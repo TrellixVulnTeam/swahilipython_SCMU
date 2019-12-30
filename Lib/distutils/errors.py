@@ -1,97 +1,97 @@
 """distutils.errors
 
 Provides exceptions used by the Distutils modules.  Note that Distutils
-modules may ashiria standard exceptions; in particular, SystemExit is
-usually raised for errors that are obviously the end-user's fault
+modules may  ashiria standard exceptions; kwenye particular, SystemExit is
+usually raised kila errors that are obviously the end-user's fault
 (eg. bad command-line arguments).
 
-This module is safe to use in "from ... import *" mode; it only exports
-symbols whose names start with "Distutils" and end with "Error"."""
+This module ni safe to use kwenye "kutoka ... agiza *" mode; it only exports
+symbols whose names start ukijumuisha "Distutils" na end ukijumuisha "Error"."""
 
-class DistutilsError (Exception):
+kundi DistutilsError (Exception):
     """The root of all Distutils evil."""
     pass
 
-class DistutilsModuleError (DistutilsError):
-    """Unable to load an expected module, or to find an expected class
-    within some module (in particular, command modules and classes)."""
+kundi DistutilsModuleError (DistutilsError):
+    """Unable to load an expected module, ama to find an expected class
+    within some module (in particular, command modules na classes)."""
     pass
 
-class DistutilsClassError (DistutilsError):
-    """Some command class (or possibly distribution class, if anyone
-    feels a need to subclass Distribution) is found sio to be holding
+kundi DistutilsClassError (DistutilsError):
+    """Some command kundi (or possibly distribution class, ikiwa anyone
+    feels a need to subkundi Distribution) ni found sio to be holding
     up its end of the bargain, ie. implementing some part of the
     "command "interface."""
     pass
 
-class DistutilsGetoptError (DistutilsError):
-    """The option table provided to 'fancy_getopt()' is bogus."""
+kundi DistutilsGetoptError (DistutilsError):
+    """The option table provided to 'fancy_getopt()' ni bogus."""
     pass
 
-class DistutilsArgError (DistutilsError):
-    """Raised by fancy_getopt in response to getopt.error -- ie. an
-    error in the command line usage."""
+kundi DistutilsArgError (DistutilsError):
+    """Raised by fancy_getopt kwenye response to getopt.error -- ie. an
+    error kwenye the command line usage."""
     pass
 
-class DistutilsFileError (DistutilsError):
-    """Any problems in the filesystem: expected file sio found, etc.
-    Typically this is for problems that we detect before OSError
+kundi DistutilsFileError (DistutilsError):
+    """Any problems kwenye the filesystem: expected file sio found, etc.
+    Typically this ni kila problems that we detect before OSError
     could be raised."""
     pass
 
-class DistutilsOptionError (DistutilsError):
-    """Syntactic/semantic errors in command options, such as use of
-    mutually conflicting options, or inconsistent options,
-    badly-spelled values, etc.  No distinction is made between option
-    values originating in the setup script, the command line, config
-    files, or what-have-you -- but if we *know* something originated in
-    the setup script, we'll ashiria DistutilsSetupError instead."""
+kundi DistutilsOptionError (DistutilsError):
+    """Syntactic/semantic errors kwenye command options, such as use of
+    mutually conflicting options, ama inconsistent options,
+    badly-spelled values, etc.  No distinction ni made between option
+    values originating kwenye the setup script, the command line, config
+    files, ama what-have-you -- but ikiwa we *know* something originated in
+    the setup script, we'll  ashiria DistutilsSetupError instead."""
     pass
 
-class DistutilsSetupError (DistutilsError):
+kundi DistutilsSetupError (DistutilsError):
     """For errors that can be definitely blamed on the setup script,
     such as invalid keyword arguments to 'setup()'."""
     pass
 
-class DistutilsPlatformError (DistutilsError):
+kundi DistutilsPlatformError (DistutilsError):
     """We don't know how to do something on the current platform (but
     we do know how to do it on some platform) -- eg. trying to compile
     C files on a platform sio supported by a CCompiler subclass."""
     pass
 
-class DistutilsExecError (DistutilsError):
+kundi DistutilsExecError (DistutilsError):
     """Any problems executing an external program (such as the C
     compiler, when compiling C files)."""
     pass
 
-class DistutilsInternalError (DistutilsError):
-    """Internal inconsistencies or impossibilities (obviously, this
-    should never be seen if the code is working!)."""
+kundi DistutilsInternalError (DistutilsError):
+    """Internal inconsistencies ama impossibilities (obviously, this
+    should never be seen ikiwa the code ni working!)."""
     pass
 
-class DistutilsTemplateError (DistutilsError):
-    """Syntax error in a file list template."""
+kundi DistutilsTemplateError (DistutilsError):
+    """Syntax error kwenye a file list template."""
 
-class DistutilsByteCompileError(DistutilsError):
+kundi DistutilsByteCompileError(DistutilsError):
     """Byte compile error."""
 
 # Exception classes used by the CCompiler implementation classes
-class CCompilerError (Exception):
+kundi CCompilerError (Exception):
     """Some compile/link operation failed."""
 
-class PreprocessError (CCompilerError):
-    """Failure to preprocess one or more C/C++ files."""
+kundi PreprocessError (CCompilerError):
+    """Failure to preprocess one ama more C/C++ files."""
 
-class CompileError (CCompilerError):
-    """Failure to compile one or more C/C++ source files."""
+kundi CompileError (CCompilerError):
+    """Failure to compile one ama more C/C++ source files."""
 
-class LibError (CCompilerError):
-    """Failure to create a static library from one or more C/C++ object
+kundi LibError (CCompilerError):
+    """Failure to create a static library kutoka one ama more C/C++ object
     files."""
 
-class LinkError (CCompilerError):
-    """Failure to link one or more C/C++ object files into an executable
-    or shared library file."""
+kundi LinkError (CCompilerError):
+    """Failure to link one ama more C/C++ object files into an executable
+    ama shared library file."""
 
-class UnknownFileError (CCompilerError):
+kundi UnknownFileError (CCompilerError):
     """Attempt to process an unknown file type."""

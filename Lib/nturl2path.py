@@ -10,7 +10,7 @@ eleza url2pathname(url):
     to a file system path; sio recommended kila general use."""
     # e.g.
     #   ///C|/foo/bar/spam.foo
-    # na
+    # and
     #   ///C:/foo/bar/spam.foo
     # become
     #   C:\foo\bar\spam.foo
@@ -28,16 +28,16 @@ eleza url2pathname(url):
         # make sure sio to convert quoted slashes :-)
         rudisha urllib.parse.unquote('\\'.join(components))
     comp = url.split('|')
-    ikiwa len(comp) != 2 ama comp[0][-1] haiko kwenye string.ascii_letters:
+    ikiwa len(comp) != 2 ama comp[0][-1] sio kwenye string.ascii_letters:
         error = 'Bad URL: ' + url
-        ashiria OSError(error)
+         ashiria OSError(error)
     drive = comp[0][-1].upper()
     components = comp[1].split('/')
     path = drive + ':'
     kila comp kwenye components:
         ikiwa comp:
             path = path + '\\' + urllib.parse.unquote(comp)
-    # Issue #11474 - handing url such kama |c/|
+    # Issue #11474 - handing url such as |c/|
     ikiwa path.endswith(':') na url.endswith('/'):
         path += '\\'
     rudisha path
@@ -62,7 +62,7 @@ eleza pathname2url(p):
     comp = p.split(':')
     ikiwa len(comp) != 2 ama len(comp[0]) > 1:
         error = 'Bad path: ' + p
-        ashiria OSError(error)
+         ashiria OSError(error)
 
     drive = urllib.parse.quote(comp[0].upper())
     components = comp[1].split('\\')

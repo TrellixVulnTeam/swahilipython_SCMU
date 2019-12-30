@@ -1,6 +1,6 @@
-from ctypes import *
-from ctypes.test import need_symbol
-import unittest
+kutoka ctypes agiza *
+kutoka ctypes.test agiza need_symbol
+agiza unittest
 
 # IMPORTANT INFO:
 #
@@ -12,12 +12,12 @@ import unittest
 #
 # WHY IS THIS SO?
 #
-# argument tuple (c_char_p("123"), ) is destroyed after the function
-# func is called, but NOT before the result is actually built.
+# argument tuple (c_char_p("123"), ) ni destroyed after the function
+# func ni called, but NOT before the result ni actually built.
 #
 # If the arglist would be destroyed BEFORE the result has been built,
 # the c_char_p("123") object would already have a zero refcount,
-# and the pointer passed to (and returned by) the function would
+# na the pointer passed to (and returned by) the function would
 # probably point to deallocated space.
 #
 # In this case, there would have to be an additional reference to the argument...
@@ -26,50 +26,50 @@ agiza _ctypes_test
 testdll = CDLL(_ctypes_test.__file__)
 
 # Return machine address `a` as a (possibly long) non-negative integer.
-# Starting with Python 2.5, id(anything) is always non-negative, na
+# Starting ukijumuisha Python 2.5, id(anything) ni always non-negative, and
 # the ctypes addressof() inherits that via PyLong_FromVoidPtr().
-def positive_address(a):
-    if a >= 0:
-        return a
-    # View the bits in `a` as unsigned instead.
-    import struct
-    num_bits = struct.calcsize("P") * 8 # num bits in native machine address
+eleza positive_address(a):
+    ikiwa a >= 0:
+        rudisha a
+    # View the bits kwenye `a` as unsigned instead.
+    agiza struct
+    num_bits = struct.calcsize("P") * 8 # num bits kwenye native machine address
     a += 1 << num_bits
     assert a >= 0
-    return a
+    rudisha a
 
-def c_wbuffer(init):
+eleza c_wbuffer(init):
     n = len(init) + 1
-    return (c_wchar * n)(*init)
+    rudisha (c_wchar * n)(*init)
 
-class CharPointersTestCase(unittest.TestCase):
+kundi CharPointersTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         func = testdll._testfunc_p_p
         func.restype = c_long
-        func.argtypes = None
+        func.argtypes = Tupu
 
-    def test_paramflags(self):
+    eleza test_paramflags(self):
         # function returns c_void_p result,
-        # and has a required parameter named 'input'
+        # na has a required parameter named 'input'
         prototype = CFUNCTYPE(c_void_p, c_void_p)
         func = prototype(("_testfunc_p_p", testdll),
                          ((1, "input"),))
 
         jaribu:
             func()
-        tatizo TypeError as details:
+        except TypeError as details:
             self.assertEqual(str(details), "required argument 'input' missing")
         isipokua:
             self.fail("TypeError sio raised")
 
-        self.assertEqual(func(None), None)
-        self.assertEqual(func(input=None), None)
+        self.assertEqual(func(Tupu), Tupu)
+        self.assertEqual(func(input=Tupu), Tupu)
 
 
-    def test_int_pointer_arg(self):
+    eleza test_int_pointer_arg(self):
         func = testdll._testfunc_p_p
-        if sizeof(c_longlong) == sizeof(c_void_p):
+        ikiwa sizeof(c_longlong) == sizeof(c_void_p):
             func.restype = c_longlong
         isipokua:
             func.restype = c_long
@@ -90,14 +90,14 @@ class CharPointersTestCase(unittest.TestCase):
         func.argtypes = POINTER(c_double),
         self.assertRaises(ArgumentError, func, byref(ci))
 
-    def test_POINTER_c_char_arg(self):
+    eleza test_POINTER_c_char_arg(self):
         func = testdll._testfunc_p_p
         func.restype = c_char_p
         func.argtypes = POINTER(c_char),
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Tupu, func(Tupu))
         self.assertEqual(b"123", func(b"123"))
-        self.assertEqual(None, func(c_char_p(None)))
+        self.assertEqual(Tupu, func(c_char_p(Tupu)))
         self.assertEqual(b"123", func(c_char_p(b"123")))
 
         self.assertEqual(b"123", func(c_buffer(b"123")))
@@ -105,14 +105,14 @@ class CharPointersTestCase(unittest.TestCase):
         self.assertEqual(ord(b"a"), func(pointer(ca))[0])
         self.assertEqual(ord(b"a"), func(byref(ca))[0])
 
-    def test_c_char_p_arg(self):
+    eleza test_c_char_p_arg(self):
         func = testdll._testfunc_p_p
         func.restype = c_char_p
         func.argtypes = c_char_p,
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Tupu, func(Tupu))
         self.assertEqual(b"123", func(b"123"))
-        self.assertEqual(None, func(c_char_p(None)))
+        self.assertEqual(Tupu, func(c_char_p(Tupu)))
         self.assertEqual(b"123", func(c_char_p(b"123")))
 
         self.assertEqual(b"123", func(c_buffer(b"123")))
@@ -120,15 +120,15 @@ class CharPointersTestCase(unittest.TestCase):
         self.assertEqual(ord(b"a"), func(pointer(ca))[0])
         self.assertEqual(ord(b"a"), func(byref(ca))[0])
 
-    def test_c_void_p_arg(self):
+    eleza test_c_void_p_arg(self):
         func = testdll._testfunc_p_p
         func.restype = c_char_p
         func.argtypes = c_void_p,
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Tupu, func(Tupu))
         self.assertEqual(b"123", func(b"123"))
         self.assertEqual(b"123", func(c_char_p(b"123")))
-        self.assertEqual(None, func(c_char_p(None)))
+        self.assertEqual(Tupu, func(c_char_p(Tupu)))
 
         self.assertEqual(b"123", func(c_buffer(b"123")))
         ca = c_char(b"a")
@@ -140,44 +140,44 @@ class CharPointersTestCase(unittest.TestCase):
         func((c_int * 3)())
 
     @need_symbol('c_wchar_p')
-    def test_c_void_p_arg_with_c_wchar_p(self):
+    eleza test_c_void_p_arg_with_c_wchar_p(self):
         func = testdll._testfunc_p_p
         func.restype = c_wchar_p
         func.argtypes = c_void_p,
 
-        self.assertEqual(None, func(c_wchar_p(None)))
+        self.assertEqual(Tupu, func(c_wchar_p(Tupu)))
         self.assertEqual("123", func(c_wchar_p("123")))
 
-    def test_instance(self):
+    eleza test_instance(self):
         func = testdll._testfunc_p_p
         func.restype = c_void_p
 
-        class X:
-            _as_parameter_ = None
+        kundi X:
+            _as_parameter_ = Tupu
 
         func.argtypes = c_void_p,
-        self.assertEqual(None, func(X()))
+        self.assertEqual(Tupu, func(X()))
 
-        func.argtypes = None
-        self.assertEqual(None, func(X()))
+        func.argtypes = Tupu
+        self.assertEqual(Tupu, func(X()))
 
 @need_symbol('c_wchar')
-class WCharPointersTestCase(unittest.TestCase):
+kundi WCharPointersTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         func = testdll._testfunc_p_p
         func.restype = c_int
-        func.argtypes = None
+        func.argtypes = Tupu
 
 
-    def test_POINTER_c_wchar_arg(self):
+    eleza test_POINTER_c_wchar_arg(self):
         func = testdll._testfunc_p_p
         func.restype = c_wchar_p
         func.argtypes = POINTER(c_wchar),
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Tupu, func(Tupu))
         self.assertEqual("123", func("123"))
-        self.assertEqual(None, func(c_wchar_p(None)))
+        self.assertEqual(Tupu, func(c_wchar_p(Tupu)))
         self.assertEqual("123", func(c_wchar_p("123")))
 
         self.assertEqual("123", func(c_wbuffer("123")))
@@ -185,26 +185,26 @@ class WCharPointersTestCase(unittest.TestCase):
         self.assertEqual("a", func(pointer(ca))[0])
         self.assertEqual("a", func(byref(ca))[0])
 
-    def test_c_wchar_p_arg(self):
+    eleza test_c_wchar_p_arg(self):
         func = testdll._testfunc_p_p
         func.restype = c_wchar_p
         func.argtypes = c_wchar_p,
 
         c_wchar_p.from_param("123")
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Tupu, func(Tupu))
         self.assertEqual("123", func("123"))
-        self.assertEqual(None, func(c_wchar_p(None)))
+        self.assertEqual(Tupu, func(c_wchar_p(Tupu)))
         self.assertEqual("123", func(c_wchar_p("123")))
 
-        # XXX Currently, these ashiria TypeErrors, although they shouldn't:
+        # XXX Currently, these  ashiria TypeErrors, although they shouldn't:
         self.assertEqual("123", func(c_wbuffer("123")))
         ca = c_wchar("a")
         self.assertEqual("a", func(pointer(ca))[0])
         self.assertEqual("a", func(byref(ca))[0])
 
-class ArrayTest(unittest.TestCase):
-    def test(self):
+kundi ArrayTest(unittest.TestCase):
+    eleza test(self):
         func = testdll._testfunc_ai8
         func.restype = POINTER(c_int)
         func.argtypes = c_int * 8,
@@ -213,10 +213,10 @@ class ArrayTest(unittest.TestCase):
 
         # This did crash before:
 
-        def func(): pass
-        CFUNCTYPE(None, c_int * 3)(func)
+        eleza func(): pass
+        CFUNCTYPE(Tupu, c_int * 3)(func)
 
 ################################################################
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

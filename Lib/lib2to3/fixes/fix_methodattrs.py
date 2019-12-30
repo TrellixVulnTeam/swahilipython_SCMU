@@ -2,7 +2,7 @@
 """
 # Author: Christian Heimes
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 

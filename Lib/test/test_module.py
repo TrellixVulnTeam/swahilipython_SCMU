@@ -13,7 +13,7 @@ kundi FullLoader:
         rudisha "<module '{}' (crafted)>".format(m.__name__)
 
 kundi BareLoader:
-    pita
+    pass
 
 
 kundi ModuleTests(unittest.TestCase):
@@ -26,8 +26,8 @@ kundi ModuleTests(unittest.TestCase):
         jaribu:
             s = foo.__name__
             self.fail("__name__ = %s" % repr(s))
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         self.assertEqual(foo.__doc__, ModuleType.__doc__)
 
     eleza test_uninitialized_missing_getattr(self):
@@ -126,7 +126,7 @@ a = A(destroyed)"""
         self.assertIs(wr(), Tupu)
 
     eleza test_module_getattr(self):
-        agiza test.good_getattr kama gga
+        agiza test.good_getattr as gga
         kutoka test.good_getattr agiza test
         self.assertEqual(test, "There ni test")
         self.assertEqual(gga.x, 1)
@@ -138,7 +138,7 @@ a = A(destroyed)"""
         toa sys.modules['test.good_getattr']
 
     eleza test_module_getattr_errors(self):
-        agiza test.bad_getattr kama bga
+        agiza test.bad_getattr as bga
         kutoka test agiza bad_getattr2
         self.assertEqual(bga.x, 1)
         self.assertEqual(bad_getattr2.x, 1)
@@ -151,12 +151,12 @@ a = A(destroyed)"""
             toa sys.modules['test.bad_getattr2']
 
     eleza test_module_dir(self):
-        agiza test.good_getattr kama gga
+        agiza test.good_getattr as gga
         self.assertEqual(dir(gga), ['a', 'b', 'c'])
         toa sys.modules['test.good_getattr']
 
     eleza test_module_dir_errors(self):
-        agiza test.bad_getattr kama bga
+        agiza test.bad_getattr as bga
         kutoka test agiza bad_getattr2
         ukijumuisha self.assertRaises(TypeError):
             dir(bga)
@@ -283,7 +283,7 @@ a = A(destroyed)"""
     eleza test_descriptor_errors_propagate(self):
         kundi Descr:
             eleza __get__(self, o, t):
-                ashiria RuntimeError
+                 ashiria RuntimeError
         kundi M(ModuleType):
             melon = Descr()
         self.assertRaises(RuntimeError, getattr, M("mymod"), "melon")

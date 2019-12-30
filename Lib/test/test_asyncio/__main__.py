@@ -1,4 +1,4 @@
-from . import load_tests
-import unittest
+kutoka . agiza load_tests
+agiza unittest
 
 unittest.main()

@@ -9,8 +9,8 @@ eleza is_instance(obj, klass):
 kundi SomeClass(object):
     class_attribute = Tupu
 
-    eleza wibble(self): pita
+    eleza wibble(self): pass
 
 
 kundi X(object):
-    pita
+    pass

@@ -5,7 +5,7 @@
 
 This converts apply(func, v, k) into (func)(*v, **k)."""
 
-# Local agizas
+# Local imports
 kutoka .. agiza pytree
 kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
@@ -19,9 +19,9 @@ kundi FixApply(fixer_base.BaseFix):
         trailer<
             '('
             arglist<
-                (sio argument<NAME '=' any>) func=any ','
-                (sio argument<NAME '=' any>) args=any [','
-                (sio argument<NAME '=' any>) kwds=any] [',']
+                (not argument<NAME '=' any>) func=any ','
+                (not argument<NAME '=' any>) args=any [','
+                (not argument<NAME '=' any>) kwds=any] [',']
             >
             ')'
         >
@@ -39,16 +39,16 @@ kundi FixApply(fixer_base.BaseFix):
         ikiwa args:
             ikiwa args.type == self.syms.star_expr:
                 rudisha  # Make no change.
-            ikiwa (args.type == self.syms.argument na
+            ikiwa (args.type == self.syms.argument and
                 args.children[0].value == '**'):
                 rudisha  # Make no change.
-        ikiwa kwds na (kwds.type == self.syms.argument na
+        ikiwa kwds na (kwds.type == self.syms.argument and
                      kwds.children[0].value == '**'):
             rudisha  # Make no change.
         prefix = node.prefix
         func = func.clone()
-        ikiwa (func.type haiko kwenye (token.NAME, syms.atom) na
-            (func.type != syms.power ama
+        ikiwa (func.type sio kwenye (token.NAME, syms.atom) and
+            (func.type != syms.power or
              func.children[-2].type == token.DOUBLESTAR)):
             # Need to parenthesize
             func = parenthesize(func)

@@ -7,10 +7,10 @@ We avoid the transformation ikiwa the zip() call ni directly contained in
 iter(<>), list(<>), tuple(<>), sorted(<>), ...join(<>), ama kila V kwenye <>:.
 """
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..pytree agiza Node
-kutoka ..pygram agiza python_symbols kama syms
+kutoka ..pygram agiza python_symbols as syms
 kutoka ..fixer_util agiza Name, ArgList, in_special_context
 
 
@@ -26,7 +26,7 @@ kundi FixZip(fixer_base.ConditionalFix):
 
     eleza transform(self, node, results):
         ikiwa self.should_skip(node):
-            rudisha
+            return
 
         ikiwa in_special_context(node):
             rudisha Tupu

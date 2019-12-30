@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here ni sio    --
+-- particular, achieving the same results as the tests here is not    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are sio exhaustive.                   --
+-- or specification.  The tests are not exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -75,7 +75,7 @@ ddadd037 add '7000'  '10000e+16' -> '1.000000000000000E+20' Inexact Rounded
 ddadd038 add '70000'  '10000e+16' -> '1.000000000000001E+20' Inexact Rounded
 ddadd039 add '700000'  '10000e+16' -> '1.000000000000007E+20' Rounded
 
--- symmejaribu:
+-- symmetry:
 ddadd040 add '10000e+16'  '70' -> '1.000000000000000E+20' Inexact Rounded
 ddadd041 add '10000e+16'  '700' -> '1.000000000000000E+20' Inexact Rounded
 ddadd042 add '10000e+16'  '7000' -> '1.000000000000000E+20' Inexact Rounded

@@ -19,7 +19,7 @@ kundi Test(unittest.TestCase):
 ##        toa cls.root
 
     eleza test_init(self):
-        self.assertKweli(Kweli)  # Get coverage of agiza
+        self.assertKweli(Kweli)  # Get coverage of import
 
 
 # Classes GUIProxy, IdbAdapter, FrameProxy, CodeProxy, DictProxy,

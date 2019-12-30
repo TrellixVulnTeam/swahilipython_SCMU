@@ -1,38 +1,38 @@
-"""Tests for distutils.command.sdist."""
-import os
-import tarfile
-import unittest
-import warnings
-import zipfile
-from os.path import join
-from textwrap import dedent
-from test.support import captured_stdout, check_warnings, run_unittest
+"""Tests kila distutils.command.sdist."""
+agiza os
+agiza tarfile
+agiza unittest
+agiza warnings
+agiza zipfile
+kutoka os.path agiza join
+kutoka textwrap agiza dedent
+kutoka test.support agiza captured_stdout, check_warnings, run_unittest
 
 jaribu:
-    import zlib
-    ZLIB_SUPPORT = True
-tatizo ImportError:
-    ZLIB_SUPPORT = False
+    agiza zlib
+    ZLIB_SUPPORT = Kweli
+except ImportError:
+    ZLIB_SUPPORT = Uongo
 
 jaribu:
-    import grp
-    import pwd
-    UID_GID_SUPPORT = True
-tatizo ImportError:
-    UID_GID_SUPPORT = False
+    agiza grp
+    agiza pwd
+    UID_GID_SUPPORT = Kweli
+except ImportError:
+    UID_GID_SUPPORT = Uongo
 
-from distutils.command.sdist import sdist, show_formats
-from distutils.core import Distribution
-from distutils.tests.test_config import BasePyPIRCCommandTestCase
-from distutils.errors import DistutilsOptionError
-from distutils.spawn import find_executable
-from distutils.log import WARN
-from distutils.filelist import FileList
-from distutils.archive_util import ARCHIVE_FORMATS
+kutoka distutils.command.sdist agiza sdist, show_formats
+kutoka distutils.core agiza Distribution
+kutoka distutils.tests.test_config agiza BasePyPIRCCommandTestCase
+kutoka distutils.errors agiza DistutilsOptionError
+kutoka distutils.spawn agiza find_executable
+kutoka distutils.log agiza WARN
+kutoka distutils.filelist agiza FileList
+kutoka distutils.archive_util agiza ARCHIVE_FORMATS
 
 SETUP_PY = """
-from distutils.core import setup
-import somecode
+kutoka distutils.core agiza setup
+agiza somecode
 
 setup(name='fake')
 """
@@ -52,47 +52,47 @@ somecode%(sep)sdoc.dat
 somecode%(sep)sdoc.txt
 """
 
-class SDistTestCase(BasePyPIRCCommandTestCase):
+kundi SDistTestCase(BasePyPIRCCommandTestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         # PyPIRCCommandTestCase creates a temp dir already
-        # and put it in self.tmp_dir
+        # na put it kwenye self.tmp_dir
         super(SDistTestCase, self).setUp()
         # setting up an environment
         self.old_path = os.getcwd()
         os.mkdir(join(self.tmp_dir, 'somecode'))
         os.mkdir(join(self.tmp_dir, 'dist'))
-        # a package, and a README
+        # a package, na a README
         self.write_file((self.tmp_dir, 'README'), 'xxx')
         self.write_file((self.tmp_dir, 'somecode', '__init__.py'), '#')
         self.write_file((self.tmp_dir, 'setup.py'), SETUP_PY)
         os.chdir(self.tmp_dir)
 
-    def tearDown(self):
+    eleza tearDown(self):
         # back to normal
         os.chdir(self.old_path)
         super(SDistTestCase, self).tearDown()
 
-    def get_cmd(self, metadata=None):
+    eleza get_cmd(self, metadata=Tupu):
         """Returns a cmd"""
-        if metadata is None:
+        ikiwa metadata ni Tupu:
             metadata = {'name': 'fake', 'version': '1.0',
                         'url': 'xxx', 'author': 'xxx',
                         'author_email': 'xxx'}
         dist = Distribution(metadata)
         dist.script_name = 'setup.py'
         dist.packages = ['somecode']
-        dist.include_package_data = True
+        dist.include_package_data = Kweli
         cmd = sdist(dist)
         cmd.dist_dir = 'dist'
-        return dist, cmd
+        rudisha dist, cmd
 
     @unittest.skipUnless(ZLIB_SUPPORT, 'Need zlib support to run')
-    def test_prune_file_list(self):
-        # this test creates a project with some VCS dirs and an NFS rename
+    eleza test_prune_file_list(self):
+        # this test creates a project ukijumuisha some VCS dirs na an NFS rename
         # file, then launches sdist to check they get pruned on all systems
 
-        # creating VCS directories with some files in them
+        # creating VCS directories ukijumuisha some files kwenye them
         os.mkdir(join(self.tmp_dir, 'somecode', '.svn'))
         self.write_file((self.tmp_dir, 'somecode', '.svn', 'ok.py'), 'xxx')
 
@@ -109,7 +109,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         # now building a sdist
         dist, cmd = self.get_cmd()
 
-        # zip is available universally
+        # zip ni available universally
         # (tar might sio be installed under win32)
         cmd.formats = ['zip']
 
@@ -130,14 +130,14 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         # making sure everything has been pruned correctly
         expected = ['', 'PKG-INFO', 'README', 'setup.py',
                     'somecode/', 'somecode/__init__.py']
-        self.assertEqual(sorted(content), ['fake-1.0/' + x for x in expected])
+        self.assertEqual(sorted(content), ['fake-1.0/' + x kila x kwenye expected])
 
     @unittest.skipUnless(ZLIB_SUPPORT, 'Need zlib support to run')
-    @unittest.skipIf(find_executable('tar') is None,
+    @unittest.skipIf(find_executable('tar') ni Tupu,
                      "The tar command ni sio found")
-    @unittest.skipIf(find_executable('gzip') is None,
+    @unittest.skipIf(find_executable('gzip') ni Tupu,
                      "The gzip command ni sio found")
-    def test_make_distribution(self):
+    eleza test_make_distribution(self):
         # now building a sdist
         dist, cmd = self.get_cmd()
 
@@ -166,22 +166,22 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(result, ['fake-1.0.tar', 'fake-1.0.tar.gz'])
 
     @unittest.skipUnless(ZLIB_SUPPORT, 'Need zlib support to run')
-    def test_add_defaults(self):
+    eleza test_add_defaults(self):
 
         # http://bugs.python.org/issue2279
 
         # add_default should also include
-        # data_files and package_data
+        # data_files na package_data
         dist, cmd = self.get_cmd()
 
         # filling data_files by pointing files
-        # in package_data
+        # kwenye package_data
         dist.package_data = {'': ['*.cfg', '*.dat'],
                              'somecode': ['*.txt']}
         self.write_file((self.tmp_dir, 'somecode', 'doc.txt'), '#')
         self.write_file((self.tmp_dir, 'somecode', 'doc.dat'), '#')
 
-        # adding some data in data_files
+        # adding some data kwenye data_files
         data_dir = join(self.tmp_dir, 'data')
         os.mkdir(data_dir)
         self.write_file((data_dir, 'data.dt'), '#')
@@ -191,7 +191,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         hg_dir = join(self.tmp_dir, '.hg')
         os.mkdir(hg_dir)
         self.write_file((hg_dir, 'last-message.txt'), '#')
-        # a buggy regex used to prevent this from working on windows (#6884)
+        # a buggy regex used to prevent this kutoka working on windows (#6884)
         self.write_file((self.tmp_dir, 'buildout.cfg'), '#')
         self.write_file((self.tmp_dir, 'inroot.txt'), '#')
         self.write_file((some_dir, 'file.txt'), '#')
@@ -211,7 +211,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         dist.scripts = [join('scripts', 'script.py')]
 
         cmd.formats = ['zip']
-        cmd.use_defaults = True
+        cmd.use_defaults = Kweli
 
         cmd.ensure_finalized()
         cmd.run()
@@ -234,7 +234,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
                     'some/', 'some/file.txt', 'some/other_file.txt',
                     'somecode/', 'somecode/__init__.py', 'somecode/doc.dat',
                     'somecode/doc.txt']
-        self.assertEqual(sorted(content), ['fake-1.0/' + x for x in expected])
+        self.assertEqual(sorted(content), ['fake-1.0/' + x kila x kwenye expected])
 
         # checking the MANIFEST
         f = open(join(self.tmp_dir, 'MANIFEST'))
@@ -245,47 +245,47 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(manifest, MANIFEST % {'sep': os.sep})
 
     @unittest.skipUnless(ZLIB_SUPPORT, 'Need zlib support to run')
-    def test_metadata_check_option(self):
+    eleza test_metadata_check_option(self):
         # testing the `medata-check` option
         dist, cmd = self.get_cmd(metadata={})
 
-        # this should ashiria some warnings !
-        # with the `check` subcommand
+        # this should  ashiria some warnings !
+        # ukijumuisha the `check` subcommand
         cmd.ensure_finalized()
         cmd.run()
-        warnings = [msg for msg in self.get_logs(WARN) if
+        warnings = [msg kila msg kwenye self.get_logs(WARN) if
                     msg.startswith('warning: check:')]
         self.assertEqual(len(warnings), 2)
 
-        # trying with a complete set of metadata
+        # trying ukijumuisha a complete set of metadata
         self.clear_logs()
         dist, cmd = self.get_cmd()
         cmd.ensure_finalized()
         cmd.metadata_check = 0
         cmd.run()
-        warnings = [msg for msg in self.get_logs(WARN) if
+        warnings = [msg kila msg kwenye self.get_logs(WARN) if
                     msg.startswith('warning: check:')]
         self.assertEqual(len(warnings), 0)
 
-    def test_check_metadata_deprecated(self):
-        # makes sure make_metadata is deprecated
+    eleza test_check_metadata_deprecated(self):
+        # makes sure make_metadata ni deprecated
         dist, cmd = self.get_cmd()
-        with check_warnings() as w:
+        ukijumuisha check_warnings() as w:
             warnings.simplefilter("always")
             cmd.check_metadata()
             self.assertEqual(len(w.warnings), 1)
 
-    def test_show_formats(self):
-        with captured_stdout() as stdout:
+    eleza test_show_formats(self):
+        ukijumuisha captured_stdout() as stdout:
             show_formats()
 
         # the output should be a header line + one line per format
         num_formats = len(ARCHIVE_FORMATS.keys())
-        output = [line for line in stdout.getvalue().split('\n')
-                  if line.strip().startswith('--formats=')]
+        output = [line kila line kwenye stdout.getvalue().split('\n')
+                  ikiwa line.strip().startswith('--formats=')]
         self.assertEqual(len(output), num_formats)
 
-    def test_finalize_options(self):
+    eleza test_finalize_options(self):
         dist, cmd = self.get_cmd()
         cmd.finalize_options()
 
@@ -294,7 +294,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(cmd.template, 'MANIFEST.in')
         self.assertEqual(cmd.dist_dir, 'dist')
 
-        # formats has to be a string splitable on (' ', ',') ama
+        # formats has to be a string splitable on (' ', ',') or
         # a stringlist
         cmd.formats = 1
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)
@@ -305,10 +305,10 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         cmd.formats = 'supazipa'
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)
 
-    # the following tests make sure there is a nice error message instead
+    # the following tests make sure there ni a nice error message instead
     # of a traceback when parsing an invalid manifest template
 
-    def _check_template(self, content):
+    eleza _check_template(self, content):
         dist, cmd = self.get_cmd()
         os.chdir(self.tmp_dir)
         self.write_file('MANIFEST.in', content)
@@ -318,25 +318,25 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         warnings = self.get_logs(WARN)
         self.assertEqual(len(warnings), 1)
 
-    def test_invalid_template_unknown_command(self):
+    eleza test_invalid_template_unknown_command(self):
         self._check_template('taunt knights *')
 
-    def test_invalid_template_wrong_arguments(self):
+    eleza test_invalid_template_wrong_arguments(self):
         # this manifest command takes one argument
         self._check_template('prune')
 
-    @unittest.skipIf(os.name != 'nt', 'test relevant for Windows only')
-    def test_invalid_template_wrong_path(self):
+    @unittest.skipIf(os.name != 'nt', 'test relevant kila Windows only')
+    eleza test_invalid_template_wrong_path(self):
         # on Windows, trailing slashes are sio allowed
         # this used to crash instead of raising a warning: #8286
         self._check_template('include examples/')
 
     @unittest.skipUnless(ZLIB_SUPPORT, 'Need zlib support to run')
-    def test_get_file_list(self):
-        # make sure MANIFEST is recalculated
+    eleza test_get_file_list(self):
+        # make sure MANIFEST ni recalculated
         dist, cmd = self.get_cmd()
 
-        # filling data_files by pointing files in package_data
+        # filling data_files by pointing files kwenye package_data
         dist.package_data = {'somecode': ['*.txt']}
         self.write_file((self.tmp_dir, 'somecode', 'doc.txt'), '#')
         cmd.formats = ['gztar']
@@ -345,8 +345,8 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
 
         f = open(cmd.manifest)
         jaribu:
-            manifest = [line.strip() for line in f.read().split('\n')
-                        if line.strip() != '']
+            manifest = [line.strip() kila line kwenye f.read().split('\n')
+                        ikiwa line.strip() != '']
         mwishowe:
             f.close()
 
@@ -355,26 +355,26 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         # adding a file
         self.write_file((self.tmp_dir, 'somecode', 'doc2.txt'), '#')
 
-        # make sure build_py is reinitialized, like a fresh run
+        # make sure build_py ni reinitialized, like a fresh run
         build_py = dist.get_command_obj('build_py')
-        build_py.finalized = False
+        build_py.finalized = Uongo
         build_py.ensure_finalized()
 
         cmd.run()
 
         f = open(cmd.manifest)
         jaribu:
-            manifest2 = [line.strip() for line in f.read().split('\n')
-                         if line.strip() != '']
+            manifest2 = [line.strip() kila line kwenye f.read().split('\n')
+                         ikiwa line.strip() != '']
         mwishowe:
             f.close()
 
-        # do we have the new file in MANIFEST ?
+        # do we have the new file kwenye MANIFEST ?
         self.assertEqual(len(manifest2), 6)
         self.assertIn('doc2.txt', manifest2[-1])
 
     @unittest.skipUnless(ZLIB_SUPPORT, 'Need zlib support to run')
-    def test_manifest_marker(self):
+    eleza test_manifest_marker(self):
         # check that autogenerated MANIFESTs have a marker
         dist, cmd = self.get_cmd()
         cmd.ensure_finalized()
@@ -382,8 +382,8 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
 
         f = open(cmd.manifest)
         jaribu:
-            manifest = [line.strip() for line in f.read().split('\n')
-                        if line.strip() != '']
+            manifest = [line.strip() kila line kwenye f.read().split('\n')
+                        ikiwa line.strip() != '']
         mwishowe:
             f.close()
 
@@ -391,8 +391,8 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
                          '# file GENERATED by distutils, do NOT edit')
 
     @unittest.skipUnless(ZLIB_SUPPORT, "Need zlib support to run")
-    def test_manifest_comments(self):
-        # make sure comments don't cause exceptions or wrong includes
+    eleza test_manifest_comments(self):
+        # make sure comments don't cause exceptions ama wrong includes
         contents = dedent("""\
             # bad.py
             #bad.py
@@ -408,8 +408,8 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(cmd.filelist.files, ['good.py'])
 
     @unittest.skipUnless(ZLIB_SUPPORT, 'Need zlib support to run')
-    def test_manual_manifest(self):
-        # check that a MANIFEST without a marker is left alone
+    eleza test_manual_manifest(self):
+        # check that a MANIFEST without a marker ni left alone
         dist, cmd = self.get_cmd()
         cmd.formats = ['gztar']
         cmd.ensure_finalized()
@@ -421,8 +421,8 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
 
         f = open(cmd.manifest)
         jaribu:
-            manifest = [line.strip() for line in f.read().split('\n')
-                        if line.strip() != '']
+            manifest = [line.strip() kila line kwenye f.read().split('\n')
+                        ikiwa line.strip() != '']
         mwishowe:
             f.close()
 
@@ -431,23 +431,23 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         archive_name = join(self.tmp_dir, 'dist', 'fake-1.0.tar.gz')
         archive = tarfile.open(archive_name)
         jaribu:
-            filenames = [tarinfo.name for tarinfo in archive]
+            filenames = [tarinfo.name kila tarinfo kwenye archive]
         mwishowe:
             archive.close()
         self.assertEqual(sorted(filenames), ['fake-1.0', 'fake-1.0/PKG-INFO',
                                              'fake-1.0/README.manual'])
 
     @unittest.skipUnless(ZLIB_SUPPORT, "requires zlib")
-    @unittest.skipUnless(UID_GID_SUPPORT, "Requires grp and pwd support")
-    @unittest.skipIf(find_executable('tar') is None,
+    @unittest.skipUnless(UID_GID_SUPPORT, "Requires grp na pwd support")
+    @unittest.skipIf(find_executable('tar') ni Tupu,
                      "The tar command ni sio found")
-    @unittest.skipIf(find_executable('gzip') is None,
+    @unittest.skipIf(find_executable('gzip') ni Tupu,
                      "The gzip command ni sio found")
-    def test_make_distribution_owner_group(self):
+    eleza test_make_distribution_owner_group(self):
         # now building a sdist
         dist, cmd = self.get_cmd()
 
-        # creating a gztar and specifying the owner+group
+        # creating a gztar na specifying the owner+group
         cmd.formats = ['gztar']
         cmd.owner = pwd.getpwuid(0)[0]
         cmd.group = grp.getgrgid(0)[0]
@@ -458,7 +458,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         archive_name = join(self.tmp_dir, 'dist', 'fake-1.0.tar.gz')
         archive = tarfile.open(archive_name)
         jaribu:
-            for member in archive.getmembers():
+            kila member kwenye archive.getmembers():
                 self.assertEqual(member.uid, 0)
                 self.assertEqual(member.gid, 0)
         mwishowe:
@@ -477,16 +477,16 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         archive = tarfile.open(archive_name)
 
         # note that we are sio testing the group ownership here
-        # because, depending on the platforms and the container
+        # because, depending on the platforms na the container
         # rights (see #7408)
         jaribu:
-            for member in archive.getmembers():
+            kila member kwenye archive.getmembers():
                 self.assertEqual(member.uid, os.getuid())
         mwishowe:
             archive.close()
 
-def test_suite():
-    return unittest.makeSuite(SDistTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(SDistTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

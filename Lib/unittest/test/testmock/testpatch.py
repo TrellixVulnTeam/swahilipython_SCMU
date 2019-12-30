@@ -43,24 +43,24 @@ something_else  = sentinel.SomethingElse
 
 
 kundi Foo(object):
-    eleza __init__(self, a): pita
-    eleza f(self, a): pita
-    eleza g(self): pita
+    eleza __init__(self, a): pass
+    eleza f(self, a): pass
+    eleza g(self): pass
     foo = 'bar'
 
     @staticmethod
-    eleza static_method(): pita
+    eleza static_method(): pass
 
     @classmethod
-    eleza class_method(cls): pita
+    eleza class_method(cls): pass
 
     kundi Bar(object):
-        eleza a(self): pita
+        eleza a(self): pass
 
 foo_name = '%s.Foo' % __name__
 
 
-eleza function(a, b=Foo): pita
+eleza function(a, b=Foo): pass
 
 
 kundi Container(object):
@@ -144,7 +144,7 @@ kundi PatchTest(unittest.TestCase):
         original = something
         @patch('%s.something' % __name__, sentinel.Something2)
         eleza test():
-            pita
+            pass
 
         jaribu:
             something = sentinel.replacement_value
@@ -186,7 +186,7 @@ kundi PatchTest(unittest.TestCase):
                          "patch sio restored")
 
         mock = Mock()
-        mock.rudisha_value = sentinel.Handle
+        mock.return_value = sentinel.Handle
         @patch('%s.open' % builtin_string, mock)
         eleza test():
             self.assertEqual(open('filename', 'r'), sentinel.Handle,
@@ -217,7 +217,7 @@ kundi PatchTest(unittest.TestCase):
         @patch.object(Test, 'something')
         eleza test(mock):
             self.assertEqual(mock, Test.something,
-                             "Mock sio pitaed into test function")
+                             "Mock sio passed into test function")
             self.assertIsInstance(mock, MagicMock,
                             "patch ukijumuisha two arguments did sio create a mock")
 
@@ -231,15 +231,15 @@ kundi PatchTest(unittest.TestCase):
             self.assertEqual(this2, sentinel.this2,
                              "Patched function didn't receive second argument")
             self.assertEqual(mock1, Test.something2,
-                             "Mock sio pitaed into test function")
+                             "Mock sio passed into test function")
             self.assertEqual(mock2, Test.something,
-                             "Second Mock sio pitaed into test function")
+                             "Second Mock sio passed into test function")
             self.assertIsInstance(mock2, MagicMock,
                             "patch ukijumuisha two arguments did sio create a mock")
             self.assertIsInstance(mock2, MagicMock,
                             "patch ukijumuisha two arguments did sio create a mock")
 
-            # A hack to test that new mocks are pitaed the second time
+            # A hack to test that new mocks are passed the second time
             self.assertNotEqual(outerMock1, mock1, "unexpected value kila mock1")
             self.assertNotEqual(outerMock2, mock2, "unexpected value kila mock1")
             rudisha mock1, mock2
@@ -310,7 +310,7 @@ kundi PatchTest(unittest.TestCase):
         @patch('%s.SomeClass' % __name__, spec=Kweli)
         eleza test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
-            # Should sio ashiria attribute error
+            # Should sio  ashiria attribute error
             MockSomeClass.wibble
 
             self.assertRaises(AttributeError, lambda: MockSomeClass.not_wibble)
@@ -322,7 +322,7 @@ kundi PatchTest(unittest.TestCase):
         @patch.object(PTModule, 'SomeClass', spec=Kweli)
         eleza test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
-            # Should sio ashiria attribute error
+            # Should sio  ashiria attribute error
             MockSomeClass.wibble
 
             self.assertRaises(AttributeError, lambda: MockSomeClass.not_wibble)
@@ -336,7 +336,7 @@ kundi PatchTest(unittest.TestCase):
             self.assertKweli(is_instance(MockSomeClass, MagicMock))
             instance = MockSomeClass()
             self.assertNotCallable(instance)
-            # Should sio ashiria attribute error
+            # Should sio  ashiria attribute error
             instance.wibble
 
             self.assertRaises(AttributeError, lambda: instance.not_wibble)
@@ -365,7 +365,7 @@ kundi PatchTest(unittest.TestCase):
     eleza test_patch_wont_create_by_default(self):
         ukijumuisha self.assertRaises(AttributeError):
             @patch('%s.frooble' % builtin_string, sentinel.Frooble)
-            eleza test(): pita
+            eleza test(): pass
 
             test()
         self.assertRaises(NameError, lambda: frooble)
@@ -374,7 +374,7 @@ kundi PatchTest(unittest.TestCase):
     eleza test_patchobject_wont_create_by_default(self):
         ukijumuisha self.assertRaises(AttributeError):
             @patch.object(SomeClass, 'ord', sentinel.Frooble)
-            eleza test(): pita
+            eleza test(): pass
             test()
         self.assertUongo(hasattr(SomeClass, 'ord'))
 
@@ -382,13 +382,13 @@ kundi PatchTest(unittest.TestCase):
     eleza test_patch_builtins_without_create(self):
         @patch(__name__+'.ord')
         eleza test_ord(mock_ord):
-            mock_ord.rudisha_value = 101
+            mock_ord.return_value = 101
             rudisha ord('c')
 
         @patch(__name__+'.open')
         eleza test_open(mock_open):
-            m = mock_open.rudisha_value
-            m.read.rudisha_value = 'abcd'
+            m = mock_open.return_value
+            m.read.return_value = 'abcd'
 
             fobj = open('doesnotexists.txt')
             data = fobj.read()
@@ -621,7 +621,7 @@ kundi PatchTest(unittest.TestCase):
 
     eleza test_patch_dict_as_context_manager(self):
         foo = {'a': 'b'}
-        ukijumuisha patch.dict(foo, a='c') kama patched:
+        ukijumuisha patch.dict(foo, a='c') as patched:
             self.assertEqual(patched, {'a': 'c'})
         self.assertEqual(foo, {'a': 'b'})
 
@@ -633,7 +633,7 @@ kundi PatchTest(unittest.TestCase):
         @patch('%s.SomeClass' % __name__, object(), autospec=Kweli)
         @patch.object(SomeClass, object())
         @patch.dict(foo)
-        eleza some_name(): pita
+        eleza some_name(): pass
 
         self.assertEqual(some_name.__name__, 'some_name')
 
@@ -643,7 +643,7 @@ kundi PatchTest(unittest.TestCase):
 
         @patch.dict(foo, {'a': 'b'})
         eleza test():
-            ashiria NameError('Konrad')
+             ashiria NameError('Konrad')
 
         ukijumuisha self.assertRaises(NameError):
             test()
@@ -833,7 +833,7 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_patch_keyword_args(self):
-        kwargs = {'side_effect': KeyError, 'foo.bar.rudisha_value': 33,
+        kwargs = {'side_effect': KeyError, 'foo.bar.return_value': 33,
                   'foo': MagicMock()}
 
         patcher = patch(foo_name, **kwargs)
@@ -846,7 +846,7 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_patch_object_keyword_args(self):
-        kwargs = {'side_effect': KeyError, 'foo.bar.rudisha_value': 33,
+        kwargs = {'side_effect': KeyError, 'foo.bar.return_value': 33,
                   'foo': MagicMock()}
 
         patcher = patch.object(Foo, 'f', **kwargs)
@@ -875,13 +875,13 @@ kundi PatchTest(unittest.TestCase):
 
     eleza test_autospec(self):
         kundi Boo(object):
-            eleza __init__(self, a): pita
-            eleza f(self, a): pita
-            eleza g(self): pita
+            eleza __init__(self, a): pass
+            eleza f(self, a): pass
+            eleza g(self): pass
             foo = 'bar'
 
             kundi Bar(object):
-                eleza a(self): pita
+                eleza a(self): pass
 
         eleza _test(mock):
             mock(1)
@@ -962,7 +962,7 @@ kundi PatchTest(unittest.TestCase):
 
     eleza test_autospec_keywords(self):
         @patch('%s.function' % __name__, autospec=Kweli,
-               rudisha_value=3)
+               return_value=3)
         eleza test(mock_function):
             #self.assertEqual(function.abc, 'foo')
             rudisha function(1, 2)
@@ -972,13 +972,13 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_autospec_staticmethod(self):
-        ukijumuisha patch('%s.Foo.static_method' % __name__, autospec=Kweli) kama method:
+        ukijumuisha patch('%s.Foo.static_method' % __name__, autospec=Kweli) as method:
             Foo.static_method()
             method.assert_called_once_with()
 
 
     eleza test_autospec_classmethod(self):
-        ukijumuisha patch('%s.Foo.class_method' % __name__, autospec=Kweli) kama method:
+        ukijumuisha patch('%s.Foo.class_method' % __name__, autospec=Kweli) as method:
             Foo.class_method()
             method.assert_called_once_with()
 
@@ -1032,7 +1032,7 @@ kundi PatchTest(unittest.TestCase):
     eleza test_tracebacks(self):
         @patch.object(Foo, 'f', object())
         eleza test():
-            ashiria AssertionError
+             ashiria AssertionError
         jaribu:
             test()
         tatizo:
@@ -1040,7 +1040,7 @@ kundi PatchTest(unittest.TestCase):
 
         result = unittest.TextTestResult(Tupu, Tupu, 0)
         traceback = result._exc_info_to_string(err, self)
-        self.assertIn('ashiria AssertionError', traceback)
+        self.assertIn(' ashiria AssertionError', traceback)
 
 
     eleza test_new_callable_patch(self):
@@ -1142,7 +1142,7 @@ kundi PatchTest(unittest.TestCase):
 
     eleza test_new_callable_inherit_for_mocks(self):
         kundi MockSub(Mock):
-            pita
+            pass
 
         MockClasses = (
             NonCallableMock, NonCallableMagicMock, MagicMock, Mock, MockSub
@@ -1153,7 +1153,7 @@ kundi PatchTest(unittest.TestCase):
                 p = patch(foo_name, new_callable=Klass, **kwargs)
                 m = p.start()
                 jaribu:
-                    instance = m.rudisha_value
+                    instance = m.return_value
                     self.assertRaises(AttributeError, getattr, instance, 'x')
                 mwishowe:
                     p.stop()
@@ -1168,7 +1168,7 @@ kundi PatchTest(unittest.TestCase):
         m = p.start()
         jaribu:
             self.assertKweli(is_instance(m, NotAMock))
-            self.assertRaises(AttributeError, getattr, m, 'rudisha_value')
+            self.assertRaises(AttributeError, getattr, m, 'return_value')
         mwishowe:
             p.stop()
 
@@ -1389,7 +1389,7 @@ kundi PatchTest(unittest.TestCase):
 
     eleza test_patch_multiple_spec_set(self):
         # ikiwa spec_set works then we can assume that spec na autospec also
-        # work kama the underlying machinery ni the same
+        # work as the underlying machinery ni the same
         patcher = patch.multiple(Foo, foo=DEFAULT, spec_set=['a', 'b'])
         result = patcher.start()
         jaribu:
@@ -1405,7 +1405,7 @@ kundi PatchTest(unittest.TestCase):
 
     eleza test_patch_multiple_new_callable(self):
         kundi Thing(object):
-            pita
+            pass
 
         patcher = patch.multiple(
             Foo, f=DEFAULT, g=DEFAULT, new_callable=Thing
@@ -1428,17 +1428,17 @@ kundi PatchTest(unittest.TestCase):
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'missing', 1)
         @patch.object(Foo, 'f', 1)
-        eleza thing1(): pita
+        eleza thing1(): pass
 
         @patch.object(Foo, 'missing', 1)
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'f', 1)
-        eleza thing2(): pita
+        eleza thing2(): pass
 
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'f', 1)
         @patch.object(Foo, 'missing', 1)
-        eleza thing3(): pita
+        eleza thing3(): pass
 
         kila func kwenye thing1, thing2, thing3:
             self.assertRaises(AttributeError, func)
@@ -1452,22 +1452,22 @@ kundi PatchTest(unittest.TestCase):
         original_foo = Foo.foo
 
         eleza crasher():
-            ashiria NameError('crasher')
+             ashiria NameError('crasher')
 
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'foo', new_callable=crasher)
         @patch.object(Foo, 'f', 1)
-        eleza thing1(): pita
+        eleza thing1(): pass
 
         @patch.object(Foo, 'foo', new_callable=crasher)
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'f', 1)
-        eleza thing2(): pita
+        eleza thing2(): pass
 
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'f', 1)
         @patch.object(Foo, 'foo', new_callable=crasher)
-        eleza thing3(): pita
+        eleza thing3(): pass
 
         kila func kwenye thing1, thing2, thing3:
             self.assertRaises(NameError, func)
@@ -1493,7 +1493,7 @@ kundi PatchTest(unittest.TestCase):
             patcher.additional_patchers = additionals
 
             @patcher
-            eleza func(): pita
+            eleza func(): pass
 
             self.assertRaises(AttributeError, func)
             self.assertEqual(Foo.f, original_f)
@@ -1506,7 +1506,7 @@ kundi PatchTest(unittest.TestCase):
         original_foo = Foo.foo
 
         eleza crasher():
-            ashiria NameError('crasher')
+             ashiria NameError('crasher')
 
         patcher = patch.object(Foo, 'f', 1)
         patcher.attribute_name = 'f'
@@ -1521,7 +1521,7 @@ kundi PatchTest(unittest.TestCase):
             patcher.additional_patchers = additionals
 
             @patcher
-            eleza func(): pita
+            eleza func(): pass
 
             self.assertRaises(NameError, func)
             self.assertEqual(Foo.f, original_f)
@@ -1601,7 +1601,7 @@ kundi PatchTest(unittest.TestCase):
 
 
     eleza test_patch_nested_autospec_repr(self):
-        ukijumuisha patch('unittest.test.testmock.support', autospec=Kweli) kama m:
+        ukijumuisha patch('unittest.test.testmock.support', autospec=Kweli) as m:
             self.assertIn(" name='support.SomeClass.wibble()'",
                           repr(m.SomeClass.wibble()))
             self.assertIn(" name='support.SomeClass().wibble()'",
@@ -1636,7 +1636,7 @@ kundi PatchTest(unittest.TestCase):
                 p.stop()
 
 
-    eleza test_patch_agizas_lazily(self):
+    eleza test_patch_imports_lazily(self):
         p1 = patch('squizz.squozz')
         self.assertRaises(ImportError, p1.start)
 
@@ -1670,7 +1670,7 @@ kundi PatchTest(unittest.TestCase):
 
         @with_custom_patch('squizz.squozz')
         eleza test(mock):
-            ashiria RuntimeError
+             ashiria RuntimeError
 
         ukijumuisha uncache('squizz'):
             squizz = Mock()
@@ -1845,7 +1845,7 @@ kundi PatchTest(unittest.TestCase):
             # now make sure we can patch based on a dotted path:
             @patch('unittest.test.testmock.support.X')
             eleza test(mock):
-                pita
+                pass
             test()
 
 
@@ -1854,9 +1854,9 @@ kundi PatchTest(unittest.TestCase):
             patch('')
 
 
-    eleza test_cant_set_kwargs_when_pitaing_a_mock(self):
+    eleza test_cant_set_kwargs_when_passing_a_mock(self):
         @patch('unittest.test.testmock.support.X', new=object(), x=1)
-        eleza test(): pita
+        eleza test(): pass
         ukijumuisha self.assertRaises(TypeError):
             test()
 

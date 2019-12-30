@@ -22,7 +22,7 @@ kundi CProfileTest(ProfileTest):
         # bpo-3895
         agiza _lsprof
 
-        ukijumuisha support.catch_unraisable_exception() kama cm:
+        ukijumuisha support.catch_unraisable_exception() as cm:
             obj = _lsprof.Profiler(lambda: int)
             obj.enable()
             obj = _lsprof.Profiler(1)
@@ -47,11 +47,11 @@ kundi CProfileTest(ProfileTest):
         # Make sure we clean ourselves up ikiwa the test fails kila some reason.
         self.addCleanup(prof.disable)
 
-        ukijumuisha prof kama __enter__rudisha_value:
+        ukijumuisha prof as __enter__return_value:
             # profile.__enter__ should rudisha itself.
-            self.assertIs(prof, __enter__rudisha_value)
+            self.assertIs(prof, __enter__return_value)
 
-            # profile should be set kama the global profiler inside the
+            # profile should be set as the global profiler inside the
             # with-block
             self.assertIs(sys.getprofile(), prof)
 
@@ -66,7 +66,7 @@ kundi TestCommandLine(unittest.TestCase):
 
 
 eleza main():
-    ikiwa '-r' haiko kwenye sys.argv:
+    ikiwa '-r' sio kwenye sys.argv:
         unittest.main()
     isipokua:
         regenerate_expected_output(__file__, CProfileTest)

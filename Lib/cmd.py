@@ -2,11 +2,11 @@
 
 Interpreters constructed ukijumuisha this kundi obey the following conventions:
 
-1. End of file on input ni processed kama the command 'EOF'.
+1. End of file on input ni processed as the command 'EOF'.
 2. A command ni parsed out of each line by collecting the prefix composed
    of characters kwenye the identchars member.
 3. A command `foo' ni dispatched to a method 'do_foo()'; the do_ method
-   ni pitaed a single argument consisting of the remainder of the line.
+   ni passed a single argument consisting of the remainder of the line.
 4. Typing an empty line repeats the last command.  (Actually, it calls the
    method `emptyline', which may be overridden kwenye a subclass.)
 5. There ni a predefined `help' method.  Given an argument `topic', it
@@ -18,7 +18,7 @@ Interpreters constructed ukijumuisha this kundi obey the following conventions:
 7. If completion ni enabled, completing commands will be done automatically,
    na completing of commands args ni done by calling complete_foo() with
    arguments text, line, begidx, endidx.  text ni string we are matching
-   against, all rudishaed matches must begin ukijumuisha it.  line ni the current
+   against, all returned matches must begin ukijumuisha it.  line ni the current
    input line (lstripped), begidx na endidx are the beginning na end
    indexes of the text being matched, which could be used to provide
    different completion depending upon which position the argument ni in.
@@ -36,7 +36,7 @@ If the value of `self.intro' ni nonempty when the cmdloop method ni called,
 it ni printed out on interpreter startup.  This value may be overridden
 via an optional argument to the cmdloop() method.
 
-The data members `self.doc_header', `self.misc_header', na
+The data members `self.doc_header', `self.misc_header', and
 `self.undoc_header' set the headers used kila the help function's
 listings of documented functions, miscellaneous topics, na undocumented
 functions respectively.
@@ -52,12 +52,12 @@ IDENTCHARS = string.ascii_letters + string.digits + '_'
 kundi Cmd:
     """A simple framework kila writing line-oriented command interpreters.
 
-    These are often useful kila test harnesses, administrative tools, na
+    These are often useful kila test harnesses, administrative tools, and
     prototypes that will later be wrapped kwenye a more sophisticated interface.
 
     A Cmd instance ama subkundi instance ni a line-oriented interpreter
     framework.  There ni no good reason to instantiate Cmd itself; rather,
-    it's useful kama a superkundi of an interpreter kundi you define yourself
+    it's useful as a superkundi of an interpreter kundi you define yourself
     kwenye order to inherit Cmd's methods na encapsulate action methods.
 
     """
@@ -97,8 +97,8 @@ kundi Cmd:
 
     eleza cmdloop(self, intro=Tupu):
         """Repeatedly issue a prompt, accept input, parse an initial prefix
-        off the received input, na dispatch to action methods, pitaing them
-        the remainder of the line kama argument.
+        off the received input, na dispatch to action methods, passing them
+        the remainder of the line as argument.
 
         """
 
@@ -109,8 +109,8 @@ kundi Cmd:
                 self.old_completer = readline.get_completer()
                 readline.set_completer(self.complete)
                 readline.parse_and_bind(self.completekey+": complete")
-            tatizo ImportError:
-                pita
+            except ImportError:
+                pass
         jaribu:
             ikiwa intro ni sio Tupu:
                 self.intro = intro
@@ -123,8 +123,8 @@ kundi Cmd:
                 isipokua:
                     ikiwa self.use_rawinput:
                         jaribu:
-                            line = input(self.prompt)
-                        tatizo EOFError:
+                            line = uliza(self.prompt)
+                        except EOFError:
                             line = 'EOF'
                     isipokua:
                         self.stdout.write(self.prompt)
@@ -143,8 +143,8 @@ kundi Cmd:
                 jaribu:
                     agiza readline
                     readline.set_completer(self.old_completer)
-                tatizo ImportError:
-                    pita
+                except ImportError:
+                    pass
 
 
     eleza precmd(self, line):
@@ -160,14 +160,14 @@ kundi Cmd:
 
     eleza preloop(self):
         """Hook method executed once when the cmdloop() method ni called."""
-        pita
+        pass
 
     eleza postloop(self):
         """Hook method executed once when the cmdloop() method ni about to
-        rudisha.
+        return.
 
         """
-        pita
+        pass
 
     eleza parseline(self, line):
         """Parse the line into a command name na a string containing
@@ -177,9 +177,9 @@ kundi Cmd:
         line = line.strip()
         ikiwa sio line:
             rudisha Tupu, Tupu, line
-        lasivyo line[0] == '?':
+        elikiwa line[0] == '?':
             line = 'help ' + line[1:]
-        lasivyo line[0] == '!':
+        elikiwa line[0] == '!':
             ikiwa hasattr(self, 'do_shell'):
                 line = 'shell ' + line[1:]
             isipokua:
@@ -190,7 +190,7 @@ kundi Cmd:
         rudisha cmd, arg, line
 
     eleza onecmd(self, line):
-        """Interpret the argument kama though it had been typed kwenye response
+        """Interpret the argument as though it had been typed kwenye response
         to the prompt.
 
         This may be overridden, but should sio normally need to be;
@@ -212,7 +212,7 @@ kundi Cmd:
         isipokua:
             jaribu:
                 func = getattr(self, 'do_' + cmd)
-            tatizo AttributeError:
+            except AttributeError:
                 rudisha self.default(line)
             rudisha func(arg)
 
@@ -229,8 +229,8 @@ kundi Cmd:
     eleza default(self, line):
         """Called on an input line when the command prefix ni sio recognized.
 
-        If this method ni sio overridden, it prints an error message na
-        rudishas.
+        If this method ni sio overridden, it prints an error message and
+        returns.
 
         """
         self.stdout.write('*** Unknown syntax: %s\n'%line)
@@ -239,7 +239,7 @@ kundi Cmd:
         """Method called to complete an input line when no command-specific
         complete_*() method ni available.
 
-        By default, it rudishas an empty list.
+        By default, it returns an empty list.
 
         """
         rudisha []
@@ -268,14 +268,14 @@ kundi Cmd:
                 isipokua:
                     jaribu:
                         compfunc = getattr(self, 'complete_' + cmd)
-                    tatizo AttributeError:
+                    except AttributeError:
                         compfunc = self.completedefault
             isipokua:
                 compfunc = self.completenames
             self.completion_matches = compfunc(text, line, begidx, endidx)
         jaribu:
             rudisha self.completion_matches[state]
-        tatizo IndexError:
+        except IndexError:
             rudisha Tupu
 
     eleza get_names(self):
@@ -295,16 +295,16 @@ kundi Cmd:
             # XXX check arg syntax
             jaribu:
                 func = getattr(self, 'help_' + arg)
-            tatizo AttributeError:
+            except AttributeError:
                 jaribu:
                     doc=getattr(self, 'do_' + arg).__doc__
                     ikiwa doc:
                         self.stdout.write("%s\n"%str(doc))
-                        rudisha
-                tatizo AttributeError:
-                    pita
+                        return
+                except AttributeError:
+                    pass
                 self.stdout.write("%s\n"%str(self.nohelp % (arg,)))
-                rudisha
+                return
             func()
         isipokua:
             names = self.get_names()
@@ -326,7 +326,7 @@ kundi Cmd:
                     ikiwa cmd kwenye help:
                         cmds_doc.append(cmd)
                         toa help[cmd]
-                    lasivyo getattr(self, name).__doc__:
+                    elikiwa getattr(self, name).__doc__:
                         cmds_doc.append(cmd)
                     isipokua:
                         cmds_undoc.append(cmd)
@@ -344,24 +344,24 @@ kundi Cmd:
             self.stdout.write("\n")
 
     eleza columnize(self, list, displaywidth=80):
-        """Display a list of strings kama a compact set of columns.
+        """Display a list of strings as a compact set of columns.
 
-        Each column ni only kama wide kama necessary.
+        Each column ni only as wide as necessary.
         Columns are separated by two spaces (one was sio legible enough).
         """
         ikiwa sio list:
             self.stdout.write("<empty>\n")
-            rudisha
+            return
 
         nonstrings = [i kila i kwenye range(len(list))
                         ikiwa sio isinstance(list[i], str)]
         ikiwa nonstrings:
-            ashiria TypeError("list[i] sio a string kila i kwenye %s"
+             ashiria TypeError("list[i] sio a string kila i kwenye %s"
                             % ", ".join(map(str, nonstrings)))
         size = len(list)
         ikiwa size == 1:
             self.stdout.write('%s\n'%str(list[0]))
-            rudisha
+            return
         # Try every row count kutoka 1 upwards
         kila nrows kwenye range(1, len(list)):
             ncols = (size+nrows-1) // nrows

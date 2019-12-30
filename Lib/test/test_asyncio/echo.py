@@ -1,8 +1,8 @@
-import os
+agiza os
 
-if __name__ == '__main__':
-    wakati True:
+ikiwa __name__ == '__main__':
+    wakati Kweli:
         buf = os.read(0, 1024)
-        if sio buf:
+        ikiwa sio buf:
             koma
         os.write(1, buf)

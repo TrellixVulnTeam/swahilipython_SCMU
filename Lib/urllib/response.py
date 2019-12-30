@@ -2,8 +2,8 @@
 
 The base class, addbase, defines a minimal file-like interface,
 including read() na readline().  The typical response object ni an
-addinfourl instance, which defines an info() method that rudishas
-headers na a geturl() method that rudishas the url.
+addinfourl instance, which defines an info() method that returns
+headers na a geturl() method that returns the url.
 """
 
 agiza tempfile
@@ -18,7 +18,7 @@ kundi addbase(tempfile._TemporaryFileWrapper):
 
     eleza __init__(self, fp):
         super(addbase,  self).__init__(fp, '<urllib response>', delete=Uongo)
-        # Keep reference around kama this was part of the original API.
+        # Keep reference around as this was part of the original API.
         self.fp = fp
 
     eleza __repr__(self):
@@ -27,7 +27,7 @@ kundi addbase(tempfile._TemporaryFileWrapper):
 
     eleza __enter__(self):
         ikiwa self.fp.closed:
-            ashiria ValueError("I/O operation on closed file")
+             ashiria ValueError("I/O operation on closed file")
         rudisha self
 
     eleza __exit__(self, type, value, traceback):

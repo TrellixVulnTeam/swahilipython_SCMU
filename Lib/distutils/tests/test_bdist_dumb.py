@@ -1,18 +1,18 @@
-"""Tests for distutils.command.bdist_dumb."""
+"""Tests kila distutils.command.bdist_dumb."""
 
-import os
-import sys
-import zipfile
-import unittest
-from test.support import run_unittest
+agiza os
+agiza sys
+agiza zipfile
+agiza unittest
+kutoka test.support agiza run_unittest
 
-from distutils.core import Distribution
-from distutils.command.bdist_dumb import bdist_dumb
-from distutils.tests import support
+kutoka distutils.core agiza Distribution
+kutoka distutils.command.bdist_dumb agiza bdist_dumb
+kutoka distutils.tests agiza support
 
 SETUP_PY = """\
-from distutils.core import setup
-import foo
+kutoka distutils.core agiza setup
+agiza foo
 
 setup(name='foo', version='0.1', py_modules=['foo'],
       url='xxx', author='xxx', author_email='xxx')
@@ -20,30 +20,30 @@ setup(name='foo', version='0.1', py_modules=['foo'],
 """
 
 jaribu:
-    import zlib
-    ZLIB_SUPPORT = True
-tatizo ImportError:
-    ZLIB_SUPPORT = False
+    agiza zlib
+    ZLIB_SUPPORT = Kweli
+except ImportError:
+    ZLIB_SUPPORT = Uongo
 
 
-class BuildDumbTestCase(support.TempdirManager,
+kundi BuildDumbTestCase(support.TempdirManager,
                         support.LoggingSilencer,
                         support.EnvironGuard,
                         unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super(BuildDumbTestCase, self).setUp()
         self.old_location = os.getcwd()
         self.old_sys_argv = sys.argv, sys.argv[:]
 
-    def tearDown(self):
+    eleza tearDown(self):
         os.chdir(self.old_location)
         sys.argv = self.old_sys_argv[0]
         sys.argv[:] = self.old_sys_argv[1]
         super(BuildDumbTestCase, self).tearDown()
 
     @unittest.skipUnless(ZLIB_SUPPORT, 'Need zlib support to run')
-    def test_simple_built(self):
+    eleza test_simple_built(self):
 
         # let's create a simple package
         tmp_dir = self.mkdtemp()
@@ -64,8 +64,8 @@ class BuildDumbTestCase(support.TempdirManager,
         sys.argv = ['setup.py']
         cmd = bdist_dumb(dist)
 
-        # so the output is the same no matter
-        # what is the platform
+        # so the output ni the same no matter
+        # what ni the platform
         cmd.format = 'zip'
 
         cmd.ensure_finalized()
@@ -77,21 +77,21 @@ class BuildDumbTestCase(support.TempdirManager,
 
         self.assertEqual(dist_created, [base])
 
-        # now let's check what we have in the zip file
+        # now let's check what we have kwenye the zip file
         fp = zipfile.ZipFile(os.path.join('dist', base))
         jaribu:
             contents = fp.namelist()
         mwishowe:
             fp.close()
 
-        contents = sorted(filter(None, map(os.path.basename, contents)))
+        contents = sorted(filter(Tupu, map(os.path.basename, contents)))
         wanted = ['foo-0.1-py%s.%s.egg-info' % sys.version_info[:2], 'foo.py']
-        if sio sys.dont_write_bytecode:
+        ikiwa sio sys.dont_write_bytecode:
             wanted.append('foo.%s.pyc' % sys.implementation.cache_tag)
         self.assertEqual(contents, sorted(wanted))
 
-def test_suite():
-    return unittest.makeSuite(BuildDumbTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(BuildDumbTestCase)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     run_unittest(test_suite())

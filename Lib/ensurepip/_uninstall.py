@@ -1,11 +1,11 @@
-"""Basic pip uninstallation support, helper for the Windows uninstaller"""
+"""Basic pip uninstallation support, helper kila the Windows uninstaller"""
 
-import argparse
-import ensurepip
-import sys
+agiza argparse
+agiza ensurepip
+agiza sys
 
 
-def _main(argv=None):
+eleza _main(argv=Tupu):
     parser = argparse.ArgumentParser(prog="python -m ensurepip._uninstall")
     parser.add_argument(
         "--version",
@@ -18,14 +18,14 @@ def _main(argv=None):
         action="count",
         default=0,
         dest="verbosity",
-        help=("Give more output. Option is additive, and can be used up to 3 "
+        help=("Give more output. Option ni additive, na can be used up to 3 "
               "times."),
     )
 
     args = parser.parse_args(argv)
 
-    return ensurepip._uninstall_helper(verbosity=args.verbosity)
+    rudisha ensurepip._uninstall_helper(verbosity=args.verbosity)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(_main())

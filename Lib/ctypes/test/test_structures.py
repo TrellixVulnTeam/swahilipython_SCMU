@@ -1,21 +1,21 @@
-import platform
-import sys
-import unittest
-from ctypes import *
-from ctypes.test import need_symbol
-from struct import calcsize
+agiza platform
+agiza sys
+agiza unittest
+kutoka ctypes agiza *
+kutoka ctypes.test agiza need_symbol
+kutoka struct agiza calcsize
 agiza _ctypes_test
-from test import support
+kutoka test agiza support
 
-class SubclassesTest(unittest.TestCase):
-    def test_subclass(self):
-        class X(Structure):
+kundi SubclassesTest(unittest.TestCase):
+    eleza test_subclass(self):
+        kundi X(Structure):
             _fields_ = [("a", c_int)]
 
-        class Y(X):
+        kundi Y(X):
             _fields_ = [("b", c_int)]
 
-        class Z(X):
+        kundi Z(X):
             pass
 
         self.assertEqual(sizeof(X), sizeof(c_int))
@@ -25,18 +25,18 @@ class SubclassesTest(unittest.TestCase):
         self.assertEqual(Y._fields_, [("b", c_int)])
         self.assertEqual(Z._fields_, [("a", c_int)])
 
-    def test_subclass_delayed(self):
-        class X(Structure):
+    eleza test_subclass_delayed(self):
+        kundi X(Structure):
             pass
         self.assertEqual(sizeof(X), 0)
         X._fields_ = [("a", c_int)]
 
-        class Y(X):
+        kundi Y(X):
             pass
         self.assertEqual(sizeof(Y), sizeof(X))
         Y._fields_ = [("b", c_int)]
 
-        class Z(X):
+        kundi Z(X):
             pass
 
         self.assertEqual(sizeof(X), sizeof(c_int))
@@ -46,7 +46,7 @@ class SubclassesTest(unittest.TestCase):
         self.assertEqual(Y._fields_, [("b", c_int)])
         self.assertEqual(Z._fields_, [("a", c_int)])
 
-class StructureTestCase(unittest.TestCase):
+kundi StructureTestCase(unittest.TestCase):
     formats = {"c": c_char,
                "b": c_byte,
                "B": c_ubyte,
@@ -62,77 +62,77 @@ class StructureTestCase(unittest.TestCase):
                "d": c_double,
                }
 
-    def test_simple_structs(self):
-        for code, tp in self.formats.items():
-            class X(Structure):
+    eleza test_simple_structs(self):
+        kila code, tp kwenye self.formats.items():
+            kundi X(Structure):
                 _fields_ = [("x", c_char),
                             ("y", tp)]
             self.assertEqual((sizeof(X), code),
                                  (calcsize("c%c0%c" % (code, code)), code))
 
-    def test_unions(self):
-        for code, tp in self.formats.items():
-            class X(Union):
+    eleza test_unions(self):
+        kila code, tp kwenye self.formats.items():
+            kundi X(Union):
                 _fields_ = [("x", c_char),
                             ("y", tp)]
             self.assertEqual((sizeof(X), code),
                                  (calcsize("%c" % (code)), code))
 
-    def test_struct_alignment(self):
-        class X(Structure):
+    eleza test_struct_alignment(self):
+        kundi X(Structure):
             _fields_ = [("x", c_char * 3)]
         self.assertEqual(alignment(X), calcsize("s"))
         self.assertEqual(sizeof(X), calcsize("3s"))
 
-        class Y(Structure):
+        kundi Y(Structure):
             _fields_ = [("x", c_char * 3),
                         ("y", c_int)]
         self.assertEqual(alignment(Y), alignment(c_int))
         self.assertEqual(sizeof(Y), calcsize("3si"))
 
-        class SI(Structure):
+        kundi SI(Structure):
             _fields_ = [("a", X),
                         ("b", Y)]
         self.assertEqual(alignment(SI), max(alignment(Y), alignment(X)))
         self.assertEqual(sizeof(SI), calcsize("3s0i 3si 0i"))
 
-        class IS(Structure):
+        kundi IS(Structure):
             _fields_ = [("b", Y),
                         ("a", X)]
 
         self.assertEqual(alignment(SI), max(alignment(X), alignment(Y)))
         self.assertEqual(sizeof(IS), calcsize("3si 3s 0i"))
 
-        class XX(Structure):
+        kundi XX(Structure):
             _fields_ = [("a", X),
                         ("b", X)]
         self.assertEqual(alignment(XX), alignment(X))
         self.assertEqual(sizeof(XX), calcsize("3s 3s 0s"))
 
-    def test_empty(self):
-        # I had problems with these
+    eleza test_empty(self):
+        # I had problems ukijumuisha these
         #
         # Although these are pathological cases: Empty Structures!
-        class X(Structure):
+        kundi X(Structure):
             _fields_ = []
 
-        class Y(Union):
+        kundi Y(Union):
             _fields_ = []
 
-        # Is this really the correct alignment, or should it be 0?
-        self.assertTrue(alignment(X) == alignment(Y) == 1)
-        self.assertTrue(sizeof(X) == sizeof(Y) == 0)
+        # Is this really the correct alignment, ama should it be 0?
+        self.assertKweli(alignment(X) == alignment(Y) == 1)
+        self.assertKweli(sizeof(X) == sizeof(Y) == 0)
 
-        class XX(Structure):
+        kundi XX(Structure):
             _fields_ = [("a", X),
                         ("b", X)]
 
         self.assertEqual(alignment(XX), 1)
         self.assertEqual(sizeof(XX), 0)
 
-    def test_fields(self):
-        # test the offset and size attributes of Structure/Union fields.
-        class X(Structure):
+    eleza test_fields(self):
+        # test the offset na size attributes of Structure/Union fields.
+        kundi X(Structure):
             _fields_ = [("x", c_int),
                         ("y", c_char)]
 
@@ -146,7 +146,7 @@ class StructureTestCase(unittest.TestCase):
         self.assertRaises((TypeError, AttributeError), setattr, X.x, "offset", 92)
         self.assertRaises((TypeError, AttributeError), setattr, X.x, "size", 92)
 
-        class X(Union):
+        kundi X(Union):
             _fields_ = [("x", c_int),
                         ("y", c_char)]
 
@@ -161,10 +161,10 @@ class StructureTestCase(unittest.TestCase):
         self.assertRaises((TypeError, AttributeError), setattr, X.x, "size", 92)
 
         # XXX Should we check nested data types also?
-        # offset is always relative to the class...
+        # offset ni always relative to the class...
 
-    def test_packed(self):
-        class X(Structure):
+    eleza test_packed(self):
+        kundi X(Structure):
             _fields_ = [("a", c_byte),
                         ("b", c_longlong)]
             _pack_ = 1
@@ -172,25 +172,25 @@ class StructureTestCase(unittest.TestCase):
         self.assertEqual(sizeof(X), 9)
         self.assertEqual(X.b.offset, 1)
 
-        class X(Structure):
+        kundi X(Structure):
             _fields_ = [("a", c_byte),
                         ("b", c_longlong)]
             _pack_ = 2
         self.assertEqual(sizeof(X), 10)
         self.assertEqual(X.b.offset, 2)
 
-        import struct
+        agiza struct
         longlong_size = struct.calcsize("q")
         longlong_align = struct.calcsize("bq") - longlong_size
 
-        class X(Structure):
+        kundi X(Structure):
             _fields_ = [("a", c_byte),
                         ("b", c_longlong)]
             _pack_ = 4
         self.assertEqual(sizeof(X), min(4, longlong_align) + longlong_size)
         self.assertEqual(X.b.offset, min(4, longlong_align))
 
-        class X(Structure):
+        kundi X(Structure):
             _fields_ = [("a", c_byte),
                         ("b", c_longlong)]
             _pack_ = 8
@@ -205,7 +205,7 @@ class StructureTestCase(unittest.TestCase):
         self.assertRaises(ValueError, type(Structure), "X", (Structure,), d)
 
     @support.cpython_only
-    def test_packed_c_limits(self):
+    eleza test_packed_c_limits(self):
         # Issue 15989
         agiza _testcapi
         d = {"_fields_": [("a", c_byte)],
@@ -215,8 +215,8 @@ class StructureTestCase(unittest.TestCase):
              "_pack_": _testcapi.UINT_MAX + 2}
         self.assertRaises(ValueError, type(Structure), "X", (Structure,), d)
 
-    def test_initializers(self):
-        class Person(Structure):
+    eleza test_initializers(self):
+        kundi Person(Structure):
             _fields_ = [("name", c_char*6),
                         ("age", c_int)]
 
@@ -231,18 +231,18 @@ class StructureTestCase(unittest.TestCase):
         # too long
         self.assertRaises(ValueError, Person, b"1234567", 5)
 
-    def test_conflicting_initializers(self):
-        class POINT(Structure):
+    eleza test_conflicting_initializers(self):
+        kundi POINT(Structure):
             _fields_ = [("phi", c_float), ("rho", c_float)]
-        # conflicting positional and keyword args
+        # conflicting positional na keyword args
         self.assertRaisesRegex(TypeError, "phi", POINT, 2, 3, phi=4)
         self.assertRaisesRegex(TypeError, "rho", POINT, 2, 3, rho=4)
 
         # too many initializers
         self.assertRaises(TypeError, POINT, 2, 3, 4)
 
-    def test_keyword_initializers(self):
-        class POINT(Structure):
+    eleza test_keyword_initializers(self):
+        kundi POINT(Structure):
             _fields_ = [("x", c_int), ("y", c_int)]
         pt = POINT(1, 2)
         self.assertEqual((pt.x, pt.y), (1, 2))
@@ -250,21 +250,21 @@ class StructureTestCase(unittest.TestCase):
         pt = POINT(y=2, x=1)
         self.assertEqual((pt.x, pt.y), (1, 2))
 
-    def test_invalid_field_types(self):
-        class POINT(Structure):
+    eleza test_invalid_field_types(self):
+        kundi POINT(Structure):
             pass
         self.assertRaises(TypeError, setattr, POINT, "_fields_", [("x", 1), ("y", 2)])
 
-    def test_invalid_name(self):
+    eleza test_invalid_name(self):
         # field name must be string
-        def declare_with_name(name):
-            class S(Structure):
+        eleza declare_with_name(name):
+            kundi S(Structure):
                 _fields_ = [(name, c_int)]
 
         self.assertRaises(TypeError, declare_with_name, b"x")
 
-    def test_intarray_fields(self):
-        class SomeInts(Structure):
+    eleza test_intarray_fields(self):
+        kundi SomeInts(Structure):
             _fields_ = [("a", c_int * 4)]
 
         # can use tuple to initialize array (but sio list!)
@@ -277,16 +277,16 @@ class StructureTestCase(unittest.TestCase):
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[:], [1, 2, 3, 4])
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[::], [1, 2, 3, 4])
         # too long
-        # XXX Should ashiria ValueError?, sio RuntimeError
+        # XXX Should  ashiria ValueError?, sio RuntimeError
         self.assertRaises(RuntimeError, SomeInts, (1, 2, 3, 4, 5))
 
-    def test_nested_initializers(self):
+    eleza test_nested_initializers(self):
         # test initializing nested structures
-        class Phone(Structure):
+        kundi Phone(Structure):
             _fields_ = [("areacode", c_char*6),
                         ("number", c_char*12)]
 
-        class Person(Structure):
+        kundi Person(Structure):
             _fields_ = [("name", c_char * 12),
                         ("phone", Phone),
                         ("age", c_int)]
@@ -299,8 +299,8 @@ class StructureTestCase(unittest.TestCase):
         self.assertEqual(p.age, 5)
 
     @need_symbol('c_wchar')
-    def test_structures_with_wchar(self):
-        class PersonW(Structure):
+    eleza test_structures_with_wchar(self):
+        kundi PersonW(Structure):
             _fields_ = [("name", c_wchar * 12),
                         ("age", c_int)]
 
@@ -314,12 +314,12 @@ class StructureTestCase(unittest.TestCase):
         #too long
         self.assertRaises(ValueError, PersonW, "1234567890123")
 
-    def test_init_errors(self):
-        class Phone(Structure):
+    eleza test_init_errors(self):
+        kundi Phone(Structure):
             _fields_ = [("areacode", c_char*6),
                         ("number", c_char*12)]
 
-        class Person(Structure):
+        kundi Person(Structure):
             _fields_ = [("name", c_char * 12),
                         ("phone", Phone),
                         ("age", c_int)]
@@ -327,66 +327,66 @@ class StructureTestCase(unittest.TestCase):
         cls, msg = self.get_except(Person, b"Someone", (1, 2))
         self.assertEqual(cls, RuntimeError)
         self.assertEqual(msg,
-                             "(Phone) <class 'TypeError'>: "
+                             "(Phone) <kundi 'TypeError'>: "
                              "expected bytes, int found")
 
         cls, msg = self.get_except(Person, b"Someone", (b"a", b"b", b"c"))
         self.assertEqual(cls, RuntimeError)
         self.assertEqual(msg,
-                             "(Phone) <class 'TypeError'>: too many initializers")
+                             "(Phone) <kundi 'TypeError'>: too many initializers")
 
-    def test_huge_field_name(self):
-        # issue12881: segfault with large structure field names
-        def create_class(length):
-            class S(Structure):
+    eleza test_huge_field_name(self):
+        # issue12881: segfault ukijumuisha large structure field names
+        eleza create_class(length):
+            kundi S(Structure):
                 _fields_ = [('x' * length, c_int)]
 
-        for length in [10 ** i for i in range(0, 8)]:
+        kila length kwenye [10 ** i kila i kwenye range(0, 8)]:
             jaribu:
                 create_class(length)
-            tatizo MemoryError:
+            except MemoryError:
                 # MemoryErrors are OK, we just don't want to segfault
                 pass
 
-    def get_except(self, func, *args):
+    eleza get_except(self, func, *args):
         jaribu:
             func(*args)
-        tatizo Exception as detail:
-            return detail.__class__, str(detail)
+        except Exception as detail:
+            rudisha detail.__class__, str(detail)
 
     @unittest.skip('test disabled')
-    def test_subclass_creation(self):
+    eleza test_subclass_creation(self):
         meta = type(Structure)
-        # same as 'class X(Structure): pass'
-        # fails, since we need either a _fields_ or a _abstract_ attribute
+        # same as 'kundi X(Structure): pass'
+        # fails, since we need either a _fields_ ama a _abstract_ attribute
         cls, msg = self.get_except(meta, "X", (Structure,), {})
         self.assertEqual((cls, msg),
-                (AttributeError, "class must define a '_fields_' attribute"))
+                (AttributeError, "kundi must define a '_fields_' attribute"))
 
-    def test_abstract_class(self):
-        class X(Structure):
+    eleza test_abstract_class(self):
+        kundi X(Structure):
             _abstract_ = "something"
         # try 'X()'
         cls, msg = self.get_except(eval, "X()", locals())
         self.assertEqual((cls, msg), (TypeError, "abstract class"))
 
-    def test_methods(self):
-##        class X(Structure):
+    eleza test_methods(self):
+##        kundi X(Structure):
 ##            _fields_ = []
 
         self.assertIn("in_dll", dir(type(Structure)))
         self.assertIn("from_address", dir(type(Structure)))
         self.assertIn("in_dll", dir(type(Structure)))
 
-    def test_positional_args(self):
+    eleza test_positional_args(self):
         # see also http://bugs.python.org/issue5042
-        class W(Structure):
+        kundi W(Structure):
             _fields_ = [("a", c_int), ("b", c_int)]
-        class X(W):
+        kundi X(W):
             _fields_ = [("c", c_int)]
-        class Y(X):
+        kundi Y(X):
             pass
-        class Z(Y):
+        kundi Z(Y):
             _fields_ = [("d", c_int), ("e", c_int), ("f", c_int)]
 
         z = Z(1, 2, 3, 4, 5, 6)
@@ -397,10 +397,10 @@ class StructureTestCase(unittest.TestCase):
                          (1, 0, 0, 0, 0, 0))
         self.assertRaises(TypeError, lambda: Z(1, 2, 3, 4, 5, 6, 7))
 
-    def test_pass_by_value(self):
+    eleza test_pass_by_value(self):
         # This should mirror the Test structure
-        # in Modules/_ctypes/_ctypes_test.c
-        class Test(Structure):
+        # kwenye Modules/_ctypes/_ctypes_test.c
+        kundi Test(Structure):
             _fields_ = [
                 ('first', c_ulong),
                 ('second', c_ulong),
@@ -414,37 +414,37 @@ class StructureTestCase(unittest.TestCase):
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_large_struct_update_value
         func.argtypes = (Test,)
-        func.restype = None
+        func.restype = Tupu
         func(s)
         self.assertEqual(s.first, 0xdeadbeef)
         self.assertEqual(s.second, 0xcafebabe)
         self.assertEqual(s.third, 0x0bad1dea)
 
-    def test_pass_by_value_finalizer(self):
+    eleza test_pass_by_value_finalizer(self):
         # bpo-37140: Similar to test_pass_by_value(), but the Python structure
         # has a finalizer (__del__() method): the finalizer must only be called
         # once.
 
         finalizer_calls = []
 
-        class Test(Structure):
+        kundi Test(Structure):
             _fields_ = [
                 ('first', c_ulong),
                 ('second', c_ulong),
                 ('third', c_ulong),
             ]
-            def __del__(self):
+            eleza __del__(self):
                 finalizer_calls.append("called")
 
         s = Test(1, 2, 3)
         # Test the StructUnionType_paramfunc() code path which copies the
-        # structure: if the stucture is larger than sizeof(void*).
+        # structure: ikiwa the stucture ni larger than sizeof(void*).
         self.assertGreater(sizeof(s), sizeof(c_void_p))
 
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_large_struct_update_value
         func.argtypes = (Test,)
-        func.restype = None
+        func.restype = Tupu
         func(s)
         # bpo-37140: Passing the structure by refrence must sio call
         # its finalizer!
@@ -454,12 +454,12 @@ class StructureTestCase(unittest.TestCase):
         self.assertEqual(s.third, 3)
 
         # The finalizer must be called exactly once
-        s = None
+        s = Tupu
         support.gc_collect()
         self.assertEqual(finalizer_calls, ["called"])
 
-    def test_pass_by_value_in_register(self):
-        class X(Structure):
+    eleza test_pass_by_value_in_register(self):
+        kundi X(Structure):
             _fields_ = [
                 ('first', c_uint),
                 ('second', c_uint)
@@ -471,7 +471,7 @@ class StructureTestCase(unittest.TestCase):
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_reg_struct_update_value
         func.argtypes = (X,)
-        func.restype = None
+        func.restype = Tupu
         func(s)
         self.assertEqual(s.first, 0xdeadbeef)
         self.assertEqual(s.second, 0xcafebabe)
@@ -479,33 +479,33 @@ class StructureTestCase(unittest.TestCase):
         self.assertEqual(s.first, got.first)
         self.assertEqual(s.second, got.second)
 
-    def test_array_in_struct(self):
+    eleza test_array_in_struct(self):
         # See bpo-22273
 
-        # These should mirror the structures in Modules/_ctypes/_ctypes_test.c
-        class Test2(Structure):
+        # These should mirror the structures kwenye Modules/_ctypes/_ctypes_test.c
+        kundi Test2(Structure):
             _fields_ = [
                 ('data', c_ubyte * 16),
             ]
 
-        class Test3(Structure):
+        kundi Test3(Structure):
             _fields_ = [
                 ('data', c_double * 2),
             ]
 
-        class Test3A(Structure):
+        kundi Test3A(Structure):
             _fields_ = [
                 ('data', c_float * 2),
             ]
 
-        class Test3B(Test3A):
+        kundi Test3B(Test3A):
             _fields_ = [
                 ('more_data', c_float * 2),
             ]
 
         s = Test2()
         expected = 0
-        for i in range(16):
+        kila i kwenye range(16):
             s.data[i] = i
             expected += i
         dll = CDLL(_ctypes_test.__file__)
@@ -515,7 +515,7 @@ class StructureTestCase(unittest.TestCase):
         result = func(s)
         self.assertEqual(result, expected)
         # check the passed-in struct hasn't changed
-        for i in range(16):
+        kila i kwenye range(16):
             self.assertEqual(s.data[i], i)
 
         s = Test3()
@@ -549,8 +549,8 @@ class StructureTestCase(unittest.TestCase):
         self.assertAlmostEqual(s.more_data[0], -3.0, places=6)
         self.assertAlmostEqual(s.more_data[1], -2.0, places=6)
 
-    def test_38368(self):
-        class U(Union):
+    eleza test_38368(self):
+        kundi U(Union):
             _fields_ = [
                 ('f1', c_uint8 * 16),
                 ('f2', c_uint16 * 8),
@@ -561,9 +561,9 @@ class StructureTestCase(unittest.TestCase):
         u.f3[1] = 0x89ABCDEF
         u.f3[2] = 0x76543210
         u.f3[3] = 0xFEDCBA98
-        f1 = [u.f1[i] for i in range(16)]
-        f2 = [u.f2[i] for i in range(8)]
-        if sys.byteorder == 'little':
+        f1 = [u.f1[i] kila i kwenye range(16)]
+        f2 = [u.f2[i] kila i kwenye range(8)]
+        ikiwa sys.byteorder == 'little':
             self.assertEqual(f1, [0x67, 0x45, 0x23, 0x01,
                                   0xef, 0xcd, 0xab, 0x89,
                                   0x10, 0x32, 0x54, 0x76,
@@ -571,75 +571,75 @@ class StructureTestCase(unittest.TestCase):
             self.assertEqual(f2, [0x4567, 0x0123, 0xcdef, 0x89ab,
                                   0x3210, 0x7654, 0xba98, 0xfedc])
 
-class PointerMemberTestCase(unittest.TestCase):
+kundi PointerMemberTestCase(unittest.TestCase):
 
-    def test(self):
-        # a Structure with a POINTER field
-        class S(Structure):
+    eleza test(self):
+        # a Structure ukijumuisha a POINTER field
+        kundi S(Structure):
             _fields_ = [("array", POINTER(c_int))]
 
         s = S()
         # We can assign arrays of the correct type
         s.array = (c_int * 3)(1, 2, 3)
-        items = [s.array[i] for i in range(3)]
+        items = [s.array[i] kila i kwenye range(3)]
         self.assertEqual(items, [1, 2, 3])
 
         # The following are bugs, but are included here because the unittests
         # also describe the current behaviour.
         #
-        # This fails with SystemError: bad arg to internal function
-        # or with IndexError (with a patch I have)
+        # This fails ukijumuisha SystemError: bad arg to internal function
+        # ama ukijumuisha IndexError (ukijumuisha a patch I have)
 
         s.array[0] = 42
 
-        items = [s.array[i] for i in range(3)]
+        items = [s.array[i] kila i kwenye range(3)]
         self.assertEqual(items, [42, 2, 3])
 
         s.array[0] = 1
 
 ##        s.array[1] = 42
 
-        items = [s.array[i] for i in range(3)]
+        items = [s.array[i] kila i kwenye range(3)]
         self.assertEqual(items, [1, 2, 3])
 
-    def test_none_to_pointer_fields(self):
-        class S(Structure):
+    eleza test_none_to_pointer_fields(self):
+        kundi S(Structure):
             _fields_ = [("x", c_int),
                         ("p", POINTER(c_int))]
 
         s = S()
         s.x = 12345678
-        s.p = None
+        s.p = Tupu
         self.assertEqual(s.x, 12345678)
 
-class TestRecursiveStructure(unittest.TestCase):
-    def test_contains_itself(self):
-        class Recursive(Structure):
+kundi TestRecursiveStructure(unittest.TestCase):
+    eleza test_contains_itself(self):
+        kundi Recursive(Structure):
             pass
 
         jaribu:
             Recursive._fields_ = [("next", Recursive)]
-        tatizo AttributeError as details:
-            self.assertIn("Structure or union cannot contain itself",
+        except AttributeError as details:
+            self.assertIn("Structure ama union cannot contain itself",
                           str(details))
         isipokua:
-            self.fail("Structure or union cannot contain itself")
+            self.fail("Structure ama union cannot contain itself")
 
 
-    def test_vice_versa(self):
-        class First(Structure):
+    eleza test_vice_versa(self):
+        kundi First(Structure):
             pass
-        class Second(Structure):
+        kundi Second(Structure):
             pass
 
         First._fields_ = [("second", Second)]
 
         jaribu:
             Second._fields_ = [("first", First)]
-        tatizo AttributeError as details:
-            self.assertIn("_fields_ is final", str(details))
+        except AttributeError as details:
+            self.assertIn("_fields_ ni final", str(details))
         isipokua:
             self.fail("AttributeError sio raised")
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

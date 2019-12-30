@@ -1,28 +1,28 @@
-"""Tests for distutils.dir_util."""
-import unittest
-import os
-import stat
-import sys
-from unittest.mock import patch
+"""Tests kila distutils.dir_util."""
+agiza unittest
+agiza os
+agiza stat
+agiza sys
+kutoka unittest.mock agiza patch
 
-from distutils import dir_util, errors
-from distutils.dir_util import (mkpath, remove_tree, create_tree, copy_tree,
+kutoka distutils agiza dir_util, errors
+kutoka distutils.dir_util agiza (mkpath, remove_tree, create_tree, copy_tree,
                                 ensure_relative)
 
-from distutils import log
-from distutils.tests import support
-from test.support import run_unittest
+kutoka distutils agiza log
+kutoka distutils.tests agiza support
+kutoka test.support agiza run_unittest
 
 
-class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
+kundi DirUtilTestCase(support.TempdirManager, unittest.TestCase):
 
-    def _log(self, msg, *args):
-        if len(args) > 0:
+    eleza _log(self, msg, *args):
+        ikiwa len(args) > 0:
             self._logs.append(msg % args)
         isipokua:
             self._logs.append(msg)
 
-    def setUp(self):
+    eleza setUp(self):
         super(DirUtilTestCase, self).setUp()
         self._logs = []
         tmp_dir = self.mkdtemp()
@@ -32,11 +32,11 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
         self.old_log = log.info
         log.info = self._log
 
-    def tearDown(self):
+    eleza tearDown(self):
         log.info = self.old_log
         super(DirUtilTestCase, self).tearDown()
 
-    def test_mkpath_remove_tree_verbosity(self):
+    eleza test_mkpath_remove_tree_verbosity(self):
 
         mkpath(self.target, verbose=0)
         wanted = []
@@ -54,9 +54,9 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
         self.assertEqual(self._logs, wanted)
 
     @unittest.skipIf(sys.platform.startswith('win'),
-        "This test is only appropriate for POSIX-like systems.")
-    def test_mkpath_with_custom_mode(self):
-        # Get and set the current umask value for testing mode bits.
+        "This test ni only appropriate kila POSIX-like systems.")
+    eleza test_mkpath_with_custom_mode(self):
+        # Get na set the current umask value kila testing mode bits.
         umask = os.umask(0o002)
         os.umask(umask)
         mkpath(self.target, 0o700)
@@ -66,7 +66,7 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
         self.assertEqual(
             stat.S_IMODE(os.stat(self.target2).st_mode), 0o555 & ~umask)
 
-    def test_create_tree_verbosity(self):
+    eleza test_create_tree_verbosity(self):
 
         create_tree(self.root_target, ['one', 'two', 'three'], verbose=0)
         self.assertEqual(self._logs, [])
@@ -78,7 +78,7 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
 
         remove_tree(self.root_target, verbose=0)
 
-    def test_copy_tree_verbosity(self):
+    eleza test_copy_tree_verbosity(self):
 
         mkpath(self.target, verbose=0)
 
@@ -89,7 +89,7 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
 
         mkpath(self.target, verbose=0)
         a_file = os.path.join(self.target, 'ok.txt')
-        with open(a_file, 'w') as f:
+        ukijumuisha open(a_file, 'w') as f:
             f.write('some content')
 
         wanted = ['copying %s -> %s' % (a_file, self.target2)]
@@ -99,13 +99,13 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
         remove_tree(self.root_target, verbose=0)
         remove_tree(self.target2, verbose=0)
 
-    def test_copy_tree_skips_nfs_temp_files(self):
+    eleza test_copy_tree_skips_nfs_temp_files(self):
         mkpath(self.target, verbose=0)
 
         a_file = os.path.join(self.target, 'ok.txt')
         nfs_file = os.path.join(self.target, '.nfs123abc')
-        for f in a_file, nfs_file:
-            with open(f, 'w') as fh:
+        kila f kwenye a_file, nfs_file:
+            ukijumuisha open(f, 'w') as fh:
                 fh.write('some content')
 
         copy_tree(self.target, self.target2)
@@ -114,26 +114,26 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
         remove_tree(self.root_target, verbose=0)
         remove_tree(self.target2, verbose=0)
 
-    def test_ensure_relative(self):
-        if os.sep == '/':
+    eleza test_ensure_relative(self):
+        ikiwa os.sep == '/':
             self.assertEqual(ensure_relative('/home/foo'), 'home/foo')
             self.assertEqual(ensure_relative('some/path'), 'some/path')
         isipokua:   # \\
             self.assertEqual(ensure_relative('c:\\home\\foo'), 'c:home\\foo')
             self.assertEqual(ensure_relative('home\\foo'), 'home\\foo')
 
-    def test_copy_tree_exception_in_listdir(self):
+    eleza test_copy_tree_exception_in_listdir(self):
         """
-        An exception in listdir should ashiria a DistutilsFileError
+        An exception kwenye listdir should  ashiria a DistutilsFileError
         """
-        with patch("os.listdir", side_effect=OSError()), \
+        ukijumuisha patch("os.listdir", side_effect=OSError()), \
              self.assertRaises(errors.DistutilsFileError):
             src = self.tempdirs[-1]
-            dir_util.copy_tree(src, None)
+            dir_util.copy_tree(src, Tupu)
 
 
-def test_suite():
-    return unittest.makeSuite(DirUtilTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(DirUtilTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

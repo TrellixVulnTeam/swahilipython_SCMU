@@ -1,16 +1,16 @@
-"""Abstract base classes related to agiza."""
+"""Abstract base classes related to import."""
 kutoka . agiza _bootstrap
 kutoka . agiza _bootstrap_external
 kutoka . agiza machinery
 jaribu:
     agiza _frozen_importlib
-tatizo ImportError kama exc:
+except ImportError as exc:
     ikiwa exc.name != '_frozen_importlib':
-        ashiria
+        raise
     _frozen_importlib = Tupu
 jaribu:
     agiza _frozen_importlib_external
-tatizo ImportError kama exc:
+except ImportError as exc:
     _frozen_importlib_external = _bootstrap_external
 agiza abc
 agiza warnings
@@ -22,7 +22,7 @@ eleza _register(abstract_cls, *classes):
         ikiwa _frozen_importlib ni sio Tupu:
             jaribu:
                 frozen_cls = getattr(_frozen_importlib, cls.__name__)
-            tatizo AttributeError:
+            except AttributeError:
                 frozen_cls = getattr(_frozen_importlib_external, cls.__name__)
             abstract_cls.register(frozen_cls)
 
@@ -57,7 +57,7 @@ kundi MetaPathFinder(Finder):
     eleza find_module(self, fullname, path):
         """Return a loader kila the module.
 
-        If no module ni found, rudisha Tupu.  The fullname ni a str na
+        If no module ni found, rudisha Tupu.  The fullname ni a str and
         the path ni a list of strings ama Tupu.
 
         This method ni deprecated since Python 3.4 kwenye favor of
@@ -100,7 +100,7 @@ kundi PathEntryFinder(Finder):
         be ignored.
 
         The portion will be discarded ikiwa another path entry finder
-        locates the module kama a normal module ama package.
+        locates the module as a normal module ama package.
 
         This method ni deprecated since Python 3.4 kwenye favor of
         finder.find_spec(). If find_spec() ni provided than backwards-compatible
@@ -140,7 +140,7 @@ kundi Loader(metaclass=abc.ABCMeta):
     eleza create_module(self, spec):
         """Return a module to initialize na into which to load.
 
-        This method should ashiria ImportError ikiwa anything prevents it
+        This method should  ashiria ImportError ikiwa anything prevents it
         kutoka creating a new module.  It may rudisha Tupu to indicate
         that the spec should create the new module.
         """
@@ -153,10 +153,10 @@ kundi Loader(metaclass=abc.ABCMeta):
     eleza load_module(self, fullname):
         """Return the loaded module.
 
-        The module must be added to sys.modules na have agiza-related
+        The module must be added to sys.modules na have import-related
         attributes set properly.  The fullname ni a str.
 
-        ImportError ni ashiriad on failure.
+        ImportError ni raised on failure.
 
         This method ni deprecated kwenye favor of loader.exec_module(). If
         exec_module() exists then it ni used to provide a backwards-compatible
@@ -164,20 +164,20 @@ kundi Loader(metaclass=abc.ABCMeta):
 
         """
         ikiwa sio hasattr(self, 'exec_module'):
-            ashiria ImportError
+             ashiria ImportError
         rudisha _bootstrap._load_module_shim(self, fullname)
 
     eleza module_repr(self, module):
         """Return a module's repr.
 
-        Used by the module type when the method does sio ashiria
+        Used by the module type when the method does sio raise
         NotImplementedError.
 
         This method ni deprecated.
 
         """
         # The exception will cause ModuleType.__repr__ to ignore this method.
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
 
 kundi ResourceLoader(Loader):
@@ -193,7 +193,7 @@ kundi ResourceLoader(Loader):
     eleza get_data(self, path):
         """Abstract method which when implemented should rudisha the bytes for
         the specified path.  The path must be a str."""
-        ashiria OSError
+         ashiria OSError
 
 
 kundi InspectLoader(Loader):
@@ -211,13 +211,13 @@ kundi InspectLoader(Loader):
 
         Raises ImportError ikiwa the module cannot be found.
         """
-        ashiria ImportError
+         ashiria ImportError
 
     eleza get_code(self, fullname):
-        """Method which rudishas the code object kila the module.
+        """Method which returns the code object kila the module.
 
-        The fullname ni a str.  Returns a types.CodeType ikiwa possible, ama
-        rudishas Tupu ikiwa a code object does sio make sense
+        The fullname ni a str.  Returns a types.CodeType ikiwa possible, else
+        returns Tupu ikiwa a code object does sio make sense
         (e.g. built-in module). Raises ImportError ikiwa the module cannot be
         found.
         """
@@ -233,7 +233,7 @@ kundi InspectLoader(Loader):
 
         Raises ImportError ikiwa the module cannot be found.
         """
-        ashiria ImportError
+         ashiria ImportError
 
     @staticmethod
     eleza source_to_code(data, path='<string>'):
@@ -252,7 +252,7 @@ _register(InspectLoader, machinery.BuiltinImporter, machinery.FrozenImporter)
 kundi ExecutionLoader(InspectLoader):
 
     """Abstract base kundi kila loaders that wish to support the execution of
-    modules kama scripts.
+    modules as scripts.
 
     This ABC represents one of the optional protocols specified kwenye PEP 302.
 
@@ -265,7 +265,7 @@ kundi ExecutionLoader(InspectLoader):
 
         Raises ImportError ikiwa the module cannot be found.
         """
-        ashiria ImportError
+         ashiria ImportError
 
     eleza get_code(self, fullname):
         """Method to rudisha the code object kila fullname.
@@ -278,7 +278,7 @@ kundi ExecutionLoader(InspectLoader):
             rudisha Tupu
         jaribu:
             path = self.get_filename(fullname)
-        tatizo ImportError:
+        except ImportError:
             rudisha self.source_to_code(source)
         isipokua:
             rudisha self.source_to_code(source, path)
@@ -288,7 +288,7 @@ _register(ExecutionLoader, machinery.ExtensionFileLoader)
 
 kundi FileLoader(_bootstrap_external.FileLoader, ResourceLoader, ExecutionLoader):
 
-    """Abstract base kundi partially implementing the ResourceLoader na
+    """Abstract base kundi partially implementing the ResourceLoader and
     ExecutionLoader ABCs."""
 
 _register(FileLoader, machinery.SourceFileLoader,
@@ -300,7 +300,7 @@ kundi SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLo
     """Abstract base kundi kila loading source code (and optionally any
     corresponding bytecode).
 
-    To support loading kutoka source code, the abstractmethods inherited kutoka
+    To support loading kutoka source code, the abstractmethods inherited from
     ResourceLoader na ExecutionLoader need to be implemented. To also support
     loading kutoka bytecode, the optional methods specified directly by this ABC
     ni required.
@@ -315,7 +315,7 @@ kundi SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLo
     eleza path_mtime(self, path):
         """Return the (int) modification time kila the path (str)."""
         ikiwa self.path_stats.__func__ ni SourceLoader.path_stats:
-            ashiria OSError
+             ashiria OSError
         rudisha int(self.path_stats(path)['mtime'])
 
     eleza path_stats(self, path):
@@ -326,13 +326,13 @@ kundi SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLo
         - 'size' (optional) ni the size kwenye bytes of the source code.
         """
         ikiwa self.path_mtime.__func__ ni SourceLoader.path_mtime:
-            ashiria OSError
+             ashiria OSError
         rudisha {'mtime': self.path_mtime(path)}
 
     eleza set_data(self, path, data):
         """Write the bytes to the path (ikiwa possible).
 
-        Accepts a str path na data kama bytes.
+        Accepts a str path na data as bytes.
 
         Any needed intermediary directories are to be created. If kila some
         reason the file cannot be written because of permissions, fail
@@ -358,9 +358,9 @@ kundi ResourceReader(metaclass=abc.ABCMeta):
         The 'resource' argument ni expected to represent only a file name
         na thus sio contain any subdirectory components.
 
-        If the resource cannot be found, FileNotFoundError ni ashiriad.
+        If the resource cannot be found, FileNotFoundError ni raised.
         """
-        ashiria FileNotFoundError
+         ashiria FileNotFoundError
 
     @abc.abstractmethod
     eleza resource_path(self, resource):
@@ -369,15 +369,15 @@ kundi ResourceReader(metaclass=abc.ABCMeta):
         The 'resource' argument ni expected to represent only a file name
         na thus sio contain any subdirectory components.
 
-        If the resource does sio exist on the file system, ashiria
+        If the resource does sio exist on the file system, raise
         FileNotFoundError.
         """
-        ashiria FileNotFoundError
+         ashiria FileNotFoundError
 
     @abc.abstractmethod
     eleza is_resource(self, name):
         """Return Kweli ikiwa the named 'name' ni consider a resource."""
-        ashiria FileNotFoundError
+         ashiria FileNotFoundError
 
     @abc.abstractmethod
     eleza contents(self):

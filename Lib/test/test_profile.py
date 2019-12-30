@@ -118,13 +118,13 @@ eleza regenerate_expected_output(filename, cls):
     results = cls.do_profiling()
 
     newfile = []
-    ukijumuisha open(filename, 'r') kama f:
+    ukijumuisha open(filename, 'r') as f:
         kila line kwenye f:
             newfile.append(line)
             ikiwa line.startswith('#--cut'):
                 koma
 
-    ukijumuisha open(filename, 'w') kama f:
+    ukijumuisha open(filename, 'w') as f:
         f.writelines(newfile)
         f.write("_ProfileOutput = {}\n")
         kila i, method kwenye enumerate(cls.methodnames):
@@ -137,7 +137,7 @@ eleza silent():
     stdout = sys.stdout
     jaribu:
         sys.stdout = StringIO()
-        tuma
+        yield
     mwishowe:
         sys.stdout = stdout
 
@@ -145,7 +145,7 @@ eleza test_main():
     run_unittest(ProfileTest)
 
 eleza main():
-    ikiwa '-r' haiko kwenye sys.argv:
+    ikiwa '-r' sio kwenye sys.argv:
         test_main()
     isipokua:
         regenerate_expected_output(__file__, ProfileTest)

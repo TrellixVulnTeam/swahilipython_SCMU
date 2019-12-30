@@ -33,7 +33,7 @@ j_kundi = new_class('J')
 kundi F():
     z: int = 5
     eleza __init__(self, x):
-        pita
+        pass
 
 kundi Y(F):
     eleza __init__(self):

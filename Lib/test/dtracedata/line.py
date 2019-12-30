@@ -1,17 +1,17 @@
-def test_line():
+eleza test_line():
     a = 1
-    print('# Preamble', a)
-    for i in range(2):
+    andika('# Preamble', a)
+    kila i kwenye range(2):
         a = i
         b = i+2
         c = i+3
-        if c < 4:
+        ikiwa c < 4:
             a = c
         d = a + b +c
-        print('#', a, b, c, d)
+        andika('#', a, b, c, d)
     a = 1
-    print('# Epilogue', a)
+    andika('# Epilogue', a)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_line()

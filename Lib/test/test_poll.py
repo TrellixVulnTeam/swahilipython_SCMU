@@ -11,8 +11,8 @@ kutoka test.support agiza TESTFN, run_unittest, reap_threads, cpython_only
 
 jaribu:
     select.poll
-tatizo AttributeError:
-    ashiria unittest.SkipTest("select.poll sio defined")
+except AttributeError:
+     ashiria unittest.SkipTest("select.poll sio defined")
 
 
 eleza find_ready_matching(ready, flag):
@@ -54,14 +54,14 @@ kundi PollTests(unittest.TestCase):
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
             ikiwa sio ready_writers:
-                ashiria RuntimeError("no pipes ready kila writing")
+                 ashiria RuntimeError("no pipes ready kila writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
             ikiwa sio ready_readers:
-                ashiria RuntimeError("no pipes ready kila reading")
+                 ashiria RuntimeError("no pipes ready kila reading")
             rd = random.choice(ready_readers)
             buf = os.read(rd, MSG_LEN)
             self.assertEqual(len(buf), MSG_LEN)
@@ -74,7 +74,7 @@ kundi PollTests(unittest.TestCase):
         self.assertEqual(bufs, [MSG] * NUM_PIPES)
 
     eleza test_poll_unit_tests(self):
-        # rudishas NVAL kila invalid file descriptor
+        # returns NVAL kila invalid file descriptor
         FD, w = os.pipe()
         os.close(FD)
         os.close(w)
@@ -83,7 +83,7 @@ kundi PollTests(unittest.TestCase):
         r = p.poll()
         self.assertEqual(r[0], (FD, select.POLLNVAL))
 
-        ukijumuisha open(TESTFN, 'w') kama f:
+        ukijumuisha open(TESTFN, 'w') as f:
             fd = f.fileno()
             p = select.poll()
             p.register(f)
@@ -105,7 +105,7 @@ kundi PollTests(unittest.TestCase):
         # Test error cases
         pollster = select.poll()
         kundi Nope:
-            pita
+            pass
 
         kundi Almost:
             eleza fileno(self):
@@ -134,10 +134,10 @@ kundi PollTests(unittest.TestCase):
             ikiwa flags & select.POLLHUP:
                 line = p.readline()
                 ikiwa line != b"":
-                    self.fail('error: pipe seems to be closed, but still rudishas data')
+                    self.fail('error: pipe seems to be closed, but still returns data')
                 endelea
 
-            lasivyo flags & select.POLLIN:
+            elikiwa flags & select.POLLIN:
                 line = p.readline()
                 ikiwa sio line:
                     koma
@@ -199,7 +199,7 @@ kundi PollTests(unittest.TestCase):
             pollster.register(w, select.POLLOUT)
             self.assertRaises(RuntimeError, pollster.poll)
         mwishowe:
-            # na make the call to poll() kutoka the thread rudisha
+            # na make the call to poll() kutoka the thread return
             os.write(w, b'spam')
             t.join()
 

@@ -1,27 +1,27 @@
-"""Tests for distutils.log"""
+"""Tests kila distutils.log"""
 
-import io
-import sys
-import unittest
-from test.support import swap_attr, run_unittest
+agiza io
+agiza sys
+agiza unittest
+kutoka test.support agiza swap_attr, run_unittest
 
-from distutils import log
+kutoka distutils agiza log
 
-class TestLog(unittest.TestCase):
-    def test_non_ascii(self):
-        # Issues #8663, #34421: test that non-encodable text is escaped with
-        # backslashreplace error handler and encodable non-ASCII text is
+kundi TestLog(unittest.TestCase):
+    eleza test_non_ascii(self):
+        # Issues #8663, #34421: test that non-encodable text ni escaped with
+        # backslashreplace error handler na encodable non-ASCII text is
         # output as is.
-        for errors in ('strict', 'backslashreplace', 'surrogateescape',
+        kila errors kwenye ('strict', 'backslashreplace', 'surrogateescape',
                        'replace', 'ignore'):
-            with self.subTest(errors=errors):
+            ukijumuisha self.subTest(errors=errors):
                 stdout = io.TextIOWrapper(io.BytesIO(),
                                           encoding='cp437', errors=errors)
                 stderr = io.TextIOWrapper(io.BytesIO(),
                                           encoding='cp437', errors=errors)
                 old_threshold = log.set_threshold(log.DEBUG)
                 jaribu:
-                    with swap_attr(sys, 'stdout', stdout), \
+                    ukijumuisha swap_attr(sys, 'stdout', stdout), \
                          swap_attr(sys, 'stderr', stderr):
                         log.debug('Dεbug\tMėssãge')
                         log.fatal('Fαtal\tÈrrōr')
@@ -30,17 +30,17 @@ class TestLog(unittest.TestCase):
 
                 stdout.seek(0)
                 self.assertEqual(stdout.read().rstrip(),
-                        'Dεbug\tM?ss?ge' if errors == 'replace' ama
-                        'Dεbug\tMssge' if errors == 'ignore' ama
+                        'Dεbug\tM?ss?ge' ikiwa errors == 'replace' else
+                        'Dεbug\tMssge' ikiwa errors == 'ignore' else
                         'Dεbug\tM\\u0117ss\\xe3ge')
                 stderr.seek(0)
                 self.assertEqual(stderr.read().rstrip(),
-                        'Fαtal\t?rr?r' if errors == 'replace' ama
-                        'Fαtal\trrr' if errors == 'ignore' ama
+                        'Fαtal\t?rr?r' ikiwa errors == 'replace' else
+                        'Fαtal\trrr' ikiwa errors == 'ignore' else
                         'Fαtal\t\\xc8rr\\u014dr')
 
-def test_suite():
-    return unittest.makeSuite(TestLog)
+eleza test_suite():
+    rudisha unittest.makeSuite(TestLog)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

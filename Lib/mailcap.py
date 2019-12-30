@@ -31,7 +31,7 @@ eleza getcaps():
     kila mailcap kwenye listmailcapfiles():
         jaribu:
             fp = open(mailcap, 'r')
-        tatizo OSError:
+        except OSError:
             endelea
         ukijumuisha fp:
             morecaps, lineno = _readmailcapfile(fp, lineno)
@@ -112,7 +112,7 @@ eleza _readmailcapfile(fp, lineno):
 eleza parseline(line):
     """Parse one entry kwenye a mailcap file na rudisha a dictionary.
 
-    The viewing command ni stored kama the value ukijumuisha the key "view",
+    The viewing command ni stored as the value ukijumuisha the key "view",
     na the rest of the fields produce key-value pairs kwenye the dict.
     """
     fields = []
@@ -135,7 +135,7 @@ eleza parseline(line):
             fvalue = field[i+1:].strip()
         ikiwa fkey kwenye fields:
             # Ignore it
-            pita
+            pass
         isipokua:
             fields[fkey] = fvalue
     rudisha key, fields
@@ -147,7 +147,7 @@ eleza parsefield(line, i, n):
         c = line[i]
         ikiwa c == ';':
             koma
-        lasivyo c == '\\':
+        elikiwa c == '\\':
             i = i+2
         isipokua:
             i = i+1
@@ -203,11 +203,11 @@ eleza subst(field, MIMEtype, filename, plist=[]):
             c = field[i]; i = i+1
             ikiwa c == '%':
                 res = res + c
-            lasivyo c == 's':
+            elikiwa c == 's':
                 res = res + filename
-            lasivyo c == 't':
+            elikiwa c == 't':
                 res = res + MIMEtype
-            lasivyo c == '{':
+            elikiwa c == '{':
                 start = i
                 wakati i < n na field[i] != '}':
                     i = i+1
@@ -237,12 +237,12 @@ eleza test():
     caps = getcaps()
     ikiwa sio sys.argv[1:]:
         show(caps)
-        rudisha
+        return
     kila i kwenye range(1, len(sys.argv), 2):
         args = sys.argv[i:i+2]
         ikiwa len(args) < 2:
             andika("usage: mailcap [MIMEtype file] ...")
-            rudisha
+            return
         MIMEtype = args[0]
         file = args[1]
         command, e = findmatch(caps, MIMEtype, 'view', file)

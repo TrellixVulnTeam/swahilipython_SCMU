@@ -1,17 +1,17 @@
-jaribu:
-    agiza idlelib.pyshell
-tatizo ImportError:
-    # IDLE ni sio installed, but maybe pyshell ni on sys.path:
-    kutoka . agiza pyshell
-    agiza os
+try:
+    import idlelib.pyshell
+except ImportError:
+    # IDLE is not installed, but maybe pyshell is on sys.path:
+    from . import pyshell
+    import os
     idledir = os.path.dirname(os.path.abspath(pyshell.__file__))
-    ikiwa idledir != os.getcwd():
-        # We're haiko kwenye the IDLE directory, help the subprocess find run.py
+    if idledir != os.getcwd():
+        # We're not in the IDLE directory, help the subprocess find run.py
         pypath = os.environ.get('PYTHONPATH', '')
-        ikiwa pypath:
+        if pypath:
             os.environ['PYTHONPATH'] = pypath + ':' + idledir
-        isipokua:
+        else:
             os.environ['PYTHONPATH'] = idledir
     pyshell.main()
-isipokua:
+else:
     idlelib.pyshell.main()

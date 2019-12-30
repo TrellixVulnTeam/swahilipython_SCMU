@@ -14,7 +14,7 @@ kundi IsolatedAsyncioTestCase(TestCase):
     # but uses a different approach:
     # 1. create a long-running task that reads self.setUp()
     #    awaitable kutoka queue along ukijumuisha a future
-    # 2. await the awaitable object pitaing kwenye na set the result
+    # 2. await the awaitable object passing kwenye na set the result
     #    into the future object
     # 3. Outer code puts the awaitable na the future object into a queue
     #    ukijumuisha waiting kila the future
@@ -26,7 +26,7 @@ kundi IsolatedAsyncioTestCase(TestCase):
     # Note: the test case modifies event loop policy ikiwa the policy was sio instantiated
     # yet.
     # asyncio.get_event_loop_policy() creates a default policy on demand but never
-    # rudishas Tupu
+    # returns Tupu
     # I believe this ni sio an issue kwenye user level tests but python itself kila testing
     # should reset a policy kwenye every test module
     # by calling asyncio.set_event_loop_policy(Tupu) kwenye tearDownModule()
@@ -37,10 +37,10 @@ kundi IsolatedAsyncioTestCase(TestCase):
         self._asyncioCallsQueue = Tupu
 
     async eleza asyncSetUp(self):
-        pita
+        pass
 
     async eleza asyncTearDown(self):
-        pita
+        pass
 
     eleza addAsyncCleanup(self, func, /, *args, **kwargs):
         # A trivial trampoline to addCleanup()
@@ -54,7 +54,7 @@ kundi IsolatedAsyncioTestCase(TestCase):
         # to check kila async function reliably:
         # 1. It can be "async eleza func()" iself
         # 2. Class can implement "async eleza __call__()" method
-        # 3. Regular "eleza func()" that rudishas awaitable object
+        # 3. Regular "eleza func()" that returns awaitable object
         self.addCleanup(*(func, *args), **kwargs)
 
     eleza _callSetUp(self):
@@ -96,15 +96,15 @@ kundi IsolatedAsyncioTestCase(TestCase):
             query = await queue.get()
             queue.task_done()
             ikiwa query ni Tupu:
-                rudisha
+                return
             fut, awaitable = query
             jaribu:
                 ret = await awaitable
                 ikiwa sio fut.cancelled():
                     fut.set_result(ret)
-            tatizo asyncio.CancelledError:
-                ashiria
-            tatizo Exception kama ex:
+            except asyncio.CancelledError:
+                raise
+            except Exception as ex:
                 ikiwa sio fut.cancelled():
                     fut.set_exception(ex)
 
@@ -129,7 +129,7 @@ kundi IsolatedAsyncioTestCase(TestCase):
             # cancel all tasks
             to_cancel = asyncio.all_tasks(loop)
             ikiwa sio to_cancel:
-                rudisha
+                return
 
             kila task kwenye to_cancel:
                 task.cancel()

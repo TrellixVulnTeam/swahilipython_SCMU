@@ -3,15 +3,15 @@
 
 """Refactoring framework.
 
-Used kama a main program, this can refactor any number of files and/or
-recursively descend down directories.  Imported kama a module, this
+Used as a main program, this can refactor any number of files and/or
+recursively descend down directories.  Imported as a module, this
 provides infrastructure to write your own refactoring tool.
 """
 
 __author__ = "Guido van Rossum <guido@python.org>"
 
 
-# Python agizas
+# Python imports
 agiza io
 agiza os
 agiza pkgutil
@@ -21,11 +21,11 @@ agiza operator
 agiza collections
 kutoka itertools agiza chain
 
-# Local agizas
+# Local imports
 kutoka .pgen2 agiza driver, tokenize, token
 kutoka .fixer_util agiza find_root
 kutoka . agiza pytree, pygram
-kutoka . agiza btm_matcher kama bm
+kutoka . agiza btm_matcher as bm
 
 
 eleza get_all_fix_names(fixer_pkg, remove_prefix=Kweli):
@@ -41,11 +41,11 @@ eleza get_all_fix_names(fixer_pkg, remove_prefix=Kweli):
 
 
 kundi _EveryNode(Exception):
-    pita
+    pass
 
 
 eleza _get_head_types(pat):
-    """ Accepts a pytree Pattern Node na rudishas a set
+    """ Accepts a pytree Pattern Node na returns a set
         of the pattern types which will match first. """
 
     ikiwa isinstance(pat, (pytree.NodePattern, pytree.LeafPattern)):
@@ -53,13 +53,13 @@ eleza _get_head_types(pat):
         #   ama a type na content -- so they don't get any farther
         # Always rudisha leafs
         ikiwa pat.type ni Tupu:
-            ashiria _EveryNode
+             ashiria _EveryNode
         rudisha {pat.type}
 
     ikiwa isinstance(pat, pytree.NegatedPattern):
         ikiwa pat.content:
             rudisha _get_head_types(pat.content)
-        ashiria _EveryNode # Negated Patterns don't have a type
+         ashiria _EveryNode # Negated Patterns don't have a type
 
     ikiwa isinstance(pat, pytree.WildcardPattern):
         # Recurse on each node kwenye content
@@ -69,11 +69,11 @@ eleza _get_head_types(pat):
                 r.update(_get_head_types(x))
         rudisha r
 
-    ashiria Exception("Oh no! I don't understand pattern %s" %(pat))
+     ashiria Exception("Oh no! I don't understand pattern %s" %(pat))
 
 
 eleza _get_headnode_dict(fixer_list):
-    """ Accepts a list of fixers na rudishas a dictionary
+    """ Accepts a list of fixers na returns a dictionary
         of head node type --> fixer list.  """
     head_nodes = collections.defaultdict(list)
     every = []
@@ -81,7 +81,7 @@ eleza _get_headnode_dict(fixer_list):
         ikiwa fixer.pattern:
             jaribu:
                 heads = _get_head_types(fixer.pattern)
-            tatizo _EveryNode:
+            except _EveryNode:
                 every.append(fixer)
             isipokua:
                 kila node_type kwenye heads:
@@ -121,16 +121,16 @@ eleza _detect_future_features(source):
             tp, value = advance()
             ikiwa tp kwenye ignore:
                 endelea
-            lasivyo tp == token.STRING:
+            elikiwa tp == token.STRING:
                 ikiwa have_docstring:
                     koma
                 have_docstring = Kweli
-            lasivyo tp == token.NAME na value == "kutoka":
+            elikiwa tp == token.NAME na value == "from":
                 tp, value = advance()
                 ikiwa tp != token.NAME ama value != "__future__":
                     koma
                 tp, value = advance()
-                ikiwa tp != token.NAME ama value != "agiza":
+                ikiwa tp != token.NAME ama value != "import":
                     koma
                 tp, value = advance()
                 ikiwa tp == token.OP na value == "(":
@@ -143,8 +143,8 @@ eleza _detect_future_features(source):
                     tp, value = advance()
             isipokua:
                 koma
-    tatizo StopIteration:
-        pita
+    except StopIteration:
+        pass
     rudisha frozenset(features)
 
 
@@ -164,7 +164,7 @@ kundi RefactoringTool(object):
         """Initializer.
 
         Args:
-            fixer_names: a list of fixers to agiza
+            fixer_names: a list of fixers to import
             options: a dict ukijumuisha configuration.
             explicit: a list of fixers to run even ikiwa they are explicit.
         """
@@ -202,9 +202,9 @@ kundi RefactoringTool(object):
                 self.BM.add_fixer(fixer)
                 # remove fixers that will be handled by the bottom-up
                 # matcher
-            lasivyo fixer kwenye self.pre_order:
+            elikiwa fixer kwenye self.pre_order:
                 self.bmi_pre_order.append(fixer)
-            lasivyo fixer kwenye self.post_order:
+            elikiwa fixer kwenye self.post_order:
                 self.bmi_post_order.append(fixer)
 
         self.bmi_pre_order_heads = _get_headnode_dict(self.bmi_pre_order)
@@ -231,21 +231,21 @@ kundi RefactoringTool(object):
             class_name = self.CLASS_PREFIX + "".join([p.title() kila p kwenye parts])
             jaribu:
                 fix_kundi = getattr(mod, class_name)
-            tatizo AttributeError:
-                ashiria FixerError("Can't find %s.%s" % (fix_name, class_name)) kutoka Tupu
+            except AttributeError:
+                 ashiria FixerError("Can't find %s.%s" % (fix_name, class_name)) kutoka Tupu
             fixer = fix_class(self.options, self.fixer_log)
             ikiwa fixer.explicit na self.explicit ni sio Kweli na \
-                    fix_mod_path haiko kwenye self.explicit:
+                    fix_mod_path sio kwenye self.explicit:
                 self.log_message("Skipping optional fixer: %s", fix_name)
                 endelea
 
             self.log_debug("Adding transformation: %s", fix_name)
             ikiwa fixer.order == "pre":
                 pre_order_fixers.append(fixer)
-            lasivyo fixer.order == "post":
+            elikiwa fixer.order == "post":
                 post_order_fixers.append(fixer)
             isipokua:
-                ashiria FixerError("Illegal fixer order: %r" % fixer.order)
+                 ashiria FixerError("Illegal fixer order: %r" % fixer.order)
 
         key_func = operator.attrgetter("run_order")
         pre_order_fixers.sort(key=key_func)
@@ -254,7 +254,7 @@ kundi RefactoringTool(object):
 
     eleza log_error(self, msg, *args, **kwds):
         """Called when an error occurs."""
-        ashiria
+        raise
 
     eleza log_message(self, msg, *args):
         """Hook to log a message."""
@@ -270,7 +270,7 @@ kundi RefactoringTool(object):
     eleza print_output(self, old_text, new_text, filename, equal):
         """Called ukijumuisha the old version, new version, na filename of a
         refactored file."""
-        pita
+        pass
 
     eleza refactor(self, items, write=Uongo, doctests_only=Uongo):
         """Refactor a list of files na directories."""
@@ -294,7 +294,7 @@ kundi RefactoringTool(object):
             dirnames.sort()
             filenames.sort()
             kila name kwenye filenames:
-                ikiwa (sio name.startswith(".") na
+                ikiwa (not name.startswith(".") and
                     os.path.splitext(name)[1] == py_ext):
                     fullname = os.path.join(dirpath, name)
                     self.refactor_file(fullname, write, doctests_only)
@@ -307,14 +307,14 @@ kundi RefactoringTool(object):
         """
         jaribu:
             f = open(filename, "rb")
-        tatizo OSError kama err:
+        except OSError as err:
             self.log_error("Can't open %s: %s", filename, err)
             rudisha Tupu, Tupu
         jaribu:
             encoding = tokenize.detect_encoding(f.readline)[0]
         mwishowe:
             f.close()
-        ukijumuisha io.open(filename, "r", encoding=encoding, newline='') kama f:
+        ukijumuisha io.open(filename, "r", encoding=encoding, newline='') as f:
             rudisha f.read(), encoding
 
     eleza refactor_file(self, filename, write=Uongo, doctests_only=Uongo):
@@ -322,7 +322,7 @@ kundi RefactoringTool(object):
         input, encoding = self._read_python_source(filename)
         ikiwa input ni Tupu:
             # Reading the file failed.
-            rudisha
+            return
         input += "\n" # Silence certain parse errors
         ikiwa doctests_only:
             self.log_debug("Refactoring doctests kwenye %s", filename)
@@ -356,10 +356,10 @@ kundi RefactoringTool(object):
             self.driver.grammar = pygram.python_grammar_no_print_statement
         jaribu:
             tree = self.driver.parse_string(data)
-        tatizo Exception kama err:
+        except Exception as err:
             self.log_error("Can't parse %s: %s: %s",
                            name, err.__class__.__name__, err)
-            rudisha
+            return
         mwishowe:
             self.driver.grammar = self.grammar
         tree.future_features = features
@@ -416,7 +416,7 @@ kundi RefactoringTool(object):
                     match_set[fixer].sort(key=pytree.Base.depth, reverse=Kweli)
 
                     ikiwa fixer.keep_line_order:
-                        #some fixers(eg fix_agizas) must be applied
+                        #some fixers(eg fix_imports) must be applied
                         #ukijumuisha the original file's line order
                         match_set[fixer].sort(key=pytree.Base.get_lineno)
 
@@ -426,7 +426,7 @@ kundi RefactoringTool(object):
 
                         jaribu:
                             find_root(node)
-                        tatizo ValueError:
+                        except ValueError:
                             # this node has been cut off kutoka a
                             # previous transformation ; skip
                             endelea
@@ -469,13 +469,13 @@ kundi RefactoringTool(object):
 
         Args:
             fixers: a list of fixer instances.
-            traversal: a generator that tumas AST nodes.
+            traversal: a generator that yields AST nodes.
 
         Returns:
             Tupu
         """
         ikiwa sio fixers:
-            rudisha
+            return
         kila node kwenye traversal:
             kila fixer kwenye fixers[node.type]:
                 results = fixer.match(node)
@@ -494,13 +494,13 @@ kundi RefactoringTool(object):
         ikiwa old_text ni Tupu:
             old_text = self._read_python_source(filename)[0]
             ikiwa old_text ni Tupu:
-                rudisha
+                return
         equal = old_text == new_text
         self.print_output(old_text, new_text, filename, equal)
         ikiwa equal:
             self.log_debug("No changes to %s", filename)
             ikiwa sio self.write_unchanged_files:
-                rudisha
+                return
         ikiwa write:
             self.write_file(new_text, filename, old_text, encoding)
         isipokua:
@@ -509,20 +509,20 @@ kundi RefactoringTool(object):
     eleza write_file(self, new_text, filename, old_text, encoding=Tupu):
         """Writes a string to a file.
 
-        It first shows a unified diff between the old text na the new text, na
+        It first shows a unified diff between the old text na the new text, and
         then rewrites the file; the latter ni only done ikiwa the write option is
         set.
         """
         jaribu:
             fp = io.open(filename, "w", encoding=encoding, newline='')
-        tatizo OSError kama err:
+        except OSError as err:
             self.log_error("Can't create %s: %s", filename, err)
-            rudisha
+            return
 
         ukijumuisha fp:
             jaribu:
                 fp.write(new_text)
-            tatizo OSError kama err:
+            except OSError as err:
                 self.log_error("Can't write %s: %s", filename, err)
         self.log_debug("Wrote changes to %s", filename)
         self.wrote = Kweli
@@ -533,10 +533,10 @@ kundi RefactoringTool(object):
     eleza refactor_docstring(self, input, filename):
         """Refactors a docstring, looking kila doctests.
 
-        This rudishas a modified version of the input string.  It looks
+        This returns a modified version of the input string.  It looks
         kila doctests, which start ukijumuisha a ">>>" prompt, na may be
-        endelead ukijumuisha "..." prompts, kama long kama the "..." ni indented
-        the same kama the ">>>".
+        endelead ukijumuisha "..." prompts, as long as the "..." ni indented
+        the same as the ">>>".
 
         (Unfortunately we can't use the doctest module's parser,
         since, like most parsers, it ni sio geared towards preserving
@@ -557,8 +557,8 @@ kundi RefactoringTool(object):
                 block = [line]
                 i = line.find(self.PS1)
                 indent = line[:i]
-            lasivyo (indent ni sio Tupu na
-                  (line.startswith(indent + self.PS2) ama
+            elikiwa (indent ni sio Tupu and
+                  (line.startswith(indent + self.PS2) or
                    line == indent + self.PS2.rstrip() + "\n")):
                 block.append(line)
             isipokua:
@@ -576,14 +576,14 @@ kundi RefactoringTool(object):
     eleza refactor_doctest(self, block, lineno, indent, filename):
         """Refactors one doctest.
 
-        A doctest ni given kama a block of lines, the first of which starts
+        A doctest ni given as a block of lines, the first of which starts
         ukijumuisha ">>>" (possibly indented), wakati the remaining lines start
         ukijumuisha "..." (identically indented).
 
         """
         jaribu:
             tree = self.parse_block(block, lineno, indent)
-        tatizo Exception kama err:
+        except Exception as err:
             ikiwa self.logger.isEnabledFor(logging.DEBUG):
                 kila line kwenye block:
                     self.log_debug("Source: %s", line.rstrip("\n"))
@@ -650,7 +650,7 @@ kundi RefactoringTool(object):
 
 
     eleza gen_lines(self, block, indent):
-        """Generates lines kama expected by tokenize kutoka a list of lines.
+        """Generates lines as expected by tokenize kutoka a list of lines.
 
         This strips the first len(indent + self.PS1) characters off each line.
         """
@@ -660,17 +660,17 @@ kundi RefactoringTool(object):
         kila line kwenye block:
             ikiwa line.startswith(prefix):
                 tuma line[len(prefix):]
-            lasivyo line == prefix.rstrip() + "\n":
+            elikiwa line == prefix.rstrip() + "\n":
                 tuma "\n"
             isipokua:
-                ashiria AssertionError("line=%r, prefix=%r" % (line, prefix))
+                 ashiria AssertionError("line=%r, prefix=%r" % (line, prefix))
             prefix = prefix2
         wakati Kweli:
             tuma ""
 
 
 kundi MultiprocessingUnsupported(Exception):
-    pita
+    pass
 
 
 kundi MultiprocessRefactoringTool(RefactoringTool):
@@ -687,10 +687,10 @@ kundi MultiprocessRefactoringTool(RefactoringTool):
                 items, write, doctests_only)
         jaribu:
             agiza multiprocessing
-        tatizo ImportError:
-            ashiria MultiprocessingUnsupported
+        except ImportError:
+             ashiria MultiprocessingUnsupported
         ikiwa self.queue ni sio Tupu:
-            ashiria RuntimeError("already doing multiple processes")
+             ashiria RuntimeError("already doing multiple processes")
         self.queue = multiprocessing.JoinableQueue()
         self.output_lock = multiprocessing.Lock()
         processes = [multiprocessing.Process(target=self._child)

@@ -51,7 +51,7 @@ kundi TurtleConfigTest(unittest.TestCase):
 
     eleza get_cfg_file(self, cfg_str):
         self.addCleanup(support.unlink, support.TESTFN)
-        ukijumuisha open(support.TESTFN, 'w') kama f:
+        ukijumuisha open(support.TESTFN, 'w') as f:
             f.write(cfg_str)
         rudisha support.TESTFN
 
@@ -104,7 +104,7 @@ kundi TurtleConfigTest(unittest.TestCase):
 
         cfg_name = self.get_cfg_file(invalid_test_config)
 
-        ukijumuisha support.captured_stdout() kama stdout:
+        ukijumuisha support.captured_stdout() as stdout:
             parsed_cfg = turtle.config_dict(cfg_name)
 
         err_msg = stdout.getvalue()

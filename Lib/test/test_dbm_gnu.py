@@ -12,9 +12,9 @@ kundi TestGdbm(unittest.TestCase):
     eleza setUpClass():
         ikiwa support.verbose:
             jaribu:
-                kutoka _gdbm agiza _GDBM_VERSION kama version
-            tatizo ImportError:
-                pita
+                kutoka _gdbm agiza _GDBM_VERSION as version
+            except ImportError:
+                pass
             isipokua:
                 andika(f"gdbm version: {version}")
 
@@ -42,7 +42,7 @@ kundi TestGdbm(unittest.TestCase):
             self.assertIn(key, key_set)
             key_set.remove(key)
             key = self.g.nextkey(key)
-        # get() na setdefault() work kama kwenye the dict interface
+        # get() na setdefault() work as kwenye the dict interface
         self.assertEqual(self.g.get(b'a'), b'b')
         self.assertIsTupu(self.g.get(b'xxx'))
         self.assertEqual(self.g.get(b'xxx', b'foo'), b'foo')
@@ -59,7 +59,7 @@ kundi TestGdbm(unittest.TestCase):
         self.g = gdbm.open(filename, 'c')
         self.g.close()
         self.assertRaises(gdbm.error, lambda: self.g['a'])
-        # try pita an invalid open flag
+        # try pass an invalid open flag
         self.assertRaises(gdbm.error, lambda: gdbm.open(filename, 'rx').close())
 
     eleza test_flags(self):
@@ -100,29 +100,29 @@ kundi TestGdbm(unittest.TestCase):
         self.assertGreaterEqual(size2, size0)
 
     eleza test_context_manager(self):
-        ukijumuisha gdbm.open(filename, 'c') kama db:
+        ukijumuisha gdbm.open(filename, 'c') as db:
             db["gdbm context manager"] = "context manager"
 
-        ukijumuisha gdbm.open(filename, 'r') kama db:
+        ukijumuisha gdbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), [b"gdbm context manager"])
 
-        ukijumuisha self.assertRaises(gdbm.error) kama cm:
+        ukijumuisha self.assertRaises(gdbm.error) as cm:
             db.keys()
         self.assertEqual(str(cm.exception),
                          "GDBM object has already been closed")
 
     eleza test_bytes(self):
-        ukijumuisha gdbm.open(filename, 'c') kama db:
+        ukijumuisha gdbm.open(filename, 'c') as db:
             db[b'bytes key \xbd'] = b'bytes value \xbd'
-        ukijumuisha gdbm.open(filename, 'r') kama db:
+        ukijumuisha gdbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), [b'bytes key \xbd'])
             self.assertKweli(b'bytes key \xbd' kwenye db)
             self.assertEqual(db[b'bytes key \xbd'], b'bytes value \xbd')
 
     eleza test_unicode(self):
-        ukijumuisha gdbm.open(filename, 'c') kama db:
+        ukijumuisha gdbm.open(filename, 'c') as db:
             db['Unicode key \U0001f40d'] = 'Unicode value \U0001f40d'
-        ukijumuisha gdbm.open(filename, 'r') kama db:
+        ukijumuisha gdbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), ['Unicode key \U0001f40d'.encode()])
             self.assertKweli('Unicode key \U0001f40d'.encode() kwenye db)
             self.assertKweli('Unicode key \U0001f40d' kwenye db)
@@ -132,9 +132,9 @@ kundi TestGdbm(unittest.TestCase):
                              'Unicode value \U0001f40d'.encode())
 
     eleza test_write_readonly_file(self):
-        ukijumuisha gdbm.open(filename, 'c') kama db:
+        ukijumuisha gdbm.open(filename, 'c') as db:
             db[b'bytes key'] = b'bytes value'
-        ukijumuisha gdbm.open(filename, 'r') kama db:
+        ukijumuisha gdbm.open(filename, 'r') as db:
             ukijumuisha self.assertRaises(gdbm.error):
                 toa db[b'not exist key']
             ukijumuisha self.assertRaises(gdbm.error):
@@ -147,17 +147,17 @@ kundi TestGdbm(unittest.TestCase):
     eleza test_nonascii_filename(self):
         filename = TESTFN_NONASCII
         self.addCleanup(unlink, filename)
-        ukijumuisha gdbm.open(filename, 'c') kama db:
+        ukijumuisha gdbm.open(filename, 'c') as db:
             db[b'key'] = b'value'
         self.assertKweli(os.path.exists(filename))
-        ukijumuisha gdbm.open(filename, 'r') kama db:
+        ukijumuisha gdbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), [b'key'])
             self.assertKweli(b'key' kwenye db)
             self.assertEqual(db[b'key'], b'value')
 
     eleza test_nonexisting_file(self):
         nonexisting_file = 'nonexisting-file'
-        ukijumuisha self.assertRaises(gdbm.error) kama cm:
+        ukijumuisha self.assertRaises(gdbm.error) as cm:
             gdbm.open(nonexisting_file)
         self.assertIn(nonexisting_file, str(cm.exception))
         self.assertEqual(cm.exception.filename, nonexisting_file)

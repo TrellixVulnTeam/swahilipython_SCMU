@@ -6,10 +6,10 @@ agiza unittest
 funceleza = """\
 eleza foo():
     # type: () -> int
-    pita
+    pass
 
 eleza bar():  # type: () -> Tupu
-    pita
+    pass
 """
 
 asynceleza = """\
@@ -53,17 +53,17 @@ eleza foo():  # type: () -> int
 nonasciieleza = """\
 eleza foo():
     # type: () -> àçčéñt
-    pita
+    pass
 """
 
 forstmt = """\
 kila a kwenye []:  # type: int
-    pita
+    pass
 """
 
 withstmt = """\
-ukijumuisha context() kama a:  # type: int
-    pita
+ukijumuisha context() as a:  # type: int
+    pass
 """
 
 vardecl = """\
@@ -72,15 +72,15 @@ a = 0  # type: int
 
 ignores = """\
 eleza foo():
-    pita  # type: ignore
+    pass  # type: ignore
 
 eleza bar():
     x = 1  # type: ignore
 
 eleza baz():
-    pita  # type: ignore[excuse]
-    pita  # type: ignore=excuse
-    pita  # type: ignore [excuse]
+    pass  # type: ignore[excuse]
+    pass  # type: ignore=excuse
+    pass  # type: ignore [excuse]
     x = 1  # type: ignore whatever
 """
 
@@ -92,114 +92,114 @@ longargs = """\
 eleza fa(
     a = 1,  # type: A
 ):
-    pita
+    pass
 
 eleza fa(
     a = 1  # type: A
 ):
-    pita
+    pass
 
 eleza fa(
     a = 1,  # type: A
     /
 ):
-    pita
+    pass
 
 eleza fab(
     a,  # type: A
     b,  # type: B
 ):
-    pita
+    pass
 
 eleza fab(
     a,  # type: A
     /,
     b,  # type: B
 ):
-    pita
+    pass
 
 eleza fab(
     a,  # type: A
     b   # type: B
 ):
-    pita
+    pass
 
 eleza fv(
     *v,  # type: V
 ):
-    pita
+    pass
 
 eleza fv(
     *v  # type: V
 ):
-    pita
+    pass
 
 eleza fk(
     **k,  # type: K
 ):
-    pita
+    pass
 
 eleza fk(
     **k  # type: K
 ):
-    pita
+    pass
 
 eleza fvk(
     *v,  # type: V
     **k,  # type: K
 ):
-    pita
+    pass
 
 eleza fvk(
     *v,  # type: V
     **k  # type: K
 ):
-    pita
+    pass
 
 eleza fav(
     a,  # type: A
     *v,  # type: V
 ):
-    pita
+    pass
 
 eleza fav(
     a,  # type: A
     /,
     *v,  # type: V
 ):
-    pita
+    pass
 
 eleza fav(
     a,  # type: A
     *v  # type: V
 ):
-    pita
+    pass
 
 eleza fak(
     a,  # type: A
     **k,  # type: K
 ):
-    pita
+    pass
 
 eleza fak(
     a,  # type: A
     /,
     **k,  # type: K
 ):
-    pita
+    pass
 
 eleza fak(
     a,  # type: A
     **k  # type: K
 ):
-    pita
+    pass
 
 eleza favk(
     a,  # type: A
     *v,  # type: V
     **k,  # type: K
 ):
-    pita
+    pass
 
 eleza favk(
     a,  # type: A
@@ -207,14 +207,14 @@ eleza favk(
     *v,  # type: V
     **k,  # type: K
 ):
-    pita
+    pass
 
 eleza favk(
     a,  # type: A
     *v,  # type: V
     **k  # type: K
 ):
-    pita
+    pass
 """
 
 
@@ -233,8 +233,8 @@ kundi TypeCommentTests(unittest.TestCase):
             ikiwa minver <= version <= maxver:
                 jaribu:
                     tuma self.parse(source, feature_version)
-                tatizo SyntaxError kama err:
-                    ashiria SyntaxError(str(err) + f" feature_version={feature_version}")
+                except SyntaxError as err:
+                     ashiria SyntaxError(str(err) + f" feature_version={feature_version}")
             isipokua:
                 ukijumuisha self.assertRaisesRegex(SyntaxError, expected_regex,
                                             msg=f"feature_version={feature_version}"):
@@ -261,28 +261,28 @@ kundi TypeCommentTests(unittest.TestCase):
 
     eleza test_asyncvar(self):
         kila tree kwenye self.parse_all(asyncvar, maxver=6):
-            pita
+            pass
 
     eleza test_asynccomp(self):
         kila tree kwenye self.parse_all(asynccomp, minver=6):
-            pita
+            pass
 
     eleza test_matmul(self):
         kila tree kwenye self.parse_all(matmul, minver=5):
-            pita
+            pass
 
     eleza test_fstring(self):
         kila tree kwenye self.parse_all(fstring, minver=6):
-            pita
+            pass
 
     eleza test_underscorednumber(self):
         kila tree kwenye self.parse_all(underscorednumber, minver=6):
-            pita
+            pass
 
     eleza test_redundantdef(self):
         kila tree kwenye self.parse_all(redundantdef, maxver=0,
                                 expected_regex="^Cannot have two type comments on def"):
-            pita
+            pass
 
     eleza test_nonasciidef(self):
         kila tree kwenye self.parse_all(nonasciidef):
@@ -333,7 +333,7 @@ kundi TypeCommentTests(unittest.TestCase):
                     todo.remove(c)
                     ikiwa c == 'v':
                         arg = t.args.vararg
-                    lasivyo c == 'k':
+                    elikiwa c == 'k':
                         arg = t.args.kwarg
                     isipokua:
                         assert 0 <= ord(c) - ord('a') < len(t.args.posonlyargs + t.args.args)
@@ -355,7 +355,7 @@ kundi TypeCommentTests(unittest.TestCase):
         """Tests kila inappropriately-placed type comments.
 
         These should be silently ignored ukijumuisha type comments off,
-        but ashiria SyntaxError ukijumuisha type comments on.
+        but  ashiria SyntaxError ukijumuisha type comments on.
 
         This ni sio meant to be exhaustive.
         """
@@ -363,49 +363,49 @@ kundi TypeCommentTests(unittest.TestCase):
         eleza check_both_ways(source):
             ast.parse(source, type_comments=Uongo)
             kila tree kwenye self.parse_all(source, maxver=0):
-                pita
+                pass
 
-        check_both_ways("pita  # type: int\n")
+        check_both_ways("pass  # type: int\n")
         check_both_ways("foo()  # type: int\n")
         check_both_ways("x += 1  # type: int\n")
         check_both_ways("wakati Kweli:  # type: int\n  endelea\n")
         check_both_ways("wakati Kweli:\n  endelea  # type: int\n")
-        check_both_ways("jaribu:  # type: int\n  pita\nmwishowe:\n  pita\n")
-        check_both_ways("jaribu:\n  pita\nmwishowe:  # type: int\n  pita\n")
-        check_both_ways("pita  # type: ignorewhatever\n")
-        check_both_ways("pita  # type: ignoreé\n")
+        check_both_ways("jaribu:  # type: int\n  pass\nmwishowe:\n  pass\n")
+        check_both_ways("jaribu:\n  pass\nmwishowe:  # type: int\n  pass\n")
+        check_both_ways("pass  # type: ignorewhatever\n")
+        check_both_ways("pass  # type: ignoreé\n")
 
-    eleza test_func_type_input(self):
+    eleza test_func_type_uliza(self):
 
-        eleza parse_func_type_input(source):
+        eleza parse_func_type_uliza(source):
             rudisha ast.parse(source, "<unknown>", "func_type")
 
-        # Some checks below will crash ikiwa the rudishaed structure ni wrong
-        tree = parse_func_type_input("() -> int")
+        # Some checks below will crash ikiwa the returned structure ni wrong
+        tree = parse_func_type_uliza("() -> int")
         self.assertEqual(tree.argtypes, [])
-        self.assertEqual(tree.rudishas.id, "int")
+        self.assertEqual(tree.returns.id, "int")
 
-        tree = parse_func_type_input("(int) -> List[str]")
+        tree = parse_func_type_uliza("(int) -> List[str]")
         self.assertEqual(len(tree.argtypes), 1)
         arg = tree.argtypes[0]
         self.assertEqual(arg.id, "int")
-        self.assertEqual(tree.rudishas.value.id, "List")
-        self.assertEqual(tree.rudishas.slice.value.id, "str")
+        self.assertEqual(tree.returns.value.id, "List")
+        self.assertEqual(tree.returns.slice.value.id, "str")
 
-        tree = parse_func_type_input("(int, *str, **Any) -> float")
+        tree = parse_func_type_uliza("(int, *str, **Any) -> float")
         self.assertEqual(tree.argtypes[0].id, "int")
         self.assertEqual(tree.argtypes[1].id, "str")
         self.assertEqual(tree.argtypes[2].id, "Any")
-        self.assertEqual(tree.rudishas.id, "float")
+        self.assertEqual(tree.returns.id, "float")
 
         ukijumuisha self.assertRaises(SyntaxError):
-            tree = parse_func_type_input("(int, *str, *Any) -> float")
+            tree = parse_func_type_uliza("(int, *str, *Any) -> float")
 
         ukijumuisha self.assertRaises(SyntaxError):
-            tree = parse_func_type_input("(int, **str, Any) -> float")
+            tree = parse_func_type_uliza("(int, **str, Any) -> float")
 
         ukijumuisha self.assertRaises(SyntaxError):
-            tree = parse_func_type_input("(**int, **str) -> float")
+            tree = parse_func_type_uliza("(**int, **str) -> float")
 
 
 ikiwa __name__ == '__main__':

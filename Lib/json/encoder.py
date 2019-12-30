@@ -3,16 +3,16 @@
 agiza re
 
 jaribu:
-    kutoka _json agiza encode_basestring_ascii kama c_encode_basestring_ascii
-tatizo ImportError:
+    kutoka _json agiza encode_basestring_ascii as c_encode_basestring_ascii
+except ImportError:
     c_encode_basestring_ascii = Tupu
 jaribu:
-    kutoka _json agiza encode_basestring kama c_encode_basestring
-tatizo ImportError:
+    kutoka _json agiza encode_basestring as c_encode_basestring
+except ImportError:
     c_encode_basestring = Tupu
 jaribu:
-    kutoka _json agiza make_encoder kama c_make_encoder
-tatizo ImportError:
+    kutoka _json agiza make_encoder as c_make_encoder
+except ImportError:
     c_make_encoder = Tupu
 
 ESCAPE = re.compile(r'[\x00-\x1f\\"\b\f\n\r\t]')
@@ -53,7 +53,7 @@ eleza py_encode_basestring_ascii(s):
         s = match.group(0)
         jaribu:
             rudisha ESCAPE_DCT[s]
-        tatizo KeyError:
+        except KeyError:
             n = ord(s)
             ikiwa n < 0x10000:
                 rudisha '\\u{0:04x}'.format(n)
@@ -94,9 +94,9 @@ kundi JSONEncoder(object):
     +-------------------+---------------+
 
     To extend this to recognize other objects, subkundi na implement a
-    ``.default()`` method ukijumuisha another method that rudishas a serializable
+    ``.default()`` method ukijumuisha another method that returns a serializable
     object kila ``o`` ikiwa possible, otherwise it should call the superclass
-    implementation (to ashiria ``TypeError``).
+    implementation (to  ashiria ``TypeError``).
 
     """
     item_separator = ', '
@@ -120,7 +120,7 @@ kundi JSONEncoder(object):
         Otherwise, no such check takes place.
 
         If allow_nan ni true, then NaN, Infinity, na -Infinity will be
-        encoded kama such.  This behavior ni sio JSON specification compliant,
+        encoded as such.  This behavior ni sio JSON specification compliant,
         but ni consistent ukijumuisha most JavaScript based encoders na decoders.
         Otherwise, it will be a ValueError to encode such floats.
 
@@ -134,13 +134,13 @@ kundi JSONEncoder(object):
         Tupu ni the most compact representation.
 
         If specified, separators should be an (item_separator, key_separator)
-        tuple.  The default ni (', ', ': ') ikiwa *indent* ni ``Tupu`` na
+        tuple.  The default ni (', ', ': ') ikiwa *indent* ni ``Tupu`` and
         (',', ': ') otherwise.  To get the most compact JSON representation,
         you should specify (',', ':') to eliminate whitespace.
 
         If specified, default ni a function that gets called kila objects
         that can't otherwise be serialized.  It should rudisha a JSON encodable
-        version of the object ama ashiria a ``TypeError``.
+        version of the object ama  ashiria a ``TypeError``.
 
         """
 
@@ -152,15 +152,15 @@ kundi JSONEncoder(object):
         self.indent = indent
         ikiwa separators ni sio Tupu:
             self.item_separator, self.key_separator = separators
-        lasivyo indent ni sio Tupu:
+        elikiwa indent ni sio Tupu:
             self.item_separator = ','
         ikiwa default ni sio Tupu:
             self.default = default
 
     eleza default(self, o):
-        """Implement this method kwenye a subkundi such that it rudishas
+        """Implement this method kwenye a subkundi such that it returns
         a serializable object kila ``o``, ama calls the base implementation
-        (to ashiria a ``TypeError``).
+        (to  ashiria a ``TypeError``).
 
         For example, to support arbitrary iterators, you could
         implement default like this::
@@ -168,15 +168,15 @@ kundi JSONEncoder(object):
             eleza default(self, o):
                 jaribu:
                     iterable = iter(o)
-                tatizo TypeError:
-                    pita
+                except TypeError:
+                    pass
                 isipokua:
                     rudisha list(iterable)
-                # Let the base kundi default method ashiria the TypeError
+                # Let the base kundi default method  ashiria the TypeError
                 rudisha JSONEncoder.default(self, o)
 
         """
-        ashiria TypeError(f'Object of type {o.__class__.__name__} '
+         ashiria TypeError(f'Object of type {o.__class__.__name__} '
                         f'is sio JSON serializable')
 
     eleza encode(self, o):
@@ -193,8 +193,8 @@ kundi JSONEncoder(object):
                 rudisha encode_basestring_ascii(o)
             isipokua:
                 rudisha encode_basestring(o)
-        # This doesn't pita the iterator directly to ''.join() because the
-        # exceptions aren't kama detailed.  The list call should be roughly
+        # This doesn't pass the iterator directly to ''.join() because the
+        # exceptions aren't as detailed.  The list call should be roughly
         # equivalent to the PySequence_Fast that ''.join() would do.
         chunks = self.iterencode(o, _one_shot=Kweli)
         ikiwa sio isinstance(chunks, (list, tuple)):
@@ -203,7 +203,7 @@ kundi JSONEncoder(object):
 
     eleza iterencode(self, o, _one_shot=Uongo):
         """Encode the given object na tuma each string
-        representation kama available.
+        representation as available.
 
         For example::
 
@@ -228,15 +228,15 @@ kundi JSONEncoder(object):
 
             ikiwa o != o:
                 text = 'NaN'
-            lasivyo o == _inf:
+            elikiwa o == _inf:
                 text = 'Infinity'
-            lasivyo o == _neginf:
+            elikiwa o == _neginf:
                 text = '-Infinity'
             isipokua:
                 rudisha _repr(o)
 
             ikiwa sio allow_nan:
-                ashiria ValueError(
+                 ashiria ValueError(
                     "Out of range float values are sio JSON compliant: " +
                     repr(o))
 
@@ -277,11 +277,11 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
     eleza _iterencode_list(lst, _current_indent_level):
         ikiwa sio lst:
             tuma '[]'
-            rudisha
+            return
         ikiwa markers ni sio Tupu:
             markerid = id(lst)
             ikiwa markerid kwenye markers:
-                ashiria ValueError("Circular reference detected")
+                 ashiria ValueError("Circular reference detected")
             markers[markerid] = lst
         buf = '['
         ikiwa _indent ni sio Tupu:
@@ -300,25 +300,25 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 buf = separator
             ikiwa isinstance(value, str):
                 tuma buf + _encoder(value)
-            lasivyo value ni Tupu:
+            elikiwa value ni Tupu:
                 tuma buf + 'null'
-            lasivyo value ni Kweli:
+            elikiwa value ni Kweli:
                 tuma buf + 'true'
-            lasivyo value ni Uongo:
+            elikiwa value ni Uongo:
                 tuma buf + 'false'
-            lasivyo isinstance(value, int):
+            elikiwa isinstance(value, int):
                 # Subclasses of int/float may override __repr__, but we still
-                # want to encode them kama integers/floats kwenye JSON. One example
+                # want to encode them as integers/floats kwenye JSON. One example
                 # within the standard library ni IntEnum.
                 tuma buf + _intstr(value)
-            lasivyo isinstance(value, float):
+            elikiwa isinstance(value, float):
                 # see comment above kila int
                 tuma buf + _floatstr(value)
             isipokua:
                 tuma buf
                 ikiwa isinstance(value, (list, tuple)):
                     chunks = _iterencode_list(value, _current_indent_level)
-                lasivyo isinstance(value, dict):
+                elikiwa isinstance(value, dict):
                     chunks = _iterencode_dict(value, _current_indent_level)
                 isipokua:
                     chunks = _iterencode(value, _current_indent_level)
@@ -333,11 +333,11 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
     eleza _iterencode_dict(dct, _current_indent_level):
         ikiwa sio dct:
             tuma '{}'
-            rudisha
+            return
         ikiwa markers ni sio Tupu:
             markerid = id(dct)
             ikiwa markerid kwenye markers:
-                ashiria ValueError("Circular reference detected")
+                 ashiria ValueError("Circular reference detected")
             markers[markerid] = dct
         tuma '{'
         ikiwa _indent ni sio Tupu:
@@ -355,25 +355,25 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             items = dct.items()
         kila key, value kwenye items:
             ikiwa isinstance(key, str):
-                pita
+                pass
             # JavaScript ni weakly typed kila these, so it makes sense to
             # also allow them.  Many encoders seem to do something like this.
-            lasivyo isinstance(key, float):
+            elikiwa isinstance(key, float):
                 # see comment kila int/float kwenye _make_iterencode
                 key = _floatstr(key)
-            lasivyo key ni Kweli:
+            elikiwa key ni Kweli:
                 key = 'true'
-            lasivyo key ni Uongo:
+            elikiwa key ni Uongo:
                 key = 'false'
-            lasivyo key ni Tupu:
+            elikiwa key ni Tupu:
                 key = 'null'
-            lasivyo isinstance(key, int):
+            elikiwa isinstance(key, int):
                 # see comment kila int/float kwenye _make_iterencode
                 key = _intstr(key)
-            lasivyo _skipkeys:
+            elikiwa _skipkeys:
                 endelea
             isipokua:
-                ashiria TypeError(f'keys must be str, int, float, bool ama Tupu, '
+                 ashiria TypeError(f'keys must be str, int, float, bool ama Tupu, '
                                 f'not {key.__class__.__name__}')
             ikiwa first:
                 first = Uongo
@@ -383,22 +383,22 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             tuma _key_separator
             ikiwa isinstance(value, str):
                 tuma _encoder(value)
-            lasivyo value ni Tupu:
+            elikiwa value ni Tupu:
                 tuma 'null'
-            lasivyo value ni Kweli:
+            elikiwa value ni Kweli:
                 tuma 'true'
-            lasivyo value ni Uongo:
+            elikiwa value ni Uongo:
                 tuma 'false'
-            lasivyo isinstance(value, int):
+            elikiwa isinstance(value, int):
                 # see comment kila int/float kwenye _make_iterencode
                 tuma _intstr(value)
-            lasivyo isinstance(value, float):
+            elikiwa isinstance(value, float):
                 # see comment kila int/float kwenye _make_iterencode
                 tuma _floatstr(value)
             isipokua:
                 ikiwa isinstance(value, (list, tuple)):
                     chunks = _iterencode_list(value, _current_indent_level)
-                lasivyo isinstance(value, dict):
+                elikiwa isinstance(value, dict):
                     chunks = _iterencode_dict(value, _current_indent_level)
                 isipokua:
                     chunks = _iterencode(value, _current_indent_level)
@@ -413,27 +413,27 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
     eleza _iterencode(o, _current_indent_level):
         ikiwa isinstance(o, str):
             tuma _encoder(o)
-        lasivyo o ni Tupu:
+        elikiwa o ni Tupu:
             tuma 'null'
-        lasivyo o ni Kweli:
+        elikiwa o ni Kweli:
             tuma 'true'
-        lasivyo o ni Uongo:
+        elikiwa o ni Uongo:
             tuma 'false'
-        lasivyo isinstance(o, int):
+        elikiwa isinstance(o, int):
             # see comment kila int/float kwenye _make_iterencode
             tuma _intstr(o)
-        lasivyo isinstance(o, float):
+        elikiwa isinstance(o, float):
             # see comment kila int/float kwenye _make_iterencode
             tuma _floatstr(o)
-        lasivyo isinstance(o, (list, tuple)):
+        elikiwa isinstance(o, (list, tuple)):
             tuma kutoka _iterencode_list(o, _current_indent_level)
-        lasivyo isinstance(o, dict):
+        elikiwa isinstance(o, dict):
             tuma kutoka _iterencode_dict(o, _current_indent_level)
         isipokua:
             ikiwa markers ni sio Tupu:
                 markerid = id(o)
                 ikiwa markerid kwenye markers:
-                    ashiria ValueError("Circular reference detected")
+                     ashiria ValueError("Circular reference detected")
                 markers[markerid] = o
             o = _default(o)
             tuma kutoka _iterencode(o, _current_indent_level)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # portions copyright 2001, Autonomous Zones Industries, Inc., all rights...
-# err...  reserved and offered to the public under the terms of the
+# err...  reserved na offered to the public under the terms of the
 # Python 2.2 license.
 # Author: Zooko O'Whielacronx
 # http://zooko.com/
@@ -19,15 +19,15 @@
 # Copyright 1991-1995, Stichting Mathematisch Centrum, all rights reserved.
 #
 #
-# Permission to use, copy, modify, and distribute this Python software na
-# its associated documentation for any purpose without fee is hereby
-# granted, provided that the above copyright notice appears in all copies,
-# and that both that copyright notice and this permission notice appear in
-# supporting documentation, and that the name of neither Automatrix,
-# Bioreason or Mojam Media be used in advertising or publicity pertaining to
+# Permission to use, copy, modify, na distribute this Python software and
+# its associated documentation kila any purpose without fee ni hereby
+# granted, provided that the above copyright notice appears kwenye all copies,
+# na that both that copyright notice na this permission notice appear in
+# supporting documentation, na that the name of neither Automatrix,
+# Bioreason ama Mojam Media be used kwenye advertising ama publicity pertaining to
 # distribution of the software without specific, written prior permission.
 #
-"""program/module to trace Python program or function execution
+"""program/module to trace Python program ama function execution
 
 Sample use, command line:
   trace.py -c -f counts --ignore-dir '$prefix' spam.py eggs
@@ -37,15 +37,15 @@ Sample use, command line:
 Sample use, programmatically
   agiza sys
 
-  # create a Trace object, telling it what to ignore, and whether to
-  # do tracing or line-counting or both.
+  # create a Trace object, telling it what to ignore, na whether to
+  # do tracing ama line-counting ama both.
   tracer = trace.Trace(ignoredirs=[sys.base_prefix, sys.base_exec_prefix,],
                        trace=0, count=1)
   # run the new command using the given tracer
   tracer.run('main()')
-  # make a report, placing output in /tmp
+  # make a report, placing output kwenye /tmp
   r = tracer.results()
-  r.write_results(show_missing=True, coverdir="/tmp")
+  r.write_results(show_missing=Kweli, coverdir="/tmp")
 """
 __all__ = ['Trace', 'CoverageResults']
 
@@ -65,125 +65,125 @@ agiza threading
 PRAGMA_NOCOVER = "#pragma NO COVER"
 
 kundi _Ignore:
-    def __init__(self, modules=None, dirs=None):
-        self._mods = set() if sio modules isipokua set(modules)
-        self._dirs = [] if sio dirs isipokua [os.path.normpath(d)
-                                          for d in dirs]
+    eleza __init__(self, modules=Tupu, dirs=Tupu):
+        self._mods = set() ikiwa sio modules isipokua set(modules)
+        self._dirs = [] ikiwa sio dirs isipokua [os.path.normpath(d)
+                                          kila d kwenye dirs]
         self._ignore = { '<string>': 1 }
 
-    def names(self, filename, modulename):
-        if modulename in self._ignore:
-            return self._ignore[modulename]
+    eleza names(self, filename, modulename):
+        ikiwa modulename kwenye self._ignore:
+            rudisha self._ignore[modulename]
 
-        # haven't seen this one before, so see if the module name is
+        # haven't seen this one before, so see ikiwa the module name is
         # on the ignore list.
-        if modulename in self._mods:  # Identical names, so ignore
+        ikiwa modulename kwenye self._mods:  # Identical names, so ignore
             self._ignore[modulename] = 1
-            return 1
+            rudisha 1
 
-        # check if the module is a proper submodule of something on
+        # check ikiwa the module ni a proper submodule of something on
         # the ignore list
-        for mod in self._mods:
+        kila mod kwenye self._mods:
             # Need to take some care since ignoring
             # "cmp" mustn't mean ignoring "cmpcache" but ignoring
             # "Spam" must also mean ignoring "Spam.Eggs".
-            if modulename.startswith(mod + '.'):
+            ikiwa modulename.startswith(mod + '.'):
                 self._ignore[modulename] = 1
-                return 1
+                rudisha 1
 
-        # Now check that filename isn't in one of the directories
-        if filename is None:
+        # Now check that filename isn't kwenye one of the directories
+        ikiwa filename ni Tupu:
             # must be a built-in, so we must ignore
             self._ignore[modulename] = 1
-            return 1
+            rudisha 1
 
         # Ignore a file when it contains one of the ignorable paths
-        for d in self._dirs:
-            # The '+ os.sep' is to ensure that d is a parent directory,
+        kila d kwenye self._dirs:
+            # The '+ os.sep' ni to ensure that d ni a parent directory,
             # as compared to cases like:
             #  d = "/usr/local"
             #  filename = "/usr/local.py"
-            # ama
+            # or
             #  d = "/usr/local.py"
             #  filename = "/usr/local.py"
-            if filename.startswith(d + os.sep):
+            ikiwa filename.startswith(d + os.sep):
                 self._ignore[modulename] = 1
-                return 1
+                rudisha 1
 
         # Tried the different ways, so we don't ignore this module
         self._ignore[modulename] = 0
-        return 0
+        rudisha 0
 
-def _modname(path):
-    """Return a plausible module name for the patch."""
+eleza _modname(path):
+    """Return a plausible module name kila the patch."""
 
     base = os.path.basename(path)
     filename, ext = os.path.splitext(base)
-    return filename
+    rudisha filename
 
-def _fullmodname(path):
-    """Return a plausible module name for the path."""
+eleza _fullmodname(path):
+    """Return a plausible module name kila the path."""
 
-    # If the file 'path' is part of a package, then the filename isn't
+    # If the file 'path' ni part of a package, then the filename isn't
     # enough to uniquely identify it.  Try to do the right thing by
-    # looking in sys.path for the longest matching prefix.  We'll
-    # assume that the rest is the package name.
+    # looking kwenye sys.path kila the longest matching prefix.  We'll
+    # assume that the rest ni the package name.
 
     comparepath = os.path.normcase(path)
     longest = ""
-    for dir in sys.path:
+    kila dir kwenye sys.path:
         dir = os.path.normcase(dir)
-        if comparepath.startswith(dir) and comparepath[len(dir)] == os.sep:
-            if len(dir) > len(longest):
+        ikiwa comparepath.startswith(dir) na comparepath[len(dir)] == os.sep:
+            ikiwa len(dir) > len(longest):
                 longest = dir
 
-    if longest:
+    ikiwa longest:
         base = path[len(longest) + 1:]
     isipokua:
         base = path
-    # the drive letter is never part of the module name
+    # the drive letter ni never part of the module name
     drive, base = os.path.splitdrive(base)
     base = base.replace(os.sep, ".")
-    if os.altsep:
+    ikiwa os.altsep:
         base = base.replace(os.altsep, ".")
     filename, ext = os.path.splitext(base)
-    return filename.lstrip(".")
+    rudisha filename.lstrip(".")
 
 kundi CoverageResults:
-    def __init__(self, counts=None, calledfuncs=None, infile=None,
-                 callers=None, outfile=None):
+    eleza __init__(self, counts=Tupu, calledfuncs=Tupu, infile=Tupu,
+                 callers=Tupu, outfile=Tupu):
         self.counts = counts
-        if self.counts is None:
+        ikiwa self.counts ni Tupu:
             self.counts = {}
         self.counter = self.counts.copy() # map (filename, lineno) to count
         self.calledfuncs = calledfuncs
-        if self.calledfuncs is None:
+        ikiwa self.calledfuncs ni Tupu:
             self.calledfuncs = {}
         self.calledfuncs = self.calledfuncs.copy()
         self.callers = callers
-        if self.callers is None:
+        ikiwa self.callers ni Tupu:
             self.callers = {}
         self.callers = self.callers.copy()
         self.infile = infile
         self.outfile = outfile
-        if self.infile:
+        ikiwa self.infile:
             # Try to merge existing counts file.
             jaribu:
-                with open(self.infile, 'rb') as f:
+                ukijumuisha open(self.infile, 'rb') as f:
                     counts, calledfuncs, callers = pickle.load(f)
                 self.update(self.__class__(counts, calledfuncs, callers))
-            tatizo (OSError, EOFError, ValueError) as err:
-                print(("Skipping counts file %r: %s"
+            except (OSError, EOFError, ValueError) as err:
+                andika(("Skipping counts file %r: %s"
                                       % (self.infile, err)), file=sys.stderr)
 
-    def is_ignored_filename(self, filename):
-        """Return True if the filename does sio refer to a file
+    eleza is_ignored_filename(self, filename):
+        """Return Kweli ikiwa the filename does sio refer to a file
         we want to have reported.
         """
-        return filename.startswith('<') and filename.endswith('>')
+        rudisha filename.startswith('<') na filename.endswith('>')
 
-    def update(self, other):
-        """Merge in the data kutoka another CoverageResults"""
+    eleza update(self, other):
+        """Merge kwenye the data kutoka another CoverageResults"""
         counts = self.counts
         calledfuncs = self.calledfuncs
         callers = self.callers
@@ -191,128 +191,128 @@ kundi CoverageResults:
         other_calledfuncs = other.calledfuncs
         other_callers = other.callers
 
-        for key in other_counts:
+        kila key kwenye other_counts:
             counts[key] = counts.get(key, 0) + other_counts[key]
 
-        for key in other_calledfuncs:
+        kila key kwenye other_calledfuncs:
             calledfuncs[key] = 1
 
-        for key in other_callers:
+        kila key kwenye other_callers:
             callers[key] = 1
 
-    def write_results(self, show_missing=True, summary=False, coverdir=None):
+    eleza write_results(self, show_missing=Kweli, summary=Uongo, coverdir=Tupu):
         """
         Write the coverage results.
 
         :param show_missing: Show lines that had no hits.
         :param summary: Include coverage summary per module.
-        :param coverdir: If None, the results of each module are placed in its
-                         directory, otherwise it is included in the directory
+        :param coverdir: If Tupu, the results of each module are placed kwenye its
+                         directory, otherwise it ni included kwenye the directory
                          specified.
         """
-        if self.calledfuncs:
-            print()
-            print("functions called:")
+        ikiwa self.calledfuncs:
+            andika()
+            andika("functions called:")
             calls = self.calledfuncs
-            for filename, modulename, funcname in sorted(calls):
-                print(("filename: %s, modulename: %s, funcname: %s"
+            kila filename, modulename, funcname kwenye sorted(calls):
+                andika(("filename: %s, modulename: %s, funcname: %s"
                        % (filename, modulename, funcname)))
 
-        if self.callers:
-            print()
-            print("calling relationships:")
+        ikiwa self.callers:
+            andika()
+            andika("calling relationships:")
             lastfile = lastcfile = ""
-            for ((pfile, pmod, pfunc), (cfile, cmod, cfunc)) \
-                    in sorted(self.callers):
-                if pfile != lastfile:
-                    print()
-                    print("***", pfile, "***")
+            kila ((pfile, pmod, pfunc), (cfile, cmod, cfunc)) \
+                    kwenye sorted(self.callers):
+                ikiwa pfile != lastfile:
+                    andika()
+                    andika("***", pfile, "***")
                     lastfile = pfile
                     lastcfile = ""
-                if cfile != pfile and lastcfile != cfile:
-                    print("  -->", cfile)
+                ikiwa cfile != pfile na lastcfile != cfile:
+                    andika("  -->", cfile)
                     lastcfile = cfile
-                print("    %s.%s -> %s.%s" % (pmod, pfunc, cmod, cfunc))
+                andika("    %s.%s -> %s.%s" % (pmod, pfunc, cmod, cfunc))
 
         # turn the counts data ("(filename, lineno) = count") into something
         # accessible on a per-file basis
         per_file = {}
-        for filename, lineno in self.counts:
+        kila filename, lineno kwenye self.counts:
             lines_hit = per_file[filename] = per_file.get(filename, {})
             lines_hit[lineno] = self.counts[(filename, lineno)]
 
-        # accumulate summary info, if needed
+        # accumulate summary info, ikiwa needed
         sums = {}
 
-        for filename, count in per_file.items():
-            if self.is_ignored_filename(filename):
+        kila filename, count kwenye per_file.items():
+            ikiwa self.is_ignored_filename(filename):
                 endelea
 
-            if filename.endswith(".pyc"):
+            ikiwa filename.endswith(".pyc"):
                 filename = filename[:-1]
 
-            if coverdir is None:
+            ikiwa coverdir ni Tupu:
                 dir = os.path.dirname(os.path.abspath(filename))
                 modulename = _modname(filename)
             isipokua:
                 dir = coverdir
-                if sio os.path.exists(dir):
+                ikiwa sio os.path.exists(dir):
                     os.makedirs(dir)
                 modulename = _fullmodname(filename)
 
             # If desired, get a list of the line numbers which represent
-            # executable content (returned as a dict for better lookup speed)
-            if show_missing:
+            # executable content (returned as a dict kila better lookup speed)
+            ikiwa show_missing:
                 lnotab = _find_executable_linenos(filename)
             isipokua:
                 lnotab = {}
             source = linecache.getlines(filename)
             coverpath = os.path.join(dir, modulename + ".cover")
-            with open(filename, 'rb') as fp:
+            ukijumuisha open(filename, 'rb') as fp:
                 encoding, _ = tokenize.detect_encoding(fp.readline)
             n_hits, n_lines = self.write_results_file(coverpath, source,
                                                       lnotab, count, encoding)
-            if summary and n_lines:
+            ikiwa summary na n_lines:
                 percent = int(100 * n_hits / n_lines)
                 sums[modulename] = n_lines, percent, modulename, filename
 
 
-        if summary and sums:
-            print("lines   cov%   module   (path)")
-            for m in sorted(sums):
+        ikiwa summary na sums:
+            andika("lines   cov%   module   (path)")
+            kila m kwenye sorted(sums):
                 n_lines, percent, modulename, filename = sums[m]
-                print("%5d   %3d%%   %s   (%s)" % sums[m])
+                andika("%5d   %3d%%   %s   (%s)" % sums[m])
 
-        if self.outfile:
-            # try and store counts and module info into self.outfile
+        ikiwa self.outfile:
+            # try na store counts na module info into self.outfile
             jaribu:
                 pickle.dump((self.counts, self.calledfuncs, self.callers),
                             open(self.outfile, 'wb'), 1)
-            tatizo OSError as err:
-                print("Can't save counts files because %s" % err, file=sys.stderr)
+            except OSError as err:
+                andika("Can't save counts files because %s" % err, file=sys.stderr)
 
-    def write_results_file(self, path, lines, lnotab, lines_hit, encoding=None):
-        """Return a coverage results file in path."""
-        # ``lnotab`` is a dict of executable lines, or a line number "table"
+    eleza write_results_file(self, path, lines, lnotab, lines_hit, encoding=Tupu):
+        """Return a coverage results file kwenye path."""
+        # ``lnotab`` ni a dict of executable lines, ama a line number "table"
 
         jaribu:
             outfile = open(path, "w", encoding=encoding)
-        tatizo OSError as err:
-            print(("trace: Could sio open %r for writing: %s "
+        except OSError as err:
+            andika(("trace: Could sio open %r kila writing: %s "
                                   "- skipping" % (path, err)), file=sys.stderr)
-            return 0, 0
+            rudisha 0, 0
 
         n_lines = 0
         n_hits = 0
-        with outfile:
-            for lineno, line in enumerate(lines, 1):
+        ukijumuisha outfile:
+            kila lineno, line kwenye enumerate(lines, 1):
                 # do the blank/comment match to try to mark more lines
                 # (help the reader find stuff that hasn't been covered)
-                if lineno in lines_hit:
+                ikiwa lineno kwenye lines_hit:
                     outfile.write("%5d: " % lines_hit[lineno])
                     n_hits += 1
                     n_lines += 1
-                lasivyo lineno in lnotab and sio PRAGMA_NOCOVER in line:
+                elikiwa lineno kwenye lnotab na sio PRAGMA_NOCOVER kwenye line:
                     # Highlight never-executed lines, unless the line contains
                     # #pragma: NO COVER
                     outfile.write(">>>>>> ")
@@ -321,290 +321,290 @@ kundi CoverageResults:
                     outfile.write("       ")
                 outfile.write(line.expandtabs(8))
 
-        return n_hits, n_lines
+        rudisha n_hits, n_lines
 
-def _find_lines_from_code(code, strs):
-    """Return dict where keys are lines in the line number table."""
+eleza _find_lines_from_code(code, strs):
+    """Return dict where keys are lines kwenye the line number table."""
     linenos = {}
 
-    for _, lineno in dis.findlinestarts(code):
-        if lineno haiko kwenye strs:
+    kila _, lineno kwenye dis.findlinestarts(code):
+        ikiwa lineno sio kwenye strs:
             linenos[lineno] = 1
 
-    return linenos
+    rudisha linenos
 
-def _find_lines(code, strs):
-    """Return lineno dict for all code objects reachable kutoka code."""
+eleza _find_lines(code, strs):
+    """Return lineno dict kila all code objects reachable kutoka code."""
     # get all of the lineno information kutoka the code of this scope level
     linenos = _find_lines_from_code(code, strs)
 
-    # and check the constants for references to other code objects
-    for c in code.co_consts:
-        if inspect.iscode(c):
+    # na check the constants kila references to other code objects
+    kila c kwenye code.co_consts:
+        ikiwa inspect.iscode(c):
             # find another code object, so recurse into it
             linenos.update(_find_lines(c, strs))
-    return linenos
+    rudisha linenos
 
-def _find_strings(filename, encoding=None):
+eleza _find_strings(filename, encoding=Tupu):
     """Return a dict of possible docstring positions.
 
-    The dict maps line numbers to strings.  There is an entry for
-    line that contains only a string or a part of a triple-quoted
+    The dict maps line numbers to strings.  There ni an entry for
+    line that contains only a string ama a part of a triple-quoted
     string.
     """
     d = {}
-    # If the first token is a string, then it's the module docstring.
-    # Add this special case so that the test in the loop passes.
+    # If the first token ni a string, then it's the module docstring.
+    # Add this special case so that the test kwenye the loop passes.
     prev_ttype = token.INDENT
-    with open(filename, encoding=encoding) as f:
+    ukijumuisha open(filename, encoding=encoding) as f:
         tok = tokenize.generate_tokens(f.readline)
-        for ttype, tstr, start, end, line in tok:
-            if ttype == token.STRING:
-                if prev_ttype == token.INDENT:
+        kila ttype, tstr, start, end, line kwenye tok:
+            ikiwa ttype == token.STRING:
+                ikiwa prev_ttype == token.INDENT:
                     sline, scol = start
                     eline, ecol = end
-                    for i in range(sline, eline + 1):
+                    kila i kwenye range(sline, eline + 1):
                         d[i] = 1
             prev_ttype = ttype
-    return d
+    rudisha d
 
-def _find_executable_linenos(filename):
-    """Return dict where keys are line numbers in the line number table."""
+eleza _find_executable_linenos(filename):
+    """Return dict where keys are line numbers kwenye the line number table."""
     jaribu:
-        with tokenize.open(filename) as f:
+        ukijumuisha tokenize.open(filename) as f:
             prog = f.read()
             encoding = f.encoding
-    tatizo OSError as err:
-        print(("Not printing coverage data for %r: %s"
+    except OSError as err:
+        andika(("Not printing coverage data kila %r: %s"
                               % (filename, err)), file=sys.stderr)
-        return {}
+        rudisha {}
     code = compile(prog, filename, "exec")
     strs = _find_strings(filename, encoding)
-    return _find_lines(code, strs)
+    rudisha _find_lines(code, strs)
 
 kundi Trace:
-    def __init__(self, count=1, trace=1, countfuncs=0, countcallers=0,
-                 ignoremods=(), ignoredirs=(), infile=None, outfile=None,
-                 timing=False):
+    eleza __init__(self, count=1, trace=1, countfuncs=0, countcallers=0,
+                 ignoremods=(), ignoredirs=(), infile=Tupu, outfile=Tupu,
+                 timing=Uongo):
         """
         @param count true iff it should count number of times each
-                     line is executed
+                     line ni executed
         @param trace true iff it should print out each line that is
                      being counted
         @param countfuncs true iff it should just output a list of
-                     (filename, modulename, funcname,) for functions
+                     (filename, modulename, funcname,) kila functions
                      that were called at least once;  This overrides
-                     `count' and `trace'
+                     `count' na `trace'
         @param ignoremods a list of the names of modules to ignore
         @param ignoredirs a list of the names of directories to ignore
                      all of the (recursive) contents of
         @param infile file kutoka which to read stored counts to be
                      added into the results
-        @param outfile file in which to write the results
+        @param outfile file kwenye which to write the results
         @param timing true iff timing information be displayed
         """
         self.infile = infile
         self.outfile = outfile
         self.ignore = _Ignore(ignoremods, ignoredirs)
         self.counts = {}   # keys are (filename, linenumber)
-        self.pathtobasename = {} # for memoizing os.path.basename
+        self.pathtobasename = {} # kila memoizing os.path.basename
         self.donothing = 0
         self.trace = trace
         self._calledfuncs = {}
         self._callers = {}
         self._caller_cache = {}
-        self.start_time = None
-        if timing:
+        self.start_time = Tupu
+        ikiwa timing:
             self.start_time = _time()
-        if countcallers:
+        ikiwa countcallers:
             self.globaltrace = self.globaltrace_trackcallers
-        lasivyo countfuncs:
+        elikiwa countfuncs:
             self.globaltrace = self.globaltrace_countfuncs
-        lasivyo trace and count:
+        elikiwa trace na count:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_trace_and_count
-        lasivyo trace:
+        elikiwa trace:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_trace
-        lasivyo count:
+        elikiwa count:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_count
         isipokua:
             # Ahem -- do nothing?  Okay.
             self.donothing = 1
 
-    def run(self, cmd):
+    eleza run(self, cmd):
         agiza __main__
         dict = __main__.__dict__
         self.runctx(cmd, dict, dict)
 
-    def runctx(self, cmd, globals=None, locals=None):
-        if globals is None: globals = {}
-        if locals is None: locals = {}
-        if sio self.donothing:
+    eleza runctx(self, cmd, globals=Tupu, locals=Tupu):
+        ikiwa globals ni Tupu: globals = {}
+        ikiwa locals ni Tupu: locals = {}
+        ikiwa sio self.donothing:
             threading.settrace(self.globaltrace)
             sys.settrace(self.globaltrace)
         jaribu:
             exec(cmd, globals, locals)
         mwishowe:
-            if sio self.donothing:
-                sys.settrace(None)
-                threading.settrace(None)
+            ikiwa sio self.donothing:
+                sys.settrace(Tupu)
+                threading.settrace(Tupu)
 
-    def runfunc(*args, **kw):
-        if len(args) >= 2:
+    eleza runfunc(*args, **kw):
+        ikiwa len(args) >= 2:
             self, func, *args = args
-        lasivyo sio args:
-            ashiria TypeError("descriptor 'runfunc' of 'Trace' object "
+        elikiwa sio args:
+             ashiria TypeError("descriptor 'runfunc' of 'Trace' object "
                             "needs an argument")
-        lasivyo 'func' in kw:
+        elikiwa 'func' kwenye kw:
             func = kw.pop('func')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'func' as keyword argument is deprecated",
+            warnings.warn("Passing 'func' as keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-            ashiria TypeError('runfunc expected at least 1 positional argument, '
+             ashiria TypeError('runfunc expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
-        result = None
-        if sio self.donothing:
+        result = Tupu
+        ikiwa sio self.donothing:
             sys.settrace(self.globaltrace)
         jaribu:
             result = func(*args, **kw)
         mwishowe:
-            if sio self.donothing:
-                sys.settrace(None)
-        return result
+            ikiwa sio self.donothing:
+                sys.settrace(Tupu)
+        rudisha result
     runfunc.__text_signature__ = '($self, func, /, *args, **kw)'
 
-    def file_module_function_of(self, frame):
+    eleza file_module_function_of(self, frame):
         code = frame.f_code
         filename = code.co_filename
-        if filename:
+        ikiwa filename:
             modulename = _modname(filename)
         isipokua:
-            modulename = None
+            modulename = Tupu
 
         funcname = code.co_name
-        clsname = None
-        if code in self._caller_cache:
-            if self._caller_cache[code] ni sio None:
+        clsname = Tupu
+        ikiwa code kwenye self._caller_cache:
+            ikiwa self._caller_cache[code] ni sio Tupu:
                 clsname = self._caller_cache[code]
         isipokua:
-            self._caller_cache[code] = None
+            self._caller_cache[code] = Tupu
             ## use of gc.get_referrers() was suggested by Michael Hudson
             # all functions which refer to this code object
-            funcs = [f for f in gc.get_referrers(code)
-                         if inspect.isfunction(f)]
+            funcs = [f kila f kwenye gc.get_referrers(code)
+                         ikiwa inspect.isfunction(f)]
             # require len(func) == 1 to avoid ambiguity caused by calls to
             # new.function(): "In the face of ambiguity, refuse the
             # temptation to guess."
-            if len(funcs) == 1:
-                dicts = [d for d in gc.get_referrers(funcs[0])
-                             if isinstance(d, dict)]
-                if len(dicts) == 1:
-                    classes = [c for c in gc.get_referrers(dicts[0])
-                                   if hasattr(c, "__bases__")]
-                    if len(classes) == 1:
-                        # ditto for new.classobj()
+            ikiwa len(funcs) == 1:
+                dicts = [d kila d kwenye gc.get_referrers(funcs[0])
+                             ikiwa isinstance(d, dict)]
+                ikiwa len(dicts) == 1:
+                    classes = [c kila c kwenye gc.get_referrers(dicts[0])
+                                   ikiwa hasattr(c, "__bases__")]
+                    ikiwa len(classes) == 1:
+                        # ditto kila new.classobj()
                         clsname = classes[0].__name__
-                        # cache the result - assumption is that new.* is
+                        # cache the result - assumption ni that new.* is
                         # sio called later to disturb this relationship
-                        # _caller_cache could be flushed if functions in
+                        # _caller_cache could be flushed ikiwa functions in
                         # the new module get called.
                         self._caller_cache[code] = clsname
-        if clsname ni sio None:
+        ikiwa clsname ni sio Tupu:
             funcname = "%s.%s" % (clsname, funcname)
 
-        return filename, modulename, funcname
+        rudisha filename, modulename, funcname
 
-    def globaltrace_trackcallers(self, frame, why, arg):
-        """Handler for call events.
+    eleza globaltrace_trackcallers(self, frame, why, arg):
+        """Handler kila call events.
 
         Adds information about who called who to the self._callers dict.
         """
-        if why == 'call':
+        ikiwa why == 'call':
             # XXX Should do a better job of identifying methods
             this_func = self.file_module_function_of(frame)
             parent_func = self.file_module_function_of(frame.f_back)
             self._callers[(parent_func, this_func)] = 1
 
-    def globaltrace_countfuncs(self, frame, why, arg):
-        """Handler for call events.
+    eleza globaltrace_countfuncs(self, frame, why, arg):
+        """Handler kila call events.
 
         Adds (filename, modulename, funcname) to the self._calledfuncs dict.
         """
-        if why == 'call':
+        ikiwa why == 'call':
             this_func = self.file_module_function_of(frame)
             self._calledfuncs[this_func] = 1
 
-    def globaltrace_lt(self, frame, why, arg):
-        """Handler for call events.
+    eleza globaltrace_lt(self, frame, why, arg):
+        """Handler kila call events.
 
-        If the code block being entered is to be ignored, returns `None',
+        If the code block being entered ni to be ignored, returns `Tupu',
         isipokua returns self.localtrace.
         """
-        if why == 'call':
+        ikiwa why == 'call':
             code = frame.f_code
-            filename = frame.f_globals.get('__file__', None)
-            if filename:
-                # XXX _modname() doesn't work right for packages, so
-                # the ignore support won't work right for packages
+            filename = frame.f_globals.get('__file__', Tupu)
+            ikiwa filename:
+                # XXX _modname() doesn't work right kila packages, so
+                # the ignore support won't work right kila packages
                 modulename = _modname(filename)
-                if modulename ni sio None:
+                ikiwa modulename ni sio Tupu:
                     ignore_it = self.ignore.names(filename, modulename)
-                    if sio ignore_it:
-                        if self.trace:
-                            print((" --- modulename: %s, funcname: %s"
+                    ikiwa sio ignore_it:
+                        ikiwa self.trace:
+                            andika((" --- modulename: %s, funcname: %s"
                                    % (modulename, code.co_name)))
-                        return self.localtrace
+                        rudisha self.localtrace
             isipokua:
-                return None
+                rudisha Tupu
 
-    def localtrace_trace_and_count(self, frame, why, arg):
-        if why == "line":
-            # record the file name and line number of every trace
+    eleza localtrace_trace_and_count(self, frame, why, arg):
+        ikiwa why == "line":
+            # record the file name na line number of every trace
             filename = frame.f_code.co_filename
             lineno = frame.f_lineno
             key = filename, lineno
             self.counts[key] = self.counts.get(key, 0) + 1
 
-            if self.start_time:
-                print('%.2f' % (_time() - self.start_time), end=' ')
+            ikiwa self.start_time:
+                andika('%.2f' % (_time() - self.start_time), end=' ')
             bname = os.path.basename(filename)
-            print("%s(%d): %s" % (bname, lineno,
+            andika("%s(%d): %s" % (bname, lineno,
                                   linecache.getline(filename, lineno)), end='')
-        return self.localtrace
+        rudisha self.localtrace
 
-    def localtrace_trace(self, frame, why, arg):
-        if why == "line":
-            # record the file name and line number of every trace
+    eleza localtrace_trace(self, frame, why, arg):
+        ikiwa why == "line":
+            # record the file name na line number of every trace
             filename = frame.f_code.co_filename
             lineno = frame.f_lineno
 
-            if self.start_time:
-                print('%.2f' % (_time() - self.start_time), end=' ')
+            ikiwa self.start_time:
+                andika('%.2f' % (_time() - self.start_time), end=' ')
             bname = os.path.basename(filename)
-            print("%s(%d): %s" % (bname, lineno,
+            andika("%s(%d): %s" % (bname, lineno,
                                   linecache.getline(filename, lineno)), end='')
-        return self.localtrace
+        rudisha self.localtrace
 
-    def localtrace_count(self, frame, why, arg):
-        if why == "line":
+    eleza localtrace_count(self, frame, why, arg):
+        ikiwa why == "line":
             filename = frame.f_code.co_filename
             lineno = frame.f_lineno
             key = filename, lineno
             self.counts[key] = self.counts.get(key, 0) + 1
-        return self.localtrace
+        rudisha self.localtrace
 
-    def results(self):
-        return CoverageResults(self.counts, infile=self.infile,
+    eleza results(self):
+        rudisha CoverageResults(self.counts, infile=self.infile,
                                outfile=self.outfile,
                                calledfuncs=self._calledfuncs,
                                callers=self._callers)
 
-def main():
+eleza main():
     agiza argparse
 
     parser = argparse.ArgumentParser()
@@ -614,18 +614,18 @@ def main():
             'One of these (or --report) must be given')
 
     grp.add_argument('-c', '--count', action='store_true',
-            help='Count the number of times each line is executed and write '
-                 'the counts to <module>.cover for each module executed, in '
+            help='Count the number of times each line ni executed na write '
+                 'the counts to <module>.cover kila each module executed, kwenye '
                  'the module\'s directory. See also --coverdir, --file, '
                  '--no-report below.')
     grp.add_argument('-t', '--trace', action='store_true',
-            help='Print each line to sys.stdout before it is executed')
+            help='Print each line to sys.stdout before it ni executed')
     grp.add_argument('-l', '--listfuncs', action='store_true',
             help='Keep track of which functions are executed at least once '
                  'and write the results to sys.stdout after the program exits. '
-                 'Cannot be specified alongside --trace or --count.')
+                 'Cannot be specified alongside --trace ama --count.')
     grp.add_argument('-T', '--trackcalls', action='store_true',
-            help='Keep track of caller/called pairs and write the results to '
+            help='Keep track of caller/called pairs na write the results to '
                  'sys.stdout after the program exits.')
 
     grp = parser.add_argument_group('Modifiers')
@@ -634,39 +634,39 @@ def main():
     _grp.add_argument('-r', '--report', action='store_true',
             help='Generate a report kutoka a counts file; does sio execute any '
                  'code. --file must specify the results file to read, which '
-                 'must have been created in a previous run with --count '
+                 'must have been created kwenye a previous run ukijumuisha --count '
                  '--file=FILE')
     _grp.add_argument('-R', '--no-report', action='store_true',
             help='Do sio generate the coverage report files. '
-                 'Useful if you want to accumulate over several runs.')
+                 'Useful ikiwa you want to accumulate over several runs.')
 
     grp.add_argument('-f', '--file',
             help='File to accumulate counts over several runs')
     grp.add_argument('-C', '--coverdir',
             help='Directory where the report files go. The coverage report '
-                 'for <package>.<module> will be written to file '
+                 'kila <package>.<module> will be written to file '
                  '<dir>/<package>/<module>.cover')
     grp.add_argument('-m', '--missing', action='store_true',
-            help='Annotate executable lines that were sio executed with '
+            help='Annotate executable lines that were sio executed ukijumuisha '
                  '">>>>>> "')
     grp.add_argument('-s', '--summary', action='store_true',
-            help='Write a brief summary for each file to sys.stdout. '
-                 'Can only be used with --count or --report')
+            help='Write a brief summary kila each file to sys.stdout. '
+                 'Can only be used ukijumuisha --count ama --report')
     grp.add_argument('-g', '--timing', action='store_true',
-            help='Prefix each line with the time since the program started. '
+            help='Prefix each line ukijumuisha the time since the program started. '
                  'Only used wakati tracing')
 
     grp = parser.add_argument_group('Filters',
             'Can be specified multiple times')
     grp.add_argument('--ignore-module', action='append', default=[],
-            help='Ignore the given module(s) and its submodules '
-                 '(if it is a package). Accepts comma separated list of '
+            help='Ignore the given module(s) na its submodules '
+                 '(ikiwa it ni a package). Accepts comma separated list of '
                  'module names.')
     grp.add_argument('--ignore-dir', action='append', default=[],
-            help='Ignore files in the given directory '
+            help='Ignore files kwenye the given directory '
                  '(multiple directories can be joined by os.pathsep).')
 
-    parser.add_argument('--module', action='store_true', default=False,
+    parser.add_argument('--module', action='store_true', default=Uongo,
                         help='Trace a module. ')
     parser.add_argument('progname', nargs='?',
             help='file to run as main program')
@@ -675,46 +675,46 @@ def main():
 
     opts = parser.parse_args()
 
-    if opts.ignore_dir:
+    ikiwa opts.ignore_dir:
         rel_path = 'lib', 'python{0.major}.{0.minor}'.format(sys.version_info)
         _prefix = os.path.join(sys.base_prefix, *rel_path)
         _exec_prefix = os.path.join(sys.base_exec_prefix, *rel_path)
 
-    def parse_ignore_dir(s):
+    eleza parse_ignore_dir(s):
         s = os.path.expanduser(os.path.expandvars(s))
         s = s.replace('$prefix', _prefix).replace('$exec_prefix', _exec_prefix)
-        return os.path.normpath(s)
+        rudisha os.path.normpath(s)
 
     opts.ignore_module = [mod.strip()
-                          for i in opts.ignore_module for mod in i.split(',')]
+                          kila i kwenye opts.ignore_module kila mod kwenye i.split(',')]
     opts.ignore_dir = [parse_ignore_dir(s)
-                       for i in opts.ignore_dir for s in i.split(os.pathsep)]
+                       kila i kwenye opts.ignore_dir kila s kwenye i.split(os.pathsep)]
 
-    if opts.report:
-        if sio opts.file:
+    ikiwa opts.report:
+        ikiwa sio opts.file:
             parser.error('-r/--report requires -f/--file')
         results = CoverageResults(infile=opts.file, outfile=opts.file)
-        return results.write_results(opts.missing, opts.summary, opts.coverdir)
+        rudisha results.write_results(opts.missing, opts.summary, opts.coverdir)
 
-    if sio any([opts.trace, opts.count, opts.listfuncs, opts.trackcalls]):
+    ikiwa sio any([opts.trace, opts.count, opts.listfuncs, opts.trackcalls]):
         parser.error('must specify one of --trace, --count, --report, '
-                     '--listfuncs, or --trackcalls')
+                     '--listfuncs, ama --trackcalls')
 
-    if opts.listfuncs and (opts.count or opts.trace):
-        parser.error('cannot specify both --listfuncs and (--trace or --count)')
+    ikiwa opts.listfuncs na (opts.count ama opts.trace):
+        parser.error('cannot specify both --listfuncs na (--trace ama --count)')
 
-    if opts.summary and sio opts.count:
-        parser.error('--summary can only be used with --count or --report')
+    ikiwa opts.summary na sio opts.count:
+        parser.error('--summary can only be used ukijumuisha --count ama --report')
 
-    if opts.progname is None:
-        parser.error('progname is missing: required with the main options')
+    ikiwa opts.progname ni Tupu:
+        parser.error('progname ni missing: required ukijumuisha the main options')
 
     t = Trace(opts.count, opts.trace, countfuncs=opts.listfuncs,
               countcallers=opts.trackcalls, ignoremods=opts.ignore_module,
               ignoredirs=opts.ignore_dir, infile=opts.file,
               outfile=opts.file, timing=opts.timing)
     jaribu:
-        if opts.module:
+        ikiwa opts.module:
             agiza runpy
             module_name = opts.progname
             mod_name, mod_spec, code = runpy._get_module_details(module_name)
@@ -725,31 +725,31 @@ def main():
                 '__package__': mod_spec.parent,
                 '__loader__': mod_spec.loader,
                 '__spec__': mod_spec,
-                '__cached__': None,
+                '__cached__': Tupu,
             }
         isipokua:
             sys.argv = [opts.progname, *opts.arguments]
             sys.path[0] = os.path.dirname(opts.progname)
 
-            with open(opts.progname) as fp:
+            ukijumuisha open(opts.progname) as fp:
                 code = compile(fp.read(), opts.progname, 'exec')
             # try to emulate __main__ namespace as much as possible
             globs = {
                 '__file__': opts.progname,
                 '__name__': '__main__',
-                '__package__': None,
-                '__cached__': None,
+                '__package__': Tupu,
+                '__cached__': Tupu,
             }
         t.runctx(code, globs, globs)
-    tatizo OSError as err:
+    except OSError as err:
         sys.exit("Cannot run file %r because: %s" % (sys.argv[0], err))
-    tatizo SystemExit:
+    except SystemExit:
         pass
 
     results = t.results()
 
-    if sio opts.no_report:
+    ikiwa sio opts.no_report:
         results.write_results(opts.missing, opts.summary, opts.coverdir)
 
-if __name__=='__main__':
+ikiwa __name__=='__main__':
     main()

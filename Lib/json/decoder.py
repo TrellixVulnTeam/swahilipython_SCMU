@@ -4,8 +4,8 @@ agiza re
 
 kutoka json agiza scanner
 jaribu:
-    kutoka _json agiza scanstring kama c_scanstring
-tatizo ImportError:
+    kutoka _json agiza scanstring as c_scanstring
+except ImportError:
     c_scanstring = Tupu
 
 __all__ = ['JSONDecoder', 'JSONDecodeError']
@@ -58,19 +58,19 @@ BACKSLASH = {
 
 eleza _decode_uXXXX(s, pos):
     esc = s[pos + 1:pos + 5]
-    ikiwa len(esc) == 4 na esc[1] haiko kwenye 'xX':
+    ikiwa len(esc) == 4 na esc[1] sio kwenye 'xX':
         jaribu:
             rudisha int(esc, 16)
-        tatizo ValueError:
-            pita
+        except ValueError:
+            pass
     msg = "Invalid \\uXXXX escape"
-    ashiria JSONDecodeError(msg, s, pos)
+     ashiria JSONDecodeError(msg, s, pos)
 
 eleza py_scanstring(s, end, strict=Kweli,
         _b=BACKSLASH, _m=STRINGCHUNK.match):
     """Scan the string s kila a JSON string. End ni the index of the
     character kwenye s after the quote that started the JSON string.
-    Unescapes all valid JSON string escape sequences na ashirias ValueError
+    Unescapes all valid JSON string escape sequences na raises ValueError
     on attempt to decode an invalid string. If strict ni Uongo then literal
     control characters are allowed kwenye the string.
 
@@ -82,7 +82,7 @@ eleza py_scanstring(s, end, strict=Kweli,
     wakati 1:
         chunk = _m(s, end)
         ikiwa chunk ni Tupu:
-            ashiria JSONDecodeError("Unterminated string starting at", s, begin)
+             ashiria JSONDecodeError("Unterminated string starting at", s, begin)
         end = chunk.end()
         content, terminator = chunk.groups()
         # Content ni contains zero ama more unescaped string characters
@@ -92,26 +92,26 @@ eleza py_scanstring(s, end, strict=Kweli,
         # ama a backslash denoting that an escape sequence follows
         ikiwa terminator == '"':
             koma
-        lasivyo terminator != '\\':
+        elikiwa terminator != '\\':
             ikiwa strict:
                 #msg = "Invalid control character %r at" % (terminator,)
                 msg = "Invalid control character {0!r} at".format(terminator)
-                ashiria JSONDecodeError(msg, s, end)
+                 ashiria JSONDecodeError(msg, s, end)
             isipokua:
                 _append(terminator)
                 endelea
         jaribu:
             esc = s[end]
-        tatizo IndexError:
-            ashiria JSONDecodeError("Unterminated string starting at",
+        except IndexError:
+             ashiria JSONDecodeError("Unterminated string starting at",
                                   s, begin) kutoka Tupu
         # If sio a unicode escape sequence, must be kwenye the lookup table
         ikiwa esc != 'u':
             jaribu:
                 char = _b[esc]
-            tatizo KeyError:
+            except KeyError:
                 msg = "Invalid \\escape: {0!r}".format(esc)
-                ashiria JSONDecodeError(msg, s, end)
+                 ashiria JSONDecodeError(msg, s, end)
             end += 1
         isipokua:
             uni = _decode_uXXXX(s, end)
@@ -142,8 +142,8 @@ eleza JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
     ikiwa memo ni Tupu:
         memo = {}
     memo_get = memo.setdefault
-    # Use a slice to prevent IndexError kutoka being ashiriad, the following
-    # check will ashiria a more specific ValueError ikiwa the string ni empty
+    # Use a slice to prevent IndexError kutoka being raised, the following
+    # check will  ashiria a more specific ValueError ikiwa the string ni empty
     nextchar = s[end:end + 1]
     # Normally we expect nextchar == '"'
     ikiwa nextchar != '"':
@@ -159,8 +159,8 @@ eleza JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
             ikiwa object_hook ni sio Tupu:
                 pairs = object_hook(pairs)
             rudisha pairs, end + 1
-        lasivyo nextchar != '"':
-            ashiria JSONDecodeError(
+        elikiwa nextchar != '"':
+             ashiria JSONDecodeError(
                 "Expecting property name enclosed kwenye double quotes", s, end)
     end += 1
     wakati Kweli:
@@ -171,7 +171,7 @@ eleza JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         ikiwa s[end:end + 1] != ':':
             end = _w(s, end).end()
             ikiwa s[end:end + 1] != ':':
-                ashiria JSONDecodeError("Expecting ':' delimiter", s, end)
+                 ashiria JSONDecodeError("Expecting ':' delimiter", s, end)
         end += 1
 
         jaribu:
@@ -179,32 +179,32 @@ eleza JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
                 end += 1
                 ikiwa s[end] kwenye _ws:
                     end = _w(s, end + 1).end()
-        tatizo IndexError:
-            pita
+        except IndexError:
+            pass
 
         jaribu:
             value, end = scan_once(s, end)
-        tatizo StopIteration kama err:
-            ashiria JSONDecodeError("Expecting value", s, err.value) kutoka Tupu
+        except StopIteration as err:
+             ashiria JSONDecodeError("Expecting value", s, err.value) kutoka Tupu
         pairs_append((key, value))
         jaribu:
             nextchar = s[end]
             ikiwa nextchar kwenye _ws:
                 end = _w(s, end + 1).end()
                 nextchar = s[end]
-        tatizo IndexError:
+        except IndexError:
             nextchar = ''
         end += 1
 
         ikiwa nextchar == '}':
             koma
-        lasivyo nextchar != ',':
-            ashiria JSONDecodeError("Expecting ',' delimiter", s, end - 1)
+        elikiwa nextchar != ',':
+             ashiria JSONDecodeError("Expecting ',' delimiter", s, end - 1)
         end = _w(s, end).end()
         nextchar = s[end:end + 1]
         end += 1
         ikiwa nextchar != '"':
-            ashiria JSONDecodeError(
+             ashiria JSONDecodeError(
                 "Expecting property name enclosed kwenye double quotes", s, end - 1)
     ikiwa object_pairs_hook ni sio Tupu:
         result = object_pairs_hook(pairs)
@@ -228,8 +228,8 @@ eleza JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     wakati Kweli:
         jaribu:
             value, end = scan_once(s, end)
-        tatizo StopIteration kama err:
-            ashiria JSONDecodeError("Expecting value", s, err.value) kutoka Tupu
+        except StopIteration as err:
+             ashiria JSONDecodeError("Expecting value", s, err.value) kutoka Tupu
         _append(value)
         nextchar = s[end:end + 1]
         ikiwa nextchar kwenye _ws:
@@ -238,15 +238,15 @@ eleza JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
         end += 1
         ikiwa nextchar == ']':
             koma
-        lasivyo nextchar != ',':
-            ashiria JSONDecodeError("Expecting ',' delimiter", s, end - 1)
+        elikiwa nextchar != ',':
+             ashiria JSONDecodeError("Expecting ',' delimiter", s, end - 1)
         jaribu:
             ikiwa s[end] kwenye _ws:
                 end += 1
                 ikiwa s[end] kwenye _ws:
                     end = _w(s, end + 1).end()
-        tatizo IndexError:
-            pita
+        except IndexError:
+            pass
 
     rudisha values, end
 
@@ -290,7 +290,7 @@ kundi JSONDecoder(object):
         deserializations (e.g. to support JSON-RPC kundi hinting).
 
         ``object_pairs_hook``, ikiwa specified will be called ukijumuisha the result of
-        every JSON object decoded ukijumuisha an ordered list of pairs.  The rudisha
+        every JSON object decoded ukijumuisha an ordered list of pairs.  The return
         value of ``object_pairs_hook`` will be used instead of the ``dict``.
         This feature can be used to implement custom decoders.
         If ``object_hook`` ni also defined, the ``object_pairs_hook`` takes
@@ -308,7 +308,7 @@ kundi JSONDecoder(object):
 
         ``parse_constant``, ikiwa specified, will be called ukijumuisha one of the
         following strings: -Infinity, Infinity, NaN.
-        This can be used to ashiria an exception ikiwa invalid JSON numbers
+        This can be used to  ashiria an exception ikiwa invalid JSON numbers
         are encountered.
 
         If ``strict`` ni false (true ni the default), then control
@@ -337,7 +337,7 @@ kundi JSONDecoder(object):
         obj, end = self.raw_decode(s, idx=_w(s, 0).end())
         end = _w(s, end).end()
         ikiwa end != len(s):
-            ashiria JSONDecodeError("Extra data", s, end)
+             ashiria JSONDecodeError("Extra data", s, end)
         rudisha obj
 
     eleza raw_decode(self, s, idx=0):
@@ -351,6 +351,6 @@ kundi JSONDecoder(object):
         """
         jaribu:
             obj, end = self.scan_once(s, idx)
-        tatizo StopIteration kama err:
-            ashiria JSONDecodeError("Expecting value", s, err.value) kutoka Tupu
+        except StopIteration as err:
+             ashiria JSONDecodeError("Expecting value", s, err.value) kutoka Tupu
         rudisha obj, end

@@ -1,13 +1,13 @@
-import unittest
-from test.test_email import TestEmailBase, parameterize
-import textwrap
-from email import policy
-from email.message import EmailMessage
-from email.contentmanager import ContentManager, raw_data_manager
+agiza unittest
+kutoka test.test_email agiza TestEmailBase, parameterize
+agiza textwrap
+kutoka email agiza policy
+kutoka email.message agiza EmailMessage
+kutoka email.contentmanager agiza ContentManager, raw_data_manager
 
 
 @parameterize
-class TestContentManager(TestEmailBase):
+kundi TestContentManager(TestEmailBase):
 
     policy = policy.default
     message = EmailMessage
@@ -18,10 +18,10 @@ class TestContentManager(TestEmailBase):
         'null_key':         (3, '',),
         }
 
-    def get_key_as_get_content_key(self, order, key):
-        def foo_getter(msg, foo=None):
+    eleza get_key_as_get_content_key(self, order, key):
+        eleza foo_getter(msg, foo=Tupu):
             bar = msg['X-Bar-Header']
-            return foo, bar
+            rudisha foo, bar
         cm = ContentManager()
         cm.add_get_handler(key, foo_getter)
         m = self._make_message()
@@ -29,15 +29,15 @@ class TestContentManager(TestEmailBase):
         m['X-Bar-Header'] = 'foo'
         self.assertEqual(cm.get_content(m, foo='bar'), ('bar', 'foo'))
 
-    def get_key_as_get_content_key_order(self, order, key):
-        def bar_getter(msg):
-            return msg['X-Bar-Header']
-        def foo_getter(msg):
-            return msg['X-Foo-Header']
+    eleza get_key_as_get_content_key_order(self, order, key):
+        eleza bar_getter(msg):
+            rudisha msg['X-Bar-Header']
+        eleza foo_getter(msg):
+            rudisha msg['X-Foo-Header']
         cm = ContentManager()
         cm.add_get_handler(key, foo_getter)
-        for precedence, key in self.get_key_params.values():
-            if precedence > order:
+        kila precedence, key kwenye self.get_key_params.values():
+            ikiwa precedence > order:
                 cm.add_get_handler(key, bar_getter)
         m = self._make_message()
         m['Content-Type'] = 'text/plain'
@@ -45,17 +45,17 @@ class TestContentManager(TestEmailBase):
         m['X-Foo-Header'] = 'foo'
         self.assertEqual(cm.get_content(m), ('foo'))
 
-    def test_get_content_raises_if_unknown_mimetype_and_no_default(self):
+    eleza test_get_content_raises_if_unknown_mimetype_and_no_default(self):
         cm = ContentManager()
         m = self._make_message()
         m['Content-Type'] = 'text/plain'
-        with self.assertRaisesRegex(KeyError, 'text/plain'):
+        ukijumuisha self.assertRaisesRegex(KeyError, 'text/plain'):
             cm.get_content(m)
 
-    class BaseThing(str):
+    kundi BaseThing(str):
         pass
     baseobject_full_path = __name__ + '.' + 'TestContentManager.BaseThing'
-    class Thing(BaseThing):
+    kundi Thing(BaseThing):
         pass
     testobject_full_path = __name__ + '.' + 'TestContentManager.Thing'
 
@@ -70,12 +70,12 @@ class TestContentManager(TestEmailBase):
         'base_name':        (7,  'BaseThing',),
         'str_type':         (8,  str,),
         'str_full_path':    (9,  'builtins.str',),
-        'str_name':         (10, 'str',),   # str name and qualname are the same
-        'null_key':         (11, None,),
+        'str_name':         (10, 'str',),   # str name na qualname are the same
+        'null_key':         (11, Tupu,),
         }
 
-    def set_key_as_set_content_key(self, order, key):
-        def foo_setter(msg, obj, foo=None):
+    eleza set_key_as_set_content_key(self, order, key):
+        eleza foo_setter(msg, obj, foo=Tupu):
             msg['X-Foo-Header'] = foo
             msg.set_payload(obj)
         cm = ContentManager()
@@ -86,16 +86,16 @@ class TestContentManager(TestEmailBase):
         self.assertEqual(m['X-Foo-Header'], 'bar')
         self.assertEqual(m.get_payload(), msg_obj)
 
-    def set_key_as_set_content_key_order(self, order, key):
-        def foo_setter(msg, obj):
+    eleza set_key_as_set_content_key_order(self, order, key):
+        eleza foo_setter(msg, obj):
             msg['X-FooBar-Header'] = 'foo'
             msg.set_payload(obj)
-        def bar_setter(msg, obj):
+        eleza bar_setter(msg, obj):
             msg['X-FooBar-Header'] = 'bar'
         cm = ContentManager()
         cm.add_set_handler(key, foo_setter)
-        for precedence, key in self.get_key_params.values():
-            if precedence > order:
+        kila precedence, key kwenye self.get_key_params.values():
+            ikiwa precedence > order:
                 cm.add_set_handler(key, bar_setter)
         m = self._make_message()
         msg_obj = self.Thing()
@@ -103,49 +103,49 @@ class TestContentManager(TestEmailBase):
         self.assertEqual(m['X-FooBar-Header'], 'foo')
         self.assertEqual(m.get_payload(), msg_obj)
 
-    def test_set_content_raises_if_unknown_type_and_no_default(self):
+    eleza test_set_content_raises_if_unknown_type_and_no_default(self):
         cm = ContentManager()
         m = self._make_message()
         msg_obj = self.Thing()
-        with self.assertRaisesRegex(KeyError, self.testobject_full_path):
+        ukijumuisha self.assertRaisesRegex(KeyError, self.testobject_full_path):
             cm.set_content(m, msg_obj)
 
-    def test_set_content_raises_if_called_on_multipart(self):
+    eleza test_set_content_raises_if_called_on_multipart(self):
         cm = ContentManager()
         m = self._make_message()
         m['Content-Type'] = 'multipart/foo'
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             cm.set_content(m, 'test')
 
-    def test_set_content_calls_clear_content(self):
+    eleza test_set_content_calls_clear_content(self):
         m = self._make_message()
         m['Content-Foo'] = 'bar'
         m['Content-Type'] = 'text/html'
         m['To'] = 'test'
         m.set_payload('abc')
         cm = ContentManager()
-        cm.add_set_handler(str, lambda *args, **kw: None)
+        cm.add_set_handler(str, lambda *args, **kw: Tupu)
         m.set_content('xyz', content_manager=cm)
-        self.assertIsNone(m['Content-Foo'])
-        self.assertIsNone(m['Content-Type'])
+        self.assertIsTupu(m['Content-Foo'])
+        self.assertIsTupu(m['Content-Type'])
         self.assertEqual(m['To'], 'test')
-        self.assertIsNone(m.get_payload())
+        self.assertIsTupu(m.get_payload())
 
 
 @parameterize
-class TestRawDataManager(TestEmailBase):
-    # Note: these tests are dependent on the order in which headers are added
+kundi TestRawDataManager(TestEmailBase):
+    # Note: these tests are dependent on the order kwenye which headers are added
     # to the message objects by the code.  There's no defined ordering in
     # RFC5322/MIME, so this makes the tests more fragile than the standards
-    # require.  However, if the header order changes it is best to understand
-    # *why*, and make sure it isn't a subtle bug in whatever change was
+    # require.  However, ikiwa the header order changes it ni best to understand
+    # *why*, na make sure it isn't a subtle bug kwenye whatever change was
     # applied.
 
     policy = policy.default.clone(max_line_length=60,
                                   content_manager=raw_data_manager)
     message = EmailMessage
 
-    def test_get_text_plain(self):
+    eleza test_get_text_plain(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: text/plain
 
@@ -153,7 +153,7 @@ class TestRawDataManager(TestEmailBase):
             """))
         self.assertEqual(raw_data_manager.get_content(m), "Basic text.\n")
 
-    def test_get_text_html(self):
+    eleza test_get_text_html(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: text/html
 
@@ -162,7 +162,7 @@ class TestRawDataManager(TestEmailBase):
         self.assertEqual(raw_data_manager.get_content(m),
                          "<p>Basic text.</p>\n")
 
-    def test_get_text_plain_latin1(self):
+    eleza test_get_text_plain_latin1(self):
         m = self._bytes_msg(textwrap.dedent("""\
             Content-Type: text/plain; charset=latin1
 
@@ -170,7 +170,7 @@ class TestRawDataManager(TestEmailBase):
             """).encode('latin1'))
         self.assertEqual(raw_data_manager.get_content(m), "Basìc tëxt.\n")
 
-    def test_get_text_plain_latin1_quoted_printable(self):
+    eleza test_get_text_plain_latin1_quoted_printable(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: text/plain; charset="latin-1"
             Content-Transfer-Encoding: quoted-printable
@@ -179,7 +179,7 @@ class TestRawDataManager(TestEmailBase):
             """))
         self.assertEqual(raw_data_manager.get_content(m), "Basìc tëxt.\n")
 
-    def test_get_text_plain_utf8_base64(self):
+    eleza test_get_text_plain_utf8_base64(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: text/plain; charset="utf8"
             Content-Transfer-Encoding: base64
@@ -188,7 +188,7 @@ class TestRawDataManager(TestEmailBase):
             """))
         self.assertEqual(raw_data_manager.get_content(m), "Basìc tëxt.\n")
 
-    def test_get_text_plain_bad_utf8_quoted_printable(self):
+    eleza test_get_text_plain_bad_utf8_quoted_printable(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: text/plain; charset="utf8"
             Content-Transfer-Encoding: quoted-printable
@@ -197,7 +197,7 @@ class TestRawDataManager(TestEmailBase):
             """))
         self.assertEqual(raw_data_manager.get_content(m), "Basìc tëxt�.\n")
 
-    def test_get_text_plain_bad_utf8_quoted_printable_ignore_errors(self):
+    eleza test_get_text_plain_bad_utf8_quoted_printable_ignore_errors(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: text/plain; charset="utf8"
             Content-Transfer-Encoding: quoted-printable
@@ -207,7 +207,7 @@ class TestRawDataManager(TestEmailBase):
         self.assertEqual(raw_data_manager.get_content(m, errors='ignore'),
                          "Basìc tëxt.\n")
 
-    def test_get_text_plain_utf8_base64_recoverable_bad_CTE_data(self):
+    eleza test_get_text_plain_utf8_base64_recoverable_bad_CTE_data(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: text/plain; charset="utf8"
             Content-Transfer-Encoding: base64
@@ -217,48 +217,48 @@ class TestRawDataManager(TestEmailBase):
         self.assertEqual(raw_data_manager.get_content(m, errors='ignore'),
                          "Basìc tëxt.\n")
 
-    def test_get_text_invalid_keyword(self):
+    eleza test_get_text_invalid_keyword(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: text/plain
 
             Basic text.
             """))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             raw_data_manager.get_content(m, foo='ignore')
 
-    def test_get_non_text(self):
+    eleza test_get_non_text(self):
         template = textwrap.dedent("""\
             Content-Type: {}
             Content-Transfer-Encoding: base64
 
             Ym9ndXMgZGF0YQ==
             """)
-        for maintype in 'audio image video application'.split():
-            with self.subTest(maintype=maintype):
+        kila maintype kwenye 'audio image video application'.split():
+            ukijumuisha self.subTest(maintype=maintype):
                 m = self._str_msg(template.format(maintype+'/foo'))
                 self.assertEqual(raw_data_manager.get_content(m), b"bogus data")
 
-    def test_get_non_text_invalid_keyword(self):
+    eleza test_get_non_text_invalid_keyword(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: image/jpg
             Content-Transfer-Encoding: base64
 
             Ym9ndXMgZGF0YQ==
             """))
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             raw_data_manager.get_content(m, errors='ignore')
 
-    def test_get_raises_on_multipart(self):
+    eleza test_get_raises_on_multipart(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: multipart/mixed; boundary="==="
 
             --===
             --===--
             """))
-        with self.assertRaises(KeyError):
+        ukijumuisha self.assertRaises(KeyError):
             raw_data_manager.get_content(m)
 
-    def test_get_message_rfc822_and_external_body(self):
+    eleza test_get_message_rfc822_and_external_body(self):
         template = textwrap.dedent("""\
             Content-Type: message/{}
 
@@ -268,8 +268,8 @@ class TestRawDataManager(TestEmailBase):
 
             an example message
             """)
-        for subtype in 'rfc822 external-body'.split():
-            with self.subTest(subtype=subtype):
+        kila subtype kwenye 'rfc822 external-body'.split():
+            ukijumuisha self.subTest(subtype=subtype):
                 m = self._str_msg(template.format(subtype))
                 sub_msg = raw_data_manager.get_content(m)
                 self.assertIsInstance(sub_msg, self.message)
@@ -278,7 +278,7 @@ class TestRawDataManager(TestEmailBase):
                 self.assertEqual(sub_msg['to'], 'foo@example.com')
                 self.assertEqual(sub_msg['from'].addresses[0].username, 'bar')
 
-    def test_get_message_non_rfc822_or_external_body_yields_bytes(self):
+    eleza test_get_message_non_rfc822_or_external_body_yields_bytes(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: message/partial
 
@@ -286,11 +286,11 @@ class TestRawDataManager(TestEmailBase):
             From: bar@example.com
             Subject: example
 
-            The real body is in another message.
+            The real body ni kwenye another message.
             """))
         self.assertEqual(raw_data_manager.get_content(m)[:10], b'To: foo@ex')
 
-    def test_set_text_plain(self):
+    eleza test_set_text_plain(self):
         m = self._make_message()
         content = "Simple message.\n"
         raw_data_manager.set_content(m, content)
@@ -300,10 +300,10 @@ class TestRawDataManager(TestEmailBase):
 
             Simple message.
             """))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_html(self):
+    eleza test_set_text_html(self):
         m = self._make_message()
         content = "<p>Simple message.</p>\n"
         raw_data_manager.set_content(m, content, subtype='html')
@@ -313,10 +313,10 @@ class TestRawDataManager(TestEmailBase):
 
             <p>Simple message.</p>
             """))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_charset_latin_1(self):
+    eleza test_set_text_charset_latin_1(self):
         m = self._make_message()
         content = "Simple message.\n"
         raw_data_manager.set_content(m, content, charset='latin-1')
@@ -326,10 +326,10 @@ class TestRawDataManager(TestEmailBase):
 
             Simple message.
             """))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_short_line_minimal_non_ascii_heuristics(self):
+    eleza test_set_text_short_line_minimal_non_ascii_heuristics(self):
         m = self._make_message()
         content = "et là il est monté sur moi et il commence à m'éto.\n"
         raw_data_manager.set_content(m, content)
@@ -339,10 +339,10 @@ class TestRawDataManager(TestEmailBase):
 
             et là il est monté sur moi et il commence à m'éto.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_long_line_minimal_non_ascii_heuristics(self):
+    eleza test_set_text_long_line_minimal_non_ascii_heuristics(self):
         m = self._make_message()
         content = ("j'ai un problème de python. il est sorti de son"
                    " vivarium.  et là il est monté sur moi et il commence"
@@ -356,10 +356,10 @@ class TestRawDataManager(TestEmailBase):
             um.  et l=C3=A0 il est mont=C3=A9 sur moi et il commence =
             =C3=A0 m'=C3=A9to.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_11_lines_long_line_minimal_non_ascii_heuristics(self):
+    eleza test_set_text_11_lines_long_line_minimal_non_ascii_heuristics(self):
         m = self._make_message()
         content = '\n'*10 + (
                   "j'ai un problème de python. il est sorti de son"
@@ -374,10 +374,10 @@ class TestRawDataManager(TestEmailBase):
             um.  et l=C3=A0 il est mont=C3=A9 sur moi et il commence =
             =C3=A0 m'=C3=A9to.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_maximal_non_ascii_heuristics(self):
+    eleza test_set_text_maximal_non_ascii_heuristics(self):
         m = self._make_message()
         content = "áàäéèęöő.\n"
         raw_data_manager.set_content(m, content)
@@ -387,10 +387,10 @@ class TestRawDataManager(TestEmailBase):
 
             áàäéèęöő.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_11_lines_maximal_non_ascii_heuristics(self):
+    eleza test_set_text_11_lines_maximal_non_ascii_heuristics(self):
         m = self._make_message()
         content = '\n'*10 + "áàäéèęöő.\n"
         raw_data_manager.set_content(m, content)
@@ -400,10 +400,10 @@ class TestRawDataManager(TestEmailBase):
             """ + '\n'*10 + """
             áàäéèęöő.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_long_line_maximal_non_ascii_heuristics(self):
+    eleza test_set_text_long_line_maximal_non_ascii_heuristics(self):
         m = self._make_message()
         content = ("áàäéèęöőáàäéèęöőáàäéèęöőáàäéèęöő"
                    "áàäéèęöőáàäéèęöőáàäéèęöőáàäéèęöő"
@@ -419,12 +419,12 @@ class TestRawDataManager(TestEmailBase):
             qcOoxJnDtsWRw6HDoMOkw6nDqMSZw7bFkcOhw6DDpMOpw6jEmcO2xZHDocOg
             w6TDqcOoxJnDtsWRLgo=
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_11_lines_long_line_maximal_non_ascii_heuristics(self):
+    eleza test_set_text_11_lines_long_line_maximal_non_ascii_heuristics(self):
         # Yes, it chooses "wrong" here.  It's a heuristic.  So this result
-        # could change if we come up with a better heuristic.
+        # could change ikiwa we come up ukijumuisha a better heuristic.
         m = self._make_message()
         content = ('\n'*10 +
                    "áàäéèęöőáàäéèęöőáàäéèęöőáàäéèęöő"
@@ -450,31 +450,31 @@ class TestRawDataManager(TestEmailBase):
             =99=C3=B6=C5=91=C3=A1=C3=A0=C3=A4=C3=A9=C3=A8=C4=99=C3=B6=
             =C5=91.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Kweli).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_text_non_ascii_with_cte_7bit_raises(self):
+    eleza test_set_text_non_ascii_with_cte_7bit_raises(self):
         m = self._make_message()
-        with self.assertRaises(UnicodeError):
+        ukijumuisha self.assertRaises(UnicodeError):
             raw_data_manager.set_content(m,"áàäéèęöő.\n", cte='7bit')
 
-    def test_set_text_non_ascii_with_charset_ascii_raises(self):
+    eleza test_set_text_non_ascii_with_charset_ascii_raises(self):
         m = self._make_message()
-        with self.assertRaises(UnicodeError):
+        ukijumuisha self.assertRaises(UnicodeError):
             raw_data_manager.set_content(m,"áàäéèęöő.\n", charset='ascii')
 
-    def test_set_text_non_ascii_with_cte_7bit_and_charset_ascii_raises(self):
+    eleza test_set_text_non_ascii_with_cte_7bit_and_charset_ascii_raises(self):
         m = self._make_message()
-        with self.assertRaises(UnicodeError):
+        ukijumuisha self.assertRaises(UnicodeError):
             raw_data_manager.set_content(m,"áàäéèęöő.\n", cte='7bit', charset='ascii')
 
-    def test_set_message(self):
+    eleza test_set_message(self):
         m = self._make_message()
         m['Subject'] = "Forwarded message"
         content = self._make_message()
         content['To'] = 'python@vivarium.org'
         content['From'] = 'police@monty.org'
-        content['Subject'] = "get back in your box"
+        content['Subject'] = "get back kwenye your box"
         content.set_content("Or face the comfy chair.")
         raw_data_manager.set_content(m, content)
         self.assertEqual(str(m), textwrap.dedent("""\
@@ -484,7 +484,7 @@ class TestRawDataManager(TestEmailBase):
 
             To: python@vivarium.org
             From: police@monty.org
-            Subject: get back in your box
+            Subject: get back kwenye your box
             Content-Type: text/plain; charset="utf-8"
             Content-Transfer-Encoding: 7bit
             MIME-Version: 1.0
@@ -497,7 +497,7 @@ class TestRawDataManager(TestEmailBase):
         self.assertIsInstance(m.get_content(), self.message)
         self.assertEqual(str(m.get_content()), str(content))
 
-    def test_set_message_with_non_ascii_and_coercion_to_7bit(self):
+    eleza test_set_message_with_non_ascii_and_coercion_to_7bit(self):
         m = self._make_message()
         m['Subject'] = "Escape report"
         content = self._make_message()
@@ -521,11 +521,11 @@ class TestRawDataManager(TestEmailBase):
 
             j'ai un problème de python. il est sorti de son vivarium.
             """).encode('utf-8'))
-        # The choice of base64 for the body encoding is because generator
-        # doesn't bother with heuristics and uses it unconditionally for utf-8
+        # The choice of base64 kila the body encoding ni because generator
+        # doesn't bother ukijumuisha heuristics na uses it unconditionally kila utf-8
         # text.
         # XXX: the first cte should be 7bit, too...that's a generator bug.
-        # XXX: the line length in the body also looks like a generator bug.
+        # XXX: the line length kwenye the body also looks like a generator bug.
         self.assertEqual(m.as_string(maxheaderlen=self.policy.max_line_length),
                          textwrap.dedent("""\
             Subject: Escape report
@@ -545,31 +545,31 @@ class TestRawDataManager(TestEmailBase):
         self.assertIsInstance(m.get_content(), self.message)
         self.assertEqual(str(m.get_content()), str(content))
 
-    def test_set_message_invalid_cte_raises(self):
+    eleza test_set_message_invalid_cte_raises(self):
         m = self._make_message()
         content = self._make_message()
-        for cte in 'quoted-printable base64'.split():
-            for subtype in 'rfc822 external-body'.split():
-                with self.subTest(cte=cte, subtype=subtype):
-                    with self.assertRaises(ValueError) as ar:
+        kila cte kwenye 'quoted-printable base64'.split():
+            kila subtype kwenye 'rfc822 external-body'.split():
+                ukijumuisha self.subTest(cte=cte, subtype=subtype):
+                    ukijumuisha self.assertRaises(ValueError) as ar:
                         m.set_content(content, subtype, cte=cte)
                     exc = str(ar.exception)
                     self.assertIn(cte, exc)
                     self.assertIn(subtype, exc)
         subtype = 'external-body'
-        for cte in '8bit binary'.split():
-            with self.subTest(cte=cte, subtype=subtype):
-                with self.assertRaises(ValueError) as ar:
+        kila cte kwenye '8bit binary'.split():
+            ukijumuisha self.subTest(cte=cte, subtype=subtype):
+                ukijumuisha self.assertRaises(ValueError) as ar:
                     m.set_content(content, subtype, cte=cte)
                 exc = str(ar.exception)
                 self.assertIn(cte, exc)
                 self.assertIn(subtype, exc)
 
-    def test_set_image_jpg(self):
-        for content in (b"bogus content",
+    eleza test_set_image_jpg(self):
+        kila content kwenye (b"bogus content",
                         bytearray(b"bogus content"),
                         memoryview(b"bogus content")):
-            with self.subTest(content=content):
+            ukijumuisha self.subTest(content=content):
                 m = self._make_message()
                 raw_data_manager.set_content(m, content, 'image', 'jpeg')
                 self.assertEqual(str(m), textwrap.dedent("""\
@@ -578,18 +578,18 @@ class TestRawDataManager(TestEmailBase):
 
                     Ym9ndXMgY29udGVudA==
                     """))
-                self.assertEqual(m.get_payload(decode=True), content)
+                self.assertEqual(m.get_payload(decode=Kweli), content)
                 self.assertEqual(m.get_content(), content)
 
-    def test_set_audio_aif_with_quoted_printable_cte(self):
-        # Why you would use qp, I don't know, but it is technically supported.
-        # XXX: the incorrect line length is because binascii.b2a_qp doesn't
+    eleza test_set_audio_aif_with_quoted_printable_cte(self):
+        # Why you would use qp, I don't know, but it ni technically supported.
+        # XXX: the incorrect line length ni because binascii.b2a_qp doesn't
         # support a line length parameter, but we must use it to get newline
         # encoding.
         # XXX: what about that lack of tailing newline?  Do we actually handle
-        # that correctly in all cases?  That is, if the *source* has an
+        # that correctly kwenye all cases?  That is, ikiwa the *source* has an
         # unencoded newline, do we add an extra newline to the returned payload
-        # or not?  And can that actually be disambiguated based on the RFC?
+        # ama not?  And can that actually be disambiguated based on the RFC?
         m = self._make_message()
         content = b'b\xFFgus\tcon\nt\rent ' + b'z'*100
         m.set_content(content, 'audio', 'aif', cte='quoted-printable')
@@ -600,10 +600,10 @@ class TestRawDataManager(TestEmailBase):
 
             b=FFgus=09con=0At=0Dent=20zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
             zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz""").encode('latin-1'))
-        self.assertEqual(m.get_payload(decode=True), content)
+        self.assertEqual(m.get_payload(decode=Kweli), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_video_mpeg_with_binary_cte(self):
+    eleza test_set_video_mpeg_with_binary_cte(self):
         m = self._make_message()
         content = b'b\xFFgus\tcon\nt\rent ' + b'z'*100
         m.set_content(content, 'video', 'mpeg', cte='binary')
@@ -617,11 +617,11 @@ class TestRawDataManager(TestEmailBase):
             # THIS MEANS WE DON'T ACTUALLY SUPPORT THE 'binary' CTE.
             b'b\xFFgus\tcon\nt\nent zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' +
             b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
-        self.assertEqual(m.get_payload(decode=True), content)
+        self.assertEqual(m.get_payload(decode=Kweli), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_application_octet_stream_with_8bit_cte(self):
-        # In 8bit mode, universal line end logic applies.  It is up to the
+    eleza test_set_application_octet_stream_with_8bit_cte(self):
+        # In 8bit mode, universal line end logic applies.  It ni up to the
         # application to make sure the lines are short enough; we don't check.
         m = self._make_message()
         content = b'b\xFFgus\tcon\nt\rent\n' + b'z'*60 + b'\n'
@@ -634,10 +634,10 @@ class TestRawDataManager(TestEmailBase):
             """).encode('ascii') +
             b'b\xFFgus\tcon\nt\nent\n' +
             b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\n')
-        self.assertEqual(m.get_payload(decode=True), content)
+        self.assertEqual(m.get_payload(decode=Kweli), content)
         self.assertEqual(m.get_content(), content)
 
-    def test_set_headers_from_header_objects(self):
+    eleza test_set_headers_from_header_objects(self):
         m = self._make_message()
         content = "Simple message.\n"
         header_factory = self.policy.header_factory
@@ -655,7 +655,7 @@ class TestRawDataManager(TestEmailBase):
             Simple message.
             """))
 
-    def test_set_headers_from_strings(self):
+    eleza test_set_headers_from_strings(self):
         m = self._make_message()
         content = "Simple message.\n"
         raw_data_manager.set_content(m, content, headers=(
@@ -670,53 +670,53 @@ class TestRawDataManager(TestEmailBase):
             Simple message.
             """))
 
-    def test_set_headers_with_invalid_duplicate_string_header_raises(self):
+    eleza test_set_headers_with_invalid_duplicate_string_header_raises(self):
         m = self._make_message()
         content = "Simple message.\n"
-        with self.assertRaisesRegex(ValueError, 'Content-Type'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'Content-Type'):
             raw_data_manager.set_content(m, content, headers=(
                 "Content-Type: foo/bar",)
                 )
 
-    def test_set_headers_with_invalid_duplicate_header_header_raises(self):
+    eleza test_set_headers_with_invalid_duplicate_header_header_raises(self):
         m = self._make_message()
         content = "Simple message.\n"
         header_factory = self.policy.header_factory
-        with self.assertRaisesRegex(ValueError, 'Content-Type'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'Content-Type'):
             raw_data_manager.set_content(m, content, headers=(
                 header_factory("Content-Type", " foo/bar"),)
                 )
 
-    def test_set_headers_with_defective_string_header_raises(self):
+    eleza test_set_headers_with_defective_string_header_raises(self):
         m = self._make_message()
         content = "Simple message.\n"
-        with self.assertRaisesRegex(ValueError, 'a@fairly@@invalid@address'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'a@fairly@@invalid@address'):
             raw_data_manager.set_content(m, content, headers=(
                 'To: a@fairly@@invalid@address',)
                 )
-            print(m['To'].defects)
+            andika(m['To'].defects)
 
-    def test_set_headers_with_defective_header_header_raises(self):
+    eleza test_set_headers_with_defective_header_header_raises(self):
         m = self._make_message()
         content = "Simple message.\n"
         header_factory = self.policy.header_factory
-        with self.assertRaisesRegex(ValueError, 'a@fairly@@invalid@address'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'a@fairly@@invalid@address'):
             raw_data_manager.set_content(m, content, headers=(
                 header_factory('To', 'a@fairly@@invalid@address'),)
                 )
-            print(m['To'].defects)
+            andika(m['To'].defects)
 
-    def test_set_disposition_inline(self):
+    eleza test_set_disposition_inline(self):
         m = self._make_message()
         m.set_content('foo', disposition='inline')
         self.assertEqual(m['Content-Disposition'], 'inline')
 
-    def test_set_disposition_attachment(self):
+    eleza test_set_disposition_attachment(self):
         m = self._make_message()
         m.set_content('foo', disposition='attachment')
         self.assertEqual(m['Content-Disposition'], 'attachment')
 
-    def test_set_disposition_foo(self):
+    eleza test_set_disposition_foo(self):
         m = self._make_message()
         m.set_content('foo', disposition='foo')
         self.assertEqual(m['Content-Disposition'], 'foo')
@@ -724,18 +724,18 @@ class TestRawDataManager(TestEmailBase):
     # XXX: we should have a 'strict' policy mode (beyond raise_on_defect) that
     # would cause 'foo' above to raise.
 
-    def test_set_filename(self):
+    eleza test_set_filename(self):
         m = self._make_message()
         m.set_content('foo', filename='bar.txt')
         self.assertEqual(m['Content-Disposition'],
                          'attachment; filename="bar.txt"')
 
-    def test_set_filename_and_disposition_inline(self):
+    eleza test_set_filename_and_disposition_inline(self):
         m = self._make_message()
         m.set_content('foo', disposition='inline', filename='bar.txt')
         self.assertEqual(m['Content-Disposition'], 'inline; filename="bar.txt"')
 
-    def test_set_non_ascii_filename(self):
+    eleza test_set_non_ascii_filename(self):
         m = self._make_message()
         m.set_content('foo', filename='ábárî.txt')
         self.assertEqual(bytes(m), textwrap.dedent("""\
@@ -758,7 +758,7 @@ class TestRawDataManager(TestEmailBase):
         'message_external_body': (message(), ('external-body',)),
         }
 
-    def content_object_as_header_receiver(self, obj, mimetype):
+    eleza content_object_as_header_receiver(self, obj, mimetype):
         m = self._make_message()
         m.set_content(obj, *mimetype, headers=(
             'To: foo@example.com',
@@ -766,31 +766,31 @@ class TestRawDataManager(TestEmailBase):
         self.assertEqual(m['to'], 'foo@example.com')
         self.assertEqual(m['from'], 'bar@simple.net')
 
-    def content_object_as_disposition_inline_receiver(self, obj, mimetype):
+    eleza content_object_as_disposition_inline_receiver(self, obj, mimetype):
         m = self._make_message()
         m.set_content(obj, *mimetype, disposition='inline')
         self.assertEqual(m['Content-Disposition'], 'inline')
 
-    def content_object_as_non_ascii_filename_receiver(self, obj, mimetype):
+    eleza content_object_as_non_ascii_filename_receiver(self, obj, mimetype):
         m = self._make_message()
         m.set_content(obj, *mimetype, disposition='inline', filename='bár.txt')
         self.assertEqual(m['Content-Disposition'], 'inline; filename="bár.txt"')
         self.assertEqual(m.get_filename(), "bár.txt")
         self.assertEqual(m['Content-Disposition'].params['filename'], "bár.txt")
 
-    def content_object_as_cid_receiver(self, obj, mimetype):
+    eleza content_object_as_cid_receiver(self, obj, mimetype):
         m = self._make_message()
         m.set_content(obj, *mimetype, cid='some_random_stuff')
         self.assertEqual(m['Content-ID'], 'some_random_stuff')
 
-    def content_object_as_params_receiver(self, obj, mimetype):
+    eleza content_object_as_params_receiver(self, obj, mimetype):
         m = self._make_message()
         params = {'foo': 'bár', 'abc': 'xyz'}
         m.set_content(obj, *mimetype, params=params)
-        if isinstance(obj, str):
+        ikiwa isinstance(obj, str):
             params['charset'] = 'utf-8'
         self.assertEqual(m['Content-Type'].params, params)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

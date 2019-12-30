@@ -10,7 +10,7 @@ not open blocks are sio shown kwenye the context hints pane.
 
 """
 agiza re
-kutoka sys agiza maxsize kama INFINITY
+kutoka sys agiza maxsize as INFINITY
 
 agiza tkinter
 kutoka tkinter.constants agiza NSEW, SUNKEN
@@ -84,8 +84,8 @@ kundi CodeContext:
         ikiwa self.t1 ni sio Tupu:
             jaribu:
                 self.text.after_cancel(self.t1)
-            tatizo tkinter.TclError:
-                pita
+            except tkinter.TclError:
+                pass
             self.t1 = Tupu
 
     eleza toggle_code_context_event(self, event=Tupu):
@@ -99,7 +99,7 @@ kundi CodeContext:
             # Calculate the border width na horizontal padding required to
             # align the context ukijumuisha the text kwenye the main Text widget.
             #
-            # All values are pitaed through getint(), since some
+            # All values are passed through getint(), since some
             # values may be pixel objects, which can't simply be added to ints.
             widgets = self.editwin.text, self.editwin.text_frame
             # Calculate the required horizontal padding na border width.
@@ -150,8 +150,8 @@ kundi CodeContext:
         The tuple fields are (linenum, indent, text, opener).
         The list represents header lines kutoka new_topvisible back to
         stopline ukijumuisha successively shorter indents > stopindent.
-        The list ni rudishaed ordered by line number.
-        Last indent rudishaed ni the smallest indent observed.
+        The list ni returned ordered by line number.
+        Last indent returned ni the smallest indent observed.
         """
         assert stopline > 0
         lines = []
@@ -184,7 +184,7 @@ kundi CodeContext:
         """
         new_topvisible = self.editwin.getlineno("@0,0")
         ikiwa self.topvisible == new_topvisible:      # Haven't scrolled.
-            rudisha
+            return
         ikiwa self.topvisible < new_topvisible:       # Scroll down.
             lines, lastindent = self.get_context(new_topvisible,
                                                  self.topvisible)

@@ -27,7 +27,7 @@ kundi TC():
     t6.tip = "(no, self)"
     eleza __call__(self, ci): 'doc'
     __call__.tip = "(self, ci)"
-    eleza nd(self): pita  # No doc.
+    eleza nd(self): pass  # No doc.
     # attaching .tip to wrapped methods does sio work
     @classmethod
     eleza cm(cls, a): 'doc'
@@ -42,8 +42,8 @@ get_spec = calltip.get_argspec
 
 kundi Get_argspecTest(unittest.TestCase):
     # The get_spec function must rudisha a string, even ikiwa blank.
-    # Test a variety of objects to be sure that none cause it to ashiria
-    # (quite aside kutoka getting kama correct an answer kama possible).
+    # Test a variety of objects to be sure that none cause it to raise
+    # (quite aside kutoka getting as correct an answer as possible).
     # The tests of builtins may koma ikiwa inspect ama the docstrings change,
     # but a red buildbot ni better than a user crash (as has happened).
     # For a simple mismatch, change the expected output to the actual.
@@ -87,7 +87,7 @@ Return the string obtained by replacing the leftmost
 non-overlapping occurrences of the pattern kwenye string by the
 replacement repl.  repl can be either a string ama a callable;
 ikiwa a string, backslash escapes kwenye it are processed.  If it is
-a callable, it's pitaed the Match object na must rudisha''')
+a callable, it's passed the Match object na must return''')
         tiptest(p.sub, '''\
 (repl, string, count=0)
 Return the string obtained by replacing the leftmost \
@@ -104,14 +104,14 @@ non-overlapping occurrences o...''')
     eleza test_properly_formated(self):
 
         eleza foo(s='a'*100):
-            pita
+            pass
 
         eleza bar(s='a'*100):
             """Hello Guido"""
-            pita
+            pass
 
         eleza baz(s='a'*100, z='b'*100):
-            pita
+            pass
 
         indent = calltip._INDENT
 
@@ -132,7 +132,7 @@ non-overlapping occurrences o...''')
                 self.assertEqual(get_spec(func), doc)
 
     eleza test_docline_truncation(self):
-        eleza f(): pita
+        eleza f(): pass
         f.__doc__ = 'a'*300
         self.assertEqual(get_spec(f), f"()\n{'a'*(calltip._MAX_COLS-3) + '...'}")
 
@@ -151,7 +151,7 @@ bytes(int) -> bytes object of size given by the parameter initialized ukijumuish
 bytes() -> empty bytes object''')
 
         # Test more than max lines
-        eleza f(): pita
+        eleza f(): pass
         f.__doc__ = 'a\n' * 15
         self.assertEqual(get_spec(f), '()' + '\na' * calltip._MAX_LINES)
 
@@ -192,7 +192,7 @@ bytes() -> empty bytes object''')
     eleza test_starred_parameter(self):
         # test that starred first parameter ni *not* removed kutoka argspec
         kundi C:
-            eleza m1(*args): pita
+            eleza m1(*args): pass
         c = C()
         kila meth, mtip  kwenye ((C.m1, '(*args)'), (c.m1, "(*args)"),):
             ukijumuisha self.subTest(meth=meth, mtip=mtip):
@@ -200,9 +200,9 @@ bytes() -> empty bytes object''')
 
     eleza test_invalid_method_get_spec(self):
         kundi C:
-            eleza m2(**kwargs): pita
+            eleza m2(**kwargs): pass
         kundi Test:
-            eleza __call__(*, a): pita
+            eleza __call__(*, a): pass
 
         mtip = calltip._invalid_method
         self.assertEqual(get_spec(C().m2), mtip)
@@ -210,7 +210,7 @@ bytes() -> empty bytes object''')
 
     eleza test_non_ascii_name(self):
         # test that re works to delete a first parameter name that
-        # includes non-ascii chars, such kama various forms of A.
+        # includes non-ascii chars, such as various forms of A.
         uni = "(A\u0391\u0410\u05d0\u0627\u0905\u1e00\u3042, a)"
         assert calltip._first_param.sub('', uni) == '(a)'
 
@@ -222,13 +222,13 @@ bytes() -> empty bytes object''')
     eleza test_attribute_exception(self):
         kundi NoCall:
             eleza __getattr__(self, name):
-                ashiria BaseException
+                 ashiria BaseException
         kundi CallA(NoCall):
             eleza __call__(oui, a, b, c):
-                pita
+                pass
         kundi CallB(NoCall):
             eleza __call__(self, ci):
-                pita
+                pass
 
         kila meth, mtip  kwenye ((NoCall, default_tip), (CallA, default_tip),
                             (NoCall(), ''), (CallA(), '(a, b, c)'),

@@ -72,9 +72,9 @@ kundi CommonTest(seq_tests.CommonTest):
         d.append(d)
         d.append(400)
         jaribu:
-            ukijumuisha open(support.TESTFN, "w") kama fo:
+            ukijumuisha open(support.TESTFN, "w") as fo:
                 fo.write(str(d))
-            ukijumuisha open(support.TESTFN, "r") kama fo:
+            ukijumuisha open(support.TESTFN, "r") as fo:
                 self.assertEqual(fo.read(), repr(d))
         mwishowe:
             os.remove(support.TESTFN)
@@ -280,7 +280,7 @@ kundi CommonTest(seq_tests.CommonTest):
             eleza __iter__(self):
                 rudisha self
             eleza __next__(self):
-                ashiria StopIteration
+                 ashiria StopIteration
             eleza __length_hint__(self):
                 rudisha sys.maxsize
         a = self.type2test([1,2,3,4])
@@ -330,12 +330,12 @@ kundi CommonTest(seq_tests.CommonTest):
         self.assertRaises(TypeError, a.remove)
 
         kundi BadExc(Exception):
-            pita
+            pass
 
         kundi BadCmp:
             eleza __eq__(self, other):
                 ikiwa other == 2:
-                    ashiria BadExc()
+                     ashiria BadExc()
                 rudisha Uongo
 
         a = self.type2test([0, 1, 2, 3])
@@ -343,7 +343,7 @@ kundi CommonTest(seq_tests.CommonTest):
 
         kundi BadCmp2:
             eleza __eq__(self, other):
-                ashiria BadExc()
+                 ashiria BadExc()
 
         d = self.type2test('abcdefghcij')
         d.remove('c')
@@ -445,7 +445,7 @@ kundi CommonTest(seq_tests.CommonTest):
         eleza revcmp(a, b):
             ikiwa a == b:
                 rudisha 0
-            lasivyo a < b:
+            elikiwa a < b:
                 rudisha 1
             isipokua: # a > b
                 rudisha -1
@@ -457,7 +457,7 @@ kundi CommonTest(seq_tests.CommonTest):
             xmod, ymod = x%3, y%7
             ikiwa xmod == ymod:
                 rudisha 0
-            lasivyo xmod < ymod:
+            elikiwa xmod < ymod:
                 rudisha -1
             isipokua: # xmod > ymod
                 rudisha 1
@@ -470,7 +470,7 @@ kundi CommonTest(seq_tests.CommonTest):
             z.append(1)
             ikiwa x == y:
                 rudisha 0
-            lasivyo x < y:
+            elikiwa x < y:
                 rudisha -1
             isipokua: # x > y
                 rudisha 1
@@ -549,7 +549,7 @@ kundi CommonTest(seq_tests.CommonTest):
         # Bug #1242657
         kundi F(object):
             eleza __iter__(self):
-                ashiria KeyboardInterrupt
+                 ashiria KeyboardInterrupt
         self.assertRaises(KeyboardInterrupt, list, F())
 
     eleza test_exhausted_iterator(self):

@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here ni sio    --
+-- particular, achieving the same results as the tests here is not    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are sio exhaustive.                   --
+-- or specification.  The tests are not exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -21,10 +21,10 @@ version: 2.59
 
 -- This set of tests tests the extended specification 'round-to-integral
 -- value' operation (from IEEE 854, later modified in 754r).
--- All non-zero results are defined as being those from either copy ama
+-- All non-zero results are defined as being those from either copy or
 -- quantize, so those are assumed to have been tested.
--- Note that 754r requires that Inexact sio be set, and we similarly
--- assume Rounded ni sio set.
+-- Note that 754r requires that Inexact not be set, and we similarly
+-- assume Rounded is not set.
 
 extended:    1
 precision:   9

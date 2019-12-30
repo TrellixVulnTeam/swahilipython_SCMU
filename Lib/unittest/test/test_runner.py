@@ -42,14 +42,14 @@ eleza cleanup(ordering, blowUp=Uongo):
         ordering.append('cleanup_good')
     isipokua:
         ordering.append('cleanup_exc')
-        ashiria Exception('CleanUpExc')
+         ashiria Exception('CleanUpExc')
 
 
 kundi TestCleanUp(unittest.TestCase):
     eleza testCleanUp(self):
         kundi TestableTest(unittest.TestCase):
             eleza testNothing(self):
-                pita
+                pass
 
         test = TestableTest('testNothing')
         self.assertEqual(test._cleanups, [])
@@ -75,7 +75,7 @@ kundi TestCleanUp(unittest.TestCase):
     eleza testCleanUpWithErrors(self):
         kundi TestableTest(unittest.TestCase):
             eleza testNothing(self):
-                pita
+                pass
 
         test = TestableTest('testNothing')
         outcome = test._outcome = _Outcome()
@@ -83,10 +83,10 @@ kundi TestCleanUp(unittest.TestCase):
         CleanUpExc = Exception('foo')
         exc2 = Exception('bar')
         eleza cleanup1():
-            ashiria CleanUpExc
+             ashiria CleanUpExc
 
         eleza cleanup2():
-            ashiria exc2
+             ashiria exc2
 
         test.addCleanup(cleanup1)
         test.addCleanup(cleanup2)
@@ -107,7 +107,7 @@ kundi TestCleanUp(unittest.TestCase):
             eleza setUp(self):
                 ordering.append('setUp')
                 ikiwa blowUp:
-                    ashiria Exception('foo')
+                     ashiria Exception('foo')
 
             eleza testNothing(self):
                 ordering.append('test')
@@ -172,7 +172,7 @@ kundi TestClassCleanup(unittest.TestCase):
     eleza test_addClassCleanUp(self):
         kundi TestableTest(unittest.TestCase):
             eleza testNothing(self):
-                pita
+                pass
         test = TestableTest('testNothing')
         self.assertEqual(test._class_cleanups, [])
         class_cleanups = []
@@ -206,7 +206,7 @@ kundi TestClassCleanup(unittest.TestCase):
                 ordering.append('setUpClass')
                 cls.addClassCleanup(cleanup, ordering)
                 ikiwa blowUp:
-                    ashiria Exception()
+                     ashiria Exception()
             eleza testNothing(self):
                 ordering.append('test')
             @classmethod
@@ -244,17 +244,17 @@ kundi TestClassCleanup(unittest.TestCase):
     eleza test_doClassCleanups_with_errors_addClassCleanUp(self):
         kundi TestableTest(unittest.TestCase):
             eleza testNothing(self):
-                pita
+                pass
 
         eleza cleanup1():
-            ashiria Exception('cleanup1')
+             ashiria Exception('cleanup1')
 
         eleza cleanup2():
-            ashiria Exception('cleanup2')
+             ashiria Exception('cleanup2')
 
         TestableTest.addClassCleanup(cleanup1)
         TestableTest.addClassCleanup(cleanup2)
-        ukijumuisha self.assertRaises(Exception) kama e:
+        ukijumuisha self.assertRaises(Exception) as e:
             TestableTest.doClassCleanups()
             self.assertEqual(e, 'cleanup1')
 
@@ -269,7 +269,7 @@ kundi TestClassCleanup(unittest.TestCase):
                 ordering.append('setUp')
                 self.addCleanup(cleanup, ordering, blowUp=Kweli)
             eleza testNothing(self):
-                pita
+                pass
             @classmethod
             eleza tearDownClass(cls):
                 ordering.append('tearDownClass')
@@ -315,11 +315,11 @@ kundi TestClassCleanup(unittest.TestCase):
                 ordering.append('setUpClass')
                 cls.addClassCleanup(cleanup, ordering, blowUp=Kweli)
                 ikiwa class_blow_up:
-                    ashiria Exception('ClassExc')
+                     ashiria Exception('ClassExc')
             eleza setUp(self):
                 ordering.append('setUp')
                 ikiwa method_blow_up:
-                    ashiria Exception('MethodExc')
+                     ashiria Exception('MethodExc')
             eleza testNothing(self):
                 ordering.append('test')
             @classmethod
@@ -388,7 +388,7 @@ kundi TestModuleCleanUp(unittest.TestCase):
             module_cleanups.append((3, args, kwargs))
 
         eleza module_cleanup_bad(*args, **kwargs):
-            ashiria Exception('CleanUpExc')
+             ashiria Exception('CleanUpExc')
 
         kundi Module(object):
             unittest.addModuleCleanup(module_cleanup_good, 1, 2, 3,
@@ -398,7 +398,7 @@ kundi TestModuleCleanUp(unittest.TestCase):
                          [(module_cleanup_good, (1, 2, 3),
                            dict(four='hello', five='goodbye')),
                           (module_cleanup_bad, (), {})])
-        ukijumuisha self.assertRaises(Exception) kama e:
+        ukijumuisha self.assertRaises(Exception) as e:
             unittest.case.doModuleCleanups()
         self.assertEqual(str(e.exception), 'CleanUpExc')
         self.assertEqual(unittest.case._module_cleanups, [])
@@ -427,7 +427,7 @@ kundi TestModuleCleanUp(unittest.TestCase):
                 ordering.append('setUpModule')
                 unittest.addModuleCleanup(cleanup, ordering)
                 ikiwa blowUp:
-                    ashiria Exception('setUpModule Exc')
+                     ashiria Exception('setUpModule Exc')
             @staticmethod
             eleza tearDownModule():
                 ordering.append('tearDownModule')
@@ -467,7 +467,7 @@ kundi TestModuleCleanUp(unittest.TestCase):
                 ordering.append('setUpModule')
                 unittest.addModuleCleanup(cleanup, ordering)
                 ikiwa blowUp:
-                    ashiria Exception()
+                     ashiria Exception()
             @staticmethod
             eleza tearDownModule():
                 ordering.append('tearDownModule')
@@ -478,7 +478,7 @@ kundi TestModuleCleanUp(unittest.TestCase):
                 ordering.append('setUpModule2')
                 unittest.addModuleCleanup(cleanup, ordering)
                 ikiwa blowUp2:
-                    ashiria Exception()
+                     ashiria Exception()
             @staticmethod
             eleza tearDownModule():
                 ordering.append('tearDownModule2')
@@ -574,7 +574,7 @@ kundi TestModuleCleanUp(unittest.TestCase):
                 ukijumuisha self.assertRaises(TypeError):
                     cls.addClassCleanup(function=cleanup, arg='hello')
             eleza testNothing(self):
-                pita
+                pass
 
         ukijumuisha self.assertRaises(TypeError):
             TestableTest.addClassCleanup()
@@ -595,7 +595,7 @@ kundi TestModuleCleanUp(unittest.TestCase):
                 ukijumuisha self.assertWarns(DeprecationWarning):
                     self2.addCleanup(function=cleanup, arg='hello')
             eleza testNothing(self):
-                pita
+                pass
 
         ukijumuisha self.assertRaises(TypeError):
             TestableTest().addCleanup()
@@ -680,7 +680,7 @@ kundi TestModuleCleanUp(unittest.TestCase):
                 ordering.append('setUpModule')
                 unittest.addModuleCleanup(cleanup, ordering, blowUp=Kweli)
                 ikiwa module_blow_up:
-                    ashiria Exception('ModuleExc')
+                     ashiria Exception('ModuleExc')
             @staticmethod
             eleza tearDownModule():
                 ordering.append('tearDownModule')
@@ -690,11 +690,11 @@ kundi TestModuleCleanUp(unittest.TestCase):
             eleza setUpClass(cls):
                 ordering.append('setUpClass')
                 ikiwa class_blow_up:
-                    ashiria Exception('ClassExc')
+                     ashiria Exception('ClassExc')
             eleza setUp(self):
                 ordering.append('setUp')
                 ikiwa method_blow_up:
-                    ashiria Exception('MethodExc')
+                     ashiria Exception('MethodExc')
             eleza testNothing(self):
                 ordering.append('test')
             @classmethod
@@ -827,16 +827,16 @@ kundi Test_TextTestRunner(unittest.TestCase):
                 super(AResult, self).__init__(stream, descriptions, verbosity)
 
         kundi ATextResult(unittest.TextTestResult, AResult):
-            pita
+            pass
 
-        # This used to ashiria an exception due to TextTestResult sio pitaing
+        # This used to  ashiria an exception due to TextTestResult sio passing
         # on arguments kwenye its __init__ super call
         ATextResult(Tupu, Tupu, 1)
 
     eleza testBufferAndFailfast(self):
         kundi Test(unittest.TestCase):
             eleza testFoo(self):
-                pita
+                pass
         result = unittest.TestResult()
         runner = unittest.TextTestRunner(stream=io.StringIO(), failfast=Kweli,
                                          buffer=Kweli)
@@ -855,7 +855,7 @@ kundi Test_TextTestRunner(unittest.TestCase):
     eleza testRunnerRegistersResult(self):
         kundi Test(unittest.TestCase):
             eleza testFoo(self):
-                pita
+                pass
         originalRegisterResult = unittest.runner.registerResult
         eleza cleanup():
             unittest.runner.registerResult = originalRegisterResult
@@ -879,7 +879,7 @@ kundi Test_TextTestRunner(unittest.TestCase):
         kundi OldTextResult(ResultWithNoStartTestRunStopTestRun):
             separator2 = ''
             eleza printErrors(self):
-                pita
+                pass
 
         kundi Runner(unittest.TextTestRunner):
             eleza __init__(self):
@@ -895,7 +895,7 @@ kundi Test_TextTestRunner(unittest.TestCase):
         kundi LoggingTextResult(LoggingResult):
             separator2 = ''
             eleza printErrors(self):
-                pita
+                pass
 
         kundi LoggingRunner(unittest.TextTestRunner):
             eleza __init__(self, events):
@@ -963,11 +963,11 @@ kundi Test_TextTestRunner(unittest.TestCase):
             self.assertEqual(out.count(msg), 1)
 
         args_list = (
-            # pitaing 'ignore' kama warnings arg -> no warnings
+            # passing 'ignore' as warnings arg -> no warnings
             [sys.executable, '_test_warnings.py', 'ignore'],
-            # -W doesn't affect the result ikiwa the arg ni pitaed
+            # -W doesn't affect the result ikiwa the arg ni passed
             [sys.executable, '-Wa', '_test_warnings.py', 'ignore'],
-            # -W affects the result ikiwa the arg ni sio pitaed
+            # -W affects the result ikiwa the arg ni sio passed
             [sys.executable, '-Wi', '_test_warnings.py']
         )
         # kwenye all these cases no warnings are printed
@@ -979,7 +979,7 @@ kundi Test_TextTestRunner(unittest.TestCase):
             self.assertEqual(len(out), 0)
 
 
-        # pitaing 'always' kama warnings arg -> all the warnings printed,
+        # passing 'always' as warnings arg -> all the warnings printed,
         #                                     unittest warnings only once
         p = subprocess.Popen([sys.executable, '_test_warnings.py', 'always'],
                              **opts)

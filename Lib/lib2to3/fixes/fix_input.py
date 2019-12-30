@@ -1,7 +1,7 @@
-"""Fixer that changes input(...) into eval(input(...))."""
+"""Fixer that changes uliza(...) into eval(uliza(...))."""
 # Author: Andre Roberge
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Call, Name
 kutoka .. agiza patcomp
@@ -19,7 +19,7 @@ kundi FixInput(fixer_base.BaseFix):
     eleza transform(self, node, results):
         # If we're already wrapped kwenye an eval() call, we're done.
         ikiwa context.match(node.parent.parent):
-            rudisha
+            return
 
         new = node.clone()
         new.prefix = ""

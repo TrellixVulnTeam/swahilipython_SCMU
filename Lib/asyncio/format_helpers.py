@@ -30,7 +30,7 @@ eleza _format_callback_source(func, args):
 eleza _format_args_and_kwargs(args, kwargs):
     """Format function arguments na keyword arguments.
 
-    Special case kila a single parameter: ('hello',) ni formatted kama ('hello').
+    Special case kila a single parameter: ('hello',) ni formatted as ('hello').
     """
     # use reprlib to limit the length of the output
     items = []
@@ -48,7 +48,7 @@ eleza _format_callback(func, args, kwargs, suffix=''):
 
     ikiwa hasattr(func, '__qualname__') na func.__qualname__:
         func_repr = func.__qualname__
-    lasivyo hasattr(func, '__name__') na func.__name__:
+    elikiwa hasattr(func, '__name__') na func.__name__:
         func_repr = func.__name__
     isipokua:
         func_repr = repr(func)
@@ -66,7 +66,7 @@ eleza extract_stack(f=Tupu, limit=Tupu):
     ikiwa f ni Tupu:
         f = sys._getframe().f_back
     ikiwa limit ni Tupu:
-        # Limit the amount of work to a reasonable amount, kama extract_stack()
+        # Limit the amount of work to a reasonable amount, as extract_stack()
         # can be called kila each coroutine na future kwenye debug mode.
         limit = constants.DEBUG_STACK_DEPTH
     stack = traceback.StackSummary.extract(traceback.walk_stack(f),

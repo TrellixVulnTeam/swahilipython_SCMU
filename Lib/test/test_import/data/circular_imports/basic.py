@@ -1,2 +1,2 @@
-"""Circular agizas through direct, relative agizas."""
+"""Circular imports through direct, relative imports."""
 kutoka . agiza basic2

@@ -25,7 +25,7 @@ kutoka test.pickletester agiza BigmemPickleTests
 jaribu:
     agiza _pickle
     has_c_implementation = Kweli
-tatizo ImportError:
+except ImportError:
     has_c_implementation = Uongo
 
 
@@ -206,7 +206,7 @@ kundi PyChainDispatchTableTests(AbstractDispatchTableTests):
 kundi PyPicklerHookTests(AbstractHookTests):
     kundi CustomPyPicklerClass(pickle._Pickler,
                                AbstractCustomPicklerClass):
-        pita
+        pass
     pickler_kundi = CustomPyPicklerClass
 
 
@@ -264,7 +264,7 @@ ikiwa has_c_implementation:
 
     kundi CPicklerHookTests(AbstractHookTests):
         kundi CustomCPicklerClass(_pickle.Pickler, AbstractCustomPicklerClass):
-            pita
+            pass
         pickler_kundi = CustomCPicklerClass
 
     @support.cpython_only
@@ -350,31 +350,31 @@ ALT_NAME_MAPPING = {
 eleza mapping(module, name):
     ikiwa (module, name) kwenye NAME_MAPPING:
         module, name = NAME_MAPPING[(module, name)]
-    lasivyo module kwenye IMPORT_MAPPING:
+    elikiwa module kwenye IMPORT_MAPPING:
         module = IMPORT_MAPPING[module]
     rudisha module, name
 
 eleza reverse_mapping(module, name):
     ikiwa (module, name) kwenye REVERSE_NAME_MAPPING:
         module, name = REVERSE_NAME_MAPPING[(module, name)]
-    lasivyo module kwenye REVERSE_IMPORT_MAPPING:
+    elikiwa module kwenye REVERSE_IMPORT_MAPPING:
         module = REVERSE_IMPORT_MAPPING[module]
     rudisha module, name
 
 eleza getmodule(module):
     jaribu:
         rudisha sys.modules[module]
-    tatizo KeyError:
+    except KeyError:
         jaribu:
             __import__(module)
-        tatizo AttributeError kama exc:
+        except AttributeError as exc:
             ikiwa support.verbose:
                 andika("Can't agiza module %r: %s" % (module, exc))
-            ashiria ImportError
-        tatizo ImportError kama exc:
+             ashiria ImportError
+        except ImportError as exc:
             ikiwa support.verbose:
                 andika(exc)
-            ashiria
+            raise
         rudisha sys.modules[module]
 
 eleza getattribute(module, name):
@@ -390,7 +390,7 @@ eleza get_exceptions(mod):
             tuma name, attr
 
 kundi CompatPickleTests(unittest.TestCase):
-    eleza test_agiza(self):
+    eleza test_import(self):
         modules = set(IMPORT_MAPPING.values())
         modules |= set(REVERSE_IMPORT_MAPPING)
         modules |= {module kila module, name kwenye REVERSE_NAME_MAPPING}
@@ -398,16 +398,16 @@ kundi CompatPickleTests(unittest.TestCase):
         kila module kwenye modules:
             jaribu:
                 getmodule(module)
-            tatizo ImportError:
-                pita
+            except ImportError:
+                pass
 
     eleza test_import_mapping(self):
         kila module3, module2 kwenye REVERSE_IMPORT_MAPPING.items():
             ukijumuisha self.subTest((module3, module2)):
                 jaribu:
                     getmodule(module3)
-                tatizo ImportError:
-                    pita
+                except ImportError:
+                    pass
                 ikiwa module3[:1] != '_':
                     self.assertIn(module2, IMPORT_MAPPING)
                     self.assertEqual(IMPORT_MAPPING[module2], module3)
@@ -418,7 +418,7 @@ kundi CompatPickleTests(unittest.TestCase):
                 ikiwa (module2, name2) == ('exceptions', 'OSError'):
                     attr = getattribute(module3, name3)
                     self.assertKweli(issubclass(attr, OSError))
-                lasivyo (module2, name2) == ('exceptions', 'ImportError'):
+                elikiwa (module2, name2) == ('exceptions', 'ImportError'):
                     attr = getattribute(module3, name3)
                     self.assertKweli(issubclass(attr, ImportError))
                 isipokua:
@@ -427,8 +427,8 @@ kundi CompatPickleTests(unittest.TestCase):
                         self.assertEqual((module, name), (module3, name3))
                     jaribu:
                         attr = getattribute(module3, name3)
-                    tatizo ImportError:
-                        pita
+                    except ImportError:
+                        pass
                     isipokua:
                         self.assertEqual(getattribute(module, name), attr)
 
@@ -437,10 +437,10 @@ kundi CompatPickleTests(unittest.TestCase):
             ukijumuisha self.subTest((module2, module3)):
                 jaribu:
                     getmodule(module3)
-                tatizo ImportError kama exc:
+                except ImportError as exc:
                     ikiwa support.verbose:
                         andika(exc)
-                ikiwa ((module2, module3) haiko kwenye ALT_IMPORT_MAPPING na
+                ikiwa ((module2, module3) sio kwenye ALT_IMPORT_MAPPING and
                     REVERSE_IMPORT_MAPPING.get(module3, Tupu) != module2):
                     kila (m3, n3), (m2, n2) kwenye REVERSE_NAME_MAPPING.items():
                         ikiwa (module3, module2) == (m3, m2):
@@ -457,10 +457,10 @@ kundi CompatPickleTests(unittest.TestCase):
             ukijumuisha self.subTest(((module2, name2), (module3, name3))):
                 jaribu:
                     attr = getattribute(module3, name3)
-                tatizo ImportError:
-                    pita
+                except ImportError:
+                    pass
                 module, name = reverse_mapping(module3, name3)
-                ikiwa (module2, name2, module3, name3) haiko kwenye ALT_NAME_MAPPING:
+                ikiwa (module2, name2, module3, name3) sio kwenye ALT_NAME_MAPPING:
                     self.assertEqual((module, name), (module2, name2))
                 module, name = mapping(module, name)
                 self.assertEqual((module, name), (module3, name3))
@@ -487,7 +487,7 @@ kundi CompatPickleTests(unittest.TestCase):
                 ikiwa exc ni sio OSError na issubclass(exc, OSError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'OSError'))
-                lasivyo exc ni sio ImportError na issubclass(exc, ImportError):
+                elikiwa exc ni sio ImportError na issubclass(exc, ImportError):
                     self.assertEqual(reverse_mapping('builtins', name),
                                      ('exceptions', 'ImportError'))
                     self.assertEqual(mapping('exceptions', name),

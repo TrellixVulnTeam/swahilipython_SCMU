@@ -1,50 +1,50 @@
-from ctypes import *
-import unittest
+kutoka ctypes agiza *
+agiza unittest
 
-class SimpleTestCase(unittest.TestCase):
-    def test_cint(self):
+kundi SimpleTestCase(unittest.TestCase):
+    eleza test_cint(self):
         x = c_int()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
         x.value = 42
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
         x = c_int(99)
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
 
-    def test_ccharp(self):
+    eleza test_ccharp(self):
         x = c_char_p()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
         x.value = b"abc"
         self.assertEqual(x._objects, b"abc")
         x = c_char_p(b"spam")
         self.assertEqual(x._objects, b"spam")
 
-class StructureTestCase(unittest.TestCase):
-    def test_cint_struct(self):
-        class X(Structure):
+kundi StructureTestCase(unittest.TestCase):
+    eleza test_cint_struct(self):
+        kundi X(Structure):
             _fields_ = [("a", c_int),
                         ("b", c_int)]
 
         x = X()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
         x.a = 42
         x.b = 99
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
 
-    def test_ccharp_struct(self):
-        class X(Structure):
+    eleza test_ccharp_struct(self):
+        kundi X(Structure):
             _fields_ = [("a", c_char_p),
                         ("b", c_char_p)]
         x = X()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
 
         x.a = b"spam"
         x.b = b"foo"
         self.assertEqual(x._objects, {"0": b"spam", "1": b"foo"})
 
-    def test_struct_struct(self):
-        class POINT(Structure):
+    eleza test_struct_struct(self):
+        kundi POINT(Structure):
             _fields_ = [("x", c_int), ("y", c_int)]
-        class RECT(Structure):
+        kundi RECT(Structure):
             _fields_ = [("ul", POINT), ("lr", POINT)]
 
         r = RECT()
@@ -52,7 +52,7 @@ class StructureTestCase(unittest.TestCase):
         r.ul.y = 1
         r.lr.x = 2
         r.lr.y = 3
-        self.assertEqual(r._objects, None)
+        self.assertEqual(r._objects, Tupu)
 
         r = RECT()
         pt = POINT(1, 2)
@@ -64,18 +64,18 @@ class StructureTestCase(unittest.TestCase):
         r.lr = POINT()
         self.assertEqual(r._objects, {'0': {}, '1': {}})
 
-class ArrayTestCase(unittest.TestCase):
-    def test_cint_array(self):
+kundi ArrayTestCase(unittest.TestCase):
+    eleza test_cint_array(self):
         INTARR = c_int * 3
 
         ia = INTARR()
-        self.assertEqual(ia._objects, None)
+        self.assertEqual(ia._objects, Tupu)
         ia[0] = 1
         ia[1] = 2
         ia[2] = 3
-        self.assertEqual(ia._objects, None)
+        self.assertEqual(ia._objects, Tupu)
 
-        class X(Structure):
+        kundi X(Structure):
             _fields_ = [("x", c_int),
                         ("a", INTARR)]
 
@@ -83,53 +83,53 @@ class ArrayTestCase(unittest.TestCase):
         x.x = 1000
         x.a[0] = 42
         x.a[1] = 96
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
         x.a = ia
         self.assertEqual(x._objects, {'1': {}})
 
-class PointerTestCase(unittest.TestCase):
-    def test_p_cint(self):
+kundi PointerTestCase(unittest.TestCase):
+    eleza test_p_cint(self):
         i = c_int(42)
         x = pointer(i)
         self.assertEqual(x._objects, {'1': i})
 
-class DeletePointerTestCase(unittest.TestCase):
+kundi DeletePointerTestCase(unittest.TestCase):
     @unittest.skip('test disabled')
-    def test_X(self):
-        class X(Structure):
+    eleza test_X(self):
+        kundi X(Structure):
             _fields_ = [("p", POINTER(c_char_p))]
         x = X()
         i = c_char_p("abc def")
-        from sys import getrefcount as grc
-        print("2?", grc(i))
+        kutoka sys agiza getrefcount as grc
+        andika("2?", grc(i))
         x.p = pointer(i)
-        print("3?", grc(i))
-        for i in range(320):
+        andika("3?", grc(i))
+        kila i kwenye range(320):
             c_int(99)
             x.p[0]
-        print(x.p[0])
+        andika(x.p[0])
 ##        toa x
 ##        print "2?", grc(i)
 ##        toa i
-        import gc
+        agiza gc
         gc.collect()
-        for i in range(320):
+        kila i kwenye range(320):
             c_int(99)
             x.p[0]
-        print(x.p[0])
-        print(x.p.contents)
+        andika(x.p[0])
+        andika(x.p.contents)
 ##        print x._objects
 
         x.p[0] = "spam spam"
 ##        print x.p[0]
-        print("+" * 42)
-        print(x._objects)
+        andika("+" * 42)
+        andika(x._objects)
 
-class PointerToStructure(unittest.TestCase):
-    def test(self):
-        class POINT(Structure):
+kundi PointerToStructure(unittest.TestCase):
+    eleza test(self):
+        kundi POINT(Structure):
             _fields_ = [("x", c_int), ("y", c_int)]
-        class RECT(Structure):
+        kundi RECT(Structure):
             _fields_ = [("a", POINTER(POINT)),
                         ("b", POINTER(POINT))]
         r = RECT()
@@ -137,7 +137,7 @@ class PointerToStructure(unittest.TestCase):
 
         r.a = pointer(p1)
         r.b = pointer(p1)
-##        from pprint import pprint as pp
+##        kutoka pprint agiza pprint as pp
 ##        pp(p1._objects)
 ##        pp(r._objects)
 
@@ -145,9 +145,9 @@ class PointerToStructure(unittest.TestCase):
         r.a[0].y = 99
 
         # to avoid leaking when tests are run several times
-        # clean up the types left in the cache.
-        from ctypes agiza _pointer_type_cache
+        # clean up the types left kwenye the cache.
+        kutoka ctypes agiza _pointer_type_cache
         toa _pointer_type_cache[POINT]
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

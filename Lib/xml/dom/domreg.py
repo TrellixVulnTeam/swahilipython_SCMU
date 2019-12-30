@@ -1,5 +1,5 @@
 """Registration facilities kila DOM. This module should sio be used
-directly. Instead, the functions getDOMImplementation na
+directly. Instead, the functions getDOMImplementation and
 registerDOMImplementation should be imported kutoka xml.dom."""
 
 # This ni a list of well-known implementations.  Well-known names
@@ -41,13 +41,13 @@ eleza getDOMImplementation(name=Tupu, features=()):
 
     Return a suitable DOM implementation. The name ni either
     well-known, the module name of a DOM implementation, ama Tupu. If
-    it ni sio Tupu, agizas the corresponding module na rudishas
+    it ni sio Tupu, imports the corresponding module na returns
     DOMImplementation object ikiwa the agiza succeeds.
 
     If name ni sio given, consider the available implementations to
     find one ukijumuisha the required feature set. If no implementation can
-    be found, ashiria an ImportError. The features list must be a sequence
-    of (feature, version) pairs which are pitaed to hasFeature."""
+    be found,  ashiria an ImportError. The features list must be a sequence
+    of (feature, version) pairs which are passed to hasFeature."""
 
     agiza os
     creator = Tupu
@@ -55,13 +55,13 @@ eleza getDOMImplementation(name=Tupu, features=()):
     ikiwa mod:
         mod = __import__(mod, {}, {}, ['getDOMImplementation'])
         rudisha mod.getDOMImplementation()
-    lasivyo name:
+    elikiwa name:
         rudisha registered[name]()
-    lasivyo sio sys.flags.ignore_environment na "PYTHON_DOM" kwenye os.environ:
+    elikiwa sio sys.flags.ignore_environment na "PYTHON_DOM" kwenye os.environ:
         rudisha getDOMImplementation(name = os.environ["PYTHON_DOM"])
 
     # User did sio specify a name, try implementations kwenye arbitrary
-    # order, rudishaing the one that has the required features
+    # order, returning the one that has the required features
     ikiwa isinstance(features, str):
         features = _parse_feature_string(features)
     kila creator kwenye registered.values():
@@ -72,12 +72,12 @@ eleza getDOMImplementation(name=Tupu, features=()):
     kila creator kwenye well_known_implementations.keys():
         jaribu:
             dom = getDOMImplementation(name = creator)
-        tatizo Exception: # typically ImportError, ama AttributeError
+        except Exception: # typically ImportError, ama AttributeError
             endelea
         ikiwa _good_enough(dom, features):
             rudisha dom
 
-    ashiria ImportError("no suitable DOM implementation found")
+     ashiria ImportError("no suitable DOM implementation found")
 
 eleza _parse_feature_string(s):
     features = []
@@ -87,7 +87,7 @@ eleza _parse_feature_string(s):
     wakati i < length:
         feature = parts[i]
         ikiwa feature[0] kwenye "0123456789":
-            ashiria ValueError("bad feature name: %r" % (feature,))
+             ashiria ValueError("bad feature name: %r" % (feature,))
         i = i + 1
         version = Tupu
         ikiwa i < length:

@@ -1,7 +1,7 @@
 "idlelib.filelist"
 
 agiza os
-kutoka tkinter agiza messagebox kama tkMessageBox
+kutoka tkinter agiza messagebox as tkMessageBox
 
 
 kundi FileList:
@@ -19,7 +19,7 @@ kundi FileList:
         assert filename
         filename = self.canonize(filename)
         ikiwa os.path.isdir(filename):
-            # This can happen when bad filename ni pitaed on command line:
+            # This can happen when bad filename ni passed on command line:
             tkMessageBox.showerror(
                 "File Error",
                 "%r ni a directory." % (filename,),
@@ -59,9 +59,9 @@ kundi FileList:
     eleza unregister_maybe_terminate(self, edit):
         jaribu:
             key = self.inversedict[edit]
-        tatizo KeyError:
+        except KeyError:
             andika("Don't know this EditorWindow object.  (close)")
-            rudisha
+            return
         ikiwa key:
             toa self.dict[key]
         toa self.inversedict[edit]
@@ -72,19 +72,19 @@ kundi FileList:
         edit.saved_change_hook()
         jaribu:
             key = self.inversedict[edit]
-        tatizo KeyError:
+        except KeyError:
             andika("Don't know this EditorWindow object.  (rename)")
-            rudisha
+            return
         filename = edit.io.filename
         ikiwa sio filename:
             ikiwa key:
                 toa self.dict[key]
             self.inversedict[edit] = Tupu
-            rudisha
+            return
         filename = self.canonize(filename)
         newkey = os.path.normcase(filename)
         ikiwa newkey == key:
-            rudisha
+            return
         ikiwa newkey kwenye self.dict:
             conflict = self.dict[newkey]
             self.inversedict[conflict] = Tupu
@@ -97,15 +97,15 @@ kundi FileList:
         ikiwa key:
             jaribu:
                 toa self.dict[key]
-            tatizo KeyError:
-                pita
+            except KeyError:
+                pass
 
     eleza canonize(self, filename):
         ikiwa sio os.path.isabs(filename):
             jaribu:
                 pwd = os.getcwd()
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
             isipokua:
                 filename = os.path.join(pwd, filename)
         rudisha os.path.normpath(filename)

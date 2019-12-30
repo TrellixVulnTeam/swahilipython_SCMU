@@ -10,7 +10,7 @@ kutoka test.test_importlib agiza util
 #
 # need to test when nested, so that the top-level path isn't sys.path
 # need to test dynamic path detection, both at top-level na nested
-# ukijumuisha dynamic path, check when a loader ni rudishaed on path reload (that is,
+# ukijumuisha dynamic path, check when a loader ni returned on path reload (that is,
 #  trying to switch kutoka a namespace package to a regular package)
 
 
@@ -18,7 +18,7 @@ kutoka test.test_importlib agiza util
 eleza sys_modules_context():
     """
     Make sure sys.modules ni the same object na has the same content
-    when exiting the context kama when entering.
+    when exiting the context as when entering.
 
     Similar to importlib.test.util.uncache, but doesn't require explicit
     names.
@@ -26,7 +26,7 @@ eleza sys_modules_context():
     sys_modules_saved = sys.modules
     sys_modules_copy = sys.modules.copy()
     jaribu:
-        tuma
+        yield
     mwishowe:
         sys.modules = sys_modules_saved
         sys.modules.clear()
@@ -41,14 +41,14 @@ eleza namespace_tree_context(**kwargs):
 
     >>> ukijumuisha namespace_tree_context(path=['/tmp/xxyy/portion1',
     ...         '/tmp/xxyy/portion2']):
-    ...     pita
+    ...     pass
     """
     # use default meta_path na path_hooks unless specified otherwise
     kwargs.setdefault('meta_path', sys.meta_path)
     kwargs.setdefault('path_hooks', sys.path_hooks)
     import_context = util.import_state(**kwargs)
     ukijumuisha import_context, sys_modules_context():
-        tuma
+        yield
 
 kundi NamespacePackageTest(unittest.TestCase):
     """
@@ -65,7 +65,7 @@ kundi NamespacePackageTest(unittest.TestCase):
         self.ctx.__enter__()
 
     eleza tearDown(self):
-        # TODO: will we ever want to pita exc_info to __exit__?
+        # TODO: will we ever want to pass exc_info to __exit__?
         self.ctx.__exit__(Tupu, Tupu, Tupu)
 
 
@@ -99,7 +99,7 @@ kundi DynamicPathNamespacePackage(NamespacePackageTest):
         # Now modify sys.path
         sys.path.append(os.path.join(self.root, 'portion2'))
 
-        # And make sure foo.two ni now agizaable
+        # And make sure foo.two ni now importable
         agiza foo.two
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
@@ -107,7 +107,7 @@ kundi DynamicPathNamespacePackage(NamespacePackageTest):
 kundi CombinedNamespacePackages(NamespacePackageTest):
     paths = ['both_portions']
 
-    eleza test_agizas(self):
+    eleza test_imports(self):
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'both_portions foo one')
@@ -117,7 +117,7 @@ kundi CombinedNamespacePackages(NamespacePackageTest):
 kundi SeparatedNamespacePackages(NamespacePackageTest):
     paths = ['portion1', 'portion2']
 
-    eleza test_agizas(self):
+    eleza test_imports(self):
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'portion1 foo one')
@@ -140,7 +140,7 @@ kundi SeparatedOverlappingNamespacePackages(NamespacePackageTest):
         self.assertEqual(foo.one.attr, 'both_portions foo one')
         self.assertEqual(foo.two.attr, 'both_portions foo two')
 
-    eleza test_first_path_wins_agizaing_second_first(self):
+    eleza test_first_path_wins_importing_second_first(self):
         agiza foo.two
         agiza foo.one
         self.assertEqual(foo.one.attr, 'portion1 foo one')
@@ -162,7 +162,7 @@ kundi SingleZipNamespacePackage(NamespacePackageTest):
 kundi SeparatedZipNamespacePackages(NamespacePackageTest):
     paths = ['top_level_portion1.zip', 'portion2']
 
-    eleza test_agizas(self):
+    eleza test_imports(self):
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'portion1 foo one')
@@ -186,7 +186,7 @@ kundi SingleNestedZipNamespacePackage(NamespacePackageTest):
 kundi SeparatedNestedZipNamespacePackages(NamespacePackageTest):
     paths = ['nested_portion1.zip/nested_portion1', 'portion2']
 
-    eleza test_agizas(self):
+    eleza test_imports(self):
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'portion1 foo one')
@@ -312,7 +312,7 @@ kundi ReloadTests(NamespacePackageTest):
         sys.path.append(os.path.join(self.root, 'portion2'))
         foo = importlib.reload(foo)
 
-        # And make sure foo.two ni now agizaable
+        # And make sure foo.two ni now importable
         agiza foo.two
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 

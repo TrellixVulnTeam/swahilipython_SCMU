@@ -3,7 +3,7 @@
 
 """Fixer that cleans up a tuple argument to isinstance after the tokens
 in it were fixed.  This ni mainly used to remove double occurrences of
-tokens kama a leftover of the long -> int / unicode -> str conversion.
+tokens as a leftover of the long -> int / unicode -> str conversion.
 
 eg.  isinstance(x, (int, long)) -> isinstance(x, (int, int))
        -> isinstance(x, int)

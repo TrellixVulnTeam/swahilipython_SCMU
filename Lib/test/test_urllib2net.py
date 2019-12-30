@@ -17,10 +17,10 @@ eleza _retry_thrice(func, exc, *args, **kwargs):
     kila i kwenye range(3):
         jaribu:
             rudisha func(*args, **kwargs)
-        tatizo exc kama e:
+        except exc as e:
             last_exc = e
             endelea
-    ashiria last_exc
+     ashiria last_exc
 
 eleza _wrap_with_retry_thrice(func, exc):
     eleza wrapped(*args, **kwargs):
@@ -53,20 +53,20 @@ kundi AuthTests(unittest.TestCase):
 #        test_hostport = "www.python.org"
 #        test_realm = 'Test Realm'
 #        test_user = 'test.test_urllib2net'
-#        test_pitaword = 'blah'
+#        test_password = 'blah'
 #
 #        # failure
 #        jaribu:
 #            _urlopen_with_retry(test_url)
-#        tatizo urllib2.HTTPError, exc:
+#        except urllib2.HTTPError, exc:
 #            self.assertEqual(exc.code, 401)
 #        isipokua:
 #            self.fail("urlopen() should have failed ukijumuisha 401")
 #
 #        # success
 #        auth_handler = urllib2.HTTPBasicAuthHandler()
-#        auth_handler.add_pitaword(test_realm, test_hostport,
-#                                  test_user, test_pitaword)
+#        auth_handler.add_password(test_realm, test_hostport,
+#                                  test_user, test_password)
 #        opener = urllib2.build_opener(auth_handler)
 #        f = opener.open('http://localhost/')
 #        response = _urlopen_with_retry("http://www.python.org/")
@@ -119,7 +119,7 @@ kundi OtherNetworkTests(unittest.TestCase):
             f.close()
             urls = [
                 'file:' + sanepathname2url(os.path.abspath(TESTFN)),
-                ('file:///nonsensename/etc/pitawd', Tupu,
+                ('file:///nonsensename/etc/passwd', Tupu,
                  urllib.error.URLError),
                 ]
             self._test_urls(urls, self._extra_handlers(), retry=Kweli)
@@ -135,24 +135,24 @@ kundi OtherNetworkTests(unittest.TestCase):
 ##     eleza test_cnri(self):
 ##         ikiwa socket.gethostname() == 'bitdiddle':
 ##             localhost = 'bitdiddle.cnri.reston.va.us'
-##         lasivyo socket.gethostname() == 'bitdiddle.concentric.net':
+##         elikiwa socket.gethostname() == 'bitdiddle.concentric.net':
 ##             localhost = 'localhost'
 ##         isipokua:
 ##             localhost = Tupu
 ##         ikiwa localhost ni sio Tupu:
 ##             urls = [
-##                 'file://%s/etc/pitawd' % localhost,
+##                 'file://%s/etc/passwd' % localhost,
 ##                 'http://%s/simple/' % localhost,
 ##                 'http://%s/digest/' % localhost,
 ##                 'http://%s/not/found.h' % localhost,
 ##                 ]
 
 ##             bauth = HTTPBasicAuthHandler()
-##             bauth.add_pitaword('basic_test_realm', localhost, 'jhylton',
-##                                'pitaword')
+##             bauth.add_password('basic_test_realm', localhost, 'jhylton',
+##                                'password')
 ##             dauth = HTTPDigestAuthHandler()
-##             dauth.add_pitaword('digest_test_realm', localhost, 'jhylton',
-##                                'pitaword')
+##             dauth.add_password('digest_test_realm', localhost, 'jhylton',
+##                                'password')
 
 ##             self._test_urls(urls, self._extra_handlers()+[bauth, dauth])
 
@@ -194,9 +194,9 @@ kundi OtherNetworkTests(unittest.TestCase):
 
         ukijumuisha support.transient_internet(URL):
             jaribu:
-                ukijumuisha urllib.request.urlopen(URL) kama res:
-                    pita
-            tatizo ValueError kama e:
+                ukijumuisha urllib.request.urlopen(URL) as res:
+                    pass
+            except ValueError as e:
                 self.fail("urlopen failed kila site sio sending \
                            Connection:close")
             isipokua:
@@ -226,13 +226,13 @@ kundi OtherNetworkTests(unittest.TestCase):
                     jaribu:
                         f = urlopen(url, req, TIMEOUT)
                     # urllib.error.URLError ni a subkundi of OSError
-                    tatizo OSError kama err:
+                    except OSError as err:
                         ikiwa expected_err:
                             msg = ("Didn't get expected error(s) %s kila %s %s, got %s: %s" %
                                    (expected_err, url, req, type(err), err))
                             self.assertIsInstance(err, expected_err, msg)
                         isipokua:
-                            ashiria
+                            raise
                     isipokua:
                         jaribu:
                             ukijumuisha support.time_out, \
@@ -240,7 +240,7 @@ kundi OtherNetworkTests(unittest.TestCase):
                                  support.ioerror_peer_reset:
                                 buf = f.read()
                                 debug("read %d bytes" % len(buf))
-                        tatizo socket.timeout:
+                        except socket.timeout:
                             andika("<timeout: %s>" % url, file=sys.stderr)
                         f.close()
                 time.sleep(0.1)

@@ -18,17 +18,17 @@ kundi Idb(bdb.Bdb):
     eleza user_line(self, frame):
         ikiwa self.in_rpc_code(frame):
             self.set_step()
-            rudisha
+            return
         message = self.__frame2message(frame)
         jaribu:
             self.gui.interaction(message, frame)
-        tatizo TclError:  # When closing debugger window ukijumuisha [x] kwenye 3.x
-            pita
+        except TclError:  # When closing debugger window ukijumuisha [x] kwenye 3.x
+            pass
 
     eleza user_exception(self, frame, info):
         ikiwa self.in_rpc_code(frame):
             self.set_step()
-            rudisha
+            return
         message = self.__frame2message(frame)
         self.gui.interaction(message, frame, info)
 
@@ -63,7 +63,7 @@ kundi Debugger:
         ikiwa idb ni Tupu:
             idb = Idb(self)
         self.pyshell = pyshell
-        self.idb = idb  # If pitaed, a proxy of remote instance.
+        self.idb = idb  # If passed, a proxy of remote instance.
         self.frame = Tupu
         self.make_gui()
         self.interacting = 0
@@ -72,7 +72,7 @@ kundi Debugger:
     eleza run(self, *args):
         # Deal ukijumuisha the scenario where we've already got a program running
         # kwenye the debugger na we want to start another. If that ni the case,
-        # our second 'run' was invoked kutoka an event dispatched sio kutoka
+        # our second 'run' was invoked kutoka an event dispatched sio from
         # the main event loop, but kutoka the nested event loop kwenye 'interaction'
         # below. So our stack looks something like this:
         #       outer main event loop
@@ -83,7 +83,7 @@ kundi Debugger:
         #                 run() kila second command
         #
         # This kind of nesting of event loops causes all kinds of problems
-        # (see e.g. issue #24455) especially when dealing ukijumuisha running kama a
+        # (see e.g. issue #24455) especially when dealing ukijumuisha running as a
         # subprocess, where there's all kinds of extra stuff happening in
         # there - insert a traceback.print_stack() to check it out.
         #
@@ -102,7 +102,7 @@ kundi Debugger:
         ikiwa self.nesting_level > 0:
             self.abort_loop()
             self.root.after(100, lambda: self.run(*args))
-            rudisha
+            return
         jaribu:
             self.interacting = 1
             rudisha self.idb.run(*args)
@@ -112,11 +112,11 @@ kundi Debugger:
     eleza close(self, event=Tupu):
         jaribu:
             self.quit()
-        tatizo Exception:
-            pita
+        except Exception:
+            pass
         ikiwa self.interacting:
             self.top.bell()
-            rudisha
+            return
         ikiwa self.stackviewer:
             self.stackviewer.close(); self.stackviewer = Tupu
         # Clean up pyshell ikiwa user clicked debugger control close widget.
@@ -209,13 +209,13 @@ kundi Debugger:
             type, value, tb = info
             jaribu:
                 m1 = type.__name__
-            tatizo AttributeError:
+            except AttributeError:
                 m1 = "%s" % str(type)
             ikiwa value ni sio Tupu:
                 jaribu:
                     m1 = "%s: %s" % (m1, str(value))
                 tatizo:
-                    pita
+                    pass
             bg = "yellow"
         isipokua:
             m1 = ""
@@ -253,7 +253,7 @@ kundi Debugger:
     eleza sync_source_line(self):
         frame = self.frame
         ikiwa sio frame:
-            rudisha
+            return
         filename, lineno = self.__frame2fileline(frame)
         ikiwa filename[:1] + filename[-1:] != "<>" na os.path.exists(filename):
             self.flist.gotofileline(filename, lineno)
@@ -277,7 +277,7 @@ kundi Debugger:
         self.abort_loop()
 
     eleza ret(self):
-        self.idb.set_rudisha(self.frame)
+        self.idb.set_return(self.frame)
         self.abort_loop()
 
     eleza quit(self):
@@ -369,7 +369,7 @@ kundi Debugger:
             jaribu:
                 kila lineno kwenye editwin.komapoints:
                     self.set_komapoint_here(filename, lineno)
-            tatizo AttributeError:
+            except AttributeError:
                 endelea
 
 kundi StackViewer(ScrolledList):
@@ -445,7 +445,7 @@ kundi StackViewer(ScrolledList):
 
     eleza show_source(self, index):
         ikiwa sio (0 <= index < len(self.stack)):
-            rudisha
+            return
         frame, lineno = self.stack[index]
         code = frame.f_code
         filename = code.co_filename
@@ -488,7 +488,7 @@ kundi NamespaceViewer:
 
     eleza load_dict(self, dict, force=0, rpc_client=Tupu):
         ikiwa dict ni self.dict na sio force:
-            rudisha
+            return
         subframe = self.subframe
         frame = self.frame
         kila c kwenye list(subframe.children.values()):
@@ -500,7 +500,7 @@ kundi NamespaceViewer:
         isipokua:
             #names = sorted(dict)
             ###
-            # Because of (temporary) limitations on the dict_keys type (sio yet
+            # Because of (temporary) limitations on the dict_keys type (not yet
             # public ama pickleable), have the subprocess to send a list of
             # keys, sio a dict_keys object.  sorted() will take a dict_keys
             # (no subprocess) ama a list.

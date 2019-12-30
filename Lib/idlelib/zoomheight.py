@@ -6,7 +6,7 @@ agiza tkinter
 
 
 kundi WmInfoGatheringError(Exception):
-    pita
+    pass
 
 
 kundi ZoomHeight:
@@ -36,13 +36,13 @@ kundi ZoomHeight:
         width, height, x, y = get_window_geometry(top)
 
         ikiwa top.wm_state() != 'normal':
-            # Can't zoom/restore window height kila windows haiko kwenye the 'normal'
+            # Can't zoom/restore window height kila windows sio kwenye the 'normal'
             # state, e.g. maximized na full-screen windows.
             rudisha Tupu
 
         jaribu:
             maxheight, maxy = self.get_max_height_and_y_coord()
-        tatizo WmInfoGatheringError:
+        except WmInfoGatheringError:
             rudisha Tupu
 
         ikiwa height != maxheight:
@@ -62,22 +62,22 @@ kundi ZoomHeight:
 
         screen_dimensions = (top.winfo_screenwidth(),
                              top.winfo_screenheight())
-        ikiwa screen_dimensions haiko kwenye self._max_height_and_y_coords:
+        ikiwa screen_dimensions sio kwenye self._max_height_and_y_coords:
             orig_state = top.wm_state()
 
             # Get window geometry info kila maximized windows.
             jaribu:
                 top.wm_state('zoomed')
-            tatizo tkinter.TclError:
+            except tkinter.TclError:
                 # The 'zoomed' state ni sio supported by some esoteric WMs,
-                # such kama Xvfb.
-                ashiria WmInfoGatheringError(
+                # such as Xvfb.
+                 ashiria WmInfoGatheringError(
                     'Failed getting geometry of maximized windows, because ' +
                     'the "zoomed" window state ni unavailable.')
             top.update()
             maxwidth, maxheight, maxx, maxy = get_window_geometry(top)
             ikiwa sys.platform == 'win32':
-                # On Windows, the rudishaed Y coordinate ni the one before
+                # On Windows, the returned Y coordinate ni the one before
                 # maximizing, so we use 0 which ni correct unless a user puts
                 # their dock on the top of the screen (very rare).
                 maxy = 0
@@ -86,7 +86,7 @@ kundi ZoomHeight:
             # Get the "root y" coordinate kila non-maximized windows ukijumuisha their
             # y coordinate set to that of maximized windows.  This ni needed
             # to properly handle different title bar heights kila non-maximized
-            # vs. maximized windows, kama seen e.g. kwenye Windows 10.
+            # vs. maximized windows, as seen e.g. kwenye Windows 10.
             top.wm_state('normal')
             top.update()
             orig_geom = get_window_geometry(top)

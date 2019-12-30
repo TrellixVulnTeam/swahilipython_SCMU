@@ -1,4 +1,4 @@
-"""Test that sys.modules ni used properly by agiza."""
+"""Test that sys.modules ni used properly by import."""
 kutoka .. agiza util
 agiza sys
 kutoka types agiza MethodType
@@ -10,14 +10,14 @@ kundi UseCache:
     """When it comes to sys.modules, agiza prefers it over anything else.
 
     Once a name has been resolved, sys.modules ni checked to see ikiwa it contains
-    the module desired. If so, then it ni rudishaed [use cache]. If it ni not
-    found, then the proper steps are taken to perform the agiza, but
+    the module desired. If so, then it ni returned [use cache]. If it ni not
+    found, then the proper steps are taken to perform the import, but
     sys.modules ni still used to rudisha the imported module (e.g., sio what a
-    loader rudishas) [kutoka cache on rudisha]. This also applies to agizas of
-    things contained within a package na thus get assigned kama an attribute
-    [kutoka cache to attribute] ama pulled kwenye thanks to a kutokalist agiza
-    [kutoka cache kila kutokalist]. But ikiwa sys.modules contains Tupu then
-    ImportError ni ashiriad [Tupu kwenye cache].
+    loader returns) [kutoka cache on return]. This also applies to imports of
+    things contained within a package na thus get assigned as an attribute
+    [kutoka cache to attribute] ama pulled kwenye thanks to a fromlist import
+    [kutoka cache kila fromlist]. But ikiwa sys.modules contains Tupu then
+    ImportError ni raised [Tupu kwenye cache].
 
     """
 
@@ -34,7 +34,7 @@ kundi UseCache:
         name = 'using_Tupu'
         ukijumuisha util.uncache(name):
             sys.modules[name] = Tupu
-            ukijumuisha self.assertRaises(ImportError) kama cm:
+            ukijumuisha self.assertRaises(ImportError) as cm:
                 self.__import__(name)
             self.assertEqual(cm.exception.name, name)
 
@@ -50,20 +50,20 @@ kundi ImportlibUseCache(UseCache, unittest.TestCase):
 
     __import__ = util.__import__['Source']
 
-    eleza create_mock(self, *names, rudisha_=Tupu):
+    eleza create_mock(self, *names, return_=Tupu):
         mock = util.mock_modules(*names)
         original_load = mock.load_module
         eleza load_module(self, fullname):
             original_load(fullname)
-            rudisha rudisha_
+            rudisha return_
         mock.load_module = MethodType(load_module, mock)
         rudisha mock
 
     # __import__ inconsistent between loaders na built-in agiza when it comes
     #   to when to use the module kwenye sys.modules na when sio to.
     eleza test_using_cache_after_loader(self):
-        # [kutoka cache on rudisha]
-        ukijumuisha self.create_mock('module') kama mock:
+        # [kutoka cache on return]
+        ukijumuisha self.create_mock('module') as mock:
             ukijumuisha util.import_state(meta_path=[mock]):
                 module = self.__import__('module')
                 self.assertEqual(id(module), id(sys.modules['module']))
@@ -71,7 +71,7 @@ kundi ImportlibUseCache(UseCache, unittest.TestCase):
     # See test_using_cache_after_loader() kila reasoning.
     eleza test_using_cache_for_assigning_to_attribute(self):
         # [kutoka cache to attribute]
-        ukijumuisha self.create_mock('pkg.__init__', 'pkg.module') kama importer:
+        ukijumuisha self.create_mock('pkg.__init__', 'pkg.module') as importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg.module')
                 self.assertKweli(hasattr(module, 'module'))
@@ -79,11 +79,11 @@ kundi ImportlibUseCache(UseCache, unittest.TestCase):
                                  id(sys.modules['pkg.module']))
 
     # See test_using_cache_after_loader() kila reasoning.
-    eleza test_using_cache_for_kutokalist(self):
-        # [kutoka cache kila kutokalist]
-        ukijumuisha self.create_mock('pkg.__init__', 'pkg.module') kama importer:
+    eleza test_using_cache_for_fromlist(self):
+        # [kutoka cache kila fromlist]
+        ukijumuisha self.create_mock('pkg.__init__', 'pkg.module') as importer:
             ukijumuisha util.import_state(meta_path=[importer]):
-                module = self.__import__('pkg', kutokalist=['module'])
+                module = self.__import__('pkg', fromlist=['module'])
                 self.assertKweli(hasattr(module, 'module'))
                 self.assertEqual(id(module.module),
                                  id(sys.modules['pkg.module']))

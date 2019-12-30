@@ -6,7 +6,7 @@ Revise ikiwa output destination changes (http://bugs.python.org/issue18318).
 Make sure warnings module ni left unaltered (http://bugs.python.org/issue18081).
 '''
 kutoka idlelib agiza run
-kutoka idlelib agiza pyshell kama shell
+kutoka idlelib agiza pyshell as shell
 agiza unittest
 kutoka test.support agiza captured_stderr
 agiza warnings
@@ -18,7 +18,7 @@ showwarning = warnings.showwarning
 running_in_idle = 'idle' kwenye showwarning.__name__
 
 # The following was generated kutoka pyshell.idle_formatwarning
-# na checked kama matching expectation.
+# na checked as matching expectation.
 idlemsg = '''
 Warning (kutoka warnings module):
   File "test_warning.py", line 99
@@ -39,7 +39,7 @@ kundi RunWarnTest(unittest.TestCase):
         self.assertIs(warnings.showwarning, showwarning)
 
     eleza test_run_show(self):
-        ukijumuisha captured_stderr() kama f:
+        ukijumuisha captured_stderr() as f:
             run.idle_showwarning_subproc(
                     'Test', UserWarning, 'test_warning.py', 99, f, 'Line of code')
             # The following uses .splitlines to erase line-ending differences
@@ -63,7 +63,7 @@ kundi ShellWarnTest(unittest.TestCase):
         self.assertEqual(idlemsg, s)
 
     eleza test_shell_show(self):
-        ukijumuisha captured_stderr() kama f:
+        ukijumuisha captured_stderr() as f:
             shell.idle_showwarning(
                     'Test', UserWarning, 'test_warning.py', 99, f, 'Line of code')
             self.assertEqual(shellmsg.splitlines(), f.getvalue().splitlines())

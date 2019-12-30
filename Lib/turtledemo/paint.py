@@ -8,7 +8,7 @@ A simple  event-driven paint program
 - left mouse button moves turtle
 - middle mouse button changes color
 - right mouse button toggles between pen up
-(no line drawn when the turtle moves) na
+(no line drawn when the turtle moves) and
 pen down (line ni drawn). If pen up follows
 at least two pen-down moves, the polygon that
 includes the starting point ni filled.

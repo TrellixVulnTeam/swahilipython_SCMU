@@ -5,8 +5,8 @@
 
 __version__ = "0.9"
 
-import itertools
-import tkinter
+agiza itertools
+agiza tkinter
 
 
 # weight/slant
@@ -16,27 +16,27 @@ BOLD   = "bold"
 ITALIC = "italic"
 
 
-def nametofont(name):
+eleza nametofont(name):
     """Given the name of a tk named font, returns a Font representation.
     """
-    return Font(name=name, exists=True)
+    rudisha Font(name=name, exists=Kweli)
 
 
-class Font:
+kundi Font:
     """Represents a named font.
 
     Constructor options are:
 
-    font -- font specifier (name, system font, or (family, size, style)-tuple)
-    name -- name to use for this font configuration (defaults to a unique name)
+    font -- font specifier (name, system font, ama (family, size, style)-tuple)
+    name -- name to use kila this font configuration (defaults to a unique name)
     exists -- does a named font by this name already exist?
-       Creates a new named font if False, points to the existing font if True.
-       Raises _tkinter.TclError if the assertion is false.
+       Creates a new named font ikiwa Uongo, points to the existing font ikiwa Kweli.
+       Raises _tkinter.TclError ikiwa the assertion ni false.
 
-       the following are ignored if font is specified:
+       the following are ignored ikiwa font ni specified:
 
     family -- font 'family', e.g. Courier, Times, Helvetica
-    size -- font size in points
+    size -- font size kwenye points
     weight -- font thickness: NORMAL, BOLD
     slant -- font slant: ROMAN, ITALIC
     underline -- font underlining: false (0), true (1)
@@ -46,177 +46,177 @@ class Font:
 
     counter = itertools.count(1)
 
-    def _set(self, kw):
+    eleza _set(self, kw):
         options = []
-        for k, v in kw.items():
+        kila k, v kwenye kw.items():
             options.append("-"+k)
             options.append(str(v))
-        return tuple(options)
+        rudisha tuple(options)
 
-    def _get(self, args):
+    eleza _get(self, args):
         options = []
-        for k in args:
+        kila k kwenye args:
             options.append("-"+k)
-        return tuple(options)
+        rudisha tuple(options)
 
-    def _mkdict(self, args):
+    eleza _mkdict(self, args):
         options = {}
-        for i in range(0, len(args), 2):
+        kila i kwenye range(0, len(args), 2):
             options[args[i][1:]] = args[i+1]
-        return options
+        rudisha options
 
-    def __init__(self, root=None, font=None, name=None, exists=False,
+    eleza __init__(self, root=Tupu, font=Tupu, name=Tupu, exists=Uongo,
                  **options):
-        if sio root:
+        ikiwa sio root:
             root = tkinter._default_root
         tk = getattr(root, 'tk', root)
-        if font:
+        ikiwa font:
             # get actual settings corresponding to the given font
             font = tk.splitlist(tk.call("font", "actual", font))
         isipokua:
             font = self._set(options)
-        if sio name:
+        ikiwa sio name:
             name = "font" + str(next(self.counter))
         self.name = name
 
-        if exists:
-            self.delete_font = False
+        ikiwa exists:
+            self.delete_font = Uongo
             # confirm font exists
-            if self.name haiko kwenye tk.splitlist(tk.call("font", "names")):
-                ashiria tkinter._tkinter.TclError(
+            ikiwa self.name sio kwenye tk.splitlist(tk.call("font", "names")):
+                 ashiria tkinter._tkinter.TclError(
                     "named font %s does sio already exist" % (self.name,))
-            # if font config info supplied, apply it
-            if font:
+            # ikiwa font config info supplied, apply it
+            ikiwa font:
                 tk.call("font", "configure", self.name, *font)
         isipokua:
-            # create new font (raises TclError if the font exists)
+            # create new font (raises TclError ikiwa the font exists)
             tk.call("font", "create", self.name, *font)
-            self.delete_font = True
+            self.delete_font = Kweli
         self._tk = tk
         self._split = tk.splitlist
         self._call  = tk.call
 
-    def __str__(self):
-        return self.name
+    eleza __str__(self):
+        rudisha self.name
 
-    def __eq__(self, other):
-        return isinstance(other, Font) and self.name == other.name
+    eleza __eq__(self, other):
+        rudisha isinstance(other, Font) na self.name == other.name
 
-    def __getitem__(self, key):
-        return self.cget(key)
+    eleza __getitem__(self, key):
+        rudisha self.cget(key)
 
-    def __setitem__(self, key, value):
+    eleza __setitem__(self, key, value):
         self.configure(**{key: value})
 
-    def __del__(self):
+    eleza __del__(self):
         jaribu:
-            if self.delete_font:
+            ikiwa self.delete_font:
                 self._call("font", "delete", self.name)
-        tatizo Exception:
+        except Exception:
             pass
 
-    def copy(self):
+    eleza copy(self):
         "Return a distinct copy of the current font"
-        return Font(self._tk, **self.actual())
+        rudisha Font(self._tk, **self.actual())
 
-    def actual(self, option=None, displayof=None):
+    eleza actual(self, option=Tupu, displayof=Tupu):
         "Return actual font attributes"
         args = ()
-        if displayof:
+        ikiwa displayof:
             args = ('-displayof', displayof)
-        if option:
+        ikiwa option:
             args = args + ('-' + option, )
-            return self._call("font", "actual", self.name, *args)
+            rudisha self._call("font", "actual", self.name, *args)
         isipokua:
-            return self._mkdict(
+            rudisha self._mkdict(
                 self._split(self._call("font", "actual", self.name, *args)))
 
-    def cget(self, option):
+    eleza cget(self, option):
         "Get font attribute"
-        return self._call("font", "config", self.name, "-"+option)
+        rudisha self._call("font", "config", self.name, "-"+option)
 
-    def config(self, **options):
+    eleza config(self, **options):
         "Modify font attributes"
-        if options:
+        ikiwa options:
             self._call("font", "config", self.name,
                   *self._set(options))
         isipokua:
-            return self._mkdict(
+            rudisha self._mkdict(
                 self._split(self._call("font", "config", self.name)))
 
     configure = config
 
-    def measure(self, text, displayof=None):
+    eleza measure(self, text, displayof=Tupu):
         "Return text width"
         args = (text,)
-        if displayof:
+        ikiwa displayof:
             args = ('-displayof', displayof, text)
-        return self._tk.getint(self._call("font", "measure", self.name, *args))
+        rudisha self._tk.getint(self._call("font", "measure", self.name, *args))
 
-    def metrics(self, *options, **kw):
+    eleza metrics(self, *options, **kw):
         """Return font metrics.
 
         For best performance, create a dummy widget
         using this font before calling this method."""
         args = ()
-        displayof = kw.pop('displayof', None)
-        if displayof:
+        displayof = kw.pop('displayof', Tupu)
+        ikiwa displayof:
             args = ('-displayof', displayof)
-        if options:
+        ikiwa options:
             args = args + self._get(options)
-            return self._tk.getint(
+            rudisha self._tk.getint(
                 self._call("font", "metrics", self.name, *args))
         isipokua:
             res = self._split(self._call("font", "metrics", self.name, *args))
             options = {}
-            for i in range(0, len(res), 2):
+            kila i kwenye range(0, len(res), 2):
                 options[res[i][1:]] = self._tk.getint(res[i+1])
-            return options
+            rudisha options
 
 
-def families(root=None, displayof=None):
+eleza families(root=Tupu, displayof=Tupu):
     "Get font families (as a tuple)"
-    if sio root:
+    ikiwa sio root:
         root = tkinter._default_root
     args = ()
-    if displayof:
+    ikiwa displayof:
         args = ('-displayof', displayof)
-    return root.tk.splitlist(root.tk.call("font", "families", *args))
+    rudisha root.tk.splitlist(root.tk.call("font", "families", *args))
 
 
-def names(root=None):
+eleza names(root=Tupu):
     "Get names of defined fonts (as a tuple)"
-    if sio root:
+    ikiwa sio root:
         root = tkinter._default_root
-    return root.tk.splitlist(root.tk.call("font", "names"))
+    rudisha root.tk.splitlist(root.tk.call("font", "names"))
 
 
 # --------------------------------------------------------------------
 # test stuff
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
 
     root = tkinter.Tk()
 
     # create a font
     f = Font(family="times", size=30, weight=NORMAL)
 
-    print(f.actual())
-    print(f.actual("family"))
-    print(f.actual("weight"))
+    andika(f.actual())
+    andika(f.actual("family"))
+    andika(f.actual("weight"))
 
-    print(f.config())
-    print(f.cget("family"))
-    print(f.cget("weight"))
+    andika(f.config())
+    andika(f.cget("family"))
+    andika(f.cget("weight"))
 
-    print(names())
+    andika(names())
 
-    print(f.measure("hello"), f.metrics("linespace"))
+    andika(f.measure("hello"), f.metrics("linespace"))
 
-    print(f.metrics(displayof=root))
+    andika(f.metrics(displayof=root))
 
     f = Font(font=("Courier", 20, "bold"))
-    print(f.measure("hello"), f.metrics("linespace", displayof=root))
+    andika(f.measure("hello"), f.metrics("linespace", displayof=root))
 
     w = tkinter.Label(root, text="Hello, world", font=f)
     w.pack()

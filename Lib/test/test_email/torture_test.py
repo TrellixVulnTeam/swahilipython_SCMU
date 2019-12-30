@@ -2,59 +2,59 @@
 #
 # A torture test of the email package.  This should sio be run as part of the
 # standard Python test suite since it requires several meg of email messages
-# collected in the wild.  These source messages are sio checked into the
+# collected kwenye the wild.  These source messages are sio checked into the
 # Python distro, but are available as part of the standalone email package at
 # http://sf.net/projects/mimelib
 
-import sys
-import os
-import unittest
-from io import StringIO
+agiza sys
+agiza os
+agiza unittest
+kutoka io agiza StringIO
 
-from test.test_email import TestEmailBase
-from test.support import run_unittest
+kutoka test.test_email agiza TestEmailBase
+kutoka test.support agiza run_unittest
 
-import email
-from email agiza __file__ as testfile
-from email.iterators agiza _structure
+agiza email
+kutoka email agiza __file__ as testfile
+kutoka email.iterators agiza _structure
 
-def openfile(filename):
-    from os.path import join, dirname, abspath
+eleza openfile(filename):
+    kutoka os.path agiza join, dirname, abspath
     path = abspath(join(dirname(testfile), os.pardir, 'moredata', filename))
-    return open(path, 'r')
+    rudisha open(path, 'r')
 
-# Prevent this test from running in the Python distro
+# Prevent this test kutoka running kwenye the Python distro
 jaribu:
     openfile('crispin-torture.txt')
-tatizo OSError:
-    ashiria unittest.SkipTest
+except OSError:
+     ashiria unittest.SkipTest
 
 
 
-class TortureBase(TestEmailBase):
-    def _msgobj(self, filename):
+kundi TortureBase(TestEmailBase):
+    eleza _msgobj(self, filename):
         fp = openfile(filename)
         jaribu:
             msg = email.message_from_file(fp)
         mwishowe:
             fp.close()
-        return msg
+        rudisha msg
 
 
 
-class TestCrispinTorture(TortureBase):
-    # Mark Crispin's torture test from the SquirrelMail project
-    def test_mondo_message(self):
+kundi TestCrispinTorture(TortureBase):
+    # Mark Crispin's torture test kutoka the SquirrelMail project
+    eleza test_mondo_message(self):
         eq = self.assertEqual
         neq = self.ndiffAssertEqual
         msg = self._msgobj('crispin-torture.txt')
         payload = msg.get_payload()
         eq(type(payload), list)
         eq(len(payload), 12)
-        eq(msg.preamble, None)
+        eq(msg.preamble, Tupu)
         eq(msg.epilogue, '\n')
-        # Probably the best way to verify the message is parsed correctly is to
-        # dump its structure and compare it against the known structure.
+        # Probably the best way to verify the message ni parsed correctly ni to
+        # dump its structure na compare it against the known structure.
         fp = StringIO()
         _structure(msg, fp=fp)
         neq(fp.getvalue(), """\
@@ -112,22 +112,22 @@ multipart/mixed
                         audio/x-sun
 """)
 
-def _testclasses():
+eleza _testclasses():
     mod = sys.modules[__name__]
-    return [getattr(mod, name) for name in dir(mod) if name.startswith('Test')]
+    rudisha [getattr(mod, name) kila name kwenye dir(mod) ikiwa name.startswith('Test')]
 
 
-def suite():
+eleza suite():
     suite = unittest.TestSuite()
-    for testclass in _testclasses():
+    kila testkundi kwenye _testclasses():
         suite.addTest(unittest.makeSuite(testclass))
-    return suite
+    rudisha suite
 
 
-def test_main():
-    for testclass in _testclasses():
+eleza test_main():
+    kila testkundi kwenye _testclasses():
         run_unittest(testclass)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(defaultTest='suite')

@@ -7,8 +7,8 @@ kutoka tkinter agiza Tk, Text
 agiza os
 agiza __main__
 
-agiza idlelib.autocomplete kama ac
-agiza idlelib.autocomplete_w kama acw
+agiza idlelib.autocomplete as ac
+agiza idlelib.autocomplete_w as acw
 kutoka idlelib.idle_test.mock_idle agiza Func
 kutoka idlelib.idle_test.mock_tk agiza Event
 
@@ -83,7 +83,7 @@ kundi AutoCompleteTest(unittest.TestCase):
         # If active autocomplete window, complete() na 'koma'.
         self.text.insert('1.0', 're.')
         acp.autocompletewindow = mock = Mock()
-        mock.is_active = Mock(rudisha_value=Kweli)
+        mock.is_active = Mock(return_value=Kweli)
         Equal(acp.autocomplete_event(ev), 'koma')
         mock.complete.assert_called_once()
         acp.autocompletewindow = Tupu
@@ -178,7 +178,7 @@ kundi AutoCompleteTest(unittest.TestCase):
 
 
     eleza test_open_completions_none(self):
-        # Test other two Tupu rudishas.
+        # Test other two Tupu returns.
         none = self.assertIsTupu
         acp = self.autocomplete
 
@@ -219,8 +219,8 @@ kundi AutoCompleteTest(unittest.TestCase):
         self.text.delete('1.0', 'end')
 
     eleza test_fetch_completions(self):
-        # Test that fetch_completions rudishas 2 lists:
-        # For attribute completion, a large list containing all variables, na
+        # Test that fetch_completions returns 2 lists:
+        # For attribute completion, a large list containing all variables, and
         # a small list containing non-private variables.
         # For file completion, a large list containing all files kwenye the path,
         # na a small list containing files that do sio start ukijumuisha '.'.
@@ -270,7 +270,7 @@ kundi AutoCompleteTest(unittest.TestCase):
             self.assertEqual(b, ['.hidden', 'monty', 'python'])
 
     eleza test_get_entity(self):
-        # Test that a name ni kwenye the namespace of sys.modules na
+        # Test that a name ni kwenye the namespace of sys.modules and
         # __main__.__dict__.
         acp = self.autocomplete
         Equal = self.assertEqual
@@ -287,7 +287,7 @@ kundi AutoCompleteTest(unittest.TestCase):
         ukijumuisha patch.dict('__main__.__dict__', {'d': di}):
             Equal(acp.get_entity('d'), di)
 
-        # Test name haiko kwenye namespace.
+        # Test name sio kwenye namespace.
         ukijumuisha patch.dict('__main__.__dict__', {}):
             ukijumuisha self.assertRaises(NameError):
                 acp.get_entity('not_exist')

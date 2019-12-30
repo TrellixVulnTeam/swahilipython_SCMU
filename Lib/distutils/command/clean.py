@@ -4,40 +4,40 @@ Implements the Distutils 'clean' command."""
 
 # contributed by Bastian Kleineidam <calvin@cs.uni-sb.de>, added 2000-03-18
 
-import os
-from distutils.core import Command
-from distutils.dir_util import remove_tree
-from distutils import log
+agiza os
+kutoka distutils.core agiza Command
+kutoka distutils.dir_util agiza remove_tree
+kutoka distutils agiza log
 
-class clean(Command):
+kundi clean(Command):
 
-    description = "clean up temporary files from 'build' command"
+    description = "clean up temporary files kutoka 'build' command"
     user_options = [
         ('build-base=', 'b',
          "base build directory (default: 'build.build-base')"),
-        ('build-lib=', None,
-         "build directory for all modules (default: 'build.build-lib')"),
+        ('build-lib=', Tupu,
+         "build directory kila all modules (default: 'build.build-lib')"),
         ('build-temp=', 't',
          "temporary build directory (default: 'build.build-temp')"),
-        ('build-scripts=', None,
-         "build directory for scripts (default: 'build.build-scripts')"),
-        ('bdist-base=', None,
-         "temporary directory for built distributions"),
+        ('build-scripts=', Tupu,
+         "build directory kila scripts (default: 'build.build-scripts')"),
+        ('bdist-base=', Tupu,
+         "temporary directory kila built distributions"),
         ('all', 'a',
          "remove all build output, sio just temporary by-products")
     ]
 
     boolean_options = ['all']
 
-    def initialize_options(self):
-        self.build_base = None
-        self.build_lib = None
-        self.build_temp = None
-        self.build_scripts = None
-        self.bdist_base = None
-        self.all = None
+    eleza initialize_options(self):
+        self.build_base = Tupu
+        self.build_lib = Tupu
+        self.build_temp = Tupu
+        self.build_scripts = Tupu
+        self.bdist_base = Tupu
+        self.all = Tupu
 
-    def finalize_options(self):
+    eleza finalize_options(self):
         self.set_undefined_options('build',
                                    ('build_base', 'build_base'),
                                    ('build_lib', 'build_lib'),
@@ -46,31 +46,31 @@ class clean(Command):
         self.set_undefined_options('bdist',
                                    ('bdist_base', 'bdist_base'))
 
-    def run(self):
+    eleza run(self):
         # remove the build/temp.<plat> directory (unless it's already
         # gone)
-        if os.path.exists(self.build_temp):
+        ikiwa os.path.exists(self.build_temp):
             remove_tree(self.build_temp, dry_run=self.dry_run)
         isipokua:
             log.debug("'%s' does sio exist -- can't clean it",
                       self.build_temp)
 
-        if self.all:
+        ikiwa self.all:
             # remove build directories
-            for directory in (self.build_lib,
+            kila directory kwenye (self.build_lib,
                               self.bdist_base,
                               self.build_scripts):
-                if os.path.exists(directory):
+                ikiwa os.path.exists(directory):
                     remove_tree(directory, dry_run=self.dry_run)
                 isipokua:
                     log.warn("'%s' does sio exist -- can't clean it",
                              directory)
 
-        # just for the heck of it, try to remove the base build directory:
-        # we might have emptied it right now, but if sio we don't care
-        if sio self.dry_run:
+        # just kila the heck of it, try to remove the base build directory:
+        # we might have emptied it right now, but ikiwa sio we don't care
+        ikiwa sio self.dry_run:
             jaribu:
                 os.rmdir(self.build_base)
                 log.info("removing '%s'", self.build_base)
-            tatizo OSError:
+            except OSError:
                 pass

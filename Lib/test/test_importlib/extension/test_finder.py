@@ -22,7 +22,7 @@ kundi FinderTests(abc.FinderTests):
     eleza test_module(self):
         self.assertKweli(self.find_module(util.EXTENSIONS.name))
 
-    # No extension module kama an __init__ available kila testing.
+    # No extension module as an __init__ available kila testing.
     test_package = test_package_in_package = Tupu
 
     # No extension module kwenye a package available kila testing.

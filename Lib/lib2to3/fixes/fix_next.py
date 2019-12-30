@@ -5,9 +5,9 @@
 #   - listcomp "next" names aren't warned
 #   - "with" statement targets aren't checked
 
-# Local agizas
+# Local imports
 kutoka ..pgen2 agiza token
-kutoka ..pygram agiza python_symbols kama syms
+kutoka ..pygram agiza python_symbols as syms
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name, Call, find_binding
 
@@ -57,10 +57,10 @@ kundi FixNext(fixer_base.BaseFix):
                 base = [n.clone() kila n kwenye base]
                 base[0].prefix = ""
                 node.replace(Call(Name("next", prefix=node.prefix), base))
-        lasivyo name:
+        elikiwa name:
             n = Name("__next__", prefix=name.prefix)
             name.replace(n)
-        lasivyo attr:
+        elikiwa attr:
             # We don't do this transformation ikiwa we're assigning to "x.next".
             # Unfortunately, it doesn't seem possible to do this kwenye PATTERN,
             #  so it's being done here.
@@ -68,9 +68,9 @@ kundi FixNext(fixer_base.BaseFix):
                 head = results["head"]
                 ikiwa "".join([str(n) kila n kwenye head]).strip() == '__builtin__':
                     self.warning(node, bind_warning)
-                rudisha
+                return
             attr.replace(Name("__next__"))
-        lasivyo "global" kwenye results:
+        elikiwa "global" kwenye results:
             self.warning(node, bind_warning)
             self.shadowed_next = Kweli
 
@@ -86,7 +86,7 @@ eleza is_assign_target(node):
     kila child kwenye assign.children:
         ikiwa child.type == token.EQUAL:
             rudisha Uongo
-        lasivyo is_subtree(child, node):
+        elikiwa is_subtree(child, node):
             rudisha Kweli
     rudisha Uongo
 

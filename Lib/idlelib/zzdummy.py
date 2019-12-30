@@ -32,7 +32,7 @@ kundi ZzDummy:
         text.undo_block_stop()
         rudisha "koma"
 
-    eleza z_out_event(self, event): pita
+    eleza z_out_event(self, event): pass
 
 ZzDummy.reload()
 

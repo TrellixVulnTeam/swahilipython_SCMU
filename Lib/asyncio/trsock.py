@@ -6,7 +6,7 @@ kundi TransportSocket:
 
     """A socket-like wrapper kila exposing real transport sockets.
 
-    These objects can be safely rudishaed by APIs like
+    These objects can be safely returned by APIs like
     `transport.get_extra_info('socket')`.  All potentially disruptive
     operations (like "socket.close()") are banned.
     """
@@ -18,7 +18,7 @@ kundi TransportSocket:
 
     eleza _na(self, what):
         warnings.warn(
-            f"Using {what} on sockets rudishaed kutoka get_extra_info('socket') "
+            f"Using {what} on sockets returned kutoka get_extra_info('socket') "
             f"will be prohibited kwenye asyncio 3.9. Please report your use case "
             f"to bugs.python.org.",
             DeprecationWarning, source=self)
@@ -47,19 +47,19 @@ kundi TransportSocket:
                 laddr = self.getsockname()
                 ikiwa laddr:
                     s = f"{s}, laddr={laddr}"
-            tatizo socket.error:
-                pita
+            except socket.error:
+                pass
             jaribu:
                 raddr = self.getpeername()
                 ikiwa raddr:
                     s = f"{s}, raddr={raddr}"
-            tatizo socket.error:
-                pita
+            except socket.error:
+                pass
 
         rudisha f"{s}>"
 
     eleza __getstate__(self):
-        ashiria TypeError("Cannot serialize asyncio.TransportSocket object")
+         ashiria TypeError("Cannot serialize asyncio.TransportSocket object")
 
     eleza fileno(self):
         rudisha self._sock.fileno()
@@ -162,9 +162,9 @@ kundi TransportSocket:
         self._na('recv_into() method')
         rudisha self._sock.recv_into(*args, **kwargs)
 
-    eleza recvkutoka_into(self, *args, **kwargs):
-        self._na('recvkutoka_into() method')
-        rudisha self._sock.recvkutoka_into(*args, **kwargs)
+    eleza recvfrom_into(self, *args, **kwargs):
+        self._na('recvfrom_into() method')
+        rudisha self._sock.recvfrom_into(*args, **kwargs)
 
     eleza recvmsg_into(self, *args, **kwargs):
         self._na('recvmsg_into() method')
@@ -174,9 +174,9 @@ kundi TransportSocket:
         self._na('recvmsg() method')
         rudisha self._sock.recvmsg(*args, **kwargs)
 
-    eleza recvkutoka(self, *args, **kwargs):
-        self._na('recvkutoka() method')
-        rudisha self._sock.recvkutoka(*args, **kwargs)
+    eleza recvfrom(self, *args, **kwargs):
+        self._na('recvfrom() method')
+        rudisha self._sock.recvfrom(*args, **kwargs)
 
     eleza recv(self, *args, **kwargs):
         self._na('recv() method')
@@ -184,8 +184,8 @@ kundi TransportSocket:
 
     eleza settimeout(self, value):
         ikiwa value == 0:
-            rudisha
-        ashiria ValueError(
+            return
+         ashiria ValueError(
             'settimeout(): only 0 timeout ni allowed on transport sockets')
 
     eleza gettimeout(self):
@@ -193,8 +193,8 @@ kundi TransportSocket:
 
     eleza setblocking(self, flag):
         ikiwa sio flag:
-            rudisha
-        ashiria ValueError(
+            return
+         ashiria ValueError(
             'setblocking(): transport sockets cannot be blocking')
 
     eleza __enter__(self):

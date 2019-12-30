@@ -110,7 +110,7 @@ eleza partial_product(start, stop):
     numfactors = (stop - start) >> 1
     ikiwa sio numfactors:
         rudisha 1
-    lasivyo numfactors == 1:
+    elikiwa numfactors == 1:
         rudisha start
     isipokua:
         mid = (start + numfactors) | 1
@@ -154,7 +154,7 @@ eleza parse_mtestfile(fname):
       id fn arg -> expected [flag]*
 
     """
-    ukijumuisha open(fname) kama fp:
+    ukijumuisha open(fname) as fp:
         kila line kwenye fp:
             # strip comments, na skip blank lines
             ikiwa '--' kwenye line:
@@ -175,9 +175,9 @@ eleza parse_testfile(fname):
     """Parse a file ukijumuisha test values
 
     Empty lines ama lines starting ukijumuisha -- are ignored
-    tumas id, fn, arg_real, arg_imag, exp_real, exp_imag
+    yields id, fn, arg_real, arg_imag, exp_real, exp_imag
     """
-    ukijumuisha open(fname) kama fp:
+    ukijumuisha open(fname) as fp:
         kila line kwenye fp:
             # skip comment lines na blank lines
             ikiwa line.startswith('--') ama sio line.strip():
@@ -197,13 +197,13 @@ eleza parse_testfile(fname):
 
 eleza result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     # Common logic of MathTests.(ftest, test_testcases, test_mtestcases)
-    """Compare arguments expected na got, kama floats, ikiwa either
+    """Compare arguments expected na got, as floats, ikiwa either
     ni a float, using a tolerance expressed kwenye multiples of
     ulp(expected) ama absolutely (ikiwa given na greater).
 
     As a convenience, when neither argument ni a float, na for
     non-finite floats, exact equality ni demanded. Also, nan==nan
-    kama far kama this function ni concerned.
+    as far as this function ni concerned.
 
     Returns Tupu on success na an error message on failure.
     """
@@ -217,16 +217,16 @@ eleza result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     # Turn mixed float na int comparison (e.g. floor()) to all-float
     ikiwa isinstance(expected, float) na isinstance(got, int):
         got = float(got)
-    lasivyo isinstance(got, float) na isinstance(expected, int):
+    elikiwa isinstance(got, float) na isinstance(expected, int):
         expected = float(expected)
 
     ikiwa isinstance(expected, float) na isinstance(got, float):
         ikiwa math.isnan(expected) na math.isnan(got):
             # Pass, since both nan
             failure = Tupu
-        lasivyo math.isinf(expected) ama math.isinf(got):
+        elikiwa math.isinf(expected) ama math.isinf(got):
             # We already know they're sio equal, drop through to failure
-            pita
+            pass
         isipokua:
             # Both are finite floats (now). Are they close enough?
             failure = ulp_abs_check(expected, got, ulp_tol, abs_tol)
@@ -241,7 +241,7 @@ eleza result_check(expected, got, ulp_tol=5, abs_tol=0.0):
         rudisha Tupu
 
 kundi IntSubclass(int):
-    pita
+    pass
 
 # Class providing an __index__ method.
 kundi MyIndexable(object):
@@ -254,7 +254,7 @@ kundi MyIndexable(object):
 kundi MathTests(unittest.TestCase):
 
     eleza ftest(self, name, got, expected, ulp_tol=5, abs_tol=0.0):
-        """Compare arguments expected na got, kama floats, ikiwa either
+        """Compare arguments expected na got, as floats, ikiwa either
         ni a float, using a tolerance expressed kwenye multiples of
         ulp(expected) ama absolutely, whichever ni greater.
 
@@ -411,7 +411,7 @@ kundi MathTests(unittest.TestCase):
             eleza __ceil__(self):
                 rudisha 42
         kundi TestNoCeil:
-            pita
+            pass
         self.ftest('ceil(TestCeil())', math.ceil(TestCeil()), 42)
         self.assertRaises(TypeError, math.ceil, TestNoCeil())
 
@@ -463,7 +463,7 @@ kundi MathTests(unittest.TestCase):
         jaribu:
             self.assertKweli(math.isnan(math.cos(INF)))
             self.assertKweli(math.isnan(math.cos(NINF)))
-        tatizo ValueError:
+        except ValueError:
             self.assertRaises(ValueError, math.cos, INF)
             self.assertRaises(ValueError, math.cos, NINF)
         self.assertKweli(math.isnan(math.cos(NAN)))
@@ -521,7 +521,7 @@ kundi MathTests(unittest.TestCase):
     # Other implementations may place different upper bounds.
     @support.cpython_only
     eleza testFactorialHugeInputs(self):
-        # Currently ashirias OverflowError kila inputs that are too large
+        # Currently raises OverflowError kila inputs that are too large
         # to fit into a C long.
         self.assertRaises(OverflowError, math.factorial, 10**100)
         self.assertRaises(OverflowError, math.factorial, 1e100)
@@ -547,7 +547,7 @@ kundi MathTests(unittest.TestCase):
             eleza __floor__(self):
                 rudisha 42
         kundi TestNoFloor:
-            pita
+            pass
         self.ftest('floor(TestFloor())', math.floor(TestFloor()), 42)
         self.assertRaises(TypeError, math.floor, TestNoFloor())
 
@@ -584,7 +584,7 @@ kundi MathTests(unittest.TestCase):
         eleza testfrexp(name, result, expected):
             (mant, exp), (emant, eexp) = result, expected
             ikiwa abs(mant-emant) > eps ama exp != eexp:
-                self.fail('%s rudishaed %r, expected %r'%\
+                self.fail('%s returned %r, expected %r'%\
                           (name, result, expected))
 
         testfrexp('frexp(-1)', math.frexp(-1), (-0.5, 1))
@@ -651,25 +651,25 @@ kundi MathTests(unittest.TestCase):
             ([2.0**53+10.0, 1.0, 2.0**-100], 2.0**53+12.0),
             ([2.0**53-4.0, 0.5, 2.0**-54], 2.0**53-3.0),
             ([1./n kila n kwenye range(1, 1001)],
-             float.kutokahex('0x1.df11f45f4e61ap+2')),
+             float.fromhex('0x1.df11f45f4e61ap+2')),
             ([(-1.)**n/n kila n kwenye range(1, 1001)],
-             float.kutokahex('-0x1.62a2af1bd3624p-1')),
+             float.fromhex('-0x1.62a2af1bd3624p-1')),
             ([1.7**(i+1)-1.7**i kila i kwenye range(1000)] + [-1.7**1000], -1.0),
             ([1e16, 1., 1e-16], 10000000000000002.0),
             ([1e16-2., 1.-2.**-53, -(1e16-2.), -(1.-2.**-53)], 0.0),
             # exercise code kila resizing partials array
             ([2.**n - 2.**(n+50) + 2.**(n+52) kila n kwenye range(-1074, 972, 2)] +
              [-2.**1022],
-             float.kutokahex('0x1.5555555555555p+970')),
+             float.fromhex('0x1.5555555555555p+970')),
             ]
 
         kila i, (vals, expected) kwenye enumerate(test_values):
             jaribu:
                 actual = math.fsum(vals)
-            tatizo OverflowError:
+            except OverflowError:
                 self.fail("test %d failed: got OverflowError, expected %r "
                           "kila math.fsum(%.100r)" % (i, expected, vals))
-            tatizo ValueError:
+            except ValueError:
                 self.fail("test %d failed: got ValueError, expected %r "
                           "kila math.fsum(%.100r)" % (i, expected, vals))
             self.assertEqual(actual, expected)
@@ -805,8 +805,8 @@ kundi MathTests(unittest.TestCase):
             self.assertEqual(math.hypot(4*scale, 3*scale), 5*scale)
 
     eleza testDist(self):
-        kutoka decimal agiza Decimal kama D
-        kutoka fractions agiza Fraction kama F
+        kutoka decimal agiza Decimal as D
+        kutoka fractions agiza Fraction as F
 
         dist = math.dist
         sqrt = math.sqrt
@@ -858,7 +858,7 @@ kundi MathTests(unittest.TestCase):
 
         # Verify tuple subclasses are allowed
         kundi T(tuple):
-            pita
+            pass
         self.assertEqual(dist(T((1, 2, 3)), ((4, 2, -1))), 5.0)
 
         # Test handling of bad arguments
@@ -897,7 +897,7 @@ kundi MathTests(unittest.TestCase):
                 ikiwa any(map(math.isinf, diffs)):
                     # Any infinite difference gives positive infinity.
                     self.assertEqual(dist(p, q), INF)
-                lasivyo any(map(math.isnan, diffs)):
+                elikiwa any(map(math.isnan, diffs)):
                     # If no infinity, any NaN gives a NaN.
                     self.assertKweli(math.isnan(dist(p, q)))
 
@@ -1070,7 +1070,7 @@ kundi MathTests(unittest.TestCase):
         eleza testmodf(name, result, expected):
             (v1, v2), (e1, e2) = result, expected
             ikiwa abs(v1-e1) > eps ama abs(v2-e2):
-                self.fail('%s rudishaed %r, expected %r'%\
+                self.fail('%s returned %r, expected %r'%\
                           (name, result, expected))
 
         testmodf('modf(1.5)', math.modf(1.5), (0.5, 1.0))
@@ -1321,19 +1321,19 @@ kundi MathTests(unittest.TestCase):
         kila case kwenye testcases:
             ukijumuisha self.subTest(case=case):
                 x_hex, y_hex, expected_hex = case.split()
-                x = float.kutokahex(x_hex)
-                y = float.kutokahex(y_hex)
-                expected = float.kutokahex(expected_hex)
+                x = float.fromhex(x_hex)
+                y = float.fromhex(y_hex)
+                expected = float.fromhex(expected_hex)
                 validate_spec(x, y, expected)
                 actual = math.remainder(x, y)
                 # Cheap way of checking that the floats are
-                # kama identical kama we need them to be.
+                # as identical as we need them to be.
                 self.assertEqual(actual.hex(), expected.hex())
 
         # Test tiny subnormal modulus: there's potential for
         # getting the implementation wrong here (kila example,
         # by assuming that modulus/2 ni exactly representable).
-        tiny = float.kutokahex('1p-1074')  # min +ve subnormal
+        tiny = float.fromhex('1p-1074')  # min +ve subnormal
         kila n kwenye range(-25, 25):
             ikiwa n == 0:
                 endelea
@@ -1346,7 +1346,7 @@ kundi MathTests(unittest.TestCase):
                 validate_spec(-x, y, actual)
 
         # Special values.
-        # NaNs should propagate kama usual.
+        # NaNs should propagate as usual.
         kila value kwenye [NAN, 0.0, -0.0, 2.0, -2.3, NINF, INF]:
             self.assertIsNaN(math.remainder(NAN, value))
             self.assertIsNaN(math.remainder(value, NAN))
@@ -1357,7 +1357,7 @@ kundi MathTests(unittest.TestCase):
             self.assertEqual(math.remainder(value, NINF), value)
 
         # remainder(x, 0) na remainder(infinity, x) kila non-NaN x are invalid
-        # operations according to IEEE 754-2008 7.2(f), na should ashiria.
+        # operations according to IEEE 754-2008 7.2(f), na should raise.
         kila value kwenye [NINF, -2.3, -0.0, 0.0, 2.3, INF]:
             ukijumuisha self.assertRaises(ValueError):
                 math.remainder(INF, value)
@@ -1376,7 +1376,7 @@ kundi MathTests(unittest.TestCase):
         jaribu:
             self.assertKweli(math.isnan(math.sin(INF)))
             self.assertKweli(math.isnan(math.sin(NINF)))
-        tatizo ValueError:
+        except ValueError:
             self.assertRaises(ValueError, math.sin, INF)
             self.assertRaises(ValueError, math.sin, NINF)
         self.assertKweli(math.isnan(math.sin(NAN)))
@@ -1446,7 +1446,7 @@ kundi MathTests(unittest.TestCase):
                 rudisha 23
 
         kundi TestNoTrunc(object):
-            pita
+            pass
 
         self.assertEqual(math.trunc(TestTrunc()), 23)
 
@@ -1501,32 +1501,32 @@ kundi MathTests(unittest.TestCase):
         jaribu:
             x = math.exp(-1000000000)
         tatizo:
-            # mathmodule.c ni failing to weed out underflows kutoka libm, ama
+            # mathmodule.c ni failing to weed out underflows kutoka libm, or
             # we've got an fp format ukijumuisha huge dynamic range
-            self.fail("underflowing exp() should sio have ashiriad "
+            self.fail("underflowing exp() should sio have raised "
                         "an exception")
         ikiwa x != 0:
-            self.fail("underflowing exp() should have rudishaed 0")
+            self.fail("underflowing exp() should have returned 0")
 
         # If this fails, probably using a strict IEEE-754 conforming libm, na x
         # ni +Inf afterwards.  But Python wants overflows detected by default.
         jaribu:
             x = math.exp(1000000000)
-        tatizo OverflowError:
-            pita
+        except OverflowError:
+            pass
         isipokua:
             self.fail("overflowing exp() didn't trigger OverflowError")
 
         # If this fails, it could be a puzzle.  One odd possibility ni that
         # mathmodule.c's macros are getting confused wakati comparing
         # Inf (HUGE_VAL) to a NaN, na artificially setting errno to ERANGE
-        # kama a result (and so raising OverflowError instead).
+        # as a result (and so raising OverflowError instead).
         jaribu:
             x = math.sqrt(-1.0)
-        tatizo ValueError:
-            pita
+        except ValueError:
+            pass
         isipokua:
-            self.fail("sqrt(-1) didn't ashiria ValueError")
+            self.fail("sqrt(-1) didn't  ashiria ValueError")
 
     @requires_IEEE_754
     eleza test_testfile(self):
@@ -1539,8 +1539,8 @@ kundi MathTests(unittest.TestCase):
             version_txt = platform.mac_ver()[0]
             jaribu:
                 osx_version = tuple(map(int, version_txt.split('.')))
-            tatizo ValueError:
-                pita
+            except ValueError:
+                pass
 
         fail_fmt = "{}: {}({!r}): {}"
 
@@ -1561,14 +1561,14 @@ kundi MathTests(unittest.TestCase):
 
             ikiwa 'invalid' kwenye flags ama 'divide-by-zero' kwenye flags:
                 er = 'ValueError'
-            lasivyo 'overflow' kwenye flags:
+            elikiwa 'overflow' kwenye flags:
                 er = 'OverflowError'
 
             jaribu:
                 result = func(ar)
-            tatizo ValueError:
+            except ValueError:
                 result = 'ValueError'
-            tatizo OverflowError:
+            except OverflowError:
                 result = 'OverflowError'
 
             # Default tolerances
@@ -1595,14 +1595,14 @@ kundi MathTests(unittest.TestCase):
 
             ikiwa 'invalid' kwenye flags ama 'divide-by-zero' kwenye flags:
                 expected = 'ValueError'
-            lasivyo 'overflow' kwenye flags:
+            elikiwa 'overflow' kwenye flags:
                 expected = 'OverflowError'
 
             jaribu:
                 got = func(arg)
-            tatizo ValueError:
+            except ValueError:
                 got = 'ValueError'
-            tatizo OverflowError:
+            except OverflowError:
                 got = 'OverflowError'
 
             # Default tolerances
@@ -1615,14 +1615,14 @@ kundi MathTests(unittest.TestCase):
                 # domain. We weaken that to require 20 ulp accuracy.
                 ulp_tol = 20
 
-            lasivyo fn == 'lgamma':
+            elikiwa fn == 'lgamma':
                 # we use a weaker accuracy test kila lgamma;
                 # lgamma only achieves an absolute error of
                 # a few multiples of the machine accuracy, in
                 # general.
                 abs_tol = 1e-15
 
-            lasivyo fn == 'erfc' na arg >= 0.0:
+            elikiwa fn == 'erfc' na arg >= 0.0:
                 # erfc has less-than-ideal accuracy kila large
                 # arguments (x ~ 25 ama so), mainly due to the
                 # error involved kwenye computing exp(-x*x).
@@ -1636,7 +1636,7 @@ kundi MathTests(unittest.TestCase):
                 #
                 ikiwa arg < 1.0:
                     ulp_tol = 10
-                lasivyo arg < 10.0:
+                elikiwa arg < 10.0:
                     ulp_tol = 100
                 isipokua:
                     ulp_tol = 1000
@@ -1765,14 +1765,14 @@ kundi IsCloseTests(unittest.TestCase):
             self.assertIsNotClose(a, b, *args, **kwargs)
 
     eleza test_negative_tolerances(self):
-        # ValueError should be ashiriad ikiwa either tolerance ni less than zero
+        # ValueError should be raised ikiwa either tolerance ni less than zero
         ukijumuisha self.assertRaises(ValueError):
             self.assertIsClose(1, 1, rel_tol=-1e-100)
         ukijumuisha self.assertRaises(ValueError):
             self.assertIsClose(1, 1, rel_tol=1e-100, abs_tol=-1e10)
 
     eleza test_identical(self):
-        # identical values must test kama close
+        # identical values must test as close
         identical_examples = [(2.0, 2.0),
                               (0.1e200, 0.1e200),
                               (1.123e-300, 1.123e-300),

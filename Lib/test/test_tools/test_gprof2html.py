@@ -22,8 +22,8 @@ kundi Gprof2htmlTests(unittest.TestCase):
 
     eleza test_gprof(self):
         # Issue #14508: this used to fail ukijumuisha a NameError.
-        ukijumuisha mock.patch.object(self.gprof, 'webbrowser') kama wmock, \
-                tempfile.TemporaryDirectory() kama tmpdir:
+        ukijumuisha mock.patch.object(self.gprof, 'webbrowser') as wmock, \
+                tempfile.TemporaryDirectory() as tmpdir:
             fn = os.path.join(tmpdir, 'abc')
             open(fn, 'w').close()
             sys.argv = ['gprof2html', fn]

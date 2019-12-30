@@ -18,7 +18,7 @@ It will also support lambdas:
 """
 # Author: Collin Winter
 
-# Local agizas
+# Local imports
 kutoka .. agiza pytree
 kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
@@ -77,7 +77,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
 
         ikiwa args.type == syms.tfpdef:
             handle_tuple(args)
-        lasivyo args.type == syms.typedargslist:
+        elikiwa args.type == syms.typedargslist:
             kila i, arg kwenye enumerate(args.children):
                 ikiwa arg.type == syms.tfpdef:
                     # Without add_prefix, the emitted code ni correct,
@@ -85,7 +85,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
                     handle_tuple(arg, add_prefix=(i > 0))
 
         ikiwa sio new_lines:
-            rudisha
+            return
 
         # This isn't strictly necessary, but it plays nicely ukijumuisha other fixers.
         # TODO(cwinter) get rid of this when children becomes a smart list
@@ -96,7 +96,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
         after = start
         ikiwa start == 0:
             new_lines[0].prefix = " "
-        lasivyo is_docstring(suite[0].children[start]):
+        elikiwa is_docstring(suite[0].children[start]):
             new_lines[0].prefix = indent
             after = start + 1
 
@@ -117,7 +117,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
             inner = inner.clone()
             inner.prefix = " "
             args.replace(inner)
-            rudisha
+            return
 
         params = find_params(args)
         to_index = map_to_index(params)
@@ -139,18 +139,18 @@ kundi FixTupleParams(fixer_base.BaseFix):
 eleza simplify_args(node):
     ikiwa node.type kwenye (syms.vfplist, token.NAME):
         rudisha node
-    lasivyo node.type == syms.vfpdef:
+    elikiwa node.type == syms.vfpdef:
         # These look like vfpdef< '(' x ')' > where x ni NAME
         # ama another vfpeleza instance (leading to recursion).
         wakati node.type == syms.vfpdef:
             node = node.children[1]
         rudisha node
-    ashiria RuntimeError("Received unexpected node %s" % node)
+     ashiria RuntimeError("Received unexpected node %s" % node)
 
 eleza find_params(node):
     ikiwa node.type == syms.vfpdef:
         rudisha find_params(node.children[1])
-    lasivyo node.type == token.NAME:
+    elikiwa node.type == token.NAME:
         rudisha node.value
     rudisha [find_params(c) kila c kwenye node.children ikiwa c.type != token.COMMA]
 

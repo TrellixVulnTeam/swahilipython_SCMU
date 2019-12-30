@@ -22,12 +22,12 @@ __all__ = ["Awaitable", "Coroutine",
 
 # This module has been renamed kutoka collections.abc to _collections_abc to
 # speed up interpreter startup. Some of the types such as MutableMapping are
-# required early but collections module agizas a lot of other modules.
+# required early but collections module imports a lot of other modules.
 # See issue #19218
 __name__ = "collections.abc"
 
-# Private list of types that we want to register with the various ABCs
-# so that they will pita tests like:
+# Private list of types that we want to register ukijumuisha the various ABCs
+# so that they will pass tests like:
 #       it = iter(somebytearray)
 #       assert isinstance(it, Iterable)
 # Note:  kwenye other implementations, these types might sio be distinct
@@ -53,15 +53,15 @@ dict_values = type({}.values())
 dict_items = type({}.items())
 ## misc ##
 mappingproxy = type(type.__dict__)
-generator = type((lambda: (tuma))())
+generator = type((lambda: (yield))())
 ## coroutine ##
-async eleza _coro(): pita
+async eleza _coro(): pass
 _coro = _coro()
 coroutine = type(_coro)
 _coro.close()  # Prevent ResourceWarning
 toa _coro
 ## asynchronous generator ##
-async eleza _ag(): tuma
+async eleza _ag(): yield
 _ag = _ag()
 async_generator = type(_ag)
 toa _ag
@@ -102,7 +102,7 @@ kundi Awaitable(metaclass=ABCMeta):
 
     @abstractmethod
     eleza __await__(self):
-        tuma
+        yield
 
     @classmethod
     eleza __subclasshook__(cls, C):
@@ -118,32 +118,32 @@ kundi Coroutine(Awaitable):
     @abstractmethod
     eleza send(self, value):
         """Send a value into the coroutine.
-        Return next tumaed value ama ashiria StopIteration.
+        Return next yielded value ama  ashiria StopIteration.
         """
-        ashiria StopIteration
+         ashiria StopIteration
 
     @abstractmethod
     eleza throw(self, typ, val=Tupu, tb=Tupu):
         """Raise an exception kwenye the coroutine.
-        Return next tumaed value ama ashiria StopIteration.
+        Return next yielded value ama  ashiria StopIteration.
         """
         ikiwa val ni Tupu:
             ikiwa tb ni Tupu:
-                ashiria typ
+                 ashiria typ
             val = typ()
         ikiwa tb ni sio Tupu:
             val = val.with_traceback(tb)
-        ashiria val
+         ashiria val
 
     eleza close(self):
         """Raise GeneratorExit inside coroutine.
         """
         jaribu:
             self.throw(GeneratorExit)
-        tatizo (GeneratorExit, StopIteration):
-            pita
+        except (GeneratorExit, StopIteration):
+            pass
         isipokua:
-            ashiria RuntimeError("coroutine ignored GeneratorExit")
+             ashiria RuntimeError("coroutine ignored GeneratorExit")
 
     @classmethod
     eleza __subclasshook__(cls, C):
@@ -176,8 +176,8 @@ kundi AsyncIterator(AsyncIterable):
 
     @abstractmethod
     async eleza __anext__(self):
-        """Return the next item ama ashiria StopAsyncIteration when exhausted."""
-        ashiria StopAsyncIteration
+        """Return the next item ama  ashiria StopAsyncIteration when exhausted."""
+         ashiria StopAsyncIteration
 
     eleza __aiter__(self):
         rudisha self
@@ -195,39 +195,39 @@ kundi AsyncGenerator(AsyncIterator):
 
     async eleza __anext__(self):
         """Return the next item kutoka the asynchronous generator.
-        When exhausted, ashiria StopAsyncIteration.
+        When exhausted,  ashiria StopAsyncIteration.
         """
         rudisha await self.asend(Tupu)
 
     @abstractmethod
     async eleza asend(self, value):
         """Send a value into the asynchronous generator.
-        Return next tumaed value ama ashiria StopAsyncIteration.
+        Return next yielded value ama  ashiria StopAsyncIteration.
         """
-        ashiria StopAsyncIteration
+         ashiria StopAsyncIteration
 
     @abstractmethod
     async eleza athrow(self, typ, val=Tupu, tb=Tupu):
         """Raise an exception kwenye the asynchronous generator.
-        Return next tumaed value ama ashiria StopAsyncIteration.
+        Return next yielded value ama  ashiria StopAsyncIteration.
         """
         ikiwa val ni Tupu:
             ikiwa tb ni Tupu:
-                ashiria typ
+                 ashiria typ
             val = typ()
         ikiwa tb ni sio Tupu:
             val = val.with_traceback(tb)
-        ashiria val
+         ashiria val
 
     async eleza aclose(self):
         """Raise GeneratorExit inside coroutine.
         """
         jaribu:
             await self.athrow(GeneratorExit)
-        tatizo (GeneratorExit, StopAsyncIteration):
-            pita
+        except (GeneratorExit, StopAsyncIteration):
+            pass
         isipokua:
-            ashiria RuntimeError("asynchronous generator ignored GeneratorExit")
+             ashiria RuntimeError("asynchronous generator ignored GeneratorExit")
 
     @classmethod
     eleza __subclasshook__(cls, C):
@@ -262,8 +262,8 @@ kundi Iterator(Iterable):
 
     @abstractmethod
     eleza __next__(self):
-        'Return the next item kutoka the iterator. When exhausted, ashiria StopIteration'
-        ashiria StopIteration
+        'Return the next item kutoka the iterator. When exhausted,  ashiria StopIteration'
+         ashiria StopIteration
 
     eleza __iter__(self):
         rudisha self
@@ -312,39 +312,39 @@ kundi Generator(Iterator):
 
     eleza __next__(self):
         """Return the next item kutoka the generator.
-        When exhausted, ashiria StopIteration.
+        When exhausted,  ashiria StopIteration.
         """
         rudisha self.send(Tupu)
 
     @abstractmethod
     eleza send(self, value):
         """Send a value into the generator.
-        Return next tumaed value ama ashiria StopIteration.
+        Return next yielded value ama  ashiria StopIteration.
         """
-        ashiria StopIteration
+         ashiria StopIteration
 
     @abstractmethod
     eleza throw(self, typ, val=Tupu, tb=Tupu):
         """Raise an exception kwenye the generator.
-        Return next tumaed value ama ashiria StopIteration.
+        Return next yielded value ama  ashiria StopIteration.
         """
         ikiwa val ni Tupu:
             ikiwa tb ni Tupu:
-                ashiria typ
+                 ashiria typ
             val = typ()
         ikiwa tb ni sio Tupu:
             val = val.with_traceback(tb)
-        ashiria val
+         ashiria val
 
     eleza close(self):
         """Raise GeneratorExit inside generator.
         """
         jaribu:
             self.throw(GeneratorExit)
-        tatizo (GeneratorExit, StopIteration):
-            pita
+        except (GeneratorExit, StopIteration):
+            pass
         isipokua:
-            ashiria RuntimeError("generator ignored GeneratorExit")
+             ashiria RuntimeError("generator ignored GeneratorExit")
 
     @classmethod
     eleza __subclasshook__(cls, C):
@@ -418,7 +418,7 @@ kundi Set(Collection):
     """A set ni a finite, iterable container.
 
     This kundi provides concrete generic implementations of all
-    methods tatizo kila __contains__, __iter__ na __len__.
+    methods except kila __contains__, __iter__ na __len__.
 
     To override the comparisons (presumably kila speed, as the
     semantics are fixed), redefine __le__ na __ge__,
@@ -433,7 +433,7 @@ kundi Set(Collection):
         ikiwa len(self) > len(other):
             rudisha Uongo
         kila elem kwenye self:
-            ikiwa elem haiko kwenye other:
+            ikiwa elem sio kwenye other:
                 rudisha Uongo
         rudisha Kweli
 
@@ -453,7 +453,7 @@ kundi Set(Collection):
         ikiwa len(self) < len(other):
             rudisha Uongo
         kila elem kwenye other:
-            ikiwa elem haiko kwenye self:
+            ikiwa elem sio kwenye self:
                 rudisha Uongo
         rudisha Kweli
 
@@ -499,7 +499,7 @@ kundi Set(Collection):
                 rudisha NotImplemented
             other = self._from_iterable(other)
         rudisha self._from_iterable(value kila value kwenye self
-                                   ikiwa value haiko kwenye other)
+                                   ikiwa value sio kwenye other)
 
     eleza __rsub__(self, other):
         ikiwa sio isinstance(other, Set):
@@ -507,7 +507,7 @@ kundi Set(Collection):
                 rudisha NotImplemented
             other = self._from_iterable(other)
         rudisha self._from_iterable(value kila value kwenye other
-                                   ikiwa value haiko kwenye self)
+                                   ikiwa value sio kwenye self)
 
     eleza __xor__(self, other):
         ikiwa sio isinstance(other, Set):
@@ -528,7 +528,7 @@ kundi Set(Collection):
         This must be compatible __eq__.
 
         All sets ought to compare equal ikiwa they contain the same
-        elements, regardless of how they are implemented, na
+        elements, regardless of how they are implemented, and
         regardless of the order of the elements; so there's sio much
         freedom kila __eq__ ama __hash__.  We match the algorithm used
         by the built-in frozenset type.
@@ -557,11 +557,11 @@ kundi MutableSet(Set):
     """A mutable set ni a finite, iterable container.
 
     This kundi provides concrete generic implementations of all
-    methods tatizo kila __contains__, __iter__, __len__,
+    methods except kila __contains__, __iter__, __len__,
     add(), na discard().
 
     To override the comparisons (presumably kila speed, as the
-    semantics are fixed), all you have to do ni redefine __le__ na
+    semantics are fixed), all you have to do ni redefine __le__ and
     then the other operations will automatically follow suit.
     """
 
@@ -570,17 +570,17 @@ kundi MutableSet(Set):
     @abstractmethod
     eleza add(self, value):
         """Add an element."""
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     @abstractmethod
     eleza discard(self, value):
-        """Remove an element.  Do sio ashiria an exception ikiwa absent."""
-        ashiria NotImplementedError
+        """Remove an element.  Do sio  ashiria an exception ikiwa absent."""
+         ashiria NotImplementedError
 
     eleza remove(self, value):
-        """Remove an element. If sio a member, ashiria a KeyError."""
-        ikiwa value haiko kwenye self:
-            ashiria KeyError(value)
+        """Remove an element. If sio a member,  ashiria a KeyError."""
+        ikiwa value sio kwenye self:
+             ashiria KeyError(value)
         self.discard(value)
 
     eleza pop(self):
@@ -588,8 +588,8 @@ kundi MutableSet(Set):
         it = iter(self)
         jaribu:
             value = next(it)
-        tatizo StopIteration:
-            ashiria KeyError kutoka Tupu
+        except StopIteration:
+             ashiria KeyError kutoka Tupu
         self.discard(value)
         rudisha value
 
@@ -598,8 +598,8 @@ kundi MutableSet(Set):
         jaribu:
             wakati Kweli:
                 self.pop()
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
 
     eleza __ior__(self, it):
         kila value kwenye it:
@@ -646,25 +646,25 @@ kundi Mapping(Collection):
     pairs.
 
     This kundi provides concrete generic implementations of all
-    methods tatizo kila __getitem__, __iter__, na __len__.
+    methods except kila __getitem__, __iter__, na __len__.
 
     """
 
     @abstractmethod
     eleza __getitem__(self, key):
-        ashiria KeyError
+         ashiria KeyError
 
     eleza get(self, key, default=Tupu):
         'D.get(k[,d]) -> D[k] ikiwa k kwenye D, isipokua d.  d defaults to Tupu.'
         jaribu:
             rudisha self[key]
-        tatizo KeyError:
+        except KeyError:
             rudisha default
 
     eleza __contains__(self, key):
         jaribu:
             self[key]
-        tatizo KeyError:
+        except KeyError:
             rudisha Uongo
         isipokua:
             rudisha Kweli
@@ -734,7 +734,7 @@ kundi ItemsView(MappingView, Set):
         key, value = item
         jaribu:
             v = self._mapping[key]
-        tatizo KeyError:
+        except KeyError:
             rudisha Uongo
         isipokua:
             rudisha v ni value ama v == value
@@ -772,18 +772,18 @@ kundi MutableMapping(Mapping):
     key/value pairs.
 
     This kundi provides concrete generic implementations of all
-    methods tatizo kila __getitem__, __setitem__, __delitem__,
+    methods except kila __getitem__, __setitem__, __delitem__,
     __iter__, na __len__.
 
     """
 
     @abstractmethod
     eleza __setitem__(self, key, value):
-        ashiria KeyError
+         ashiria KeyError
 
     @abstractmethod
     eleza __delitem__(self, key):
-        ashiria KeyError
+         ashiria KeyError
 
     __marker = object()
 
@@ -793,7 +793,7 @@ kundi MutableMapping(Mapping):
         '''
         jaribu:
             value = self[key]
-        tatizo KeyError:
+        except KeyError:
             ikiwa default ni self.__marker:
                 raise
             rudisha default
@@ -803,12 +803,12 @@ kundi MutableMapping(Mapping):
 
     eleza popitem(self):
         '''D.popitem() -> (k, v), remove na rudisha some (key, value) pair
-           as a 2-tuple; but ashiria KeyError ikiwa D ni empty.
+           as a 2-tuple; but  ashiria KeyError ikiwa D ni empty.
         '''
         jaribu:
             key = next(iter(self))
-        tatizo StopIteration:
-            ashiria KeyError kutoka Tupu
+        except StopIteration:
+             ashiria KeyError kutoka Tupu
         value = self[key]
         toa self[key]
         rudisha key, value
@@ -818,8 +818,8 @@ kundi MutableMapping(Mapping):
         jaribu:
             wakati Kweli:
                 self.popitem()
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
 
     eleza update(self, other=(), /, **kwds):
         ''' D.update([E, ]**F) -> Tupu.  Update D kutoka mapping/iterable E na F.
@@ -830,7 +830,7 @@ kundi MutableMapping(Mapping):
         ikiwa isinstance(other, Mapping):
             kila key kwenye other:
                 self[key] = other[key]
-        lasivyo hasattr(other, "keys"):
+        elikiwa hasattr(other, "keys"):
             kila key kwenye other.keys():
                 self[key] = other[key]
         isipokua:
@@ -840,10 +840,10 @@ kundi MutableMapping(Mapping):
             self[key] = value
 
     eleza setdefault(self, key, default=Tupu):
-        'D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d ikiwa k haiko kwenye D'
+        'D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d ikiwa k sio kwenye D'
         jaribu:
             rudisha self[key]
-        tatizo KeyError:
+        except KeyError:
             self[key] = default
         rudisha default
 
@@ -865,7 +865,7 @@ kundi Sequence(Reversible, Collection):
 
     @abstractmethod
     eleza __getitem__(self, index):
-        ashiria IndexError
+         ashiria IndexError
 
     eleza __iter__(self):
         i = 0
@@ -874,7 +874,7 @@ kundi Sequence(Reversible, Collection):
                 v = self[i]
                 tuma v
                 i += 1
-        tatizo IndexError:
+        except IndexError:
             return
 
     eleza __contains__(self, value):
@@ -905,10 +905,10 @@ kundi Sequence(Reversible, Collection):
                 v = self[i]
                 ikiwa v ni value ama v == value:
                     rudisha i
-            tatizo IndexError:
+            except IndexError:
                 koma
             i += 1
-        ashiria ValueError
+         ashiria ValueError
 
     eleza count(self, value):
         'S.count(value) -> integer -- rudisha number of occurrences of value'
@@ -946,16 +946,16 @@ kundi MutableSequence(Sequence):
 
     @abstractmethod
     eleza __setitem__(self, index, value):
-        ashiria IndexError
+         ashiria IndexError
 
     @abstractmethod
     eleza __delitem__(self, index):
-        ashiria IndexError
+         ashiria IndexError
 
     @abstractmethod
     eleza insert(self, index, value):
         'S.insert(index, value) -- insert value before index'
-        ashiria IndexError
+         ashiria IndexError
 
     eleza append(self, value):
         'S.append(value) -- append value to the end of the sequence'
@@ -966,8 +966,8 @@ kundi MutableSequence(Sequence):
         jaribu:
             wakati Kweli:
                 self.pop()
-        tatizo IndexError:
-            pita
+        except IndexError:
+            pass
 
     eleza reverse(self):
         'S.reverse() -- reverse *IN PLACE*'

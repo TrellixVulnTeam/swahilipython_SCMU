@@ -55,7 +55,7 @@ kundi Math:
         # to work
         ikiwa method == 'add':
             rudisha "add(2,3) => 5"
-        lasivyo method == 'pow':
+        elikiwa method == 'pow':
             rudisha "pow(x, y[, z]) => number"
         isipokua:
             # By convention, rudisha empty
@@ -64,10 +64,10 @@ kundi Math:
     eleza _dispatch(self, method, params):
         ikiwa method == 'pow':
             rudisha pow(*params)
-        lasivyo method == 'add':
+        elikiwa method == 'add':
             rudisha params[0] + params[1]
         isipokua:
-            ashiria ValueError('bad method')
+             ashiria ValueError('bad method')
 
 server = SimpleXMLRPCServer(("localhost", 8000))
 server.register_introspection_functions()
@@ -83,8 +83,8 @@ kundi MathServer(SimpleXMLRPCServer):
             # callable through XML-RPC to prevent potential security
             # problems
             func = getattr(self, 'export_' + method)
-        tatizo AttributeError:
-            ashiria Exception('method "%s" ni sio supported' % method)
+        except AttributeError:
+             ashiria Exception('method "%s" ni sio supported' % method)
         isipokua:
             rudisha func(*params)
 
@@ -118,7 +118,7 @@ agiza pydoc
 agiza traceback
 jaribu:
     agiza fcntl
-tatizo ImportError:
+except ImportError:
     fcntl = Tupu
 
 eleza resolve_dotted_attribute(obj, attr, allow_dotted_names=Kweli):
@@ -138,7 +138,7 @@ eleza resolve_dotted_attribute(obj, attr, allow_dotted_names=Kweli):
 
     kila i kwenye attrs:
         ikiwa i.startswith('_'):
-            ashiria AttributeError(
+             ashiria AttributeError(
                 'attempt to access private attribute "%s"' % i
                 )
         isipokua:
@@ -150,7 +150,7 @@ eleza list_public_methods(obj):
     object, which represent callable attributes"""
 
     rudisha [member kila member kwenye dir(obj)
-                ikiwa sio member.startswith('_') na
+                ikiwa sio member.startswith('_') and
                     callable(getattr(obj, member))]
 
 kundi SimpleXMLRPCDispatcher:
@@ -176,8 +176,8 @@ kundi SimpleXMLRPCDispatcher:
         Only one instance can be installed at a time.
 
         If the registered instance has a _dispatch method then that
-        method will be called ukijumuisha the name of the XML-RPC method na
-        its parameters kama a tuple
+        method will be called ukijumuisha the name of the XML-RPC method and
+        its parameters as a tuple
         e.g. instance._dispatch('add',(2,3))
 
         If the registered instance does sio have a _dispatch method
@@ -191,7 +191,7 @@ kundi SimpleXMLRPCDispatcher:
 
         If the optional allow_dotted_names argument ni true na the
         instance does sio have a _dispatch method, method names
-        containing dots are supported na resolved, kama long kama none of
+        containing dots are supported na resolved, as long as none of
         the name segments start ukijumuisha an '_'.
 
             *** SECURITY WARNING: ***
@@ -245,9 +245,9 @@ kundi SimpleXMLRPCDispatcher:
         """Dispatches an XML-RPC method kutoka marshalled (XML) data.
 
         XML-RPC methods are dispatched kutoka the marshalled (XML) data
-        using the _dispatch method na the result ni rudishaed as
+        using the _dispatch method na the result ni returned as
         marshalled data. For backwards compatibility, a dispatch
-        function can be provided kama an argument (see comment in
+        function can be provided as an argument (see comment in
         SimpleXMLRPCRequestHandler.do_POST) but overriding the
         existing method through subclassing ni the preferred means
         of changing method dispatch behavior.
@@ -265,7 +265,7 @@ kundi SimpleXMLRPCDispatcher:
             response = (response,)
             response = dumps(response, methodresponse=1,
                              allow_none=self.allow_none, encoding=self.encoding)
-        tatizo Fault kama fault:
+        except Fault as fault:
             response = dumps(fault, allow_none=self.allow_none,
                              encoding=self.encoding)
         tatizo:
@@ -296,7 +296,7 @@ kundi SimpleXMLRPCDispatcher:
             # ikiwa the instance has a _dispatch method then we
             # don't have enough information to provide a list
             # of methods
-            lasivyo sio hasattr(self.instance, '_dispatch'):
+            elikiwa sio hasattr(self.instance, '_dispatch'):
                 methods |= set(list_public_methods(self.instance))
         rudisha sorted(methods)
 
@@ -304,8 +304,8 @@ kundi SimpleXMLRPCDispatcher:
         """system.methodSignature('add') => [double, int, int]
 
         Returns a list describing the signature of the method. In the
-        above example, the add method takes two integers kama arguments
-        na rudishas a double result.
+        above example, the add method takes two integers as arguments
+        na returns a double result.
 
         This server does NOT support system.methodSignature."""
 
@@ -321,21 +321,21 @@ kundi SimpleXMLRPCDispatcher:
         method = Tupu
         ikiwa method_name kwenye self.funcs:
             method = self.funcs[method_name]
-        lasivyo self.instance ni sio Tupu:
+        elikiwa self.instance ni sio Tupu:
             # Instance can implement _methodHelp to rudisha help kila a method
             ikiwa hasattr(self.instance, '_methodHelp'):
                 rudisha self.instance._methodHelp(method_name)
             # ikiwa the instance has a _dispatch method then we
             # don't have enough information to provide help
-            lasivyo sio hasattr(self.instance, '_dispatch'):
+            elikiwa sio hasattr(self.instance, '_dispatch'):
                 jaribu:
                     method = resolve_dotted_attribute(
                                 self.instance,
                                 method_name,
                                 self.allow_dotted_names
                                 )
-                tatizo AttributeError:
-                    pita
+                except AttributeError:
+                    pass
 
         # Note that we aren't checking that the method actually
         # be a callable object of some kind
@@ -363,7 +363,7 @@ kundi SimpleXMLRPCDispatcher:
                 # XXX A marshalling error kwenye any response will fail the entire
                 # multicall. If someone cares they should fix this.
                 results.append([self._dispatch(method_name, params)])
-            tatizo Fault kama fault:
+            except Fault as fault:
                 results.append(
                     {'faultCode' : fault.faultCode,
                      'faultString' : fault.faultString}
@@ -389,8 +389,8 @@ kundi SimpleXMLRPCDispatcher:
         ikiwa available.
 
         If the registered instance has a _dispatch method then that
-        method will be called ukijumuisha the name of the XML-RPC method na
-        its parameters kama a tuple
+        method will be called ukijumuisha the name of the XML-RPC method and
+        its parameters as a tuple
         e.g. instance._dispatch('add',(2,3))
 
         If the registered instance does sio have a _dispatch method
@@ -404,12 +404,12 @@ kundi SimpleXMLRPCDispatcher:
         jaribu:
             # call the matching registered function
             func = self.funcs[method]
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
         isipokua:
             ikiwa func ni sio Tupu:
                 rudisha func(*params)
-            ashiria Exception('method "%s" ni sio supported' % method)
+             ashiria Exception('method "%s" ni sio supported' % method)
 
         ikiwa self.instance ni sio Tupu:
             ikiwa hasattr(self.instance, '_dispatch'):
@@ -423,13 +423,13 @@ kundi SimpleXMLRPCDispatcher:
                     method,
                     self.allow_dotted_names
                 )
-            tatizo AttributeError:
-                pita
+            except AttributeError:
+                pass
             isipokua:
                 ikiwa func ni sio Tupu:
                     rudisha func(*params)
 
-        ashiria Exception('method "%s" ni sio supported' % method)
+         ashiria Exception('method "%s" ni sio supported' % method)
 
 kundi SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
     """Simple XML-RPC request handler class.
@@ -477,14 +477,14 @@ kundi SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
     eleza do_POST(self):
         """Handles the HTTP POST request.
 
-        Attempts to interpret all HTTP POST requests kama XML-RPC calls,
+        Attempts to interpret all HTTP POST requests as XML-RPC calls,
         which are forwarded to the server's _dispatch method kila handling.
         """
 
         # Check that the path ni legal
         ikiwa sio self.is_rpc_path_valid():
             self.report_404()
-            rudisha
+            return
 
         jaribu:
             # Get arguments by reading body of request.
@@ -515,8 +515,8 @@ kundi SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
             response = self.server._marshaled_dispatch(
                     data, getattr(self, '_dispatch', Tupu), self.path
                 )
-        tatizo Exception kama e: # This should only happen ikiwa the module ni buggy
-            # internal error, report kama HTTP server error
+        except Exception as e: # This should only happen ikiwa the module ni buggy
+            # internal error, report as HTTP server error
             self.send_response(500)
 
             # Send information about the exception ikiwa requested
@@ -539,8 +539,8 @@ kundi SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
                         jaribu:
                             response = gzip_encode(response)
                             self.send_header("Content-Encoding", "gzip")
-                        tatizo NotImplementedError:
-                            pita
+                        except NotImplementedError:
+                            pass
             self.send_header("Content-length", str(len(response)))
             self.end_headers()
             self.wfile.write(response)
@@ -553,9 +553,9 @@ kundi SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
         ikiwa encoding == "gzip":
             jaribu:
                 rudisha gzip_decode(data)
-            tatizo NotImplementedError:
+            except NotImplementedError:
                 self.send_response(501, "encoding %r sio supported" % encoding)
-            tatizo ValueError:
+            except ValueError:
                 self.send_response(400, "error decoding gzip content")
         isipokua:
             self.send_response(501, "encoding %r sio supported" % encoding)
@@ -591,8 +591,8 @@ kundi SimpleXMLRPCServer(socketserver.TCPServer,
     allow_reuse_address = Kweli
 
     # Warning: this ni kila debugging purposes only! Never set this to Kweli in
-    # production code, kama will be sending out sensitive information (exception
-    # na stack trace details) when exceptions are ashiriad inside
+    # production code, as will be sending out sensitive information (exception
+    # na stack trace details) when exceptions are raised inside
     # SimpleXMLRPCRequestHandler.do_POST
     _send_traceback_header = Uongo
 
@@ -650,7 +650,7 @@ kundi MultiPathXMLRPCServer(SimpleXMLRPCServer):
         rudisha response
 
 kundi CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
-    """Simple handler kila XML-RPC data pitaed through CGI."""
+    """Simple handler kila XML-RPC data passed through CGI."""
 
     eleza __init__(self, allow_none=Uongo, encoding=Tupu, use_builtin_types=Uongo):
         SimpleXMLRPCDispatcher.__init__(self, allow_none, encoding, use_builtin_types)
@@ -693,7 +693,7 @@ kundi CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
         sys.stdout.buffer.flush()
 
     eleza handle_request(self, request_text=Tupu):
-        """Handle a single XML-RPC request pitaed through a CGI post method.
+        """Handle a single XML-RPC request passed through a CGI post method.
 
         If no XML data ni given then it ni read kutoka stdin. The resulting
         XML-RPC response ni printed to stdout along ukijumuisha the correct HTTP
@@ -707,7 +707,7 @@ kundi CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
             # POST data ni normally available through stdin
             jaribu:
                 length = int(os.environ.get('CONTENT_LENGTH', Tupu))
-            tatizo (ValueError, TypeError):
+            except (ValueError, TypeError):
                 length = -1
             ikiwa request_text ni Tupu:
                 request_text = sys.stdin.read(length)
@@ -729,7 +729,7 @@ kundi ServerHTMLDoc(pydoc.HTMLDoc):
         here = 0
 
         # XXX Note that this regular expression does sio allow kila the
-        # hyperlinking of arbitrary strings being used kama method
+        # hyperlinking of arbitrary strings being used as method
         # names. Only methods ukijumuisha names consisting of word characters
         # na '.'s are hyperlinked.
         pattern = re.compile(r'\b((http|ftp)://\S+[\w/]|'
@@ -746,15 +746,15 @@ kundi ServerHTMLDoc(pydoc.HTMLDoc):
             ikiwa scheme:
                 url = escape(all).replace('"', '&quot;')
                 results.append('<a href="%s">%s</a>' % (url, url))
-            lasivyo rfc:
+            elikiwa rfc:
                 url = 'http://www.rfc-editor.org/rfc/rfc%d.txt' % int(rfc)
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
-            lasivyo pep:
+            elikiwa pep:
                 url = 'http://www.python.org/dev/peps/pep-%04d/' % int(pep)
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
-            lasivyo text[end:end+1] == '(':
+            elikiwa text[end:end+1] == '(':
                 results.append(self.namelink(name, methods, funcs, classes))
-            lasivyo selfdot:
+            elikiwa selfdot:
                 results.append('self.<strong>%s</strong>' % name)
             isipokua:
                 results.append(self.namelink(name, classes))
@@ -819,7 +819,7 @@ kundi ServerHTMLDoc(pydoc.HTMLDoc):
 kundi XMLRPCDocGenerator:
     """Generates documentation kila an XML-RPC server.
 
-    This kundi ni designed kama mix-in na should not
+    This kundi ni designed as mix-in na should not
     be constructed directly.
     """
 
@@ -862,7 +862,7 @@ kundi XMLRPCDocGenerator:
         kila method_name kwenye self.system_listMethods():
             ikiwa method_name kwenye self.funcs:
                 method = self.funcs[method_name]
-            lasivyo self.instance ni sio Tupu:
+            elikiwa self.instance ni sio Tupu:
                 method_info = [Tupu, Tupu] # argspec, documentation
                 ikiwa hasattr(self.instance, '_get_method_argstring'):
                     method_info[0] = self.instance._get_method_argstring(method_name)
@@ -872,13 +872,13 @@ kundi XMLRPCDocGenerator:
                 method_info = tuple(method_info)
                 ikiwa method_info != (Tupu, Tupu):
                     method = method_info
-                lasivyo sio hasattr(self.instance, '_dispatch'):
+                elikiwa sio hasattr(self.instance, '_dispatch'):
                     jaribu:
                         method = resolve_dotted_attribute(
                                     self.instance,
                                     method_name
                                     )
-                    tatizo AttributeError:
+                    except AttributeError:
                         method = method_info
                 isipokua:
                     method = method_info
@@ -903,20 +903,20 @@ kundi DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
     Handles all HTTP POST requests na attempts to decode them as
     XML-RPC requests.
 
-    Handles all HTTP GET requests na interprets them kama requests
+    Handles all HTTP GET requests na interprets them as requests
     kila documentation.
     """
 
     eleza do_GET(self):
         """Handles the HTTP GET request.
 
-        Interpret all HTTP GET requests kama requests kila server
+        Interpret all HTTP GET requests as requests kila server
         documentation.
         """
         # Check that the path ni legal
         ikiwa sio self.is_rpc_path_valid():
             self.report_404()
-            rudisha
+            return
 
         response = self.server.generate_html_documentation().encode('utf-8')
         self.send_response(200)
@@ -943,13 +943,13 @@ kundi DocXMLRPCServer(  SimpleXMLRPCServer,
 
 kundi DocCGIXMLRPCRequestHandler(   CGIXMLRPCRequestHandler,
                                     XMLRPCDocGenerator):
-    """Handler kila XML-RPC data na documentation requests pitaed through
+    """Handler kila XML-RPC data na documentation requests passed through
     CGI"""
 
     eleza handle_get(self):
         """Handles the HTTP GET request.
 
-        Interpret all HTTP GET requests kama requests kila server
+        Interpret all HTTP GET requests as requests kila server
         documentation.
         """
 
@@ -979,7 +979,7 @@ ikiwa __name__ == '__main__':
             eleza getCurrentTime():
                 rudisha datetime.datetime.now()
 
-    ukijumuisha SimpleXMLRPCServer(("localhost", 8000)) kama server:
+    ukijumuisha SimpleXMLRPCServer(("localhost", 8000)) as server:
         server.register_function(pow)
         server.register_function(lambda x,y: x+y, 'add')
         server.register_instance(ExampleService(), allow_dotted_names=Kweli)
@@ -988,6 +988,6 @@ ikiwa __name__ == '__main__':
         andika('It ni advisable to run this example server within a secure, closed network.')
         jaribu:
             server.serve_forever()
-        tatizo KeyboardInterrupt:
+        except KeyboardInterrupt:
             andika("\nKeyboard interrupt received, exiting.")
             sys.exit(0)

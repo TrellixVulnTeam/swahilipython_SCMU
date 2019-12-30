@@ -37,10 +37,10 @@ kundi UnseekableIO(io.BytesIO):
         rudisha Uongo
 
     eleza tell(self):
-        ashiria io.UnsupportedOperation
+         ashiria io.UnsupportedOperation
 
     eleza seek(self, *args):
-        ashiria io.UnsupportedOperation
+         ashiria io.UnsupportedOperation
 
 
 kundi BaseTest(unittest.TestCase):
@@ -56,14 +56,14 @@ kundi BaseTest(unittest.TestCase):
 kundi TestGzip(BaseTest):
     eleza write_and_read_back(self, data, mode='b'):
         b_data = bytes(data)
-        ukijumuisha gzip.GzipFile(self.filename, 'w'+mode) kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'w'+mode) as f:
             l = f.write(data)
         self.assertEqual(l, len(b_data))
-        ukijumuisha gzip.GzipFile(self.filename, 'r'+mode) kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'r'+mode) as f:
             self.assertEqual(f.read(), b_data)
 
     eleza test_write(self):
-        ukijumuisha gzip.GzipFile(self.filename, 'wb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'wb') as f:
             f.write(data1 * 50)
 
             # Try flush na fileno.
@@ -78,18 +78,18 @@ kundi TestGzip(BaseTest):
 
     eleza test_write_read_with_pathlike_file(self):
         filename = pathlib.Path(self.filename)
-        ukijumuisha gzip.GzipFile(filename, 'w') kama f:
+        ukijumuisha gzip.GzipFile(filename, 'w') as f:
             f.write(data1 * 50)
         self.assertIsInstance(f.name, str)
-        ukijumuisha gzip.GzipFile(filename, 'a') kama f:
+        ukijumuisha gzip.GzipFile(filename, 'a') as f:
             f.write(data1)
-        ukijumuisha gzip.GzipFile(filename) kama f:
+        ukijumuisha gzip.GzipFile(filename) as f:
             d = f.read()
         self.assertEqual(d, data1 * 51)
         self.assertIsInstance(f.name, str)
 
     # The following test_write_xy methods test that write accepts
-    # the corresponding bytes-like object type kama input
+    # the corresponding bytes-like object type as input
     # na that the data written equals bytes(xy) kwenye all cases.
     eleza test_write_memoryview(self):
         self.write_and_read_back(memoryview(data1 * 50))
@@ -104,22 +104,22 @@ kundi TestGzip(BaseTest):
         self.write_and_read_back(array.array('I', data1 * 40))
 
     eleza test_write_incompatible_type(self):
-        # Test that non-bytes-like types ashiria TypeError.
+        # Test that non-bytes-like types  ashiria TypeError.
         # Issue #21560: attempts to write incompatible types
         # should sio affect the state of the fileobject
-        ukijumuisha gzip.GzipFile(self.filename, 'wb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'wb') as f:
             ukijumuisha self.assertRaises(TypeError):
                 f.write('')
             ukijumuisha self.assertRaises(TypeError):
                 f.write([])
             f.write(data1)
-        ukijumuisha gzip.GzipFile(self.filename, 'rb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'rb') as f:
             self.assertEqual(f.read(), data1)
 
     eleza test_read(self):
         self.test_write()
         # Try reading.
-        ukijumuisha gzip.GzipFile(self.filename, 'r') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'r') as f:
             d = f.read()
         self.assertEqual(d, data1*50)
 
@@ -127,7 +127,7 @@ kundi TestGzip(BaseTest):
         self.test_write()
         blocks = []
         nread = 0
-        ukijumuisha gzip.GzipFile(self.filename, 'r') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'r') as f:
             wakati Kweli:
                 d = f.read1()
                 ikiwa sio d:
@@ -147,7 +147,7 @@ kundi TestGzip(BaseTest):
         self.assertEqual(f.read(size), data1)
 
     eleza test_io_on_closed_object(self):
-        # Test that I/O operations on closed GzipFile objects ashiria a
+        # Test that I/O operations on closed GzipFile objects  ashiria a
         # ValueError, just like the corresponding functions on file objects.
 
         # Write to a file, open it kila reading, then close it.
@@ -177,10 +177,10 @@ kundi TestGzip(BaseTest):
     eleza test_append(self):
         self.test_write()
         # Append to the previous file
-        ukijumuisha gzip.GzipFile(self.filename, 'ab') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'ab') as f:
             f.write(data2 * 15)
 
-        ukijumuisha gzip.GzipFile(self.filename, 'rb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'rb') as f:
             d = f.read()
         self.assertEqual(d, (data1*50) + (data2*15))
 
@@ -188,14 +188,14 @@ kundi TestGzip(BaseTest):
         # Bug #1074261 was triggered when reading a file that contained
         # many, many members.  Create such a file na verify that reading it
         # works.
-        ukijumuisha gzip.GzipFile(self.filename, 'wb', 9) kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'wb', 9) as f:
             f.write(b'a')
         kila i kwenye range(0, 200):
-            ukijumuisha gzip.GzipFile(self.filename, "ab", 9) kama f: # append
+            ukijumuisha gzip.GzipFile(self.filename, "ab", 9) as f: # append
                 f.write(b'a')
 
         # Try reading the file
-        ukijumuisha gzip.GzipFile(self.filename, "rb") kama zgfile:
+        ukijumuisha gzip.GzipFile(self.filename, "rb") as zgfile:
             contents = b""
             wakati 1:
                 ztxt = zgfile.read(8192)
@@ -204,9 +204,9 @@ kundi TestGzip(BaseTest):
         self.assertEqual(contents, b'a'*201)
 
     eleza test_exclusive_write(self):
-        ukijumuisha gzip.GzipFile(self.filename, 'xb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'xb') as f:
             f.write(data1 * 50)
-        ukijumuisha gzip.GzipFile(self.filename, 'rb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'rb') as f:
             self.assertEqual(f.read(), data1 * 50)
         ukijumuisha self.assertRaises(FileExistsError):
             gzip.GzipFile(self.filename, 'xb')
@@ -216,8 +216,8 @@ kundi TestGzip(BaseTest):
         # performance.
         self.test_write()
 
-        ukijumuisha gzip.GzipFile(self.filename, 'rb') kama f:
-            ukijumuisha io.BufferedReader(f) kama r:
+        ukijumuisha gzip.GzipFile(self.filename, 'rb') as f:
+            ukijumuisha io.BufferedReader(f) as r:
                 lines = [line kila line kwenye r]
 
         self.assertEqual(lines, 50 * data1.splitlines(keepends=Kweli))
@@ -226,7 +226,7 @@ kundi TestGzip(BaseTest):
         self.test_write()
         # Try .readline() ukijumuisha varying line lengths
 
-        ukijumuisha gzip.GzipFile(self.filename, 'rb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'rb') as f:
             line_length = 0
             wakati 1:
                 L = f.readline(line_length)
@@ -238,10 +238,10 @@ kundi TestGzip(BaseTest):
         self.test_write()
         # Try .readlines()
 
-        ukijumuisha gzip.GzipFile(self.filename, 'rb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'rb') as f:
             L = f.readlines()
 
-        ukijumuisha gzip.GzipFile(self.filename, 'rb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'rb') as f:
             wakati 1:
                 L = f.readlines(150)
                 ikiwa L == []: koma
@@ -250,7 +250,7 @@ kundi TestGzip(BaseTest):
         self.test_write()
         # Try seek, read test
 
-        ukijumuisha gzip.GzipFile(self.filename) kama f:
+        ukijumuisha gzip.GzipFile(self.filename) as f:
             wakati 1:
                 oldpos = f.tell()
                 line1 = f.readline()
@@ -269,7 +269,7 @@ kundi TestGzip(BaseTest):
         self.test_write()
         # Try seek(whence=1), read test
 
-        ukijumuisha gzip.GzipFile(self.filename) kama f:
+        ukijumuisha gzip.GzipFile(self.filename) as f:
             f.read(10)
             f.seek(10, whence=1)
             y = f.read(10)
@@ -277,36 +277,36 @@ kundi TestGzip(BaseTest):
 
     eleza test_seek_write(self):
         # Try seek, write test
-        ukijumuisha gzip.GzipFile(self.filename, 'w') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'w') as f:
             kila pos kwenye range(0, 256, 16):
                 f.seek(pos)
                 f.write(b'GZ\n')
 
     eleza test_mode(self):
         self.test_write()
-        ukijumuisha gzip.GzipFile(self.filename, 'r') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'r') as f:
             self.assertEqual(f.myfileobj.mode, 'rb')
         support.unlink(self.filename)
-        ukijumuisha gzip.GzipFile(self.filename, 'x') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'x') as f:
             self.assertEqual(f.myfileobj.mode, 'xb')
 
     eleza test_1647484(self):
         kila mode kwenye ('wb', 'rb'):
-            ukijumuisha gzip.GzipFile(self.filename, mode) kama f:
+            ukijumuisha gzip.GzipFile(self.filename, mode) as f:
                 self.assertKweli(hasattr(f, "name"))
                 self.assertEqual(f.name, self.filename)
 
     eleza test_paddedfile_getattr(self):
         self.test_write()
-        ukijumuisha gzip.GzipFile(self.filename, 'rb') kama f:
+        ukijumuisha gzip.GzipFile(self.filename, 'rb') as f:
             self.assertKweli(hasattr(f.fileobj, "name"))
             self.assertEqual(f.fileobj.name, self.filename)
 
     eleza test_mtime(self):
         mtime = 123456789
-        ukijumuisha gzip.GzipFile(self.filename, 'w', mtime = mtime) kama fWrite:
+        ukijumuisha gzip.GzipFile(self.filename, 'w', mtime = mtime) as fWrite:
             fWrite.write(data1)
-        ukijumuisha gzip.GzipFile(self.filename) kama fRead:
+        ukijumuisha gzip.GzipFile(self.filename) as fRead:
             self.assertKweli(hasattr(fRead, 'mtime'))
             self.assertIsTupu(fRead.mtime)
             dataRead = fRead.read()
@@ -316,10 +316,10 @@ kundi TestGzip(BaseTest):
     eleza test_metadata(self):
         mtime = 123456789
 
-        ukijumuisha gzip.GzipFile(self.filename, 'w', mtime = mtime) kama fWrite:
+        ukijumuisha gzip.GzipFile(self.filename, 'w', mtime = mtime) as fWrite:
             fWrite.write(data1)
 
-        ukijumuisha open(self.filename, 'rb') kama fRead:
+        ukijumuisha open(self.filename, 'rb') as fRead:
             # see RFC 1952: http://www.faqs.org/rfcs/rfc1952.html
 
             idBytes = fRead.read(2)
@@ -360,34 +360,34 @@ kundi TestGzip(BaseTest):
 
     eleza test_with_open(self):
         # GzipFile supports the context management protocol
-        ukijumuisha gzip.GzipFile(self.filename, "wb") kama f:
+        ukijumuisha gzip.GzipFile(self.filename, "wb") as f:
             f.write(b"xxx")
         f = gzip.GzipFile(self.filename, "rb")
         f.close()
         jaribu:
             ukijumuisha f:
-                pita
-        tatizo ValueError:
-            pita
+                pass
+        except ValueError:
+            pass
         isipokua:
-            self.fail("__enter__ on a closed file didn't ashiria an exception")
+            self.fail("__enter__ on a closed file didn't  ashiria an exception")
         jaribu:
-            ukijumuisha gzip.GzipFile(self.filename, "wb") kama f:
+            ukijumuisha gzip.GzipFile(self.filename, "wb") as f:
                 1/0
-        tatizo ZeroDivisionError:
-            pita
+        except ZeroDivisionError:
+            pass
         isipokua:
-            self.fail("1/0 didn't ashiria an exception")
+            self.fail("1/0 didn't  ashiria an exception")
 
     eleza test_zero_padded_file(self):
-        ukijumuisha gzip.GzipFile(self.filename, "wb") kama f:
+        ukijumuisha gzip.GzipFile(self.filename, "wb") as f:
             f.write(data1 * 50)
 
         # Pad the file ukijumuisha zeroes
-        ukijumuisha open(self.filename, "ab") kama f:
+        ukijumuisha open(self.filename, "ab") as f:
             f.write(b"\x00" * 50)
 
-        ukijumuisha gzip.GzipFile(self.filename, "rb") kama f:
+        ukijumuisha gzip.GzipFile(self.filename, "rb") as f:
             d = f.read()
             self.assertEqual(d, data1 * 50, "Incorrect data kwenye file")
 
@@ -395,24 +395,24 @@ kundi TestGzip(BaseTest):
         self.assertKweli(issubclass(gzip.BadGzipFile, OSError))
 
     eleza test_bad_gzip_file(self):
-        ukijumuisha open(self.filename, 'wb') kama file:
+        ukijumuisha open(self.filename, 'wb') as file:
             file.write(data1 * 50)
-        ukijumuisha gzip.GzipFile(self.filename, 'r') kama file:
+        ukijumuisha gzip.GzipFile(self.filename, 'r') as file:
             self.assertRaises(gzip.BadGzipFile, file.readlines)
 
     eleza test_non_seekable_file(self):
         uncompressed = data1 * 50
         buf = UnseekableIO()
-        ukijumuisha gzip.GzipFile(fileobj=buf, mode="wb") kama f:
+        ukijumuisha gzip.GzipFile(fileobj=buf, mode="wb") as f:
             f.write(uncompressed)
         compressed = buf.getvalue()
         buf = UnseekableIO(compressed)
-        ukijumuisha gzip.GzipFile(fileobj=buf, mode="rb") kama f:
+        ukijumuisha gzip.GzipFile(fileobj=buf, mode="rb") as f:
             self.assertEqual(f.read(), uncompressed)
 
     eleza test_peek(self):
         uncompressed = data1 * 200
-        ukijumuisha gzip.GzipFile(self.filename, "wb") kama f:
+        ukijumuisha gzip.GzipFile(self.filename, "wb") as f:
             f.write(uncompressed)
 
         eleza sizes():
@@ -420,7 +420,7 @@ kundi TestGzip(BaseTest):
                 kila n kwenye range(5, 50, 10):
                     tuma n
 
-        ukijumuisha gzip.GzipFile(self.filename, "rb") kama f:
+        ukijumuisha gzip.GzipFile(self.filename, "rb") as f:
             f.max_read_chunk = 33
             nread = 0
             kila n kwenye sizes():
@@ -436,54 +436,54 @@ kundi TestGzip(BaseTest):
         # Issue #10791: TextIOWrapper.readlines() fails when wrapping GzipFile.
         lines = (data1 * 50).decode("ascii").splitlines(keepends=Kweli)
         self.test_write()
-        ukijumuisha gzip.GzipFile(self.filename, 'r') kama f:
-            ukijumuisha io.TextIOWrapper(f, encoding="ascii") kama t:
+        ukijumuisha gzip.GzipFile(self.filename, 'r') as f:
+            ukijumuisha io.TextIOWrapper(f, encoding="ascii") as t:
                 self.assertEqual(t.readlines(), lines)
 
     eleza test_fileobj_from_fdopen(self):
         # Issue #13781: Opening a GzipFile kila writing fails when using a
         # fileobj created ukijumuisha os.fdopen().
         fd = os.open(self.filename, os.O_WRONLY | os.O_CREAT)
-        ukijumuisha os.fdopen(fd, "wb") kama f:
-            ukijumuisha gzip.GzipFile(fileobj=f, mode="w") kama g:
-                pita
+        ukijumuisha os.fdopen(fd, "wb") as f:
+            ukijumuisha gzip.GzipFile(fileobj=f, mode="w") as g:
+                pass
 
     eleza test_fileobj_mode(self):
         gzip.GzipFile(self.filename, "wb").close()
-        ukijumuisha open(self.filename, "r+b") kama f:
-            ukijumuisha gzip.GzipFile(fileobj=f, mode='r') kama g:
+        ukijumuisha open(self.filename, "r+b") as f:
+            ukijumuisha gzip.GzipFile(fileobj=f, mode='r') as g:
                 self.assertEqual(g.mode, gzip.READ)
-            ukijumuisha gzip.GzipFile(fileobj=f, mode='w') kama g:
+            ukijumuisha gzip.GzipFile(fileobj=f, mode='w') as g:
                 self.assertEqual(g.mode, gzip.WRITE)
-            ukijumuisha gzip.GzipFile(fileobj=f, mode='a') kama g:
+            ukijumuisha gzip.GzipFile(fileobj=f, mode='a') as g:
                 self.assertEqual(g.mode, gzip.WRITE)
-            ukijumuisha gzip.GzipFile(fileobj=f, mode='x') kama g:
+            ukijumuisha gzip.GzipFile(fileobj=f, mode='x') as g:
                 self.assertEqual(g.mode, gzip.WRITE)
             ukijumuisha self.assertRaises(ValueError):
                 gzip.GzipFile(fileobj=f, mode='z')
         kila mode kwenye "rb", "r+b":
-            ukijumuisha open(self.filename, mode) kama f:
-                ukijumuisha gzip.GzipFile(fileobj=f) kama g:
+            ukijumuisha open(self.filename, mode) as f:
+                ukijumuisha gzip.GzipFile(fileobj=f) as g:
                     self.assertEqual(g.mode, gzip.READ)
         kila mode kwenye "wb", "ab", "xb":
             ikiwa "x" kwenye mode:
                 support.unlink(self.filename)
-            ukijumuisha open(self.filename, mode) kama f:
-                ukijumuisha gzip.GzipFile(fileobj=f) kama g:
+            ukijumuisha open(self.filename, mode) as f:
+                ukijumuisha gzip.GzipFile(fileobj=f) as g:
                     self.assertEqual(g.mode, gzip.WRITE)
 
     eleza test_bytes_filename(self):
         str_filename = self.filename
         jaribu:
             bytes_filename = str_filename.encode("ascii")
-        tatizo UnicodeEncodeError:
+        except UnicodeEncodeError:
             self.skipTest("Temporary file name needs to be ASCII")
-        ukijumuisha gzip.GzipFile(bytes_filename, "wb") kama f:
+        ukijumuisha gzip.GzipFile(bytes_filename, "wb") as f:
             f.write(data1 * 50)
-        ukijumuisha gzip.GzipFile(bytes_filename, "rb") kama f:
+        ukijumuisha gzip.GzipFile(bytes_filename, "rb") as f:
             self.assertEqual(f.read(), data1 * 50)
         # Sanity check that we are actually operating on the right file.
-        ukijumuisha gzip.GzipFile(str_filename, "rb") kama f:
+        ukijumuisha gzip.GzipFile(str_filename, "rb") as f:
             self.assertEqual(f.read(), data1 * 50)
 
     eleza test_decompress_limited(self):
@@ -505,7 +505,7 @@ kundi TestGzip(BaseTest):
             kila args kwenye [(), (1,), (6,), (9,)]:
                 datac = gzip.compress(data, *args)
                 self.assertEqual(type(datac), bytes)
-                ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(datac), mode="rb") kama f:
+                ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(datac), mode="rb") as f:
                     self.assertEqual(f.read(), data)
 
     eleza test_compress_mtime(self):
@@ -515,14 +515,14 @@ kundi TestGzip(BaseTest):
                 ukijumuisha self.subTest(data=data, args=args):
                     datac = gzip.compress(data, *args, mtime=mtime)
                     self.assertEqual(type(datac), bytes)
-                    ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(datac), mode="rb") kama f:
+                    ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(datac), mode="rb") as f:
                         f.read(1) # to set mtime attribute
                         self.assertEqual(f.mtime, mtime)
 
     eleza test_decompress(self):
         kila data kwenye (data1, data2):
             buf = io.BytesIO()
-            ukijumuisha gzip.GzipFile(fileobj=buf, mode="wb") kama f:
+            ukijumuisha gzip.GzipFile(fileobj=buf, mode="wb") as f:
                 f.write(data)
             self.assertEqual(gzip.decompress(buf.getvalue()), data)
             # Roundtrip ukijumuisha compress
@@ -533,14 +533,14 @@ kundi TestGzip(BaseTest):
         data = data1*50
         # Drop the CRC (4 bytes) na file size (4 bytes).
         truncated = gzip.compress(data)[:-8]
-        ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(truncated)) kama f:
+        ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(truncated)) as f:
             self.assertRaises(EOFError, f.read)
-        ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(truncated)) kama f:
+        ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(truncated)) as f:
             self.assertEqual(f.read(len(data)), data)
             self.assertRaises(EOFError, f.read, 1)
         # Incomplete 10-byte header.
         kila i kwenye range(2, 10):
-            ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(truncated[:i])) kama f:
+            ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(truncated[:i])) as f:
                 self.assertRaises(EOFError, f.read, 1)
 
     eleza test_read_with_extra(self):
@@ -548,94 +548,94 @@ kundi TestGzip(BaseTest):
         gzdata = (b'\x1f\x8b\x08\x04\xb2\x17cQ\x02\xff'
                   b'\x05\x00Extra'
                   b'\x0bI-.\x01\x002\xd1Mx\x04\x00\x00\x00')
-        ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(gzdata)) kama f:
+        ukijumuisha gzip.GzipFile(fileobj=io.BytesIO(gzdata)) as f:
             self.assertEqual(f.read(), b'Test')
 
     eleza test_prepend_error(self):
         # See issue #20875
-        ukijumuisha gzip.open(self.filename, "wb") kama f:
+        ukijumuisha gzip.open(self.filename, "wb") as f:
             f.write(data1)
-        ukijumuisha gzip.open(self.filename, "rb") kama f:
+        ukijumuisha gzip.open(self.filename, "rb") as f:
             f._buffer.raw._fp.prepend()
 
 kundi TestOpen(BaseTest):
     eleza test_binary_modes(self):
         uncompressed = data1 * 50
 
-        ukijumuisha gzip.open(self.filename, "wb") kama f:
+        ukijumuisha gzip.open(self.filename, "wb") as f:
             f.write(uncompressed)
-        ukijumuisha open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") as f:
             file_data = gzip.decompress(f.read())
             self.assertEqual(file_data, uncompressed)
 
-        ukijumuisha gzip.open(self.filename, "rb") kama f:
+        ukijumuisha gzip.open(self.filename, "rb") as f:
             self.assertEqual(f.read(), uncompressed)
 
-        ukijumuisha gzip.open(self.filename, "ab") kama f:
+        ukijumuisha gzip.open(self.filename, "ab") as f:
             f.write(uncompressed)
-        ukijumuisha open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") as f:
             file_data = gzip.decompress(f.read())
             self.assertEqual(file_data, uncompressed * 2)
 
         ukijumuisha self.assertRaises(FileExistsError):
             gzip.open(self.filename, "xb")
         support.unlink(self.filename)
-        ukijumuisha gzip.open(self.filename, "xb") kama f:
+        ukijumuisha gzip.open(self.filename, "xb") as f:
             f.write(uncompressed)
-        ukijumuisha open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") as f:
             file_data = gzip.decompress(f.read())
             self.assertEqual(file_data, uncompressed)
 
     eleza test_pathlike_file(self):
         filename = pathlib.Path(self.filename)
-        ukijumuisha gzip.open(filename, "wb") kama f:
+        ukijumuisha gzip.open(filename, "wb") as f:
             f.write(data1 * 50)
-        ukijumuisha gzip.open(filename, "ab") kama f:
+        ukijumuisha gzip.open(filename, "ab") as f:
             f.write(data1)
-        ukijumuisha gzip.open(filename) kama f:
+        ukijumuisha gzip.open(filename) as f:
             self.assertEqual(f.read(), data1 * 51)
 
     eleza test_implicit_binary_modes(self):
         # Test implicit binary modes (no "b" ama "t" kwenye mode string).
         uncompressed = data1 * 50
 
-        ukijumuisha gzip.open(self.filename, "w") kama f:
+        ukijumuisha gzip.open(self.filename, "w") as f:
             f.write(uncompressed)
-        ukijumuisha open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") as f:
             file_data = gzip.decompress(f.read())
             self.assertEqual(file_data, uncompressed)
 
-        ukijumuisha gzip.open(self.filename, "r") kama f:
+        ukijumuisha gzip.open(self.filename, "r") as f:
             self.assertEqual(f.read(), uncompressed)
 
-        ukijumuisha gzip.open(self.filename, "a") kama f:
+        ukijumuisha gzip.open(self.filename, "a") as f:
             f.write(uncompressed)
-        ukijumuisha open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") as f:
             file_data = gzip.decompress(f.read())
             self.assertEqual(file_data, uncompressed * 2)
 
         ukijumuisha self.assertRaises(FileExistsError):
             gzip.open(self.filename, "x")
         support.unlink(self.filename)
-        ukijumuisha gzip.open(self.filename, "x") kama f:
+        ukijumuisha gzip.open(self.filename, "x") as f:
             f.write(uncompressed)
-        ukijumuisha open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") as f:
             file_data = gzip.decompress(f.read())
             self.assertEqual(file_data, uncompressed)
 
     eleza test_text_modes(self):
         uncompressed = data1.decode("ascii") * 50
         uncompressed_raw = uncompressed.replace("\n", os.linesep)
-        ukijumuisha gzip.open(self.filename, "wt") kama f:
+        ukijumuisha gzip.open(self.filename, "wt") as f:
             f.write(uncompressed)
-        ukijumuisha open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") as f:
             file_data = gzip.decompress(f.read()).decode("ascii")
             self.assertEqual(file_data, uncompressed_raw)
-        ukijumuisha gzip.open(self.filename, "rt") kama f:
+        ukijumuisha gzip.open(self.filename, "rt") as f:
             self.assertEqual(f.read(), uncompressed)
-        ukijumuisha gzip.open(self.filename, "at") kama f:
+        ukijumuisha gzip.open(self.filename, "at") as f:
             f.write(uncompressed)
-        ukijumuisha open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") as f:
             file_data = gzip.decompress(f.read()).decode("ascii")
             self.assertEqual(file_data, uncompressed_raw * 2)
 
@@ -643,11 +643,11 @@ kundi TestOpen(BaseTest):
         uncompressed_bytes = data1 * 50
         uncompressed_str = uncompressed_bytes.decode("ascii")
         compressed = gzip.compress(uncompressed_bytes)
-        ukijumuisha gzip.open(io.BytesIO(compressed), "r") kama f:
+        ukijumuisha gzip.open(io.BytesIO(compressed), "r") as f:
             self.assertEqual(f.read(), uncompressed_bytes)
-        ukijumuisha gzip.open(io.BytesIO(compressed), "rb") kama f:
+        ukijumuisha gzip.open(io.BytesIO(compressed), "rb") as f:
             self.assertEqual(f.read(), uncompressed_bytes)
-        ukijumuisha gzip.open(io.BytesIO(compressed), "rt") kama f:
+        ukijumuisha gzip.open(io.BytesIO(compressed), "rt") as f:
             self.assertEqual(f.read(), uncompressed_str)
 
     eleza test_bad_params(self):
@@ -669,28 +669,28 @@ kundi TestOpen(BaseTest):
         # Test non-default encoding.
         uncompressed = data1.decode("ascii") * 50
         uncompressed_raw = uncompressed.replace("\n", os.linesep)
-        ukijumuisha gzip.open(self.filename, "wt", encoding="utf-16") kama f:
+        ukijumuisha gzip.open(self.filename, "wt", encoding="utf-16") as f:
             f.write(uncompressed)
-        ukijumuisha open(self.filename, "rb") kama f:
+        ukijumuisha open(self.filename, "rb") as f:
             file_data = gzip.decompress(f.read()).decode("utf-16")
             self.assertEqual(file_data, uncompressed_raw)
-        ukijumuisha gzip.open(self.filename, "rt", encoding="utf-16") kama f:
+        ukijumuisha gzip.open(self.filename, "rt", encoding="utf-16") as f:
             self.assertEqual(f.read(), uncompressed)
 
     eleza test_encoding_error_handler(self):
         # Test ukijumuisha non-default encoding error handler.
-        ukijumuisha gzip.open(self.filename, "wb") kama f:
+        ukijumuisha gzip.open(self.filename, "wb") as f:
             f.write(b"foo\xffbar")
         ukijumuisha gzip.open(self.filename, "rt", encoding="ascii", errors="ignore") \
-                kama f:
+                as f:
             self.assertEqual(f.read(), "foobar")
 
     eleza test_newline(self):
         # Test ukijumuisha explicit newline (universal newline mode disabled).
         uncompressed = data1.decode("ascii") * 50
-        ukijumuisha gzip.open(self.filename, "wt", newline="\n") kama f:
+        ukijumuisha gzip.open(self.filename, "wt", newline="\n") as f:
             f.write(uncompressed)
-        ukijumuisha gzip.open(self.filename, "rt", newline="\r") kama f:
+        ukijumuisha gzip.open(self.filename, "rt", newline="\r") as f:
             self.assertEqual(f.readlines(), [uncompressed])
 
 
@@ -711,12 +711,12 @@ kundi TestCommandLine(unittest.TestCase):
     data = b'This ni a simple test ukijumuisha gzip'
 
     eleza test_decompress_stdin_stdout(self):
-        ukijumuisha io.BytesIO() kama bytes_io:
-            ukijumuisha gzip.GzipFile(fileobj=bytes_io, mode='wb') kama gzip_file:
+        ukijumuisha io.BytesIO() as bytes_io:
+            ukijumuisha gzip.GzipFile(fileobj=bytes_io, mode='wb') as gzip_file:
                 gzip_file.write(self.data)
 
             args = sys.executable, '-m', 'gzip', '-d'
-            ukijumuisha Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) kama proc:
+            ukijumuisha Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
                 out, err = proc.communicate(bytes_io.getvalue())
 
         self.assertEqual(err, b'')
@@ -727,11 +727,11 @@ kundi TestCommandLine(unittest.TestCase):
         gzipname = os.path.join(TEMPDIR, 'testgzip.gz')
         self.assertUongo(os.path.exists(gzipname))
 
-        ukijumuisha gzip.open(gzipname, mode='wb') kama fp:
+        ukijumuisha gzip.open(gzipname, mode='wb') as fp:
             fp.write(self.data)
         rc, out, err = assert_python_ok('-m', 'gzip', '-d', gzipname)
 
-        ukijumuisha open(os.path.join(TEMPDIR, "testgzip"), "rb") kama gunziped:
+        ukijumuisha open(os.path.join(TEMPDIR, "testgzip"), "rb") as gunziped:
             self.assertEqual(gunziped.read(), self.data)
 
         self.assertKweli(os.path.exists(gzipname))
@@ -748,7 +748,7 @@ kundi TestCommandLine(unittest.TestCase):
     @create_and_remove_directory(TEMPDIR)
     eleza test_compress_stdin_outfile(self):
         args = sys.executable, '-m', 'gzip'
-        ukijumuisha Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) kama proc:
+        ukijumuisha Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
             out, err = proc.communicate(self.data)
 
         self.assertEqual(err, b'')
@@ -760,7 +760,7 @@ kundi TestCommandLine(unittest.TestCase):
         gzipname = local_testgzip + '.gz'
         self.assertUongo(os.path.exists(gzipname))
 
-        ukijumuisha open(local_testgzip, 'wb') kama fp:
+        ukijumuisha open(local_testgzip, 'wb') as fp:
             fp.write(self.data)
 
         rc, out, err = assert_python_ok('-m', 'gzip', local_testgzip)
@@ -777,7 +777,7 @@ kundi TestCommandLine(unittest.TestCase):
                 gzipname = local_testgzip + '.gz'
                 self.assertUongo(os.path.exists(gzipname))
 
-                ukijumuisha open(local_testgzip, 'wb') kama fp:
+                ukijumuisha open(local_testgzip, 'wb') as fp:
                     fp.write(self.data)
 
                 rc, out, err = assert_python_ok('-m', 'gzip', compress_level, local_testgzip)

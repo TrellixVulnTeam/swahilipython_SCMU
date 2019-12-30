@@ -34,7 +34,7 @@ kutoka test agiza support
 kundi NoLogRequestHandler:
     eleza log_message(self, *args):
         # don't write log messages to stderr
-        pita
+        pass
 
     eleza read(self, n=Tupu):
         rudisha ''
@@ -210,7 +210,7 @@ kundi BaseHTTPServerTestCase(BaseTestCase):
         res = self.con.getresponse()
         self.assertEqual(res.status, HTTPStatus.NO_CONTENT)
 
-    eleza test_rudisha_header_keep_alive(self):
+    eleza test_return_header_keep_alive(self):
         self.con.request('KEEP', '/')
         res = self.con.getresponse()
         self.assertEqual(res.getheader('Connection'), 'keep-alive')
@@ -222,12 +222,12 @@ kundi BaseHTTPServerTestCase(BaseTestCase):
         res = self.con.getresponse()
         self.assertEqual(res.status, 999)
 
-    eleza test_rudisha_custom_status(self):
+    eleza test_return_custom_status(self):
         self.con.request('CUSTOM', '/')
         res = self.con.getresponse()
         self.assertEqual(res.status, 999)
 
-    eleza test_rudisha_explain_error(self):
+    eleza test_return_explain_error(self):
         self.con.request('EXPLAINERROR', '/')
         res = self.con.getresponse()
         self.assertEqual(res.status, 999)
@@ -261,7 +261,7 @@ kundi BaseHTTPServerTestCase(BaseTestCase):
             self.assertEqual(code, res.status)
             self.assertEqual(Tupu, res.getheader('Content-Length'))
             self.assertEqual(Tupu, res.getheader('Content-Type'))
-            ikiwa code haiko kwenye allow_transfer_encoding_codes:
+            ikiwa code sio kwenye allow_transfer_encoding_codes:
                 self.assertEqual(Tupu, res.getheader('Transfer-Encoding'))
 
             data = res.read()
@@ -282,7 +282,7 @@ kundi BaseHTTPServerTestCase(BaseTestCase):
             isipokua:
                 self.assertEqual(Tupu, res.getheader('Content-Length'))
                 self.assertEqual(Tupu, res.getheader('Content-Type'))
-            ikiwa code haiko kwenye allow_transfer_encoding_codes:
+            ikiwa code sio kwenye allow_transfer_encoding_codes:
                 self.assertEqual(Tupu, res.getheader('Transfer-Encoding'))
 
             data = res.read()
@@ -305,7 +305,7 @@ kundi RequestHandlerLoggingTestCase(BaseTestCase):
         self.con = http.client.HTTPConnection(self.HOST, self.PORT)
         self.con.connect()
 
-        ukijumuisha support.captured_stderr() kama err:
+        ukijumuisha support.captured_stderr() as err:
             self.con.request('GET', '/')
             self.con.getresponse()
 
@@ -316,7 +316,7 @@ kundi RequestHandlerLoggingTestCase(BaseTestCase):
         self.con = http.client.HTTPConnection(self.HOST, self.PORT)
         self.con.connect()
 
-        ukijumuisha support.captured_stderr() kama err:
+        ukijumuisha support.captured_stderr() as err:
             self.con.request('ERROR', '/')
             self.con.getresponse()
 
@@ -327,7 +327,7 @@ kundi RequestHandlerLoggingTestCase(BaseTestCase):
 
 kundi SimpleHTTPServerTestCase(BaseTestCase):
     kundi request_handler(NoLogRequestHandler, SimpleHTTPRequestHandler):
-        pita
+        pass
 
     eleza setUp(self):
         BaseTestCase.setUp(self)
@@ -339,12 +339,12 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
         self.tempdir_name = os.path.basename(self.tempdir)
         self.base_url = '/' + self.tempdir_name
         tempname = os.path.join(self.tempdir, 'test')
-        ukijumuisha open(tempname, 'wb') kama temp:
+        ukijumuisha open(tempname, 'wb') as temp:
             temp.write(self.data)
             temp.flush()
         mtime = os.stat(tempname).st_mtime
         # compute last modification datetime kila browser cache tests
-        last_modikiwa = datetime.datetime.kutokatimestamp(mtime,
+        last_modikiwa = datetime.datetime.fromtimestamp(mtime,
             datetime.timezone.utc)
         self.last_modif_datetime = last_modif.replace(microsecond=0)
         self.last_modif_header = email.utils.formatdate(
@@ -356,7 +356,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
             jaribu:
                 shutil.rmtree(self.tempdir)
             tatizo:
-                pita
+                pass
         mwishowe:
             BaseTestCase.tearDown(self)
 
@@ -394,7 +394,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
     eleza test_undecodable_filename(self):
         enc = sys.getfilesystemencoding()
         filename = os.fsdecode(support.TESTFN_UNDECODABLE) + '.txt'
-        ukijumuisha open(os.path.join(self.tempdir, filename), 'wb') kama f:
+        ukijumuisha open(os.path.join(self.tempdir, filename), 'wb') as f:
             f.write(support.TESTFN_UNDECODABLE)
         response = self.request(self.base_url + '/')
         ikiwa sys.platform == 'darwin':
@@ -405,7 +405,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
                     filename = name
                     koma
         body = self.check_status_and_reason(response, HTTPStatus.OK)
-        quotedname = urllib.parse.quote(filename, errors='surrogatepita')
+        quotedname = urllib.parse.quote(filename, errors='surrogatepass')
         self.assertIn(('href="%s"' % quotedname)
                       .encode(enc, 'surrogateescape'), body)
         self.assertIn(('>%s<' % html.escape(filename, quote=Uongo))
@@ -437,12 +437,12 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.NOT_FOUND)
 
         data = b"Dummy index file\r\n"
-        ukijumuisha open(os.path.join(self.tempdir_name, 'index.html'), 'wb') kama f:
+        ukijumuisha open(os.path.join(self.tempdir_name, 'index.html'), 'wb') as f:
             f.write(data)
         response = self.request(self.base_url + '/')
         self.check_status_and_reason(response, HTTPStatus.OK, data)
 
-        # chmod() doesn't work kama expected on Windows, na filesystem
+        # chmod() doesn't work as expected on Windows, na filesystem
         # permissions are ignored by root on Unix.
         ikiwa os.name == 'posix' na os.geteuid() != 0:
             os.chmod(self.tempdir, 0)
@@ -463,7 +463,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
 
     eleza test_browser_cache(self):
         """Check that when a request to /test ni sent ukijumuisha the request header
-        If-Modified-Since set to date of last modification, the server rudishas
+        If-Modified-Since set to date of last modification, the server returns
         status code 304, sio 200
         """
         headers = email.message.Message()
@@ -509,7 +509,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.NOT_IMPLEMENTED)
 
     eleza test_last_modified(self):
-        """Checks that the datetime rudishaed kwenye Last-Modified response header
+        """Checks that the datetime returned kwenye Last-Modified response header
         ni the actual datetime of last modification, rounded to the second
         """
         response = self.request(self.base_url + '/test')
@@ -539,8 +539,8 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
 
         jaribu:
             open(fullpath, 'w').close()
-        tatizo OSError:
-            ashiria unittest.SkipTest('Can sio create file %s on current file '
+        except OSError:
+             ashiria unittest.SkipTest('Can sio create file %s on current file '
                                     'system' % filename)
 
         jaribu:
@@ -587,10 +587,10 @@ andika(os.environ["%s"])
 
 
 @unittest.skipIf(hasattr(os, 'geteuid') na os.geteuid() == 0,
-        "This test can't be run reliably kama root (issue #13308).")
+        "This test can't be run reliably as root (issue #13308).")
 kundi CGIHTTPServerTestCase(BaseTestCase):
     kundi request_handler(NoLogRequestHandler, CGIHTTPRequestHandler):
-        pita
+        pass
 
     linesep = os.linesep.encode('ascii')
 
@@ -618,36 +618,36 @@ kundi CGIHTTPServerTestCase(BaseTestCase):
             self.pythonexe = sys.executable
 
         jaribu:
-            # The python executable path ni written kama the first line of the
+            # The python executable path ni written as the first line of the
             # CGI Python script. The encoding cookie cannot be used, na so the
             # path should be encodable to the default script encoding (utf-8)
             self.pythonexe.encode('utf-8')
-        tatizo UnicodeEncodeError:
+        except UnicodeEncodeError:
             self.tearDown()
             self.skipTest("Python executable path ni sio encodable to utf-8")
 
         self.nocgi_path = os.path.join(self.parent_dir, 'nocgi.py')
-        ukijumuisha open(self.nocgi_path, 'w') kama fp:
+        ukijumuisha open(self.nocgi_path, 'w') as fp:
             fp.write(cgi_file1 % self.pythonexe)
         os.chmod(self.nocgi_path, 0o777)
 
         self.file1_path = os.path.join(self.cgi_dir, 'file1.py')
-        ukijumuisha open(self.file1_path, 'w', encoding='utf-8') kama file1:
+        ukijumuisha open(self.file1_path, 'w', encoding='utf-8') as file1:
             file1.write(cgi_file1 % self.pythonexe)
         os.chmod(self.file1_path, 0o777)
 
         self.file2_path = os.path.join(self.cgi_dir, 'file2.py')
-        ukijumuisha open(self.file2_path, 'w', encoding='utf-8') kama file2:
+        ukijumuisha open(self.file2_path, 'w', encoding='utf-8') as file2:
             file2.write(cgi_file2 % self.pythonexe)
         os.chmod(self.file2_path, 0o777)
 
         self.file3_path = os.path.join(self.cgi_child_dir, 'file3.py')
-        ukijumuisha open(self.file3_path, 'w', encoding='utf-8') kama file3:
+        ukijumuisha open(self.file3_path, 'w', encoding='utf-8') as file3:
             file3.write(cgi_file1 % self.pythonexe)
         os.chmod(self.file3_path, 0o777)
 
         self.file4_path = os.path.join(self.cgi_dir, 'file4.py')
-        ukijumuisha open(self.file4_path, 'w', encoding='utf-8') kama file4:
+        ukijumuisha open(self.file4_path, 'w', encoding='utf-8') as file4:
             file4.write(cgi_file4 % (self.pythonexe, 'QUERY_STRING'))
         os.chmod(self.file4_path, 0o777)
 
@@ -741,7 +741,7 @@ kundi CGIHTTPServerTestCase(BaseTestCase):
 
     eleza test_authorization(self):
         headers = {b'Authorization' : b'Basic ' +
-                   base64.b64encode(b'username:pita')}
+                   base64.b64encode(b'username:pass')}
         res = self.request('/cgi-bin/file1.py', 'GET', headers=headers)
         self.assertEqual(
             (b'Hello World' + self.linesep, 'text/html', HTTPStatus.OK),
@@ -792,7 +792,7 @@ kundi CGIHTTPServerTestCase(BaseTestCase):
 kundi SocketlessRequestHandler(SimpleHTTPRequestHandler):
     eleza __init__(self, *args, **kwargs):
         request = mock.Mock()
-        request.makefile.rudisha_value = BytesIO()
+        request.makefile.return_value = BytesIO()
         super().__init__(request, Tupu, Tupu)
 
         self.get_called = Uongo
@@ -806,7 +806,7 @@ kundi SocketlessRequestHandler(SimpleHTTPRequestHandler):
         self.wfile.write(b'<html><body>Data</body></html>\r\n')
 
     eleza log_message(self, format, *args):
-        pita
+        pass
 
 kundi RejectingSocketlessRequestHandler(SocketlessRequestHandler):
     eleza handle_expect_100(self):
@@ -1002,7 +1002,7 @@ kundi BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         self.assertEqual(result[0], b'HTTP/1.1 417 Expectation Failed\r\n')
         self.verify_expected_headers(result[1:-1])
         # The expect handler should short circuit the usual get method by
-        # rudishaing false here, so get_called should be false
+        # returning false here, so get_called should be false
         self.assertUongo(self.handler.get_called)
         self.assertEqual(sum(r == b'Connection: close\r\n' kila r kwenye result[1:-1]), 1)
         self.handler = usual_handler        # Restore to avoid komaing any subsequent tests.
@@ -1122,9 +1122,9 @@ kundi ScriptTestCase(unittest.TestCase):
 
     eleza mock_server_class(self):
         rudisha mock.MagicMock(
-            rudisha_value=mock.MagicMock(
+            return_value=mock.MagicMock(
                 __enter__=mock.MagicMock(
-                    rudisha_value=mock.MagicMock(
+                    return_value=mock.MagicMock(
                         socket=mock.MagicMock(
                             getsockname=lambda: ('', 0),
                         ),

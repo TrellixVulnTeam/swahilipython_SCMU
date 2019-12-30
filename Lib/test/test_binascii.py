@@ -36,7 +36,7 @@ kundi BinASCIITest(unittest.TestCase):
             self.assertKweli(hasattr(getattr(binascii, name), '__call__'))
             self.assertRaises(TypeError, getattr(binascii, name))
 
-    eleza test_rudishaed_value(self):
+    eleza test_returned_value(self):
         # Limit to the minimum of all limits (b2a_uu)
         MAX_ALL = 45
         raw = self.rawdata[:MAX_ALL]
@@ -46,10 +46,10 @@ kundi BinASCIITest(unittest.TestCase):
             jaribu:
                 a = b2a(self.type2test(raw))
                 res = a2b(self.type2test(a))
-            tatizo Exception kama err:
-                self.fail("{}/{} conversion ashirias {!r}".format(fb, fa, err))
+            except Exception as err:
+                self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
             ikiwa fb == 'b2a_hqx':
-                # b2a_hqx rudishas a tuple
+                # b2a_hqx returns a tuple
                 res, _ = res
             self.assertEqual(res, raw, "{}/{} conversion: "
                              "{!r} != {!r}".format(fb, fa, res, raw))
@@ -87,7 +87,7 @@ kundi BinASCIITest(unittest.TestCase):
         fillers = bytearray()
         valid = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"
         kila i kwenye range(256):
-            ikiwa i haiko kwenye valid:
+            ikiwa i sio kwenye valid:
                 fillers.append(i)
         eleza addnoise(line):
             noise = fillers
@@ -107,8 +107,8 @@ kundi BinASCIITest(unittest.TestCase):
             res += b
         self.assertEqual(res, self.rawdata)
 
-        # Test base64 ukijumuisha just invalid characters, which should rudisha
-        # empty strings. TBD: shouldn't it ashiria an exception instead ?
+        # Test base64 ukijumuisha just invalid characters, which should return
+        # empty strings. TBD: shouldn't it  ashiria an exception instead ?
         self.assertEqual(binascii.a2b_base64(self.type2test(fillers)), b'')
 
     eleza test_base64errors(self):
@@ -262,10 +262,10 @@ kundi BinASCIITest(unittest.TestCase):
         # A test kila SF bug 534347 (segfaults without the proper fix)
         jaribu:
             a2b_qp(b"", **{1:1})
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            self.fail("binascii.a2b_qp(**{1:1}) didn't ashiria TypeError")
+            self.fail("binascii.a2b_qp(**{1:1}) didn't  ashiria TypeError")
 
         self.assertEqual(a2b_qp(type2test(b"=")), b"")
         self.assertEqual(a2b_qp(type2test(b"= ")), b"= ")
@@ -355,7 +355,7 @@ kundi BinASCIITest(unittest.TestCase):
         self.assertEqual(b2a_qp(type2test(b'.a')[:-1]), b'=2E')
 
     eleza test_empty_string(self):
-        # A test kila SF bug #1022953.  Make sure SystemError ni sio ashiriad.
+        # A test kila SF bug #1022953.  Make sure SystemError ni sio raised.
         empty = self.type2test(b'')
         kila func kwenye all_functions:
             ikiwa func == 'crc_hqx':
@@ -365,16 +365,16 @@ kundi BinASCIITest(unittest.TestCase):
             f = getattr(binascii, func)
             jaribu:
                 f(empty)
-            tatizo Exception kama err:
-                self.fail("{}({!r}) ashirias {!r}".format(func, empty, err))
+            except Exception as err:
+                self.fail("{}({!r}) raises {!r}".format(func, empty, err))
 
     eleza test_unicode_b2a(self):
         # Unicode strings are sio accepted by b2a_* functions.
         kila func kwenye set(all_functions) - set(a2b_functions) | {'rledecode_hqx'}:
             jaribu:
                 self.assertRaises(TypeError, getattr(binascii, func), "test")
-            tatizo Exception kama err:
-                self.fail('{}("test") ashirias {!r}'.format(func, err))
+            except Exception as err:
+                self.fail('{}("test") raises {!r}'.format(func, err))
         # crc_hqx needs 2 arguments
         self.assertRaises(TypeError, binascii.crc_hqx, "test", 0)
 
@@ -393,10 +393,10 @@ kundi BinASCIITest(unittest.TestCase):
                 binary_res = a2b(a)
                 a = a.decode('ascii')
                 res = a2b(a)
-            tatizo Exception kama err:
-                self.fail("{}/{} conversion ashirias {!r}".format(fb, fa, err))
+            except Exception as err:
+                self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
             ikiwa fb == 'b2a_hqx':
-                # b2a_hqx rudishas a tuple
+                # b2a_hqx returns a tuple
                 res, _ = res
                 binary_res, _ = binary_res
             self.assertEqual(res, raw, "{}/{} conversion: "

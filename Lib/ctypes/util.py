@@ -1,111 +1,111 @@
-import os
-import shutil
-import subprocess
-import sys
+agiza os
+agiza shutil
+agiza subprocess
+agiza sys
 
-# find_library(name) returns the pathname of a library, or None.
-if os.name == "nt":
+# find_library(name) returns the pathname of a library, ama Tupu.
+ikiwa os.name == "nt":
 
-    def _get_build_version():
+    eleza _get_build_version():
         """Return the version of MSVC that was used to build Python.
 
-        For Python 2.3 and up, the version number is included in
-        sys.version.  For earlier versions, assume the compiler is MSVC 6.
+        For Python 2.3 na up, the version number ni included in
+        sys.version.  For earlier versions, assume the compiler ni MSVC 6.
         """
-        # This function was copied from Lib/distutils/msvccompiler.py
+        # This function was copied kutoka Lib/distutils/msvccompiler.py
         prefix = "MSC v."
         i = sys.version.find(prefix)
-        if i == -1:
-            return 6
+        ikiwa i == -1:
+            rudisha 6
         i = i + len(prefix)
         s, rest = sys.version[i:].split(" ", 1)
         majorVersion = int(s[:-2]) - 6
-        if majorVersion >= 13:
+        ikiwa majorVersion >= 13:
             majorVersion += 1
         minorVersion = int(s[2:3]) / 10.0
-        # I don't think paths are affected by minor version in version 6
-        if majorVersion == 6:
+        # I don't think paths are affected by minor version kwenye version 6
+        ikiwa majorVersion == 6:
             minorVersion = 0
-        if majorVersion >= 6:
-            return majorVersion + minorVersion
+        ikiwa majorVersion >= 6:
+            rudisha majorVersion + minorVersion
         # isipokua we don't know what version of the compiler this is
-        return None
+        rudisha Tupu
 
-    def find_msvcrt():
+    eleza find_msvcrt():
         """Return the name of the VC runtime dll"""
         version = _get_build_version()
-        if version is None:
+        ikiwa version ni Tupu:
             # better be safe than sorry
-            return None
-        if version <= 6:
+            rudisha Tupu
+        ikiwa version <= 6:
             clibname = 'msvcrt'
-        lasivyo version <= 13:
+        elikiwa version <= 13:
             clibname = 'msvcr%d' % (version * 10)
         isipokua:
-            # CRT is no longer directly loadable. See issue23606 for the
+            # CRT ni no longer directly loadable. See issue23606 kila the
             # discussion about alternative approaches.
-            return None
+            rudisha Tupu
 
-        # If python was built with in debug mode
-        import importlib.machinery
-        if '_d.pyd' in importlib.machinery.EXTENSION_SUFFIXES:
+        # If python was built ukijumuisha kwenye debug mode
+        agiza importlib.machinery
+        ikiwa '_d.pyd' kwenye importlib.machinery.EXTENSION_SUFFIXES:
             clibname += 'd'
-        return clibname+'.dll'
+        rudisha clibname+'.dll'
 
-    def find_library(name):
-        if name in ('c', 'm'):
-            return find_msvcrt()
-        # See MSDN for the REAL search order.
-        for directory in os.environ['PATH'].split(os.pathsep):
+    eleza find_library(name):
+        ikiwa name kwenye ('c', 'm'):
+            rudisha find_msvcrt()
+        # See MSDN kila the REAL search order.
+        kila directory kwenye os.environ['PATH'].split(os.pathsep):
             fname = os.path.join(directory, name)
-            if os.path.isfile(fname):
-                return fname
-            if fname.lower().endswith(".dll"):
+            ikiwa os.path.isfile(fname):
+                rudisha fname
+            ikiwa fname.lower().endswith(".dll"):
                 endelea
             fname = fname + ".dll"
-            if os.path.isfile(fname):
-                return fname
-        return None
+            ikiwa os.path.isfile(fname):
+                rudisha fname
+        rudisha Tupu
 
-lasivyo os.name == "posix" and sys.platform == "darwin":
-    from ctypes.macholib.dyld import dyld_find as _dyld_find
-    def find_library(name):
+elikiwa os.name == "posix" na sys.platform == "darwin":
+    kutoka ctypes.macholib.dyld agiza dyld_find as _dyld_find
+    eleza find_library(name):
         possible = ['lib%s.dylib' % name,
                     '%s.dylib' % name,
                     '%s.framework/%s' % (name, name)]
-        for name in possible:
+        kila name kwenye possible:
             jaribu:
-                return _dyld_find(name)
-            tatizo ValueError:
+                rudisha _dyld_find(name)
+            except ValueError:
                 endelea
-        return None
+        rudisha Tupu
 
-lasivyo sys.platform.startswith("aix"):
+elikiwa sys.platform.startswith("aix"):
     # AIX has two styles of storing shared libraries
-    # GNU auto_tools refer to these as svr4 and aix
-    # svr4 (System V Release 4) is a regular file, often with .so as suffix
-    # AIX style uses an archive (suffix .a) with members (e.g., shr.o, libssl.so)
-    # see issue#26439 and _aix.py for more details
+    # GNU auto_tools refer to these as svr4 na aix
+    # svr4 (System V Release 4) ni a regular file, often ukijumuisha .so as suffix
+    # AIX style uses an archive (suffix .a) ukijumuisha members (e.g., shr.o, libssl.so)
+    # see issue#26439 na _aix.py kila more details
 
-    from ctypes._aix import find_library
+    kutoka ctypes._aix agiza find_library
 
-lasivyo os.name == "posix":
+elikiwa os.name == "posix":
     # Andreas Degert's find functions, using gcc, /sbin/ldconfig, objdump
-    import re, tempfile
+    agiza re, tempfile
 
-    def _findLib_gcc(name):
-        # Run GCC's linker with the -t (aka --trace) option and examine the
+    eleza _findLib_gcc(name):
+        # Run GCC's linker ukijumuisha the -t (aka --trace) option na examine the
         # library name it prints out. The GCC command will fail because we
-        # haven't supplied a proper program with main(), but that does not
+        # haven't supplied a proper program ukijumuisha main(), but that does not
         # matter.
         expr = os.fsencode(r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name))
 
         c_compiler = shutil.which('gcc')
-        if sio c_compiler:
+        ikiwa sio c_compiler:
             c_compiler = shutil.which('cc')
-        if sio c_compiler:
+        ikiwa sio c_compiler:
             # No C compiler available, give up
-            return None
+            rudisha Tupu
 
         temp = tempfile.NamedTemporaryFile()
         jaribu:
@@ -119,78 +119,78 @@ lasivyo os.name == "posix":
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.STDOUT,
                                         env=env)
-            tatizo OSError:  # E.g. bad executable
-                return None
-            with proc:
+            except OSError:  # E.g. bad executable
+                rudisha Tupu
+            ukijumuisha proc:
                 trace = proc.stdout.read()
         mwishowe:
             jaribu:
                 temp.close()
-            tatizo FileNotFoundError:
-                # Raised if the file was already removed, which is the normal
-                # behaviour of GCC if linking fails
+            except FileNotFoundError:
+                # Raised ikiwa the file was already removed, which ni the normal
+                # behaviour of GCC ikiwa linking fails
                 pass
         res = re.search(expr, trace)
-        if sio res:
-            return None
-        return os.fsdecode(res.group(0))
+        ikiwa sio res:
+            rudisha Tupu
+        rudisha os.fsdecode(res.group(0))
 
 
-    if sys.platform == "sunos5":
+    ikiwa sys.platform == "sunos5":
         # use /usr/ccs/bin/dump on solaris
-        def _get_soname(f):
-            if sio f:
-                return None
+        eleza _get_soname(f):
+            ikiwa sio f:
+                rudisha Tupu
 
             jaribu:
                 proc = subprocess.Popen(("/usr/ccs/bin/dump", "-Lpv", f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            tatizo OSError:  # E.g. command sio found
-                return None
-            with proc:
+            except OSError:  # E.g. command sio found
+                rudisha Tupu
+            ukijumuisha proc:
                 data = proc.stdout.read()
             res = re.search(br'\[.*\]\sSONAME\s+([^\s]+)', data)
-            if sio res:
-                return None
-            return os.fsdecode(res.group(1))
+            ikiwa sio res:
+                rudisha Tupu
+            rudisha os.fsdecode(res.group(1))
     isipokua:
-        def _get_soname(f):
+        eleza _get_soname(f):
             # assuming GNU binutils / ELF
-            if sio f:
-                return None
+            ikiwa sio f:
+                rudisha Tupu
             objdump = shutil.which('objdump')
-            if sio objdump:
+            ikiwa sio objdump:
                 # objdump ni sio available, give up
-                return None
+                rudisha Tupu
 
             jaribu:
                 proc = subprocess.Popen((objdump, '-p', '-j', '.dynamic', f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            tatizo OSError:  # E.g. bad executable
-                return None
-            with proc:
+            except OSError:  # E.g. bad executable
+                rudisha Tupu
+            ukijumuisha proc:
                 dump = proc.stdout.read()
             res = re.search(br'\sSONAME\s+([^\s]+)', dump)
-            if sio res:
-                return None
-            return os.fsdecode(res.group(1))
+            ikiwa sio res:
+                rudisha Tupu
+            rudisha os.fsdecode(res.group(1))
 
-    if sys.platform.startswith(("freebsd", "openbsd", "dragonfly")):
+    ikiwa sys.platform.startswith(("freebsd", "openbsd", "dragonfly")):
 
-        def _num_version(libname):
+        eleza _num_version(libname):
             # "libxyz.so.MAJOR.MINOR" => [ MAJOR, MINOR ]
             parts = libname.split(b".")
             nums = []
             jaribu:
                 wakati parts:
                     nums.insert(0, int(parts.pop()))
-            tatizo ValueError:
+            except ValueError:
                 pass
-            return nums or [sys.maxsize]
+            rudisha nums ama [sys.maxsize]
 
-        def find_library(name):
+        eleza find_library(name):
             ename = re.escape(name)
             expr = r':-l%s\.\S+ => \S*/(lib%s\.\S+)' % (ename, ename)
             expr = os.fsencode(expr)
@@ -199,64 +199,64 @@ lasivyo os.name == "posix":
                 proc = subprocess.Popen(('/sbin/ldconfig', '-r'),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            tatizo OSError:  # E.g. command sio found
+            except OSError:  # E.g. command sio found
                 data = b''
             isipokua:
-                with proc:
+                ukijumuisha proc:
                     data = proc.stdout.read()
 
             res = re.findall(expr, data)
-            if sio res:
-                return _get_soname(_findLib_gcc(name))
+            ikiwa sio res:
+                rudisha _get_soname(_findLib_gcc(name))
             res.sort(key=_num_version)
-            return os.fsdecode(res[-1])
+            rudisha os.fsdecode(res[-1])
 
-    lasivyo sys.platform == "sunos5":
+    elikiwa sys.platform == "sunos5":
 
-        def _findLib_crle(name, is64):
-            if sio os.path.exists('/usr/bin/crle'):
-                return None
+        eleza _findLib_crle(name, is64):
+            ikiwa sio os.path.exists('/usr/bin/crle'):
+                rudisha Tupu
 
             env = dict(os.environ)
             env['LC_ALL'] = 'C'
 
-            if is64:
+            ikiwa is64:
                 args = ('/usr/bin/crle', '-64')
             isipokua:
                 args = ('/usr/bin/crle',)
 
-            paths = None
+            paths = Tupu
             jaribu:
                 proc = subprocess.Popen(args,
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL,
                                         env=env)
-            tatizo OSError:  # E.g. bad executable
-                return None
-            with proc:
-                for line in proc.stdout:
+            except OSError:  # E.g. bad executable
+                rudisha Tupu
+            ukijumuisha proc:
+                kila line kwenye proc.stdout:
                     line = line.strip()
-                    if line.startswith(b'Default Library Path (ELF):'):
+                    ikiwa line.startswith(b'Default Library Path (ELF):'):
                         paths = os.fsdecode(line).split()[4]
 
-            if sio paths:
-                return None
+            ikiwa sio paths:
+                rudisha Tupu
 
-            for dir in paths.split(":"):
+            kila dir kwenye paths.split(":"):
                 libfile = os.path.join(dir, "lib%s.so" % name)
-                if os.path.exists(libfile):
-                    return libfile
+                ikiwa os.path.exists(libfile):
+                    rudisha libfile
 
-            return None
+            rudisha Tupu
 
-        def find_library(name, is64 = False):
-            return _get_soname(_findLib_crle(name, is64) ama _findLib_gcc(name))
+        eleza find_library(name, is64 = Uongo):
+            rudisha _get_soname(_findLib_crle(name, is64) ama _findLib_gcc(name))
 
     isipokua:
 
-        def _findSoname_ldconfig(name):
-            import struct
-            if struct.calcsize('l') == 4:
+        eleza _findSoname_ldconfig(name):
+            agiza struct
+            ikiwa struct.calcsize('l') == 4:
                 machine = os.uname().machine + '-32'
             isipokua:
                 machine = os.uname().machine + '-64'
@@ -269,90 +269,90 @@ lasivyo os.name == "posix":
                 }
             abi_type = mach_map.get(machine, 'libc6')
 
-            # XXX assuming GLIBC's ldconfig (with option -p)
+            # XXX assuming GLIBC's ldconfig (ukijumuisha option -p)
             regex = r'\s+(lib%s\.[^\s]+)\s+\(%s'
             regex = os.fsencode(regex % (re.escape(name), abi_type))
             jaribu:
-                with subprocess.Popen(['/sbin/ldconfig', '-p'],
+                ukijumuisha subprocess.Popen(['/sbin/ldconfig', '-p'],
                                       stdin=subprocess.DEVNULL,
                                       stderr=subprocess.DEVNULL,
                                       stdout=subprocess.PIPE,
                                       env={'LC_ALL': 'C', 'LANG': 'C'}) as p:
                     res = re.search(regex, p.stdout.read())
-                    if res:
-                        return os.fsdecode(res.group(1))
-            tatizo OSError:
+                    ikiwa res:
+                        rudisha os.fsdecode(res.group(1))
+            except OSError:
                 pass
 
-        def _findLib_ld(name):
-            # See issue #9998 for why this is needed
+        eleza _findLib_ld(name):
+            # See issue #9998 kila why this ni needed
             expr = r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name)
             cmd = ['ld', '-t']
             libpath = os.environ.get('LD_LIBRARY_PATH')
-            if libpath:
-                for d in libpath.split(':'):
+            ikiwa libpath:
+                kila d kwenye libpath.split(':'):
                     cmd.extend(['-L', d])
             cmd.extend(['-o', os.devnull, '-l%s' % name])
-            result = None
+            result = Tupu
             jaribu:
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE,
-                                     universal_newlines=True)
+                                     universal_newlines=Kweli)
                 out, _ = p.communicate()
                 res = re.search(expr, os.fsdecode(out))
-                if res:
+                ikiwa res:
                     result = res.group(0)
-            tatizo Exception as e:
-                pass  # result will be None
-            return result
+            except Exception as e:
+                pass  # result will be Tupu
+            rudisha result
 
-        def find_library(name):
+        eleza find_library(name):
             # See issue #9998
-            return _findSoname_ldconfig(name) ama \
+            rudisha _findSoname_ldconfig(name) ama \
                    _get_soname(_findLib_gcc(name) ama _findLib_ld(name))
 
 ################################################################
 # test code
 
-def test():
-    from ctypes import cdll
-    if os.name == "nt":
-        print(cdll.msvcrt)
-        print(cdll.load("msvcrt"))
-        print(find_library("msvcrt"))
+eleza test():
+    kutoka ctypes agiza cdll
+    ikiwa os.name == "nt":
+        andika(cdll.msvcrt)
+        andika(cdll.load("msvcrt"))
+        andika(find_library("msvcrt"))
 
-    if os.name == "posix":
-        # find and load_version
-        print(find_library("m"))
-        print(find_library("c"))
-        print(find_library("bz2"))
+    ikiwa os.name == "posix":
+        # find na load_version
+        andika(find_library("m"))
+        andika(find_library("c"))
+        andika(find_library("bz2"))
 
         # load
-        if sys.platform == "darwin":
-            print(cdll.LoadLibrary("libm.dylib"))
-            print(cdll.LoadLibrary("libcrypto.dylib"))
-            print(cdll.LoadLibrary("libSystem.dylib"))
-            print(cdll.LoadLibrary("System.framework/System"))
-        # issue-26439 - fix broken test call for AIX
-        lasivyo sys.platform.startswith("aix"):
-            from ctypes import CDLL
-            if sys.maxsize < 2**32:
-                print(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")
-                print(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr.o)')}")
-                # librpm.so is only available as 32-bit shared library
-                print(find_library("rpm"))
-                print(cdll.LoadLibrary("librpm.so"))
+        ikiwa sys.platform == "darwin":
+            andika(cdll.LoadLibrary("libm.dylib"))
+            andika(cdll.LoadLibrary("libcrypto.dylib"))
+            andika(cdll.LoadLibrary("libSystem.dylib"))
+            andika(cdll.LoadLibrary("System.framework/System"))
+        # issue-26439 - fix broken test call kila AIX
+        elikiwa sys.platform.startswith("aix"):
+            kutoka ctypes agiza CDLL
+            ikiwa sys.maxsize < 2**32:
+                andika(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")
+                andika(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr.o)')}")
+                # librpm.so ni only available as 32-bit shared library
+                andika(find_library("rpm"))
+                andika(cdll.LoadLibrary("librpm.so"))
             isipokua:
-                print(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr_64.o)', os.RTLD_MEMBER)}")
-                print(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr_64.o)')}")
-            print(f"crypt\t:: {find_library('crypt')}")
-            print(f"crypt\t:: {cdll.LoadLibrary(find_library('crypt'))}")
-            print(f"crypto\t:: {find_library('crypto')}")
-            print(f"crypto\t:: {cdll.LoadLibrary(find_library('crypto'))}")
+                andika(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr_64.o)', os.RTLD_MEMBER)}")
+                andika(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr_64.o)')}")
+            andika(f"crypt\t:: {find_library('crypt')}")
+            andika(f"crypt\t:: {cdll.LoadLibrary(find_library('crypt'))}")
+            andika(f"crypto\t:: {find_library('crypto')}")
+            andika(f"crypto\t:: {cdll.LoadLibrary(find_library('crypto'))}")
         isipokua:
-            print(cdll.LoadLibrary("libm.so"))
-            print(cdll.LoadLibrary("libcrypt.so"))
-            print(find_library("crypt"))
+            andika(cdll.LoadLibrary("libm.so"))
+            andika(cdll.LoadLibrary("libcrypt.so"))
+            andika(find_library("crypt"))
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test()

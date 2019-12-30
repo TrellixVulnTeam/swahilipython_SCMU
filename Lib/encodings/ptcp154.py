@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec generated from 'PTCP154.txt' with gencodec.py.
+""" Python Character Mapping Codec generated kutoka 'PTCP154.txt' ukijumuisha gencodec.py.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 
@@ -28,10 +28,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pita
+    pass
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pita
+    pass
 
 ### encodings module API
 

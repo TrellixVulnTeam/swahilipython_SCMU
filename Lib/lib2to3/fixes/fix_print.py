@@ -13,7 +13,7 @@ No changes are applied ikiwa print_function ni imported kutoka __future__
 
 """
 
-# Local agizas
+# Local imports
 kutoka .. agiza patcomp
 kutoka .. agiza pytree
 kutoka ..pgen2 agiza token
@@ -43,13 +43,13 @@ kundi FixPrint(fixer_base.BaseFix):
             # Special-case print all by itself
             bare_print.replace(Call(Name("print"), [],
                                prefix=bare_print.prefix))
-            rudisha
+            return
         assert node.children[0] == Name("print")
         args = node.children[1:]
         ikiwa len(args) == 1 na parend_expr.match(args[0]):
             # We don't want to keep sticking parens around an
             # already-parenthesised expression.
-            rudisha
+            return
 
         sep = end = file = Tupu
         ikiwa args na args[-1] == Comma():

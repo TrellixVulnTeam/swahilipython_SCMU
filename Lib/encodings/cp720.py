@@ -1,5 +1,5 @@
 """Python Character Mapping Codec cp720 generated on Windows:
-Vista 6.0.6002 SP2 Multiprocessor Free with the command:
+Vista 6.0.6002 SP2 Multiprocessor Free ukijumuisha the command:
   python Tools/unicode/genwincodec.py 720
 """#"
 
@@ -25,10 +25,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pita
+    pass
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pita
+    pass
 
 ### encodings module API
 

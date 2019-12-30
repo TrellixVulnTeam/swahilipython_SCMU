@@ -46,5 +46,5 @@ kundi TestSeparators:
         self.assertRaises(TypeError, self.dumps, h, separators=(b', ', b': '))
 
 
-kundi TestPySeparators(TestSeparators, PyTest): pita
-kundi TestCSeparators(TestSeparators, CTest): pita
+kundi TestPySeparators(TestSeparators, PyTest): pass
+kundi TestCSeparators(TestSeparators, CTest): pass

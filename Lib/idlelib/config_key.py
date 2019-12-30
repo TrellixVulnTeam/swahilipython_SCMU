@@ -204,7 +204,7 @@ kundi GetKeysDialog(Toplevel):
 
         The names are used to build Tk bindings -- it doesn't matter ikiwa the
         keyboard has these keys; it matters ikiwa Tk understands them.  The
-        order ni also agizaant: key binding equality depends on it, so
+        order ni also important: key binding equality depends on it, so
         config-keys.eleza must use the same ordering.
         """
         ikiwa sys.platform == "darwin":
@@ -260,7 +260,7 @@ kundi GetKeysDialog(Toplevel):
         ikiwa sio keys:
             self.showerror(title=self.keyerror_title, parent=self,
                            message="No key specified.")
-            rudisha
+            return
         ikiwa (self.advanced ama self.keys_ok(keys)) na self.bind_ok(keys):
             self.result = keys
         self.grab_release()
@@ -285,17 +285,17 @@ kundi GetKeysDialog(Toplevel):
         ikiwa sio keys.endswith('>'):
             self.showerror(title, parent=self,
                            message='Missing the final Key')
-        lasivyo (sio modifiers
-              na final_key haiko kwenye FUNCTION_KEYS + MOVE_KEYS):
+        elikiwa (not modifiers
+              na final_key sio kwenye FUNCTION_KEYS + MOVE_KEYS):
             self.showerror(title=title, parent=self,
                            message='No modifier key(s) specified.')
-        lasivyo (modifiers == ['Shift']) \
+        elikiwa (modifiers == ['Shift']) \
                  na (final_key sio in
                       FUNCTION_KEYS + MOVE_KEYS + ('Tab', 'Space')):
             msg = 'The shift modifier by itself may sio be used with'\
                   ' this key symbol.'
             self.showerror(title=title, parent=self, message=msg)
-        lasivyo keys kwenye key_sequences:
+        elikiwa keys kwenye key_sequences:
             msg = 'This key combination ni already kwenye use.'
             self.showerror(title=title, parent=self, message=msg)
         isipokua:
@@ -306,7 +306,7 @@ kundi GetKeysDialog(Toplevel):
         "Return Kweli ikiwa Tcl accepts the new keys isipokua show message."
         jaribu:
             binding = self.bind(keys, lambda: Tupu)
-        tatizo TclError kama err:
+        except TclError as err:
             self.showerror(
                     title=self.keyerror_title, parent=self,
                     message=(f'The entered key sequence ni sio accepted.\n\n'

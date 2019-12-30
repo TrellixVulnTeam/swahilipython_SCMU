@@ -1,61 +1,61 @@
-import unittest
-from ctypes import *
-import re, sys
+agiza unittest
+kutoka ctypes agiza *
+agiza re, sys
 
-if sys.byteorder == "little":
+ikiwa sys.byteorder == "little":
     THIS_ENDIAN = "<"
     OTHER_ENDIAN = ">"
 isipokua:
     THIS_ENDIAN = ">"
     OTHER_ENDIAN = "<"
 
-def normalize(format):
-    # Remove current endian specifier and white space from a format
+eleza normalize(format):
+    # Remove current endian specifier na white space kutoka a format
     # string
-    if format is None:
-        return ""
+    ikiwa format ni Tupu:
+        rudisha ""
     format = format.replace(OTHER_ENDIAN, THIS_ENDIAN)
-    return re.sub(r"\s", "", format)
+    rudisha re.sub(r"\s", "", format)
 
-class Test(unittest.TestCase):
+kundi Test(unittest.TestCase):
 
-    def test_native_types(self):
-        for tp, fmt, shape, itemtp in native_types:
+    eleza test_native_types(self):
+        kila tp, fmt, shape, itemtp kwenye native_types:
             ob = tp()
             v = memoryview(ob)
             jaribu:
                 self.assertEqual(normalize(v.format), normalize(fmt))
-                if shape:
+                ikiwa shape:
                     self.assertEqual(len(v), shape[0])
                 isipokua:
                     self.assertEqual(len(v) * sizeof(itemtp), sizeof(ob))
                 self.assertEqual(v.itemsize, sizeof(itemtp))
                 self.assertEqual(v.shape, shape)
                 # XXX Issue #12851: PyCData_NewGetBuffer() must provide strides
-                #     if requested. memoryview currently reconstructs missing
+                #     ikiwa requested. memoryview currently reconstructs missing
                 #     stride information, so this assert will fail.
                 # self.assertEqual(v.strides, ())
 
                 # they are always read/write
-                self.assertFalse(v.readonly)
+                self.assertUongo(v.readonly)
 
-                if v.shape:
+                ikiwa v.shape:
                     n = 1
-                    for dim in v.shape:
+                    kila dim kwenye v.shape:
                         n = n * dim
                     self.assertEqual(n * v.itemsize, len(v.tobytes()))
             tatizo:
                 # so that we can see the failing type
-                print(tp)
+                andika(tp)
                 raise
 
-    def test_endian_types(self):
-        for tp, fmt, shape, itemtp in endian_types:
+    eleza test_endian_types(self):
+        kila tp, fmt, shape, itemtp kwenye endian_types:
             ob = tp()
             v = memoryview(ob)
             jaribu:
                 self.assertEqual(v.format, fmt)
-                if shape:
+                ikiwa shape:
                     self.assertEqual(len(v), shape[0])
                 isipokua:
                     self.assertEqual(len(v) * sizeof(itemtp), sizeof(ob))
@@ -65,44 +65,44 @@ class Test(unittest.TestCase):
                 # self.assertEqual(v.strides, ())
 
                 # they are always read/write
-                self.assertFalse(v.readonly)
+                self.assertUongo(v.readonly)
 
-                if v.shape:
+                ikiwa v.shape:
                     n = 1
-                    for dim in v.shape:
+                    kila dim kwenye v.shape:
                         n = n * dim
                     self.assertEqual(n, len(v))
             tatizo:
                 # so that we can see the failing type
-                print(tp)
+                andika(tp)
                 raise
 
 # define some structure classes
 
-class Point(Structure):
+kundi Point(Structure):
     _fields_ = [("x", c_long), ("y", c_long)]
 
-class PackedPoint(Structure):
+kundi PackedPoint(Structure):
     _pack_ = 2
     _fields_ = [("x", c_long), ("y", c_long)]
 
-class Point2(Structure):
+kundi Point2(Structure):
     pass
 Point2._fields_ = [("x", c_long), ("y", c_long)]
 
-class EmptyStruct(Structure):
+kundi EmptyStruct(Structure):
     _fields_ = []
 
-class aUnion(Union):
+kundi aUnion(Union):
     _fields_ = [("a", c_int)]
 
-class StructWithArrays(Structure):
+kundi StructWithArrays(Structure):
     _fields_ = [("x", c_long * 3 * 2), ("y", Point * 4)]
 
-class Incomplete(Structure):
+kundi Incomplete(Structure):
     pass
 
-class Complete(Structure):
+kundi Complete(Structure):
     pass
 PComplete = POINTER(Complete)
 Complete._fields_ = [("a", c_long)]
@@ -110,7 +110,7 @@ Complete._fields_ = [("a", c_long)]
 ################################################################
 #
 # This table contains format strings as they look on little endian
-# machines.  The test replaces '<' with '>' on big endian machines.
+# machines.  The test replaces '<' ukijumuisha '>' on big endian machines.
 #
 
 # Platform-specific type codes
@@ -127,16 +127,16 @@ s_float = "f"
 s_double = "d"
 s_longdouble = "g"
 
-# Alias definitions in ctypes/__init__.py
-if c_int is c_long:
+# Alias definitions kwenye ctypes/__init__.py
+ikiwa c_int ni c_long:
     s_int = s_long
-if c_uint is c_ulong:
+ikiwa c_uint ni c_ulong:
     s_uint = s_ulong
-if c_longlong is c_long:
+ikiwa c_longlong ni c_long:
     s_longlong = s_long
-if c_ulonglong is c_ulong:
+ikiwa c_ulonglong ni c_ulong:
     s_ulonglong = s_ulong
-if c_longdouble is c_double:
+ikiwa c_longdouble ni c_double:
     s_longdouble = s_double
 
 
@@ -173,7 +173,7 @@ native_types = [
     (POINTER(c_byte),           "&<b",                  (),           POINTER(c_byte)),
     (POINTER(POINTER(c_long)),  "&&<" + s_long,         (),           POINTER(POINTER(c_long))),
 
-    ## arrays and pointers
+    ## arrays na pointers
 
     (c_double * 4,              "<d",                   (4,),           c_double),
     (c_float * 4 * 3 * 2,       "<f",                   (2,3,4),        c_float),
@@ -181,7 +181,7 @@ native_types = [
     (POINTER(c_short) * 2 * 3,  "&<" + s_short,         (3,2,),         POINTER(c_short)),
     (POINTER(c_short * 2),      "&(2)<" + s_short,      (),             POINTER(c_short)),
 
-    ## structures and unions
+    ## structures na unions
 
     (Point,                     "T{<l:x:<l:y:}".replace('l', s_long),  (),  Point),
     # packed structures do sio implement the pep
@@ -190,7 +190,7 @@ native_types = [
     (EmptyStruct,               "T{}",                                 (),  EmptyStruct),
     # the pep doesn't support unions
     (aUnion,                    "B",                                   (),  aUnion),
-    # structure with sub-arrays
+    # structure ukijumuisha sub-arrays
     (StructWithArrays, "T{(2,3)<l:x:(4)T{<l:x:<l:y:}:y:}".replace('l', s_long), (), StructWithArrays),
     (StructWithArrays * 3, "T{(2,3)<l:x:(4)T{<l:x:<l:y:}:y:}".replace('l', s_long), (3,), StructWithArrays),
 
@@ -198,7 +198,7 @@ native_types = [
     (Incomplete,                "B",                    (),           Incomplete),
     (POINTER(Incomplete),       "&B",                   (),           POINTER(Incomplete)),
 
-    # 'Complete' is a structure that starts incomplete, but is completed after the
+    # 'Complete' ni a structure that starts incomplete, but ni completed after the
     # pointer type to it has been created.
     (Complete,                  "T{<l:a:}".replace('l', s_long), (), Complete),
     # Unfortunately the pointer format string ni sio fixed...
@@ -207,20 +207,20 @@ native_types = [
     ## other
 
     # function signatures are sio implemented
-    (CFUNCTYPE(None),           "X{}",                  (),           CFUNCTYPE(None)),
+    (CFUNCTYPE(Tupu),           "X{}",                  (),           CFUNCTYPE(Tupu)),
 
     ]
 
-class BEPoint(BigEndianStructure):
+kundi BEPoint(BigEndianStructure):
     _fields_ = [("x", c_long), ("y", c_long)]
 
-class LEPoint(LittleEndianStructure):
+kundi LEPoint(LittleEndianStructure):
     _fields_ = [("x", c_long), ("y", c_long)]
 
 ################################################################
 #
 # This table contains format strings as they really look, on both big
-# and little endian machines.
+# na little endian machines.
 #
 endian_types = [
     (BEPoint, "T{>l:x:>l:y:}".replace('l', s_long), (), BEPoint),
@@ -229,5 +229,5 @@ endian_types = [
     (POINTER(LEPoint), "&T{<l:x:<l:y:}".replace('l', s_long), (), POINTER(LEPoint)),
     ]
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

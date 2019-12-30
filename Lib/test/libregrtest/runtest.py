@@ -1,19 +1,19 @@
-import collections
-import faulthandler
-import functools
-import gc
-import importlib
-import io
-import os
-import sys
-import time
-import traceback
-import unittest
+agiza collections
+agiza faulthandler
+agiza functools
+agiza gc
+agiza importlib
+agiza io
+agiza os
+agiza sys
+agiza time
+agiza traceback
+agiza unittest
 
-from test import support
-from test.libregrtest.refleak import dash_R, clear_caches
-from test.libregrtest.save_env import saved_test_environment
-from test.libregrtest.utils import format_duration, print_warning
+kutoka test agiza support
+kutoka test.libregrtest.refleak agiza dash_R, clear_caches
+kutoka test.libregrtest.save_env agiza saved_test_environment
+kutoka test.libregrtest.utils agiza format_duration, print_warning
 
 
 # Test result constants.
@@ -23,7 +23,7 @@ ENV_CHANGED = -1
 SKIPPED = -2
 RESOURCE_DENIED = -3
 INTERRUPTED = -4
-CHILD_ERROR = -5   # error in a child process
+CHILD_ERROR = -5   # error kwenye a child process
 TEST_DID_NOT_RUN = -6
 TIMEOUT = -7
 
@@ -39,12 +39,12 @@ _FORMAT_TEST_RESULT = {
     TIMEOUT: '%s timed out',
 }
 
-# Minimum duration of a test to display its duration or to mention that
-# the test is running in background
+# Minimum duration of a test to display its duration ama to mention that
+# the test ni running kwenye background
 PROGRESS_MIN_TIME = 30.0   # seconds
 
-# small set of tests to determine if we have a basically functioning interpreter
-# (i.e. if any of these fail, then anything isipokua is likely to follow)
+# small set of tests to determine ikiwa we have a basically functioning interpreter
+# (i.e. ikiwa any of these fail, then anything isipokua ni likely to follow)
 STDTESTS = [
     'test_grammar',
     'test_opcodes',
@@ -62,74 +62,74 @@ STDTESTS = [
 NOTTESTS = set()
 
 
-# used by --findleaks, store for gc.garbage
+# used by --findleaks, store kila gc.garbage
 FOUND_GARBAGE = []
 
 
-def is_failed(result, ns):
+eleza is_failed(result, ns):
     ok = result.result
-    if ok in (PASSED, RESOURCE_DENIED, SKIPPED, TEST_DID_NOT_RUN):
-        return False
-    if ok == ENV_CHANGED:
-        return ns.fail_env_changed
-    return True
+    ikiwa ok kwenye (PASSED, RESOURCE_DENIED, SKIPPED, TEST_DID_NOT_RUN):
+        rudisha Uongo
+    ikiwa ok == ENV_CHANGED:
+        rudisha ns.fail_env_changed
+    rudisha Kweli
 
 
-def format_test_result(result):
+eleza format_test_result(result):
     fmt = _FORMAT_TEST_RESULT.get(result.result, "%s")
     text = fmt % result.test_name
-    if result.result == TIMEOUT:
+    ikiwa result.result == TIMEOUT:
         text = '%s (%s)' % (text, format_duration(result.test_time))
-    return text
+    rudisha text
 
 
-def findtestdir(path=None):
-    return path or os.path.dirname(os.path.dirname(__file__)) ama os.curdir
+eleza findtestdir(path=Tupu):
+    rudisha path ama os.path.dirname(os.path.dirname(__file__)) ama os.curdir
 
 
-def findtests(testdir=None, stdtests=STDTESTS, nottests=NOTTESTS):
+eleza findtests(testdir=Tupu, stdtests=STDTESTS, nottests=NOTTESTS):
     """Return a list of all applicable test modules."""
     testdir = findtestdir(testdir)
     names = os.listdir(testdir)
     tests = []
     others = set(stdtests) | nottests
-    for name in names:
+    kila name kwenye names:
         mod, ext = os.path.splitext(name)
-        if mod[:5] == "test_" and ext in (".py", "") and mod haiko kwenye others:
+        ikiwa mod[:5] == "test_" na ext kwenye (".py", "") na mod sio kwenye others:
             tests.append(mod)
-    return stdtests + sorted(tests)
+    rudisha stdtests + sorted(tests)
 
 
-def get_abs_module(ns, test_name):
-    if test_name.startswith('test.') ama ns.testdir:
-        return test_name
+eleza get_abs_module(ns, test_name):
+    ikiwa test_name.startswith('test.') ama ns.testdir:
+        rudisha test_name
     isipokua:
-        # Import it from the test package
-        return 'test.' + test_name
+        # Import it kutoka the test package
+        rudisha 'test.' + test_name
 
 
 TestResult = collections.namedtuple('TestResult',
     'test_name result test_time xml_data')
 
-def _runtest(ns, test_name):
+eleza _runtest(ns, test_name):
     # Handle faulthandler timeout, capture stdout+stderr, XML serialization
-    # and measure time.
+    # na measure time.
 
     output_on_failure = ns.verbose3
 
-    use_timeout = (ns.timeout ni sio None)
-    if use_timeout:
-        faulthandler.dump_traceback_later(ns.timeout, exit=True)
+    use_timeout = (ns.timeout ni sio Tupu)
+    ikiwa use_timeout:
+        faulthandler.dump_traceback_later(ns.timeout, exit=Kweli)
 
     start_time = time.perf_counter()
     jaribu:
         support.set_match_tests(ns.match_tests)
-        support.junit_xml_list = xml_list = [] if ns.xmlpath isipokua None
-        if ns.failfast:
-            support.failfast = True
+        support.junit_xml_list = xml_list = [] ikiwa ns.xmlpath isipokua Tupu
+        ikiwa ns.failfast:
+            support.failfast = Kweli
 
-        if output_on_failure:
-            support.verbose = True
+        ikiwa output_on_failure:
+            support.verbose = Kweli
 
             stream = io.StringIO()
             orig_stdout = sys.stdout
@@ -138,8 +138,8 @@ def _runtest(ns, test_name):
                 sys.stdout = stream
                 sys.stderr = stream
                 result = _runtest_inner(ns, test_name,
-                                        display_failure=False)
-                if result != PASSED:
+                                        display_failure=Uongo)
+                ikiwa result != PASSED:
                     output = stream.getvalue()
                     orig_stderr.write(output)
                     orig_stderr.flush()
@@ -153,93 +153,93 @@ def _runtest(ns, test_name):
             result = _runtest_inner(ns, test_name,
                                     display_failure=not ns.verbose)
 
-        if xml_list:
-            import xml.etree.ElementTree as ET
-            xml_data = [ET.tostring(x).decode('us-ascii') for x in xml_list]
+        ikiwa xml_list:
+            agiza xml.etree.ElementTree as ET
+            xml_data = [ET.tostring(x).decode('us-ascii') kila x kwenye xml_list]
         isipokua:
-            xml_data = None
+            xml_data = Tupu
 
         test_time = time.perf_counter() - start_time
 
-        return TestResult(test_name, result, test_time, xml_data)
+        rudisha TestResult(test_name, result, test_time, xml_data)
     mwishowe:
-        if use_timeout:
+        ikiwa use_timeout:
             faulthandler.cancel_dump_traceback_later()
-        support.junit_xml_list = None
+        support.junit_xml_list = Tupu
 
 
-def runtest(ns, test_name):
+eleza runtest(ns, test_name):
     """Run a single test.
 
     ns -- regrtest namespace of options
     test_name -- the name of the test
 
-    Returns the tuple (result, test_time, xml_data), where result is one
+    Returns the tuple (result, test_time, xml_data), where result ni one
     of the constants:
 
         INTERRUPTED      KeyboardInterrupt
         RESOURCE_DENIED  test skipped because resource denied
-        SKIPPED          test skipped for some other reason
+        SKIPPED          test skipped kila some other reason
         ENV_CHANGED      test failed because it changed the execution environment
         FAILED           test failed
         PASSED           test passed
         EMPTY_TEST_SUITE test ran no subtests.
         TIMEOUT          test timed out.
 
-    If ns.xmlpath ni sio None, xml_data is a list containing each
+    If ns.xmlpath ni sio Tupu, xml_data ni a list containing each
     generated testsuite element.
     """
     jaribu:
-        return _runtest(ns, test_name)
+        rudisha _runtest(ns, test_name)
     tatizo:
-        if sio ns.pgo:
+        ikiwa sio ns.pgo:
             msg = traceback.format_exc()
-            print(f"test {test_name} crashed -- {msg}",
-                  file=sys.stderr, flush=True)
-        return TestResult(test_name, FAILED, 0.0, None)
+            andika(f"test {test_name} crashed -- {msg}",
+                  file=sys.stderr, flush=Kweli)
+        rudisha TestResult(test_name, FAILED, 0.0, Tupu)
 
 
-def _test_module(the_module):
+eleza _test_module(the_module):
     loader = unittest.TestLoader()
     tests = loader.loadTestsFromModule(the_module)
-    for error in loader.errors:
-        print(error, file=sys.stderr)
-    if loader.errors:
-        ashiria Exception("errors wakati loading tests")
+    kila error kwenye loader.errors:
+        andika(error, file=sys.stderr)
+    ikiwa loader.errors:
+         ashiria Exception("errors wakati loading tests")
     support.run_unittest(tests)
 
 
-def _runtest_inner2(ns, test_name):
+eleza _runtest_inner2(ns, test_name):
     # Load the test function, run the test function, handle huntrleaks
-    # and findleaks to detect leaks
+    # na findleaks to detect leaks
 
     abstest = get_abs_module(ns, test_name)
 
-    # remove the module from sys.module to reload it if it was already imported
+    # remove the module kutoka sys.module to reload it ikiwa it was already imported
     support.unload(abstest)
 
     the_module = importlib.import_module(abstest)
 
     # If the test has a test_main, that will run the appropriate
     # tests.  If not, use normal unittest test loading.
-    test_runner = getattr(the_module, "test_main", None)
-    if test_runner is None:
+    test_runner = getattr(the_module, "test_main", Tupu)
+    ikiwa test_runner ni Tupu:
         test_runner = functools.partial(_test_module, the_module)
 
     jaribu:
-        if ns.huntrleaks:
-            # Return True if the test leaked references
+        ikiwa ns.huntrleaks:
+            # Return Kweli ikiwa the test leaked references
             refleak = dash_R(ns, test_name, test_runner)
         isipokua:
             test_runner()
-            refleak = False
+            refleak = Uongo
     mwishowe:
         cleanup_test_droppings(test_name, ns.verbose)
 
     support.gc_collect()
 
-    if gc.garbage:
-        support.environment_altered = True
+    ikiwa gc.garbage:
+        support.environment_altered = Kweli
         print_warning(f"{test_name} created {len(gc.garbage)} "
                       f"uncollectable object(s).")
 
@@ -250,91 +250,91 @@ def _runtest_inner2(ns, test_name):
 
     support.reap_children()
 
-    return refleak
+    rudisha refleak
 
 
-def _runtest_inner(ns, test_name, display_failure=True):
+eleza _runtest_inner(ns, test_name, display_failure=Kweli):
     # Detect environment changes, handle exceptions.
 
-    # Reset the environment_altered flag to detect if a test altered
+    # Reset the environment_altered flag to detect ikiwa a test altered
     # the environment
-    support.environment_altered = False
+    support.environment_altered = Uongo
 
-    if ns.pgo:
-        display_failure = False
+    ikiwa ns.pgo:
+        display_failure = Uongo
 
     jaribu:
         clear_caches()
 
-        with saved_test_environment(test_name, ns.verbose, ns.quiet, pgo=ns.pgo) as environment:
+        ukijumuisha saved_test_environment(test_name, ns.verbose, ns.quiet, pgo=ns.pgo) as environment:
             refleak = _runtest_inner2(ns, test_name)
-    tatizo support.ResourceDenied as msg:
-        if sio ns.quiet and sio ns.pgo:
-            print(f"{test_name} skipped -- {msg}", flush=True)
-        return RESOURCE_DENIED
-    tatizo unittest.SkipTest as msg:
-        if sio ns.quiet and sio ns.pgo:
-            print(f"{test_name} skipped -- {msg}", flush=True)
-        return SKIPPED
-    tatizo support.TestFailed as exc:
+    except support.ResourceDenied as msg:
+        ikiwa sio ns.quiet na sio ns.pgo:
+            andika(f"{test_name} skipped -- {msg}", flush=Kweli)
+        rudisha RESOURCE_DENIED
+    except unittest.SkipTest as msg:
+        ikiwa sio ns.quiet na sio ns.pgo:
+            andika(f"{test_name} skipped -- {msg}", flush=Kweli)
+        rudisha SKIPPED
+    except support.TestFailed as exc:
         msg = f"test {test_name} failed"
-        if display_failure:
+        ikiwa display_failure:
             msg = f"{msg} -- {exc}"
-        print(msg, file=sys.stderr, flush=True)
-        return FAILED
-    tatizo support.TestDidNotRun:
-        return TEST_DID_NOT_RUN
-    tatizo KeyboardInterrupt:
-        print()
-        return INTERRUPTED
+        andika(msg, file=sys.stderr, flush=Kweli)
+        rudisha FAILED
+    except support.TestDidNotRun:
+        rudisha TEST_DID_NOT_RUN
+    except KeyboardInterrupt:
+        andika()
+        rudisha INTERRUPTED
     tatizo:
-        if sio ns.pgo:
+        ikiwa sio ns.pgo:
             msg = traceback.format_exc()
-            print(f"test {test_name} crashed -- {msg}",
-                  file=sys.stderr, flush=True)
-        return FAILED
+            andika(f"test {test_name} crashed -- {msg}",
+                  file=sys.stderr, flush=Kweli)
+        rudisha FAILED
 
-    if refleak:
-        return FAILED
-    if environment.changed:
-        return ENV_CHANGED
-    return PASSED
+    ikiwa refleak:
+        rudisha FAILED
+    ikiwa environment.changed:
+        rudisha ENV_CHANGED
+    rudisha PASSED
 
 
-def cleanup_test_droppings(test_name, verbose):
+eleza cleanup_test_droppings(test_name, verbose):
     # First kill any dangling references to open files etc.
     # This can also issue some ResourceWarnings which would otherwise get
-    # triggered during the following test run, and possibly produce failures.
+    # triggered during the following test run, na possibly produce failures.
     support.gc_collect()
 
     # Try to clean up junk commonly left behind.  While tests shouldn't leave
-    # any files or directories behind, when a test fails that can be tedious
-    # for it to arrange.  The consequences can be especially nasty on Windows,
-    # since if a test leaves a file open, it cannot be deleted by name (while
+    # any files ama directories behind, when a test fails that can be tedious
+    # kila it to arrange.  The consequences can be especially nasty on Windows,
+    # since ikiwa a test leaves a file open, it cannot be deleted by name (while
     # there's nothing we can do about that here either, we can display the
-    # name of the offending test, which is a real help).
-    for name in (support.TESTFN,):
-        if sio os.path.exists(name):
+    # name of the offending test, which ni a real help).
+    kila name kwenye (support.TESTFN,):
+        ikiwa sio os.path.exists(name):
             endelea
 
-        if os.path.isdir(name):
-            import shutil
+        ikiwa os.path.isdir(name):
+            agiza shutil
             kind, nuker = "directory", shutil.rmtree
-        lasivyo os.path.isfile(name):
+        elikiwa os.path.isfile(name):
             kind, nuker = "file", os.unlink
         isipokua:
-            ashiria RuntimeError(f"os.path says {name!r} exists but is neither "
+             ashiria RuntimeError(f"os.path says {name!r} exists but ni neither "
                                f"directory nor file")
 
-        if verbose:
+        ikiwa verbose:
             print_warning("%r left behind %s %r" % (test_name, kind, name))
-            support.environment_altered = True
+            support.environment_altered = Kweli
 
         jaribu:
-            import stat
+            agiza stat
             # fix possible permissions problems that might prevent cleanup
             os.chmod(name, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
             nuker(name)
-        tatizo Exception as exc:
+        except Exception as exc:
             print_warning(f"{test_name} left behind {kind} {name!r} "
                           f"and it couldn't be removed: {exc}")

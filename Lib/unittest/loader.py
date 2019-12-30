@@ -31,7 +31,7 @@ kundi _FailedTest(case.TestCase):
         ikiwa name != self._testMethodName:
             rudisha super(_FailedTest, self).__getattr__(name)
         eleza testFailure():
-            ashiria self._exception
+             ashiria self._exception
         rudisha testFailure
 
 
@@ -52,7 +52,7 @@ eleza _make_failed_test(methodname, exception, suiteClass, message):
 eleza _make_skipped_test(methodname, exception, suiteClass):
     @case.skip(str(exception))
     eleza testSkipped(self):
-        pita
+        pass
     attrs = {methodname: testSkipped}
     TestClass = type("ModuleSkipped", (case.TestCase,), attrs)
     rudisha suiteClass((TestClass(methodname),))
@@ -66,7 +66,7 @@ eleza _jython_aware_splitext(path):
 kundi TestLoader(object):
     """
     This kundi ni responsible kila loading tests according to various criteria
-    na rudishaing them wrapped kwenye a TestSuite
+    na returning them wrapped kwenye a TestSuite
     """
     testMethodPrefix = 'test'
     sortTestMethodsUsing = staticmethod(util.three_way_cmp)
@@ -84,7 +84,7 @@ kundi TestLoader(object):
     eleza loadTestsFromTestCase(self, testCaseClass):
         """Return a suite of all test cases contained kwenye testCaseClass"""
         ikiwa issubclass(testCaseClass, suite.TestSuite):
-            ashiria TypeError("Test cases should sio be derived kutoka "
+             ashiria TypeError("Test cases should sio be derived kutoka "
                             "TestSuite. Maybe you meant to derive kutoka "
                             "TestCase?")
         testCaseNames = self.getTestCaseNames(testCaseClass)
@@ -109,14 +109,14 @@ kundi TestLoader(object):
             # Complain about the number of arguments, but don't forget the
             # required `module` argument.
             complaint = len(args) + 1
-            ashiria TypeError('loadTestsFromModule() takes 1 positional argument but {} were given'.format(complaint))
+             ashiria TypeError('loadTestsFromModule() takes 1 positional argument but {} were given'.format(complaint))
         ikiwa len(kws) != 0:
             # Since the keyword arguments are unsorted (see PEP 468), just
             # pick the alphabetically sorted first argument to complain about,
             # ikiwa multiple were given.  At least the error message will be
             # predictable.
             complaint = sorted(kws)[0]
-            ashiria TypeError("loadTestsFromModule() got an unexpected keyword argument '{}'".format(complaint))
+             ashiria TypeError("loadTestsFromModule() got an unexpected keyword argument '{}'".format(complaint))
         tests = []
         kila name kwenye dir(module):
             obj = getattr(module, name)
@@ -128,7 +128,7 @@ kundi TestLoader(object):
         ikiwa load_tests ni sio Tupu:
             jaribu:
                 rudisha load_tests(self, tests, pattern)
-            tatizo Exception kama e:
+            except Exception as e:
                 error_case, error_message = _make_failed_load_tests(
                     module.__name__, e, self.suiteClass)
                 self.errors.append(error_message)
@@ -140,7 +140,7 @@ kundi TestLoader(object):
 
         The name may resolve either to a module, a test case class, a
         test method within a test case class, ama a callable object which
-        rudishas a TestCase ama TestSuite instance.
+        returns a TestCase ama TestSuite instance.
 
         The method optionally resolves the names relative to a given module.
         """
@@ -153,7 +153,7 @@ kundi TestLoader(object):
                     module_name = '.'.join(parts_copy)
                     module = __import__(module_name)
                     koma
-                tatizo ImportError:
+                except ImportError:
                     next_attribute = parts_copy.pop()
                     # Last error so we can give it to the user ikiwa needed.
                     error_case, error_message = _make_failed_import_test(
@@ -167,13 +167,13 @@ kundi TestLoader(object):
         kila part kwenye parts:
             jaribu:
                 parent, obj = obj, getattr(obj, part)
-            tatizo AttributeError kama e:
+            except AttributeError as e:
                 # We can't traverse some part of the name.
                 ikiwa (getattr(obj, '__path__', Tupu) ni sio Tupu
                     na error_case ni sio Tupu):
                     # This ni a package (no __path__ per importlib docs), na we
-                    # encountered an error agizaing something. We cannot tell
-                    # the difference between package.WrongNameTestClass na
+                    # encountered an error importing something. We cannot tell
+                    # the difference between package.WrongNameTestClass and
                     # package.wrong_module_name so we just report the
                     # ImportError - it ni more informative.
                     self.errors.append(error_message)
@@ -189,29 +189,29 @@ kundi TestLoader(object):
 
         ikiwa isinstance(obj, types.ModuleType):
             rudisha self.loadTestsFromModule(obj)
-        lasivyo isinstance(obj, type) na issubclass(obj, case.TestCase):
+        elikiwa isinstance(obj, type) na issubclass(obj, case.TestCase):
             rudisha self.loadTestsFromTestCase(obj)
-        lasivyo (isinstance(obj, types.FunctionType) na
-              isinstance(parent, type) na
+        elikiwa (isinstance(obj, types.FunctionType) and
+              isinstance(parent, type) and
               issubclass(parent, case.TestCase)):
             name = parts[-1]
             inst = parent(name)
             # static methods follow a different path
             ikiwa sio isinstance(getattr(inst, name), types.FunctionType):
                 rudisha self.suiteClass([inst])
-        lasivyo isinstance(obj, suite.TestSuite):
+        elikiwa isinstance(obj, suite.TestSuite):
             rudisha obj
         ikiwa callable(obj):
             test = obj()
             ikiwa isinstance(test, suite.TestSuite):
                 rudisha test
-            lasivyo isinstance(test, case.TestCase):
+            elikiwa isinstance(test, case.TestCase):
                 rudisha self.suiteClass([test])
             isipokua:
-                ashiria TypeError("calling %s rudishaed %s, sio a test" %
+                 ashiria TypeError("calling %s returned %s, sio a test" %
                                 (obj, test))
         isipokua:
-            ashiria TypeError("don't know how to make test kutoka: %s" % obj)
+             ashiria TypeError("don't know how to make test from: %s" % obj)
 
     eleza loadTestsFromNames(self, names, module=Tupu):
         """Return a suite of all test cases found using the given sequence
@@ -245,7 +245,7 @@ kundi TestLoader(object):
         tests found within them. Only test files that match the pattern will
         be loaded. (Using shell style pattern matching.)
 
-        All test modules must be agizaable kutoka the top level of the project.
+        All test modules must be importable kutoka the top level of the project.
         If the start directory ni sio the top level directory then the top
         level directory must be specified separately.
 
@@ -260,9 +260,9 @@ kundi TestLoader(object):
         If load_tests exists then discovery does *not* recurse into the package,
         load_tests ni responsible kila loading all tests kwenye the package.
 
-        The pattern ni deliberately sio stored kama a loader attribute so that
+        The pattern ni deliberately sio stored as a loader attribute so that
         packages can endelea discovery themselves. top_level_dir ni stored so
-        load_tests does sio need to pita this argument kwenye to loader.discover().
+        load_tests does sio need to pass this argument kwenye to loader.discover().
 
         Paths are sorted before being imported to ensure reproducible execution
         order even on filesystems ukijumuisha non-alphabetical ordering like ext3/4.
@@ -271,44 +271,44 @@ kundi TestLoader(object):
         ikiwa top_level_dir ni Tupu na self._top_level_dir ni sio Tupu:
             # make top_level_dir optional ikiwa called kutoka load_tests kwenye a package
             top_level_dir = self._top_level_dir
-        lasivyo top_level_dir ni Tupu:
+        elikiwa top_level_dir ni Tupu:
             set_implicit_top = Kweli
             top_level_dir = start_dir
 
         top_level_dir = os.path.abspath(top_level_dir)
 
         ikiwa sio top_level_dir kwenye sys.path:
-            # all test modules must be agizaable kutoka the top level directory
+            # all test modules must be importable kutoka the top level directory
             # should we *unconditionally* put the start directory kwenye first
             # kwenye sys.path to minimise likelihood of conflicts between installed
             # modules na development versions?
             sys.path.insert(0, top_level_dir)
         self._top_level_dir = top_level_dir
 
-        is_not_agizaable = Uongo
+        is_not_importable = Uongo
         is_namespace = Uongo
         tests = []
         ikiwa os.path.isdir(os.path.abspath(start_dir)):
             start_dir = os.path.abspath(start_dir)
             ikiwa start_dir != top_level_dir:
-                is_not_agizaable = sio os.path.isfile(os.path.join(start_dir, '__init__.py'))
+                is_not_importable = sio os.path.isfile(os.path.join(start_dir, '__init__.py'))
         isipokua:
             # support kila discovery kutoka dotted module names
             jaribu:
                 __import__(start_dir)
-            tatizo ImportError:
-                is_not_agizaable = Kweli
+            except ImportError:
+                is_not_importable = Kweli
             isipokua:
                 the_module = sys.modules[start_dir]
                 top_part = start_dir.split('.')[0]
                 jaribu:
                     start_dir = os.path.abspath(
                        os.path.dirname((the_module.__file__)))
-                tatizo AttributeError:
+                except AttributeError:
                     # look kila namespace packages
                     jaribu:
                         spec = the_module.__spec__
-                    tatizo AttributeError:
+                    except AttributeError:
                         spec = Tupu
 
                     ikiwa spec na spec.loader ni Tupu:
@@ -316,7 +316,7 @@ kundi TestLoader(object):
                             is_namespace = Kweli
 
                             kila path kwenye the_module.__path__:
-                                ikiwa (sio set_implicit_top na
+                                ikiwa (not set_implicit_top and
                                     sio path.startswith(top_level_dir)):
                                     endelea
                                 self._top_level_dir = \
@@ -325,12 +325,12 @@ kundi TestLoader(object):
                                 tests.extend(self._find_tests(path,
                                                               pattern,
                                                               namespace=Kweli))
-                    lasivyo the_module.__name__ kwenye sys.builtin_module_names:
+                    elikiwa the_module.__name__ kwenye sys.builtin_module_names:
                         # builtin module
-                        ashiria TypeError('Can sio use builtin modules '
+                         ashiria TypeError('Can sio use builtin modules '
                                         'as dotted module names') kutoka Tupu
                     isipokua:
-                        ashiria TypeError(
+                         ashiria TypeError(
                             'don\'t know how to discover kutoka {!r}'
                             .format(the_module)) kutoka Tupu
 
@@ -342,8 +342,8 @@ kundi TestLoader(object):
                     isipokua:
                         sys.path.remove(top_level_dir)
 
-        ikiwa is_not_agizaable:
-            ashiria ImportError('Start directory ni sio agizaable: %r' % start_dir)
+        ikiwa is_not_importable:
+             ashiria ImportError('Start directory ni sio importable: %r' % start_dir)
 
         ikiwa sio is_namespace:
             tests = list(self._find_tests(start_dir, pattern))
@@ -358,7 +358,7 @@ kundi TestLoader(object):
         isipokua:
             # here we have been given a module rather than a package - so
             # all we can do ni search the *same* directory the module ni in
-            # should an exception be ashiriad instead
+            # should an exception be raised instead
             rudisha os.path.dirname(full_path)
 
     eleza _get_name_from_path(self, path):
@@ -387,7 +387,7 @@ kundi TestLoader(object):
         name = self._get_name_from_path(start_dir)
         # name ni '.' when start_dir == top_level_dir (and top_level_dir ni by
         # definition sio a package).
-        ikiwa name != '.' na name haiko kwenye self._loading_packages:
+        ikiwa name != '.' na name sio kwenye self._loading_packages:
             # name ni kwenye self._loading_packages wakati we have called into
             # loadTestsFromModule ukijumuisha name.
             tests, should_recurse = self._find_test_path(
@@ -397,7 +397,7 @@ kundi TestLoader(object):
             ikiwa sio should_recurse:
                 # Either an error occurred, ama load_tests was used by the
                 # package.
-                rudisha
+                return
         # Handle the contents.
         paths = sorted(os.listdir(start_dir))
         kila path kwenye paths:
@@ -419,7 +419,7 @@ kundi TestLoader(object):
         """Used by discovery.
 
         Loads tests kutoka a single file, ama a directories' __init__.py when
-        pitaed the directory.
+        passed the directory.
 
         Returns a tuple (Tupu_or_tests_from_file, should_recurse).
         """
@@ -434,7 +434,7 @@ kundi TestLoader(object):
             name = self._get_name_from_path(full_path)
             jaribu:
                 module = self._get_module_from_name(name)
-            tatizo case.SkipTest kama e:
+            except case.SkipTest as e:
                 rudisha _make_skipped_test(name, e, self.suiteClass), Uongo
             tatizo:
                 error_case, error_message = \
@@ -455,11 +455,11 @@ kundi TestLoader(object):
                     expected_dir = os.path.dirname(full_path)
                     msg = ("%r module incorrectly imported kutoka %r. Expected "
                            "%r. Is this module globally installed?")
-                    ashiria ImportError(
+                     ashiria ImportError(
                         msg % (mod_name, module_dir, expected_dir))
                 rudisha self.loadTestsFromModule(module, pattern=pattern), Uongo
-        lasivyo os.path.isdir(full_path):
-            ikiwa (sio namespace na
+        elikiwa os.path.isdir(full_path):
+            ikiwa (not namespace and
                 sio os.path.isfile(os.path.join(full_path, '__init__.py'))):
                 rudisha Tupu, Uongo
 
@@ -468,7 +468,7 @@ kundi TestLoader(object):
             name = self._get_name_from_path(full_path)
             jaribu:
                 package = self._get_module_from_name(name)
-            tatizo case.SkipTest kama e:
+            except case.SkipTest as e:
                 rudisha _make_skipped_test(name, e, self.suiteClass), Uongo
             tatizo:
                 error_case, error_message = \
@@ -477,7 +477,7 @@ kundi TestLoader(object):
                 rudisha error_case, Uongo
             isipokua:
                 load_tests = getattr(package, 'load_tests', Tupu)
-                # Mark this package kama being kwenye load_tests (possibly ;))
+                # Mark this package as being kwenye load_tests (possibly ;))
                 self._loading_packages.add(name)
                 jaribu:
                     tests = self.loadTestsFromModule(package, pattern=pattern)

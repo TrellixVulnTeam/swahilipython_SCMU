@@ -2,21 +2,21 @@
 
 Implements the Distutils 'build_scripts' command."""
 
-import os, re
-from stat import ST_MODE
-from distutils import sysconfig
-from distutils.core import Command
-from distutils.dep_util import newer
-from distutils.util import convert_path, Mixin2to3
-from distutils import log
-import tokenize
+agiza os, re
+kutoka stat agiza ST_MODE
+kutoka distutils agiza sysconfig
+kutoka distutils.core agiza Command
+kutoka distutils.dep_util agiza newer
+kutoka distutils.util agiza convert_path, Mixin2to3
+kutoka distutils agiza log
+agiza tokenize
 
-# check if Python is called on the first line with this expression
+# check ikiwa Python ni called on the first line ukijumuisha this expression
 first_line_re = re.compile(b'^#!.*python[0-9.]*([ \t].*)?$')
 
-class build_scripts(Command):
+kundi build_scripts(Command):
 
-    description = "\"build\" scripts (copy and fixup #! line)"
+    description = "\"build\" scripts (copy na fixup #! line)"
 
     user_options = [
         ('build-dir=', 'd', "directory to \"build\" (copy) to"),
@@ -27,76 +27,76 @@ class build_scripts(Command):
     boolean_options = ['force']
 
 
-    def initialize_options(self):
-        self.build_dir = None
-        self.scripts = None
-        self.force = None
-        self.executable = None
-        self.outfiles = None
+    eleza initialize_options(self):
+        self.build_dir = Tupu
+        self.scripts = Tupu
+        self.force = Tupu
+        self.executable = Tupu
+        self.outfiles = Tupu
 
-    def finalize_options(self):
+    eleza finalize_options(self):
         self.set_undefined_options('build',
                                    ('build_scripts', 'build_dir'),
                                    ('force', 'force'),
                                    ('executable', 'executable'))
         self.scripts = self.distribution.scripts
 
-    def get_source_files(self):
-        return self.scripts
+    eleza get_source_files(self):
+        rudisha self.scripts
 
-    def run(self):
-        if sio self.scripts:
+    eleza run(self):
+        ikiwa sio self.scripts:
             return
         self.copy_scripts()
 
 
-    def copy_scripts(self):
-        r"""Copy each script listed in 'self.scripts'; if it's marked as a
-        Python script in the Unix way (first line matches 'first_line_re',
-        ie. starts with "\#!" and contains "python"), then adjust the first
+    eleza copy_scripts(self):
+        r"""Copy each script listed kwenye 'self.scripts'; ikiwa it's marked as a
+        Python script kwenye the Unix way (first line matches 'first_line_re',
+        ie. starts ukijumuisha "\#!" na contains "python"), then adjust the first
         line to refer to the current Python interpreter as we copy.
         """
         self.mkpath(self.build_dir)
         outfiles = []
         updated_files = []
-        for script in self.scripts:
-            adjust = False
+        kila script kwenye self.scripts:
+            adjust = Uongo
             script = convert_path(script)
             outfile = os.path.join(self.build_dir, os.path.basename(script))
             outfiles.append(outfile)
 
-            if sio self.force and sio newer(script, outfile):
+            ikiwa sio self.force na sio newer(script, outfile):
                 log.debug("not copying %s (up-to-date)", script)
                 endelea
 
-            # Always open the file, but ignore failures in dry-run mode --
-            # that way, we'll get accurate feedback if we can read the
+            # Always open the file, but ignore failures kwenye dry-run mode --
+            # that way, we'll get accurate feedback ikiwa we can read the
             # script.
             jaribu:
                 f = open(script, "rb")
-            tatizo OSError:
-                if sio self.dry_run:
+            except OSError:
+                ikiwa sio self.dry_run:
                     raise
-                f = None
+                f = Tupu
             isipokua:
                 encoding, lines = tokenize.detect_encoding(f.readline)
                 f.seek(0)
                 first_line = f.readline()
-                if sio first_line:
-                    self.warn("%s is an empty file (skipping)" % script)
+                ikiwa sio first_line:
+                    self.warn("%s ni an empty file (skipping)" % script)
                     endelea
 
                 match = first_line_re.match(first_line)
-                if match:
-                    adjust = True
+                ikiwa match:
+                    adjust = Kweli
                     post_interp = match.group(1) ama b''
 
-            if adjust:
-                log.info("copying and adjusting %s -> %s", script,
+            ikiwa adjust:
+                log.info("copying na adjusting %s -> %s", script,
                          self.build_dir)
                 updated_files.append(outfile)
-                if sio self.dry_run:
-                    if sio sysconfig.python_build:
+                ikiwa sio self.dry_run:
+                    ikiwa sio sysconfig.python_build:
                         executable = self.executable
                     isipokua:
                         executable = os.path.join(
@@ -112,49 +112,49 @@ class build_scripts(Command):
                     # UTF-8.
                     jaribu:
                         shebang.decode('utf-8')
-                    tatizo UnicodeDecodeError:
-                        ashiria ValueError(
+                    except UnicodeDecodeError:
+                         ashiria ValueError(
                             "The shebang ({!r}) ni sio decodable "
-                            "from utf-8".format(shebang))
-                    # If the script is encoded to a custom encoding (use a
+                            "kutoka utf-8".format(shebang))
+                    # If the script ni encoded to a custom encoding (use a
                     # #coding:xxx cookie), the shebang has to be decodable from
                     # the script encoding too.
                     jaribu:
                         shebang.decode(encoding)
-                    tatizo UnicodeDecodeError:
-                        ashiria ValueError(
+                    except UnicodeDecodeError:
+                         ashiria ValueError(
                             "The shebang ({!r}) ni sio decodable "
-                            "from the script encoding ({})"
+                            "kutoka the script encoding ({})"
                             .format(shebang, encoding))
-                    with open(outfile, "wb") as outf:
+                    ukijumuisha open(outfile, "wb") as outf:
                         outf.write(shebang)
                         outf.writelines(f.readlines())
-                if f:
+                ikiwa f:
                     f.close()
             isipokua:
-                if f:
+                ikiwa f:
                     f.close()
                 updated_files.append(outfile)
                 self.copy_file(script, outfile)
 
-        if os.name == 'posix':
-            for file in outfiles:
-                if self.dry_run:
+        ikiwa os.name == 'posix':
+            kila file kwenye outfiles:
+                ikiwa self.dry_run:
                     log.info("changing mode of %s", file)
                 isipokua:
                     oldmode = os.stat(file)[ST_MODE] & 0o7777
                     newmode = (oldmode | 0o555) & 0o7777
-                    if newmode != oldmode:
-                        log.info("changing mode of %s from %o to %o",
+                    ikiwa newmode != oldmode:
+                        log.info("changing mode of %s kutoka %o to %o",
                                  file, oldmode, newmode)
                         os.chmod(file, newmode)
         # XXX should we modify self.outfiles?
-        return outfiles, updated_files
+        rudisha outfiles, updated_files
 
-class build_scripts_2to3(build_scripts, Mixin2to3):
+kundi build_scripts_2to3(build_scripts, Mixin2to3):
 
-    def copy_scripts(self):
+    eleza copy_scripts(self):
         outfiles, updated_files = build_scripts.copy_scripts(self)
-        if sio self.dry_run:
+        ikiwa sio self.dry_run:
             self.run_2to3(updated_files)
-        return outfiles, updated_files
+        rudisha outfiles, updated_files

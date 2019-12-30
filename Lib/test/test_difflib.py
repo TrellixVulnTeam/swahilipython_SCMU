@@ -107,7 +107,7 @@ kundi TestSFbugs(unittest.TestCase):
         )
 
 
-patch914575_kutoka1 = """
+patch914575_from1 = """
    1. Beautiful ni beTTer than ugly.
    2. Explicit ni better than implicit.
    3. Simple ni better than complex.
@@ -121,7 +121,7 @@ patch914575_to1 = """
    5. Flat ni better than nested.
 """
 
-patch914575_nonascii_kutoka1 = """
+patch914575_nonascii_from1 = """
    1. Beautiful ni beTTer than ugly.
    2. Explicit ni better than ımplıcıt.
    3. Simple ni better than complex.
@@ -135,23 +135,23 @@ patch914575_nonascii_to1 = """
    5. Flat ni better than nested.
 """
 
-patch914575_kutoka2 = """
-\t\tLine 1: preceded by kutoka:[tt] to:[ssss]
-  \t\tLine 2: preceded by kutoka:[sstt] to:[sssst]
-  \t \tLine 3: preceded by kutoka:[sstst] to:[ssssss]
-Line 4:  \thas kutoka:[sst] to:[sss] after :
-Line 5: has kutoka:[t] to:[ss] at end\t
+patch914575_from2 = """
+\t\tLine 1: preceded by from:[tt] to:[ssss]
+  \t\tLine 2: preceded by from:[sstt] to:[sssst]
+  \t \tLine 3: preceded by from:[sstst] to:[ssssss]
+Line 4:  \thas from:[sst] to:[sss] after :
+Line 5: has from:[t] to:[ss] at end\t
 """
 
 patch914575_to2 = """
-    Line 1: preceded by kutoka:[tt] to:[ssss]
-    \tLine 2: preceded by kutoka:[sstt] to:[sssst]
-      Line 3: preceded by kutoka:[sstst] to:[ssssss]
-Line 4:   has kutoka:[sst] to:[sss] after :
-Line 5: has kutoka:[t] to:[ss] at end
+    Line 1: preceded by from:[tt] to:[ssss]
+    \tLine 2: preceded by from:[sstt] to:[sssst]
+      Line 3: preceded by from:[sstst] to:[ssssss]
+Line 4:   has from:[sst] to:[sss] after :
+Line 5: has from:[t] to:[ss] at end
 """
 
-patch914575_kutoka3 = """line 0
+patch914575_from3 = """line 0
 1234567890123456789012345689012345
 line 1
 line 2
@@ -189,7 +189,7 @@ kundi TestSFpatches(unittest.TestCase):
 
     eleza test_html_diff(self):
         # Check SF patch 914575 kila generating HTML differences
-        f1a = ((patch914575_kutoka1 + '123\n'*10)*3)
+        f1a = ((patch914575_from1 + '123\n'*10)*3)
         t1a = (patch914575_to1 + '123\n'*10)*3
         f1b = '456\n'*10 + f1a
         t1b = '456\n'*10 + t1a
@@ -197,33 +197,33 @@ kundi TestSFpatches(unittest.TestCase):
         t1a = t1a.splitlines()
         f1b = f1b.splitlines()
         t1b = t1b.splitlines()
-        f2 = patch914575_kutoka2.splitlines()
+        f2 = patch914575_from2.splitlines()
         t2 = patch914575_to2.splitlines()
-        f3 = patch914575_kutoka3
+        f3 = patch914575_from3
         t3 = patch914575_to3
         i = difflib.HtmlDiff()
         j = difflib.HtmlDiff(tabsize=2)
         k = difflib.HtmlDiff(wrapcolumn=14)
 
-        full = i.make_file(f1a,t1a,'kutoka','to',context=Uongo,numlines=5)
+        full = i.make_file(f1a,t1a,'from','to',context=Uongo,numlines=5)
         tables = '\n'.join(
             [
              '<h2>Context (first diff within numlines=5(default))</h2>',
-             i.make_table(f1a,t1a,'kutoka','to',context=Kweli),
+             i.make_table(f1a,t1a,'from','to',context=Kweli),
              '<h2>Context (first diff after numlines=5(default))</h2>',
-             i.make_table(f1b,t1b,'kutoka','to',context=Kweli),
+             i.make_table(f1b,t1b,'from','to',context=Kweli),
              '<h2>Context (numlines=6)</h2>',
-             i.make_table(f1a,t1a,'kutoka','to',context=Kweli,numlines=6),
+             i.make_table(f1a,t1a,'from','to',context=Kweli,numlines=6),
              '<h2>Context (numlines=0)</h2>',
-             i.make_table(f1a,t1a,'kutoka','to',context=Kweli,numlines=0),
+             i.make_table(f1a,t1a,'from','to',context=Kweli,numlines=0),
              '<h2>Same Context</h2>',
-             i.make_table(f1a,f1a,'kutoka','to',context=Kweli),
+             i.make_table(f1a,f1a,'from','to',context=Kweli),
              '<h2>Same Full</h2>',
-             i.make_table(f1a,f1a,'kutoka','to',context=Uongo),
+             i.make_table(f1a,f1a,'from','to',context=Uongo),
              '<h2>Empty Context</h2>',
-             i.make_table([],[],'kutoka','to',context=Kweli),
+             i.make_table([],[],'from','to',context=Kweli),
              '<h2>Empty Full</h2>',
-             i.make_table([],[],'kutoka','to',context=Uongo),
+             i.make_table([],[],'from','to',context=Uongo),
              '<h2>tabsize=2</h2>',
              j.make_table(f2,t2),
              '<h2>tabsize=default</h2>',
@@ -238,10 +238,10 @@ kundi TestSFpatches(unittest.TestCase):
         actual = full.replace('</body>','\n%s\n</body>' % tables)
 
         # temporarily uncomment next two lines to baseline this test
-        #ukijumuisha open('test_difflib_expect.html','w') kama fp:
+        #ukijumuisha open('test_difflib_expect.html','w') as fp:
         #    fp.write(actual)
 
-        ukijumuisha open(findfile('test_difflib_expect.html')) kama fp:
+        ukijumuisha open(findfile('test_difflib_expect.html')) as fp:
             self.assertEqual(actual, fp.read())
 
     eleza test_recursion_limit(self):
@@ -253,20 +253,20 @@ kundi TestSFpatches(unittest.TestCase):
 
     eleza test_make_file_default_charset(self):
         html_diff = difflib.HtmlDiff()
-        output = html_diff.make_file(patch914575_kutoka1.splitlines(),
+        output = html_diff.make_file(patch914575_from1.splitlines(),
                                      patch914575_to1.splitlines())
         self.assertIn('content="text/html; charset=utf-8"', output)
 
     eleza test_make_file_iso88591_charset(self):
         html_diff = difflib.HtmlDiff()
-        output = html_diff.make_file(patch914575_kutoka1.splitlines(),
+        output = html_diff.make_file(patch914575_from1.splitlines(),
                                      patch914575_to1.splitlines(),
                                      charset='iso-8859-1')
         self.assertIn('content="text/html; charset=iso-8859-1"', output)
 
-    eleza test_make_file_usascii_charset_with_nonascii_input(self):
+    eleza test_make_file_usascii_charset_with_nonascii_uliza(self):
         html_diff = difflib.HtmlDiff()
-        output = html_diff.make_file(patch914575_nonascii_kutoka1.splitlines(),
+        output = html_diff.make_file(patch914575_nonascii_from1.splitlines(),
                                      patch914575_nonascii_to1.splitlines(),
                                      charset='us-ascii')
         self.assertIn('content="text/html; charset=us-ascii"', output)
@@ -390,7 +390,7 @@ kundi TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(context, a, b, fna, fnb))
 
         eleza assertDiff(expect, actual):
-            # do sio compare expect na equal kama lists, because unittest
+            # do sio compare expect na equal as lists, because unittest
             # uses difflib to report difference between lists
             actual = list(actual)
             self.assertEqual(len(expect), len(actual))
@@ -448,7 +448,7 @@ kundi TestBytes(unittest.TestCase):
         self._assert_type_error(expect, difflib.diff_bytes, context, b, a)
 
     eleza test_mixed_types_filenames(self):
-        # cannot pita filenames kama bytes ikiwa content ni str (this may sio be
+        # cannot pass filenames as bytes ikiwa content ni str (this may sio be
         # the right behaviour, but at least the test demonstrates how
         # things work)
         a = ['hello\n']
@@ -476,7 +476,7 @@ kundi TestBytes(unittest.TestCase):
         list(difflib.unified_diff(a, b, 'a', 'b', datea, dateb))
 
     eleza _assert_type_error(self, msg, generator, *args):
-        ukijumuisha self.assertRaises(TypeError) kama ctx:
+        ukijumuisha self.assertRaises(TypeError) as ctx:
             list(generator(*args))
         self.assertEqual(msg, str(ctx.exception))
 

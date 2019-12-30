@@ -1,5 +1,5 @@
-import ensurepip
-import sys
+agiza ensurepip
+agiza sys
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(ensurepip._main())

@@ -1,7 +1,7 @@
 """Manage shelves of pickled objects.
 
 A "shelf" ni a persistent, dictionary-like object.  The difference
-ukijumuisha dbm databases ni that the values (sio the keys!) kwenye a shelf can
+ukijumuisha dbm databases ni that the values (not the keys!) kwenye a shelf can
 be essentially arbitrary Python objects -- anything that the "pickle"
 module can handle.  This includes most kundi instances, recursive data
 types, na objects containing lots of shared sub-objects.  The keys
@@ -15,10 +15,10 @@ object):
 
         d[key] = data   # store data at key (overwrites old data if
                         # using an existing key)
-        data = d[key]   # retrieve a COPY of the data at key (ashiria
+        data = d[key]   # retrieve a COPY of the data at key (raise
                         # KeyError ikiwa no such key) -- NOTE that this
-                        # access rudishas a *copy* of the entry!
-        toa d[key]      # delete data stored at key (ashirias KeyError
+                        # access returns a *copy* of the entry!
+        toa d[key]      # delete data stored at key (raises KeyError
                         # ikiwa no such key)
         flag = key kwenye d # true ikiwa the key exists
         list = d.keys() # a list of all existing keys (slow!)
@@ -28,10 +28,10 @@ object):
 Dependent on the implementation, closing a persistent dictionary may
 or may sio be necessary to flush changes to disk.
 
-Normally, d[key] rudishas a COPY of the entry.  This needs care when
+Normally, d[key] returns a COPY of the entry.  This needs care when
 mutable entries are mutated: kila example, ikiwa d[key] ni a list,
         d[key].append(anitem)
-does NOT modify the entry d[key] itself, kama stored kwenye the persistent
+does NOT modify the entry d[key] itself, as stored kwenye the persistent
 mapping -- it only modifies the copy, which ni then immediately
 discarded, so that the append has NO effect whatsoever.  To append an
 item to d[key] kwenye a way that will affect the persistent mapping, use:
@@ -39,12 +39,12 @@ item to d[key] kwenye a way that will affect the persistent mapping, use:
         data.append(anitem)
         d[key] = data
 
-To avoid the problem ukijumuisha mutable entries, you may pita the keyword
+To avoid the problem ukijumuisha mutable entries, you may pass the keyword
 argument writeback=Kweli kwenye the call to shelve.open.  When you use:
         d = shelve.open(filename, writeback=Kweli)
 then d keeps a cache of all entries you access, na writes them all back
 to the persistent mapping when you call d.close().  This ensures that
-such usage kama d[key].append(anitem) works kama intended.
+such usage as d[key].append(anitem) works as intended.
 
 However, using keyword argument writeback=Kweli may consume vast amount
 of memory kila the cache, na it may make d.close() very slow, ikiwa you
@@ -64,10 +64,10 @@ agiza collections.abc
 __all__ = ["Shelf", "BsdDbShelf", "DbfilenameShelf", "open"]
 
 kundi _ClosedDict(collections.abc.MutableMapping):
-    'Marker kila a closed dict.  Access attempts ashiria a ValueError.'
+    'Marker kila a closed dict.  Access attempts  ashiria a ValueError.'
 
     eleza closed(self, *args):
-        ashiria ValueError('invalid operation on closed shelf')
+         ashiria ValueError('invalid operation on closed shelf')
     __iter__ = __len__ = __getitem__ = __setitem__ = __delitem__ = keys = closed
 
     eleza __repr__(self):
@@ -109,7 +109,7 @@ kundi Shelf(collections.abc.MutableMapping):
     eleza __getitem__(self, key):
         jaribu:
             value = self.cache[key]
-        tatizo KeyError:
+        except KeyError:
             f = BytesIO(self.dict[key.encode(self.keyencoding)])
             value = Unpickler(f).load()
             ikiwa self.writeback:
@@ -128,8 +128,8 @@ kundi Shelf(collections.abc.MutableMapping):
         toa self.dict[key.encode(self.keyencoding)]
         jaribu:
             toa self.cache[key]
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
 
     eleza __enter__(self):
         rudisha self
@@ -139,13 +139,13 @@ kundi Shelf(collections.abc.MutableMapping):
 
     eleza close(self):
         ikiwa self.dict ni Tupu:
-            rudisha
+            return
         jaribu:
             self.sync()
             jaribu:
                 self.dict.close()
-            tatizo AttributeError:
-                pita
+            except AttributeError:
+                pass
         mwishowe:
             # Catch errors that may happen when close ni called kutoka __del__
             # because CPython ni kwenye interpreter shutdown.
@@ -158,7 +158,7 @@ kundi Shelf(collections.abc.MutableMapping):
         ikiwa sio hasattr(self, 'writeback'):
             # __init__ didn't succeed, so don't bother closing
             # see http://bugs.python.org/issue1339007 kila details
-            rudisha
+            return
         self.close()
 
     eleza sync(self):
@@ -175,12 +175,12 @@ kundi Shelf(collections.abc.MutableMapping):
 kundi BsdDbShelf(Shelf):
     """Shelf implementation using the "BSD" db interface.
 
-    This adds methods first(), next(), previous(), last() na
+    This adds methods first(), next(), previous(), last() and
     set_location() that have no counterpart kwenye [g]dbm databases.
 
     The actual database must be opened using one of the "bsddb"
-    modules "open" routines (i.e. bsddb.hashopen, bsddb.btopen ama
-    bsddb.rnopen) na pitaed to the constructor.
+    modules "open" routines (i.e. bsddb.hashopen, bsddb.btopen or
+    bsddb.rnopen) na passed to the constructor.
 
     See the module's __doc__ string kila an overview of the interface.
     """
@@ -233,7 +233,7 @@ eleza open(filename, flag='c', protocol=Tupu, writeback=Uongo):
     The filename parameter ni the base filename kila the underlying
     database.  As a side-effect, an extension may be added to the
     filename na more than one file may be created.  The optional flag
-    parameter has the same interpretation kama the flag parameter of
+    parameter has the same interpretation as the flag parameter of
     dbm.open(). The optional protocol parameter specifies the
     version of the pickle protocol.
 

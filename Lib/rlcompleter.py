@@ -7,13 +7,13 @@ evaluates (!) the expression up to the last dot na completes its attributes.
 It's very cool to do "agiza sys" type "sys.", hit the completion key (twice),
 and see the list of names defined by the sys module!
 
-Tip: to use the tab key kama the completion key, call
+Tip: to use the tab key as the completion key, call
 
     readline.parse_and_bind("tab: complete")
 
 Notes:
 
-- Exceptions ashiriad by the completer function are *ignored* (and generally cause
+- Exceptions raised by the completer function are *ignored* (and generally cause
   the completion to fail).  This ni a feature -- since readline sets the tty
   device kwenye raw (or ckoma) mode, printing a traceback wouldn't work well
   without some complicated hoopla to save, reset na restore the tty state.
@@ -43,16 +43,16 @@ kundi Completer:
 
         If unspecified, the default namespace where completions are performed
         ni __main__ (technically, __main__.__dict__). Namespaces should be
-        given kama dictionaries.
+        given as dictionaries.
 
-        Completer instances should be used kama the completion mechanism of
+        Completer instances should be used as the completion mechanism of
         readline via the set_completer() call:
 
         readline.set_completer(Completer(my_namespace).complete)
         """
 
         ikiwa namespace na sio isinstance(namespace, dict):
-            ashiria TypeError('namespace must be a dictionary')
+             ashiria TypeError('namespace must be a dictionary')
 
         # Don't bind to namespace quite yet, but flag whether the user wants a
         # specific namespace ama to use __main__.__dict__. This will allow us
@@ -67,7 +67,7 @@ kundi Completer:
         """Return the next possible completion kila 'text'.
 
         This ni called successively ukijumuisha state == 0, 1, 2, ... until it
-        rudishas Tupu.  The completion should begin ukijumuisha 'text'.
+        returns Tupu.  The completion should begin ukijumuisha 'text'.
 
         """
         ikiwa self.use_main_ns:
@@ -91,7 +91,7 @@ kundi Completer:
                 self.matches = self.global_matches(text)
         jaribu:
             rudisha self.matches[state]
-        tatizo IndexError:
+        except IndexError:
             rudisha Tupu
 
     eleza _callable_postfix(self, val, word):
@@ -115,14 +115,14 @@ kundi Completer:
                 seen.add(word)
                 ikiwa word kwenye {'finally', 'try'}:
                     word = word + ':'
-                lasivyo word haiko kwenye {'Uongo', 'Tupu', 'Kweli',
-                                  'koma', 'endelea', 'pita',
+                elikiwa word sio kwenye {'Uongo', 'Tupu', 'Kweli',
+                                  'koma', 'endelea', 'pass',
                                   'else'}:
                     word = word + ' '
                 matches.append(word)
         kila nspace kwenye [self.namespace, builtins.__dict__]:
             kila word, val kwenye nspace.items():
-                ikiwa word[:n] == text na word haiko kwenye seen:
+                ikiwa word[:n] == text na word sio kwenye seen:
                     seen.add(word)
                     matches.append(self._callable_postfix(val, word))
         rudisha matches
@@ -132,7 +132,7 @@ kundi Completer:
 
         Assuming the text ni of the form NAME.NAME....[NAME], na is
         evaluable kwenye self.namespace, it will be evaluated na its attributes
-        (as revealed by dir()) are used kama possible completions.  (For class
+        (as revealed by dir()) are used as possible completions.  (For class
         instances, kundi members are also considered.)
 
         WARNING: this can still invoke arbitrary C code, ikiwa an object
@@ -146,10 +146,10 @@ kundi Completer:
         expr, attr = m.group(1, 3)
         jaribu:
             thisobject = eval(expr, self.namespace)
-        tatizo Exception:
+        except Exception:
             rudisha []
 
-        # get the content of the object, tatizo __builtins__
+        # get the content of the object, except __builtins__
         words = set(dir(thisobject))
         words.discard("__builtins__")
 
@@ -160,19 +160,19 @@ kundi Completer:
         n = len(attr)
         ikiwa attr == '':
             noprefix = '_'
-        lasivyo attr == '_':
+        elikiwa attr == '_':
             noprefix = '__'
         isipokua:
             noprefix = Tupu
         wakati Kweli:
             kila word kwenye words:
-                ikiwa (word[:n] == attr na
+                ikiwa (word[:n] == attr and
                     sio (noprefix na word[:n+1] == noprefix)):
                     match = "%s.%s" % (expr, word)
                     jaribu:
                         val = getattr(thisobject, word)
-                    tatizo Exception:
-                        pita  # Include even ikiwa attribute sio set
+                    except Exception:
+                        pass  # Include even ikiwa attribute sio set
                     isipokua:
                         match = self._callable_postfix(val, match)
                     matches.append(match)
@@ -194,7 +194,7 @@ eleza get_class_members(klass):
 
 jaribu:
     agiza readline
-tatizo ImportError:
+except ImportError:
     _readline_available = Uongo
 isipokua:
     readline.set_completer(Completer().complete)

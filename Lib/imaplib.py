@@ -29,7 +29,7 @@ kutoka io agiza DEFAULT_BUFFER_SIZE
 jaribu:
     agiza ssl
     HAVE_SSL = Kweli
-tatizo ImportError:
+except ImportError:
     HAVE_SSL = Uongo
 
 __all__ = ["IMAP4", "IMAP4_stream", "Internaldate2tuple",
@@ -113,13 +113,13 @@ InternalDate = re.compile(br'.*INTERNALDATE "'
 Literal = re.compile(br'.*{(?P<size>\d+)}$', re.ASCII)
 MapCRLF = re.compile(br'\r\n|\r|\n')
 # We no longer exclude the ']' character kutoka the data portion of the response
-# code, even though it violates the RFC.  Popular IMAP servers such kama Gmail
+# code, even though it violates the RFC.  Popular IMAP servers such as Gmail
 # allow flags ukijumuisha ']', na there are programs (including imaplib!) that can
 # produce them.  The problem ukijumuisha this ni ikiwa the 'text' portion of the response
 # includes a ']' we'll parse the response wrong (which ni the point of the RFC
 # restriction).  However, that seems less likely to be a problem kwenye practice
 # than being unable to correctly parse flags that include ']' chars, which
-# was reported kama a real-world problem kwenye issue #21815.
+# was reported as a real-world problem kwenye issue #21815.
 Response_code = re.compile(br'\[(?P<type>[A-Z-]+)( (?P<data>.*))?\]')
 Untagged_response = re.compile(br'\* (?P<type>[A-Z-]+)( (?P<data>.*))?')
 # Untagged_status ni no longer used; kept kila backward compatibility
@@ -143,43 +143,43 @@ kundi IMAP4:
     All IMAP4rev1 commands are supported by methods of the same
     name (in lower-case).
 
-    All arguments to commands are converted to strings, tatizo for
-    AUTHENTICATE, na the last argument to APPEND which ni pitaed as
+    All arguments to commands are converted to strings, except for
+    AUTHENTICATE, na the last argument to APPEND which ni passed as
     an IMAP4 literal.  If necessary (the string contains any
     non-printing characters ama white-space na isn't enclosed with
     either parentheses ama double quotes) each string ni quoted.
-    However, the 'pitaword' argument to the LOGIN command ni always
+    However, the 'password' argument to the LOGIN command ni always
     quoted.  If you want to avoid having an argument string quoted
     (eg: the 'flags' argument to STORE) then enclose the string in
     parentheses (eg: "(\Deleted)").
 
-    Each command rudishas a tuple: (type, [data, ...]) where 'type'
+    Each command returns a tuple: (type, [data, ...]) where 'type'
     ni usually 'OK' ama 'NO', na 'data' ni either the text kutoka the
     tagged response, ama untagged results kutoka command. Each 'data'
     ni either a string, ama a tuple. If a tuple, then the first part
     ni the header of the response, na the second part contains
     the data (ie: 'literal' value).
 
-    Errors ashiria the exception kundi <instance>.error("<reason>").
-    IMAP4 server errors ashiria <instance>.abort("<reason>"),
+    Errors  ashiria the exception kundi <instance>.error("<reason>").
+    IMAP4 server errors  ashiria <instance>.abort("<reason>"),
     which ni a sub-kundi of 'error'. Mailbox status changes
-    kutoka READ-WRITE to READ-ONLY ashiria the exception class
+    kutoka READ-WRITE to READ-ONLY  ashiria the exception class
     <instance>.readonly("<reason>"), which ni a sub-kundi of 'abort'.
 
     "error" exceptions imply a program error.
-    "abort" exceptions imply the connection should be reset, na
+    "abort" exceptions imply the connection should be reset, and
             the command re-tried.
     "readonly" exceptions imply the command should be re-tried.
 
     Note: to use this module, you must read the RFCs pertaining to the
-    IMAP4 protocol, kama the semantics of the arguments to each IMAP4
+    IMAP4 protocol, as the semantics of the arguments to each IMAP4
     command are left to the invoker, sio to mention the results. Also,
     most IMAP servers implement a sub-set of the commands available here.
     """
 
-    kundi error(Exception): pita    # Logical errors - debug required
-    kundi abort(error): pita        # Service errors - close na retry
-    kundi readonly(abort): pita     # Mailbox status changed to READ-ONLY
+    kundi error(Exception): pass    # Logical errors - debug required
+    kundi abort(error): pass        # Service errors - close na retry
+    kundi readonly(abort): pass     # Mailbox status changed to READ-ONLY
 
     eleza __init__(self, host='', port=IMAP4_PORT):
         self.debug = Debug
@@ -199,12 +199,12 @@ kundi IMAP4:
 
         jaribu:
             self._connect()
-        tatizo Exception:
+        except Exception:
             jaribu:
                 self.shutdown()
-            tatizo OSError:
-                pita
-            ashiria
+            except OSError:
+                pass
+            raise
 
     eleza _mode_ascii(self):
         self.utf8_enabled = Uongo
@@ -243,10 +243,10 @@ kundi IMAP4:
         self.welcome = self._get_response()
         ikiwa 'PREAUTH' kwenye self.untagged_responses:
             self.state = 'AUTH'
-        lasivyo 'OK' kwenye self.untagged_responses:
+        elikiwa 'OK' kwenye self.untagged_responses:
             self.state = 'NONAUTH'
         isipokua:
-            ashiria self.error(self.welcome)
+             ashiria self.error(self.welcome)
 
         self._get_capabilities()
         ikiwa __debug__:
@@ -257,28 +257,28 @@ kundi IMAP4:
             ikiwa sio version kwenye self.capabilities:
                 endelea
             self.PROTOCOL_VERSION = version
-            rudisha
+            return
 
-        ashiria self.error('server sio IMAP4 compliant')
+         ashiria self.error('server sio IMAP4 compliant')
 
 
     eleza __getattr__(self, attr):
         #       Allow UPPERCASE variants of IMAP4 command methods.
         ikiwa attr kwenye Commands:
             rudisha getattr(self, attr.lower())
-        ashiria AttributeError("Unknown IMAP4 command: '%s'" % attr)
+         ashiria AttributeError("Unknown IMAP4 command: '%s'" % attr)
 
     eleza __enter__(self):
         rudisha self
 
     eleza __exit__(self, *args):
         ikiwa self.state == "LOGOUT":
-            rudisha
+            return
 
         jaribu:
             self.logout()
-        tatizo OSError:
-            pita
+        except OSError:
+            pass
 
 
     #       Overridable methods
@@ -287,7 +287,7 @@ kundi IMAP4:
     eleza _create_socket(self):
         # Default value of IMAP4.host ni '', but socket.getaddrinfo()
         # (which ni used by socket.create_connection()) expects Tupu
-        # kama a default value kila host.
+        # as a default value kila host.
         host = Tupu ikiwa sio self.host isipokua self.host
         sys.audit("imaplib.open", self, self.host, self.port)
         rudisha socket.create_connection((host, self.port))
@@ -313,7 +313,7 @@ kundi IMAP4:
         """Read line kutoka remote."""
         line = self.file.readline(_MAXLINE + 1)
         ikiwa len(line) > _MAXLINE:
-            ashiria self.error("got more than %d bytes" % _MAXLINE)
+             ashiria self.error("got more than %d bytes" % _MAXLINE)
         rudisha line
 
 
@@ -328,13 +328,13 @@ kundi IMAP4:
         self.file.close()
         jaribu:
             self.sock.shutdown(socket.SHUT_RDWR)
-        tatizo OSError kama exc:
+        except OSError as exc:
             # The server might already have closed the connection.
             # On Windows, this may result kwenye WSAEINVAL (error 10022):
             # An invalid operation was attempted.
             ikiwa (exc.errno != errno.ENOTCONN
                na getattr(exc, 'winerror', 0) != 10022):
-                ashiria
+                raise
         mwishowe:
             self.sock.close()
 
@@ -387,7 +387,7 @@ kundi IMAP4:
 
         (typ, [data]) = <instance>.append(mailbox, flags, date_time, message)
 
-                All args tatizo `message' can be Tupu.
+                All args except `message' can be Tupu.
         """
         name = 'APPEND'
         ikiwa sio mailbox:
@@ -420,7 +420,7 @@ kundi IMAP4:
                 data = authobject(response)
 
         It will be called to process server continuation responses; the
-        response argument it ni pitaed will be a bytes.  It should rudisha bytes
+        response argument it ni passed will be a bytes.  It should rudisha bytes
         data that will be base64 encoded na sent to the server.  It should
         rudisha Tupu ikiwa the client abort response '*' should be sent instead.
         """
@@ -428,11 +428,11 @@ kundi IMAP4:
         # XXX: shouldn't this code be removed, sio commented out?
         #cap = 'AUTH=%s' % mech
         #ikiwa sio cap kwenye self.capabilities:       # Let the server decide!
-        #    ashiria self.error("Server doesn't allow %s authentication." % mech)
+        #     ashiria self.error("Server doesn't allow %s authentication." % mech)
         self.literal = _Authenticator(authobject).process
         typ, dat = self._simple_command('AUTHENTICATE', mech)
         ikiwa typ != 'OK':
-            ashiria self.error(dat[-1].decode('utf-8', 'replace'))
+             ashiria self.error(dat[-1].decode('utf-8', 'replace'))
         self.state = 'AUTH'
         rudisha typ, dat
 
@@ -504,8 +504,8 @@ kundi IMAP4:
 
         (typ, [data]) = <intance>.enable(capability)
         """
-        ikiwa 'ENABLE' haiko kwenye self.capabilities:
-            ashiria IMAP4.error("Server does sio support ENABLE")
+        ikiwa 'ENABLE' sio kwenye self.capabilities:
+             ashiria IMAP4.error("Server does sio support ENABLE")
         typ, data = self._simple_command('ENABLE', capability)
         ikiwa typ == 'OK' na 'UTF8=ACCEPT' kwenye capability.upper():
             self._mode_utf8()
@@ -591,34 +591,34 @@ kundi IMAP4:
         rudisha self._untagged_response(typ, dat, name)
 
 
-    eleza login(self, user, pitaword):
-        """Identify client using plaintext pitaword.
+    eleza login(self, user, password):
+        """Identify client using plaintext password.
 
-        (typ, [data]) = <instance>.login(user, pitaword)
+        (typ, [data]) = <instance>.login(user, password)
 
-        NB: 'pitaword' will be quoted.
+        NB: 'password' will be quoted.
         """
-        typ, dat = self._simple_command('LOGIN', user, self._quote(pitaword))
+        typ, dat = self._simple_command('LOGIN', user, self._quote(password))
         ikiwa typ != 'OK':
-            ashiria self.error(dat[-1])
+             ashiria self.error(dat[-1])
         self.state = 'AUTH'
         rudisha typ, dat
 
 
-    eleza login_cram_md5(self, user, pitaword):
+    eleza login_cram_md5(self, user, password):
         """ Force use of CRAM-MD5 authentication.
 
-        (typ, [data]) = <instance>.login_cram_md5(user, pitaword)
+        (typ, [data]) = <instance>.login_cram_md5(user, password)
         """
-        self.user, self.pitaword = user, pitaword
+        self.user, self.password = user, password
         rudisha self.authenticate('CRAM-MD5', self._CRAM_MD5_AUTH)
 
 
     eleza _CRAM_MD5_AUTH(self, challenge):
         """ Authobject to use ukijumuisha CRAM-MD5 authentication. """
         agiza hmac
-        pwd = (self.pitaword.encode('utf-8') ikiwa isinstance(self.pitaword, str)
-                                             isipokua self.pitaword)
+        pwd = (self.password.encode('utf-8') ikiwa isinstance(self.password, str)
+                                             isipokua self.password)
         rudisha self.user + " " + hmac.HMAC(pwd, challenge, 'md5').hexdigest()
 
 
@@ -688,7 +688,7 @@ kundi IMAP4:
 
 
     eleza proxyauth(self, user):
-        """Assume authentication kama "user".
+        """Assume authentication as "user".
 
         Allows an authorised administrator to proxy into any user's
         mailbox.
@@ -719,7 +719,7 @@ kundi IMAP4:
         name = 'SEARCH'
         ikiwa charset:
             ikiwa self.utf8_enabled:
-                ashiria IMAP4.error("Non-Tupu charset sio valid kwenye UTF8 mode")
+                 ashiria IMAP4.error("Non-Tupu charset sio valid kwenye UTF8 mode")
             typ, dat = self._simple_command(name, 'CHARSET', charset, *criteria)
         isipokua:
             typ, dat = self._simple_command(name, *criteria)
@@ -754,7 +754,7 @@ kundi IMAP4:
             ikiwa __debug__:
                 ikiwa self.debug >= 1:
                     self._dump_ur(self.untagged_responses)
-            ashiria self.readonly('%s ni sio writable' % mailbox)
+             ashiria self.readonly('%s ni sio writable' % mailbox)
         rudisha typ, self.untagged_responses.get('EXISTS', [Tupu])
 
 
@@ -790,7 +790,7 @@ kundi IMAP4:
         """
         name = 'SORT'
         #ikiwa sio name kwenye self.capabilities:      # Let the server decide!
-        #       ashiria self.error('unimplemented extension command: %s' % name)
+        #        ashiria self.error('unimplemented extension command: %s' % name)
         ikiwa (sort_criteria[0],sort_criteria[-1]) != ('(',')'):
             sort_criteria = '(%s)' % sort_criteria
         typ, dat = self._simple_command(name, sort_criteria, charset, *search_criteria)
@@ -800,12 +800,12 @@ kundi IMAP4:
     eleza starttls(self, ssl_context=Tupu):
         name = 'STARTTLS'
         ikiwa sio HAVE_SSL:
-            ashiria self.error('SSL support missing')
+             ashiria self.error('SSL support missing')
         ikiwa self._tls_established:
-            ashiria self.abort('TLS session already established')
-        ikiwa name haiko kwenye self.capabilities:
-            ashiria self.abort('TLS sio supported by server')
-        # Generate a default SSL context ikiwa none was pitaed.
+             ashiria self.abort('TLS session already established')
+        ikiwa name sio kwenye self.capabilities:
+             ashiria self.abort('TLS sio supported by server')
+        # Generate a default SSL context ikiwa none was passed.
         ikiwa ssl_context ni Tupu:
             ssl_context = ssl._create_stdlib_context()
         typ, dat = self._simple_command(name)
@@ -816,7 +816,7 @@ kundi IMAP4:
             self._tls_established = Kweli
             self._get_capabilities()
         isipokua:
-            ashiria self.error("Couldn't establish TLS session")
+             ashiria self.error("Couldn't establish TLS session")
         rudisha self._untagged_response(typ, dat, name)
 
 
@@ -827,7 +827,7 @@ kundi IMAP4:
         """
         name = 'STATUS'
         #ikiwa self.PROTOCOL_VERSION == 'IMAP4':   # Let the server decide!
-        #    ashiria self.error('%s unimplemented kwenye IMAP4 (obtain IMAP4rev1 server, ama re-code)' % name)
+        #     ashiria self.error('%s unimplemented kwenye IMAP4 (obtain IMAP4rev1 server, ama re-code)' % name)
         typ, dat = self._simple_command(name, mailbox, names)
         rudisha self._untagged_response(typ, dat, name)
 
@@ -871,9 +871,9 @@ kundi IMAP4:
         """
         command = command.upper()
         ikiwa sio command kwenye Commands:
-            ashiria self.error("Unknown IMAP4 UID command: %s" % command)
-        ikiwa self.state haiko kwenye Commands[command]:
-            ashiria self.error("command %s illegal kwenye state %s, "
+             ashiria self.error("Unknown IMAP4 UID command: %s" % command)
+        ikiwa self.state sio kwenye Commands[command]:
+             ashiria self.error("command %s illegal kwenye state %s, "
                              "only allowed kwenye states %s" %
                              (command, self.state,
                               ', '.join(Commands[command])))
@@ -906,7 +906,7 @@ kundi IMAP4:
         """
         name = name.upper()
         #ikiwa sio name kwenye self.capabilities:      # Let the server decide!
-        #    ashiria self.error('unknown extension command: %s' % name)
+        #     ashiria self.error('unknown extension command: %s' % name)
         ikiwa sio name kwenye Commands:
             Commands[name] = (self.state,)
         rudisha self._simple_command(name, *args)
@@ -933,14 +933,14 @@ kundi IMAP4:
     eleza _check_bye(self):
         bye = self.untagged_responses.get('BYE')
         ikiwa bye:
-            ashiria self.abort(bye[-1].decode(self._encoding, 'replace'))
+             ashiria self.abort(bye[-1].decode(self._encoding, 'replace'))
 
 
     eleza _command(self, name, *args):
 
-        ikiwa self.state haiko kwenye Commands[name]:
+        ikiwa self.state sio kwenye Commands[name]:
             self.literal = Tupu
-            ashiria self.error("command %s illegal kwenye state %s, "
+             ashiria self.error("command %s illegal kwenye state %s, "
                              "only allowed kwenye states %s" %
                              (name, self.state,
                               ', '.join(Commands[name])))
@@ -951,7 +951,7 @@ kundi IMAP4:
 
         ikiwa 'READ-ONLY' kwenye self.untagged_responses \
         na sio self.is_readonly:
-            ashiria self.readonly('mailbox status changed to READ-ONLY')
+             ashiria self.readonly('mailbox status changed to READ-ONLY')
 
         tag = self._new_tag()
         name = bytes(name, self._encoding)
@@ -979,8 +979,8 @@ kundi IMAP4:
 
         jaribu:
             self.send(data + CRLF)
-        tatizo OSError kama val:
-            ashiria self.abort('socket error: %s' % val)
+        except OSError as val:
+             ashiria self.abort('socket error: %s' % val)
 
         ikiwa literal ni Tupu:
             rudisha tag
@@ -1004,8 +1004,8 @@ kundi IMAP4:
             jaribu:
                 self.send(literal)
                 self.send(CRLF)
-            tatizo OSError kama val:
-                ashiria self.abort('socket error: %s' % val)
+            except OSError as val:
+                 ashiria self.abort('socket error: %s' % val)
 
             ikiwa sio literator:
                 koma
@@ -1020,21 +1020,21 @@ kundi IMAP4:
             self._check_bye()
         jaribu:
             typ, data = self._get_tagged_response(tag, expect_bye=logout)
-        tatizo self.abort kama val:
-            ashiria self.abort('command: %s => %s' % (name, val))
-        tatizo self.error kama val:
-            ashiria self.error('command: %s => %s' % (name, val))
+        except self.abort as val:
+             ashiria self.abort('command: %s => %s' % (name, val))
+        except self.error as val:
+             ashiria self.error('command: %s => %s' % (name, val))
         ikiwa sio logout:
             self._check_bye()
         ikiwa typ == 'BAD':
-            ashiria self.error('%s command error: %s %s' % (name, typ, data))
+             ashiria self.error('%s command error: %s %s' % (name, typ, data))
         rudisha typ, data
 
 
     eleza _get_capabilities(self):
         typ, dat = self.capability()
         ikiwa dat == [Tupu]:
-            ashiria self.error('no CAPABILITY response kutoka server')
+             ashiria self.error('no CAPABILITY response kutoka server')
         dat = str(dat[-1], self._encoding)
         dat = dat.upper()
         self.capabilities = tuple(dat.split())
@@ -1054,7 +1054,7 @@ kundi IMAP4:
         ikiwa self._match(self.tagre, resp):
             tag = self.mo.group('tag')
             ikiwa sio tag kwenye self.tagged_commands:
-                ashiria self.abort('unexpected tagged response: %r' % resp)
+                 ashiria self.abort('unexpected tagged response: %r' % resp)
 
             typ = self.mo.group('type')
             typ = str(typ, self._encoding)
@@ -1076,7 +1076,7 @@ kundi IMAP4:
                     self.continuation_response = self.mo.group('data')
                     rudisha Tupu     # NB: indicates continuation
 
-                ashiria self.abort("unexpected response: %r" % resp)
+                 ashiria self.abort("unexpected response: %r" % resp)
 
             typ = self.mo.group('type')
             typ = str(typ, self._encoding)
@@ -1096,7 +1096,7 @@ kundi IMAP4:
                         self._mesg('read literal size %s' % size)
                 data = self.read(size)
 
-                # Store response ukijumuisha literal kama tuple
+                # Store response ukijumuisha literal as tuple
 
                 self._append_untagged(typ, (dat, data))
 
@@ -1141,27 +1141,27 @@ kundi IMAP4:
 
             # Some have reported "unexpected response" exceptions.
             # Note that ignoring them here causes loops.
-            # Instead, send me details of the unexpected response na
+            # Instead, send me details of the unexpected response and
             # I'll update the code kwenye `_get_response()'.
 
             jaribu:
                 self._get_response()
-            tatizo self.abort kama val:
+            except self.abort as val:
                 ikiwa __debug__:
                     ikiwa self.debug >= 1:
                         self.print_log()
-                ashiria
+                raise
 
 
     eleza _get_line(self):
 
         line = self.readline()
         ikiwa sio line:
-            ashiria self.abort('socket error: EOF')
+             ashiria self.abort('socket error: EOF')
 
         # Protocol mandates all lines terminated by CRLF
         ikiwa sio line.endswith(b'\r\n'):
-            ashiria self.abort('socket error: unterminated line: %r' % line)
+             ashiria self.abort('socket error: unterminated line: %r' % line)
 
         line = line[:-2]
         ikiwa __debug__:
@@ -1229,7 +1229,7 @@ kundi IMAP4:
         eleza _dump_ur(self, dict):
             # Dump untagged responses (in `dict').
             l = dict.items()
-            ikiwa sio l: rudisha
+            ikiwa sio l: return
             t = '\n\t\t'
             l = map(lambda x:'%s: "%s"' % (x[0], x[1][0] na '" "'.join(x[1]) ama ''), l)
             self._mesg('untagged responses dump:%s%s' % (t, t.join(l)))
@@ -1248,7 +1248,7 @@ kundi IMAP4:
                 jaribu:
                     self._mesg(*self._cmd_log[i])
                 tatizo:
-                    pita
+                    pass
                 i += 1
                 ikiwa i >= self._cmd_log_len:
                     i = 0
@@ -1269,8 +1269,8 @@ ikiwa HAVE_SSL:
                 certfile - PEM formatted certificate chain file (default: Tupu);
                 ssl_context - a SSLContext object that contains your certificate chain
                               na private key (default: Tupu)
-                Note: ikiwa ssl_context ni provided, then parameters keyfile ama
-                certfile should sio be set otherwise ValueError ni ashiriad.
+                Note: ikiwa ssl_context ni provided, then parameters keyfile or
+                certfile should sio be set otherwise ValueError ni raised.
 
         kila more documentation see the docstring of the parent kundi IMAP4.
         """
@@ -1279,10 +1279,10 @@ ikiwa HAVE_SSL:
         eleza __init__(self, host='', port=IMAP4_SSL_PORT, keyfile=Tupu,
                      certfile=Tupu, ssl_context=Tupu):
             ikiwa ssl_context ni sio Tupu na keyfile ni sio Tupu:
-                ashiria ValueError("ssl_context na keyfile arguments are mutually "
+                 ashiria ValueError("ssl_context na keyfile arguments are mutually "
                                  "exclusive")
             ikiwa ssl_context ni sio Tupu na certfile ni sio Tupu:
-                ashiria ValueError("ssl_context na certfile arguments are mutually "
+                 ashiria ValueError("ssl_context na certfile arguments are mutually "
                                  "exclusive")
             ikiwa keyfile ni sio Tupu ama certfile ni sio Tupu:
                 agiza warnings
@@ -1318,7 +1318,7 @@ kundi IMAP4_stream(IMAP4):
 
     Instantiate with: IMAP4_stream(command)
 
-            "command" - a string that can be pitaed to subprocess.Popen()
+            "command" - a string that can be passed to subprocess.Popen()
 
     kila more documentation see the docstring of the parent kundi IMAP4.
     """
@@ -1481,19 +1481,19 @@ eleza Time2Internaldate(date_time):
 
     Return string kwenye form: '"DD-Mmm-YYYY HH:MM:SS +HHMM"'.  The
     date_time argument can be a number (int ama float) representing
-    seconds since epoch (as rudishaed by time.time()), a 9-tuple
+    seconds since epoch (as returned by time.time()), a 9-tuple
     representing local time, an instance of time.struct_time (as
-    rudishaed by time.localtime()), an aware datetime instance ama a
+    returned by time.localtime()), an aware datetime instance ama a
     double-quoted string.  In the last case, it ni assumed to already
     be kwenye the correct format.
     """
     ikiwa isinstance(date_time, (int, float)):
-        dt = datetime.kutokatimestamp(date_time,
+        dt = datetime.fromtimestamp(date_time,
                                     timezone.utc).astimezone()
-    lasivyo isinstance(date_time, tuple):
+    elikiwa isinstance(date_time, tuple):
         jaribu:
             gmtoff = date_time.tm_gmtoff
-        tatizo AttributeError:
+        except AttributeError:
             ikiwa time.daylight:
                 dst = date_time[8]
                 ikiwa dst == -1:
@@ -1503,14 +1503,14 @@ eleza Time2Internaldate(date_time):
                 gmtoff = -time.timezone
         delta = timedelta(seconds=gmtoff)
         dt = datetime(*date_time[:6], tzinfo=timezone(delta))
-    lasivyo isinstance(date_time, datetime):
+    elikiwa isinstance(date_time, datetime):
         ikiwa date_time.tzinfo ni Tupu:
-            ashiria ValueError("date_time must be aware")
+             ashiria ValueError("date_time must be aware")
         dt = date_time
-    lasivyo isinstance(date_time, str) na (date_time[0],date_time[-1]) == ('"','"'):
+    elikiwa isinstance(date_time, str) na (date_time[0],date_time[-1]) == ('"','"'):
         rudisha date_time        # Assume kwenye correct format
     isipokua:
-        ashiria ValueError("date_time sio of a known type")
+         ashiria ValueError("date_time sio of a known type")
     fmt = '"%d-{}-%Y %H:%M:%S %z"'.format(Months[dt.month])
     rudisha dt.strftime(fmt)
 
@@ -1518,22 +1518,22 @@ eleza Time2Internaldate(date_time):
 
 ikiwa __name__ == '__main__':
 
-    # To test: invoke either kama 'python imaplib.py [IMAP4_server_hostname]'
+    # To test: invoke either as 'python imaplib.py [IMAP4_server_hostname]'
     # ama 'python imaplib.py -s "rsh IMAP4_server_hostname exec /etc/rimapd"'
     # to test the IMAP4_stream class
 
-    agiza getopt, getpita
+    agiza getopt, getpass
 
     jaribu:
         optlist, args = getopt.getopt(sys.argv[1:], 'd:s:')
-    tatizo getopt.error kama val:
+    except getopt.error as val:
         optlist, args = (), ()
 
     stream_command = Tupu
     kila opt,val kwenye optlist:
         ikiwa opt == '-d':
             Debug = int(val)
-        lasivyo opt == '-s':
+        elikiwa opt == '-s':
             stream_command = val
             ikiwa sio args: args = (stream_command,)
 
@@ -1541,8 +1541,8 @@ ikiwa __name__ == '__main__':
 
     host = args[0]
 
-    USER = getpita.getuser()
-    PASSWD = getpita.getpita("IMAP pitaword kila %s on %s: " % (USER, host ama "localhost"))
+    USER = getpass.getuser()
+    PASSWD = getpass.getpass("IMAP password kila %s on %s: " % (USER, host ama "localhost"))
 
     test_mesg = 'From: %(user)s@localhost%(lf)sSubject: IMAP4 test%(lf)s%(lf)sdata...%(lf)s' % {'user':USER, 'lf':'\n'}
     test_seq1 = (
@@ -1576,7 +1576,7 @@ ikiwa __name__ == '__main__':
         M._mesg('%s %s' % (cmd, args))
         typ, dat = getattr(M, cmd)(*args)
         M._mesg('%s => %s %s' % (cmd, typ, dat))
-        ikiwa typ == 'NO': ashiria dat[0]
+        ikiwa typ == 'NO':  ashiria dat[0]
         rudisha dat
 
     jaribu:
@@ -1620,4 +1620,4 @@ If you would like to see debugging output,
 jaribu: %s -d5
 ''' % sys.argv[0])
 
-        ashiria
+        raise

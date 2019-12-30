@@ -5,7 +5,7 @@ There are two kinds of tables: sets, kila which a member test ni provided,
 and mappings, kila which a mapping function ni provided.
 """
 
-kutoka unicodedata agiza ucd_3_2_0 kama unicodedata
+kutoka unicodedata agiza ucd_3_2_0 as unicodedata
 
 assert unicodedata.unidata_version == '3.2.0'
 
@@ -13,7 +13,7 @@ eleza in_table_a1(code):
     ikiwa unicodedata.category(code) != 'Cn': rudisha Uongo
     c = ord(code)
     ikiwa 0xFDD0 <= c < 0xFDF0: rudisha Uongo
-    rudisha (c & 0xFFFF) haiko kwenye (0xFFFE, 0xFFFF)
+    rudisha (c & 0xFFFF) sio kwenye (0xFFFE, 0xFFFF)
 
 
 b1_set = set([173, 847, 6150, 6155, 6156, 6157, 8203, 8204, 8205, 8288, 65279] + list(range(65024,65040)))

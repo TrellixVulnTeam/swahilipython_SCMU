@@ -14,16 +14,16 @@ kundi RebindBuiltinsTests(unittest.TestCase):
         """Perform TestCase-specific configuration on a function before testing.
 
         By default, this does nothing. Example usage: spinning a function so
-        that a JIT will optimize it. Subclasses should override this kama needed.
+        that a JIT will optimize it. Subclasses should override this as needed.
 
         Args:
             func: function to configure.
-            *args: any arguments that should be pitaed to func, ikiwa calling it.
+            *args: any arguments that should be passed to func, ikiwa calling it.
 
         Returns:
             Nothing. Work will be performed on func in-place.
         """
-        pita
+        pass
 
     eleza test_globals_shadow_builtins(self):
         # Modify globals() to shadow an entry kwenye builtins.

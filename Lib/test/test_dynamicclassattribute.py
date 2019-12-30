@@ -7,16 +7,16 @@ agiza unittest
 kutoka types agiza DynamicClassAttribute
 
 kundi PropertyBase(Exception):
-    pita
+    pass
 
 kundi PropertyGet(PropertyBase):
-    pita
+    pass
 
 kundi PropertySet(PropertyBase):
-    pita
+    pass
 
 kundi PropertyDel(PropertyBase):
-    pita
+    pass
 
 kundi BaseClass(object):
     eleza __init__(self):
@@ -42,15 +42,15 @@ kundi SubClass(BaseClass):
     @spam.getter
     eleza spam(self):
         """SubClass.getter"""
-        ashiria PropertyGet(self._spam)
+         ashiria PropertyGet(self._spam)
 
     @spam.setter
     eleza spam(self, value):
-        ashiria PropertySet(self._spam)
+         ashiria PropertySet(self._spam)
 
     @spam.deleter
     eleza spam(self):
-        ashiria PropertyDel(self._spam)
+         ashiria PropertyDel(self._spam)
 
 kundi PropertyDocBase(object):
     _spam = 1
@@ -86,13 +86,13 @@ kundi ClassWithAbstractVirtualProperty(metaclass=abc.ABCMeta):
     @DynamicClassAttribute
     @abc.abstractmethod
     eleza color():
-        pita
+        pass
 
 kundi ClassWithPropertyAbstractVirtual(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     @DynamicClassAttribute
     eleza color():
-        pita
+        pass
 
 kundi PropertyTests(unittest.TestCase):
     eleza test_property_decorator_baseclass(self):
@@ -104,8 +104,8 @@ kundi PropertyTests(unittest.TestCase):
         self.assertEqual(base.spam, 10)
         self.assertEqual(base._spam, 10)
         delattr(base, "spam")
-        self.assertKweli(sio hasattr(base, "spam"))
-        self.assertKweli(sio hasattr(base, "_spam"))
+        self.assertKweli(not hasattr(base, "spam"))
+        self.assertKweli(not hasattr(base, "_spam"))
         base.spam = 20
         self.assertEqual(base.spam, 20)
         self.assertEqual(base._spam, 20)
@@ -149,7 +149,7 @@ kundi PropertyTests(unittest.TestCase):
         kila val kwenye (Kweli, Uongo, [], [1], '', '1'):
             kundi C(object):
                 eleza foo(self):
-                    pita
+                    pass
                 foo.__isabstractmethod__ = val
                 foo = DynamicClassAttribute(foo)
             self.assertIs(C.__dict__['foo'].__isabstractmethod__, bool(val))
@@ -158,12 +158,12 @@ kundi PropertyTests(unittest.TestCase):
         # right thing when presented ukijumuisha a value that fails truth testing:
         kundi NotBool(object):
             eleza __bool__(self):
-                ashiria ValueError()
+                 ashiria ValueError()
             __len__ = __bool__
         ukijumuisha self.assertRaises(ValueError):
             kundi C(object):
                 eleza foo(self):
-                    pita
+                    pass
                 foo.__isabstractmethod__ = NotBool()
                 foo = DynamicClassAttribute(foo)
 
@@ -171,10 +171,10 @@ kundi PropertyTests(unittest.TestCase):
         self.assertRaises(TypeError, ClassWithAbstractVirtualProperty)
         self.assertRaises(TypeError, ClassWithPropertyAbstractVirtual)
         kundi APV(ClassWithPropertyAbstractVirtual):
-            pita
+            pass
         self.assertRaises(TypeError, APV)
         kundi AVP(ClassWithAbstractVirtualProperty):
-            pita
+            pass
         self.assertRaises(TypeError, AVP)
         kundi Okay1(ClassWithAbstractVirtualProperty):
             @DynamicClassAttribute
@@ -213,13 +213,13 @@ kundi PropertySubclassTests(unittest.TestCase):
             kundi Foo(object):
                 @PropertySubSlots
                 eleza spam(self):
-                    """Trying to copy this docstring will ashiria an exception"""
+                    """Trying to copy this docstring will  ashiria an exception"""
                     rudisha 1
                 andika('\n',spam.__doc__)
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
-            ashiria Exception("AttributeError sio ashiriad")
+             ashiria Exception("AttributeError sio raised")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted ukijumuisha -O2 na above")

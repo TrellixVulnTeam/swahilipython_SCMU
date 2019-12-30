@@ -3,14 +3,14 @@ agiza unittest
 
 kundi ExceptionTestCase(unittest.TestCase):
     eleza test_try_except_else_finally(self):
-        hit_tatizo = Uongo
+        hit_except = Uongo
         hit_else = Uongo
         hit_finally = Uongo
 
         jaribu:
-            ashiria Exception('nyaa!')
+             ashiria Exception('nyaa!')
         tatizo:
-            hit_tatizo = Kweli
+            hit_except = Kweli
         isipokua:
             hit_else = Kweli
         mwishowe:
@@ -21,14 +21,14 @@ kundi ExceptionTestCase(unittest.TestCase):
         self.assertUongo(hit_else)
 
     eleza test_try_except_else_finally_no_exception(self):
-        hit_tatizo = Uongo
+        hit_except = Uongo
         hit_else = Uongo
         hit_finally = Uongo
 
         jaribu:
-            pita
+            pass
         tatizo:
-            hit_tatizo = Kweli
+            hit_except = Kweli
         isipokua:
             hit_else = Kweli
         mwishowe:
@@ -39,13 +39,13 @@ kundi ExceptionTestCase(unittest.TestCase):
         self.assertKweli(hit_else)
 
     eleza test_try_except_finally(self):
-        hit_tatizo = Uongo
+        hit_except = Uongo
         hit_finally = Uongo
 
         jaribu:
-            ashiria Exception('yarr!')
+             ashiria Exception('yarr!')
         tatizo:
-            hit_tatizo = Kweli
+            hit_except = Kweli
         mwishowe:
             hit_finally = Kweli
 
@@ -53,13 +53,13 @@ kundi ExceptionTestCase(unittest.TestCase):
         self.assertKweli(hit_finally)
 
     eleza test_try_except_finally_no_exception(self):
-        hit_tatizo = Uongo
+        hit_except = Uongo
         hit_finally = Uongo
 
         jaribu:
-            pita
+            pass
         tatizo:
-            hit_tatizo = Kweli
+            hit_except = Kweli
         mwishowe:
             hit_finally = Kweli
 
@@ -67,33 +67,33 @@ kundi ExceptionTestCase(unittest.TestCase):
         self.assertKweli(hit_finally)
 
     eleza test_try_except(self):
-        hit_tatizo = Uongo
+        hit_except = Uongo
 
         jaribu:
-            ashiria Exception('ahoy!')
+             ashiria Exception('ahoy!')
         tatizo:
-            hit_tatizo = Kweli
+            hit_except = Kweli
 
         self.assertKweli(hit_except)
 
     eleza test_try_except_no_exception(self):
-        hit_tatizo = Uongo
+        hit_except = Uongo
 
         jaribu:
-            pita
+            pass
         tatizo:
-            hit_tatizo = Kweli
+            hit_except = Kweli
 
         self.assertUongo(hit_except)
 
     eleza test_try_except_else(self):
-        hit_tatizo = Uongo
+        hit_except = Uongo
         hit_else = Uongo
 
         jaribu:
-            ashiria Exception('foo!')
+             ashiria Exception('foo!')
         tatizo:
-            hit_tatizo = Kweli
+            hit_except = Kweli
         isipokua:
             hit_else = Kweli
 
@@ -101,13 +101,13 @@ kundi ExceptionTestCase(unittest.TestCase):
         self.assertKweli(hit_except)
 
     eleza test_try_except_else_no_exception(self):
-        hit_tatizo = Uongo
+        hit_except = Uongo
         hit_else = Uongo
 
         jaribu:
-            pita
+            pass
         tatizo:
-            hit_tatizo = Kweli
+            hit_except = Kweli
         isipokua:
             hit_else = Kweli
 
@@ -118,7 +118,7 @@ kundi ExceptionTestCase(unittest.TestCase):
         hit_finally = Uongo
 
         jaribu:
-            pita
+            pass
         mwishowe:
             hit_finally = Kweli
 
@@ -126,14 +126,14 @@ kundi ExceptionTestCase(unittest.TestCase):
 
     eleza test_nested(self):
         hit_finally = Uongo
-        hit_inner_tatizo = Uongo
+        hit_inner_except = Uongo
         hit_inner_finally = Uongo
 
         jaribu:
             jaribu:
-                ashiria Exception('inner exception')
+                 ashiria Exception('inner exception')
             tatizo:
-                hit_inner_tatizo = Kweli
+                hit_inner_except = Kweli
             mwishowe:
                 hit_inner_finally = Kweli
         mwishowe:
@@ -146,21 +146,21 @@ kundi ExceptionTestCase(unittest.TestCase):
     eleza test_nested_else(self):
         hit_else = Uongo
         hit_finally = Uongo
-        hit_tatizo = Uongo
-        hit_inner_tatizo = Uongo
+        hit_except = Uongo
+        hit_inner_except = Uongo
         hit_inner_else = Uongo
 
         jaribu:
             jaribu:
-                pita
+                pass
             tatizo:
-                hit_inner_tatizo = Kweli
+                hit_inner_except = Kweli
             isipokua:
                 hit_inner_else = Kweli
 
-            ashiria Exception('outer exception')
+             ashiria Exception('outer exception')
         tatizo:
-            hit_tatizo = Kweli
+            hit_except = Kweli
         isipokua:
             hit_else = Kweli
         mwishowe:

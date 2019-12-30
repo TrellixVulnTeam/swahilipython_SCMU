@@ -23,10 +23,10 @@ eleza get_gdb_version():
                                 universal_newlines=Kweli)
         ukijumuisha proc:
             version = proc.communicate()[0]
-    tatizo OSError:
+    except OSError:
         # This ni what "no gdb" looks like.  There may, however, be other
         # errors that manifest this way too.
-        ashiria unittest.SkipTest("Couldn't find gdb on the path")
+         ashiria unittest.SkipTest("Couldn't find gdb on the path")
 
     # Regex to parse:
     # 'GNU gdb (GDB; SUSE Linux Enterprise 12) 7.7\n' -> 7.7
@@ -35,26 +35,26 @@ eleza get_gdb_version():
     # 'GNU gdb (GDB) Fedora (7.5.1-37.fc18)\n' -> 7.5
     match = re.search(r"^GNU gdb.*?\b(\d+)\.(\d+)", version)
     ikiwa match ni Tupu:
-        ashiria Exception("unable to parse GDB version: %r" % version)
+         ashiria Exception("unable to parse GDB version: %r" % version)
     rudisha (version, int(match.group(1)), int(match.group(2)))
 
 gdb_version, gdb_major_version, gdb_minor_version = get_gdb_version()
 ikiwa gdb_major_version < 7:
-    ashiria unittest.SkipTest("gdb versions before 7.0 didn't support python "
+     ashiria unittest.SkipTest("gdb versions before 7.0 didn't support python "
                             "embedding. Saw %s.%s:\n%s"
                             % (gdb_major_version, gdb_minor_version,
                                gdb_version))
 
 ikiwa sio sysconfig.is_python_build():
-    ashiria unittest.SkipTest("test_gdb only works on source builds at the moment.")
+     ashiria unittest.SkipTest("test_gdb only works on source builds at the moment.")
 
 ikiwa 'Clang' kwenye platform.python_compiler() na sys.platform == 'darwin':
-    ashiria unittest.SkipTest("test_gdb doesn't work correctly when python is"
+     ashiria unittest.SkipTest("test_gdb doesn't work correctly when python is"
                             " built ukijumuisha LLVM clang")
 
 ikiwa ((sysconfig.get_config_var('PGO_PROF_USE_FLAG') ama 'xxx') in
     (sysconfig.get_config_var('PY_CORE_CFLAGS') ama '')):
-    ashiria unittest.SkipTest("test_gdb ni sio reliable on PGO builds")
+     ashiria unittest.SkipTest("test_gdb ni sio reliable on PGO builds")
 
 # Location of custom hooks file kwenye a repository checkout.
 checkout_hook_path = os.path.join(os.path.dirname(sys.executable),
@@ -69,10 +69,10 @@ eleza cet_protection():
         rudisha Uongo
     flags = cflags.split()
     # Kweli ikiwa "-mcet -fcf-protection" options are found, but false
-    # ikiwa "-fcf-protection=none" ama "-fcf-protection=rudisha" ni found.
+    # ikiwa "-fcf-protection=none" ama "-fcf-protection=return" ni found.
     rudisha (('-mcet' kwenye flags)
             na any((flag.startswith('-fcf-protection')
-                     na sio flag.endswith(("=none", "=rudisha")))
+                     na sio flag.endswith(("=none", "=return")))
                     kila flag kwenye flags))
 
 # Control-flow enforcement technology
@@ -108,21 +108,21 @@ eleza run_gdb(*args, **env_vars):
 # Verify that "gdb" was built ukijumuisha the embedded python support enabled:
 gdbpy_version, _ = run_gdb("--eval-command=python agiza sys; andika(sys.version_info)")
 ikiwa sio gdbpy_version:
-    ashiria unittest.SkipTest("gdb sio built ukijumuisha embedded python support")
+     ashiria unittest.SkipTest("gdb sio built ukijumuisha embedded python support")
 
-# Verify that "gdb" can load our custom hooks, kama OS security settings may
+# Verify that "gdb" can load our custom hooks, as OS security settings may
 # disallow this without a customized .gdbinit.
 _, gdbpy_errors = run_gdb('--args', sys.executable)
 ikiwa "auto-loading has been declined" kwenye gdbpy_errors:
     msg = "gdb security settings prevent use of custom hooks: "
-    ashiria unittest.SkipTest(msg + gdbpy_errors.rstrip())
+     ashiria unittest.SkipTest(msg + gdbpy_errors.rstrip())
 
 eleza gdb_has_frame_select():
     # Does this build of gdb have gdb.Frame.select ?
     stdout, _ = run_gdb("--eval-command=python andika(dir(gdb.Frame))")
     m = re.match(r'.*\[(.*)\].*', stdout)
     ikiwa sio m:
-        ashiria unittest.SkipTest("Unable to parse output kutoka gdb.Frame.select test")
+         ashiria unittest.SkipTest("Unable to parse output kutoka gdb.Frame.select test")
     gdb_frame_dir = m.group(1).split(', ')
     rudisha "'select'" kwenye gdb_frame_dir
 
@@ -177,7 +177,7 @@ kundi DebuggerTests(unittest.TestCase):
 
                     'run']
 
-        # GDB kama of 7.4 onwards can distinguish between the
+        # GDB as of 7.4 onwards can distinguish between the
         # value of a variable at entry vs current value:
         #   http://sourceware.org/gdb/onlinedocs/gdb/Variables.html
         # which leads to the selftests failing ukijumuisha errors like this:
@@ -211,7 +211,7 @@ kundi DebuggerTests(unittest.TestCase):
 
         ikiwa source:
             args += ["-c", source]
-        lasivyo script:
+        elikiwa script:
             args += [script]
 
         # Use "args" to invoke gdb, capturing stdout, stderr:
@@ -223,10 +223,10 @@ kundi DebuggerTests(unittest.TestCase):
         # bpo-34007: Sometimes some versions of the shared libraries that
         # are part of the traceback are compiled kwenye optimised mode na the
         # Program Counter (PC) ni sio present, sio allowing gdb to walk the
-        # frames back. When this happens, the Python bindings of gdb ashiria
+        # frames back. When this happens, the Python bindings of gdb raise
         # an exception, making the test impossible to succeed.
         ikiwa "PC sio saved" kwenye err:
-            ashiria unittest.SkipTest("gdb cannot walk the frame object"
+             ashiria unittest.SkipTest("gdb cannot walk the frame object"
                                     " because the Program Counter is"
                                     " sio present")
 
@@ -245,7 +245,7 @@ kundi DebuggerTests(unittest.TestCase):
         # For a nested structure, the first time we hit the komapoint will
         # give us the top-level structure
 
-        # NOTE: avoid decoding too much of the traceback kama some
+        # NOTE: avoid decoding too much of the traceback as some
         # undecodable characters may lurk there kwenye optimized mode
         # (issue #19743).
         cmds_after_komapoint = cmds_after_komapoint ama ["backtrace 1"]
@@ -339,7 +339,7 @@ kundi PrettyPrintTests(DebuggerTests):
     eleza test_strings(self):
         'Verify the pretty-printing of unicode strings'
         # We cannot simply call locale.getpreferredencoding() here,
-        # kama GDB might have been linked against a different version
+        # as GDB might have been linked against a different version
         # of Python ukijumuisha a different encoding na coercion policy
         # ukijumuisha respect to PEP 538 na PEP 540.
         out, err = run_gdb(
@@ -348,7 +348,7 @@ kundi PrettyPrintTests(DebuggerTests):
 
         encoding = out.rstrip()
         ikiwa err ama sio encoding:
-            ashiria RuntimeError(
+             ashiria RuntimeError(
                 f'unable to determine the preferred encoding '
                 f'of embedded Python kwenye GDB: {err}')
 
@@ -356,7 +356,7 @@ kundi PrettyPrintTests(DebuggerTests):
             jaribu:
                 text.encode(encoding)
                 printable = Kweli
-            tatizo UnicodeEncodeError:
+            except UnicodeEncodeError:
                 self.assertGdbRepr(text, ascii(text))
             isipokua:
                 self.assertGdbRepr(text)
@@ -420,8 +420,8 @@ id(s)''')
         # Test a RuntimeError
         gdb_repr, gdb_output = self.get_gdb_repr('''
 jaribu:
-    ashiria RuntimeError("I am an error")
-tatizo RuntimeError kama e:
+     ashiria RuntimeError("I am an error")
+except RuntimeError as e:
     id(e)
 ''')
         self.assertEqual(gdb_repr,
@@ -432,7 +432,7 @@ tatizo RuntimeError kama e:
         gdb_repr, gdb_output = self.get_gdb_repr('''
 jaribu:
     a = 1 / 0
-tatizo ZeroDivisionError kama e:
+except ZeroDivisionError as e:
     id(e)
 ''')
         self.assertEqual(gdb_repr,
@@ -442,7 +442,7 @@ tatizo ZeroDivisionError kama e:
         'Verify the pretty-printing of new-style kundi instances'
         gdb_repr, gdb_output = self.get_gdb_repr('''
 kundi Foo:
-    pita
+    pass
 foo = Foo()
 foo.an_int = 42
 id(foo)''')
@@ -454,7 +454,7 @@ id(foo)''')
         'Verify the pretty-printing of an instance of a list subclass'
         gdb_repr, gdb_output = self.get_gdb_repr('''
 kundi Foo(list):
-    pita
+    pass
 foo = Foo()
 foo += [1, 2, 3]
 foo.an_int = 42
@@ -470,7 +470,7 @@ id(foo)''')
         # new-style kundi support
         gdb_repr, gdb_output = self.get_gdb_repr('''
 kundi Foo(tuple):
-    pita
+    pass
 foo = Foo((1, 2, 3))
 foo.an_int = 42
 id(foo)''')
@@ -497,7 +497,7 @@ id(foo)''')
             ikiwa gdb_repr == exprepr:
                 # gdb managed to print the value kwenye spite of the corruption;
                 # this ni good (see http://bugs.python.org/issue8330)
-                rudisha
+                return
 
         # Match anything kila the type name; 0xDEADBEEF could point to
         # something arbitrary (see  http://bugs.python.org/issue8330)
@@ -578,7 +578,7 @@ id(foo)''')
         gdb_repr, gdb_output = \
             self.get_gdb_repr('''
 kundi Foo:
-    pita
+    pass
 foo = Foo()
 foo.an_attr = foo
 id(foo)''')
@@ -591,7 +591,7 @@ id(foo)''')
         gdb_repr, gdb_output = \
             self.get_gdb_repr('''
 kundi Foo(object):
-    pita
+    pass
 foo = Foo()
 foo.an_attr = foo
 id(foo)''')
@@ -603,7 +603,7 @@ id(foo)''')
         gdb_repr, gdb_output = \
             self.get_gdb_repr('''
 kundi Foo(object):
-    pita
+    pass
 a = Foo()
 b = Foo()
 a.an_attr = b
@@ -652,7 +652,7 @@ id(a)''')
     eleza test_frames(self):
         gdb_output = self.get_stack_trace('''
 eleza foo(a, b, c):
-    pita
+    pass
 
 foo(3, 4, 5)
 id(foo.__code__)''',
@@ -824,7 +824,7 @@ id(42)
                      "Python was compiled ukijumuisha optimizations")
     # Some older versions of gdb will fail with
     #  "Cannot find new threads: generic error"
-    # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 kama a workaround
+    # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 as a workaround
     eleza test_gc(self):
         'Verify that "py-bt" indicates ikiwa a thread ni garbage-collecting'
         cmd = ('kutoka gc agiza collect\n'
@@ -850,7 +850,7 @@ id(42)
                      "Python was compiled ukijumuisha optimizations")
     # Some older versions of gdb will fail with
     #  "Cannot find new threads: generic error"
-    # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 kama a workaround
+    # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 as a workaround
     eleza test_pycfunction(self):
         'Verify that "py-bt" displays invocations of PyCFunction instances'
         # Various optimizations multiply the code paths by which these are
@@ -863,7 +863,7 @@ id(42)
             ('sorted', '[]', 'builtin_sorted', 1),  # METH_FASTCALL|METH_KEYWORDS
         ):
             ukijumuisha self.subTest(c_name):
-                cmd = ('kutoka time agiza gmtime\n'  # (sio always needed)
+                cmd = ('kutoka time agiza gmtime\n'  # (not always needed)
                     'eleza foo():\n'
                     f'    {py_name}({py_args})\n'
                     'eleza bar():\n'
@@ -901,7 +901,7 @@ id(42)
         ''')
         cmds_after_komapoint = ['koma wrapper_call', 'endelea']
         ikiwa CET_PROTECTION:
-            # bpo-32962: same case kama kwenye get_stack_trace():
+            # bpo-32962: same case as kwenye get_stack_trace():
             # we need an additional 'next' command kwenye order to read
             # arguments of the innermost function of the call stack.
             cmds_after_komapoint.append('next')

@@ -12,7 +12,7 @@ agiza _threading_local
 
 
 kundi Weak(object):
-    pita
+    pass
 
 eleza target(local, weaklist):
     weak = Weak()
@@ -67,19 +67,19 @@ kundi BaseLocalTest:
 
         ukijumuisha support.start_threads(threading.Thread(target=f, args=(i,))
                                    kila i kwenye range(10)):
-            pita
+            pass
 
     eleza test_derived_cycle_dealloc(self):
         # http://bugs.python.org/issue6990
         kundi Local(self._local):
-            pita
+            pass
         locals = Tupu
-        pitaed = Uongo
+        passed = Uongo
         e1 = threading.Event()
         e2 = threading.Event()
 
         eleza f():
-            nonlocal pitaed
+            nonlocal passed
             # 1) Involve Local kwenye a cycle
             cycle = [Local()]
             cycle.append(cycle)
@@ -93,7 +93,7 @@ kundi BaseLocalTest:
             e2.wait()
 
             # 4) New Locals should be empty
-            pitaed = all(sio hasattr(local, 'foo') kila local kwenye locals)
+            passed = all(not hasattr(local, 'foo') kila local kwenye locals)
 
         t = threading.Thread(target=f)
         t.start()
@@ -106,13 +106,13 @@ kundi BaseLocalTest:
         e2.set()
         t.join()
 
-        self.assertKweli(pitaed)
+        self.assertKweli(passed)
 
     eleza test_arguments(self):
         # Issue 1522237
         kundi MyLocal(self._local):
             eleza __init__(self, *args, **kwargs):
-                pita
+                pass
 
         MyLocal(a=1)
         MyLocal(1)
@@ -135,9 +135,9 @@ kundi BaseLocalTest:
         eleza f2():
             jaribu:
                 foo = obj.x
-            tatizo AttributeError:
+            except AttributeError:
                 # This ni expected -- we haven't set obj.x kwenye this thread yet!
-                self._failed = ""  # pitaed
+                self._failed = ""  # passed
             isipokua:
                 self._failed = ('Incorrectly got value %r kutoka kundi %r\n' %
                                 (foo, c))
@@ -182,7 +182,7 @@ kundi BaseLocalTest:
 
     eleza test_cycle_collection(self):
         kundi X:
-            pita
+            pass
 
         x = X()
         x.local = self._local()

@@ -1,18 +1,18 @@
-"""Tests for distutils.command.upload."""
-import os
-import unittest
-import unittest.mock as mock
-from urllib.request import HTTPError
+"""Tests kila distutils.command.upload."""
+agiza os
+agiza unittest
+agiza unittest.mock as mock
+kutoka urllib.request agiza HTTPError
 
-from test.support import run_unittest
+kutoka test.support agiza run_unittest
 
-from distutils.command import upload as upload_mod
-from distutils.command.upload import upload
-from distutils.core import Distribution
-from distutils.errors import DistutilsError
-from distutils.log import ERROR, INFO
+kutoka distutils.command agiza upload as upload_mod
+kutoka distutils.command.upload agiza upload
+kutoka distutils.core agiza Distribution
+kutoka distutils.errors agiza DistutilsError
+kutoka distutils.log agiza ERROR, INFO
 
-from distutils.tests.test_config import PYPIRC, BasePyPIRCCommandTestCase
+kutoka distutils.tests.test_config agiza PYPIRC, BasePyPIRCCommandTestCase
 
 PYPIRC_LONG_PASSWORD = """\
 [distutils]
@@ -43,77 +43,77 @@ index-servers =
 username:me
 """
 
-class FakeOpen(object):
+kundi FakeOpen(object):
 
-    def __init__(self, url, msg=None, code=None):
+    eleza __init__(self, url, msg=Tupu, code=Tupu):
         self.url = url
-        if sio isinstance(url, str):
+        ikiwa sio isinstance(url, str):
             self.req = url
         isipokua:
-            self.req = None
-        self.msg = msg or 'OK'
-        self.code = code or 200
+            self.req = Tupu
+        self.msg = msg ama 'OK'
+        self.code = code ama 200
 
-    def getheader(self, name, default=None):
-        return {
+    eleza getheader(self, name, default=Tupu):
+        rudisha {
             'content-type': 'text/plain; charset=utf-8',
             }.get(name.lower(), default)
 
-    def read(self):
-        return b'xyzzy'
+    eleza read(self):
+        rudisha b'xyzzy'
 
-    def getcode(self):
-        return self.code
+    eleza getcode(self):
+        rudisha self.code
 
 
-class uploadTestCase(BasePyPIRCCommandTestCase):
+kundi uploadTestCase(BasePyPIRCCommandTestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super(uploadTestCase, self).setUp()
         self.old_open = upload_mod.urlopen
         upload_mod.urlopen = self._urlopen
-        self.last_open = None
-        self.next_msg = None
-        self.next_code = None
+        self.last_open = Tupu
+        self.next_msg = Tupu
+        self.next_code = Tupu
 
-    def tearDown(self):
+    eleza tearDown(self):
         upload_mod.urlopen = self.old_open
         super(uploadTestCase, self).tearDown()
 
-    def _urlopen(self, url):
+    eleza _urlopen(self, url):
         self.last_open = FakeOpen(url, msg=self.next_msg, code=self.next_code)
-        return self.last_open
+        rudisha self.last_open
 
-    def test_finalize_options(self):
+    eleza test_finalize_options(self):
 
         # new format
         self.write_file(self.rc, PYPIRC)
         dist = Distribution()
         cmd = upload(dist)
         cmd.finalize_options()
-        for attr, waited in (('username', 'me'), ('password', 'secret'),
+        kila attr, waited kwenye (('username', 'me'), ('password', 'secret'),
                              ('realm', 'pypi'),
                              ('repository', 'https://upload.pypi.org/legacy/')):
             self.assertEqual(getattr(cmd, attr), waited)
 
-    def test_saved_password(self):
-        # file with no password
+    eleza test_saved_password(self):
+        # file ukijumuisha no password
         self.write_file(self.rc, PYPIRC_NOPASSWORD)
 
         # make sure it passes
         dist = Distribution()
         cmd = upload(dist)
         cmd.finalize_options()
-        self.assertEqual(cmd.password, None)
+        self.assertEqual(cmd.password, Tupu)
 
-        # make sure we get it as well, if another command
+        # make sure we get it as well, ikiwa another command
         # initialized it at the dist level
         dist.password = 'xxx'
         cmd = upload(dist)
         cmd.finalize_options()
         self.assertEqual(cmd.password, 'xxx')
 
-    def test_upload(self):
+    eleza test_upload(self):
         tmp = self.mkdtemp()
         path = os.path.join(tmp, 'xxx')
         self.write_file(path)
@@ -132,11 +132,11 @@ class uploadTestCase(BasePyPIRCCommandTestCase):
         headers = dict(self.last_open.req.headers)
         self.assertEqual(headers['Content-length'], '2162')
         content_type = headers['Content-type']
-        self.assertTrue(content_type.startswith('multipart/form-data'))
+        self.assertKweli(content_type.startswith('multipart/form-data'))
         self.assertEqual(self.last_open.req.get_method(), 'POST')
         expected_url = 'https://upload.pypi.org/legacy/'
         self.assertEqual(self.last_open.req.get_full_url(), expected_url)
-        self.assertTrue(b'xxx' in self.last_open.req.data)
+        self.assertKweli(b'xxx' kwenye self.last_open.req.data)
         self.assertIn(b'protocol_version', self.last_open.req.data)
 
         # The PyPI response body was echoed
@@ -144,9 +144,9 @@ class uploadTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(results[-1], 75 * '-' + '\nxyzzy\n' + 75 * '-')
 
     # bpo-32304: archives whose last byte was b'\r' were corrupted due to
-    # normalization intended for Mac OS 9.
-    def test_upload_correct_cr(self):
-        # content that ends with \r should sio be modified.
+    # normalization intended kila Mac OS 9.
+    eleza test_upload_correct_cr(self):
+        # content that ends ukijumuisha \r should sio be modified.
         tmp = self.mkdtemp()
         path = os.path.join(tmp, 'xxx')
         self.write_file(path, content='yy\r')
@@ -154,7 +154,7 @@ class uploadTestCase(BasePyPIRCCommandTestCase):
         dist_files = [(command, pyversion, filename)]
         self.write_file(self.rc, PYPIRC_LONG_PASSWORD)
 
-        # other fields that ended with \r used to be modified, now are
+        # other fields that ended ukijumuisha \r used to be modified, now are
         # preserved.
         pkg_dir, dist = self.create_dist(
             dist_files=dist_files,
@@ -169,12 +169,12 @@ class uploadTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(headers['Content-length'], '2172')
         self.assertIn(b'long description\r', self.last_open.req.data)
 
-    def test_upload_fails(self):
+    eleza test_upload_fails(self):
         self.next_msg = "Not Found"
         self.next_code = 404
         self.assertRaises(DistutilsError, self.test_upload)
 
-    def test_wrong_exception_order(self):
+    eleza test_wrong_exception_order(self):
         tmp = self.mkdtemp()
         path = os.path.join(tmp, 'xxx')
         self.write_file(path)
@@ -184,14 +184,14 @@ class uploadTestCase(BasePyPIRCCommandTestCase):
         pkg_dir, dist = self.create_dist(dist_files=dist_files)
         tests = [
             (OSError('oserror'), 'oserror', OSError),
-            (HTTPError('url', 400, 'httperror', {}, None),
+            (HTTPError('url', 400, 'httperror', {}, Tupu),
              'Upload failed (400): httperror', DistutilsError),
         ]
-        for exception, expected, raised_exception in tests:
-            with self.subTest(exception=type(exception).__name__):
-                with mock.patch('distutils.command.upload.urlopen',
+        kila exception, expected, raised_exception kwenye tests:
+            ukijumuisha self.subTest(exception=type(exception).__name__):
+                ukijumuisha mock.patch('distutils.command.upload.urlopen',
                                 new=mock.Mock(side_effect=exception)):
-                    with self.assertRaises(raised_exception):
+                    ukijumuisha self.assertRaises(raised_exception):
                         cmd = upload(dist)
                         cmd.ensure_finalized()
                         cmd.run()
@@ -200,8 +200,8 @@ class uploadTestCase(BasePyPIRCCommandTestCase):
                     self.clear_logs()
 
 
-def test_suite():
-    return unittest.makeSuite(uploadTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(uploadTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

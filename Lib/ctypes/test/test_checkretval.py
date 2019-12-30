@@ -1,17 +1,17 @@
-import unittest
+agiza unittest
 
-from ctypes import *
-from ctypes.test import need_symbol
+kutoka ctypes agiza *
+kutoka ctypes.test agiza need_symbol
 
-class CHECKED(c_int):
-    def _check_retval_(value):
+kundi CHECKED(c_int):
+    eleza _check_retval_(value):
         # Receives a CHECKED instance.
-        return str(value.value)
+        rudisha str(value.value)
     _check_retval_ = staticmethod(_check_retval_)
 
-class Test(unittest.TestCase):
+kundi Test(unittest.TestCase):
 
-    def test_checkretval(self):
+    eleza test_checkretval(self):
 
         agiza _ctypes_test
         dll = CDLL(_ctypes_test.__file__)
@@ -20,17 +20,17 @@ class Test(unittest.TestCase):
         dll._testfunc_p_p.restype = CHECKED
         self.assertEqual("42", dll._testfunc_p_p(42))
 
-        dll._testfunc_p_p.restype = None
-        self.assertEqual(None, dll._testfunc_p_p(42))
+        dll._testfunc_p_p.restype = Tupu
+        self.assertEqual(Tupu, dll._testfunc_p_p(42))
 
         toa dll._testfunc_p_p.restype
         self.assertEqual(42, dll._testfunc_p_p(42))
 
     @need_symbol('oledll')
-    def test_oledll(self):
+    eleza test_oledll(self):
         self.assertRaises(OSError,
                               oledll.oleaut32.CreateTypeLib2,
-                              0, None, None)
+                              0, Tupu, Tupu)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

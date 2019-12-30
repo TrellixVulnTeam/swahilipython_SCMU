@@ -5,11 +5,11 @@ agiza signal
 agiza os
 agiza sys
 kutoka test agiza support
-agiza _thread kama thread
+agiza _thread as thread
 agiza time
 
 ikiwa (sys.platform[:3] == 'win'):
-    ashiria unittest.SkipTest("Can't test signal on %s" % sys.platform)
+     ashiria unittest.SkipTest("Can't test signal on %s" % sys.platform)
 
 process_pid = os.getpid()
 signalled_all=thread.allocate_lock()
@@ -24,13 +24,13 @@ eleza registerSignals(for_usr1, for_usr2, for_alrm):
     rudisha usr1, usr2, alrm
 
 
-# The signal handler. Just note that the signal occurred na
+# The signal handler. Just note that the signal occurred and
 # kutoka who.
 eleza handle_signals(sig,frame):
     signal_blackboard[sig]['tripped'] += 1
     signal_blackboard[sig]['tripped_by'] = thread.get_ident()
 
-# a function that will be spawned kama a separate thread.
+# a function that will be spawned as a separate thread.
 eleza send_signals():
     os.kill(process_pid, signal.SIGUSR1)
     os.kill(process_pid, signal.SIGUSR2)
@@ -41,7 +41,7 @@ kundi ThreadSignals(unittest.TestCase):
     eleza test_signals(self):
         ukijumuisha support.wait_threads_exit():
             # Test signal handling semantics of threads.
-            # We spawn a thread, have the thread send two signals, na
+            # We spawn a thread, have the thread send two signals, and
             # wait kila it to finish. Check that we got both signals
             # na that they were run by the main thread.
             signalled_all.acquire()
@@ -52,8 +52,8 @@ kundi ThreadSignals(unittest.TestCase):
         # will come back, but we don't know when.
         # (it might even be after the thread exits
         # na might be out of order.)  If we haven't seen
-        # the signals yet, send yet another signal na
-        # wait kila it rudisha.
+        # the signals yet, send yet another signal and
+        # wait kila it return.
         ikiwa signal_blackboard[signal.SIGUSR1]['tripped'] == 0 \
            ama signal_blackboard[signal.SIGUSR2]['tripped'] == 0:
             jaribu:
@@ -74,11 +74,11 @@ kundi ThreadSignals(unittest.TestCase):
         thread.start_new_thread(send_signals, ())
 
     eleza alarm_interrupt(self, sig, frame):
-        ashiria KeyboardInterrupt
+         ashiria KeyboardInterrupt
 
     @unittest.skipIf(USING_PTHREAD_COND,
                      'POSIX condition variables cannot be interrupted')
-    @unittest.skipIf(sys.platform.startswith('linux') na
+    @unittest.skipIf(sys.platform.startswith('linux') and
                      sio sys.thread_info.version,
                      'Issue 34004: musl does sio allow interruption of locks '
                      'by signals.')
@@ -98,7 +98,7 @@ kundi ThreadSignals(unittest.TestCase):
             t1 = time.monotonic()
             self.assertRaises(KeyboardInterrupt, lock.acquire, timeout=5)
             dt = time.monotonic() - t1
-            # Checking that KeyboardInterrupt was ashiriad ni sio sufficient.
+            # Checking that KeyboardInterrupt was raised ni sio sufficient.
             # We want to assert that lock.acquire() was interrupted because
             # of the signal, sio that the signal handler was called immediately
             # after timeout rudisha of lock.acquire() (which can fool assertRaises).
@@ -109,7 +109,7 @@ kundi ThreadSignals(unittest.TestCase):
 
     @unittest.skipIf(USING_PTHREAD_COND,
                      'POSIX condition variables cannot be interrupted')
-    @unittest.skipIf(sys.platform.startswith('linux') na
+    @unittest.skipIf(sys.platform.startswith('linux') and
                      sio sys.thread_info.version,
                      'Issue 34004: musl does sio allow interruption of locks '
                      'by signals.')
@@ -156,7 +156,7 @@ kundi ThreadSignals(unittest.TestCase):
                 # Acquire the lock kwenye a non-main thread, so this test works for
                 # RLocks.
                 lock.acquire()
-                # Wait until the main thread ni blocked kwenye the lock acquire, na
+                # Wait until the main thread ni blocked kwenye the lock acquire, and
                 # then wake it up ukijumuisha this.
                 time.sleep(0.5)
                 os.kill(process_pid, signal.SIGUSR1)
@@ -188,7 +188,7 @@ kundi ThreadSignals(unittest.TestCase):
         # receive a signal.  Check this by repeatedly interrupting a lock
         # acquire kwenye the main thread, na make sure that the lock acquire times
         # out after the right amount of time.
-        # NOTE: this test only behaves kama expected ikiwa C signals get delivered
+        # NOTE: this test only behaves as expected ikiwa C signals get delivered
         # to the main thread.  Otherwise lock.acquire() itself doesn't get
         # interrupted na the test trivially succeeds.
         self.start = Tupu

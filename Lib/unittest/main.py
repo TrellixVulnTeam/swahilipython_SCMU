@@ -27,7 +27,7 @@ Examples:
 """
 
 eleza _convert_name(name):
-    # on Linux / Mac OS X 'foo.PY' ni sio agizaable, but on
+    # on Linux / Mac OS X 'foo.PY' ni sio importable, but on
     # Windows it is. Simpler to do a case insensitive match
     # a better check would be to check that the name ni a
     # valid Python module name.
@@ -37,7 +37,7 @@ eleza _convert_name(name):
             ikiwa os.path.isabs(rel_path) ama rel_path.startswith(os.pardir):
                 rudisha name
             name = rel_path
-        # on Windows both '\' na '/' are used kama path
+        # on Windows both '\' na '/' are used as path
         # separators. Better to replace both than rely on os.path.sep
         rudisha name[:-3].replace('\\', '.').replace('/', '.')
     rudisha name
@@ -87,11 +87,11 @@ kundi TestProgram(object):
             # specified by the warnings arg ama the -W python flag
             self.warnings = 'default'
         isipokua:
-            # here self.warnings ni set either to the value pitaed
+            # here self.warnings ni set either to the value passed
             # to the warnings args ama to Tupu.
-            # If the user didn't pita a value self.warnings will
+            # If the user didn't pass a value self.warnings will
             # be Tupu. This means that the behavior ni unchanged
-            # na depends on the values pitaed to -W.
+            # na depends on the values passed to -W.
             self.warnings = warnings
         self.defaultTest = defaultTest
         self.testRunner = testRunner
@@ -122,13 +122,13 @@ kundi TestProgram(object):
         ikiwa self.module ni Tupu:
             ikiwa len(argv) > 1 na argv[1].lower() == 'discover':
                 self._do_discovery(argv[2:])
-                rudisha
+                return
             self._main_parser.parse_args(argv[1:], self)
             ikiwa sio self.tests:
                 # this allows "python -m unittest -v" to still work for
                 # test discovery.
                 self._do_discovery([])
-                rudisha
+                return
         isipokua:
             self._main_parser.parse_args(argv[1:], self)
 
@@ -137,22 +137,22 @@ kundi TestProgram(object):
             ikiwa __name__ == '__main__':
                 # to support python -m unittest ...
                 self.module = Tupu
-        lasivyo self.defaultTest ni Tupu:
+        elikiwa self.defaultTest ni Tupu:
             # createTests will load tests kutoka self.module
             self.testNames = Tupu
-        lasivyo isinstance(self.defaultTest, str):
+        elikiwa isinstance(self.defaultTest, str):
             self.testNames = (self.defaultTest,)
         isipokua:
             self.testNames = list(self.defaultTest)
         self.createTests()
 
-    eleza createTests(self, kutoka_discovery=Uongo, Loader=Tupu):
+    eleza createTests(self, from_discovery=Uongo, Loader=Tupu):
         ikiwa self.testNamePatterns:
             self.testLoader.testNamePatterns = self.testNamePatterns
-        ikiwa kutoka_discovery:
+        ikiwa from_discovery:
             loader = self.testLoader ikiwa Loader ni Tupu isipokua Loader()
             self.test = loader.discover(self.start, self.pattern, self.top)
-        lasivyo self.testNames ni Tupu:
+        elikiwa self.testNames ni Tupu:
             self.test = self.testLoader.loadTestsFromModule(self.module)
         isipokua:
             self.test = self.testLoader.loadTestsFromNames(self.testNames,
@@ -213,7 +213,7 @@ kundi TestProgram(object):
         parser = argparse.ArgumentParser(parents=[parent])
         parser.prog = '%s discover' % self.progName
         parser.epilog = ('For test discovery all test modules must be '
-                         'agizaable kutoka the top level directory of the '
+                         'importable kutoka the top level directory of the '
                          'project.')
 
         parser.add_argument('-s', '--start-directory', dest='start',
@@ -241,7 +241,7 @@ kundi TestProgram(object):
                 self._initArgParsers()
             self._discovery_parser.parse_args(argv, self)
 
-        self.createTests(kutoka_discovery=Kweli, Loader=Loader)
+        self.createTests(from_discovery=Kweli, Loader=Loader)
 
     eleza runTests(self):
         ikiwa self.catchkoma:
@@ -256,13 +256,13 @@ kundi TestProgram(object):
                                                  buffer=self.buffer,
                                                  warnings=self.warnings,
                                                  tb_locals=self.tb_locals)
-                tatizo TypeError:
+                except TypeError:
                     # didn't accept the tb_locals argument
                     testRunner = self.testRunner(verbosity=self.verbosity,
                                                  failfast=self.failfast,
                                                  buffer=self.buffer,
                                                  warnings=self.warnings)
-            tatizo TypeError:
+            except TypeError:
                 # didn't accept the verbosity, buffer ama failfast arguments
                 testRunner = self.testRunner()
         isipokua:
@@ -270,6 +270,6 @@ kundi TestProgram(object):
             testRunner = self.testRunner
         self.result = testRunner.run(self.test)
         ikiwa self.exit:
-            sys.exit(sio self.result.wasSuccessful())
+            sys.exit(not self.result.wasSuccessful())
 
 main = TestProgram

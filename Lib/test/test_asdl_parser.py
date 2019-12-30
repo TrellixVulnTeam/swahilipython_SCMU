@@ -8,9 +8,9 @@ agiza sysconfig
 agiza unittest
 
 
-# This test ni only relevant kila kutoka-source builds of Python.
+# This test ni only relevant kila from-source builds of Python.
 ikiwa sio sysconfig.is_python_build():
-    ashiria unittest.SkipTest('test irrelevant kila an installed Python')
+     ashiria unittest.SkipTest('test irrelevant kila an installed Python')
 
 src_base = dirname(dirname(dirname(__file__)))
 parser_dir = os.path.join(src_base, 'Parser')
@@ -19,7 +19,7 @@ parser_dir = os.path.join(src_base, 'Parser')
 kundi TestAsdlParser(unittest.TestCase):
     @classmethod
     eleza setUpClass(cls):
-        # Loads the asdl module dynamically, since it's haiko kwenye a real agizaable
+        # Loads the asdl module dynamically, since it's sio kwenye a real importable
         # package.
         # Parses Python.asdl into an ast.Module na run the check on it.
         # There's no need to do this kila each test method, hence setUpClass.

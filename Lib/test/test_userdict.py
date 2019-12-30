@@ -36,13 +36,13 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(collections.UserDict([('one',1), ('two',2)], two=3, three=5), d3)
 
         # alternate constructor
-        self.assertEqual(collections.UserDict.kutokakeys('one two'.split()), d4)
-        self.assertEqual(collections.UserDict().kutokakeys('one two'.split()), d4)
-        self.assertEqual(collections.UserDict.kutokakeys('one two'.split(), 1), d5)
-        self.assertEqual(collections.UserDict().kutokakeys('one two'.split(), 1), d5)
-        self.assertKweli(u1.kutokakeys('one two'.split()) ni sio u1)
-        self.assertIsInstance(u1.kutokakeys('one two'.split()), collections.UserDict)
-        self.assertIsInstance(u2.kutokakeys('one two'.split()), collections.UserDict)
+        self.assertEqual(collections.UserDict.fromkeys('one two'.split()), d4)
+        self.assertEqual(collections.UserDict().fromkeys('one two'.split()), d4)
+        self.assertEqual(collections.UserDict.fromkeys('one two'.split(), 1), d5)
+        self.assertEqual(collections.UserDict().fromkeys('one two'.split(), 1), d5)
+        self.assertKweli(u1.fromkeys('one two'.split()) ni sio u1)
+        self.assertIsInstance(u1.fromkeys('one two'.split()), collections.UserDict)
+        self.assertIsInstance(u2.fromkeys('one two'.split()), collections.UserDict)
 
         # Test __repr__
         self.assertEqual(str(u0), str(d0))
@@ -169,7 +169,7 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         # Make sure UserDict doesn't have a __missing__ method
         self.assertEqual(hasattr(collections.UserDict, "__missing__"), Uongo)
         # Test several cases:
-        # (D) subkundi defines __missing__ method rudishaing a value
+        # (D) subkundi defines __missing__ method returning a value
         # (E) subkundi defines __missing__ method raising RuntimeError
         # (F) subkundi sets __missing__ instance variable (no effect)
         # (G) subkundi doesn't define __missing__ at all
@@ -184,14 +184,14 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(d[2], 42)
         kundi E(collections.UserDict):
             eleza __missing__(self, key):
-                ashiria RuntimeError(key)
+                 ashiria RuntimeError(key)
         e = E()
         jaribu:
             e[42]
-        tatizo RuntimeError kama err:
+        except RuntimeError as err:
             self.assertEqual(err.args, (42,))
         isipokua:
-            self.fail("e[42] didn't ashiria RuntimeError")
+            self.fail("e[42] didn't  ashiria RuntimeError")
         kundi F(collections.UserDict):
             eleza __init__(self):
                 # An instance variable __missing__ should have no effect
@@ -200,19 +200,19 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         f = F()
         jaribu:
             f[42]
-        tatizo KeyError kama err:
+        except KeyError as err:
             self.assertEqual(err.args, (42,))
         isipokua:
-            self.fail("f[42] didn't ashiria KeyError")
+            self.fail("f[42] didn't  ashiria KeyError")
         kundi G(collections.UserDict):
-            pita
+            pass
         g = G()
         jaribu:
             g[42]
-        tatizo KeyError kama err:
+        except KeyError as err:
             self.assertEqual(err.args, (42,))
         isipokua:
-            self.fail("g[42] didn't ashiria KeyError")
+            self.fail("g[42] didn't  ashiria KeyError")
 
 
 

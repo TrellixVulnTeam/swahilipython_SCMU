@@ -29,7 +29,7 @@ agiza time
 
 
 eleza write_tests(filename, tests):
-    ukijumuisha open(filename, "w") kama fp:
+    ukijumuisha open(filename, "w") as fp:
         kila name kwenye tests:
             andika(name, file=fp)
         fp.flush()
@@ -37,7 +37,7 @@ eleza write_tests(filename, tests):
 
 eleza write_output(filename, tests):
     ikiwa sio filename:
-        rudisha
+        return
     andika("Writing %s tests into %s" % (len(tests), filename))
     write_tests(filename, tests)
     rudisha filename
@@ -102,7 +102,7 @@ eleza main():
     args = parse_args()
 
     ikiwa args.input:
-        ukijumuisha open(args.input) kama fp:
+        ukijumuisha open(args.input) as fp:
             tests = [line.strip() kila line kwenye fp]
     isipokua:
         tests = list_cases(args)
@@ -140,7 +140,7 @@ eleza main():
                 andika("Tests succeeded: skipping this subtest, trying a new subset")
             andika()
             iteration += 1
-    tatizo KeyboardInterrupt:
+    except KeyboardInterrupt:
         andika()
         andika("Bisection interrupted!")
         andika()

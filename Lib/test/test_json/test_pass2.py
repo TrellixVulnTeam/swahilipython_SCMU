@@ -1,7 +1,7 @@
 kutoka test.test_json agiza PyTest, CTest
 
 
-# kutoka http://json.org/JSON_checker/test/pita2.json
+# kutoka http://json.org/JSON_checker/test/pass2.json
 JSON = r'''
 [[[[[[[[[[[[[[[[[[["Not too deep"]]]]]]]]]]]]]]]]]]]
 '''
@@ -14,5 +14,5 @@ kundi TestPass2:
         self.assertEqual(res, self.loads(out))
 
 
-kundi TestPyPass2(TestPass2, PyTest): pita
-kundi TestCPass2(TestPass2, CTest): pita
+kundi TestPyPass2(TestPass2, PyTest): pass
+kundi TestCPass2(TestPass2, CTest): pass

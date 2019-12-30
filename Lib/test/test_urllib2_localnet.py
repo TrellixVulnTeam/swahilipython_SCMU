@@ -12,7 +12,7 @@ kutoka test agiza support
 
 jaribu:
     agiza ssl
-tatizo ImportError:
+except ImportError:
     ssl = Tupu
 
 here = os.path.dirname(__file__)
@@ -120,13 +120,13 @@ kundi DigestAuthHandler:
             auth_dict[name] = value
         rudisha auth_dict
 
-    eleza _validate_auth(self, auth_dict, pitaword, method, uri):
+    eleza _validate_auth(self, auth_dict, password, method, uri):
         final_dict = {}
         final_dict.update(auth_dict)
-        final_dict["pitaword"] = pitaword
+        final_dict["password"] = password
         final_dict["method"] = method
         final_dict["uri"] = uri
-        HA1_str = "%(username)s:%(realm)s:%(pitaword)s" % final_dict
+        HA1_str = "%(username)s:%(realm)s:%(password)s" % final_dict
         HA1 = hashlib.md5(HA1_str.encode("ascii")).hexdigest()
         HA2_str = "%(method)s:%(uri)s" % final_dict
         HA2 = hashlib.md5(HA2_str.encode("ascii")).hexdigest()
@@ -138,7 +138,7 @@ kundi DigestAuthHandler:
 
         rudisha response == auth_dict["response"]
 
-    eleza _rudisha_auth_challenge(self, request_handler):
+    eleza _return_auth_challenge(self, request_handler):
         request_handler.send_response(407, "Proxy Authentication Required")
         request_handler.send_header("Content-Type", "text/html")
         request_handler.send_header(
@@ -146,7 +146,7 @@ kundi DigestAuthHandler:
             'qop="%s",'
             'nonce="%s", ' % \
             (self._realm_name, self._qop, self._generate_nonce()))
-        # XXX: Not sure ikiwa we're supposed to add this next header ama
+        # XXX: Not sure ikiwa we're supposed to add this next header or
         # not.
         #request_handler.send_header('Connection', 'close')
         request_handler.end_headers()
@@ -165,18 +165,18 @@ kundi DigestAuthHandler:
         ikiwa len(self._users) == 0:
             rudisha Kweli
 
-        ikiwa "Proxy-Authorization" haiko kwenye request_handler.headers:
-            rudisha self._rudisha_auth_challenge(request_handler)
+        ikiwa "Proxy-Authorization" sio kwenye request_handler.headers:
+            rudisha self._return_auth_challenge(request_handler)
         isipokua:
             auth_dict = self._create_auth_dict(
                 request_handler.headers["Proxy-Authorization"]
                 )
             ikiwa auth_dict["username"] kwenye self._users:
-                pitaword = self._users[ auth_dict["username"] ]
+                password = self._users[ auth_dict["username"] ]
             isipokua:
-                rudisha self._rudisha_auth_challenge(request_handler)
+                rudisha self._return_auth_challenge(request_handler)
             ikiwa sio auth_dict.get("nonce") kwenye self._nonces:
-                rudisha self._rudisha_auth_challenge(request_handler)
+                rudisha self._return_auth_challenge(request_handler)
             isipokua:
                 self._nonces.remove(auth_dict["nonce"])
 
@@ -188,13 +188,13 @@ kundi DigestAuthHandler:
 
             kila path kwenye [request_handler.path, request_handler.short_path]:
                 ikiwa self._validate_auth(auth_dict,
-                                       pitaword,
+                                       password,
                                        request_handler.command,
                                        path):
                     auth_validated = Kweli
 
             ikiwa sio auth_validated:
-                rudisha self._rudisha_auth_challenge(request_handler)
+                rudisha self._return_auth_challenge(request_handler)
             rudisha Kweli
 
 
@@ -212,7 +212,7 @@ kundi BasicAuthHandler(http.server.BaseHTTPRequestHandler):
 
     eleza log_message(self, format, *args):
         # Suppress console log message
-        pita
+        pass
 
     eleza do_HEAD(self):
         self.send_response(200)
@@ -229,7 +229,7 @@ kundi BasicAuthHandler(http.server.BaseHTTPRequestHandler):
         ikiwa sio self.headers.get("Authorization", ""):
             self.do_AUTHHEAD()
             self.wfile.write(b"No Auth header received")
-        lasivyo self.headers.get(
+        elikiwa self.headers.get(
                 "Authorization", "") == "Basic " + self.ENCODED_AUTH:
             self.send_response(200)
             self.end_headers()
@@ -258,7 +258,7 @@ kundi FakeProxyHandler(http.server.BaseHTTPRequestHandler):
     eleza log_message(self, format, *args):
         # Uncomment the next line kila debugging.
         # sys.stderr.write(format % args)
-        pita
+        pass
 
     eleza do_GET(self):
         (scm, netloc, path, params, query, fragment) = urllib.parse.urlparse(
@@ -301,16 +301,16 @@ kundi BasicAuthTests(unittest.TestCase):
 
     eleza test_basic_auth_success(self):
         ah = urllib.request.HTTPBasicAuthHandler()
-        ah.add_pitaword(self.REALM, self.server_url, self.USER, self.PASSWD)
+        ah.add_password(self.REALM, self.server_url, self.USER, self.PASSWD)
         urllib.request.install_opener(urllib.request.build_opener(ah))
         jaribu:
             self.assertKweli(urllib.request.urlopen(self.server_url))
-        tatizo urllib.error.HTTPError:
+        except urllib.error.HTTPError:
             self.fail("Basic auth failed kila the url: %s" % self.server_url)
 
     eleza test_basic_auth_httperror(self):
         ah = urllib.request.HTTPBasicAuthHandler()
-        ah.add_pitaword(self.REALM, self.server_url, self.USER, self.INCORRECT_PASSWD)
+        ah.add_password(self.REALM, self.server_url, self.USER, self.INCORRECT_PASSWD)
         urllib.request.install_opener(urllib.request.build_opener(ah))
         self.assertRaises(urllib.error.HTTPError, urllib.request.urlopen, self.server_url)
 
@@ -325,7 +325,7 @@ kundi ProxyAuthTests(unittest.TestCase):
     @support.requires_hashdigest("md5")
     eleza setUp(self):
         super(ProxyAuthTests, self).setUp()
-        # Ignore proxy bypita settings kwenye the environment.
+        # Ignore proxy bypass settings kwenye the environment.
         eleza restore_environ(old_environ):
             os.environ.clear()
             os.environ.update(old_environ)
@@ -354,43 +354,43 @@ kundi ProxyAuthTests(unittest.TestCase):
         self.server.stop()
         self.server = Tupu
 
-    eleza test_proxy_with_bad_pitaword_ashirias_httperror(self):
-        self.proxy_digest_handler.add_pitaword(self.REALM, self.URL,
+    eleza test_proxy_with_bad_password_raises_httperror(self):
+        self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD+"bad")
         self.digest_auth_handler.set_qop("auth")
         self.assertRaises(urllib.error.HTTPError,
                           self.opener.open,
                           self.URL)
 
-    eleza test_proxy_with_no_pitaword_ashirias_httperror(self):
+    eleza test_proxy_with_no_password_raises_httperror(self):
         self.digest_auth_handler.set_qop("auth")
         self.assertRaises(urllib.error.HTTPError,
                           self.opener.open,
                           self.URL)
 
     eleza test_proxy_qop_auth_works(self):
-        self.proxy_digest_handler.add_pitaword(self.REALM, self.URL,
+        self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth")
-        ukijumuisha self.opener.open(self.URL) kama result:
+        ukijumuisha self.opener.open(self.URL) as result:
             wakati result.read():
-                pita
+                pass
 
     eleza test_proxy_qop_auth_int_works_or_throws_urlerror(self):
-        self.proxy_digest_handler.add_pitaword(self.REALM, self.URL,
+        self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth-int")
         jaribu:
             result = self.opener.open(self.URL)
-        tatizo urllib.error.URLError:
+        except urllib.error.URLError:
             # It's okay ikiwa we don't support auth-int, but we certainly
             # shouldn't receive any kind of exception here other than
             # a URLError.
-            pita
+            pass
         isipokua:
             ukijumuisha result:
                 wakati result.read():
-                    pita
+                    pass
 
 
 eleza GetRequestHandler(responses):
@@ -430,7 +430,7 @@ eleza GetRequestHandler(responses):
             self.end_headers()
 
         eleza log_message(self, *args):
-            pita
+            pass
 
 
     rudisha FakeHTTPRequestHandler
@@ -530,11 +530,11 @@ kundi TestUrlopen(unittest.TestCase):
 
         jaribu:
             self.urlopen("http://localhost:%s/weeble" % handler.port)
-        tatizo urllib.error.URLError kama f:
+        except urllib.error.URLError as f:
             data = f.read()
             f.close()
         isipokua:
-            self.fail("404 should ashiria URLError")
+            self.fail("404 should  ashiria URLError")
 
         self.assertEqual(data, expected_response)
         self.assertEqual(handler.requests, ["/weeble"])
@@ -568,12 +568,12 @@ kundi TestUrlopen(unittest.TestCase):
                                 cafile=CERT_localhost)
             self.assertEqual(data, b"we care a bit")
             # Bad cert
-            ukijumuisha self.assertRaises(urllib.error.URLError) kama cm:
+            ukijumuisha self.assertRaises(urllib.error.URLError) as cm:
                 self.urlopen("https://localhost:%s/bizarre" % handler.port,
                              cafile=CERT_fakehostname)
             # Good cert, but mismatching hostname
             handler = self.start_https_server(certfile=CERT_fakehostname)
-            ukijumuisha self.assertRaises(urllib.error.URLError) kama cm:
+            ukijumuisha self.assertRaises(urllib.error.URLError) as cm:
                 self.urlopen("https://localhost:%s/bizarre" % handler.port,
                              cafile=CERT_fakehostname)
 
@@ -581,7 +581,7 @@ kundi TestUrlopen(unittest.TestCase):
         handler = self.start_https_server(certfile=CERT_localhost)
         # Self-signed cert should fail verification ukijumuisha system certificate store
         ukijumuisha support.check_warnings(('', DeprecationWarning)):
-            ukijumuisha self.assertRaises(urllib.error.URLError) kama cm:
+            ukijumuisha self.assertRaises(urllib.error.URLError) as cm:
                 self.urlopen("https://localhost:%s/bizarre" % handler.port,
                              cadefault=Kweli)
 
@@ -606,14 +606,14 @@ kundi TestUrlopen(unittest.TestCase):
         req = urllib.request.Request("http://localhost:%s/" % handler.port,
                                      headers={"Range": "bytes=20-39"})
         ukijumuisha urllib.request.urlopen(req):
-            pita
+            pass
         self.assertEqual(handler.headers_received["Range"], "bytes=20-39")
 
     eleza test_basic(self):
         handler = self.start_server()
-        ukijumuisha urllib.request.urlopen("http://localhost:%s" % handler.port) kama open_url:
+        ukijumuisha urllib.request.urlopen("http://localhost:%s" % handler.port) as open_url:
             kila attr kwenye ("read", "close", "info", "geturl"):
-                self.assertKweli(hasattr(open_url, attr), "object rudishaed kutoka "
+                self.assertKweli(hasattr(open_url, attr), "object returned kutoka "
                              "urlopen lacks the %s attribute" % attr)
             self.assertKweli(open_url.read(), "calling 'read' failed")
 
@@ -624,12 +624,12 @@ kundi TestUrlopen(unittest.TestCase):
         ukijumuisha open_url:
             info_obj = open_url.info()
         self.assertIsInstance(info_obj, email.message.Message,
-                              "object rudishaed by 'info' ni sio an "
+                              "object returned by 'info' ni sio an "
                               "instance of email.message.Message")
         self.assertEqual(info_obj.get_content_subtype(), "plain")
 
     eleza test_geturl(self):
-        # Make sure same URL kama opened ni rudishaed by geturl.
+        # Make sure same URL as opened ni returned by geturl.
         handler = self.start_server()
         open_url = urllib.request.urlopen("http://localhost:%s" % handler.port)
         ukijumuisha open_url:

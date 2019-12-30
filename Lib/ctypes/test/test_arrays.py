@@ -1,23 +1,23 @@
-import unittest
-from test.support import bigmemtest, _2G
-import sys
-from ctypes import *
+agiza unittest
+kutoka test.support agiza bigmemtest, _2G
+agiza sys
+kutoka ctypes agiza *
 
-from ctypes.test import need_symbol
+kutoka ctypes.test agiza need_symbol
 
 formats = "bBhHiIlLqQfd"
 
 formats = c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint, \
           c_long, c_ulonglong, c_float, c_double, c_longdouble
 
-class ArrayTestCase(unittest.TestCase):
-    def test_simple(self):
-        # create classes holding simple numeric types, and check
+kundi ArrayTestCase(unittest.TestCase):
+    eleza test_simple(self):
+        # create classes holding simple numeric types, na check
         # various properties.
 
         init = list(range(15, 25))
 
-        for fmt in formats:
+        kila fmt kwenye formats:
             alen = len(init)
             int_array = ARRAY(fmt, alen)
 
@@ -26,23 +26,23 @@ class ArrayTestCase(unittest.TestCase):
             self.assertEqual(len(ia), alen)
 
             # slot values ok?
-            values = [ia[i] for i in range(alen)]
+            values = [ia[i] kila i kwenye range(alen)]
             self.assertEqual(values, init)
 
             # out-of-bounds accesses should be caught
-            with self.assertRaises(IndexError): ia[alen]
-            with self.assertRaises(IndexError): ia[-alen-1]
+            ukijumuisha self.assertRaises(IndexError): ia[alen]
+            ukijumuisha self.assertRaises(IndexError): ia[-alen-1]
 
             # change the items
-            from operator import setitem
+            kutoka operator agiza setitem
             new_values = list(range(42, 42+alen))
-            [setitem(ia, n, new_values[n]) for n in range(alen)]
-            values = [ia[i] for i in range(alen)]
+            [setitem(ia, n, new_values[n]) kila n kwenye range(alen)]
+            values = [ia[i] kila i kwenye range(alen)]
             self.assertEqual(values, new_values)
 
             # are the items initialized to 0?
             ia = int_array()
-            values = [ia[i] for i in range(alen)]
+            values = [ia[i] kila i kwenye range(alen)]
             self.assertEqual(values, [0] * alen)
 
             # Too many initializers should be caught
@@ -66,10 +66,10 @@ class ArrayTestCase(unittest.TestCase):
         self.assertEqual(len(ca), 3)
 
         # cannot delete items
-        from operator import delitem
+        kutoka operator agiza delitem
         self.assertRaises(TypeError, delitem, ca, 0)
 
-    def test_step_overflow(self):
+    eleza test_step_overflow(self):
         a = (c_int * 5)()
         a[3::sys.maxsize] = (1,)
         self.assertListEqual(a[3::sys.maxsize], [1])
@@ -80,34 +80,34 @@ class ArrayTestCase(unittest.TestCase):
         a[3::sys.maxsize] = u"X"
         self.assertEqual(a[3::sys.maxsize], u"X")
 
-    def test_numeric_arrays(self):
+    eleza test_numeric_arrays(self):
 
         alen = 5
 
         numarray = ARRAY(c_int, alen)
 
         na = numarray()
-        values = [na[i] for i in range(alen)]
+        values = [na[i] kila i kwenye range(alen)]
         self.assertEqual(values, [0] * alen)
 
         na = numarray(*[c_int()] * alen)
-        values = [na[i] for i in range(alen)]
+        values = [na[i] kila i kwenye range(alen)]
         self.assertEqual(values, [0]*alen)
 
         na = numarray(1, 2, 3, 4, 5)
-        values = [i for i in na]
+        values = [i kila i kwenye na]
         self.assertEqual(values, [1, 2, 3, 4, 5])
 
         na = numarray(*map(c_int, (1, 2, 3, 4, 5)))
-        values = [i for i in na]
+        values = [i kila i kwenye na]
         self.assertEqual(values, [1, 2, 3, 4, 5])
 
-    def test_classcache(self):
+    eleza test_classcache(self):
         self.assertIsNot(ARRAY(c_int, 3), ARRAY(c_int, 4))
         self.assertIs(ARRAY(c_int, 3), ARRAY(c_int, 3))
 
-    def test_from_address(self):
-        # Failed with 0.9.8, reported by JUrner
+    eleza test_from_address(self):
+        # Failed ukijumuisha 0.9.8, reported by JUrner
         p = create_string_buffer(b"foo")
         sz = (c_char * 3).from_address(addressof(p))
         self.assertEqual(sz[:], b"foo")
@@ -118,7 +118,7 @@ class ArrayTestCase(unittest.TestCase):
         self.assertEqual(sz.value, b"foo")
 
     @need_symbol('create_unicode_buffer')
-    def test_from_addressW(self):
+    eleza test_from_addressW(self):
         p = create_unicode_buffer("foo")
         sz = (c_wchar * 3).from_address(addressof(p))
         self.assertEqual(sz[:], "foo")
@@ -128,36 +128,36 @@ class ArrayTestCase(unittest.TestCase):
         self.assertEqual(sz[1:4:2], "o")
         self.assertEqual(sz.value, "foo")
 
-    def test_cache(self):
-        # Array types are cached internally in the _ctypes extension,
-        # in a WeakValueDictionary.  Make sure the array type is
-        # removed from the cache when the itemtype goes away.  This
-        # test will sio fail, but will show a leak in the testsuite.
+    eleza test_cache(self):
+        # Array types are cached internally kwenye the _ctypes extension,
+        # kwenye a WeakValueDictionary.  Make sure the array type is
+        # removed kutoka the cache when the itemtype goes away.  This
+        # test will sio fail, but will show a leak kwenye the testsuite.
 
         # Create a new type:
-        class my_int(c_int):
+        kundi my_int(c_int):
             pass
         # Create a new array type based on it:
         t1 = my_int * 1
         t2 = my_int * 1
         self.assertIs(t1, t2)
 
-    def test_subclass(self):
-        class T(Array):
+    eleza test_subclass(self):
+        kundi T(Array):
             _type_ = c_int
             _length_ = 13
-        class U(T):
+        kundi U(T):
             pass
-        class V(U):
+        kundi V(U):
             pass
-        class W(V):
+        kundi W(V):
             pass
-        class X(T):
+        kundi X(T):
             _type_ = c_short
-        class Y(T):
+        kundi Y(T):
             _length_ = 187
 
-        for c in [T, U, V, W]:
+        kila c kwenye [T, U, V, W]:
             self.assertEqual(c._type_, c_int)
             self.assertEqual(c._length_, 13)
             self.assertEqual(c()._type_, c_int)
@@ -173,66 +173,66 @@ class ArrayTestCase(unittest.TestCase):
         self.assertEqual(Y()._type_, c_int)
         self.assertEqual(Y()._length_, 187)
 
-    def test_bad_subclass(self):
-        with self.assertRaises(AttributeError):
-            class T(Array):
+    eleza test_bad_subclass(self):
+        ukijumuisha self.assertRaises(AttributeError):
+            kundi T(Array):
                 pass
-        with self.assertRaises(AttributeError):
-            class T(Array):
+        ukijumuisha self.assertRaises(AttributeError):
+            kundi T(Array):
                 _type_ = c_int
-        with self.assertRaises(AttributeError):
-            class T(Array):
+        ukijumuisha self.assertRaises(AttributeError):
+            kundi T(Array):
                 _length_ = 13
 
-    def test_bad_length(self):
-        with self.assertRaises(ValueError):
-            class T(Array):
+    eleza test_bad_length(self):
+        ukijumuisha self.assertRaises(ValueError):
+            kundi T(Array):
                 _type_ = c_int
                 _length_ = - sys.maxsize * 2
-        with self.assertRaises(ValueError):
-            class T(Array):
+        ukijumuisha self.assertRaises(ValueError):
+            kundi T(Array):
                 _type_ = c_int
                 _length_ = -1
-        with self.assertRaises(TypeError):
-            class T(Array):
+        ukijumuisha self.assertRaises(TypeError):
+            kundi T(Array):
                 _type_ = c_int
                 _length_ = 1.87
-        with self.assertRaises(OverflowError):
-            class T(Array):
+        ukijumuisha self.assertRaises(OverflowError):
+            kundi T(Array):
                 _type_ = c_int
                 _length_ = sys.maxsize * 2
 
-    def test_zero_length(self):
+    eleza test_zero_length(self):
         # _length_ can be zero.
-        class T(Array):
+        kundi T(Array):
             _type_ = c_int
             _length_ = 0
 
-    def test_empty_element_struct(self):
-        class EmptyStruct(Structure):
+    eleza test_empty_element_struct(self):
+        kundi EmptyStruct(Structure):
             _fields_ = []
 
         obj = (EmptyStruct * 2)()  # bpo37188: Floating point exception
         self.assertEqual(sizeof(obj), 0)
 
-    def test_empty_element_array(self):
-        class EmptyArray(Array):
+    eleza test_empty_element_array(self):
+        kundi EmptyArray(Array):
             _type_ = c_int
             _length_ = 0
 
         obj = (EmptyArray * 2)()  # bpo37188: Floating point exception
         self.assertEqual(sizeof(obj), 0)
 
-    def test_bpo36504_signed_int_overflow(self):
-        # The overflow check in PyCArrayType_new() could cause signed integer
+    eleza test_bpo36504_signed_int_overflow(self):
+        # The overflow check kwenye PyCArrayType_new() could cause signed integer
         # overflow.
-        with self.assertRaises(OverflowError):
+        ukijumuisha self.assertRaises(OverflowError):
             c_char * sys.maxsize * 2
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
-    @bigmemtest(size=_2G, memuse=1, dry_run=False)
-    def test_large_array(self, size):
+    @bigmemtest(size=_2G, memuse=1, dry_run=Uongo)
+    eleza test_large_array(self, size):
         c_char * size
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -1,45 +1,45 @@
 # Module doctest.
 # Released to the public domain 16-Jan-2001, by Tim Peters (tim@python.org).
-# Major enhancements and refactoring by:
+# Major enhancements na refactoring by:
 #     Jim Fulton
 #     Edward Loper
 
 # Provided as-is; use at your own risk; no warranty; no promises; enjoy!
 
-r"""Module doctest -- a framework for running examples in docstrings.
+r"""Module doctest -- a framework kila running examples kwenye docstrings.
 
 In simplest use, end each module M to be tested with:
 
-def _test():
+eleza _test():
     agiza doctest
     doctest.testmod()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     _test()
 
-Then running the module as a script will cause the examples in the
-docstrings to get executed and verified:
+Then running the module as a script will cause the examples kwenye the
+docstrings to get executed na verified:
 
 python M.py
 
-This won't display anything unless an example fails, in which case the
-failing example(s) and the cause(s) of the failure(s) are printed to stdout
-(why sio stderr? because stderr is a lame hack <0.2 wink>), and the final
-line of output is "Test failed.".
+This won't display anything unless an example fails, kwenye which case the
+failing example(s) na the cause(s) of the failure(s) are printed to stdout
+(why sio stderr? because stderr ni a lame hack <0.2 wink>), na the final
+line of output ni "Test failed.".
 
-Run it with the -v switch instead:
+Run it ukijumuisha the -v switch instead:
 
 python M.py -v
 
-and a detailed report of all examples tried is printed to stdout, along
-with assorted summaries at the end.
+and a detailed report of all examples tried ni printed to stdout, along
+ukijumuisha assorted summaries at the end.
 
-You can force verbose mode by passing "verbose=True" to testmod, or prohibit
-it by passing "verbose=False".  In either of those cases, sys.argv is not
+You can force verbose mode by passing "verbose=Kweli" to testmod, ama prohibit
+it by passing "verbose=Uongo".  In either of those cases, sys.argv ni not
 examined by testmod.
 
 There are a variety of other ways to run doctests, including integration
-with the unittest framework, and support for running non-Python text
+ukijumuisha the unittest framework, na support kila running non-Python text
 files containing doctests.  There are also many ways to override parts
 of doctest's default behaviors.  See the Library Reference Manual for
 details.
@@ -111,9 +111,9 @@ TestResults = namedtuple('TestResults', 'failed attempted')
 #  - Example: a <source, want> pair, plus an intra-docstring line number.
 #  - DocTest: a collection of examples, parsed kutoka a docstring, plus
 #    info about where the docstring came kutoka (name, filename, lineno).
-#  - DocTestFinder: extracts DocTests kutoka a given object's docstring na
+#  - DocTestFinder: extracts DocTests kutoka a given object's docstring and
 #    its contained objects' docstrings.
-#  - DocTestRunner: runs DocTest cases, and accumulates statistics.
+#  - DocTestRunner: runs DocTest cases, na accumulates statistics.
 #
 # So the basic picture is:
 #
@@ -129,9 +129,9 @@ TestResults = namedtuple('TestResults', 'failed attempted')
 # Option constants.
 
 OPTIONFLAGS_BY_NAME = {}
-def register_optionflag(name):
-    # Create a new flag unless `name` is already known.
-    return OPTIONFLAGS_BY_NAME.setdefault(name, 1 << len(OPTIONFLAGS_BY_NAME))
+eleza register_optionflag(name):
+    # Create a new flag unless `name` ni already known.
+    rudisha OPTIONFLAGS_BY_NAME.setdefault(name, 1 << len(OPTIONFLAGS_BY_NAME))
 
 DONT_ACCEPT_TRUE_FOR_1 = register_optionflag('DONT_ACCEPT_TRUE_FOR_1')
 DONT_ACCEPT_BLANKLINE = register_optionflag('DONT_ACCEPT_BLANKLINE')
@@ -159,7 +159,7 @@ REPORTING_FLAGS = (REPORT_UDIFF |
                    REPORT_ONLY_FIRST_FAILURE |
                    FAIL_FAST)
 
-# Special string markers for use in `want` strings:
+# Special string markers kila use kwenye `want` strings:
 BLANKLINE_MARKER = '<BLANKLINE>'
 ELLIPSIS_MARKER = '...'
 
@@ -171,7 +171,7 @@ ELLIPSIS_MARKER = '...'
 #  3. DocTest Parser -- extracts examples kutoka strings
 #  4. DocTest Finder -- extracts test cases kutoka objects
 #  5. DocTest Runner -- runs test cases
-#  6. Test Functions -- convenient wrappers for testing
+#  6. Test Functions -- convenient wrappers kila testing
 #  7. Unittest Support
 #  8. Debugging Support
 #  9. Example Usage
@@ -180,323 +180,323 @@ ELLIPSIS_MARKER = '...'
 ## 1. Utility Functions
 ######################################################################
 
-def _extract_future_flags(globs):
+eleza _extract_future_flags(globs):
     """
-    Return the compiler-flags associated with the future features that
+    Return the compiler-flags associated ukijumuisha the future features that
     have been imported into the given namespace (globs).
     """
     flags = 0
-    for fname in __future__.all_feature_names:
-        feature = globs.get(fname, None)
-        if feature is getattr(__future__, fname):
+    kila fname kwenye __future__.all_feature_names:
+        feature = globs.get(fname, Tupu)
+        ikiwa feature ni getattr(__future__, fname):
             flags |= feature.compiler_flag
-    return flags
+    rudisha flags
 
-def _normalize_module(module, depth=2):
+eleza _normalize_module(module, depth=2):
     """
     Return the module specified by `module`.  In particular:
-      - If `module` is a module, then return module.
-      - If `module` is a string, then agiza and return the
-        module with that name.
-      - If `module` is None, then return the calling module.
-        The calling module is assumed to be the module of
-        the stack frame at the given depth in the call stack.
+      - If `module` ni a module, then rudisha module.
+      - If `module` ni a string, then agiza na rudisha the
+        module ukijumuisha that name.
+      - If `module` ni Tupu, then rudisha the calling module.
+        The calling module ni assumed to be the module of
+        the stack frame at the given depth kwenye the call stack.
     """
-    if inspect.ismodule(module):
-        return module
-    lasivyo isinstance(module, str):
-        return __import__(module, globals(), locals(), ["*"])
-    lasivyo module is None:
-        return sys.modules[sys._getframe(depth).f_globals['__name__']]
+    ikiwa inspect.ismodule(module):
+        rudisha module
+    elikiwa isinstance(module, str):
+        rudisha __import__(module, globals(), locals(), ["*"])
+    elikiwa module ni Tupu:
+        rudisha sys.modules[sys._getframe(depth).f_globals['__name__']]
     isipokua:
-        ashiria TypeError("Expected a module, string, or None")
+         ashiria TypeError("Expected a module, string, ama Tupu")
 
-def _load_testfile(filename, package, module_relative, encoding):
-    if module_relative:
+eleza _load_testfile(filename, package, module_relative, encoding):
+    ikiwa module_relative:
         package = _normalize_module(package, 3)
         filename = _module_relative_path(package, filename)
-        if getattr(package, '__loader__', None) ni sio None:
-            if hasattr(package.__loader__, 'get_data'):
+        ikiwa getattr(package, '__loader__', Tupu) ni sio Tupu:
+            ikiwa hasattr(package.__loader__, 'get_data'):
                 file_contents = package.__loader__.get_data(filename)
                 file_contents = file_contents.decode(encoding)
                 # get_data() opens files as 'rb', so one must do the equivalent
                 # conversion as universal newlines would do.
-                return file_contents.replace(os.linesep, '\n'), filename
-    with open(filename, encoding=encoding) as f:
-        return f.read(), filename
+                rudisha file_contents.replace(os.linesep, '\n'), filename
+    ukijumuisha open(filename, encoding=encoding) as f:
+        rudisha f.read(), filename
 
-def _indent(s, indent=4):
+eleza _indent(s, indent=4):
     """
     Add the given number of space characters to the beginning of
-    every non-blank line in `s`, and return the result.
+    every non-blank line kwenye `s`, na rudisha the result.
     """
     # This regexp matches the start of non-blank lines:
-    return re.sub('(?m)^(?!$)', indent*' ', s)
+    rudisha re.sub('(?m)^(?!$)', indent*' ', s)
 
-def _exception_traceback(exc_info):
+eleza _exception_traceback(exc_info):
     """
-    Return a string containing a traceback message for the given
+    Return a string containing a traceback message kila the given
     exc_info tuple (as returned by sys.exc_info()).
     """
     # Get a traceback message.
     excout = StringIO()
     exc_type, exc_val, exc_tb = exc_info
     traceback.print_exception(exc_type, exc_val, exc_tb, file=excout)
-    return excout.getvalue()
+    rudisha excout.getvalue()
 
 # Override some StringIO methods.
 kundi _SpoofOut(StringIO):
-    def getvalue(self):
+    eleza getvalue(self):
         result = StringIO.getvalue(self)
         # If anything at all was written, make sure there's a trailing
-        # newline.  There's no way for the expected output to indicate
-        # that a trailing newline is missing.
-        if result and sio result.endswith("\n"):
+        # newline.  There's no way kila the expected output to indicate
+        # that a trailing newline ni missing.
+        ikiwa result na sio result.endswith("\n"):
             result += "\n"
-        return result
+        rudisha result
 
-    def truncate(self, size=None):
+    eleza truncate(self, size=Tupu):
         self.seek(size)
         StringIO.truncate(self)
 
 # Worst-case linear-time ellipsis matching.
-def _ellipsis_match(want, got):
+eleza _ellipsis_match(want, got):
     """
     Essentially the only subtle case:
     >>> _ellipsis_match('aa...aa', 'aaa')
-    False
+    Uongo
     """
-    if ELLIPSIS_MARKER haiko kwenye want:
-        return want == got
+    ikiwa ELLIPSIS_MARKER sio kwenye want:
+        rudisha want == got
 
     # Find "the real" strings.
     ws = want.split(ELLIPSIS_MARKER)
     assert len(ws) >= 2
 
-    # Deal with exact matches possibly needed at one or both ends.
+    # Deal ukijumuisha exact matches possibly needed at one ama both ends.
     startpos, endpos = 0, len(got)
     w = ws[0]
-    if w:   # starts with exact match
-        if got.startswith(w):
+    ikiwa w:   # starts ukijumuisha exact match
+        ikiwa got.startswith(w):
             startpos = len(w)
             toa ws[0]
         isipokua:
-            return False
+            rudisha Uongo
     w = ws[-1]
-    if w:   # ends with exact match
-        if got.endswith(w):
+    ikiwa w:   # ends ukijumuisha exact match
+        ikiwa got.endswith(w):
             endpos -= len(w)
             toa ws[-1]
         isipokua:
-            return False
+            rudisha Uongo
 
-    if startpos > endpos:
+    ikiwa startpos > endpos:
         # Exact end matches required more characters than we have, as in
         # _ellipsis_match('aa...aa', 'aaa')
-        return False
+        rudisha Uongo
 
     # For the rest, we only need to find the leftmost non-overlapping
-    # match for each piece.  If there's no overall match that way alone,
+    # match kila each piece.  If there's no overall match that way alone,
     # there's no overall match period.
-    for w in ws:
-        # w may be '' at times, if there are consecutive ellipses, ama
-        # due to an ellipsis at the start or end of `want`.  That's OK.
-        # Search for an empty string succeeds, and doesn't change startpos.
+    kila w kwenye ws:
+        # w may be '' at times, ikiwa there are consecutive ellipses, or
+        # due to an ellipsis at the start ama end of `want`.  That's OK.
+        # Search kila an empty string succeeds, na doesn't change startpos.
         startpos = got.find(w, startpos, endpos)
-        if startpos < 0:
-            return False
+        ikiwa startpos < 0:
+            rudisha Uongo
         startpos += len(w)
 
-    return True
+    rudisha Kweli
 
-def _comment_line(line):
+eleza _comment_line(line):
     "Return a commented form of the given line"
     line = line.rstrip()
-    if line:
-        return '# '+line
+    ikiwa line:
+        rudisha '# '+line
     isipokua:
-        return '#'
+        rudisha '#'
 
-def _strip_exception_details(msg):
-    # Support for IGNORE_EXCEPTION_DETAIL.
-    # Get rid of everything tatizo the exception name; in particular, drop
-    # the possibly dotted module path (if any) and the exception message (if
-    # any).  We assume that a colon is never part of a dotted name, or of an
+eleza _strip_exception_details(msg):
+    # Support kila IGNORE_EXCEPTION_DETAIL.
+    # Get rid of everything except the exception name; kwenye particular, drop
+    # the possibly dotted module path (ikiwa any) na the exception message (if
+    # any).  We assume that a colon ni never part of a dotted name, ama of an
     # exception name.
     # E.g., given
     #    "foo.bar.MyError: la di da"
-    # return "MyError"
-    # Or for "abc.def" or "abc.def:\n" return "def".
+    # rudisha "MyError"
+    # Or kila "abc.def" ama "abc.def:\n" rudisha "def".
 
     start, end = 0, len(msg)
     # The exception name must appear on the first line.
     i = msg.find("\n")
-    if i >= 0:
+    ikiwa i >= 0:
         end = i
-    # retain up to the first colon (if any)
+    # retain up to the first colon (ikiwa any)
     i = msg.find(':', 0, end)
-    if i >= 0:
+    ikiwa i >= 0:
         end = i
     # retain just the exception name
     i = msg.rfind('.', 0, end)
-    if i >= 0:
+    ikiwa i >= 0:
         start = i+1
-    return msg[start: end]
+    rudisha msg[start: end]
 
 kundi _OutputRedirectingPdb(pdb.Pdb):
     """
     A specialized version of the python debugger that redirects stdout
-    to a given stream when interacting with the user.  Stdout is *not*
-    redirected when traced code is executed.
+    to a given stream when interacting ukijumuisha the user.  Stdout ni *not*
+    redirected when traced code ni executed.
     """
-    def __init__(self, out):
+    eleza __init__(self, out):
         self.__out = out
-        self.__debugger_used = False
-        # do sio play signal games in the pdb
-        pdb.Pdb.__init__(self, stdout=out, nosigint=True)
-        # still use input() to get user input
+        self.__debugger_used = Uongo
+        # do sio play signal games kwenye the pdb
+        pdb.Pdb.__init__(self, stdout=out, nosigint=Kweli)
+        # still use uliza() to get user input
         self.use_rawinput = 1
 
-    def set_trace(self, frame=None):
-        self.__debugger_used = True
-        if frame is None:
+    eleza set_trace(self, frame=Tupu):
+        self.__debugger_used = Kweli
+        ikiwa frame ni Tupu:
             frame = sys._getframe().f_back
         pdb.Pdb.set_trace(self, frame)
 
-    def set_endelea(self):
+    eleza set_endelea(self):
         # Calling set_endelea unconditionally would koma unit test
-        # coverage reporting, as Bdb.set_endelea calls sys.settrace(None).
-        if self.__debugger_used:
+        # coverage reporting, as Bdb.set_endelea calls sys.settrace(Tupu).
+        ikiwa self.__debugger_used:
             pdb.Pdb.set_endelea(self)
 
-    def trace_dispatch(self, *args):
+    eleza trace_dispatch(self, *args):
         # Redirect stdout to the given stream.
         save_stdout = sys.stdout
         sys.stdout = self.__out
         # Call Pdb's trace dispatch method.
         jaribu:
-            return pdb.Pdb.trace_dispatch(self, *args)
+            rudisha pdb.Pdb.trace_dispatch(self, *args)
         mwishowe:
             sys.stdout = save_stdout
 
-# [XX] Normalize with respect to os.path.pardir?
-def _module_relative_path(module, test_path):
-    if sio inspect.ismodule(module):
-        ashiria TypeError('Expected a module: %r' % module)
-    if test_path.startswith('/'):
-        ashiria ValueError('Module-relative files may sio have absolute paths')
+# [XX] Normalize ukijumuisha respect to os.path.pardir?
+eleza _module_relative_path(module, test_path):
+    ikiwa sio inspect.ismodule(module):
+         ashiria TypeError('Expected a module: %r' % module)
+    ikiwa test_path.startswith('/'):
+         ashiria ValueError('Module-relative files may sio have absolute paths')
 
-    # Normalize the path. On Windows, replace "/" with "\".
+    # Normalize the path. On Windows, replace "/" ukijumuisha "\".
     test_path = os.path.join(*(test_path.split('/')))
 
-    # Find the base directory for the path.
-    if hasattr(module, '__file__'):
+    # Find the base directory kila the path.
+    ikiwa hasattr(module, '__file__'):
         # A normal module/package
         basedir = os.path.split(module.__file__)[0]
-    lasivyo module.__name__ == '__main__':
+    elikiwa module.__name__ == '__main__':
         # An interactive session.
-        if len(sys.argv)>0 and sys.argv[0] != '':
+        ikiwa len(sys.argv)>0 na sys.argv[0] != '':
             basedir = os.path.split(sys.argv[0])[0]
         isipokua:
             basedir = os.curdir
     isipokua:
-        if hasattr(module, '__path__'):
-            for directory in module.__path__:
+        ikiwa hasattr(module, '__path__'):
+            kila directory kwenye module.__path__:
                 fullpath = os.path.join(directory, test_path)
-                if os.path.exists(fullpath):
-                    return fullpath
+                ikiwa os.path.exists(fullpath):
+                    rudisha fullpath
 
         # A module w/o __file__ (this includes builtins)
-        ashiria ValueError("Can't resolve paths relative to the module "
+         ashiria ValueError("Can't resolve paths relative to the module "
                          "%r (it has no __file__)"
                          % module.__name__)
 
-    # Combine the base directory and the test path.
-    return os.path.join(basedir, test_path)
+    # Combine the base directory na the test path.
+    rudisha os.path.join(basedir, test_path)
 
 ######################################################################
 ## 2. Example & DocTest
 ######################################################################
-## - An "example" is a <source, want> pair, where "source" is a
-##   fragment of source code, and "want" is the expected output for
+## - An "example" ni a <source, want> pair, where "source" ni a
+##   fragment of source code, na "want" ni the expected output for
 ##   "source."  The Example kundi also includes information about
-##   where the example was extracted kutoka.
+##   where the example was extracted from.
 ##
-## - A "doctest" is a collection of examples, typically extracted kutoka
+## - A "doctest" ni a collection of examples, typically extracted from
 ##   a string (such as an object's docstring).  The DocTest kundi also
-##   includes information about where the string was extracted kutoka.
+##   includes information about where the string was extracted from.
 
 kundi Example:
     """
-    A single doctest example, consisting of source code and expected
+    A single doctest example, consisting of source code na expected
     output.  `Example` defines the following attributes:
 
-      - source: A single Python statement, always ending with a newline.
-        The constructor adds a newline if needed.
+      - source: A single Python statement, always ending ukijumuisha a newline.
+        The constructor adds a newline ikiwa needed.
 
       - want: The expected output kutoka running the source code (either
-        kutoka stdout, or a traceback in case of exception).  `want` ends
-        with a newline unless it's empty, in which case it's an empty
-        string.  The constructor adds a newline if needed.
+        kutoka stdout, ama a traceback kwenye case of exception).  `want` ends
+        ukijumuisha a newline unless it's empty, kwenye which case it's an empty
+        string.  The constructor adds a newline ikiwa needed.
 
       - exc_msg: The exception message generated by the example, if
-        the example is expected to generate an exception; or `None` if
+        the example ni expected to generate an exception; ama `Tupu` if
         it ni sio expected to generate an exception.  This exception
-        message is compared against the return value of
-        `traceback.format_exception_only()`.  `exc_msg` ends with a
-        newline unless it's `None`.  The constructor adds a newline
-        if needed.
+        message ni compared against the rudisha value of
+        `traceback.format_exception_only()`.  `exc_msg` ends ukijumuisha a
+        newline unless it's `Tupu`.  The constructor adds a newline
+        ikiwa needed.
 
       - lineno: The line number within the DocTest string containing
         this Example where the Example begins.  This line number is
-        zero-based, with respect to the beginning of the DocTest.
+        zero-based, ukijumuisha respect to the beginning of the DocTest.
 
-      - indent: The example's indentation in the DocTest string.
+      - indent: The example's indentation kwenye the DocTest string.
         I.e., the number of space characters that precede the
         example's first prompt.
 
-      - options: A dictionary mapping kutoka option flags to True ama
-        False, which is used to override default options for this
-        example.  Any option flags sio contained in this dictionary
+      - options: A dictionary mapping kutoka option flags to Kweli or
+        Uongo, which ni used to override default options kila this
+        example.  Any option flags sio contained kwenye this dictionary
         are left at their default value (as specified by the
         DocTestRunner's optionflags).  By default, no options are set.
     """
-    def __init__(self, source, want, exc_msg=None, lineno=0, indent=0,
-                 options=None):
+    eleza __init__(self, source, want, exc_msg=Tupu, lineno=0, indent=0,
+                 options=Tupu):
         # Normalize inputs.
-        if sio source.endswith('\n'):
+        ikiwa sio source.endswith('\n'):
             source += '\n'
-        if want and sio want.endswith('\n'):
+        ikiwa want na sio want.endswith('\n'):
             want += '\n'
-        if exc_msg ni sio None and sio exc_msg.endswith('\n'):
+        ikiwa exc_msg ni sio Tupu na sio exc_msg.endswith('\n'):
             exc_msg += '\n'
         # Store properties.
         self.source = source
         self.want = want
         self.lineno = lineno
         self.indent = indent
-        if options is None: options = {}
+        ikiwa options ni Tupu: options = {}
         self.options = options
         self.exc_msg = exc_msg
 
-    def __eq__(self, other):
-        if type(self) ni sio type(other):
-            return NotImplemented
+    eleza __eq__(self, other):
+        ikiwa type(self) ni sio type(other):
+            rudisha NotImplemented
 
-        return self.source == other.source and \
-               self.want == other.want and \
-               self.lineno == other.lineno and \
-               self.indent == other.indent and \
-               self.options == other.options and \
+        rudisha self.source == other.source na \
+               self.want == other.want na \
+               self.lineno == other.lineno na \
+               self.indent == other.indent na \
+               self.options == other.options na \
                self.exc_msg == other.exc_msg
 
-    def __hash__(self):
-        return hash((self.source, self.want, self.lineno, self.indent,
+    eleza __hash__(self):
+        rudisha hash((self.source, self.want, self.lineno, self.indent,
                      self.exc_msg))
 
 kundi DocTest:
     """
-    A collection of doctest examples that should be run in a single
+    A collection of doctest examples that should be run kwenye a single
     namespace.  Each `DocTest` defines the following attributes:
 
       - examples: the list of examples.
@@ -505,23 +505,23 @@ kundi DocTest:
         be run in.
 
       - name: A name identifying the DocTest (typically, the name of
-        the object whose docstring this DocTest was extracted kutoka).
+        the object whose docstring this DocTest was extracted from).
 
       - filename: The name of the file that this DocTest was extracted
-        kutoka, or `None` if the filename is unknown.
+        from, ama `Tupu` ikiwa the filename ni unknown.
 
       - lineno: The line number within filename where this DocTest
-        begins, or `None` if the line number is unavailable.  This
-        line number is zero-based, with respect to the beginning of
+        begins, ama `Tupu` ikiwa the line number ni unavailable.  This
+        line number ni zero-based, ukijumuisha respect to the beginning of
         the file.
 
-      - docstring: The string that the examples were extracted kutoka,
-        or `None` if the string is unavailable.
+      - docstring: The string that the examples were extracted from,
+        ama `Tupu` ikiwa the string ni unavailable.
     """
-    def __init__(self, examples, globs, name, filename, lineno, docstring):
+    eleza __init__(self, examples, globs, name, filename, lineno, docstring):
         """
         Create a new DocTest containing the given examples.  The
-        DocTest's globals are initialized with a copy of `globs`.
+        DocTest's globals are initialized ukijumuisha a copy of `globs`.
         """
         assert sio isinstance(examples, str), \
                "DocTest no longer accepts str; use DocTestParser instead"
@@ -532,36 +532,36 @@ kundi DocTest:
         self.filename = filename
         self.lineno = lineno
 
-    def __repr__(self):
-        if len(self.examples) == 0:
+    eleza __repr__(self):
+        ikiwa len(self.examples) == 0:
             examples = 'no examples'
-        lasivyo len(self.examples) == 1:
+        elikiwa len(self.examples) == 1:
             examples = '1 example'
         isipokua:
             examples = '%d examples' % len(self.examples)
-        return ('<%s %s kutoka %s:%s (%s)>' %
+        rudisha ('<%s %s kutoka %s:%s (%s)>' %
                 (self.__class__.__name__,
                  self.name, self.filename, self.lineno, examples))
 
-    def __eq__(self, other):
-        if type(self) ni sio type(other):
-            return NotImplemented
+    eleza __eq__(self, other):
+        ikiwa type(self) ni sio type(other):
+            rudisha NotImplemented
 
-        return self.examples == other.examples and \
-               self.docstring == other.docstring and \
-               self.globs == other.globs and \
-               self.name == other.name and \
-               self.filename == other.filename and \
+        rudisha self.examples == other.examples na \
+               self.docstring == other.docstring na \
+               self.globs == other.globs na \
+               self.name == other.name na \
+               self.filename == other.filename na \
                self.lineno == other.lineno
 
-    def __hash__(self):
-        return hash((self.docstring, self.name, self.filename, self.lineno))
+    eleza __hash__(self):
+        rudisha hash((self.docstring, self.name, self.filename, self.lineno))
 
     # This lets us sort tests by name:
-    def __lt__(self, other):
-        if sio isinstance(other, DocTest):
-            return NotImplemented
-        return ((self.name, self.filename, self.lineno, id(self))
+    eleza __lt__(self, other):
+        ikiwa sio isinstance(other, DocTest):
+            rudisha NotImplemented
+        rudisha ((self.name, self.filename, self.lineno, id(self))
                 <
                 (other.name, other.filename, other.lineno, id(other)))
 
@@ -573,32 +573,32 @@ kundi DocTestParser:
     """
     A kundi used to parse strings containing doctest examples.
     """
-    # This regular expression is used to find doctest examples in a
-    # string.  It defines three groups: `source` is the source code
-    # (including leading indentation and prompts); `indent` is the
-    # indentation of the first (PS1) line of the source code; na
-    # `want` is the expected output (including leading indentation).
+    # This regular expression ni used to find doctest examples kwenye a
+    # string.  It defines three groups: `source` ni the source code
+    # (including leading indentation na prompts); `indent` ni the
+    # indentation of the first (PS1) line of the source code; and
+    # `want` ni the expected output (including leading indentation).
     _EXAMPLE_RE = re.compile(r'''
-        # Source consists of a PS1 line followed by zero or more PS2 lines.
+        # Source consists of a PS1 line followed by zero ama more PS2 lines.
         (?P<source>
             (?:^(?P<indent> [ ]*) >>>    .*)    # PS1 line
             (?:\n           [ ]*  \.\.\. .*)*)  # PS2 lines
         \n?
-        # Want consists of any non-blank lines that do sio start with PS1.
+        # Want consists of any non-blank lines that do sio start ukijumuisha PS1.
         (?P<want> (?:(?![ ]*$)    # Not a blank line
-                     (?![ ]*>>>)  # Not a line starting with PS1
+                     (?![ ]*>>>)  # Not a line starting ukijumuisha PS1
                      .+$\n?       # But any other line
                   )*)
         ''', re.MULTILINE | re.VERBOSE)
 
-    # A regular expression for handling `want` strings that contain
+    # A regular expression kila handling `want` strings that contain
     # expected exceptions.  It divides `want` into three pieces:
     #    - the traceback header line (`hdr`)
     #    - the traceback stack (`stack`)
     #    - the exception message (`msg`), as generated by
     #      traceback.format_exception_only()
     # `msg` may have multiple lines.  We assume/require that the
-    # exception message is the first non-indented line starting with a word
+    # exception message ni the first non-indented line starting ukijumuisha a word
     # character following the traceback header line.
     _EXCEPTION_RE = re.compile(r"""
         # Grab the traceback header.  Different versions of Python have
@@ -610,31 +610,31 @@ kundi DocTestParser:
         )
         \s* $                # toss trailing whitespace on the header.
         (?P<stack> .*?)      # don't blink: absorb stuff until...
-        ^ (?P<msg> \w+ .*)   #     a line *starts* with alphanum.
+        ^ (?P<msg> \w+ .*)   #     a line *starts* ukijumuisha alphanum.
         """, re.VERBOSE | re.MULTILINE | re.DOTALL)
 
-    # A callable returning a true value iff its argument is a blank line
-    # or contains a single comment.
+    # A callable returning a true value iff its argument ni a blank line
+    # ama contains a single comment.
     _IS_BLANK_OR_COMMENT = re.compile(r'^[ ]*(#.*)?$').match
 
-    def parse(self, string, name='<string>'):
+    eleza parse(self, string, name='<string>'):
         """
-        Divide the given string into examples and intervening text,
-        and return them as a list of alternating Examples and strings.
-        Line numbers for the Examples are 0-based.  The optional
-        argument `name` is a name identifying this string, and is only
-        used for error messages.
+        Divide the given string into examples na intervening text,
+        na rudisha them as a list of alternating Examples na strings.
+        Line numbers kila the Examples are 0-based.  The optional
+        argument `name` ni a name identifying this string, na ni only
+        used kila error messages.
         """
         string = string.expandtabs()
-        # If all lines begin with the same indentation, then strip it.
+        # If all lines begin ukijumuisha the same indentation, then strip it.
         min_indent = self._min_indent(string)
-        if min_indent > 0:
-            string = '\n'.join([l[min_indent:] for l in string.split('\n')])
+        ikiwa min_indent > 0:
+            string = '\n'.join([l[min_indent:] kila l kwenye string.split('\n')])
 
         output = []
         charno, lineno = 0, 0
-        # Find all doctest examples in the string:
-        for m in self._EXAMPLE_RE.finditer(string):
+        # Find all doctest examples kwenye the string:
+        kila m kwenye self._EXAMPLE_RE.finditer(string):
             # Add the pre-example text to `output`.
             output.append(string[charno:m.start()])
             # Update lineno (lines before this example)
@@ -642,8 +642,8 @@ kundi DocTestParser:
             # Extract info kutoka the regexp match.
             (source, options, want, exc_msg) = \
                      self._parse_example(m, name, lineno)
-            # Create an Example, and add it to the list.
-            if sio self._IS_BLANK_OR_COMMENT(source):
+            # Create an Example, na add it to the list.
+            ikiwa sio self._IS_BLANK_OR_COMMENT(source):
                 output.append( Example(source, want, exc_msg,
                                     lineno=lineno,
                                     indent=min_indent+len(m.group('indent')),
@@ -654,148 +654,148 @@ kundi DocTestParser:
             charno = m.end()
         # Add any remaining post-example text to `output`.
         output.append(string[charno:])
-        return output
+        rudisha output
 
-    def get_doctest(self, string, globs, name, filename, lineno):
+    eleza get_doctest(self, string, globs, name, filename, lineno):
         """
-        Extract all doctest examples kutoka the given string, na
+        Extract all doctest examples kutoka the given string, and
         collect them into a `DocTest` object.
 
-        `globs`, `name`, `filename`, and `lineno` are attributes for
-        the new `DocTest` object.  See the documentation for `DocTest`
-        for more information.
+        `globs`, `name`, `filename`, na `lineno` are attributes for
+        the new `DocTest` object.  See the documentation kila `DocTest`
+        kila more information.
         """
-        return DocTest(self.get_examples(string, name), globs,
+        rudisha DocTest(self.get_examples(string, name), globs,
                        name, filename, lineno, string)
 
-    def get_examples(self, string, name='<string>'):
+    eleza get_examples(self, string, name='<string>'):
         """
-        Extract all doctest examples kutoka the given string, and return
+        Extract all doctest examples kutoka the given string, na return
         them as a list of `Example` objects.  Line numbers are
-        0-based, because it's most common in doctests that nothing
+        0-based, because it's most common kwenye doctests that nothing
         interesting appears on the same line as opening triple-quote,
-        and so the first interesting line is called \"line 1\" then.
+        na so the first interesting line ni called \"line 1\" then.
 
-        The optional argument `name` is a name identifying this
-        string, and is only used for error messages.
+        The optional argument `name` ni a name identifying this
+        string, na ni only used kila error messages.
         """
-        return [x for x in self.parse(string, name)
-                if isinstance(x, Example)]
+        rudisha [x kila x kwenye self.parse(string, name)
+                ikiwa isinstance(x, Example)]
 
-    def _parse_example(self, m, name, lineno):
+    eleza _parse_example(self, m, name, lineno):
         """
         Given a regular expression match kutoka `_EXAMPLE_RE` (`m`),
-        return a pair `(source, want)`, where `source` is the matched
-        example's source code (with prompts and indentation stripped);
-        and `want` is the example's expected output (with indentation
+        rudisha a pair `(source, want)`, where `source` ni the matched
+        example's source code (ukijumuisha prompts na indentation stripped);
+        na `want` ni the example's expected output (ukijumuisha indentation
         stripped).
 
-        `name` is the string's name, and `lineno` is the line number
-        where the example starts; both are used for error messages.
+        `name` ni the string's name, na `lineno` ni the line number
+        where the example starts; both are used kila error messages.
         """
         # Get the example's indentation level.
         indent = len(m.group('indent'))
 
         # Divide source into lines; check that they're properly
-        # indented; and then strip their indentation & prompts.
+        # indented; na then strip their indentation & prompts.
         source_lines = m.group('source').split('\n')
         self._check_prompt_blank(source_lines, indent, name, lineno)
         self._check_prefix(source_lines[1:], ' '*indent + '.', name, lineno)
-        source = '\n'.join([sl[indent+4:] for sl in source_lines])
+        source = '\n'.join([sl[indent+4:] kila sl kwenye source_lines])
 
-        # Divide want into lines; check that it's properly indented; na
+        # Divide want into lines; check that it's properly indented; and
         # then strip the indentation.  Spaces before the last newline should
         # be preserved, so plain rstrip() isn't good enough.
         want = m.group('want')
         want_lines = want.split('\n')
-        if len(want_lines) > 1 and re.match(r' *$', want_lines[-1]):
+        ikiwa len(want_lines) > 1 na re.match(r' *$', want_lines[-1]):
             toa want_lines[-1]  # forget final newline & spaces after it
         self._check_prefix(want_lines, ' '*indent, name,
                            lineno + len(source_lines))
-        want = '\n'.join([wl[indent:] for wl in want_lines])
+        want = '\n'.join([wl[indent:] kila wl kwenye want_lines])
 
         # If `want` contains a traceback message, then extract it.
         m = self._EXCEPTION_RE.match(want)
-        if m:
+        ikiwa m:
             exc_msg = m.group('msg')
         isipokua:
-            exc_msg = None
+            exc_msg = Tupu
 
         # Extract options kutoka the source.
         options = self._find_options(source, name, lineno)
 
-        return source, options, want, exc_msg
+        rudisha source, options, want, exc_msg
 
-    # This regular expression looks for option directives in the
+    # This regular expression looks kila option directives kwenye the
     # source code of an example.  Option directives are comments
-    # starting with "doctest:".  Warning: this may give false
-    # positives for string-literals that contain the string
+    # starting ukijumuisha "doctest:".  Warning: this may give false
+    # positives kila string-literals that contain the string
     # "#doctest:".  Eliminating these false positives would require
     # actually parsing the string; but we limit them by ignoring any
-    # line containing "#doctest:" that is *followed* by a quote mark.
+    # line containing "#doctest:" that ni *followed* by a quote mark.
     _OPTION_DIRECTIVE_RE = re.compile(r'#\s*doctest:\s*([^\n\'"]*)$',
                                       re.MULTILINE)
 
-    def _find_options(self, source, name, lineno):
+    eleza _find_options(self, source, name, lineno):
         """
-        Return a dictionary containing option overrides extracted kutoka
-        option directives in the given source string.
+        Return a dictionary containing option overrides extracted from
+        option directives kwenye the given source string.
 
-        `name` is the string's name, and `lineno` is the line number
-        where the example starts; both are used for error messages.
+        `name` ni the string's name, na `lineno` ni the line number
+        where the example starts; both are used kila error messages.
         """
         options = {}
-        # (note: with the current regexp, this will match at most once:)
-        for m in self._OPTION_DIRECTIVE_RE.finditer(source):
+        # (note: ukijumuisha the current regexp, this will match at most once:)
+        kila m kwenye self._OPTION_DIRECTIVE_RE.finditer(source):
             option_strings = m.group(1).replace(',', ' ').split()
-            for option in option_strings:
-                if (option[0] haiko kwenye '+-' ama
-                    option[1:] haiko kwenye OPTIONFLAGS_BY_NAME):
-                    ashiria ValueError('line %r of the doctest for %s '
+            kila option kwenye option_strings:
+                ikiwa (option[0] sio kwenye '+-' or
+                    option[1:] sio kwenye OPTIONFLAGS_BY_NAME):
+                     ashiria ValueError('line %r of the doctest kila %s '
                                      'has an invalid option: %r' %
                                      (lineno+1, name, option))
                 flag = OPTIONFLAGS_BY_NAME[option[1:]]
                 options[flag] = (option[0] == '+')
-        if options and self._IS_BLANK_OR_COMMENT(source):
-            ashiria ValueError('line %r of the doctest for %s has an option '
-                             'directive on a line with no example: %r' %
+        ikiwa options na self._IS_BLANK_OR_COMMENT(source):
+             ashiria ValueError('line %r of the doctest kila %s has an option '
+                             'directive on a line ukijumuisha no example: %r' %
                              (lineno, name, source))
-        return options
+        rudisha options
 
     # This regular expression finds the indentation of every non-blank
-    # line in a string.
+    # line kwenye a string.
     _INDENT_RE = re.compile(r'^([ ]*)(?=\S)', re.MULTILINE)
 
-    def _min_indent(self, s):
-        "Return the minimum indentation of any non-blank line in `s`"
-        indents = [len(indent) for indent in self._INDENT_RE.findall(s)]
-        if len(indents) > 0:
-            return min(indents)
+    eleza _min_indent(self, s):
+        "Return the minimum indentation of any non-blank line kwenye `s`"
+        indents = [len(indent) kila indent kwenye self._INDENT_RE.findall(s)]
+        ikiwa len(indents) > 0:
+            rudisha min(indents)
         isipokua:
-            return 0
+            rudisha 0
 
-    def _check_prompt_blank(self, lines, indent, name, lineno):
+    eleza _check_prompt_blank(self, lines, indent, name, lineno):
         """
-        Given the lines of a source string (including prompts na
+        Given the lines of a source string (including prompts and
         leading indentation), check to make sure that every prompt is
         followed by a space character.  If any line ni sio followed by
-        a space character, then ashiria ValueError.
+        a space character, then  ashiria ValueError.
         """
-        for i, line in enumerate(lines):
-            if len(line) >= indent+4 and line[indent+3] != ' ':
-                ashiria ValueError('line %r of the docstring for %s '
+        kila i, line kwenye enumerate(lines):
+            ikiwa len(line) >= indent+4 na line[indent+3] != ' ':
+                 ashiria ValueError('line %r of the docstring kila %s '
                                  'lacks blank after %s: %r' %
                                  (lineno+i+1, name,
                                   line[indent:indent+3], line))
 
-    def _check_prefix(self, lines, prefix, name, lineno):
+    eleza _check_prefix(self, lines, prefix, name, lineno):
         """
-        Check that every line in the given list starts with the given
-        prefix; if any line does not, then ashiria a ValueError.
+        Check that every line kwenye the given list starts ukijumuisha the given
+        prefix; ikiwa any line does not, then  ashiria a ValueError.
         """
-        for i, line in enumerate(lines):
-            if line and sio line.startswith(prefix):
-                ashiria ValueError('line %r of the docstring for %s has '
+        kila i, line kwenye enumerate(lines):
+            ikiwa line na sio line.startswith(prefix):
+                 ashiria ValueError('line %r of the docstring kila %s has '
                                  'inconsistent leading whitespace: %r' %
                                  (lineno+i+1, name, line))
 
@@ -807,46 +807,46 @@ kundi DocTestParser:
 kundi DocTestFinder:
     """
     A kundi used to extract the DocTests that are relevant to a given
-    object, kutoka its docstring and the docstrings of its contained
+    object, kutoka its docstring na the docstrings of its contained
     objects.  Doctests can currently be extracted kutoka the following
     object types: modules, functions, classes, methods, staticmethods,
-    classmethods, and properties.
+    classmethods, na properties.
     """
 
-    def __init__(self, verbose=False, parser=DocTestParser(),
-                 recurse=True, exclude_empty=True):
+    eleza __init__(self, verbose=Uongo, parser=DocTestParser(),
+                 recurse=Kweli, exclude_empty=Kweli):
         """
         Create a new doctest finder.
 
-        The optional argument `parser` specifies a kundi ama
+        The optional argument `parser` specifies a kundi or
         function that should be used to create new DocTest objects (or
         objects that implement the same interface as DocTest).  The
-        signature for this factory function should match the signature
+        signature kila this factory function should match the signature
         of the DocTest constructor.
 
-        If the optional argument `recurse` is false, then `find` will
-        only examine the given object, and sio any contained objects.
+        If the optional argument `recurse` ni false, then `find` will
+        only examine the given object, na sio any contained objects.
 
-        If the optional argument `exclude_empty` is false, then `find`
-        will include tests for objects with empty docstrings.
+        If the optional argument `exclude_empty` ni false, then `find`
+        will include tests kila objects ukijumuisha empty docstrings.
         """
         self._parser = parser
         self._verbose = verbose
         self._recurse = recurse
         self._exclude_empty = exclude_empty
 
-    def find(self, obj, name=None, module=None, globs=None, extraglobs=None):
+    eleza find(self, obj, name=Tupu, module=Tupu, globs=Tupu, extraglobs=Tupu):
         """
         Return a list of the DocTests that are defined by the given
-        object's docstring, or by any of its contained objects'
+        object's docstring, ama by any of its contained objects'
         docstrings.
 
-        The optional parameter `module` is the module that contains
-        the given object.  If the module ni sio specified or is None, then
+        The optional parameter `module` ni the module that contains
+        the given object.  If the module ni sio specified ama ni Tupu, then
         the test finder will attempt to automatically determine the
-        correct module.  The object's module is used:
+        correct module.  The object's module ni used:
 
-            - As a default namespace, if `globs` ni sio specified.
+            - As a default namespace, ikiwa `globs` ni sio specified.
             - To prevent the DocTestFinder kutoka extracting DocTests
               kutoka objects that are imported kutoka other modules.
             - To find the name of the file containing the object.
@@ -855,263 +855,263 @@ kundi DocTestFinder:
 
         Contained objects whose module does sio match `module` are ignored.
 
-        If `module` is False, no attempt to find the module will be made.
-        This is obscure, of use mostly in tests:  if `module` is False, ama
-        is None but cannot be found automatically, then all objects are
+        If `module` ni Uongo, no attempt to find the module will be made.
+        This ni obscure, of use mostly kwenye tests:  ikiwa `module` ni Uongo, or
+        ni Tupu but cannot be found automatically, then all objects are
         considered to belong to the (non-existent) module, so all contained
-        objects will (recursively) be searched for doctests.
+        objects will (recursively) be searched kila doctests.
 
-        The globals for each DocTest is formed by combining `globs`
-        and `extraglobs` (bindings in `extraglobs` override bindings
-        in `globs`).  A new copy of the globals dictionary is created
-        for each DocTest.  If `globs` ni sio specified, then it
-        defaults to the module's `__dict__`, if specified, or {}
+        The globals kila each DocTest ni formed by combining `globs`
+        na `extraglobs` (bindings kwenye `extraglobs` override bindings
+        kwenye `globs`).  A new copy of the globals dictionary ni created
+        kila each DocTest.  If `globs` ni sio specified, then it
+        defaults to the module's `__dict__`, ikiwa specified, ama {}
         otherwise.  If `extraglobs` ni sio specified, then it defaults
         to {}.
 
         """
         # If name was sio specified, then extract it kutoka the object.
-        if name is None:
-            name = getattr(obj, '__name__', None)
-            if name is None:
-                ashiria ValueError("DocTestFinder.find: name must be given "
+        ikiwa name ni Tupu:
+            name = getattr(obj, '__name__', Tupu)
+            ikiwa name ni Tupu:
+                 ashiria ValueError("DocTestFinder.find: name must be given "
                         "when obj.__name__ doesn't exist: %r" %
                                  (type(obj),))
 
-        # Find the module that contains the given object (if obj is
-        # a module, then module=obj.).  Note: this may fail, in which
-        # case module will be None.
-        if module is False:
-            module = None
-        lasivyo module is None:
+        # Find the module that contains the given object (ikiwa obj is
+        # a module, then module=obj.).  Note: this may fail, kwenye which
+        # case module will be Tupu.
+        ikiwa module ni Uongo:
+            module = Tupu
+        elikiwa module ni Tupu:
             module = inspect.getmodule(obj)
 
-        # Read the module's source code.  This is used by
-        # DocTestFinder._find_lineno to find the line number for a
+        # Read the module's source code.  This ni used by
+        # DocTestFinder._find_lineno to find the line number kila a
         # given object's docstring.
         jaribu:
             file = inspect.getsourcefile(obj)
-        tatizo TypeError:
-            source_lines = None
+        except TypeError:
+            source_lines = Tupu
         isipokua:
-            if sio file:
-                # Check to see if it's one of our special internal "files"
+            ikiwa sio file:
+                # Check to see ikiwa it's one of our special internal "files"
                 # (see __patched_linecache_getlines).
                 file = inspect.getfile(obj)
-                if sio file[0]+file[-2:] == '<]>': file = None
-            if file is None:
-                source_lines = None
+                ikiwa sio file[0]+file[-2:] == '<]>': file = Tupu
+            ikiwa file ni Tupu:
+                source_lines = Tupu
             isipokua:
-                if module ni sio None:
-                    # Supply the module globals in case the module was
-                    # originally loaded via a PEP 302 loader na
+                ikiwa module ni sio Tupu:
+                    # Supply the module globals kwenye case the module was
+                    # originally loaded via a PEP 302 loader and
                     # file ni sio a valid filesystem path
                     source_lines = linecache.getlines(file, module.__dict__)
                 isipokua:
                     # No access to a loader, so assume it's a normal
                     # filesystem path
                     source_lines = linecache.getlines(file)
-                if sio source_lines:
-                    source_lines = None
+                ikiwa sio source_lines:
+                    source_lines = Tupu
 
-        # Initialize globals, and merge in extraglobs.
-        if globs is None:
-            if module is None:
+        # Initialize globals, na merge kwenye extraglobs.
+        ikiwa globs ni Tupu:
+            ikiwa module ni Tupu:
                 globs = {}
             isipokua:
                 globs = module.__dict__.copy()
         isipokua:
             globs = globs.copy()
-        if extraglobs ni sio None:
+        ikiwa extraglobs ni sio Tupu:
             globs.update(extraglobs)
-        if '__name__' haiko kwenye globs:
+        ikiwa '__name__' sio kwenye globs:
             globs['__name__'] = '__main__'  # provide a default module name
 
         # Recursively explore `obj`, extracting DocTests.
         tests = []
         self._find(tests, obj, name, module, source_lines, globs, {})
-        # Sort the tests by alpha order of names, for consistency in
-        # verbose-mode output.  This was a feature of doctest in Pythons
-        # <= 2.3 that got lost by accident in 2.4.  It was repaired in
-        # 2.4.4 and 2.5.
+        # Sort the tests by alpha order of names, kila consistency in
+        # verbose-mode output.  This was a feature of doctest kwenye Pythons
+        # <= 2.3 that got lost by accident kwenye 2.4.  It was repaired in
+        # 2.4.4 na 2.5.
         tests.sort()
-        return tests
+        rudisha tests
 
-    def _from_module(self, module, object):
+    eleza _from_module(self, module, object):
         """
-        Return true if the given object is defined in the given
+        Return true ikiwa the given object ni defined kwenye the given
         module.
         """
-        if module is None:
-            return True
-        lasivyo inspect.getmodule(object) ni sio None:
-            return module is inspect.getmodule(object)
-        lasivyo inspect.isfunction(object):
-            return module.__dict__ is object.__globals__
-        lasivyo inspect.ismethoddescriptor(object):
-            if hasattr(object, '__objclass__'):
+        ikiwa module ni Tupu:
+            rudisha Kweli
+        elikiwa inspect.getmodule(object) ni sio Tupu:
+            rudisha module ni inspect.getmodule(object)
+        elikiwa inspect.isfunction(object):
+            rudisha module.__dict__ ni object.__globals__
+        elikiwa inspect.ismethoddescriptor(object):
+            ikiwa hasattr(object, '__objclass__'):
                 obj_mod = object.__objclass__.__module__
-            lasivyo hasattr(object, '__module__'):
+            elikiwa hasattr(object, '__module__'):
                 obj_mod = object.__module__
             isipokua:
-                return True # [XX] no easy way to tell otherwise
-            return module.__name__ == obj_mod
-        lasivyo inspect.isclass(object):
-            return module.__name__ == object.__module__
-        lasivyo hasattr(object, '__module__'):
-            return module.__name__ == object.__module__
-        lasivyo isinstance(object, property):
-            return True # [XX] no way sio be sure.
+                rudisha Kweli # [XX] no easy way to tell otherwise
+            rudisha module.__name__ == obj_mod
+        elikiwa inspect.isclass(object):
+            rudisha module.__name__ == object.__module__
+        elikiwa hasattr(object, '__module__'):
+            rudisha module.__name__ == object.__module__
+        elikiwa isinstance(object, property):
+            rudisha Kweli # [XX] no way sio be sure.
         isipokua:
-            ashiria ValueError("object must be a kundi or function")
+             ashiria ValueError("object must be a kundi ama function")
 
-    def _find(self, tests, obj, name, module, source_lines, globs, seen):
+    eleza _find(self, tests, obj, name, module, source_lines, globs, seen):
         """
-        Find tests for the given object and any contained objects, na
+        Find tests kila the given object na any contained objects, and
         add them to `tests`.
         """
-        if self._verbose:
-            print('Finding tests in %s' % name)
+        ikiwa self._verbose:
+            andika('Finding tests kwenye %s' % name)
 
         # If we've already processed this object, then ignore it.
-        if id(obj) in seen:
+        ikiwa id(obj) kwenye seen:
             return
         seen[id(obj)] = 1
 
-        # Find a test for this object, and add it to the list of tests.
+        # Find a test kila this object, na add it to the list of tests.
         test = self._get_test(obj, name, module, globs, source_lines)
-        if test ni sio None:
+        ikiwa test ni sio Tupu:
             tests.append(test)
 
-        # Look for tests in a module's contained objects.
-        if inspect.ismodule(obj) and self._recurse:
-            for valname, val in obj.__dict__.items():
+        # Look kila tests kwenye a module's contained objects.
+        ikiwa inspect.ismodule(obj) na self._recurse:
+            kila valname, val kwenye obj.__dict__.items():
                 valname = '%s.%s' % (name, valname)
                 # Recurse to functions & classes.
-                if ((inspect.isroutine(inspect.unwrap(val))
-                     or inspect.isclass(val)) na
+                ikiwa ((inspect.isroutine(inspect.unwrap(val))
+                     ama inspect.isclass(val)) and
                     self._from_module(module, val)):
                     self._find(tests, val, valname, module, source_lines,
                                globs, seen)
 
-        # Look for tests in a module's __test__ dictionary.
-        if inspect.ismodule(obj) and self._recurse:
-            for valname, val in getattr(obj, '__test__', {}).items():
-                if sio isinstance(valname, str):
-                    ashiria ValueError("DocTestFinder.find: __test__ keys "
+        # Look kila tests kwenye a module's __test__ dictionary.
+        ikiwa inspect.ismodule(obj) na self._recurse:
+            kila valname, val kwenye getattr(obj, '__test__', {}).items():
+                ikiwa sio isinstance(valname, str):
+                     ashiria ValueError("DocTestFinder.find: __test__ keys "
                                      "must be strings: %r" %
                                      (type(valname),))
-                if sio (inspect.isroutine(val) ama inspect.isclass(val) ama
+                ikiwa sio (inspect.isroutine(val) ama inspect.isclass(val) or
                         inspect.ismodule(val) ama isinstance(val, str)):
-                    ashiria ValueError("DocTestFinder.find: __test__ values "
+                     ashiria ValueError("DocTestFinder.find: __test__ values "
                                      "must be strings, functions, methods, "
-                                     "classes, or modules: %r" %
+                                     "classes, ama modules: %r" %
                                      (type(val),))
                 valname = '%s.__test__.%s' % (name, valname)
                 self._find(tests, val, valname, module, source_lines,
                            globs, seen)
 
-        # Look for tests in a class's contained objects.
-        if inspect.isclass(obj) and self._recurse:
-            for valname, val in obj.__dict__.items():
-                # Special handling for staticmethod/classmethod.
-                if isinstance(val, staticmethod):
+        # Look kila tests kwenye a class's contained objects.
+        ikiwa inspect.isclass(obj) na self._recurse:
+            kila valname, val kwenye obj.__dict__.items():
+                # Special handling kila staticmethod/classmethod.
+                ikiwa isinstance(val, staticmethod):
                     val = getattr(obj, valname)
-                if isinstance(val, classmethod):
+                ikiwa isinstance(val, classmethod):
                     val = getattr(obj, valname).__func__
 
-                # Recurse to methods, properties, and nested classes.
-                if ((inspect.isroutine(val) ama inspect.isclass(val) ama
-                      isinstance(val, property)) na
+                # Recurse to methods, properties, na nested classes.
+                ikiwa ((inspect.isroutine(val) ama inspect.isclass(val) or
+                      isinstance(val, property)) and
                       self._from_module(module, val)):
                     valname = '%s.%s' % (name, valname)
                     self._find(tests, val, valname, module, source_lines,
                                globs, seen)
 
-    def _get_test(self, obj, name, module, globs, source_lines):
+    eleza _get_test(self, obj, name, module, globs, source_lines):
         """
-        Return a DocTest for the given object, if it defines a docstring;
-        otherwise, return None.
+        Return a DocTest kila the given object, ikiwa it defines a docstring;
+        otherwise, rudisha Tupu.
         """
         # Extract the object's docstring.  If it doesn't have one,
-        # then return None (no test for this object).
-        if isinstance(obj, str):
+        # then rudisha Tupu (no test kila this object).
+        ikiwa isinstance(obj, str):
             docstring = obj
         isipokua:
             jaribu:
-                if obj.__doc__ is None:
+                ikiwa obj.__doc__ ni Tupu:
                     docstring = ''
                 isipokua:
                     docstring = obj.__doc__
-                    if sio isinstance(docstring, str):
+                    ikiwa sio isinstance(docstring, str):
                         docstring = str(docstring)
-            tatizo (TypeError, AttributeError):
+            except (TypeError, AttributeError):
                 docstring = ''
 
-        # Find the docstring's location in the file.
+        # Find the docstring's location kwenye the file.
         lineno = self._find_lineno(obj, source_lines)
 
-        # Don't bother if the docstring is empty.
-        if self._exclude_empty and sio docstring:
-            return None
+        # Don't bother ikiwa the docstring ni empty.
+        ikiwa self._exclude_empty na sio docstring:
+            rudisha Tupu
 
-        # Return a DocTest for this object.
-        if module is None:
-            filename = None
+        # Return a DocTest kila this object.
+        ikiwa module ni Tupu:
+            filename = Tupu
         isipokua:
             filename = getattr(module, '__file__', module.__name__)
-            if filename[-4:] == ".pyc":
+            ikiwa filename[-4:] == ".pyc":
                 filename = filename[:-1]
-        return self._parser.get_doctest(docstring, globs, name,
+        rudisha self._parser.get_doctest(docstring, globs, name,
                                         filename, lineno)
 
-    def _find_lineno(self, obj, source_lines):
+    eleza _find_lineno(self, obj, source_lines):
         """
         Return a line number of the given object's docstring.  Note:
         this method assumes that the object has a docstring.
         """
-        lineno = None
+        lineno = Tupu
 
-        # Find the line number for modules.
-        if inspect.ismodule(obj):
+        # Find the line number kila modules.
+        ikiwa inspect.ismodule(obj):
             lineno = 0
 
-        # Find the line number for classes.
-        # Note: this could be fooled if a kundi is defined multiple
-        # times in a single file.
-        if inspect.isclass(obj):
-            if source_lines is None:
-                return None
+        # Find the line number kila classes.
+        # Note: this could be fooled ikiwa a kundi ni defined multiple
+        # times kwenye a single file.
+        ikiwa inspect.isclass(obj):
+            ikiwa source_lines ni Tupu:
+                rudisha Tupu
             pat = re.compile(r'^\s*class\s*%s\b' %
                              getattr(obj, '__name__', '-'))
-            for i, line in enumerate(source_lines):
-                if pat.match(line):
+            kila i, line kwenye enumerate(source_lines):
+                ikiwa pat.match(line):
                     lineno = i
                     koma
 
-        # Find the line number for functions & methods.
-        if inspect.ismethod(obj): obj = obj.__func__
-        if inspect.isfunction(obj): obj = obj.__code__
-        if inspect.istraceback(obj): obj = obj.tb_frame
-        if inspect.isframe(obj): obj = obj.f_code
-        if inspect.iscode(obj):
-            lineno = getattr(obj, 'co_firstlineno', None)-1
+        # Find the line number kila functions & methods.
+        ikiwa inspect.ismethod(obj): obj = obj.__func__
+        ikiwa inspect.isfunction(obj): obj = obj.__code__
+        ikiwa inspect.istraceback(obj): obj = obj.tb_frame
+        ikiwa inspect.isframe(obj): obj = obj.f_code
+        ikiwa inspect.iscode(obj):
+            lineno = getattr(obj, 'co_firstlineno', Tupu)-1
 
         # Find the line number where the docstring starts.  Assume
-        # that it's the first line that begins with a quote mark.
+        # that it's the first line that begins ukijumuisha a quote mark.
         # Note: this could be fooled by a multiline function
-        # signature, where a continuation line begins with a quote
+        # signature, where a continuation line begins ukijumuisha a quote
         # mark.
-        if lineno ni sio None:
-            if source_lines is None:
-                return lineno+1
+        ikiwa lineno ni sio Tupu:
+            ikiwa source_lines ni Tupu:
+                rudisha lineno+1
             pat = re.compile(r'(^|.*:)\s*\w*("|\')')
-            for lineno in range(lineno, len(source_lines)):
-                if pat.match(source_lines[lineno]):
-                    return lineno
+            kila lineno kwenye range(lineno, len(source_lines)):
+                ikiwa pat.match(source_lines[lineno]):
+                    rudisha lineno
 
         # We couldn't find the line number.
-        return None
+        rudisha Tupu
 
 ######################################################################
 ## 5. DocTest Runner
@@ -1119,84 +1119,84 @@ kundi DocTestFinder:
 
 kundi DocTestRunner:
     """
-    A kundi used to run DocTest test cases, and accumulate statistics.
-    The `run` method is used to process a single DocTest case.  It
-    returns a tuple `(f, t)`, where `t` is the number of test cases
-    tried, and `f` is the number of test cases that failed.
+    A kundi used to run DocTest test cases, na accumulate statistics.
+    The `run` method ni used to process a single DocTest case.  It
+    returns a tuple `(f, t)`, where `t` ni the number of test cases
+    tried, na `f` ni the number of test cases that failed.
 
         >>> tests = DocTestFinder().find(_TestClass)
-        >>> runner = DocTestRunner(verbose=False)
+        >>> runner = DocTestRunner(verbose=Uongo)
         >>> tests.sort(key = lambda test: test.name)
-        >>> for test in tests:
-        ...     print(test.name, '->', runner.run(test))
+        >>> kila test kwenye tests:
+        ...     andika(test.name, '->', runner.run(test))
         _TestClass -> TestResults(failed=0, attempted=2)
         _TestClass.__init__ -> TestResults(failed=0, attempted=2)
         _TestClass.get -> TestResults(failed=0, attempted=2)
         _TestClass.square -> TestResults(failed=0, attempted=1)
 
     The `summarize` method prints a summary of all the test cases that
-    have been run by the runner, and returns an aggregated `(f, t)`
+    have been run by the runner, na returns an aggregated `(f, t)`
     tuple:
 
         >>> runner.summarize(verbose=1)
         4 items passed all tests:
-           2 tests in _TestClass
-           2 tests in _TestClass.__init__
-           2 tests in _TestClass.get
-           1 tests in _TestClass.square
-        7 tests in 4 items.
-        7 passed and 0 failed.
+           2 tests kwenye _TestClass
+           2 tests kwenye _TestClass.__init__
+           2 tests kwenye _TestClass.get
+           1 tests kwenye _TestClass.square
+        7 tests kwenye 4 items.
+        7 passed na 0 failed.
         Test passed.
         TestResults(failed=0, attempted=7)
 
-    The aggregated number of tried examples and failed examples is
-    also available via the `tries` and `failures` attributes:
+    The aggregated number of tried examples na failed examples is
+    also available via the `tries` na `failures` attributes:
 
         >>> runner.tries
         7
         >>> runner.failures
         0
 
-    The comparison between expected outputs and actual outputs is done
-    by an `OutputChecker`.  This comparison may be customized with a
-    number of option flags; see the documentation for `testmod` for
+    The comparison between expected outputs na actual outputs ni done
+    by an `OutputChecker`.  This comparison may be customized ukijumuisha a
+    number of option flags; see the documentation kila `testmod` for
     more information.  If the option flags are insufficient, then the
     comparison may also be customized by passing a subkundi of
     `OutputChecker` to the constructor.
 
-    The test runner's display output can be controlled in two ways.
+    The test runner's display output can be controlled kwenye two ways.
     First, an output function (`out) can be passed to
-    `TestRunner.run`; this function will be called with strings that
+    `TestRunner.run`; this function will be called ukijumuisha strings that
     should be displayed.  It defaults to `sys.stdout.write`.  If
     capturing the output ni sio sufficient, then the display output
-    can be also customized by subclassing DocTestRunner, na
+    can be also customized by subclassing DocTestRunner, and
     overriding the methods `report_start`, `report_success`,
-    `report_unexpected_exception`, and `report_failure`.
+    `report_unexpected_exception`, na `report_failure`.
     """
-    # This divider string is used to separate failure messages, and to
+    # This divider string ni used to separate failure messages, na to
     # separate sections of the summary.
     DIVIDER = "*" * 70
 
-    def __init__(self, checker=None, verbose=None, optionflags=0):
+    eleza __init__(self, checker=Tupu, verbose=Tupu, optionflags=0):
         """
         Create a new test runner.
 
-        Optional keyword arg `checker` is the `OutputChecker` that
-        should be used to compare the expected outputs and actual
+        Optional keyword arg `checker` ni the `OutputChecker` that
+        should be used to compare the expected outputs na actual
         outputs of doctest examples.
 
-        Optional keyword arg 'verbose' prints lots of stuff if true,
-        only failures if false; by default, it's true iff '-v' is in
+        Optional keyword arg 'verbose' prints lots of stuff ikiwa true,
+        only failures ikiwa false; by default, it's true iff '-v' ni in
         sys.argv.
 
         Optional argument `optionflags` can be used to control how the
-        test runner compares expected output to actual output, and how
-        it displays failures.  See the documentation for `testmod` for
+        test runner compares expected output to actual output, na how
+        it displays failures.  See the documentation kila `testmod` for
         more information.
         """
-        self._checker = checker or OutputChecker()
-        if verbose is None:
-            verbose = '-v' in sys.argv
+        self._checker = checker ama OutputChecker()
+        ikiwa verbose ni Tupu:
+            verbose = '-v' kwenye sys.argv
         self._verbose = verbose
         self.optionflags = optionflags
         self.original_optionflags = optionflags
@@ -1206,79 +1206,79 @@ kundi DocTestRunner:
         self.failures = 0
         self._name2ft = {}
 
-        # Create a fake output target for capturing doctest output.
+        # Create a fake output target kila capturing doctest output.
         self._fakeout = _SpoofOut()
 
     #/////////////////////////////////////////////////////////////////
     # Reporting methods
     #/////////////////////////////////////////////////////////////////
 
-    def report_start(self, out, test, example):
+    eleza report_start(self, out, test, example):
         """
-        Report that the test runner is about to process the given
-        example.  (Only displays a message if verbose=True)
+        Report that the test runner ni about to process the given
+        example.  (Only displays a message ikiwa verbose=Kweli)
         """
-        if self._verbose:
-            if example.want:
+        ikiwa self._verbose:
+            ikiwa example.want:
                 out('Trying:\n' + _indent(example.source) +
                     'Expecting:\n' + _indent(example.want))
             isipokua:
                 out('Trying:\n' + _indent(example.source) +
                     'Expecting nothing\n')
 
-    def report_success(self, out, test, example, got):
+    eleza report_success(self, out, test, example, got):
         """
         Report that the given example ran successfully.  (Only
-        displays a message if verbose=True)
+        displays a message ikiwa verbose=Kweli)
         """
-        if self._verbose:
+        ikiwa self._verbose:
             out("ok\n")
 
-    def report_failure(self, out, test, example, got):
+    eleza report_failure(self, out, test, example, got):
         """
         Report that the given example failed.
         """
         out(self._failure_header(test, example) +
             self._checker.output_difference(example, got, self.optionflags))
 
-    def report_unexpected_exception(self, out, test, example, exc_info):
+    eleza report_unexpected_exception(self, out, test, example, exc_info):
         """
         Report that the given example raised an unexpected exception.
         """
         out(self._failure_header(test, example) +
             'Exception raised:\n' + _indent(_exception_traceback(exc_info)))
 
-    def _failure_header(self, test, example):
+    eleza _failure_header(self, test, example):
         out = [self.DIVIDER]
-        if test.filename:
-            if test.lineno ni sio None and example.lineno ni sio None:
+        ikiwa test.filename:
+            ikiwa test.lineno ni sio Tupu na example.lineno ni sio Tupu:
                 lineno = test.lineno + example.lineno + 1
             isipokua:
                 lineno = '?'
-            out.append('File "%s", line %s, in %s' %
+            out.append('File "%s", line %s, kwenye %s' %
                        (test.filename, lineno, test.name))
         isipokua:
-            out.append('Line %s, in %s' % (example.lineno+1, test.name))
+            out.append('Line %s, kwenye %s' % (example.lineno+1, test.name))
         out.append('Failed example:')
         source = example.source
         out.append(_indent(source))
-        return '\n'.join(out)
+        rudisha '\n'.join(out)
 
     #/////////////////////////////////////////////////////////////////
     # DocTest Running
     #/////////////////////////////////////////////////////////////////
 
-    def __run(self, test, compileflags, out):
+    eleza __run(self, test, compileflags, out):
         """
-        Run the examples in `test`.  Write the outcome of each example
-        with one of the `DocTestRunner.report_*` methods, using the
-        writer function `out`.  `compileflags` is the set of compiler
+        Run the examples kwenye `test`.  Write the outcome of each example
+        ukijumuisha one of the `DocTestRunner.report_*` methods, using the
+        writer function `out`.  `compileflags` ni the set of compiler
         flags that should be used to execute examples.  Return a tuple
-        `(f, t)`, where `t` is the number of examples tried, and `f`
-        is the number of examples that failed.  The examples are run
-        in the namespace `test.globs`.
+        `(f, t)`, where `t` ni the number of examples tried, na `f`
+        ni the number of examples that failed.  The examples are run
+        kwenye the namespace `test.globs`.
         """
-        # Keep track of the number of failures and tries.
+        # Keep track of the number of failures na tries.
         failures = tries = 0
 
         # Save the option flags (since option directives can be used
@@ -1290,46 +1290,46 @@ kundi DocTestRunner:
         check = self._checker.check_output
 
         # Process each example.
-        for examplenum, example in enumerate(test.examples):
+        kila examplenum, example kwenye enumerate(test.examples):
 
-            # If REPORT_ONLY_FIRST_FAILURE is set, then suppress
+            # If REPORT_ONLY_FIRST_FAILURE ni set, then suppress
             # reporting after the first failure.
-            quiet = (self.optionflags & REPORT_ONLY_FIRST_FAILURE na
+            quiet = (self.optionflags & REPORT_ONLY_FIRST_FAILURE and
                      failures > 0)
 
-            # Merge in the example's options.
+            # Merge kwenye the example's options.
             self.optionflags = original_optionflags
-            if example.options:
-                for (optionflag, val) in example.options.items():
-                    if val:
+            ikiwa example.options:
+                kila (optionflag, val) kwenye example.options.items():
+                    ikiwa val:
                         self.optionflags |= optionflag
                     isipokua:
                         self.optionflags &= ~optionflag
 
-            # If 'SKIP' is set, then skip this example.
-            if self.optionflags & SKIP:
+            # If 'SKIP' ni set, then skip this example.
+            ikiwa self.optionflags & SKIP:
                 endelea
 
             # Record that we started this example.
             tries += 1
-            if sio quiet:
+            ikiwa sio quiet:
                 self.report_start(out, test, example)
 
-            # Use a special filename for compile(), so we can retrieve
+            # Use a special filename kila compile(), so we can retrieve
             # the source code during interactive debugging (see
             # __patched_linecache_getlines).
             filename = '<doctest %s[%d]>' % (test.name, examplenum)
 
-            # Run the example in the given context (globs), and record
+            # Run the example kwenye the given context (globs), na record
             # any exception that gets raised.  (But don't intercept
             # keyboard interrupts.)
             jaribu:
-                # Don't blink!  This is where the user's code gets run.
+                # Don't blink!  This ni where the user's code gets run.
                 exec(compile(example.source, filename, "single",
                              compileflags, 1), test.globs)
                 self.debugger.set_endelea() # ==== Example Finished ====
-                exception = None
-            tatizo KeyboardInterrupt:
+                exception = Tupu
+            except KeyboardInterrupt:
                 raise
             tatizo:
                 exception = sys.exc_info()
@@ -1337,63 +1337,63 @@ kundi DocTestRunner:
 
             got = self._fakeout.getvalue()  # the actual output
             self._fakeout.truncate(0)
-            outcome = FAILURE   # guilty until proved innocent or insane
+            outcome = FAILURE   # guilty until proved innocent ama insane
 
             # If the example executed without raising any exceptions,
             # verify its output.
-            if exception is None:
-                if check(example.want, got, self.optionflags):
+            ikiwa exception ni Tupu:
+                ikiwa check(example.want, got, self.optionflags):
                     outcome = SUCCESS
 
-            # The example raised an exception:  check if it was expected.
+            # The example raised an exception:  check ikiwa it was expected.
             isipokua:
                 exc_msg = traceback.format_exception_only(*exception[:2])[-1]
-                if sio quiet:
+                ikiwa sio quiet:
                     got += _exception_traceback(exception)
 
-                # If `example.exc_msg` is None, then we weren't expecting
+                # If `example.exc_msg` ni Tupu, then we weren't expecting
                 # an exception.
-                if example.exc_msg is None:
+                ikiwa example.exc_msg ni Tupu:
                     outcome = BOOM
 
                 # We expected an exception:  see whether it matches.
-                lasivyo check(example.exc_msg, exc_msg, self.optionflags):
+                elikiwa check(example.exc_msg, exc_msg, self.optionflags):
                     outcome = SUCCESS
 
-                # Another chance if they didn't care about the detail.
-                lasivyo self.optionflags & IGNORE_EXCEPTION_DETAIL:
-                    if check(_strip_exception_details(example.exc_msg),
+                # Another chance ikiwa they didn't care about the detail.
+                elikiwa self.optionflags & IGNORE_EXCEPTION_DETAIL:
+                    ikiwa check(_strip_exception_details(example.exc_msg),
                              _strip_exception_details(exc_msg),
                              self.optionflags):
                         outcome = SUCCESS
 
             # Report the outcome.
-            if outcome is SUCCESS:
-                if sio quiet:
+            ikiwa outcome ni SUCCESS:
+                ikiwa sio quiet:
                     self.report_success(out, test, example, got)
-            lasivyo outcome is FAILURE:
-                if sio quiet:
+            elikiwa outcome ni FAILURE:
+                ikiwa sio quiet:
                     self.report_failure(out, test, example, got)
                 failures += 1
-            lasivyo outcome is BOOM:
-                if sio quiet:
+            elikiwa outcome ni BOOM:
+                ikiwa sio quiet:
                     self.report_unexpected_exception(out, test, example,
                                                      exception)
                 failures += 1
             isipokua:
-                assert False, ("unknown outcome", outcome)
+                assert Uongo, ("unknown outcome", outcome)
 
-            if failures and self.optionflags & FAIL_FAST:
+            ikiwa failures na self.optionflags & FAIL_FAST:
                 koma
 
         # Restore the option flags (in case they were modified)
         self.optionflags = original_optionflags
 
-        # Record and return the number of failures and tries.
+        # Record na rudisha the number of failures na tries.
         self.__record_outcome(test, failures, tries)
-        return TestResults(failures, tries)
+        rudisha TestResults(failures, tries)
 
-    def __record_outcome(self, test, f, t):
+    eleza __record_outcome(self, test, f, t):
         """
         Record the fact that the given DocTest (`test`) generated `f`
         failures out of `t` tried examples.
@@ -1406,47 +1406,47 @@ kundi DocTestRunner:
     __LINECACHE_FILENAME_RE = re.compile(r'<doctest '
                                          r'(?P<name>.+)'
                                          r'\[(?P<examplenum>\d+)\]>$')
-    def __patched_linecache_getlines(self, filename, module_globals=None):
+    eleza __patched_linecache_getlines(self, filename, module_globals=Tupu):
         m = self.__LINECACHE_FILENAME_RE.match(filename)
-        if m and m.group('name') == self.test.name:
+        ikiwa m na m.group('name') == self.test.name:
             example = self.test.examples[int(m.group('examplenum'))]
-            return example.source.splitlines(keepends=True)
+            rudisha example.source.splitlines(keepends=Kweli)
         isipokua:
-            return self.save_linecache_getlines(filename, module_globals)
+            rudisha self.save_linecache_getlines(filename, module_globals)
 
-    def run(self, test, compileflags=None, out=None, clear_globs=True):
+    eleza run(self, test, compileflags=Tupu, out=Tupu, clear_globs=Kweli):
         """
-        Run the examples in `test`, and display the results using the
+        Run the examples kwenye `test`, na display the results using the
         writer function `out`.
 
-        The examples are run in the namespace `test.globs`.  If
-        `clear_globs` is true (the default), then this namespace will
-        be cleared after the test runs, to help with garbage
+        The examples are run kwenye the namespace `test.globs`.  If
+        `clear_globs` ni true (the default), then this namespace will
+        be cleared after the test runs, to help ukijumuisha garbage
         collection.  If you would like to examine the namespace after
-        the test completes, then use `clear_globs=False`.
+        the test completes, then use `clear_globs=Uongo`.
 
         `compileflags` gives the set of flags that should be used by
         the Python compiler when running the examples.  If not
-        specified, then it will default to the set of future-agiza
+        specified, then it will default to the set of future-import
         flags that apply to `globs`.
 
-        The output of each example is checked using
-        `DocTestRunner.check_output`, and the results are formatted by
+        The output of each example ni checked using
+        `DocTestRunner.check_output`, na the results are formatted by
         the `DocTestRunner.report_*` methods.
         """
         self.test = test
 
-        if compileflags is None:
+        ikiwa compileflags ni Tupu:
             compileflags = _extract_future_flags(test.globs)
 
         save_stdout = sys.stdout
-        if out is None:
+        ikiwa out ni Tupu:
             encoding = save_stdout.encoding
-            if encoding is None or encoding.lower() == 'utf-8':
+            ikiwa encoding ni Tupu ama encoding.lower() == 'utf-8':
                 out = save_stdout.write
             isipokua:
                 # Use backslashreplace error handling on write
-                def out(s):
+                eleza out(s):
                     s = str(s.encode(encoding, 'backslashreplace'), encoding)
                     save_stdout.write(s)
         sys.stdout = self._fakeout
@@ -1454,8 +1454,8 @@ kundi DocTestRunner:
         # Patch pdb.set_trace to restore sys.stdout during interactive
         # debugging (so it's sio still redirected to self._fakeout).
         # Note that the interactive output will go to *our*
-        # save_stdout, even if that's sio the real sys.stdout; this
-        # allows us to write test cases for the set_trace behavior.
+        # save_stdout, even ikiwa that's sio the real sys.stdout; this
+        # allows us to write test cases kila the set_trace behavior.
         save_trace = sys.gettrace()
         save_set_trace = pdb.set_trace
         self.debugger = _OutputRedirectingPdb(save_stdout)
@@ -1472,85 +1472,85 @@ kundi DocTestRunner:
         sys.displayhook = sys.__displayhook__
 
         jaribu:
-            return self.__run(test, compileflags, out)
+            rudisha self.__run(test, compileflags, out)
         mwishowe:
             sys.stdout = save_stdout
             pdb.set_trace = save_set_trace
             sys.settrace(save_trace)
             linecache.getlines = self.save_linecache_getlines
             sys.displayhook = save_displayhook
-            if clear_globs:
+            ikiwa clear_globs:
                 test.globs.clear()
                 agiza builtins
-                builtins._ = None
+                builtins._ = Tupu
 
     #/////////////////////////////////////////////////////////////////
     # Summarization
     #/////////////////////////////////////////////////////////////////
-    def summarize(self, verbose=None):
+    eleza summarize(self, verbose=Tupu):
         """
         Print a summary of all the test cases that have been run by
-        this DocTestRunner, and return a tuple `(f, t)`, where `f` is
-        the total number of failed examples, and `t` is the total
+        this DocTestRunner, na rudisha a tuple `(f, t)`, where `f` is
+        the total number of failed examples, na `t` ni the total
         number of tried examples.
 
         The optional `verbose` argument controls how detailed the
         summary is.  If the verbosity ni sio specified, then the
-        DocTestRunner's verbosity is used.
+        DocTestRunner's verbosity ni used.
         """
-        if verbose is None:
+        ikiwa verbose ni Tupu:
             verbose = self._verbose
         notests = []
         passed = []
         failed = []
         totalt = totalf = 0
-        for x in self._name2ft.items():
+        kila x kwenye self._name2ft.items():
             name, (f, t) = x
             assert f <= t
             totalt += t
             totalf += f
-            if t == 0:
+            ikiwa t == 0:
                 notests.append(name)
-            lasivyo f == 0:
+            elikiwa f == 0:
                 passed.append( (name, t) )
             isipokua:
                 failed.append(x)
-        if verbose:
-            if notests:
-                print(len(notests), "items had no tests:")
+        ikiwa verbose:
+            ikiwa notests:
+                andika(len(notests), "items had no tests:")
                 notests.sort()
-                for thing in notests:
-                    print("   ", thing)
-            if passed:
-                print(len(passed), "items passed all tests:")
+                kila thing kwenye notests:
+                    andika("   ", thing)
+            ikiwa passed:
+                andika(len(passed), "items passed all tests:")
                 passed.sort()
-                for thing, count in passed:
-                    print(" %3d tests in %s" % (count, thing))
-        if failed:
-            print(self.DIVIDER)
-            print(len(failed), "items had failures:")
+                kila thing, count kwenye passed:
+                    andika(" %3d tests kwenye %s" % (count, thing))
+        ikiwa failed:
+            andika(self.DIVIDER)
+            andika(len(failed), "items had failures:")
             failed.sort()
-            for thing, (f, t) in failed:
-                print(" %3d of %3d in %s" % (f, t, thing))
-        if verbose:
-            print(totalt, "tests in", len(self._name2ft), "items.")
-            print(totalt - totalf, "passed and", totalf, "failed.")
-        if totalf:
-            print("***Test Failed***", totalf, "failures.")
-        lasivyo verbose:
-            print("Test passed.")
-        return TestResults(totalf, totalt)
+            kila thing, (f, t) kwenye failed:
+                andika(" %3d of %3d kwenye %s" % (f, t, thing))
+        ikiwa verbose:
+            andika(totalt, "tests in", len(self._name2ft), "items.")
+            andika(totalt - totalf, "passed and", totalf, "failed.")
+        ikiwa totalf:
+            andika("***Test Failed***", totalf, "failures.")
+        elikiwa verbose:
+            andika("Test passed.")
+        rudisha TestResults(totalf, totalt)
 
     #/////////////////////////////////////////////////////////////////
     # Backward compatibility cruft to maintain doctest.master.
     #/////////////////////////////////////////////////////////////////
-    def merge(self, other):
+    eleza merge(self, other):
         d = self._name2ft
-        for name, (f, t) in other._name2ft.items():
-            if name in d:
+        kila name, (f, t) kwenye other._name2ft.items():
+            ikiwa name kwenye d:
                 # Don't print here by default, since doing
                 #     so komas some of the buildbots
-                #print("*** DocTestRunner.merge: '" + name + "' in both" \
+                #andika("*** DocTestRunner.merge: '" + name + "' kwenye both" \
                 #    " testers; summing outcomes.")
                 f2, t2 = d[name]
                 f = f + f2
@@ -1562,149 +1562,149 @@ kundi OutputChecker:
     A kundi used to check the whether the actual output kutoka a doctest
     example matches the expected output.  `OutputChecker` defines two
     methods: `check_output`, which compares a given pair of outputs,
-    and returns true if they match; and `output_difference`, which
+    na returns true ikiwa they match; na `output_difference`, which
     returns a string describing the differences between two outputs.
     """
-    def _toAscii(self, s):
+    eleza _toAscii(self, s):
         """
         Convert string to hex-escaped ASCII string.
         """
-        return str(s.encode('ASCII', 'backslashreplace'), "ASCII")
+        rudisha str(s.encode('ASCII', 'backslashreplace'), "ASCII")
 
-    def check_output(self, want, got, optionflags):
+    eleza check_output(self, want, got, optionflags):
         """
-        Return True iff the actual output kutoka an example (`got`)
+        Return Kweli iff the actual output kutoka an example (`got`)
         matches the expected output (`want`).  These strings are
-        always considered to match if they are identical; but
-        depending on what option flags the test runner is using,
+        always considered to match ikiwa they are identical; but
+        depending on what option flags the test runner ni using,
         several non-exact match types are also possible.  See the
-        documentation for `TestRunner` for more information about
+        documentation kila `TestRunner` kila more information about
         option flags.
         """
 
         # If `want` contains hex-escaped character such as "\u1234",
-        # then `want` is a string of six characters(e.g. [\,u,1,2,3,4]).
+        # then `want` ni a string of six characters(e.g. [\,u,1,2,3,4]).
         # On the other hand, `got` could be another sequence of
-        # characters such as [\u1234], so `want` and `got` should
+        # characters such as [\u1234], so `want` na `got` should
         # be folded to hex-escaped ASCII string to compare.
         got = self._toAscii(got)
         want = self._toAscii(want)
 
-        # Handle the common case first, for efficiency:
-        # if they're string-identical, always return true.
-        if got == want:
-            return True
+        # Handle the common case first, kila efficiency:
+        # ikiwa they're string-identical, always rudisha true.
+        ikiwa got == want:
+            rudisha Kweli
 
-        # The values True and False replaced 1 and 0 as the return
-        # value for boolean comparisons in Python 2.3.
-        if sio (optionflags & DONT_ACCEPT_TRUE_FOR_1):
-            if (got,want) == ("True\n", "1\n"):
-                return True
-            if (got,want) == ("False\n", "0\n"):
-                return True
+        # The values Kweli na Uongo replaced 1 na 0 as the return
+        # value kila boolean comparisons kwenye Python 2.3.
+        ikiwa sio (optionflags & DONT_ACCEPT_TRUE_FOR_1):
+            ikiwa (got,want) == ("Kweli\n", "1\n"):
+                rudisha Kweli
+            ikiwa (got,want) == ("Uongo\n", "0\n"):
+                rudisha Kweli
 
         # <BLANKLINE> can be used as a special sequence to signify a
-        # blank line, unless the DONT_ACCEPT_BLANKLINE flag is used.
-        if sio (optionflags & DONT_ACCEPT_BLANKLINE):
-            # Replace <BLANKLINE> in want with a blank line.
+        # blank line, unless the DONT_ACCEPT_BLANKLINE flag ni used.
+        ikiwa sio (optionflags & DONT_ACCEPT_BLANKLINE):
+            # Replace <BLANKLINE> kwenye want ukijumuisha a blank line.
             want = re.sub(r'(?m)^%s\s*?$' % re.escape(BLANKLINE_MARKER),
                           '', want)
-            # If a line in got contains only spaces, then remove the
+            # If a line kwenye got contains only spaces, then remove the
             # spaces.
             got = re.sub(r'(?m)^[^\S\n]+$', '', got)
-            if got == want:
-                return True
+            ikiwa got == want:
+                rudisha Kweli
 
-        # This flag causes doctest to ignore any differences in the
+        # This flag causes doctest to ignore any differences kwenye the
         # contents of whitespace strings.  Note that this can be used
-        # in conjunction with the ELLIPSIS flag.
-        if optionflags & NORMALIZE_WHITESPACE:
+        # kwenye conjunction ukijumuisha the ELLIPSIS flag.
+        ikiwa optionflags & NORMALIZE_WHITESPACE:
             got = ' '.join(got.split())
             want = ' '.join(want.split())
-            if got == want:
-                return True
+            ikiwa got == want:
+                rudisha Kweli
 
-        # The ELLIPSIS flag says to let the sequence "..." in `want`
-        # match any substring in `got`.
-        if optionflags & ELLIPSIS:
-            if _ellipsis_match(want, got):
-                return True
+        # The ELLIPSIS flag says to let the sequence "..." kwenye `want`
+        # match any substring kwenye `got`.
+        ikiwa optionflags & ELLIPSIS:
+            ikiwa _ellipsis_match(want, got):
+                rudisha Kweli
 
-        # We didn't find any match; return false.
-        return False
+        # We didn't find any match; rudisha false.
+        rudisha Uongo
 
     # Should we do a fancy diff?
-    def _do_a_fancy_diff(self, want, got, optionflags):
-        # Not unless they asked for a fancy diff.
-        if sio optionflags & (REPORT_UDIFF |
+    eleza _do_a_fancy_diff(self, want, got, optionflags):
+        # Not unless they asked kila a fancy diff.
+        ikiwa sio optionflags & (REPORT_UDIFF |
                               REPORT_CDIFF |
                               REPORT_NDIFF):
-            return False
+            rudisha Uongo
 
         # If expected output uses ellipsis, a meaningful fancy diff is
-        # too hard ... or maybe not.  In two real-life failures Tim saw,
-        # a diff was a major help anyway, so this is commented out.
-        # [todo] _ellipsis_match() knows which pieces do and don't match,
-        # and could be the basis for a kick-ass diff in this case.
-        ##if optionflags & ELLIPSIS and ELLIPSIS_MARKER in want:
-        ##    return False
+        # too hard ... ama maybe not.  In two real-life failures Tim saw,
+        # a diff was a major help anyway, so this ni commented out.
+        # [todo] _ellipsis_match() knows which pieces do na don't match,
+        # na could be the basis kila a kick-ass diff kwenye this case.
+        ##ikiwa optionflags & ELLIPSIS na ELLIPSIS_MARKER kwenye want:
+        ##    rudisha Uongo
 
         # ndiff does intraline difference marking, so can be useful even
-        # for 1-line differences.
-        if optionflags & REPORT_NDIFF:
-            return True
+        # kila 1-line differences.
+        ikiwa optionflags & REPORT_NDIFF:
+            rudisha Kweli
 
         # The other diff types need at least a few lines to be helpful.
-        return want.count('\n') > 2 and got.count('\n') > 2
+        rudisha want.count('\n') > 2 na got.count('\n') > 2
 
-    def output_difference(self, example, got, optionflags):
+    eleza output_difference(self, example, got, optionflags):
         """
         Return a string describing the differences between the
-        expected output for a given example (`example`) and the actual
-        output (`got`).  `optionflags` is the set of option flags used
-        to compare `want` and `got`.
+        expected output kila a given example (`example`) na the actual
+        output (`got`).  `optionflags` ni the set of option flags used
+        to compare `want` na `got`.
         """
         want = example.want
         # If <BLANKLINE>s are being used, then replace blank lines
-        # with <BLANKLINE> in the actual output string.
-        if sio (optionflags & DONT_ACCEPT_BLANKLINE):
+        # ukijumuisha <BLANKLINE> kwenye the actual output string.
+        ikiwa sio (optionflags & DONT_ACCEPT_BLANKLINE):
             got = re.sub('(?m)^[ ]*(?=\n)', BLANKLINE_MARKER, got)
 
-        # Check if we should use diff.
-        if self._do_a_fancy_diff(want, got, optionflags):
+        # Check ikiwa we should use diff.
+        ikiwa self._do_a_fancy_diff(want, got, optionflags):
             # Split want & got into lines.
-            want_lines = want.splitlines(keepends=True)
-            got_lines = got.splitlines(keepends=True)
+            want_lines = want.splitlines(keepends=Kweli)
+            got_lines = got.splitlines(keepends=Kweli)
             # Use difflib to find their differences.
-            if optionflags & REPORT_UDIFF:
+            ikiwa optionflags & REPORT_UDIFF:
                 diff = difflib.unified_diff(want_lines, got_lines, n=2)
                 diff = list(diff)[2:] # strip the diff header
-                kind = 'unified diff with -expected +actual'
-            lasivyo optionflags & REPORT_CDIFF:
+                kind = 'unified diff ukijumuisha -expected +actual'
+            elikiwa optionflags & REPORT_CDIFF:
                 diff = difflib.context_diff(want_lines, got_lines, n=2)
                 diff = list(diff)[2:] # strip the diff header
-                kind = 'context diff with expected followed by actual'
-            lasivyo optionflags & REPORT_NDIFF:
+                kind = 'context diff ukijumuisha expected followed by actual'
+            elikiwa optionflags & REPORT_NDIFF:
                 engine = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
                 diff = list(engine.compare(want_lines, got_lines))
-                kind = 'ndiff with -expected +actual'
+                kind = 'ndiff ukijumuisha -expected +actual'
             isipokua:
                 assert 0, 'Bad diff option'
-            return 'Differences (%s):\n' % kind + _indent(''.join(diff))
+            rudisha 'Differences (%s):\n' % kind + _indent(''.join(diff))
 
         # If we're sio using diff, then simply list the expected
         # output followed by the actual output.
-        if want and got:
-            return 'Expected:\n%sGot:\n%s' % (_indent(want), _indent(got))
-        lasivyo want:
-            return 'Expected:\n%sGot nothing\n' % _indent(want)
-        lasivyo got:
-            return 'Expected nothing\nGot:\n%s' % _indent(got)
+        ikiwa want na got:
+            rudisha 'Expected:\n%sGot:\n%s' % (_indent(want), _indent(got))
+        elikiwa want:
+            rudisha 'Expected:\n%sGot nothing\n' % _indent(want)
+        elikiwa got:
+            rudisha 'Expected nothing\nGot:\n%s' % _indent(got)
         isipokua:
-            return 'Expected nothing\nGot nothing\n'
+            rudisha 'Expected nothing\nGot nothing\n'
 
 kundi DocTestFailure(Exception):
-    """A DocTest example has failed in debugging mode.
+    """A DocTest example has failed kwenye debugging mode.
 
     The exception instance has variables:
 
@@ -1714,13 +1714,13 @@ kundi DocTestFailure(Exception):
 
     - got: the actual output
     """
-    def __init__(self, test, example, got):
+    eleza __init__(self, test, example, got):
         self.test = test
         self.example = example
         self.got = got
 
-    def __str__(self):
-        return str(self.test)
+    eleza __str__(self):
+        rudisha str(self.test)
 
 kundi UnexpectedException(Exception):
     """A DocTest example has encountered an unexpected exception
@@ -1733,44 +1733,44 @@ kundi UnexpectedException(Exception):
 
     - exc_info: the exception info
     """
-    def __init__(self, test, example, exc_info):
+    eleza __init__(self, test, example, exc_info):
         self.test = test
         self.example = example
         self.exc_info = exc_info
 
-    def __str__(self):
-        return str(self.test)
+    eleza __str__(self):
+        rudisha str(self.test)
 
 kundi DebugRunner(DocTestRunner):
-    r"""Run doc tests but ashiria an exception as soon as there is a failure.
+    r"""Run doc tests but  ashiria an exception as soon as there ni a failure.
 
-       If an unexpected exception occurs, an UnexpectedException is raised.
-       It contains the test, the example, and the original exception:
+       If an unexpected exception occurs, an UnexpectedException ni raised.
+       It contains the test, the example, na the original exception:
 
-         >>> runner = DebugRunner(verbose=False)
-         >>> test = DocTestParser().get_doctest('>>> ashiria KeyError\n42',
+         >>> runner = DebugRunner(verbose=Uongo)
+         >>> test = DocTestParser().get_doctest('>>>  ashiria KeyError\n42',
          ...                                    {}, 'foo', 'foo.py', 0)
          >>> jaribu:
          ...     runner.run(test)
-         ... tatizo UnexpectedException as f:
+         ... except UnexpectedException as f:
          ...     failure = f
 
-         >>> failure.test is test
-         True
+         >>> failure.test ni test
+         Kweli
 
          >>> failure.example.want
          '42\n'
 
          >>> exc_info = failure.exc_info
-         >>> ashiria exc_info[1] # Already has the traceback
+         >>>  ashiria exc_info[1] # Already has the traceback
          Traceback (most recent call last):
          ...
          KeyError
 
        We wrap the original exception to give the calling application
-       access to the test and example information.
+       access to the test na example information.
 
-       If the output doesn't match, then a DocTestFailure is raised:
+       If the output doesn't match, then a DocTestFailure ni raised:
 
          >>> test = DocTestParser().get_doctest('''
          ...      >>> x = 1
@@ -1780,25 +1780,25 @@ kundi DebugRunner(DocTestRunner):
 
          >>> jaribu:
          ...    runner.run(test)
-         ... tatizo DocTestFailure as f:
+         ... except DocTestFailure as f:
          ...    failure = f
 
        DocTestFailure objects provide access to the test:
 
-         >>> failure.test is test
-         True
+         >>> failure.test ni test
+         Kweli
 
        As well as to the example:
 
          >>> failure.example.want
          '2\n'
 
-       and the actual output:
+       na the actual output:
 
          >>> failure.got
          '1\n'
 
-       If a failure or error occurs, the globals are left intact:
+       If a failure ama error occurs, the globals are left intact:
 
          >>> toa test.globs['__builtins__']
          >>> test.globs
@@ -1806,7 +1806,7 @@ kundi DebugRunner(DocTestRunner):
 
          >>> test = DocTestParser().get_doctest('''
          ...      >>> x = 2
-         ...      >>> ashiria KeyError
+         ...      >>>  ashiria KeyError
          ...      ''', {}, 'foo', 'foo.py', 0)
 
          >>> runner.run(test)
@@ -1818,7 +1818,7 @@ kundi DebugRunner(DocTestRunner):
          >>> test.globs
          {'x': 2}
 
-       But the globals are cleared if there is no error:
+       But the globals are cleared ikiwa there ni no error:
 
          >>> test = DocTestParser().get_doctest('''
          ...      >>> x = 2
@@ -1832,17 +1832,17 @@ kundi DebugRunner(DocTestRunner):
 
        """
 
-    def run(self, test, compileflags=None, out=None, clear_globs=True):
-        r = DocTestRunner.run(self, test, compileflags, out, False)
-        if clear_globs:
+    eleza run(self, test, compileflags=Tupu, out=Tupu, clear_globs=Kweli):
+        r = DocTestRunner.run(self, test, compileflags, out, Uongo)
+        ikiwa clear_globs:
             test.globs.clear()
-        return r
+        rudisha r
 
-    def report_unexpected_exception(self, out, test, example, exc_info):
-        ashiria UnexpectedException(test, example, exc_info)
+    eleza report_unexpected_exception(self, out, test, example, exc_info):
+         ashiria UnexpectedException(test, example, exc_info)
 
-    def report_failure(self, out, test, example, got):
-        ashiria DocTestFailure(test, example, got)
+    eleza report_failure(self, out, test, example, got):
+         ashiria DocTestFailure(test, example, got)
 
 ######################################################################
 ## 6. Test Functions
@@ -1851,50 +1851,50 @@ kundi DebugRunner(DocTestRunner):
 
 # For backward compatibility, a global instance of a DocTestRunner
 # class, updated by testmod.
-master = None
+master = Tupu
 
-def testmod(m=None, name=None, globs=None, verbose=None,
-            report=True, optionflags=0, extraglobs=None,
-            raise_on_error=False, exclude_empty=False):
-    """m=None, name=None, globs=None, verbose=None, report=True,
-       optionflags=0, extraglobs=None, raise_on_error=False,
-       exclude_empty=False
+eleza testmod(m=Tupu, name=Tupu, globs=Tupu, verbose=Tupu,
+            report=Kweli, optionflags=0, extraglobs=Tupu,
+            raise_on_error=Uongo, exclude_empty=Uongo):
+    """m=Tupu, name=Tupu, globs=Tupu, verbose=Tupu, report=Kweli,
+       optionflags=0, extraglobs=Tupu, raise_on_error=Uongo,
+       exclude_empty=Uongo
 
-    Test examples in docstrings in functions and classes reachable
-    kutoka module m (or the current module if m ni sio supplied), starting
-    with m.__doc__.
+    Test examples kwenye docstrings kwenye functions na classes reachable
+    kutoka module m (or the current module ikiwa m ni sio supplied), starting
+    ukijumuisha m.__doc__.
 
-    Also test examples reachable kutoka dict m.__test__ if it exists and is
-    sio None.  m.__test__ maps names to functions, classes and strings;
-    function and kundi docstrings are tested even if the name is private;
-    strings are tested directly, as if they were docstrings.
+    Also test examples reachable kutoka dict m.__test__ ikiwa it exists na is
+    sio Tupu.  m.__test__ maps names to functions, classes na strings;
+    function na kundi docstrings are tested even ikiwa the name ni private;
+    strings are tested directly, as ikiwa they were docstrings.
 
     Return (#failures, #tests).
 
-    See help(doctest) for an overview.
+    See help(doctest) kila an overview.
 
     Optional keyword arg "name" gives the name of the module; by default
     use m.__name__.
 
     Optional keyword arg "globs" gives a dict to be used as the globals
     when executing examples; by default, use m.__dict__.  A copy of this
-    dict is actually used for each docstring, so that each docstring's
-    examples start with a clean slate.
+    dict ni actually used kila each docstring, so that each docstring's
+    examples start ukijumuisha a clean slate.
 
     Optional keyword arg "extraglobs" gives a dictionary that should be
     merged into the globals that are used to execute examples.  By
-    default, no extra globals are used.  This is new in 2.4.
+    default, no extra globals are used.  This ni new kwenye 2.4.
 
-    Optional keyword arg "verbose" prints lots of stuff if true, prints
-    only failures if false; by default, it's true iff "-v" is in sys.argv.
+    Optional keyword arg "verbose" prints lots of stuff ikiwa true, prints
+    only failures ikiwa false; by default, it's true iff "-v" ni kwenye sys.argv.
 
     Optional keyword arg "report" prints a summary at the end when true,
     isipokua prints nothing at the end.  In verbose mode, the summary is
-    detailed, isipokua very brief (in fact, empty if all tests passed).
+    detailed, isipokua very brief (in fact, empty ikiwa all tests passed).
 
     Optional keyword arg "optionflags" or's together module constants,
-    and defaults to 0.  This is new in 2.3.  Possible values (see the
-    docs for details):
+    na defaults to 0.  This ni new kwenye 2.3.  Possible values (see the
+    docs kila details):
 
         DONT_ACCEPT_TRUE_FOR_1
         DONT_ACCEPT_BLANKLINE
@@ -1908,105 +1908,105 @@ def testmod(m=None, name=None, globs=None, verbose=None,
         REPORT_ONLY_FIRST_FAILURE
 
     Optional keyword arg "raise_on_error" raises an exception on the
-    first unexpected exception or failure. This allows failures to be
+    first unexpected exception ama failure. This allows failures to be
     post-mortem debugged.
 
     Advanced tomfoolery:  testmod runs methods of a local instance of
     kundi doctest.Tester, then merges the results into (or creates)
     global Tester instance doctest.master.  Methods of doctest.master
-    can be called directly too, if you want to do something unusual.
-    Passing report=0 to testmod is especially useful then, to delay
+    can be called directly too, ikiwa you want to do something unusual.
+    Passing report=0 to testmod ni especially useful then, to delay
     displaying a summary.  Invoke doctest.master.summarize(verbose)
     when you're done fiddling.
     """
     global master
 
     # If no module was given, then use __main__.
-    if m is None:
-        # DWA - m will still be None if this wasn't invoked kutoka the command
-        # line, in which case the following TypeError is about as good an error
+    ikiwa m ni Tupu:
+        # DWA - m will still be Tupu ikiwa this wasn't invoked kutoka the command
+        # line, kwenye which case the following TypeError ni about as good an error
         # as we should expect
         m = sys.modules.get('__main__')
 
     # Check that we were actually given a module.
-    if sio inspect.ismodule(m):
-        ashiria TypeError("testmod: module required; %r" % (m,))
+    ikiwa sio inspect.ismodule(m):
+         ashiria TypeError("testmod: module required; %r" % (m,))
 
     # If no name was given, then use the module's name.
-    if name is None:
+    ikiwa name ni Tupu:
         name = m.__name__
 
-    # Find, parse, and run all tests in the given module.
+    # Find, parse, na run all tests kwenye the given module.
     finder = DocTestFinder(exclude_empty=exclude_empty)
 
-    if raise_on_error:
+    ikiwa raise_on_error:
         runner = DebugRunner(verbose=verbose, optionflags=optionflags)
     isipokua:
         runner = DocTestRunner(verbose=verbose, optionflags=optionflags)
 
-    for test in finder.find(m, name, globs=globs, extraglobs=extraglobs):
+    kila test kwenye finder.find(m, name, globs=globs, extraglobs=extraglobs):
         runner.run(test)
 
-    if report:
+    ikiwa report:
         runner.summarize()
 
-    if master is None:
+    ikiwa master ni Tupu:
         master = runner
     isipokua:
         master.merge(runner)
 
-    return TestResults(runner.failures, runner.tries)
+    rudisha TestResults(runner.failures, runner.tries)
 
-def testfile(filename, module_relative=True, name=None, package=None,
-             globs=None, verbose=None, report=True, optionflags=0,
-             extraglobs=None, raise_on_error=False, parser=DocTestParser(),
-             encoding=None):
+eleza testfile(filename, module_relative=Kweli, name=Tupu, package=Tupu,
+             globs=Tupu, verbose=Tupu, report=Kweli, optionflags=0,
+             extraglobs=Tupu, raise_on_error=Uongo, parser=DocTestParser(),
+             encoding=Tupu):
     """
-    Test examples in the given file.  Return (#failures, #tests).
+    Test examples kwenye the given file.  Return (#failures, #tests).
 
     Optional keyword arg "module_relative" specifies how filenames
     should be interpreted:
 
-      - If "module_relative" is True (the default), then "filename"
+      - If "module_relative" ni Kweli (the default), then "filename"
          specifies a module-relative path.  By default, this path is
-         relative to the calling module's directory; but if the
-         "package" argument is specified, then it is relative to that
+         relative to the calling module's directory; but ikiwa the
+         "package" argument ni specified, then it ni relative to that
          package.  To ensure os-independence, "filename" should use
-         "/" characters to separate path segments, and should not
-         be an absolute path (i.e., it may sio begin with "/").
+         "/" characters to separate path segments, na should not
+         be an absolute path (i.e., it may sio begin ukijumuisha "/").
 
-      - If "module_relative" is False, then "filename" specifies an
-        os-specific path.  The path may be absolute or relative (to
+      - If "module_relative" ni Uongo, then "filename" specifies an
+        os-specific path.  The path may be absolute ama relative (to
         the current working directory).
 
     Optional keyword arg "name" gives the name of the test; by default
     use the file's basename.
 
-    Optional keyword argument "package" is a Python package or the
+    Optional keyword argument "package" ni a Python package ama the
     name of a Python package whose directory should be used as the
-    base directory for a module relative filename.  If no package is
-    specified, then the calling module's directory is used as the base
-    directory for module relative filenames.  It is an error to
-    specify "package" if "module_relative" is False.
+    base directory kila a module relative filename.  If no package is
+    specified, then the calling module's directory ni used as the base
+    directory kila module relative filenames.  It ni an error to
+    specify "package" ikiwa "module_relative" ni Uongo.
 
     Optional keyword arg "globs" gives a dict to be used as the globals
     when executing examples; by default, use {}.  A copy of this dict
-    is actually used for each docstring, so that each docstring's
-    examples start with a clean slate.
+    ni actually used kila each docstring, so that each docstring's
+    examples start ukijumuisha a clean slate.
 
     Optional keyword arg "extraglobs" gives a dictionary that should be
     merged into the globals that are used to execute examples.  By
     default, no extra globals are used.
 
-    Optional keyword arg "verbose" prints lots of stuff if true, prints
-    only failures if false; by default, it's true iff "-v" is in sys.argv.
+    Optional keyword arg "verbose" prints lots of stuff ikiwa true, prints
+    only failures ikiwa false; by default, it's true iff "-v" ni kwenye sys.argv.
 
     Optional keyword arg "report" prints a summary at the end when true,
     isipokua prints nothing at the end.  In verbose mode, the summary is
-    detailed, isipokua very brief (in fact, empty if all tests passed).
+    detailed, isipokua very brief (in fact, empty ikiwa all tests passed).
 
     Optional keyword arg "optionflags" or's together module constants,
-    and defaults to 0.  Possible values (see the docs for details):
+    na defaults to 0.  Possible values (see the docs kila details):
 
         DONT_ACCEPT_TRUE_FOR_1
         DONT_ACCEPT_BLANKLINE
@@ -2020,7 +2020,7 @@ def testfile(filename, module_relative=True, name=None, package=None,
         REPORT_ONLY_FIRST_FAILURE
 
     Optional keyword arg "raise_on_error" raises an exception on the
-    first unexpected exception or failure. This allows failures to be
+    first unexpected exception ama failure. This allows failures to be
     post-mortem debugged.
 
     Optional keyword arg "parser" specifies a DocTestParser (or
@@ -2032,75 +2032,75 @@ def testfile(filename, module_relative=True, name=None, package=None,
     Advanced tomfoolery:  testmod runs methods of a local instance of
     kundi doctest.Tester, then merges the results into (or creates)
     global Tester instance doctest.master.  Methods of doctest.master
-    can be called directly too, if you want to do something unusual.
-    Passing report=0 to testmod is especially useful then, to delay
+    can be called directly too, ikiwa you want to do something unusual.
+    Passing report=0 to testmod ni especially useful then, to delay
     displaying a summary.  Invoke doctest.master.summarize(verbose)
     when you're done fiddling.
     """
     global master
 
-    if package and sio module_relative:
-        ashiria ValueError("Package may only be specified for module-"
+    ikiwa package na sio module_relative:
+         ashiria ValueError("Package may only be specified kila module-"
                          "relative paths.")
 
     # Relativize the path
     text, filename = _load_testfile(filename, package, module_relative,
-                                    encoding or "utf-8")
+                                    encoding ama "utf-8")
 
     # If no name was given, then use the file's name.
-    if name is None:
+    ikiwa name ni Tupu:
         name = os.path.basename(filename)
 
     # Assemble the globals.
-    if globs is None:
+    ikiwa globs ni Tupu:
         globs = {}
     isipokua:
         globs = globs.copy()
-    if extraglobs ni sio None:
+    ikiwa extraglobs ni sio Tupu:
         globs.update(extraglobs)
-    if '__name__' haiko kwenye globs:
+    ikiwa '__name__' sio kwenye globs:
         globs['__name__'] = '__main__'
 
-    if raise_on_error:
+    ikiwa raise_on_error:
         runner = DebugRunner(verbose=verbose, optionflags=optionflags)
     isipokua:
         runner = DocTestRunner(verbose=verbose, optionflags=optionflags)
 
-    # Read the file, convert it to a test, and run it.
+    # Read the file, convert it to a test, na run it.
     test = parser.get_doctest(text, globs, name, filename, 0)
     runner.run(test)
 
-    if report:
+    ikiwa report:
         runner.summarize()
 
-    if master is None:
+    ikiwa master ni Tupu:
         master = runner
     isipokua:
         master.merge(runner)
 
-    return TestResults(runner.failures, runner.tries)
+    rudisha TestResults(runner.failures, runner.tries)
 
-def run_docstring_examples(f, globs, verbose=False, name="NoName",
-                           compileflags=None, optionflags=0):
+eleza run_docstring_examples(f, globs, verbose=Uongo, name="NoName",
+                           compileflags=Tupu, optionflags=0):
     """
-    Test examples in the given object's docstring (`f`), using `globs`
-    as globals.  Optional argument `name` is used in failure messages.
-    If the optional argument `verbose` is true, then generate output
-    even if there are no failures.
+    Test examples kwenye the given object's docstring (`f`), using `globs`
+    as globals.  Optional argument `name` ni used kwenye failure messages.
+    If the optional argument `verbose` ni true, then generate output
+    even ikiwa there are no failures.
 
     `compileflags` gives the set of flags that should be used by the
     Python compiler when running the examples.  If sio specified, then
     it will default to the set of future-agiza flags that apply to
     `globs`.
 
-    Optional keyword arg `optionflags` specifies options for the
-    testing and output.  See the documentation for `testmod` for more
+    Optional keyword arg `optionflags` specifies options kila the
+    testing na output.  See the documentation kila `testmod` kila more
     information.
     """
-    # Find, parse, and run all tests in the given module.
-    finder = DocTestFinder(verbose=verbose, recurse=False)
+    # Find, parse, na run all tests kwenye the given module.
+    finder = DocTestFinder(verbose=verbose, recurse=Uongo)
     runner = DocTestRunner(verbose=verbose, optionflags=optionflags)
-    for test in finder.find(f, name, globs=globs):
+    kila test kwenye finder.find(f, name, globs=globs):
         runner.run(test, compileflags=compileflags)
 
 ######################################################################
@@ -2109,21 +2109,21 @@ def run_docstring_examples(f, globs, verbose=False, name="NoName",
 
 _unittest_reportflags = 0
 
-def set_unittest_reportflags(flags):
+eleza set_unittest_reportflags(flags):
     """Sets the unittest option flags.
 
-    The old flag is returned so that a runner could restore the old
-    value if it wished to:
+    The old flag ni returned so that a runner could restore the old
+    value ikiwa it wished to:
 
       >>> agiza doctest
       >>> old = doctest._unittest_reportflags
       >>> doctest.set_unittest_reportflags(REPORT_NDIFF |
       ...                          REPORT_ONLY_FIRST_FAILURE) == old
-      True
+      Kweli
 
       >>> doctest._unittest_reportflags == (REPORT_NDIFF |
       ...                                   REPORT_ONLY_FIRST_FAILURE)
-      True
+      Kweli
 
     Only reporting flags can be set:
 
@@ -2134,21 +2134,21 @@ def set_unittest_reportflags(flags):
 
       >>> doctest.set_unittest_reportflags(old) == (REPORT_NDIFF |
       ...                                   REPORT_ONLY_FIRST_FAILURE)
-      True
+      Kweli
     """
     global _unittest_reportflags
 
-    if (flags & REPORTING_FLAGS) != flags:
-        ashiria ValueError("Only reporting flags allowed", flags)
+    ikiwa (flags & REPORTING_FLAGS) != flags:
+         ashiria ValueError("Only reporting flags allowed", flags)
     old = _unittest_reportflags
     _unittest_reportflags = flags
-    return old
+    rudisha old
 
 
 kundi DocTestCase(unittest.TestCase):
 
-    def __init__(self, test, optionflags=0, setUp=None, tearDown=None,
-                 checker=None):
+    eleza __init__(self, test, optionflags=0, setUp=Tupu, tearDown=Tupu,
+                 checker=Tupu):
 
         unittest.TestCase.__init__(self)
         self._dt_optionflags = optionflags
@@ -2157,92 +2157,92 @@ kundi DocTestCase(unittest.TestCase):
         self._dt_setUp = setUp
         self._dt_tearDown = tearDown
 
-    def setUp(self):
+    eleza setUp(self):
         test = self._dt_test
 
-        if self._dt_setUp ni sio None:
+        ikiwa self._dt_setUp ni sio Tupu:
             self._dt_setUp(test)
 
-    def tearDown(self):
+    eleza tearDown(self):
         test = self._dt_test
 
-        if self._dt_tearDown ni sio None:
+        ikiwa self._dt_tearDown ni sio Tupu:
             self._dt_tearDown(test)
 
         test.globs.clear()
 
-    def runTest(self):
+    eleza runTest(self):
         test = self._dt_test
         old = sys.stdout
         new = StringIO()
         optionflags = self._dt_optionflags
 
-        if sio (optionflags & REPORTING_FLAGS):
+        ikiwa sio (optionflags & REPORTING_FLAGS):
             # The option flags don't include any reporting flags,
             # so add the default reporting flags
             optionflags |= _unittest_reportflags
 
         runner = DocTestRunner(optionflags=optionflags,
-                               checker=self._dt_checker, verbose=False)
+                               checker=self._dt_checker, verbose=Uongo)
 
         jaribu:
             runner.DIVIDER = "-"*70
             failures, tries = runner.run(
-                test, out=new.write, clear_globs=False)
+                test, out=new.write, clear_globs=Uongo)
         mwishowe:
             sys.stdout = old
 
-        if failures:
-            ashiria self.failureException(self.format_failure(new.getvalue()))
+        ikiwa failures:
+             ashiria self.failureException(self.format_failure(new.getvalue()))
 
-    def format_failure(self, err):
+    eleza format_failure(self, err):
         test = self._dt_test
-        if test.lineno is None:
+        ikiwa test.lineno ni Tupu:
             lineno = 'unknown line number'
         isipokua:
             lineno = '%s' % test.lineno
         lname = '.'.join(test.name.split('.')[-1:])
-        return ('Failed doctest test for %s\n'
-                '  File "%s", line %s, in %s\n\n%s'
+        rudisha ('Failed doctest test kila %s\n'
+                '  File "%s", line %s, kwenye %s\n\n%s'
                 % (test.name, test.filename, lineno, lname, err)
                 )
 
-    def debug(self):
-        r"""Run the test case without results and without catching exceptions
+    eleza debug(self):
+        r"""Run the test case without results na without catching exceptions
 
            The unit test framework includes a debug method on test cases
-           and test suites to support post-mortem debugging.  The test code
-           is run in such a way that errors are sio caught.  This way a
-           caller can catch the errors and initiate post-mortem debugging.
+           na test suites to support post-mortem debugging.  The test code
+           ni run kwenye such a way that errors are sio caught.  This way a
+           caller can catch the errors na initiate post-mortem debugging.
 
            The DocTestCase provides a debug method that raises
-           UnexpectedException errors if there is an unexpected
+           UnexpectedException errors ikiwa there ni an unexpected
            exception:
 
-             >>> test = DocTestParser().get_doctest('>>> ashiria KeyError\n42',
+             >>> test = DocTestParser().get_doctest('>>>  ashiria KeyError\n42',
              ...                {}, 'foo', 'foo.py', 0)
              >>> case = DocTestCase(test)
              >>> jaribu:
              ...     case.debug()
-             ... tatizo UnexpectedException as f:
+             ... except UnexpectedException as f:
              ...     failure = f
 
-           The UnexpectedException contains the test, the example, na
+           The UnexpectedException contains the test, the example, and
            the original exception:
 
-             >>> failure.test is test
-             True
+             >>> failure.test ni test
+             Kweli
 
              >>> failure.example.want
              '42\n'
 
              >>> exc_info = failure.exc_info
-             >>> ashiria exc_info[1] # Already has the traceback
+             >>>  ashiria exc_info[1] # Already has the traceback
              Traceback (most recent call last):
              ...
              KeyError
 
-           If the output doesn't match, then a DocTestFailure is raised:
+           If the output doesn't match, then a DocTestFailure ni raised:
 
              >>> test = DocTestParser().get_doctest('''
              ...      >>> x = 1
@@ -2253,20 +2253,20 @@ kundi DocTestCase(unittest.TestCase):
 
              >>> jaribu:
              ...    case.debug()
-             ... tatizo DocTestFailure as f:
+             ... except DocTestFailure as f:
              ...    failure = f
 
            DocTestFailure objects provide access to the test:
 
-             >>> failure.test is test
-             True
+             >>> failure.test ni test
+             Kweli
 
            As well as to the example:
 
              >>> failure.example.want
              '2\n'
 
-           and the actual output:
+           na the actual output:
 
              >>> failure.got
              '1\n'
@@ -2275,207 +2275,207 @@ kundi DocTestCase(unittest.TestCase):
 
         self.setUp()
         runner = DebugRunner(optionflags=self._dt_optionflags,
-                             checker=self._dt_checker, verbose=False)
-        runner.run(self._dt_test, clear_globs=False)
+                             checker=self._dt_checker, verbose=Uongo)
+        runner.run(self._dt_test, clear_globs=Uongo)
         self.tearDown()
 
-    def id(self):
-        return self._dt_test.name
+    eleza id(self):
+        rudisha self._dt_test.name
 
-    def __eq__(self, other):
-        if type(self) ni sio type(other):
-            return NotImplemented
+    eleza __eq__(self, other):
+        ikiwa type(self) ni sio type(other):
+            rudisha NotImplemented
 
-        return self._dt_test == other._dt_test and \
-               self._dt_optionflags == other._dt_optionflags and \
-               self._dt_setUp == other._dt_setUp and \
-               self._dt_tearDown == other._dt_tearDown and \
+        rudisha self._dt_test == other._dt_test na \
+               self._dt_optionflags == other._dt_optionflags na \
+               self._dt_setUp == other._dt_setUp na \
+               self._dt_tearDown == other._dt_tearDown na \
                self._dt_checker == other._dt_checker
 
-    def __hash__(self):
-        return hash((self._dt_optionflags, self._dt_setUp, self._dt_tearDown,
+    eleza __hash__(self):
+        rudisha hash((self._dt_optionflags, self._dt_setUp, self._dt_tearDown,
                      self._dt_checker))
 
-    def __repr__(self):
+    eleza __repr__(self):
         name = self._dt_test.name.split('.')
-        return "%s (%s)" % (name[-1], '.'.join(name[:-1]))
+        rudisha "%s (%s)" % (name[-1], '.'.join(name[:-1]))
 
     __str__ = object.__str__
 
-    def shortDescription(self):
-        return "Doctest: " + self._dt_test.name
+    eleza shortDescription(self):
+        rudisha "Doctest: " + self._dt_test.name
 
 kundi SkipDocTestCase(DocTestCase):
-    def __init__(self, module):
+    eleza __init__(self, module):
         self.module = module
-        DocTestCase.__init__(self, None)
+        DocTestCase.__init__(self, Tupu)
 
-    def setUp(self):
-        self.skipTest("DocTestSuite will sio work with -O2 and above")
+    eleza setUp(self):
+        self.skipTest("DocTestSuite will sio work ukijumuisha -O2 na above")
 
-    def test_skip(self):
+    eleza test_skip(self):
         pass
 
-    def shortDescription(self):
-        return "Skipping tests kutoka %s" % self.module.__name__
+    eleza shortDescription(self):
+        rudisha "Skipping tests kutoka %s" % self.module.__name__
 
     __str__ = shortDescription
 
 
 kundi _DocTestSuite(unittest.TestSuite):
 
-    def _removeTestAtIndex(self, index):
+    eleza _removeTestAtIndex(self, index):
         pass
 
 
-def DocTestSuite(module=None, globs=None, extraglobs=None, test_finder=None,
+eleza DocTestSuite(module=Tupu, globs=Tupu, extraglobs=Tupu, test_finder=Tupu,
                  **options):
     """
-    Convert doctest tests for a module to a unittest test suite.
+    Convert doctest tests kila a module to a unittest test suite.
 
-    This converts each documentation string in a module that
+    This converts each documentation string kwenye a module that
     contains doctest tests to a unittest test case.  If any of the
-    tests in a doc string fail, then the test case fails.  An exception
-    is raised showing the name of the file containing the test and a
+    tests kwenye a doc string fail, then the test case fails.  An exception
+    ni raised showing the name of the file containing the test na a
     (sometimes approximate) line number.
 
     The `module` argument provides the module to be tested.  The argument
-    can be either a module or a module name.
+    can be either a module ama a module name.
 
-    If no argument is given, the calling module is used.
+    If no argument ni given, the calling module ni used.
 
     A number of options may be provided as keyword arguments:
 
     setUp
-      A set-up function.  This is called before running the
-      tests in each file. The setUp function will be passed a DocTest
+      A set-up function.  This ni called before running the
+      tests kwenye each file. The setUp function will be passed a DocTest
       object.  The setUp function can access the test globals as the
       globs attribute of the test passed.
 
     tearDown
-      A tear-down function.  This is called after running the
-      tests in each file.  The tearDown function will be passed a DocTest
+      A tear-down function.  This ni called after running the
+      tests kwenye each file.  The tearDown function will be passed a DocTest
       object.  The tearDown function can access the test globals as the
       globs attribute of the test passed.
 
     globs
-      A dictionary containing initial global variables for the tests.
+      A dictionary containing initial global variables kila the tests.
 
     optionflags
        A set of doctest option flags expressed as an integer.
     """
 
-    if test_finder is None:
+    ikiwa test_finder ni Tupu:
         test_finder = DocTestFinder()
 
     module = _normalize_module(module)
     tests = test_finder.find(module, globs=globs, extraglobs=extraglobs)
 
-    if sio tests and sys.flags.optimize >=2:
-        # Skip doctests when running with -O2
+    ikiwa sio tests na sys.flags.optimize >=2:
+        # Skip doctests when running ukijumuisha -O2
         suite = _DocTestSuite()
         suite.addTest(SkipDocTestCase(module))
-        return suite
+        rudisha suite
 
     tests.sort()
     suite = _DocTestSuite()
 
-    for test in tests:
-        if len(test.examples) == 0:
+    kila test kwenye tests:
+        ikiwa len(test.examples) == 0:
             endelea
-        if sio test.filename:
+        ikiwa sio test.filename:
             filename = module.__file__
-            if filename[-4:] == ".pyc":
+            ikiwa filename[-4:] == ".pyc":
                 filename = filename[:-1]
             test.filename = filename
         suite.addTest(DocTestCase(test, **options))
 
-    return suite
+    rudisha suite
 
 kundi DocFileCase(DocTestCase):
 
-    def id(self):
-        return '_'.join(self._dt_test.name.split('.'))
+    eleza id(self):
+        rudisha '_'.join(self._dt_test.name.split('.'))
 
-    def __repr__(self):
-        return self._dt_test.filename
+    eleza __repr__(self):
+        rudisha self._dt_test.filename
 
-    def format_failure(self, err):
-        return ('Failed doctest test for %s\n  File "%s", line 0\n\n%s'
+    eleza format_failure(self, err):
+        rudisha ('Failed doctest test kila %s\n  File "%s", line 0\n\n%s'
                 % (self._dt_test.name, self._dt_test.filename, err)
                 )
 
-def DocFileTest(path, module_relative=True, package=None,
-                globs=None, parser=DocTestParser(),
-                encoding=None, **options):
-    if globs is None:
+eleza DocFileTest(path, module_relative=Kweli, package=Tupu,
+                globs=Tupu, parser=DocTestParser(),
+                encoding=Tupu, **options):
+    ikiwa globs ni Tupu:
         globs = {}
     isipokua:
         globs = globs.copy()
 
-    if package and sio module_relative:
-        ashiria ValueError("Package may only be specified for module-"
+    ikiwa package na sio module_relative:
+         ashiria ValueError("Package may only be specified kila module-"
                          "relative paths.")
 
     # Relativize the path.
     doc, path = _load_testfile(path, package, module_relative,
-                               encoding or "utf-8")
+                               encoding ama "utf-8")
 
-    if "__file__" haiko kwenye globs:
+    ikiwa "__file__" sio kwenye globs:
         globs["__file__"] = path
 
-    # Find the file and read it.
+    # Find the file na read it.
     name = os.path.basename(path)
 
-    # Convert it to a test, and wrap it in a DocFileCase.
+    # Convert it to a test, na wrap it kwenye a DocFileCase.
     test = parser.get_doctest(doc, globs, name, path, 0)
-    return DocFileCase(test, **options)
+    rudisha DocFileCase(test, **options)
 
-def DocFileSuite(*paths, **kw):
-    """A unittest suite for one or more doctest files.
+eleza DocFileSuite(*paths, **kw):
+    """A unittest suite kila one ama more doctest files.
 
-    The path to each doctest file is given as a string; the
+    The path to each doctest file ni given as a string; the
     interpretation of that string depends on the keyword argument
     "module_relative".
 
     A number of options may be provided as keyword arguments:
 
     module_relative
-      If "module_relative" is True, then the given file paths are
+      If "module_relative" ni Kweli, then the given file paths are
       interpreted as os-independent module-relative paths.  By
       default, these paths are relative to the calling module's
-      directory; but if the "package" argument is specified, then
+      directory; but ikiwa the "package" argument ni specified, then
       they are relative to that package.  To ensure os-independence,
       "filename" should use "/" characters to separate path
-      segments, and may sio be an absolute path (i.e., it may not
-      begin with "/").
+      segments, na may sio be an absolute path (i.e., it may not
+      begin ukijumuisha "/").
 
-      If "module_relative" is False, then the given file paths are
+      If "module_relative" ni Uongo, then the given file paths are
       interpreted as os-specific paths.  These paths may be absolute
-      or relative (to the current working directory).
+      ama relative (to the current working directory).
 
     package
-      A Python package or the name of a Python package whose directory
-      should be used as the base directory for module relative paths.
+      A Python package ama the name of a Python package whose directory
+      should be used as the base directory kila module relative paths.
       If "package" ni sio specified, then the calling module's
-      directory is used as the base directory for module relative
-      filenames.  It is an error to specify "package" if
-      "module_relative" is False.
+      directory ni used as the base directory kila module relative
+      filenames.  It ni an error to specify "package" if
+      "module_relative" ni Uongo.
 
     setUp
-      A set-up function.  This is called before running the
-      tests in each file. The setUp function will be passed a DocTest
+      A set-up function.  This ni called before running the
+      tests kwenye each file. The setUp function will be passed a DocTest
       object.  The setUp function can access the test globals as the
       globs attribute of the test passed.
 
     tearDown
-      A tear-down function.  This is called after running the
-      tests in each file.  The tearDown function will be passed a DocTest
+      A tear-down function.  This ni called after running the
+      tests kwenye each file.  The tearDown function will be passed a DocTest
       object.  The tearDown function can access the test globals as the
       globs attribute of the test passed.
 
     globs
-      A dictionary containing initial global variables for the tests.
+      A dictionary containing initial global variables kila the tests.
 
     optionflags
       A set of doctest option flags expressed as an integer.
@@ -2489,26 +2489,26 @@ def DocFileSuite(*paths, **kw):
     """
     suite = _DocTestSuite()
 
-    # We do this here so that _normalize_module is called at the right
-    # level.  If it were called in DocFileTest, then this function
-    # would be the caller and we might guess the package incorrectly.
-    if kw.get('module_relative', True):
+    # We do this here so that _normalize_module ni called at the right
+    # level.  If it were called kwenye DocFileTest, then this function
+    # would be the caller na we might guess the package incorrectly.
+    ikiwa kw.get('module_relative', Kweli):
         kw['package'] = _normalize_module(kw.get('package'))
 
-    for path in paths:
+    kila path kwenye paths:
         suite.addTest(DocFileTest(path, **kw))
 
-    return suite
+    rudisha suite
 
 ######################################################################
 ## 8. Debugging Support
 ######################################################################
 
-def script_from_examples(s):
-    r"""Extract script kutoka text with examples.
+eleza script_from_examples(s):
+    r"""Extract script kutoka text ukijumuisha examples.
 
-       Converts text with examples to a Python script.  Example input is
-       converted to regular code.  Example output and all other words
+       Converts text ukijumuisha examples to a Python script.  Example input is
+       converted to regular code.  Example output na all other words
        are converted to comments:
 
        >>> text = '''
@@ -2526,9 +2526,9 @@ def script_from_examples(s):
        ...           And
        ...           Beyond
        ...
-       ...           You can use logic if you want:
+       ...           You can use logic ikiwa you want:
        ...
-       ...           >>> if 0:
+       ...           >>> ikiwa 0:
        ...           ...    blah
        ...           ...    blah
        ...           ...
@@ -2536,7 +2536,7 @@ def script_from_examples(s):
        ...           Ho hum
        ...           '''
 
-       >>> print(script_from_examples(text))
+       >>> andika(script_from_examples(text))
        # Here are examples of simple math.
        #
        #     Python has super accurate integer addition
@@ -2553,9 +2553,9 @@ def script_from_examples(s):
        ## And
        ## Beyond
        #
-       #     You can use logic if you want:
+       #     You can use logic ikiwa you want:
        #
-       if 0:
+       ikiwa 0:
           blah
           blah
        #
@@ -2563,76 +2563,76 @@ def script_from_examples(s):
        <BLANKLINE>
        """
     output = []
-    for piece in DocTestParser().parse(s):
-        if isinstance(piece, Example):
+    kila piece kwenye DocTestParser().parse(s):
+        ikiwa isinstance(piece, Example):
             # Add the example's source code (strip trailing NL)
             output.append(piece.source[:-1])
             # Add the expected output:
             want = piece.want
-            if want:
+            ikiwa want:
                 output.append('# Expected:')
-                output += ['## '+l for l in want.split('\n')[:-1]]
+                output += ['## '+l kila l kwenye want.split('\n')[:-1]]
         isipokua:
             # Add non-example text.
             output += [_comment_line(l)
-                       for l in piece.split('\n')[:-1]]
+                       kila l kwenye piece.split('\n')[:-1]]
 
     # Trim junk on both ends.
-    wakati output and output[-1] == '#':
+    wakati output na output[-1] == '#':
         output.pop()
-    wakati output and output[0] == '#':
+    wakati output na output[0] == '#':
         output.pop(0)
-    # Combine the output, and return it.
+    # Combine the output, na rudisha it.
     # Add a courtesy newline to prevent exec kutoka choking (see bug #1172785)
-    return '\n'.join(output) + '\n'
+    rudisha '\n'.join(output) + '\n'
 
-def testsource(module, name):
+eleza testsource(module, name):
     """Extract the test sources kutoka a doctest docstring as a script.
 
     Provide the module (or dotted name of the module) containing the
-    test to be debugged and the name (within the module) of the object
-    with the doc string with tests to be debugged.
+    test to be debugged na the name (within the module) of the object
+    ukijumuisha the doc string ukijumuisha tests to be debugged.
     """
     module = _normalize_module(module)
     tests = DocTestFinder().find(module)
-    test = [t for t in tests if t.name == name]
-    if sio test:
-        ashiria ValueError(name, "not found in tests")
+    test = [t kila t kwenye tests ikiwa t.name == name]
+    ikiwa sio test:
+         ashiria ValueError(name, "not found kwenye tests")
     test = test[0]
     testsrc = script_from_examples(test.docstring)
-    return testsrc
+    rudisha testsrc
 
-def debug_src(src, pm=False, globs=None):
-    """Debug a single doctest docstring, in argument `src`'"""
+eleza debug_src(src, pm=Uongo, globs=Tupu):
+    """Debug a single doctest docstring, kwenye argument `src`'"""
     testsrc = script_from_examples(src)
     debug_script(testsrc, pm, globs)
 
-def debug_script(src, pm=False, globs=None):
-    "Debug a test script.  `src` is the script, as a string."
+eleza debug_script(src, pm=Uongo, globs=Tupu):
+    "Debug a test script.  `src` ni the script, as a string."
     agiza pdb
 
-    if globs:
+    ikiwa globs:
         globs = globs.copy()
     isipokua:
         globs = {}
 
-    if pm:
+    ikiwa pm:
         jaribu:
             exec(src, globs, globs)
         tatizo:
-            print(sys.exc_info()[1])
-            p = pdb.Pdb(nosigint=True)
+            andika(sys.exc_info()[1])
+            p = pdb.Pdb(nosigint=Kweli)
             p.reset()
-            p.interaction(None, sys.exc_info()[2])
+            p.interaction(Tupu, sys.exc_info()[2])
     isipokua:
-        pdb.Pdb(nosigint=True).run("exec(%r)" % src, globs, globs)
+        pdb.Pdb(nosigint=Kweli).run("exec(%r)" % src, globs, globs)
 
-def debug(module, name, pm=False):
+eleza debug(module, name, pm=Uongo):
     """Debug a single doctest docstring.
 
     Provide the module (or dotted name of the module) containing the
-    test to be debugged and the name (within the module) of the object
-    with the docstring with tests to be debugged.
+    test to be debugged na the name (within the module) of the object
+    ukijumuisha the docstring ukijumuisha tests to be debugged.
     """
     module = _normalize_module(module)
     testsrc = testsource(module, name)
@@ -2643,7 +2643,7 @@ def debug(module, name, pm=False):
 ######################################################################
 kundi _TestClass:
     """
-    A pointless class, for sanity-checking of docstring testing.
+    A pointless class, kila sanity-checking of docstring testing.
 
     Methods:
         square()
@@ -2655,17 +2655,17 @@ kundi _TestClass:
     '0xa9'
     """
 
-    def __init__(self, val):
-        """val -> _TestClass object with associated value val.
+    eleza __init__(self, val):
+        """val -> _TestClass object ukijumuisha associated value val.
 
         >>> t = _TestClass(123)
-        >>> print(t.get())
+        >>> andika(t.get())
         123
         """
 
         self.val = val
 
-    def square(self):
+    eleza square(self):
         """square() -> square TestClass's associated value
 
         >>> _TestClass(13).square().get()
@@ -2673,17 +2673,17 @@ kundi _TestClass:
         """
 
         self.val = self.val ** 2
-        return self
+        rudisha self
 
-    def get(self):
-        """get() -> return TestClass's associated value.
+    eleza get(self):
+        """get() -> rudisha TestClass's associated value.
 
         >>> x = _TestClass(-42)
-        >>> print(x.get())
+        >>> andika(x.get())
         -42
         """
 
-        return self.val
+        rudisha self.val
 
 __test__ = {"_TestClass": _TestClass,
             "string": r"""
@@ -2695,23 +2695,23 @@ __test__ = {"_TestClass": _TestClass,
 
             "bool-int equivalence": r"""
                                     In 2.2, boolean expressions displayed
-                                    0 or 1.  By default, we still accept
+                                    0 ama 1.  By default, we still accept
                                     them.  This can be disabled by passing
                                     DONT_ACCEPT_TRUE_FOR_1 to the new
                                     optionflags argument.
                                     >>> 4 == 4
                                     1
                                     >>> 4 == 4
-                                    True
+                                    Kweli
                                     >>> 4 > 4
                                     0
                                     >>> 4 > 4
-                                    False
+                                    Uongo
                                     """,
 
             "blank lines": r"""
-                Blank lines can be marked with <BLANKLINE>:
-                    >>> print('foo\n\nbar\n')
+                Blank lines can be marked ukijumuisha <BLANKLINE>:
+                    >>> andika('foo\n\nbar\n')
                     foo
                     <BLANKLINE>
                     bar
@@ -2719,16 +2719,16 @@ __test__ = {"_TestClass": _TestClass,
             """,
 
             "ellipsis": r"""
-                If the ellipsis flag is used, then '...' can be used to
-                elide substrings in the desired output:
-                    >>> print(list(range(1000))) #doctest: +ELLIPSIS
+                If the ellipsis flag ni used, then '...' can be used to
+                elide substrings kwenye the desired output:
+                    >>> andika(list(range(1000))) #doctest: +ELLIPSIS
                     [0, 1, 2, ..., 999]
             """,
 
             "whitespace normalization": r"""
-                If the whitespace normalization flag is used, then
-                differences in whitespace are ignored.
-                    >>> print(list(range(30))) #doctest: +NORMALIZE_WHITESPACE
+                If the whitespace normalization flag ni used, then
+                differences kwenye whitespace are ignored.
+                    >>> andika(list(range(30))) #doctest: +NORMALIZE_WHITESPACE
                     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                      15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
                      27, 28, 29]
@@ -2736,12 +2736,12 @@ __test__ = {"_TestClass": _TestClass,
            }
 
 
-def _test():
+eleza _test():
     agiza argparse
 
     parser = argparse.ArgumentParser(description="doctest runner")
-    parser.add_argument('-v', '--verbose', action='store_true', default=False,
-                        help='print very verbose output for all tests')
+    parser.add_argument('-v', '--verbose', action='store_true', default=Uongo,
+                        help='print very verbose output kila all tests')
     parser.add_argument('-o', '--option', action='append',
                         choices=OPTIONFLAGS_BY_NAME.keys(), default=[],
                         help=('specify a doctest option flag to apply'
@@ -2749,37 +2749,37 @@ def _test():
                               ' than once to apply multiple options'))
     parser.add_argument('-f', '--fail-fast', action='store_true',
                         help=('stop running tests after first failure (this'
-                              ' is a shorthand for -o FAIL_FAST, and is'
-                              ' in addition to any other -o options)'))
+                              ' ni a shorthand kila -o FAIL_FAST, na is'
+                              ' kwenye addition to any other -o options)'))
     parser.add_argument('file', nargs='+',
                         help='file containing the tests to run')
     args = parser.parse_args()
     testfiles = args.file
-    # Verbose used to be handled by the "inspect argv" magic in DocTestRunner,
+    # Verbose used to be handled by the "inspect argv" magic kwenye DocTestRunner,
     # but since we are using argparse we are passing it manually now.
     verbose = args.verbose
     options = 0
-    for option in args.option:
+    kila option kwenye args.option:
         options |= OPTIONFLAGS_BY_NAME[option]
-    if args.fail_fast:
+    ikiwa args.fail_fast:
         options |= FAIL_FAST
-    for filename in testfiles:
-        if filename.endswith(".py"):
-            # It is a module -- insert its dir into sys.path and try to
-            # agiza it. If it is part of a package, that possibly
-            # won't work because of package agizas.
+    kila filename kwenye testfiles:
+        ikiwa filename.endswith(".py"):
+            # It ni a module -- insert its dir into sys.path na try to
+            # agiza it. If it ni part of a package, that possibly
+            # won't work because of package imports.
             dirname, filename = os.path.split(filename)
             sys.path.insert(0, dirname)
             m = __import__(filename[:-3])
             toa sys.path[0]
             failures, _ = testmod(m, verbose=verbose, optionflags=options)
         isipokua:
-            failures, _ = testfile(filename, module_relative=False,
+            failures, _ = testfile(filename, module_relative=Uongo,
                                      verbose=verbose, optionflags=options)
-        if failures:
-            return 1
-    return 0
+        ikiwa failures:
+            rudisha 1
+    rudisha 0
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(_test())

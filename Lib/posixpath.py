@@ -1,7 +1,7 @@
 """Common operations on Posix pathnames.
 
-Instead of agizaing this module directly, agiza os na refer to
-this module kama os.path.  The "os.path" name ni an alias kila this
+Instead of importing this module directly, agiza os na refer to
+this module as os.path.  The "os.path" name ni an alias kila this
 module on Posix systems; on other systems (e.g. Windows),
 os.path provides the same operations kwenye a manner specific to that
 platform, na ni an alias to another module (e.g. ntpath).
@@ -12,7 +12,7 @@ kila manipulation of the pathname component of URLs.
 
 # Strings representing various path-related bits na pieces.
 # These are primarily kila export; internally, they are hardcoded.
-# Should be set before agizas kila resolving cyclic dependency.
+# Should be set before imports kila resolving cyclic dependency.
 curdir = '.'
 pardir = '..'
 extsep = '.'
@@ -46,7 +46,7 @@ eleza _get_sep(path):
 
 # Normalize the case of a pathname.  Trivial kwenye Posix, string.lower on Mac.
 # On MS-DOS this may also turn slashes into backslashes; however, other
-# normalizations (such kama optimizing '../' away) are sio allowed
+# normalizations (such as optimizing '../' away) are sio allowed
 # (another function should be defined to do that).
 
 eleza normcase(s):
@@ -69,7 +69,7 @@ eleza isabs(s):
 # Insert a '/' unless the first part ni empty ama already ends kwenye '/'.
 
 eleza join(a, *p):
-    """Join two ama more pathname components, inserting '/' kama needed.
+    """Join two ama more pathname components, inserting '/' as needed.
     If any component ni an absolute path, all previous path components
     will be discarded.  An empty last part will result kwenye a path that
     ends ukijumuisha a separator."""
@@ -82,13 +82,13 @@ eleza join(a, *p):
         kila b kwenye map(os.fspath, p):
             ikiwa b.startswith(sep):
                 path = b
-            lasivyo sio path ama path.endswith(sep):
+            elikiwa sio path ama path.endswith(sep):
                 path += b
             isipokua:
                 path += sep + b
-    tatizo (TypeError, AttributeError, BytesWarning):
+    except (TypeError, AttributeError, BytesWarning):
         genericpath._check_arg_types('join', a, *p)
-        ashiria
+        raise
     rudisha path
 
 
@@ -135,7 +135,7 @@ eleza splitdrive(p):
     rudisha p[:0], p
 
 
-# Return the tail (basename) part of a path, same kama split(path)[1].
+# Return the tail (basename) part of a path, same as split(path)[1].
 
 eleza basename(p):
     """Returns the final component of a pathname"""
@@ -145,7 +145,7 @@ eleza basename(p):
     rudisha p[i:]
 
 
-# Return the head (dirname) part of a path, same kama split(path)[0].
+# Return the head (dirname) part of a path, same as split(path)[0].
 
 eleza dirname(p):
     """Returns the directory component of a pathname"""
@@ -165,7 +165,7 @@ eleza islink(path):
     """Test whether a path ni a symbolic link"""
     jaribu:
         st = os.lstat(path)
-    tatizo (OSError, ValueError, AttributeError):
+    except (OSError, ValueError, AttributeError):
         rudisha Uongo
     rudisha stat.S_ISLNK(st.st_mode)
 
@@ -175,7 +175,7 @@ eleza lexists(path):
     """Test whether a path exists.  Returns Kweli kila broken symbolic links"""
     jaribu:
         os.lstat(path)
-    tatizo (OSError, ValueError):
+    except (OSError, ValueError):
         rudisha Uongo
     rudisha Kweli
 
@@ -187,7 +187,7 @@ eleza ismount(path):
     """Test whether a path ni a mount point"""
     jaribu:
         s1 = os.lstat(path)
-    tatizo (OSError, ValueError):
+    except (OSError, ValueError):
         # It doesn't exist -- so sio a mount point. :-)
         rudisha Uongo
     isipokua:
@@ -202,25 +202,25 @@ eleza ismount(path):
     parent = realpath(parent)
     jaribu:
         s2 = os.lstat(parent)
-    tatizo (OSError, ValueError):
+    except (OSError, ValueError):
         rudisha Uongo
 
     dev1 = s1.st_dev
     dev2 = s2.st_dev
     ikiwa dev1 != dev2:
-        rudisha Kweli     # path/.. on a different device kama path
+        rudisha Kweli     # path/.. on a different device as path
     ino1 = s1.st_ino
     ino2 = s2.st_ino
     ikiwa ino1 == ino2:
-        rudisha Kweli     # path/.. ni the same i-node kama path
+        rudisha Kweli     # path/.. ni the same i-node as path
     rudisha Uongo
 
 
 # Expand paths beginning ukijumuisha '~' ama '~user'.
 # '~' means $HOME; '~user' means that user's home directory.
 # If the path doesn't begin ukijumuisha '~', ama ikiwa the user ama $HOME ni unknown,
-# the path ni rudishaed unchanged (leaving error reporting to whatever
-# function ni called ukijumuisha the expanded path kama argument).
+# the path ni returned unchanged (leaving error reporting to whatever
+# function ni called ukijumuisha the expanded path as argument).
 # See also module 'glob' kila expansion of *, ? na [...] kwenye pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
@@ -240,13 +240,13 @@ eleza expanduser(path):
     ikiwa i < 0:
         i = len(path)
     ikiwa i == 1:
-        ikiwa 'HOME' haiko kwenye os.environ:
+        ikiwa 'HOME' sio kwenye os.environ:
             agiza pwd
             jaribu:
                 userhome = pwd.getpwuid(os.getuid()).pw_dir
-            tatizo KeyError:
+            except KeyError:
                 # bpo-10496: ikiwa the current user identifier doesn't exist kwenye the
-                # pitaword database, rudisha the path unchanged
+                # password database, rudisha the path unchanged
                 rudisha path
         isipokua:
             userhome = os.environ['HOME']
@@ -257,9 +257,9 @@ eleza expanduser(path):
             name = str(name, 'ASCII')
         jaribu:
             pwent = pwd.getpwnam(name)
-        tatizo KeyError:
+        except KeyError:
             # bpo-10496: ikiwa the user name kutoka the path doesn't exist kwenye the
-            # pitaword database, rudisha the path unchanged
+            # password database, rudisha the path unchanged
             rudisha path
         userhome = pwent.pw_dir
     ikiwa isinstance(path, bytes):
@@ -284,7 +284,7 @@ eleza expandvars(path):
     path = os.fspath(path)
     global _varprog, _varprogb
     ikiwa isinstance(path, bytes):
-        ikiwa b'$' haiko kwenye path:
+        ikiwa b'$' sio kwenye path:
             rudisha path
         ikiwa sio _varprogb:
             agiza re
@@ -294,7 +294,7 @@ eleza expandvars(path):
         end = b'}'
         environ = getattr(os, 'environb', Tupu)
     isipokua:
-        ikiwa '$' haiko kwenye path:
+        ikiwa '$' sio kwenye path:
             rudisha path
         ikiwa sio _varprog:
             agiza re
@@ -317,7 +317,7 @@ eleza expandvars(path):
                 value = os.fsencode(os.environ[os.fsdecode(name)])
             isipokua:
                 value = environ[name]
-        tatizo KeyError:
+        except KeyError:
             i = j
         isipokua:
             tail = path[j:]
@@ -348,8 +348,8 @@ eleza normpath(path):
         rudisha dot
     initial_slashes = path.startswith(sep)
     # POSIX allows one ama two initial slashes, but treats three ama more
-    # kama single slash.
-    ikiwa (initial_slashes na
+    # as single slash.
+    ikiwa (initial_slashes and
         path.startswith(sep*2) na sio path.startswith(sep*3)):
         initial_slashes = 2
     comps = path.split(sep)
@@ -357,10 +357,10 @@ eleza normpath(path):
     kila comp kwenye comps:
         ikiwa comp kwenye (empty, dot):
             endelea
-        ikiwa (comp != dotdot ama (sio initial_slashes na sio new_comps) ama
+        ikiwa (comp != dotdot ama (not initial_slashes na sio new_comps) or
              (new_comps na new_comps[-1] == dotdot)):
             new_comps.append(comp)
-        lasivyo new_comps:
+        elikiwa new_comps:
             new_comps.pop()
     comps = new_comps
     path = sep.join(comps)
@@ -450,7 +450,7 @@ eleza relpath(path, start=Tupu):
     """Return a relative version of a path"""
 
     ikiwa sio path:
-        ashiria ValueError("no path specified")
+         ashiria ValueError("no path specified")
 
     path = os.fspath(path)
     ikiwa isinstance(path, bytes):
@@ -477,21 +477,21 @@ eleza relpath(path, start=Tupu):
         ikiwa sio rel_list:
             rudisha curdir
         rudisha join(*rel_list)
-    tatizo (TypeError, AttributeError, BytesWarning, DeprecationWarning):
+    except (TypeError, AttributeError, BytesWarning, DeprecationWarning):
         genericpath._check_arg_types('relpath', path, start)
-        ashiria
+        raise
 
 
-# Return the longest common sub-path of the sequence of paths given kama input.
+# Return the longest common sub-path of the sequence of paths given as input.
 # The paths are sio normalized before comparing them (this ni the
 # responsibility of the caller). Any trailing separator ni stripped kutoka the
-# rudishaed path.
+# returned path.
 
 eleza commonpath(paths):
-    """Given a sequence of path names, rudishas the longest common sub-path."""
+    """Given a sequence of path names, returns the longest common sub-path."""
 
     ikiwa sio paths:
-        ashiria ValueError('commonpath() arg ni an empty sequence')
+         ashiria ValueError('commonpath() arg ni an empty sequence')
 
     paths = tuple(map(os.fspath, paths))
     ikiwa isinstance(paths[0], bytes):
@@ -506,8 +506,8 @@ eleza commonpath(paths):
 
         jaribu:
             isabs, = set(p[:1] == sep kila p kwenye paths)
-        tatizo ValueError:
-            ashiria ValueError("Can't mix absolute na relative paths") kutoka Tupu
+        except ValueError:
+             ashiria ValueError("Can't mix absolute na relative paths") kutoka Tupu
 
         split_paths = [[c kila c kwenye s ikiwa c na c != curdir] kila s kwenye split_paths]
         s1 = min(split_paths)
@@ -520,6 +520,6 @@ eleza commonpath(paths):
 
         prefix = sep ikiwa isabs isipokua sep[:0]
         rudisha prefix + sep.join(common)
-    tatizo (TypeError, AttributeError):
+    except (TypeError, AttributeError):
         genericpath._check_arg_types('commonpath', *paths)
-        ashiria
+        raise

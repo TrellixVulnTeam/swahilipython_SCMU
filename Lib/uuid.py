@@ -2,7 +2,7 @@ r"""UUID objects (universally unique identifiers) according to RFC 4122.
 
 This module provides immutable UUID objects (kundi UUID) na the functions
 uuid1(), uuid3(), uuid4(), uuid5() kila generating version 1, 3, 4, na 5
-UUIDs kama specified kwenye RFC 4122.
+UUIDs as specified kwenye RFC 4122.
 
 If all you want ni a unique ID, you should probably call uuid1() ama uuid4().
 Note that uuid1() may compromise privacy since it creates a UUID containing
@@ -74,28 +74,28 @@ kundi SafeUUID(Enum):
 
 
 kundi UUID:
-    """Instances of the UUID kundi represent UUIDs kama specified kwenye RFC 4122.
-    UUID objects are immutable, hashable, na usable kama dictionary keys.
-    Converting a UUID to a string ukijumuisha str() tumas something kwenye the form
+    """Instances of the UUID kundi represent UUIDs as specified kwenye RFC 4122.
+    UUID objects are immutable, hashable, na usable as dictionary keys.
+    Converting a UUID to a string ukijumuisha str() yields something kwenye the form
     '12345678-1234-1234-1234-123456789abc'.  The UUID constructor accepts
     five possible forms: a similar string of hexadecimal digits, ama a tuple
-    of six integer fields (ukijumuisha 32-bit, 16-bit, 16-bit, 8-bit, 8-bit, na
-    48-bit values respectively) kama an argument named 'fields', ama a string
-    of 16 bytes (ukijumuisha all the integer fields kwenye big-endian order) kama an
+    of six integer fields (ukijumuisha 32-bit, 16-bit, 16-bit, 8-bit, 8-bit, and
+    48-bit values respectively) as an argument named 'fields', ama a string
+    of 16 bytes (ukijumuisha all the integer fields kwenye big-endian order) as an
     argument named 'bytes', ama a string of 16 bytes (ukijumuisha the first three
-    fields kwenye little-endian order) kama an argument named 'bytes_le', ama a
-    single 128-bit integer kama an argument named 'int'.
+    fields kwenye little-endian order) as an argument named 'bytes_le', ama a
+    single 128-bit integer as an argument named 'int'.
 
     UUIDs have these read-only attributes:
 
-        bytes       the UUID kama a 16-byte string (containing the six
+        bytes       the UUID as a 16-byte string (containing the six
                     integer fields kwenye big-endian byte order)
 
-        bytes_le    the UUID kama a 16-byte string (ukijumuisha time_low, time_mid,
+        bytes_le    the UUID as a 16-byte string (ukijumuisha time_low, time_mid,
                     na time_hi_version kwenye little-endian byte order)
 
         fields      a tuple of the six integer fields of the UUID,
-                    which are also available kama six individual attributes
+                    which are also available as six individual attributes
                     na two derived attributes:
 
             time_low                the first 32 bits of the UUID
@@ -108,11 +108,11 @@ kundi UUID:
             time                    the 60-bit timestamp
             clock_seq               the 14-bit sequence number
 
-        hex         the UUID kama a 32-character hexadecimal string
+        hex         the UUID as a 32-character hexadecimal string
 
-        int         the UUID kama a 128-bit integer
+        int         the UUID as a 128-bit integer
 
-        urn         the UUID kama a URN kama specified kwenye RFC 4122
+        urn         the UUID as a URN as specified kwenye RFC 4122
 
         variant     the UUID variant (one of the constants RESERVED_NCS,
                     RFC_4122, RESERVED_MICROSOFT, ama RESERVED_FUTURE)
@@ -131,11 +131,11 @@ kundi UUID:
                        int=Tupu, version=Tupu,
                        *, is_safe=SafeUUID.unknown):
         r"""Create a UUID kutoka either a string of 32 hexadecimal digits,
-        a string of 16 bytes kama the 'bytes' argument, a string of 16 bytes
-        kwenye little-endian order kama the 'bytes_le' argument, a tuple of six
+        a string of 16 bytes as the 'bytes' argument, a string of 16 bytes
+        kwenye little-endian order as the 'bytes_le' argument, a tuple of six
         integers (32-bit time_low, 16-bit time_mid, 16-bit time_hi_version,
         8-bit clock_seq_hi_variant, 8-bit clock_seq_low, 48-bit node) as
-        the 'fields' argument, ama a single 128-bit integer kama the 'int'
+        the 'fields' argument, ama a single 128-bit integer as the 'int'
         argument.  When a string of hex digits ni given, curly braces,
         hyphens, na a URN prefix are all optional.  For example, these
         expressions all tuma the same UUID:
@@ -154,56 +154,56 @@ kundi UUID:
         UUID will have its variant na version set according to RFC 4122,
         overriding the given 'hex', 'bytes', 'bytes_le', 'fields', ama 'int'.
 
-        is_safe ni an enum exposed kama an attribute on the instance.  It
+        is_safe ni an enum exposed as an attribute on the instance.  It
         indicates whether the UUID has been generated kwenye a way that ni safe
         kila multiprocessing applications, via uuid_generate_time_safe(3).
         """
 
         ikiwa [hex, bytes, bytes_le, fields, int].count(Tupu) != 4:
-            ashiria TypeError('one of the hex, bytes, bytes_le, fields, '
+             ashiria TypeError('one of the hex, bytes, bytes_le, fields, '
                             'or int arguments must be given')
         ikiwa hex ni sio Tupu:
             hex = hex.replace('urn:', '').replace('uuid:', '')
             hex = hex.strip('{}').replace('-', '')
             ikiwa len(hex) != 32:
-                ashiria ValueError('badly formed hexadecimal UUID string')
+                 ashiria ValueError('badly formed hexadecimal UUID string')
             int = int_(hex, 16)
         ikiwa bytes_le ni sio Tupu:
             ikiwa len(bytes_le) != 16:
-                ashiria ValueError('bytes_le ni sio a 16-char string')
+                 ashiria ValueError('bytes_le ni sio a 16-char string')
             bytes = (bytes_le[4-1::-1] + bytes_le[6-1:4-1:-1] +
                      bytes_le[8-1:6-1:-1] + bytes_le[8:])
         ikiwa bytes ni sio Tupu:
             ikiwa len(bytes) != 16:
-                ashiria ValueError('bytes ni sio a 16-char string')
+                 ashiria ValueError('bytes ni sio a 16-char string')
             assert isinstance(bytes, bytes_), repr(bytes)
-            int = int_.kutoka_bytes(bytes, byteorder='big')
+            int = int_.from_bytes(bytes, byteorder='big')
         ikiwa fields ni sio Tupu:
             ikiwa len(fields) != 6:
-                ashiria ValueError('fields ni sio a 6-tuple')
+                 ashiria ValueError('fields ni sio a 6-tuple')
             (time_low, time_mid, time_hi_version,
              clock_seq_hi_variant, clock_seq_low, node) = fields
             ikiwa sio 0 <= time_low < 1<<32:
-                ashiria ValueError('field 1 out of range (need a 32-bit value)')
+                 ashiria ValueError('field 1 out of range (need a 32-bit value)')
             ikiwa sio 0 <= time_mid < 1<<16:
-                ashiria ValueError('field 2 out of range (need a 16-bit value)')
+                 ashiria ValueError('field 2 out of range (need a 16-bit value)')
             ikiwa sio 0 <= time_hi_version < 1<<16:
-                ashiria ValueError('field 3 out of range (need a 16-bit value)')
+                 ashiria ValueError('field 3 out of range (need a 16-bit value)')
             ikiwa sio 0 <= clock_seq_hi_variant < 1<<8:
-                ashiria ValueError('field 4 out of range (need an 8-bit value)')
+                 ashiria ValueError('field 4 out of range (need an 8-bit value)')
             ikiwa sio 0 <= clock_seq_low < 1<<8:
-                ashiria ValueError('field 5 out of range (need an 8-bit value)')
+                 ashiria ValueError('field 5 out of range (need an 8-bit value)')
             ikiwa sio 0 <= node < 1<<48:
-                ashiria ValueError('field 6 out of range (need a 48-bit value)')
+                 ashiria ValueError('field 6 out of range (need a 48-bit value)')
             clock_seq = (clock_seq_hi_variant << 8) | clock_seq_low
             int = ((time_low << 96) | (time_mid << 80) |
                    (time_hi_version << 64) | (clock_seq << 48) | node)
         ikiwa int ni sio Tupu:
             ikiwa sio 0 <= int < 1<<128:
-                ashiria ValueError('int ni out of range (need a 128-bit value)')
+                 ashiria ValueError('int ni out of range (need a 128-bit value)')
         ikiwa version ni sio Tupu:
             ikiwa sio 1 <= version <= 5:
-                ashiria ValueError('illegal version number')
+                 ashiria ValueError('illegal version number')
             # Set the variant to RFC 4122.
             int &= ~(0xc000 << 48)
             int |= 0x8000 << 48
@@ -234,7 +234,7 @@ kundi UUID:
         rudisha NotImplemented
 
     # Q. What's the value of being able to sort UUIDs?
-    # A. Use them kama keys kwenye a B-Tree ama similar mapping.
+    # A. Use them as keys kwenye a B-Tree ama similar mapping.
 
     eleza __lt__(self, other):
         ikiwa isinstance(other, UUID):
@@ -266,7 +266,7 @@ kundi UUID:
         rudisha '%s(%r)' % (self.__class__.__name__, str(self))
 
     eleza __setattr__(self, name, value):
-        ashiria TypeError('UUID objects are immutable')
+         ashiria TypeError('UUID objects are immutable')
 
     eleza __str__(self):
         hex = '%032x' % self.int
@@ -334,9 +334,9 @@ kundi UUID:
     eleza variant(self):
         ikiwa sio self.int & (0x8000 << 48):
             rudisha RESERVED_NCS
-        lasivyo sio self.int & (0x4000 << 48):
+        elikiwa sio self.int & (0x4000 << 48):
             rudisha RFC_4122
-        lasivyo sio self.int & (0x2000 << 48):
+        elikiwa sio self.int & (0x2000 << 48):
             rudisha RESERVED_MICROSOFT
         isipokua:
             rudisha RESERVED_FUTURE
@@ -401,15 +401,15 @@ eleza _find_mac(command, args, hw_identifiers, get_index):
                             ikiwa _is_universal(mac):
                                 rudisha mac
                             first_local_mac = first_local_mac ama mac
-                        tatizo (ValueError, IndexError):
-                            # Virtual interfaces, such kama those provided by
+                        except (ValueError, IndexError):
+                            # Virtual interfaces, such as those provided by
                             # VPNs, do sio have a colon-delimited MAC address
-                            # kama expected, but a 16-byte HWAddr separated by
+                            # as expected, but a 16-byte HWAddr separated by
                             # dashes. These should be ignored kwenye favor of a
                             # real MAC address
-                            pita
-    tatizo OSError:
-        pita
+                            pass
+    except OSError:
+        pass
     rudisha first_local_mac ama Tupu
 
 eleza _ifconfig_getnode():
@@ -435,7 +435,7 @@ eleza _arp_getnode():
     agiza os, socket
     jaribu:
         ip_addr = socket.gethostbyname(socket.gethostname())
-    tatizo OSError:
+    except OSError:
         rudisha Tupu
 
     # Try getting the MAC addr kutoka arp based on our IP address (Solaris).
@@ -473,7 +473,7 @@ eleza _netstat_getnode():
             words = proc.stdout.readline().rstrip().split()
             jaribu:
                 i = words.index(b'Address')
-            tatizo ValueError:
+            except ValueError:
                 rudisha Tupu
             kila line kwenye proc.stdout:
                 jaribu:
@@ -484,10 +484,10 @@ eleza _netstat_getnode():
                         ikiwa _is_universal(mac):
                             rudisha mac
                         first_local_mac = first_local_mac ama mac
-                tatizo (ValueError, IndexError):
-                    pita
-    tatizo OSError:
-        pita
+                except (ValueError, IndexError):
+                    pass
+    except OSError:
+        pass
     rudisha first_local_mac ama Tupu
 
 eleza _ipconfig_getnode():
@@ -501,13 +501,13 @@ eleza _ipconfig_getnode():
         ctypes.windll.kernel32.GetSystemDirectoryA(buffer, 300)
         dirs.insert(0, buffer.value.decode('mbcs'))
     tatizo:
-        pita
+        pass
     kila dir kwenye dirs:
         jaribu:
             proc = subprocess.Popen([os.path.join(dir, 'ipconfig'), '/all'],
                                     stdout=subprocess.PIPE,
                                     encoding="oem")
-        tatizo OSError:
+        except OSError:
             endelea
         ukijumuisha proc:
             kila line kwenye proc.stdout:
@@ -548,7 +548,7 @@ eleza _netbios_getnode():
         bytes = status.adapter_address[:6]
         ikiwa len(bytes) != 6:
             endelea
-        mac = int.kutoka_bytes(bytes, 'big')
+        mac = int.from_bytes(bytes, 'big')
         ikiwa _is_universal(mac):
             rudisha mac
         first_local_mac = first_local_mac ama mac
@@ -561,7 +561,7 @@ _has_uuid_generate_time_safe = Tupu
 # Import optional C extension at toplevel, to help disabling it when testing
 jaribu:
     agiza _uuid
-tatizo ImportError:
+except ImportError:
     _uuid = Tupu
 
 
@@ -572,23 +572,23 @@ eleza _load_system_functions():
     global _generate_time_safe, _UuidCreate, _has_uuid_generate_time_safe
 
     ikiwa _has_uuid_generate_time_safe ni sio Tupu:
-        rudisha
+        return
 
     _has_uuid_generate_time_safe = Uongo
 
     ikiwa sys.platform == "darwin" na int(os.uname().release.split('.')[0]) < 9:
-        # The uuid_generate_* functions are broken on MacOS X 10.5, kama noted
+        # The uuid_generate_* functions are broken on MacOS X 10.5, as noted
         # kwenye issue #8621 the function generates the same sequence of values
         # kwenye the parent process na all children created using fork (unless
-        # those children use exec kama well).
+        # those children use exec as well).
         #
         # Assume that the uuid_generate functions are broken kutoka 10.5 onward,
         # the test can be adjusted when a later version ni fixed.
-        pita
-    lasivyo _uuid ni sio Tupu:
+        pass
+    elikiwa _uuid ni sio Tupu:
         _generate_time_safe = _uuid.generate_time_safe
         _has_uuid_generate_time_safe = _uuid.has_uuid_generate_time_safe
-        rudisha
+        return
 
     jaribu:
         # If we couldn't find an extension module, try ctypes to find
@@ -605,7 +605,7 @@ eleza _load_system_functions():
         kila libname kwenye _libnames:
             jaribu:
                 lib = ctypes.CDLL(ctypes.util.find_library(libname))
-            tatizo Exception:                           # pragma: nocover
+            except Exception:                           # pragma: nocover
                 endelea
             # Try to find the safe variety first.
             ikiwa hasattr(lib, 'uuid_generate_time_safe'):
@@ -618,7 +618,7 @@ eleza _load_system_functions():
                 _has_uuid_generate_time_safe = Kweli
                 koma
 
-            lasivyo hasattr(lib, 'uuid_generate_time'):    # pragma: nocover
+            elikiwa hasattr(lib, 'uuid_generate_time'):    # pragma: nocover
                 _uuid_generate_time = lib.uuid_generate_time
                 # void uuid_generate_time(uuid_t out);
                 _uuid_generate_time.restype = Tupu
@@ -633,7 +633,7 @@ eleza _load_system_functions():
         # random UUID na UuidCreateSequential gives a UUID containing the
         # hardware address.  These routines are provided by the RPC runtime.
         # NOTE:  at least on Tim's WinXP Pro SP2 desktop box, wakati the last
-        # 6 bytes rudishaed by UuidCreateSequential are fixed, they don't appear
+        # 6 bytes returned by UuidCreateSequential are fixed, they don't appear
         # to bear any relationship to the MAC address of any network device
         # on the box.
         jaribu:
@@ -643,7 +643,7 @@ eleza _load_system_functions():
         _UuidCreate = getattr(lib, 'UuidCreateSequential',
                               getattr(lib, 'UuidCreate', Tupu))
 
-    tatizo Exception kama exc:
+    except Exception as exc:
         agiza warnings
         warnings.warn(f"Could sio find fallback ctypes uuid functions: {exc}",
                       ImportWarning)
@@ -666,7 +666,7 @@ eleza _windll_getnode():
 
 eleza _random_getnode():
     """Get a random node ID."""
-    # RFC 4122, $4.1.6 says "For systems ukijumuisha no IEEE address, a randomly ama
+    # RFC 4122, $4.1.6 says "For systems ukijumuisha no IEEE address, a randomly or
     # pseudo-randomly generated value may be used; see Section 4.5.  The
     # multicast bit must be set kwenye such addresses, kwenye order that they will
     # never conflict ukijumuisha addresses obtained kutoka network cards."
@@ -688,18 +688,18 @@ eleza _random_getnode():
 #     @unittest.skipUnless(_uuid._ifconfig_getnode kwenye _uuid._GETTERS, ...)
 ikiwa _LINUX:
     _OS_GETTERS = [_ip_getnode, _ifconfig_getnode]
-lasivyo _DARWIN:
+elikiwa _DARWIN:
     _OS_GETTERS = [_ifconfig_getnode, _arp_getnode, _netstat_getnode]
-lasivyo _WINDOWS:
+elikiwa _WINDOWS:
     _OS_GETTERS = [_netbios_getnode, _ipconfig_getnode]
-lasivyo _AIX:
+elikiwa _AIX:
     _OS_GETTERS = [_netstat_getnode]
 isipokua:
     _OS_GETTERS = [_ifconfig_getnode, _ip_getnode, _arp_getnode,
                    _netstat_getnode, _lanscan_getnode]
 ikiwa os.name == 'posix':
     _GETTERS = [_unix_getnode] + _OS_GETTERS
-lasivyo os.name == 'nt':
+elikiwa os.name == 'nt':
     _GETTERS = [_windll_getnode] + _OS_GETTERS
 isipokua:
     _GETTERS = _OS_GETTERS
@@ -707,11 +707,11 @@ isipokua:
 _node = Tupu
 
 eleza getnode(*, getters=Tupu):
-    """Get the hardware address kama a 48-bit positive integer.
+    """Get the hardware address as a 48-bit positive integer.
 
     The first time this runs, it may launch a separate program, which could
     be quite slow.  If all attempts to obtain the hardware address fail, we
-    choose a random 48-bit number ukijumuisha its eighth bit set to 1 kama recommended
+    choose a random 48-bit number ukijumuisha its eighth bit set to 1 as recommended
     kwenye RFC 4122.
     """
     global _node
@@ -725,7 +725,7 @@ eleza getnode(*, getters=Tupu):
             endelea
         ikiwa (_node ni sio Tupu) na (0 <= _node < (1 << 48)):
             rudisha _node
-    assert Uongo, '_random_getnode() rudishaed invalid value: {}'.format(_node)
+    assert Uongo, '_random_getnode() returned invalid value: {}'.format(_node)
 
 
 _last_timestamp = Tupu
@@ -733,7 +733,7 @@ _last_timestamp = Tupu
 eleza uuid1(node=Tupu, clock_seq=Tupu):
     """Generate a UUID kutoka a host ID, sequence number, na the current time.
     If 'node' ni sio given, getnode() ni used to obtain the hardware
-    address.  If 'clock_seq' ni given, it ni used kama the sequence number;
+    address.  If 'clock_seq' ni given, it ni used as the sequence number;
     otherwise a random 14-bit sequence number ni chosen."""
 
     # When the system provides a version-1 UUID generator, use it (but don't
@@ -743,7 +743,7 @@ eleza uuid1(node=Tupu, clock_seq=Tupu):
         uuid_time, safely_generated = _generate_time_safe()
         jaribu:
             is_safe = SafeUUID(safely_generated)
-        tatizo ValueError:
+        except ValueError:
             is_safe = SafeUUID.unknown
         rudisha UUID(bytes=uuid_time, is_safe=is_safe)
 

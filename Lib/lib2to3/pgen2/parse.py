@@ -10,7 +10,7 @@ how this parsing engine works.
 
 """
 
-# Local agizas
+# Local imports
 kutoka . agiza token
 
 kundi ParseError(Exception):
@@ -35,7 +35,7 @@ kundi Parser(object):
     p = Parser(grammar, [converter])  # create instance
     p.setup([start])                  # prepare kila parsing
     <kila each input token>:
-        ikiwa p.addtoken(...):           # parse a token; may ashiria ParseError
+        ikiwa p.addtoken(...):           # parse a token; may  ashiria ParseError
             koma
     root = p.rootnode                 # root of abstract syntax tree
 
@@ -45,12 +45,12 @@ kundi Parser(object):
     sequence, na should sio be used concurrently by different threads
     to parse separate token sequences.
 
-    See driver.py kila how to get input tokens by tokenizing a file ama
+    See driver.py kila how to get input tokens by tokenizing a file or
     string.
 
-    Parsing ni complete when addtoken() rudishas Kweli; the root of the
+    Parsing ni complete when addtoken() returns Kweli; the root of the
     abstract syntax tree can then be retrieved kutoka the rootnode
-    instance variable.  When a syntax error occurs, addtoken() ashirias
+    instance variable.  When a syntax error occurs, addtoken() raises
     the ParseError exception.  There ni no error recovery; the parser
     cannot be used after a syntax error was reported (but it can be
     reinitialized by calling setup()).
@@ -117,7 +117,7 @@ kundi Parser(object):
         """Add a token; rudisha Kweli iff this ni the end of the program."""
         # Map kutoka token to label
         ilabel = self.classify(type, value, context)
-        # Loop until the token ni shifted; may ashiria exceptions
+        # Loop until the token ni shifted; may  ashiria exceptions
         wakati Kweli:
             dfa, state, node = self.stack[-1]
             states, first = dfa
@@ -141,7 +141,7 @@ kundi Parser(object):
                         states, first = dfa
                     # Done ukijumuisha this token
                     rudisha Uongo
-                lasivyo t >= 256:
+                elikiwa t >= 256:
                     # See ikiwa it's a symbol na ikiwa we're kwenye its first set
                     itsdfa = self.grammar.dfas[t]
                     itsstates, itsfirst = itsdfa
@@ -151,15 +151,15 @@ kundi Parser(object):
                         koma # To endelea the outer wakati loop
             isipokua:
                 ikiwa (0, state) kwenye arcs:
-                    # An accepting state, pop it na try something ama
+                    # An accepting state, pop it na try something else
                     self.pop()
                     ikiwa sio self.stack:
                         # Done parsing, but another token ni input
-                        ashiria ParseError("too much input",
+                         ashiria ParseError("too much input",
                                          type, value, context)
                 isipokua:
                     # No success finding a transition
-                    ashiria ParseError("bad input", type, value, context)
+                     ashiria ParseError("bad input", type, value, context)
 
     eleza classify(self, type, value, context):
         """Turn a token into a label.  (Internal)"""
@@ -172,7 +172,7 @@ kundi Parser(object):
                 rudisha ilabel
         ilabel = self.grammar.tokens.get(type)
         ikiwa ilabel ni Tupu:
-            ashiria ParseError("bad token", type, value, context)
+             ashiria ParseError("bad token", type, value, context)
         rudisha ilabel
 
     eleza shift(self, type, value, newstate, context):

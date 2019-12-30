@@ -139,7 +139,7 @@ kundi Repr:
             s = builtins.repr(x)
             # Bugs kwenye x.__repr__() can cause arbitrary
             # exceptions -- then make up something
-        tatizo Exception:
+        except Exception:
             rudisha '<%s instance at %#x>' % (x.__class__.__name__, id(x))
         ikiwa len(s) > self.maxother:
             i = max(0, (self.maxother-3)//2)
@@ -150,11 +150,11 @@ kundi Repr:
 
 eleza _possibly_sorted(x):
     # Since sio all sequences of items can be sorted na comparison
-    # functions may ashiria arbitrary exceptions, rudisha an unsorted
+    # functions may  ashiria arbitrary exceptions, rudisha an unsorted
     # sequence kwenye that case.
     jaribu:
         rudisha sorted(x)
-    tatizo Exception:
+    except Exception:
         rudisha list(x)
 
 aRepr = Repr()

@@ -4,78 +4,78 @@ Provides the Distribution class, which represents the module distribution
 being built/installed/distributed.
 """
 
-import sys
-import os
-import re
-from email import message_from_file
+agiza sys
+agiza os
+agiza re
+kutoka email agiza message_from_file
 
 jaribu:
-    import warnings
-tatizo ImportError:
-    warnings = None
+    agiza warnings
+except ImportError:
+    warnings = Tupu
 
-from distutils.errors import *
-from distutils.fancy_getopt import FancyGetopt, translate_longopt
-from distutils.util import check_environ, strtobool, rfc822_escape
-from distutils import log
-from distutils.debug import DEBUG
+kutoka distutils.errors agiza *
+kutoka distutils.fancy_getopt agiza FancyGetopt, translate_longopt
+kutoka distutils.util agiza check_environ, strtobool, rfc822_escape
+kutoka distutils agiza log
+kutoka distutils.debug agiza DEBUG
 
 # Regex to define acceptable Distutils command names.  This ni sio *quite*
 # the same as a Python NAME -- I don't allow leading underscores.  The fact
-# that they're very similar is no coincidence; the default naming scheme is
-# to look for a Python module named after the command.
+# that they're very similar ni no coincidence; the default naming scheme is
+# to look kila a Python module named after the command.
 command_re = re.compile(r'^[a-zA-Z]([a-zA-Z0-9_]*)$')
 
 
-def _ensure_list(value, fieldname):
-    if isinstance(value, str):
-        # a string containing comma separated values is okay.  It will
+eleza _ensure_list(value, fieldname):
+    ikiwa isinstance(value, str):
+        # a string containing comma separated values ni okay.  It will
         # be converted to a list by Distribution.finalize_options().
         pass
-    lasivyo sio isinstance(value, list):
-        # passing a tuple or an iterator perhaps, warn and convert
+    elikiwa sio isinstance(value, list):
+        # passing a tuple ama an iterator perhaps, warn na convert
         typename = type(value).__name__
         msg = f"Warning: '{fieldname}' should be a list, got type '{typename}'"
         log.log(log.WARN, msg)
         value = list(value)
-    return value
+    rudisha value
 
 
-class Distribution:
+kundi Distribution:
     """The core of the Distutils.  Most of the work hiding behind 'setup'
-    is really done within a Distribution instance, which farms the work out
+    ni really done within a Distribution instance, which farms the work out
     to the Distutils commands specified on the command line.
 
     Setup scripts will almost never instantiate Distribution directly,
-    unless the 'setup()' function is totally inadequate to their needs.
-    However, it is conceivable that a setup script might wish to subclass
-    Distribution for some specialized purpose, and then pass the subclass
+    unless the 'setup()' function ni totally inadequate to their needs.
+    However, it ni conceivable that a setup script might wish to subclass
+    Distribution kila some specialized purpose, na then pass the subclass
     to 'setup()' as the 'distclass' keyword argument.  If so, it is
     necessary to respect the expectations that 'setup' has of Distribution.
-    See the code for 'setup()', in core.py, for details.
+    See the code kila 'setup()', kwenye core.py, kila details.
     """
 
     # 'global_options' describes the command-line options that may be
     # supplied to the setup script prior to any actual commands.
-    # Eg. "./setup.py -n" or "./setup.py --quiet" both take advantage of
+    # Eg. "./setup.py -n" ama "./setup.py --quiet" both take advantage of
     # these global options.  This list should be kept to a bare minimum,
-    # since every global option is also valid as a command option -- and we
-    # don't want to pollute the commands with too many options that they
+    # since every global option ni also valid as a command option -- na we
+    # don't want to pollute the commands ukijumuisha too many options that they
     # have minimal control over.
-    # The fourth entry for verbose means that it can be repeated.
+    # The fourth entry kila verbose means that it can be repeated.
     global_options = [
         ('verbose', 'v', "run verbosely (default)", 1),
         ('quiet', 'q', "run quietly (turns verbosity off)"),
         ('dry-run', 'n', "don't actually do anything"),
         ('help', 'h', "show detailed help message"),
-        ('no-user-cfg', None,
-            'ignore pydistutils.cfg in your home directory'),
+        ('no-user-cfg', Tupu,
+            'ignore pydistutils.cfg kwenye your home directory'),
     ]
 
-    # 'common_usage' is a short (2-3 line) string describing the common
+    # 'common_usage' ni a short (2-3 line) string describing the common
     # usage of the setup script.
     common_usage = """\
-Common commands: (see '--help-commands' for more)
+Common commands: (see '--help-commands' kila more)
 
   setup.py build      will build the package underneath 'build/'
   setup.py install    will install the package
@@ -83,306 +83,306 @@ Common commands: (see '--help-commands' for more)
 
     # options that are sio propagated to the commands
     display_options = [
-        ('help-commands', None,
+        ('help-commands', Tupu,
          "list all available commands"),
-        ('name', None,
+        ('name', Tupu,
          "print package name"),
         ('version', 'V',
          "print package version"),
-        ('fullname', None,
+        ('fullname', Tupu,
          "print <package name>-<version>"),
-        ('author', None,
+        ('author', Tupu,
          "print the author's name"),
-        ('author-email', None,
+        ('author-email', Tupu,
          "print the author's email address"),
-        ('maintainer', None,
+        ('maintainer', Tupu,
          "print the maintainer's name"),
-        ('maintainer-email', None,
+        ('maintainer-email', Tupu,
          "print the maintainer's email address"),
-        ('contact', None,
-         "print the maintainer's name if known, isipokua the author's"),
-        ('contact-email', None,
-         "print the maintainer's email address if known, isipokua the author's"),
-        ('url', None,
-         "print the URL for this package"),
-        ('license', None,
+        ('contact', Tupu,
+         "print the maintainer's name ikiwa known, isipokua the author's"),
+        ('contact-email', Tupu,
+         "print the maintainer's email address ikiwa known, isipokua the author's"),
+        ('url', Tupu,
+         "print the URL kila this package"),
+        ('license', Tupu,
          "print the license of the package"),
-        ('licence', None,
-         "alias for --license"),
-        ('description', None,
+        ('licence', Tupu,
+         "alias kila --license"),
+        ('description', Tupu,
          "print the package description"),
-        ('long-description', None,
+        ('long-description', Tupu,
          "print the long package description"),
-        ('platforms', None,
+        ('platforms', Tupu,
          "print the list of platforms"),
-        ('classifiers', None,
+        ('classifiers', Tupu,
          "print the list of classifiers"),
-        ('keywords', None,
+        ('keywords', Tupu,
          "print the list of keywords"),
-        ('provides', None,
+        ('provides', Tupu,
          "print the list of packages/modules provided"),
-        ('requires', None,
+        ('requires', Tupu,
          "print the list of packages/modules required"),
-        ('obsoletes', None,
+        ('obsoletes', Tupu,
          "print the list of packages/modules made obsolete")
         ]
-    display_option_names = [translate_longopt(x[0]) for x in display_options]
+    display_option_names = [translate_longopt(x[0]) kila x kwenye display_options]
 
     # negative options are options that exclude other options
     negative_opt = {'quiet': 'verbose'}
 
     # -- Creation/initialization methods -------------------------------
 
-    def __init__(self, attrs=None):
+    eleza __init__(self, attrs=Tupu):
         """Construct a new Distribution instance: initialize all the
-        attributes of a Distribution, and then use 'attrs' (a dictionary
+        attributes of a Distribution, na then use 'attrs' (a dictionary
         mapping attribute names to values) to assign some of those
         attributes their "real" values.  (Any attributes sio mentioned in
-        'attrs' will be assigned to some null value: 0, None, an empty list
-        or dictionary, etc.)  Most importantly, initialize the
+        'attrs' will be assigned to some null value: 0, Tupu, an empty list
+        ama dictionary, etc.)  Most importantly, initialize the
         'command_obj' attribute to the empty dictionary; this will be
-        filled in with real command objects by 'parse_command_line()'.
+        filled kwenye ukijumuisha real command objects by 'parse_command_line()'.
         """
 
-        # Default values for our command-line options
+        # Default values kila our command-line options
         self.verbose = 1
         self.dry_run = 0
         self.help = 0
-        for attr in self.display_option_names:
+        kila attr kwenye self.display_option_names:
             setattr(self, attr, 0)
 
-        # Store the distribution meta-data (name, version, author, and so
-        # forth) in a separate object -- we're getting to have enough
+        # Store the distribution meta-data (name, version, author, na so
+        # forth) kwenye a separate object -- we're getting to have enough
         # information here (and enough command-line options) that it's
         # worth it.  Also delegate 'get_XXX()' methods to the 'metadata'
-        # object in a sneaky and underhanded (but efficient!) way.
+        # object kwenye a sneaky na underhanded (but efficient!) way.
         self.metadata = DistributionMetadata()
-        for basename in self.metadata._METHOD_BASENAMES:
+        kila basename kwenye self.metadata._METHOD_BASENAMES:
             method_name = "get_" + basename
             setattr(self, method_name, getattr(self.metadata, method_name))
 
-        # 'cmdclass' maps command names to class objects, so we
-        # can 1) quickly figure out which class to instantiate when
-        # we need to create a new command object, and 2) have a way
-        # for the setup script to override command classes
-        self.cmdclass = {}
+        # 'cmdclass' maps command names to kundi objects, so we
+        # can 1) quickly figure out which kundi to instantiate when
+        # we need to create a new command object, na 2) have a way
+        # kila the setup script to override command classes
+        self.cmdkundi = {}
 
-        # 'command_packages' is a list of packages in which commands
-        # are searched for.  The factory for command 'foo' is expected
-        # to be named 'foo' in the module 'foo' in one of the packages
-        # named here.  This list is searched from the left; an error
-        # is raised if no named package provides the command being
+        # 'command_packages' ni a list of packages kwenye which commands
+        # are searched for.  The factory kila command 'foo' ni expected
+        # to be named 'foo' kwenye the module 'foo' kwenye one of the packages
+        # named here.  This list ni searched kutoka the left; an error
+        # ni raised ikiwa no named package provides the command being
         # searched for.  (Always access using get_command_packages().)
-        self.command_packages = None
+        self.command_packages = Tupu
 
-        # 'script_name' and 'script_args' are usually set to sys.argv[0]
-        # and sys.argv[1:], but they can be overridden when the caller is
-        # sio necessarily a setup script run from the command-line.
-        self.script_name = None
-        self.script_args = None
+        # 'script_name' na 'script_args' are usually set to sys.argv[0]
+        # na sys.argv[1:], but they can be overridden when the caller is
+        # sio necessarily a setup script run kutoka the command-line.
+        self.script_name = Tupu
+        self.script_args = Tupu
 
-        # 'command_options' is where we store command options between
-        # parsing them (from config files, the command-line, etc.) and when
-        # they are actually needed -- ie. when the command in question is
-        # instantiated.  It is a dictionary of dictionaries of 2-tuples:
+        # 'command_options' ni where we store command options between
+        # parsing them (kutoka config files, the command-line, etc.) na when
+        # they are actually needed -- ie. when the command kwenye question is
+        # instantiated.  It ni a dictionary of dictionaries of 2-tuples:
         #   command_options = { command_name : { option : (source, value) } }
         self.command_options = {}
 
-        # 'dist_files' is the list of (command, pyversion, file) that
+        # 'dist_files' ni the list of (command, pyversion, file) that
         # have been created by any dist commands run so far. This is
-        # filled regardless of whether the run is dry or not. pyversion
-        # gives sysconfig.get_python_version() if the dist file is
-        # specific to a Python version, 'any' if it is good for all
-        # Python versions on the target platform, and '' for a source
-        # file. pyversion should sio be used to specify minimum ama
-        # maximum required Python versions; use the metainfo for that
+        # filled regardless of whether the run ni dry ama not. pyversion
+        # gives sysconfig.get_python_version() ikiwa the dist file is
+        # specific to a Python version, 'any' ikiwa it ni good kila all
+        # Python versions on the target platform, na '' kila a source
+        # file. pyversion should sio be used to specify minimum or
+        # maximum required Python versions; use the metainfo kila that
         # instead.
         self.dist_files = []
 
         # These options are really the business of various commands, rather
-        # than of the Distribution itself.  We provide aliases for them in
+        # than of the Distribution itself.  We provide aliases kila them in
         # Distribution as a convenience to the developer.
-        self.packages = None
+        self.packages = Tupu
         self.package_data = {}
-        self.package_dir = None
-        self.py_modules = None
-        self.libraries = None
-        self.headers = None
-        self.ext_modules = None
-        self.ext_package = None
-        self.include_dirs = None
-        self.extra_path = None
-        self.scripts = None
-        self.data_files = None
+        self.package_dir = Tupu
+        self.py_modules = Tupu
+        self.libraries = Tupu
+        self.headers = Tupu
+        self.ext_modules = Tupu
+        self.ext_package = Tupu
+        self.include_dirs = Tupu
+        self.extra_path = Tupu
+        self.scripts = Tupu
+        self.data_files = Tupu
         self.password = ''
 
         # And now initialize bookkeeping stuff that can't be supplied by
         # the caller at all.  'command_obj' maps command names to
         # Command instances -- that's how we enforce that every command
-        # class is a singleton.
+        # kundi ni a singleton.
         self.command_obj = {}
 
         # 'have_run' maps command names to boolean values; it keeps track
         # of whether we have actually run a particular command, to make it
         # cheap to "run" a command whenever we think we might need to -- if
-        # it's already been done, no need for expensive filesystem
-        # operations, we just check the 'have_run' dictionary and carry on.
-        # It's only safe to query 'have_run' for a command class that has
+        # it's already been done, no need kila expensive filesystem
+        # operations, we just check the 'have_run' dictionary na carry on.
+        # It's only safe to query 'have_run' kila a command kundi that has
         # been instantiated -- a false value will be inserted when the
-        # command object is created, and replaced with a true value when
-        # the command is successfully run.  Thus it's probably best to use
+        # command object ni created, na replaced ukijumuisha a true value when
+        # the command ni successfully run.  Thus it's probably best to use
         # '.get()' rather than a straight lookup.
         self.have_run = {}
 
         # Now we'll use the attrs dictionary (ultimately, keyword args from
-        # the setup script) to possibly override any or all of these
+        # the setup script) to possibly override any ama all of these
         # distribution options.
 
-        if attrs:
-            # Pull out the set of command options and work on them
+        ikiwa attrs:
+            # Pull out the set of command options na work on them
             # specifically.  Note that this order guarantees that aliased
             # command options will override any supplied redundantly
             # through the general options dictionary.
             options = attrs.get('options')
-            if options ni sio None:
+            ikiwa options ni sio Tupu:
                 toa attrs['options']
-                for (command, cmd_options) in options.items():
+                kila (command, cmd_options) kwenye options.items():
                     opt_dict = self.get_option_dict(command)
-                    for (opt, val) in cmd_options.items():
+                    kila (opt, val) kwenye cmd_options.items():
                         opt_dict[opt] = ("setup script", val)
 
-            if 'licence' in attrs:
+            ikiwa 'licence' kwenye attrs:
                 attrs['license'] = attrs['licence']
                 toa attrs['licence']
-                msg = "'licence' distribution option is deprecated; use 'license'"
-                if warnings ni sio None:
+                msg = "'licence' distribution option ni deprecated; use 'license'"
+                ikiwa warnings ni sio Tupu:
                     warnings.warn(msg)
                 isipokua:
                     sys.stderr.write(msg + "\n")
 
             # Now work on the rest of the attributes.  Any attribute that's
-            # sio already defined is invalid!
-            for (key, val) in attrs.items():
-                if hasattr(self.metadata, "set_" + key):
+            # sio already defined ni invalid!
+            kila (key, val) kwenye attrs.items():
+                ikiwa hasattr(self.metadata, "set_" + key):
                     getattr(self.metadata, "set_" + key)(val)
-                lasivyo hasattr(self.metadata, key):
+                elikiwa hasattr(self.metadata, key):
                     setattr(self.metadata, key, val)
-                lasivyo hasattr(self, key):
+                elikiwa hasattr(self, key):
                     setattr(self, key, val)
                 isipokua:
                     msg = "Unknown distribution option: %s" % repr(key)
                     warnings.warn(msg)
 
-        # no-user-cfg is handled before other command line args
-        # because other args override the config files, and this
-        # one is needed before we can load the config files.
+        # no-user-cfg ni handled before other command line args
+        # because other args override the config files, na this
+        # one ni needed before we can load the config files.
         # If attrs['script_args'] wasn't passed, assume false.
         #
         # This also make sure we just look at the global options
-        self.want_user_cfg = True
+        self.want_user_cfg = Kweli
 
-        if self.script_args ni sio None:
-            for arg in self.script_args:
-                if sio arg.startswith('-'):
+        ikiwa self.script_args ni sio Tupu:
+            kila arg kwenye self.script_args:
+                ikiwa sio arg.startswith('-'):
                     koma
-                if arg == '--no-user-cfg':
-                    self.want_user_cfg = False
+                ikiwa arg == '--no-user-cfg':
+                    self.want_user_cfg = Uongo
                     koma
 
         self.finalize_options()
 
-    def get_option_dict(self, command):
-        """Get the option dictionary for a given command.  If that
+    eleza get_option_dict(self, command):
+        """Get the option dictionary kila a given command.  If that
         command's option dictionary hasn't been created yet, then create it
-        and return the new dictionary; otherwise, return the existing
+        na rudisha the new dictionary; otherwise, rudisha the existing
         option dictionary.
         """
         dict = self.command_options.get(command)
-        if dict is None:
+        ikiwa dict ni Tupu:
             dict = self.command_options[command] = {}
-        return dict
+        rudisha dict
 
-    def dump_option_dicts(self, header=None, commands=None, indent=""):
-        from pprint import pformat
+    eleza dump_option_dicts(self, header=Tupu, commands=Tupu, indent=""):
+        kutoka pprint agiza pformat
 
-        if commands is None:             # dump all command option dicts
+        ikiwa commands ni Tupu:             # dump all command option dicts
             commands = sorted(self.command_options.keys())
 
-        if header ni sio None:
+        ikiwa header ni sio Tupu:
             self.announce(indent + header)
             indent = indent + "  "
 
-        if sio commands:
+        ikiwa sio commands:
             self.announce(indent + "no commands known yet")
             return
 
-        for cmd_name in commands:
+        kila cmd_name kwenye commands:
             opt_dict = self.command_options.get(cmd_name)
-            if opt_dict is None:
+            ikiwa opt_dict ni Tupu:
                 self.announce(indent +
-                              "no option dict for '%s' command" % cmd_name)
+                              "no option dict kila '%s' command" % cmd_name)
             isipokua:
                 self.announce(indent +
-                              "option dict for '%s' command:" % cmd_name)
+                              "option dict kila '%s' command:" % cmd_name)
                 out = pformat(opt_dict)
-                for line in out.split('\n'):
+                kila line kwenye out.split('\n'):
                     self.announce(indent + "  " + line)
 
     # -- Config file finding/parsing methods ---------------------------
 
-    def find_config_files(self):
-        """Find as many configuration files as should be processed for this
-        platform, and return a list of filenames in the order in which they
+    eleza find_config_files(self):
+        """Find as many configuration files as should be processed kila this
+        platform, na rudisha a list of filenames kwenye the order kwenye which they
         should be parsed.  The filenames returned are guaranteed to exist
         (modulo nasty race conditions).
 
-        There are three possible config files: distutils.cfg in the
+        There are three possible config files: distutils.cfg kwenye the
         Distutils installation directory (ie. where the top-level
-        Distutils __inst__.py file lives), a file in the user's home
-        directory named .pydistutils.cfg on Unix and pydistutils.cfg
-        on Windows/Mac; and setup.cfg in the current directory.
+        Distutils __inst__.py file lives), a file kwenye the user's home
+        directory named .pydistutils.cfg on Unix na pydistutils.cfg
+        on Windows/Mac; na setup.cfg kwenye the current directory.
 
-        The file in the user's home directory can be disabled with the
+        The file kwenye the user's home directory can be disabled ukijumuisha the
         --no-user-cfg option.
         """
         files = []
         check_environ()
 
-        # Where to look for the system-wide Distutils config file
+        # Where to look kila the system-wide Distutils config file
         sys_dir = os.path.dirname(sys.modules['distutils'].__file__)
 
-        # Look for the system config file
+        # Look kila the system config file
         sys_file = os.path.join(sys_dir, "distutils.cfg")
-        if os.path.isfile(sys_file):
+        ikiwa os.path.isfile(sys_file):
             files.append(sys_file)
 
         # What to call the per-user config file
-        if os.name == 'posix':
+        ikiwa os.name == 'posix':
             user_filename = ".pydistutils.cfg"
         isipokua:
             user_filename = "pydistutils.cfg"
 
-        # And look for the user config file
-        if self.want_user_cfg:
+        # And look kila the user config file
+        ikiwa self.want_user_cfg:
             user_file = os.path.join(os.path.expanduser('~'), user_filename)
-            if os.path.isfile(user_file):
+            ikiwa os.path.isfile(user_file):
                 files.append(user_file)
 
         # All platforms support local setup.cfg
         local_file = "setup.cfg"
-        if os.path.isfile(local_file):
+        ikiwa os.path.isfile(local_file):
             files.append(local_file)
 
-        if DEBUG:
+        ikiwa DEBUG:
             self.announce("using config files: %s" % ', '.join(files))
 
-        return files
+        rudisha files
 
-    def parse_config_files(self, filenames=None):
-        from configparser import ConfigParser
+    eleza parse_config_files(self, filenames=Tupu):
+        kutoka configparser agiza ConfigParser
 
-        # Ignore install directory options if we have a venv
-        if sys.prefix != sys.base_prefix:
+        # Ignore install directory options ikiwa we have a venv
+        ikiwa sys.prefix != sys.base_prefix:
             ignore_options = [
                 'install-base', 'install-platbase', 'install-lib',
                 'install-platlib', 'install-purelib', 'install-headers',
@@ -393,23 +393,23 @@ Common commands: (see '--help-commands' for more)
 
         ignore_options = frozenset(ignore_options)
 
-        if filenames is None:
+        ikiwa filenames ni Tupu:
             filenames = self.find_config_files()
 
-        if DEBUG:
+        ikiwa DEBUG:
             self.announce("Distribution.parse_config_files():")
 
         parser = ConfigParser()
-        for filename in filenames:
-            if DEBUG:
+        kila filename kwenye filenames:
+            ikiwa DEBUG:
                 self.announce("  reading %s" % filename)
             parser.read(filename)
-            for section in parser.sections():
+            kila section kwenye parser.sections():
                 options = parser.options(section)
                 opt_dict = self.get_option_dict(section)
 
-                for opt in options:
-                    if opt != '__name__' and opt haiko kwenye ignore_options:
+                kila opt kwenye options:
+                    ikiwa opt != '__name__' na opt sio kwenye ignore_options:
                         val = parser.get(section,opt)
                         opt = opt.replace('-', '_')
                         opt_dict[opt] = (filename, val)
@@ -418,41 +418,41 @@ Common commands: (see '--help-commands' for more)
             # the original filenames that options come from)
             parser.__init__()
 
-        # If there was a "global" section in the config file, use it
+        # If there was a "global" section kwenye the config file, use it
         # to set Distribution options.
 
-        if 'global' in self.command_options:
-            for (opt, (src, val)) in self.command_options['global'].items():
+        ikiwa 'global' kwenye self.command_options:
+            kila (opt, (src, val)) kwenye self.command_options['global'].items():
                 alias = self.negative_opt.get(opt)
                 jaribu:
-                    if alias:
+                    ikiwa alias:
                         setattr(self, alias, sio strtobool(val))
-                    lasivyo opt in ('verbose', 'dry_run'): # ugh!
+                    elikiwa opt kwenye ('verbose', 'dry_run'): # ugh!
                         setattr(self, opt, strtobool(val))
                     isipokua:
                         setattr(self, opt, val)
-                tatizo ValueError as msg:
-                    ashiria DistutilsOptionError(msg)
+                except ValueError as msg:
+                     ashiria DistutilsOptionError(msg)
 
     # -- Command-line parsing methods ----------------------------------
 
-    def parse_command_line(self):
-        """Parse the setup script's command line, taken from the
+    eleza parse_command_line(self):
+        """Parse the setup script's command line, taken kutoka the
         'script_args' instance attribute (which defaults to 'sys.argv[1:]'
-        -- see 'setup()' in core.py).  This list is first processed for
+        -- see 'setup()' kwenye core.py).  This list ni first processed for
         "global options" -- options that set attributes of the Distribution
-        instance.  Then, it is alternately scanned for Distutils commands
-        and options for that command.  Each new command terminates the
-        options for the previous command.  The allowed options for a
+        instance.  Then, it ni alternately scanned kila Distutils commands
+        na options kila that command.  Each new command terminates the
+        options kila the previous command.  The allowed options kila a
         command are determined by the 'user_options' attribute of the
-        command class -- thus, we have to be able to load command classes
-        in order to parse the command line.  Any error in that 'options'
+        command kundi -- thus, we have to be able to load command classes
+        kwenye order to parse the command line.  Any error kwenye that 'options'
         attribute raises DistutilsGetoptError; any error on the
         command-line raises DistutilsArgError.  If no Distutils commands
         were found on the command line, raises DistutilsArgError.  Return
-        true if command-line was successfully parsed and we should carry
-        on with executing commands; false if no errors but we shouldn't
-        execute commands (currently, this only happens if user asks for
+        true ikiwa command-line was successfully parsed na we should carry
+        on ukijumuisha executing commands; false ikiwa no errors but we shouldn't
+        execute commands (currently, this only happens ikiwa user asks for
         help).
         """
         #
@@ -462,9 +462,9 @@ Common commands: (see '--help-commands' for more)
         toplevel_options = self._get_toplevel_options()
 
         # We have to parse the command line a bit at a time -- global
-        # options, then the first command, then its options, and so on --
-        # because each command will be handled by a different class, na
-        # the options that are valid for a particular class aren't known
+        # options, then the first command, then its options, na so on --
+        # because each command will be handled by a different class, and
+        # the options that are valid kila a particular kundi aren't known
         # until we have loaded the command class, which doesn't happen
         # until we know what the command is.
 
@@ -476,381 +476,381 @@ Common commands: (see '--help-commands' for more)
         option_order = parser.get_option_order()
         log.set_verbosity(self.verbose)
 
-        # for display options we return immediately
-        if self.handle_display_options(option_order):
+        # kila display options we rudisha immediately
+        ikiwa self.handle_display_options(option_order):
             return
         wakati args:
             args = self._parse_command_opts(parser, args)
-            if args is None:            # user asked for help (and got it)
+            ikiwa args ni Tupu:            # user asked kila help (and got it)
                 return
 
         # Handle the cases of --help as a "global" option, ie.
-        # "setup.py --help" and "setup.py --help command ...".  For the
+        # "setup.py --help" na "setup.py --help command ...".  For the
         # former, we show global options (--verbose, --dry-run, etc.)
-        # and display-only options (--name, --version, etc.); for the
-        # latter, we omit the display-only options and show help for
+        # na display-only options (--name, --version, etc.); kila the
+        # latter, we omit the display-only options na show help for
         # each command listed on the command line.
-        if self.help:
+        ikiwa self.help:
             self._show_help(parser,
                             display_options=len(self.commands) == 0,
                             commands=self.commands)
             return
 
         # Oops, no commands found -- an end-user error
-        if sio self.commands:
-            ashiria DistutilsArgError("no commands supplied")
+        ikiwa sio self.commands:
+             ashiria DistutilsArgError("no commands supplied")
 
-        # All is well: return true
-        return True
+        # All ni well: rudisha true
+        rudisha Kweli
 
-    def _get_toplevel_options(self):
+    eleza _get_toplevel_options(self):
         """Return the non-display options recognized at the top level.
 
         This includes options that are recognized *only* at the top
-        level as well as options recognized for commands.
+        level as well as options recognized kila commands.
         """
-        return self.global_options + [
-            ("command-packages=", None,
+        rudisha self.global_options + [
+            ("command-packages=", Tupu,
              "list of packages that provide distutils commands"),
             ]
 
-    def _parse_command_opts(self, parser, args):
-        """Parse the command-line options for a single command.
+    eleza _parse_command_opts(self, parser, args):
+        """Parse the command-line options kila a single command.
         'parser' must be a FancyGetopt instance; 'args' must be the list
-        of arguments, starting with the current command (whose options
+        of arguments, starting ukijumuisha the current command (whose options
         we are about to parse).  Returns a new version of 'args' with
         the next command at the front of the list; will be the empty
-        list if there are no more commands on the command line.  Returns
-        None if the user asked for help on this command.
+        list ikiwa there are no more commands on the command line.  Returns
+        Tupu ikiwa the user asked kila help on this command.
         """
-        # late import because of mutual dependence between these modules
-        from distutils.cmd import Command
+        # late agiza because of mutual dependence between these modules
+        kutoka distutils.cmd agiza Command
 
-        # Pull the current command from the head of the command line
+        # Pull the current command kutoka the head of the command line
         command = args[0]
-        if sio command_re.match(command):
-            ashiria SystemExit("invalid command name '%s'" % command)
+        ikiwa sio command_re.match(command):
+             ashiria SystemExit("invalid command name '%s'" % command)
         self.commands.append(command)
 
-        # Dig up the command class that implements this command, so we
-        # 1) know that it's a valid command, and 2) know which options
+        # Dig up the command kundi that implements this command, so we
+        # 1) know that it's a valid command, na 2) know which options
         # it takes.
         jaribu:
-            cmd_class = self.get_command_class(command)
-        tatizo DistutilsModuleError as msg:
-            ashiria DistutilsArgError(msg)
+            cmd_kundi = self.get_command_class(command)
+        except DistutilsModuleError as msg:
+             ashiria DistutilsArgError(msg)
 
-        # Require that the command class be derived from Command -- want
-        # to be sure that the basic "command" interface is implemented.
-        if sio issubclass(cmd_class, Command):
-            ashiria DistutilsClassError(
-                "command class %s must subclass Command" % cmd_class)
+        # Require that the command kundi be derived kutoka Command -- want
+        # to be sure that the basic "command" interface ni implemented.
+        ikiwa sio issubclass(cmd_class, Command):
+             ashiria DistutilsClassError(
+                "command kundi %s must subkundi Command" % cmd_class)
 
         # Also make sure that the command object provides a list of its
         # known options.
-        if sio (hasattr(cmd_class, 'user_options') na
+        ikiwa sio (hasattr(cmd_class, 'user_options') and
                 isinstance(cmd_class.user_options, list)):
-            msg = ("command class %s must provide "
+            msg = ("command kundi %s must provide "
                 "'user_options' attribute (a list of tuples)")
-            ashiria DistutilsClassError(msg % cmd_class)
+             ashiria DistutilsClassError(msg % cmd_class)
 
-        # If the command class has a list of negative alias options,
-        # merge it in with the global negative aliases.
+        # If the command kundi has a list of negative alias options,
+        # merge it kwenye ukijumuisha the global negative aliases.
         negative_opt = self.negative_opt
-        if hasattr(cmd_class, 'negative_opt'):
+        ikiwa hasattr(cmd_class, 'negative_opt'):
             negative_opt = negative_opt.copy()
             negative_opt.update(cmd_class.negative_opt)
 
-        # Check for help_options in command class.  They have a different
+        # Check kila help_options kwenye command class.  They have a different
         # format (tuple of four) so we need to preprocess them here.
-        if (hasattr(cmd_class, 'help_options') na
+        ikiwa (hasattr(cmd_class, 'help_options') and
                 isinstance(cmd_class.help_options, list)):
             help_options = fix_help_options(cmd_class.help_options)
         isipokua:
             help_options = []
 
         # All commands support the global options too, just by adding
-        # in 'global_options'.
+        # kwenye 'global_options'.
         parser.set_option_table(self.global_options +
                                 cmd_class.user_options +
                                 help_options)
         parser.set_negative_aliases(negative_opt)
         (args, opts) = parser.getopt(args[1:])
-        if hasattr(opts, 'help') and opts.help:
+        ikiwa hasattr(opts, 'help') na opts.help:
             self._show_help(parser, display_options=0, commands=[cmd_class])
             return
 
-        if (hasattr(cmd_class, 'help_options') na
+        ikiwa (hasattr(cmd_class, 'help_options') and
                 isinstance(cmd_class.help_options, list)):
             help_option_found=0
-            for (help_option, short, desc, func) in cmd_class.help_options:
-                if hasattr(opts, parser.get_attr_name(help_option)):
+            kila (help_option, short, desc, func) kwenye cmd_class.help_options:
+                ikiwa hasattr(opts, parser.get_attr_name(help_option)):
                     help_option_found=1
-                    if callable(func):
+                    ikiwa callable(func):
                         func()
                     isipokua:
-                        ashiria DistutilsClassError(
-                            "invalid help function %r for help option '%s': "
+                         ashiria DistutilsClassError(
+                            "invalid help function %r kila help option '%s': "
                             "must be a callable object (function, etc.)"
                             % (func, help_option))
 
-            if help_option_found:
+            ikiwa help_option_found:
                 return
 
-        # Put the options from the command-line into their official
+        # Put the options kutoka the command-line into their official
         # holding pen, the 'command_options' dictionary.
         opt_dict = self.get_option_dict(command)
-        for (name, value) in vars(opts).items():
+        kila (name, value) kwenye vars(opts).items():
             opt_dict[name] = ("command line", value)
 
-        return args
+        rudisha args
 
-    def finalize_options(self):
-        """Set final values for all the options on the Distribution
+    eleza finalize_options(self):
+        """Set final values kila all the options on the Distribution
         instance, analogous to the .finalize_options() method of Command
         objects.
         """
-        for attr in ('keywords', 'platforms'):
+        kila attr kwenye ('keywords', 'platforms'):
             value = getattr(self.metadata, attr)
-            if value is None:
+            ikiwa value ni Tupu:
                 endelea
-            if isinstance(value, str):
-                value = [elm.strip() for elm in value.split(',')]
+            ikiwa isinstance(value, str):
+                value = [elm.strip() kila elm kwenye value.split(',')]
                 setattr(self.metadata, attr, value)
 
-    def _show_help(self, parser, global_options=1, display_options=1,
+    eleza _show_help(self, parser, global_options=1, display_options=1,
                    commands=[]):
-        """Show help for the setup script command-line in the form of
+        """Show help kila the setup script command-line kwenye the form of
         several lists of command-line options.  'parser' should be a
-        FancyGetopt instance; do sio expect it to be returned in the
+        FancyGetopt instance; do sio expect it to be returned kwenye the
         same state, as its option table will be reset to make it
         generate the correct help text.
 
-        If 'global_options' is true, lists the global options:
-        --verbose, --dry-run, etc.  If 'display_options' is true, lists
+        If 'global_options' ni true, lists the global options:
+        --verbose, --dry-run, etc.  If 'display_options' ni true, lists
         the "display-only" options: --name, --version, etc.  Finally,
-        lists per-command help for every command name or command class
-        in 'commands'.
+        lists per-command help kila every command name ama command class
+        kwenye 'commands'.
         """
-        # late import because of mutual dependence between these modules
-        from distutils.core import gen_usage
-        from distutils.cmd import Command
+        # late agiza because of mutual dependence between these modules
+        kutoka distutils.core agiza gen_usage
+        kutoka distutils.cmd agiza Command
 
-        if global_options:
-            if display_options:
+        ikiwa global_options:
+            ikiwa display_options:
                 options = self._get_toplevel_options()
             isipokua:
                 options = self.global_options
             parser.set_option_table(options)
             parser.print_help(self.common_usage + "\nGlobal options:")
-            print('')
+            andika('')
 
-        if display_options:
+        ikiwa display_options:
             parser.set_option_table(self.display_options)
             parser.print_help(
                 "Information display options (just display " +
                 "information, ignore any commands)")
-            print('')
+            andika('')
 
-        for command in self.commands:
-            if isinstance(command, type) and issubclass(command, Command):
+        kila command kwenye self.commands:
+            ikiwa isinstance(command, type) na issubclass(command, Command):
                 klass = command
             isipokua:
                 klass = self.get_command_class(command)
-            if (hasattr(klass, 'help_options') na
+            ikiwa (hasattr(klass, 'help_options') and
                     isinstance(klass.help_options, list)):
                 parser.set_option_table(klass.user_options +
                                         fix_help_options(klass.help_options))
             isipokua:
                 parser.set_option_table(klass.user_options)
-            parser.print_help("Options for '%s' command:" % klass.__name__)
-            print('')
+            parser.print_help("Options kila '%s' command:" % klass.__name__)
+            andika('')
 
-        print(gen_usage(self.script_name))
+        andika(gen_usage(self.script_name))
 
-    def handle_display_options(self, option_order):
+    eleza handle_display_options(self, option_order):
         """If there were any non-global "display-only" options
-        (--help-commands or the metadata display options) on the command
-        line, display the requested info and return true; isipokua return
+        (--help-commands ama the metadata display options) on the command
+        line, display the requested info na rudisha true; isipokua return
         false.
         """
-        from distutils.core import gen_usage
+        kutoka distutils.core agiza gen_usage
 
-        # User just wants a list of commands -- we'll print it out and stop
-        # processing now (ie. if they ran "setup --help-commands foo bar",
+        # User just wants a list of commands -- we'll print it out na stop
+        # processing now (ie. ikiwa they ran "setup --help-commands foo bar",
         # we ignore "foo bar").
-        if self.help_commands:
+        ikiwa self.help_commands:
             self.print_commands()
-            print('')
-            print(gen_usage(self.script_name))
-            return 1
+            andika('')
+            andika(gen_usage(self.script_name))
+            rudisha 1
 
         # If user supplied any of the "display metadata" options, then
-        # display that metadata in the order in which the user supplied the
+        # display that metadata kwenye the order kwenye which the user supplied the
         # metadata options.
         any_display_options = 0
         is_display_option = {}
-        for option in self.display_options:
+        kila option kwenye self.display_options:
             is_display_option[option[0]] = 1
 
-        for (opt, val) in option_order:
-            if val and is_display_option.get(opt):
+        kila (opt, val) kwenye option_order:
+            ikiwa val na is_display_option.get(opt):
                 opt = translate_longopt(opt)
                 value = getattr(self.metadata, "get_"+opt)()
-                if opt in ['keywords', 'platforms']:
-                    print(','.join(value))
-                lasivyo opt in ('classifiers', 'provides', 'requires',
+                ikiwa opt kwenye ['keywords', 'platforms']:
+                    andika(','.join(value))
+                elikiwa opt kwenye ('classifiers', 'provides', 'requires',
                              'obsoletes'):
-                    print('\n'.join(value))
+                    andika('\n'.join(value))
                 isipokua:
-                    print(value)
+                    andika(value)
                 any_display_options = 1
 
-        return any_display_options
+        rudisha any_display_options
 
-    def print_command_list(self, commands, header, max_length):
+    eleza print_command_list(self, commands, header, max_length):
         """Print a subset of the list of all commands -- used by
         'print_commands()'.
         """
-        print(header + ":")
+        andika(header + ":")
 
-        for cmd in commands:
+        kila cmd kwenye commands:
             klass = self.cmdclass.get(cmd)
-            if sio klass:
+            ikiwa sio klass:
                 klass = self.get_command_class(cmd)
             jaribu:
                 description = klass.description
-            tatizo AttributeError:
+            except AttributeError:
                 description = "(no description available)"
 
-            print("  %-*s  %s" % (max_length, cmd, description))
+            andika("  %-*s  %s" % (max_length, cmd, description))
 
-    def print_commands(self):
-        """Print out a help message listing all available commands with a
-        description of each.  The list is divided into "standard commands"
-        (listed in distutils.command.__all__) and "extra commands"
-        (mentioned in self.cmdclass, but sio a standard command).  The
-        descriptions come from the command class attribute
+    eleza print_commands(self):
+        """Print out a help message listing all available commands ukijumuisha a
+        description of each.  The list ni divided into "standard commands"
+        (listed kwenye distutils.command.__all__) na "extra commands"
+        (mentioned kwenye self.cmdclass, but sio a standard command).  The
+        descriptions come kutoka the command kundi attribute
         'description'.
         """
-        import distutils.command
+        agiza distutils.command
         std_commands = distutils.command.__all__
         is_std = {}
-        for cmd in std_commands:
+        kila cmd kwenye std_commands:
             is_std[cmd] = 1
 
         extra_commands = []
-        for cmd in self.cmdclass.keys():
-            if sio is_std.get(cmd):
+        kila cmd kwenye self.cmdclass.keys():
+            ikiwa sio is_std.get(cmd):
                 extra_commands.append(cmd)
 
         max_length = 0
-        for cmd in (std_commands + extra_commands):
-            if len(cmd) > max_length:
+        kila cmd kwenye (std_commands + extra_commands):
+            ikiwa len(cmd) > max_length:
                 max_length = len(cmd)
 
         self.print_command_list(std_commands,
                                 "Standard commands",
                                 max_length)
-        if extra_commands:
-            print()
+        ikiwa extra_commands:
+            andika()
             self.print_command_list(extra_commands,
                                     "Extra commands",
                                     max_length)
 
-    def get_command_list(self):
+    eleza get_command_list(self):
         """Get a list of (command, description) tuples.
-        The list is divided into "standard commands" (listed in
-        distutils.command.__all__) and "extra commands" (mentioned in
+        The list ni divided into "standard commands" (listed in
+        distutils.command.__all__) na "extra commands" (mentioned in
         self.cmdclass, but sio a standard command).  The descriptions come
-        from the command class attribute 'description'.
+        kutoka the command kundi attribute 'description'.
         """
-        # Currently this is only used on Mac OS, for the Mac-only GUI
+        # Currently this ni only used on Mac OS, kila the Mac-only GUI
         # Distutils interface (by Jack Jansen)
-        import distutils.command
+        agiza distutils.command
         std_commands = distutils.command.__all__
         is_std = {}
-        for cmd in std_commands:
+        kila cmd kwenye std_commands:
             is_std[cmd] = 1
 
         extra_commands = []
-        for cmd in self.cmdclass.keys():
-            if sio is_std.get(cmd):
+        kila cmd kwenye self.cmdclass.keys():
+            ikiwa sio is_std.get(cmd):
                 extra_commands.append(cmd)
 
         rv = []
-        for cmd in (std_commands + extra_commands):
+        kila cmd kwenye (std_commands + extra_commands):
             klass = self.cmdclass.get(cmd)
-            if sio klass:
+            ikiwa sio klass:
                 klass = self.get_command_class(cmd)
             jaribu:
                 description = klass.description
-            tatizo AttributeError:
+            except AttributeError:
                 description = "(no description available)"
             rv.append((cmd, description))
-        return rv
+        rudisha rv
 
     # -- Command class/object methods ----------------------------------
 
-    def get_command_packages(self):
-        """Return a list of packages from which commands are loaded."""
+    eleza get_command_packages(self):
+        """Return a list of packages kutoka which commands are loaded."""
         pkgs = self.command_packages
-        if sio isinstance(pkgs, list):
-            if pkgs is None:
+        ikiwa sio isinstance(pkgs, list):
+            ikiwa pkgs ni Tupu:
                 pkgs = ''
-            pkgs = [pkg.strip() for pkg in pkgs.split(',') if pkg != '']
-            if "distutils.command" haiko kwenye pkgs:
+            pkgs = [pkg.strip() kila pkg kwenye pkgs.split(',') ikiwa pkg != '']
+            ikiwa "distutils.command" sio kwenye pkgs:
                 pkgs.insert(0, "distutils.command")
             self.command_packages = pkgs
-        return pkgs
+        rudisha pkgs
 
-    def get_command_class(self, command):
-        """Return the class that implements the Distutils command named by
-        'command'.  First we check the 'cmdclass' dictionary; if the
-        command is mentioned there, we fetch the class object from the
-        dictionary and return it.  Otherwise we load the command module
-        ("distutils.command." + command) and fetch the command class from
-        the module.  The loaded class is also stored in 'cmdclass'
+    eleza get_command_class(self, command):
+        """Return the kundi that implements the Distutils command named by
+        'command'.  First we check the 'cmdclass' dictionary; ikiwa the
+        command ni mentioned there, we fetch the kundi object kutoka the
+        dictionary na rudisha it.  Otherwise we load the command module
+        ("distutils.command." + command) na fetch the command kundi from
+        the module.  The loaded kundi ni also stored kwenye 'cmdclass'
         to speed future calls to 'get_command_class()'.
 
-        Raises DistutilsModuleError if the expected module could sio be
-        found, or if that module does sio define the expected class.
+        Raises DistutilsModuleError ikiwa the expected module could sio be
+        found, ama ikiwa that module does sio define the expected class.
         """
         klass = self.cmdclass.get(command)
-        if klass:
-            return klass
+        ikiwa klass:
+            rudisha klass
 
-        for pkgname in self.get_command_packages():
+        kila pkgname kwenye self.get_command_packages():
             module_name = "%s.%s" % (pkgname, command)
             klass_name = command
 
             jaribu:
                 __import__(module_name)
                 module = sys.modules[module_name]
-            tatizo ImportError:
+            except ImportError:
                 endelea
 
             jaribu:
                 klass = getattr(module, klass_name)
-            tatizo AttributeError:
-                ashiria DistutilsModuleError(
-                    "invalid command '%s' (no class '%s' in module '%s')"
+            except AttributeError:
+                 ashiria DistutilsModuleError(
+                    "invalid command '%s' (no kundi '%s' kwenye module '%s')"
                     % (command, klass_name, module_name))
 
             self.cmdclass[command] = klass
-            return klass
+            rudisha klass
 
-        ashiria DistutilsModuleError("invalid command '%s'" % command)
+         ashiria DistutilsModuleError("invalid command '%s'" % command)
 
-    def get_command_obj(self, command, create=1):
-        """Return the command object for 'command'.  Normally this object
-        is cached on a previous call to 'get_command_obj()'; if no command
-        object for 'command' is in the cache, then we either create na
-        return it (if 'create' is true) ama return None.
+    eleza get_command_obj(self, command, create=1):
+        """Return the command object kila 'command'.  Normally this object
+        ni cached on a previous call to 'get_command_obj()'; ikiwa no command
+        object kila 'command' ni kwenye the cache, then we either create and
+        rudisha it (ikiwa 'create' ni true) ama rudisha Tupu.
         """
         cmd_obj = self.command_obj.get(command)
-        if sio cmd_obj and create:
-            if DEBUG:
+        ikiwa sio cmd_obj na create:
+            ikiwa DEBUG:
                 self.announce("Distribution.get_command_obj(): "
                               "creating '%s' command object" % command)
 
@@ -858,125 +858,125 @@ Common commands: (see '--help-commands' for more)
             cmd_obj = self.command_obj[command] = klass(self)
             self.have_run[command] = 0
 
-            # Set any options that were supplied in config files
-            # or on the command line.  (NB. support for error
-            # reporting is lame here: any errors aren't reported
-            # until 'finalize_options()' is called, which means
+            # Set any options that were supplied kwenye config files
+            # ama on the command line.  (NB. support kila error
+            # reporting ni lame here: any errors aren't reported
+            # until 'finalize_options()' ni called, which means
             # we won't report the source of the error.)
             options = self.command_options.get(command)
-            if options:
+            ikiwa options:
                 self._set_command_options(cmd_obj, options)
 
-        return cmd_obj
+        rudisha cmd_obj
 
-    def _set_command_options(self, command_obj, option_dict=None):
-        """Set the options for 'command_obj' from 'option_dict'.  Basically
+    eleza _set_command_options(self, command_obj, option_dict=Tupu):
+        """Set the options kila 'command_obj' kutoka 'option_dict'.  Basically
         this means copying elements of a dictionary ('option_dict') to
         attributes of an instance ('command').
 
-        'command_obj' must be a Command instance.  If 'option_dict' is not
-        supplied, uses the standard option dictionary for this command
-        (from 'self.command_options').
+        'command_obj' must be a Command instance.  If 'option_dict' ni not
+        supplied, uses the standard option dictionary kila this command
+        (kutoka 'self.command_options').
         """
         command_name = command_obj.get_command_name()
-        if option_dict is None:
+        ikiwa option_dict ni Tupu:
             option_dict = self.get_option_dict(command_name)
 
-        if DEBUG:
-            self.announce("  setting options for '%s' command:" % command_name)
-        for (option, (source, value)) in option_dict.items():
-            if DEBUG:
-                self.announce("    %s = %s (from %s)" % (option, value,
+        ikiwa DEBUG:
+            self.announce("  setting options kila '%s' command:" % command_name)
+        kila (option, (source, value)) kwenye option_dict.items():
+            ikiwa DEBUG:
+                self.announce("    %s = %s (kutoka %s)" % (option, value,
                                                          source))
             jaribu:
                 bool_opts = [translate_longopt(o)
-                             for o in command_obj.boolean_options]
-            tatizo AttributeError:
+                             kila o kwenye command_obj.boolean_options]
+            except AttributeError:
                 bool_opts = []
             jaribu:
                 neg_opt = command_obj.negative_opt
-            tatizo AttributeError:
+            except AttributeError:
                 neg_opt = {}
 
             jaribu:
                 is_string = isinstance(value, str)
-                if option in neg_opt and is_string:
+                ikiwa option kwenye neg_opt na is_string:
                     setattr(command_obj, neg_opt[option], sio strtobool(value))
-                lasivyo option in bool_opts and is_string:
+                elikiwa option kwenye bool_opts na is_string:
                     setattr(command_obj, option, strtobool(value))
-                lasivyo hasattr(command_obj, option):
+                elikiwa hasattr(command_obj, option):
                     setattr(command_obj, option, value)
                 isipokua:
-                    ashiria DistutilsOptionError(
-                        "error in %s: command '%s' has no such option '%s'"
+                     ashiria DistutilsOptionError(
+                        "error kwenye %s: command '%s' has no such option '%s'"
                         % (source, command_name, option))
-            tatizo ValueError as msg:
-                ashiria DistutilsOptionError(msg)
+            except ValueError as msg:
+                 ashiria DistutilsOptionError(msg)
 
-    def reinitialize_command(self, command, reinit_subcommands=0):
-        """Reinitializes a command to the state it was in when first
+    eleza reinitialize_command(self, command, reinit_subcommands=0):
+        """Reinitializes a command to the state it was kwenye when first
         returned by 'get_command_obj()': ie., initialized but sio yet
         finalized.  This provides the opportunity to sneak option
-        values in programmatically, overriding or supplementing
-        user-supplied values from the config files and command line.
+        values kwenye programmatically, overriding ama supplementing
+        user-supplied values kutoka the config files na command line.
         You'll have to re-finalize the command object (by calling
-        'finalize_options()' or 'ensure_finalized()') before using it for
+        'finalize_options()' ama 'ensure_finalized()') before using it for
         real.
 
         'command' should be a command name (string) ama command object.  If
-        'reinit_subcommands' is true, also reinitializes the command's
-        sub-commands, as declared by the 'sub_commands' class attribute (if
-        it has one).  See the "install" command for an example.  Only
+        'reinit_subcommands' ni true, also reinitializes the command's
+        sub-commands, as declared by the 'sub_commands' kundi attribute (if
+        it has one).  See the "install" command kila an example.  Only
         reinitializes the sub-commands that actually matter, ie. those
-        whose test predicates return true.
+        whose test predicates rudisha true.
 
         Returns the reinitialized command object.
         """
-        from distutils.cmd import Command
-        if sio isinstance(command, Command):
+        kutoka distutils.cmd agiza Command
+        ikiwa sio isinstance(command, Command):
             command_name = command
             command = self.get_command_obj(command_name)
         isipokua:
             command_name = command.get_command_name()
 
-        if sio command.finalized:
-            return command
+        ikiwa sio command.finalized:
+            rudisha command
         command.initialize_options()
         command.finalized = 0
         self.have_run[command_name] = 0
         self._set_command_options(command)
 
-        if reinit_subcommands:
-            for sub in command.get_sub_commands():
+        ikiwa reinit_subcommands:
+            kila sub kwenye command.get_sub_commands():
                 self.reinitialize_command(sub, reinit_subcommands)
 
-        return command
+        rudisha command
 
     # -- Methods that operate on the Distribution ----------------------
 
-    def announce(self, msg, level=log.INFO):
+    eleza announce(self, msg, level=log.INFO):
         log.log(level, msg)
 
-    def run_commands(self):
+    eleza run_commands(self):
         """Run each command that was seen on the setup script command line.
-        Uses the list of commands found and cache of command objects
+        Uses the list of commands found na cache of command objects
         created by 'get_command_obj()'.
         """
-        for cmd in self.commands:
+        kila cmd kwenye self.commands:
             self.run_command(cmd)
 
     # -- Methods that operate on its Commands --------------------------
 
-    def run_command(self, command):
+    eleza run_command(self, command):
         """Do whatever it takes to run a command (including nothing at all,
-        if the command has already been run).  Specifically: if we have
-        already created and run the command named by 'command', return
+        ikiwa the command has already been run).  Specifically: ikiwa we have
+        already created na run the command named by 'command', return
         silently without doing anything.  If the command named by 'command'
         doesn't even have a command object yet, create one.  Then invoke
         'run()' on that command object (or an existing one).
         """
-        # Already been here, done that? then return silently.
-        if self.have_run.get(command):
+        # Already been here, done that? then rudisha silently.
+        ikiwa self.have_run.get(command):
             return
 
         log.info("running %s", command)
@@ -987,42 +987,42 @@ Common commands: (see '--help-commands' for more)
 
     # -- Distribution query methods ------------------------------------
 
-    def has_pure_modules(self):
-        return len(self.packages or self.py_modules or []) > 0
+    eleza has_pure_modules(self):
+        rudisha len(self.packages ama self.py_modules ama []) > 0
 
-    def has_ext_modules(self):
-        return self.ext_modules and len(self.ext_modules) > 0
+    eleza has_ext_modules(self):
+        rudisha self.ext_modules na len(self.ext_modules) > 0
 
-    def has_c_libraries(self):
-        return self.libraries and len(self.libraries) > 0
+    eleza has_c_libraries(self):
+        rudisha self.libraries na len(self.libraries) > 0
 
-    def has_modules(self):
-        return self.has_pure_modules() ama self.has_ext_modules()
+    eleza has_modules(self):
+        rudisha self.has_pure_modules() ama self.has_ext_modules()
 
-    def has_headers(self):
-        return self.headers and len(self.headers) > 0
+    eleza has_headers(self):
+        rudisha self.headers na len(self.headers) > 0
 
-    def has_scripts(self):
-        return self.scripts and len(self.scripts) > 0
+    eleza has_scripts(self):
+        rudisha self.scripts na len(self.scripts) > 0
 
-    def has_data_files(self):
-        return self.data_files and len(self.data_files) > 0
+    eleza has_data_files(self):
+        rudisha self.data_files na len(self.data_files) > 0
 
-    def is_pure(self):
-        return (self.has_pure_modules() na
-                sio self.has_ext_modules() na
+    eleza is_pure(self):
+        rudisha (self.has_pure_modules() and
+                sio self.has_ext_modules() and
                 sio self.has_c_libraries())
 
     # -- Metadata query methods ----------------------------------------
 
-    # If you're looking for 'get_name()', 'get_version()', and so forth,
-    # they are defined in a sneaky way: the constructor binds self.get_XXX
-    # to self.metadata.get_XXX.  The actual code is in the
+    # If you're looking kila 'get_name()', 'get_version()', na so forth,
+    # they are defined kwenye a sneaky way: the constructor binds self.get_XXX
+    # to self.metadata.get_XXX.  The actual code ni kwenye the
     # DistributionMetadata class, below.
 
-class DistributionMetadata:
-    """Dummy class to hold the distribution meta-data: name, version,
-    author, and so forth.
+kundi DistributionMetadata:
+    """Dummy kundi to hold the distribution meta-data: name, version,
+    author, na so forth.
     """
 
     _METHOD_BASENAMES = ("name", "version", "author", "author_email",
@@ -1034,44 +1034,44 @@ class DistributionMetadata:
                          "provides", "requires", "obsoletes",
                          )
 
-    def __init__(self, path=None):
-        if path ni sio None:
+    eleza __init__(self, path=Tupu):
+        ikiwa path ni sio Tupu:
             self.read_pkg_file(open(path))
         isipokua:
-            self.name = None
-            self.version = None
-            self.author = None
-            self.author_email = None
-            self.maintainer = None
-            self.maintainer_email = None
-            self.url = None
-            self.license = None
-            self.description = None
-            self.long_description = None
-            self.keywords = None
-            self.platforms = None
-            self.classifiers = None
-            self.download_url = None
+            self.name = Tupu
+            self.version = Tupu
+            self.author = Tupu
+            self.author_email = Tupu
+            self.maintainer = Tupu
+            self.maintainer_email = Tupu
+            self.url = Tupu
+            self.license = Tupu
+            self.description = Tupu
+            self.long_description = Tupu
+            self.keywords = Tupu
+            self.platforms = Tupu
+            self.classifiers = Tupu
+            self.download_url = Tupu
             # PEP 314
-            self.provides = None
-            self.requires = None
-            self.obsoletes = None
+            self.provides = Tupu
+            self.requires = Tupu
+            self.obsoletes = Tupu
 
-    def read_pkg_file(self, file):
-        """Reads the metadata values from a file object."""
+    eleza read_pkg_file(self, file):
+        """Reads the metadata values kutoka a file object."""
         msg = message_from_file(file)
 
-        def _read_field(name):
+        eleza _read_field(name):
             value = msg[name]
-            if value == 'UNKNOWN':
-                return None
-            return value
+            ikiwa value == 'UNKNOWN':
+                rudisha Tupu
+            rudisha value
 
-        def _read_list(name):
-            values = msg.get_all(name, None)
-            if values == []:
-                return None
-            return values
+        eleza _read_list(name):
+            values = msg.get_all(name, Tupu)
+            ikiwa values == []:
+                rudisha Tupu
+            rudisha values
 
         metadata_version = msg['metadata-version']
         self.name = _read_field('name')
@@ -1079,49 +1079,49 @@ class DistributionMetadata:
         self.description = _read_field('summary')
         # we are filling author only.
         self.author = _read_field('author')
-        self.maintainer = None
+        self.maintainer = Tupu
         self.author_email = _read_field('author-email')
-        self.maintainer_email = None
+        self.maintainer_email = Tupu
         self.url = _read_field('home-page')
         self.license = _read_field('license')
 
-        if 'download-url' in msg:
+        ikiwa 'download-url' kwenye msg:
             self.download_url = _read_field('download-url')
         isipokua:
-            self.download_url = None
+            self.download_url = Tupu
 
         self.long_description = _read_field('description')
         self.description = _read_field('summary')
 
-        if 'keywords' in msg:
+        ikiwa 'keywords' kwenye msg:
             self.keywords = _read_field('keywords').split(',')
 
         self.platforms = _read_list('platform')
         self.classifiers = _read_list('classifier')
 
-        # PEP 314 - these fields only exist in 1.1
-        if metadata_version == '1.1':
+        # PEP 314 - these fields only exist kwenye 1.1
+        ikiwa metadata_version == '1.1':
             self.requires = _read_list('requires')
             self.provides = _read_list('provides')
             self.obsoletes = _read_list('obsoletes')
         isipokua:
-            self.requires = None
-            self.provides = None
-            self.obsoletes = None
+            self.requires = Tupu
+            self.provides = Tupu
+            self.obsoletes = Tupu
 
-    def write_pkg_info(self, base_dir):
+    eleza write_pkg_info(self, base_dir):
         """Write the PKG-INFO file into the release tree.
         """
-        with open(os.path.join(base_dir, 'PKG-INFO'), 'w',
+        ukijumuisha open(os.path.join(base_dir, 'PKG-INFO'), 'w',
                   encoding='UTF-8') as pkg_info:
             self.write_pkg_file(pkg_info)
 
-    def write_pkg_file(self, file):
+    eleza write_pkg_file(self, file):
         """Write the PKG-INFO format data to a file object.
         """
         version = '1.0'
-        if (self.provides or self.requires or self.obsoletes ama
-                self.classifiers or self.download_url):
+        ikiwa (self.provides ama self.requires ama self.obsoletes or
+                self.classifiers ama self.download_url):
             version = '1.1'
 
         file.write('Metadata-Version: %s\n' % version)
@@ -1132,14 +1132,14 @@ class DistributionMetadata:
         file.write('Author: %s\n' % self.get_contact())
         file.write('Author-email: %s\n' % self.get_contact_email())
         file.write('License: %s\n' % self.get_license())
-        if self.download_url:
+        ikiwa self.download_url:
             file.write('Download-URL: %s\n' % self.download_url)
 
         long_desc = rfc822_escape(self.get_long_description())
         file.write('Description: %s\n' % long_desc)
 
         keywords = ','.join(self.get_keywords())
-        if keywords:
+        ikiwa keywords:
             file.write('Keywords: %s\n' % keywords)
 
         self._write_list(file, 'Platform', self.get_platforms())
@@ -1150,107 +1150,107 @@ class DistributionMetadata:
         self._write_list(file, 'Provides', self.get_provides())
         self._write_list(file, 'Obsoletes', self.get_obsoletes())
 
-    def _write_list(self, file, name, values):
-        for value in values:
+    eleza _write_list(self, file, name, values):
+        kila value kwenye values:
             file.write('%s: %s\n' % (name, value))
 
     # -- Metadata query methods ----------------------------------------
 
-    def get_name(self):
-        return self.name or "UNKNOWN"
+    eleza get_name(self):
+        rudisha self.name ama "UNKNOWN"
 
-    def get_version(self):
-        return self.version or "0.0.0"
+    eleza get_version(self):
+        rudisha self.version ama "0.0.0"
 
-    def get_fullname(self):
-        return "%s-%s" % (self.get_name(), self.get_version())
+    eleza get_fullname(self):
+        rudisha "%s-%s" % (self.get_name(), self.get_version())
 
-    def get_author(self):
-        return self.author or "UNKNOWN"
+    eleza get_author(self):
+        rudisha self.author ama "UNKNOWN"
 
-    def get_author_email(self):
-        return self.author_email or "UNKNOWN"
+    eleza get_author_email(self):
+        rudisha self.author_email ama "UNKNOWN"
 
-    def get_maintainer(self):
-        return self.maintainer or "UNKNOWN"
+    eleza get_maintainer(self):
+        rudisha self.maintainer ama "UNKNOWN"
 
-    def get_maintainer_email(self):
-        return self.maintainer_email or "UNKNOWN"
+    eleza get_maintainer_email(self):
+        rudisha self.maintainer_email ama "UNKNOWN"
 
-    def get_contact(self):
-        return self.maintainer or self.author or "UNKNOWN"
+    eleza get_contact(self):
+        rudisha self.maintainer ama self.author ama "UNKNOWN"
 
-    def get_contact_email(self):
-        return self.maintainer_email or self.author_email or "UNKNOWN"
+    eleza get_contact_email(self):
+        rudisha self.maintainer_email ama self.author_email ama "UNKNOWN"
 
-    def get_url(self):
-        return self.url or "UNKNOWN"
+    eleza get_url(self):
+        rudisha self.url ama "UNKNOWN"
 
-    def get_license(self):
-        return self.license or "UNKNOWN"
+    eleza get_license(self):
+        rudisha self.license ama "UNKNOWN"
     get_licence = get_license
 
-    def get_description(self):
-        return self.description or "UNKNOWN"
+    eleza get_description(self):
+        rudisha self.description ama "UNKNOWN"
 
-    def get_long_description(self):
-        return self.long_description or "UNKNOWN"
+    eleza get_long_description(self):
+        rudisha self.long_description ama "UNKNOWN"
 
-    def get_keywords(self):
-        return self.keywords or []
+    eleza get_keywords(self):
+        rudisha self.keywords ama []
 
-    def set_keywords(self, value):
+    eleza set_keywords(self, value):
         self.keywords = _ensure_list(value, 'keywords')
 
-    def get_platforms(self):
-        return self.platforms or ["UNKNOWN"]
+    eleza get_platforms(self):
+        rudisha self.platforms ama ["UNKNOWN"]
 
-    def set_platforms(self, value):
+    eleza set_platforms(self, value):
         self.platforms = _ensure_list(value, 'platforms')
 
-    def get_classifiers(self):
-        return self.classifiers or []
+    eleza get_classifiers(self):
+        rudisha self.classifiers ama []
 
-    def set_classifiers(self, value):
+    eleza set_classifiers(self, value):
         self.classifiers = _ensure_list(value, 'classifiers')
 
-    def get_download_url(self):
-        return self.download_url or "UNKNOWN"
+    eleza get_download_url(self):
+        rudisha self.download_url ama "UNKNOWN"
 
     # PEP 314
-    def get_requires(self):
-        return self.requires or []
+    eleza get_requires(self):
+        rudisha self.requires ama []
 
-    def set_requires(self, value):
-        import distutils.versionpredicate
-        for v in value:
+    eleza set_requires(self, value):
+        agiza distutils.versionpredicate
+        kila v kwenye value:
             distutils.versionpredicate.VersionPredicate(v)
         self.requires = list(value)
 
-    def get_provides(self):
-        return self.provides or []
+    eleza get_provides(self):
+        rudisha self.provides ama []
 
-    def set_provides(self, value):
-        value = [v.strip() for v in value]
-        for v in value:
-            import distutils.versionpredicate
+    eleza set_provides(self, value):
+        value = [v.strip() kila v kwenye value]
+        kila v kwenye value:
+            agiza distutils.versionpredicate
             distutils.versionpredicate.split_provision(v)
         self.provides = value
 
-    def get_obsoletes(self):
-        return self.obsoletes or []
+    eleza get_obsoletes(self):
+        rudisha self.obsoletes ama []
 
-    def set_obsoletes(self, value):
-        import distutils.versionpredicate
-        for v in value:
+    eleza set_obsoletes(self, value):
+        agiza distutils.versionpredicate
+        kila v kwenye value:
             distutils.versionpredicate.VersionPredicate(v)
         self.obsoletes = list(value)
 
-def fix_help_options(options):
-    """Convert a 4-tuple 'help_options' list as found in various command
+eleza fix_help_options(options):
+    """Convert a 4-tuple 'help_options' list as found kwenye various command
     classes to the 3-tuple form required by FancyGetopt.
     """
     new_options = []
-    for help_tuple in options:
+    kila help_tuple kwenye options:
         new_options.append(help_tuple[0:3])
-    return new_options
+    rudisha new_options

@@ -16,7 +16,7 @@ kutoka test.support agiza TESTFN, FakePath
 
 jaribu:
     agiza grp, pwd
-tatizo ImportError:
+except ImportError:
     grp = pwd = Tupu
 
 
@@ -66,7 +66,7 @@ kundi PosixFlavourTest(_BaseFlavourTest, unittest.TestCase):
 
     eleza test_parse_parts(self):
         check = self._check_parse_parts
-        # Collapsing of excess leading slashes, tatizo kila the double-slash
+        # Collapsing of excess leading slashes, except kila the double-slash
         # special case.
         check(['//a', 'b'],             ('', '//', ['//', 'a', 'b']))
         check(['///a', 'b'],            ('', '/', ['/', 'a', 'b']))
@@ -86,7 +86,7 @@ kundi PosixFlavourTest(_BaseFlavourTest, unittest.TestCase):
         self.assertEqual(f('/a/b'), ('', '/', 'a/b'))
         self.assertEqual(f('/a/b/'), ('', '/', 'a/b/'))
         # The root ni collapsed when there are redundant slashes
-        # tatizo when there are exactly two leading slashes, which
+        # except when there are exactly two leading slashes, which
         # ni a special case kwenye POSIX.
         self.assertEqual(f('//a'), ('', '//', 'a'))
         self.assertEqual(f('///a'), ('', '/', 'a'))
@@ -207,7 +207,7 @@ kundi _BasePurePathTest(object):
         # kutoka a str subkundi instance, na it then gets converted to
         # a pure str object.
         kundi StrSubclass(str):
-            pita
+            pass
         P = self.cls
         p = P(*(StrSubclass(x) kila x kwenye args))
         self.assertEqual(p, P(*args))
@@ -235,7 +235,7 @@ kundi _BasePurePathTest(object):
         self.assertEqual(pp, P('/c'))
 
     eleza test_div_common(self):
-        # Basically the same kama joinpath().
+        # Basically the same as joinpath().
         P = self.cls
         p = P('a/b')
         pp = p / 'c'
@@ -378,7 +378,7 @@ kundi _BasePurePathTest(object):
             P() < {}
 
     eleza test_parts_common(self):
-        # `parts` rudishas a tuple.
+        # `parts` returns a tuple.
         sep = self.sep
         P = self.cls
         p = P('a/b')
@@ -658,7 +658,7 @@ kundi PurePosixPathTest(_BasePurePathTest, unittest.TestCase):
         P = self.cls
         jaribu:
             os.fsencode('\xe9')
-        tatizo UnicodeEncodeError:
+        except UnicodeEncodeError:
             self.skipTest("\\xe9 cannot be encoded to the filesystem encoding")
         self.assertEqual(P('/a/b\xe9').as_uri(),
                          'file:///a/b' + quote_from_bytes(os.fsencode('\xe9')))
@@ -696,7 +696,7 @@ kundi PurePosixPathTest(_BasePurePathTest, unittest.TestCase):
         self.assertEqual(pp, P('/c'))
 
     eleza test_div(self):
-        # Basically the same kama joinpath().
+        # Basically the same as joinpath().
         P = self.cls
         p = P('//a')
         pp = p / 'b'
@@ -1106,7 +1106,7 @@ kundi PureWindowsPathTest(_BasePurePathTest, unittest.TestCase):
         self.assertEqual(pp, P('C:/x/y'))
 
     eleza test_div(self):
-        # Basically the same kama joinpath().
+        # Basically the same as joinpath().
         P = self.cls
         p = P('C:/a/b')
         self.assertEqual(p / 'x/y', P('C:/a/b/x/y'))
@@ -1236,13 +1236,13 @@ kundi _BasePathTest(object):
         os.mkdir(join('dirC'))
         os.mkdir(join('dirC', 'dirD'))
         os.mkdir(join('dirE'))
-        ukijumuisha open(join('fileA'), 'wb') kama f:
+        ukijumuisha open(join('fileA'), 'wb') as f:
             f.write(b"this ni file A\n")
-        ukijumuisha open(join('dirB', 'fileB'), 'wb') kama f:
+        ukijumuisha open(join('dirB', 'fileB'), 'wb') as f:
             f.write(b"this ni file B\n")
-        ukijumuisha open(join('dirC', 'fileC'), 'wb') kama f:
+        ukijumuisha open(join('dirC', 'fileC'), 'wb') as f:
             f.write(b"this ni file C\n")
-        ukijumuisha open(join('dirC', 'dirD', 'fileD'), 'wb') kama f:
+        ukijumuisha open(join('dirC', 'dirD', 'fileD'), 'wb') as f:
             f.write(b"this ni file D\n")
         os.chmod(join('dirE'), 0)
         ikiwa support.can_symlink():
@@ -1270,7 +1270,7 @@ kundi _BasePathTest(object):
                         (path_a, path_b))
 
     eleza assertFileNotFound(self, func, *args, **kwargs):
-        ukijumuisha self.assertRaises(FileNotFoundError) kama cm:
+        ukijumuisha self.assertRaises(FileNotFoundError) as cm:
             func(*args, **kwargs)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
 
@@ -1356,13 +1356,13 @@ kundi _BasePathTest(object):
 
     eleza test_open_common(self):
         p = self.cls(BASE)
-        ukijumuisha (p / 'fileA').open('r') kama f:
+        ukijumuisha (p / 'fileA').open('r') as f:
             self.assertIsInstance(f, io.TextIOBase)
             self.assertEqual(f.read(), "this ni file A\n")
-        ukijumuisha (p / 'fileA').open('rb') kama f:
+        ukijumuisha (p / 'fileA').open('rb') as f:
             self.assertIsInstance(f, io.BufferedIOBase)
             self.assertEqual(f.read().strip(), b"this ni file A")
-        ukijumuisha (p / 'fileA').open('rb', buffering=0) kama f:
+        ukijumuisha (p / 'fileA').open('rb', buffering=0) as f:
             self.assertIsInstance(f, io.RawIOBase)
             self.assertEqual(f.read().strip(), b"this ni file A")
 
@@ -1405,7 +1405,7 @@ kundi _BasePathTest(object):
     eleza test_iterdir_nodir(self):
         # __iter__ on something that ni sio a directory.
         p = self.cls(BASE, 'fileA')
-        ukijumuisha self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) as cm:
             next(p.iterdir())
         # ENOENT ama EINVAL under Windows, ENOTDIR otherwise
         # (see issue #12802).
@@ -1512,7 +1512,7 @@ kundi _BasePathTest(object):
     eleza test_resolve_common(self):
         P = self.cls
         p = P(BASE, 'foo')
-        ukijumuisha self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) as cm:
             p.resolve(strict=Kweli)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
         # Non-strict
@@ -1588,7 +1588,7 @@ kundi _BasePathTest(object):
         it2 = p.iterdir()
         next(it2)
         ukijumuisha p:
-            pita
+            pass
         # I/O operation on closed path.
         self.assertRaises(ValueError, next, it)
         self.assertRaises(ValueError, next, it2)
@@ -1637,7 +1637,7 @@ kundi _BasePathTest(object):
         uid = p.stat().st_uid
         jaribu:
             name = pwd.getpwuid(uid).pw_name
-        tatizo KeyError:
+        except KeyError:
             self.skipTest(
                 "user %d doesn't have an entry kwenye the system database" % uid)
         self.assertEqual(name, p.owner())
@@ -1648,7 +1648,7 @@ kundi _BasePathTest(object):
         gid = p.stat().st_gid
         jaribu:
             name = grp.getgrgid(gid).gr_name
-        tatizo KeyError:
+        except KeyError:
             self.skipTest(
                 "group %d doesn't have an entry kwenye the system database" % gid)
         self.assertEqual(name, p.group())
@@ -1680,7 +1680,7 @@ kundi _BasePathTest(object):
         q = P / 'dirA' / 'fileAA'
         jaribu:
             p.link_to(q)
-        tatizo PermissionError kama e:
+        except PermissionError as e:
             self.skipTest('os.link(): %s' % e)
         self.assertEqual(q.stat().st_size, size)
         self.assertEqual(os.path.samefile(p, q), Kweli)
@@ -1753,7 +1753,7 @@ kundi _BasePathTest(object):
         P = self.cls(BASE)
         p = P / 'fileA'
         p.touch()
-        ukijumuisha p.open('rb') kama f:
+        ukijumuisha p.open('rb') as f:
             self.assertEqual(f.read().strip(), b"this ni file A")
 
     eleza test_mkdir(self):
@@ -1763,7 +1763,7 @@ kundi _BasePathTest(object):
         p.mkdir()
         self.assertKweli(p.exists())
         self.assertKweli(p.is_dir())
-        ukijumuisha self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) as cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
 
@@ -1771,13 +1771,13 @@ kundi _BasePathTest(object):
         # Creating a chain of directories.
         p = self.cls(BASE, 'newdirB', 'newdirC')
         self.assertUongo(p.exists())
-        ukijumuisha self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) as cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.ENOENT)
         p.mkdir(parents=Kweli)
         self.assertKweli(p.exists())
         self.assertKweli(p.is_dir())
-        ukijumuisha self.assertRaises(OSError) kama cm:
+        ukijumuisha self.assertRaises(OSError) as cm:
             p.mkdir(parents=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
         # Test `mode` arg.
@@ -1797,7 +1797,7 @@ kundi _BasePathTest(object):
         st_ctime_first = p.stat().st_ctime
         self.assertKweli(p.exists())
         self.assertKweli(p.is_dir())
-        ukijumuisha self.assertRaises(FileExistsError) kama cm:
+        ukijumuisha self.assertRaises(FileExistsError) as cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
         p.mkdir(exist_ok=Kweli)
@@ -1807,14 +1807,14 @@ kundi _BasePathTest(object):
     eleza test_mkdir_exist_ok_with_parent(self):
         p = self.cls(BASE, 'dirC')
         self.assertKweli(p.exists())
-        ukijumuisha self.assertRaises(FileExistsError) kama cm:
+        ukijumuisha self.assertRaises(FileExistsError) as cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
         p = p / 'newdirC'
         p.mkdir(parents=Kweli)
         st_ctime_first = p.stat().st_ctime
         self.assertKweli(p.exists())
-        ukijumuisha self.assertRaises(FileExistsError) kama cm:
+        ukijumuisha self.assertRaises(FileExistsError) as cm:
             p.mkdir(parents=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
         p.mkdir(parents=Kweli, exist_ok=Kweli)
@@ -1822,7 +1822,7 @@ kundi _BasePathTest(object):
         self.assertEqual(p.stat().st_ctime, st_ctime_first)
 
     eleza test_mkdir_exist_ok_root(self):
-        # Issue #25803: A drive root could ashiria PermissionError on Windows.
+        # Issue #25803: A drive root could  ashiria PermissionError on Windows.
         self.cls('/').resolve().mkdir(exist_ok=Kweli)
         self.cls('/').resolve().mkdir(parents=Kweli, exist_ok=Kweli)
 
@@ -1840,24 +1840,24 @@ kundi _BasePathTest(object):
     eleza test_mkdir_with_child_file(self):
         p = self.cls(BASE, 'dirB', 'fileB')
         self.assertKweli(p.exists())
-        # An exception ni ashiriad when the last path component ni an existing
+        # An exception ni raised when the last path component ni an existing
         # regular file, regardless of whether exist_ok ni true ama not.
-        ukijumuisha self.assertRaises(FileExistsError) kama cm:
+        ukijumuisha self.assertRaises(FileExistsError) as cm:
             p.mkdir(parents=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
-        ukijumuisha self.assertRaises(FileExistsError) kama cm:
+        ukijumuisha self.assertRaises(FileExistsError) as cm:
             p.mkdir(parents=Kweli, exist_ok=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
 
     eleza test_mkdir_no_parents_file(self):
         p = self.cls(BASE, 'fileA')
         self.assertKweli(p.exists())
-        # An exception ni ashiriad when the last path component ni an existing
+        # An exception ni raised when the last path component ni an existing
         # regular file, regardless of whether exist_ok ni true ama not.
-        ukijumuisha self.assertRaises(FileExistsError) kama cm:
+        ukijumuisha self.assertRaises(FileExistsError) as cm:
             p.mkdir()
         self.assertEqual(cm.exception.errno, errno.EEXIST)
-        ukijumuisha self.assertRaises(FileExistsError) kama cm:
+        ukijumuisha self.assertRaises(FileExistsError) as cm:
             p.mkdir(exist_ok=Kweli)
         self.assertEqual(cm.exception.errno, errno.EEXIST)
 
@@ -1884,7 +1884,7 @@ kundi _BasePathTest(object):
             jaribu:
                 ukijumuisha mock.patch("pathlib._normal_accessor.mkdir", my_mkdir):
                     p12.mkdir(parents=Kweli, exist_ok=Uongo)
-            tatizo FileExistsError:
+            except FileExistsError:
                 self.assertIn(str(p12), concurrently_created)
             isipokua:
                 self.assertNotIn(str(p12), concurrently_created)
@@ -1984,7 +1984,7 @@ kundi _BasePathTest(object):
         P = self.cls(BASE, 'myfifo')
         jaribu:
             os.mkfifo(str(P))
-        tatizo PermissionError kama e:
+        except PermissionError as e:
             self.skipTest('os.mkfifo(): %s' % e)
         self.assertKweli(P.is_fifo())
         self.assertUongo(P.is_socket())
@@ -2008,8 +2008,8 @@ kundi _BasePathTest(object):
         self.addCleanup(sock.close)
         jaribu:
             sock.bind(str(P))
-        tatizo OSError kama e:
-            ikiwa (isinstance(e, PermissionError) ama
+        except OSError as e:
+            ikiwa (isinstance(e, PermissionError) or
                     "AF_UNIX path too long" kwenye str(e)):
                 self.skipTest("cannot bind Unix socket: " + str(e))
         self.assertKweli(P.is_socket())
@@ -2151,12 +2151,12 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
         self.addCleanup(os.umask, old_mask)
         p = self.cls(BASE)
         ukijumuisha (p / 'new_file').open('wb'):
-            pita
+            pass
         st = os.stat(join('new_file'))
         self.assertEqual(stat.S_IMODE(st.st_mode), 0o666)
         os.umask(0o022)
         ukijumuisha (p / 'other_new_file').open('wb'):
-            pita
+            pass
         st = os.stat(join('other_new_file'))
         self.assertEqual(stat.S_IMODE(st.st_mode), 0o644)
 
@@ -2239,7 +2239,7 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
         p6 = P('')
         p7 = P('~fakeuser/Documents')
 
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env.pop('HOME', Tupu)
 
             self.assertEqual(p1.expanduser(), P(userhome) / 'Documents')
@@ -2277,10 +2277,10 @@ kundi PosixPathTest(_BasePathTest, unittest.TestCase):
                 f.is_char_device()
                 f.is_fifo()
                 f.is_socket()
-        tatizo OSError kama e:
+        except OSError as e:
             ikiwa e.errno == errno.EBADF:
                 self.fail("Bad file descriptor sio handled.")
-            ashiria
+            raise
 
 
 @only_nt
@@ -2299,14 +2299,14 @@ kundi WindowsPathTest(_BasePathTest, unittest.TestCase):
 
     eleza test_expanduser(self):
         P = self.cls
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env.pop('HOME', Tupu)
             env.pop('USERPROFILE', Tupu)
             env.pop('HOMEPATH', Tupu)
             env.pop('HOMEDRIVE', Tupu)
             env['USERNAME'] = 'alice'
 
-            # test that the path rudishas unchanged
+            # test that the path returns unchanged
             p1 = P('~/My Documents')
             p2 = P('~alice/My Documents')
             p3 = P('~bob/My Documents')
@@ -2381,7 +2381,7 @@ kundi CompatiblePathTest(unittest.TestCase):
         self.assertEqual(result.string, "test/right")
 
         ukijumuisha self.assertRaises(TypeError):
-            # Verify improper operations still ashiria a TypeError
+            # Verify improper operations still  ashiria a TypeError
             pathlib.PurePath("test") / 10
 
     eleza test_rtruediv(self):
@@ -2390,7 +2390,7 @@ kundi CompatiblePathTest(unittest.TestCase):
         self.assertEqual(result.string, "left/test")
 
         ukijumuisha self.assertRaises(TypeError):
-            # Verify improper operations still ashiria a TypeError
+            # Verify improper operations still  ashiria a TypeError
             10 / pathlib.PurePath("test")
 
 

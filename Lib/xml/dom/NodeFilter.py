@@ -1,4 +1,4 @@
-# This ni the Python mapping kila interface NodeFilter kutoka
+# This ni the Python mapping kila interface NodeFilter from
 # DOM2-Traversal-Range. It contains only constants.
 
 kundi NodeFilter:
@@ -24,4 +24,4 @@ kundi NodeFilter:
     SHOW_NOTATION               = 0x00000800
 
     eleza acceptNode(self, node):
-        ashiria NotImplementedError
+         ashiria NotImplementedError

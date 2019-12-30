@@ -11,14 +11,14 @@ kutoka test.support.script_helper agiza kill_python
 eleza spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     """Run the Python REPL ukijumuisha the given arguments.
 
-    kw ni extra keyword args to pita to subprocess.Popen. Returns a Popen
+    kw ni extra keyword args to pass to subprocess.Popen. Returns a Popen
     object.
     """
 
     # To run the REPL without using a terminal, spawn python ukijumuisha the command
     # line option '-i' na the process name set to '<stdin>'.
     # The directory of argv[0] must match the directory of the Python
-    # executable kila the Popen() call to python to succeed kama the directory
+    # executable kila the Popen() call to python to succeed as the directory
     # path may be used by Py_GetPath() to build the default module search
     # path.
     stdin_fname = os.path.join(os.path.dirname(sys.executable), "<stdin>")
@@ -40,7 +40,7 @@ kundi TestInteractiveInterpreter(unittest.TestCase):
     eleza test_no_memory(self):
         # Issue #30696: Fix the interactive interpreter looping endlessly when
         # no memory. Check also that the fix does sio koma the interactive
-        # loop when an exception ni ashiriad.
+        # loop when an exception ni raised.
         user_input = """
             agiza sys, _testcapi
             1/0

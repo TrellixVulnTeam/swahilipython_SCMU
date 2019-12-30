@@ -29,7 +29,7 @@ kundi XMLReader:
 
     eleza parse(self, source):
         "Parse an XML document kutoka a system identifier ama an InputSource."
-        ashiria NotImplementedError("This method must be implemented!")
+         ashiria NotImplementedError("This method must be implemented!")
 
     eleza getContentHandler(self):
         "Returns the current ContentHandler."
@@ -68,25 +68,25 @@ kundi XMLReader:
 
         SAX parsers are sio required to provide localization kila errors
         na warnings; ikiwa they cannot support the requested locale,
-        however, they must ashiria a SAX exception. Applications may
+        however, they must  ashiria a SAX exception. Applications may
         request a locale change kwenye the middle of a parse."""
-        ashiria SAXNotSupportedException("Locale support sio implemented")
+         ashiria SAXNotSupportedException("Locale support sio implemented")
 
     eleza getFeature(self, name):
-        "Looks up na rudishas the state of a SAX2 feature."
-        ashiria SAXNotRecognizedException("Feature '%s' sio recognized" % name)
+        "Looks up na returns the state of a SAX2 feature."
+         ashiria SAXNotRecognizedException("Feature '%s' sio recognized" % name)
 
     eleza setFeature(self, name, state):
         "Sets the state of a SAX2 feature."
-        ashiria SAXNotRecognizedException("Feature '%s' sio recognized" % name)
+         ashiria SAXNotRecognizedException("Feature '%s' sio recognized" % name)
 
     eleza getProperty(self, name):
-        "Looks up na rudishas the value of a SAX2 property."
-        ashiria SAXNotRecognizedException("Property '%s' sio recognized" % name)
+        "Looks up na returns the value of a SAX2 property."
+         ashiria SAXNotRecognizedException("Property '%s' sio recognized" % name)
 
     eleza setProperty(self, name, value):
         "Sets the value of a SAX2 property."
-        ashiria SAXNotRecognizedException("Property '%s' sio recognized" % name)
+         ashiria SAXNotRecognizedException("Property '%s' sio recognized" % name)
 
 kundi IncrementalParser(XMLReader):
     """This interface adds three extra methods to the XMLReader
@@ -97,15 +97,15 @@ kundi IncrementalParser(XMLReader):
     When the parser ni instantiated it ni ready to begin accepting
     data kutoka the feed method immediately. After parsing has been
     finished ukijumuisha a call to close the reset method must be called to
-    make the parser ready to accept new data, either kutoka feed ama
+    make the parser ready to accept new data, either kutoka feed or
     using the parse method.
 
     Note that these methods must _not_ be called during parsing, that
-    is, after parse has been called na before it rudishas.
+    is, after parse has been called na before it returns.
 
     By default, the kundi also implements the parse method of the XMLReader
     interface using the feed, close na reset methods of the
-    IncrementalParser interface kama a convenience to SAX 2.0 driver
+    IncrementalParser interface as a convenience to SAX 2.0 driver
     writers."""
 
     eleza __init__(self, bufsize=2**16):
@@ -132,17 +132,17 @@ kundi IncrementalParser(XMLReader):
         corresponding events. It ni allowed kila XML constructs to be
         split across several calls to feed.
 
-        feed may ashiria SAXException."""
-        ashiria NotImplementedError("This method must be implemented!")
+        feed may  ashiria SAXException."""
+         ashiria NotImplementedError("This method must be implemented!")
 
     eleza prepareParser(self, source):
         """This method ni called by the parse implementation to allow
         the SAX 2.0 driver to prepare itself kila parsing."""
-        ashiria NotImplementedError("prepareParser must be overridden!")
+         ashiria NotImplementedError("prepareParser must be overridden!")
 
     eleza close(self):
         """This method ni called when the entire XML document has been
-        pitaed to the parser through the feed method, to notify the
+        passed to the parser through the feed method, to notify the
         parser that there are no more data. This allows the parser to
         do the final checks on the document na empty the internal
         data buffer.
@@ -150,15 +150,15 @@ kundi IncrementalParser(XMLReader):
         The parser will sio be ready to parse another document until
         the reset method has been called.
 
-        close may ashiria SAXException."""
-        ashiria NotImplementedError("This method must be implemented!")
+        close may  ashiria SAXException."""
+         ashiria NotImplementedError("This method must be implemented!")
 
     eleza reset(self):
         """This method ni called after close has been called to reset
         the parser so that it ni ready to parse new documents. The
         results of calling parse ama feed after close without calling
         reset are undefined."""
-        ashiria NotImplementedError("This method must be implemented!")
+         ashiria NotImplementedError("This method must be implemented!")
 
 # ===== LOCATOR =====
 
@@ -195,11 +195,11 @@ kundi InputSource:
     information) and/or the character stream of an entity.
 
     Applications will create objects of this kundi kila use kwenye the
-    XMLReader.parse method na kila rudishaing kutoka
+    XMLReader.parse method na kila returning from
     EntityResolver.resolveEntity.
 
     An InputSource belongs to the application, the XMLReader ni not
-    allowed to modify InputSource objects pitaed to it kutoka the
+    allowed to modify InputSource objects passed to it kutoka the
     application, although it may make copies na modify those."""
 
     eleza __init__(self, system_id = Tupu):
@@ -296,13 +296,13 @@ kundi AttributesImpl:
         rudisha self._attrs[name]
 
     eleza getNameByQName(self, name):
-        ikiwa name haiko kwenye self._attrs:
-            ashiria KeyError(name)
+        ikiwa name sio kwenye self._attrs:
+             ashiria KeyError(name)
         rudisha name
 
     eleza getQNameByName(self, name):
-        ikiwa name haiko kwenye self._attrs:
-            ashiria KeyError(name)
+        ikiwa name sio kwenye self._attrs:
+             ashiria KeyError(name)
         rudisha name
 
     eleza getNames(self):
@@ -352,14 +352,14 @@ kundi AttributesNSImpl(AttributesImpl):
             ikiwa qname == name:
                 rudisha self._attrs[nsname]
 
-        ashiria KeyError(name)
+         ashiria KeyError(name)
 
     eleza getNameByQName(self, name):
         kila (nsname, qname) kwenye self._qnames.items():
             ikiwa qname == name:
                 rudisha nsname
 
-        ashiria KeyError(name)
+         ashiria KeyError(name)
 
     eleza getQNameByName(self, name):
         rudisha self._qnames[name]

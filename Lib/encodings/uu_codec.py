@@ -1,15 +1,15 @@
 """Python 'uu_codec' Codec - UU content transfer encoding.
 
-This codec de/encodes from bytes to bytes.
+This codec de/encodes kutoka bytes to bytes.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com). Some details were
-adapted from uu.py which was written by Lance Ellinghouse na
-modified by Jack Jansen and Fredrik Lundh.
+adapted kutoka uu.py which was written by Lance Ellinghouse and
+modified by Jack Jansen na Fredrik Lundh.
 """
 
 agiza codecs
-import binascii
-from io import BytesIO
+agiza binascii
+kutoka io agiza BytesIO
 
 ### Codec APIs
 
@@ -40,26 +40,26 @@ eleza uu_decode(input, errors='strict'):
     # Find start of encoded data
     wakati 1:
         s = readline()
-        if sio s:
-            ashiria ValueError('Missing "begin" line in input data')
-        if s[:5] == b'begin':
+        ikiwa sio s:
+             ashiria ValueError('Missing "begin" line kwenye input data')
+        ikiwa s[:5] == b'begin':
             koma
 
     # Decode
     wakati Kweli:
         s = readline()
-        if sio s or s == b'end\n':
+        ikiwa sio s ama s == b'end\n':
             koma
         jaribu:
             data = binascii.a2b_uu(s)
-        tatizo binascii.Error as v:
-            # Workaround for broken uuencoders by /Fredrik Lundh
+        except binascii.Error as v:
+            # Workaround kila broken uuencoders by /Fredrik Lundh
             nbytes = (((s[0]-32) & 63) * 4 + 5) // 3
             data = binascii.a2b_uu(s[:nbytes])
             #sys.stderr.write("Warning: %s\n" % str(v))
         write(data)
-    if sio s:
-        ashiria ValueError('Truncated input data')
+    ikiwa sio s:
+         ashiria ValueError('Truncated input data')
 
     rudisha (outfile.getvalue(), len(input))
 

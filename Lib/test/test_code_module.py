@@ -54,7 +54,7 @@ kundi TestInteractiveConsole(unittest.TestCase):
             ikiwa 'antioch' kwenye ''.join(call[1]):
                 koma
         isipokua:
-            ashiria AssertionError("no console stdout")
+             ashiria AssertionError("no console stdout")
 
     eleza test_syntax_error(self):
         self.infunc.side_effect = ["undefined", EOFError('Finished')]
@@ -63,10 +63,10 @@ kundi TestInteractiveConsole(unittest.TestCase):
             ikiwa 'NameError' kwenye ''.join(call[1]):
                 koma
         isipokua:
-            ashiria AssertionError("No syntax error kutoka console")
+             ashiria AssertionError("No syntax error kutoka console")
 
     eleza test_sysexcepthook(self):
-        self.infunc.side_effect = ["ashiria ValueError('')",
+        self.infunc.side_effect = [" ashiria ValueError('')",
                                     EOFError('Finished')]
         hook = mock.Mock()
         self.sysmod.excepthook = hook
@@ -116,7 +116,7 @@ kundi TestInteractiveConsole(unittest.TestCase):
 
 
     eleza test_cause_tb(self):
-        self.infunc.side_effect = ["ashiria ValueError('') kutoka AttributeError",
+        self.infunc.side_effect = [" ashiria ValueError('') kutoka AttributeError",
                                     EOFError('Finished')]
         self.console.interact()
         output = ''.join(''.join(call[1]) kila call kwenye self.stderr.method_calls)

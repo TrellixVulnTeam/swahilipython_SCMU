@@ -19,7 +19,7 @@ There should be another fixer that handles at least the following constants:
 
 """
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 

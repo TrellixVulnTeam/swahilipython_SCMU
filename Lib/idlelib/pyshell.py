@@ -6,10 +6,10 @@ ikiwa __name__ == "__main__":
 
 jaribu:
     kutoka tkinter agiza *
-tatizo ImportError:
+except ImportError:
     andika("** IDLE can't agiza Tkinter.\n"
           "Your Python may sio be configured kila Tk. **", file=sys.__stderr__)
-    ashiria SystemExit(1)
+     ashiria SystemExit(1)
 
 # Valid arguments kila the ...Awareness call below are defined kwenye the following.
 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn280512(v=vs.85).aspx
@@ -18,10 +18,10 @@ ikiwa sys.platform == 'win32':
         agiza ctypes
         PROCESS_SYSTEM_DPI_AWARE = 1
         ctypes.OleDLL('shcore').SetProcessDpiAwareness(PROCESS_SYSTEM_DPI_AWARE)
-    tatizo (ImportError, AttributeError, OSError):
-        pita
+    except (ImportError, AttributeError, OSError):
+        pass
 
-agiza tkinter.messagebox kama tkMessageBox
+agiza tkinter.messagebox as tkMessageBox
 ikiwa TkVersion < 8.5:
     root = Tk()  # otherwise create root kwenye main
     root.withdraw()
@@ -30,7 +30,7 @@ ikiwa TkVersion < 8.5:
     tkMessageBox.showerror("Idle Cannot Start",
             "Idle requires tcl/tk 8.5+, sio %s." % TkVersion,
             parent=root)
-    ashiria SystemExit(1)
+     ashiria SystemExit(1)
 
 kutoka code agiza InteractiveInterpreter
 agiza linecache
@@ -58,7 +58,7 @@ kutoka idlelib.run agiza idle_formatwarning, StdInputFile, StdOutputFile
 kutoka idlelib.undo agiza UndoDelegator
 
 HOST = '127.0.0.1' # python execution server on localhost loopback
-PORT = 0  # someday pita kwenye host, port kila remote debug capability
+PORT = 0  # someday pass kwenye host, port kila remote debug capability
 
 # Override warnings module to write to warning_stream.  Initialize to send IDLE
 # internal warnings to the console.  ScriptBinding.check_syntax() will
@@ -80,8 +80,8 @@ eleza idle_showwarning(
         file.write(idle_formatwarning(
                 message, category, filename, lineno, line=line))
         file.write(">>> ")
-    tatizo (AttributeError, OSError):
-        pita  # ikiwa file (probably __stderr__) ni invalid, skip warning.
+    except (AttributeError, OSError):
+        pass  # ikiwa file (probably __stderr__) ni invalid, skip warning.
 
 _warnings_showwarning = Tupu
 
@@ -133,7 +133,7 @@ kundi PyShellEditorWindow(EditorWindow):
         self.text.bind("<<clear-komapoint-here>>", self.clear_komapoint_here)
         self.text.bind("<<open-python-shell>>", self.flist.open_shell)
 
-        #TODO: don't read/write this kutoka/to .idlerc when testing
+        #TODO: don't read/write this from/to .idlerc when testing
         self.komapointPath = os.path.join(
                 idleConf.userdir, 'komapoints.lst')
         # whenever a file ni changed, restore komapoints
@@ -159,7 +159,7 @@ kundi PyShellEditorWindow(EditorWindow):
         "Turn colorizing of komapoint text on ama off"
         ikiwa self.io ni Tupu:
             # possible due to update kwenye restore_file_komas
-            rudisha
+            return
         ikiwa color:
             theme = idleConf.CurrentTheme()
             cfg = idleConf.GetHighlight(theme, "koma")
@@ -173,20 +173,20 @@ kundi PyShellEditorWindow(EditorWindow):
         text.tag_add("BREAK", "%d.0" % lineno, "%d.0" % (lineno+1))
         jaribu:
             self.komapoints.index(lineno)
-        tatizo ValueError:  # only add ikiwa missing, i.e. do once
+        except ValueError:  # only add ikiwa missing, i.e. do once
             self.komapoints.append(lineno)
         jaribu:    # update the subprocess debugger
             debug = self.flist.pyshell.interp.debugger
             debug.set_komapoint_here(filename, lineno)
         tatizo: # but debugger may sio be active right now....
-            pita
+            pass
 
     eleza set_komapoint_here(self, event=Tupu):
         text = self.text
         filename = self.io.filename
         ikiwa sio filename:
             text.bell()
-            rudisha
+            return
         lineno = int(float(text.index("insert")))
         self.set_komapoint(lineno)
 
@@ -195,19 +195,19 @@ kundi PyShellEditorWindow(EditorWindow):
         filename = self.io.filename
         ikiwa sio filename:
             text.bell()
-            rudisha
+            return
         lineno = int(float(text.index("insert")))
         jaribu:
             self.komapoints.remove(lineno)
         tatizo:
-            pita
+            pass
         text.tag_remove("BREAK", "insert linestart",\
                         "insert lineend +1char")
         jaribu:
             debug = self.flist.pyshell.interp.debugger
             debug.clear_komapoint_here(filename, lineno)
         tatizo:
-            pita
+            pass
 
     eleza clear_file_komas(self):
         ikiwa self.komapoints:
@@ -215,14 +215,14 @@ kundi PyShellEditorWindow(EditorWindow):
             filename = self.io.filename
             ikiwa sio filename:
                 text.bell()
-                rudisha
+                return
             self.komapoints = []
             text.tag_remove("BREAK", "1.0", END)
             jaribu:
                 debug = self.flist.pyshell.interp.debugger
                 debug.clear_file_komas(filename)
             tatizo:
-                pita
+                pass
 
     eleza store_file_komas(self):
         "Save komapoints when file ni saved"
@@ -236,7 +236,7 @@ kundi PyShellEditorWindow(EditorWindow):
         #     This ni necessary to keep the saved komas synched ukijumuisha the
         #     saved file.
         #
-        #     Breakpoints are set kama tagged ranges kwenye the text.
+        #     Breakpoints are set as tagged ranges kwenye the text.
         #     Since a modified file has to be saved before it is
         #     run, na since self.komapoints (kutoka which the subprocess
         #     debugger ni loaded) ni updated during the save, the visible
@@ -245,12 +245,12 @@ kundi PyShellEditorWindow(EditorWindow):
         komas = self.komapoints
         filename = self.io.filename
         jaribu:
-            ukijumuisha open(self.komapointPath, "r") kama fp:
+            ukijumuisha open(self.komapointPath, "r") as fp:
                 lines = fp.readlines()
-        tatizo OSError:
+        except OSError:
             lines = []
         jaribu:
-            ukijumuisha open(self.komapointPath, "w") kama new_file:
+            ukijumuisha open(self.komapointPath, "w") as new_file:
                 kila line kwenye lines:
                     ikiwa sio line.startswith(filename + '='):
                         new_file.write(line)
@@ -258,7 +258,7 @@ kundi PyShellEditorWindow(EditorWindow):
                 komas = self.komapoints
                 ikiwa komas:
                     new_file.write(filename + '=' + str(komas) + '\n')
-        tatizo OSError kama err:
+        except OSError as err:
             ikiwa sio getattr(self.root, "komapoint_error_displayed", Uongo):
                 self.root.komapoint_error_displayed = Kweli
                 tkMessageBox.showerror(title='IDLE Error',
@@ -270,12 +270,12 @@ kundi PyShellEditorWindow(EditorWindow):
         self.text.update()   # this enables setting "BREAK" tags to be visible
         ikiwa self.io ni Tupu:
             # can happen ikiwa IDLE closes due to the .update() call
-            rudisha
+            return
         filename = self.io.filename
         ikiwa filename ni Tupu:
-            rudisha
+            return
         ikiwa os.path.isfile(self.komapointPath):
-            ukijumuisha open(self.komapointPath, "r") kama fp:
+            ukijumuisha open(self.komapointPath, "r") as fp:
                 lines = fp.readlines()
             kila line kwenye lines:
                 ikiwa line.startswith(filename + '='):
@@ -367,26 +367,26 @@ kundi ModifiedUndoDelegator(UndoDelegator):
         jaribu:
             ikiwa self.delegate.compare(index, "<", "iomark"):
                 self.delegate.bell()
-                rudisha
-        tatizo TclError:
-            pita
+                return
+        except TclError:
+            pass
         UndoDelegator.insert(self, index, chars, tags)
 
     eleza delete(self, index1, index2=Tupu):
         jaribu:
             ikiwa self.delegate.compare(index1, "<", "iomark"):
                 self.delegate.bell()
-                rudisha
-        tatizo TclError:
-            pita
+                return
+        except TclError:
+            pass
         UndoDelegator.delete(self, index1, index2)
 
 
 kundi MyRPCClient(rpc.RPCClient):
 
     eleza handle_EOF(self):
-        "Override the base kundi - just re-ashiria EOFError"
-        ashiria EOFError
+        "Override the base kundi - just re- ashiria EOFError"
+         ashiria EOFError
 
 eleza restart_line(width, filename):  # See bpo-38141.
     """Return width long restart line formatted ukijumuisha filename.
@@ -442,8 +442,8 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             jaribu:
                 self.rpcclt = MyRPCClient(addr)
                 koma
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
         isipokua:
             self.display_port_binding_error()
             rudisha Tupu
@@ -463,7 +463,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
         self.rpcclt.listening_sock.settimeout(10)
         jaribu:
             self.rpcclt.accept()
-        tatizo socket.timeout:
+        except socket.timeout:
             self.display_no_subprocess_error()
             rudisha Tupu
         self.rpcclt.register("console", self.tkconsole)
@@ -488,7 +488,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
                 # Only close subprocess debugger, don't unregister gui_adap!
                 debugger_r.close_subprocess_debugger(self.rpcclt)
             tatizo:
-                pita
+                pass
         # Kill subprocess, spawn a new one, accept connection.
         self.rpcclt.close()
         self.terminate_subprocess()
@@ -498,7 +498,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
         self.spawn_subprocess()
         jaribu:
             self.rpcclt.accept()
-        tatizo socket.timeout:
+        except socket.timeout:
             self.display_no_subprocess_error()
             rudisha Tupu
         self.transfer_path(with_cwd=with_cwd)
@@ -532,12 +532,12 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             self.tkconsole.text.after_cancel(self._afterid)
         jaribu:
             self.rpcclt.listening_sock.close()
-        tatizo AttributeError:  # no socket
-            pita
+        except AttributeError:  # no socket
+            pass
         jaribu:
             self.rpcclt.close()
-        tatizo AttributeError:  # no socket
-            pita
+        except AttributeError:  # no socket
+            pass
         self.terminate_subprocess()
         self.tkconsole.executing = Uongo
         self.rpcclt = Tupu
@@ -546,14 +546,14 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
         "Make sure subprocess ni terminated"
         jaribu:
             self.rpcsubproc.kill()
-        tatizo OSError:
+        except OSError:
             # process already terminated
-            rudisha
+            return
         isipokua:
             jaribu:
                 self.rpcsubproc.wait()
-            tatizo OSError:
-                rudisha
+            except OSError:
+                return
 
     eleza transfer_path(self, with_cwd=Uongo):
         ikiwa with_cwd:        # Issue 13506
@@ -563,7 +563,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             path = sys.path
 
         self.runcommand("""ikiwa 1:
-        agiza sys kama _sys
+        agiza sys as _sys
         _sys.path = %r
         toa _sys
         \n""" % (path,))
@@ -573,14 +573,14 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
     eleza poll_subprocess(self):
         clt = self.rpcclt
         ikiwa clt ni Tupu:
-            rudisha
+            return
         jaribu:
             response = clt.pollresponse(self.active_seq, wait=0.05)
-        tatizo (EOFError, OSError, KeyboardInterrupt):
+        except (EOFError, OSError, KeyboardInterrupt):
             # lost connection ama subprocess terminated itself, restart
             # [the KBI ni kutoka rpc.SocketIO.handle_EOF()]
             ikiwa self.tkconsole.closing:
-                rudisha
+                return
             response = Tupu
             self.restart_subprocess()
         ikiwa response:
@@ -591,18 +591,18 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             ikiwa how == "OK":
                 ikiwa what ni sio Tupu:
                     andika(repr(what), file=console)
-            lasivyo how == "EXCEPTION":
+            elikiwa how == "EXCEPTION":
                 ikiwa self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
                     self.remote_stack_viewer()
-            lasivyo how == "ERROR":
+            elikiwa how == "ERROR":
                 errmsg = "pyshell.ModifiedInterpreter: Subprocess ERROR:\n"
                 andika(errmsg, what, file=sys.__stderr__)
                 andika(errmsg, what, file=console)
             # we received a response to the currently active seq number:
             jaribu:
                 self.tkconsole.endexecuting()
-            tatizo AttributeError:  # shell may have closed
-                pita
+            except AttributeError:  # shell may have closed
+                pass
         # Reschedule myself
         ikiwa sio self.tkconsole.closing:
             self._afterid = self.tkconsole.text.after(
@@ -619,22 +619,22 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
     eleza open_remote_stack_viewer(self):
         """Initiate the remote stack viewer kutoka a separate thread.
 
-        This method ni called kutoka the subprocess, na by rudishaing kutoka this
+        This method ni called kutoka the subprocess, na by returning kutoka this
         method we allow the subprocess to unblock.  After a bit the shell
-        requests the subprocess to open the remote stack viewer which rudishas a
+        requests the subprocess to open the remote stack viewer which returns a
         static object looking at the last exception.  It ni queried through
         the RPC mechanism.
 
         """
         self.tkconsole.text.after(300, self.remote_stack_viewer)
-        rudisha
+        return
 
     eleza remote_stack_viewer(self):
         kutoka idlelib agiza debugobj_r
         oid = self.rpcclt.remotequeue("exec", "stackviewer", ("flist",), {})
         ikiwa oid ni Tupu:
             self.tkconsole.root.bell()
-            rudisha
+            return
         item = debugobj_r.StubObjectTreeItem(self.rpcclt, oid)
         kutoka idlelib.tree agiza ScrolledCanvas, TreeNode
         top = Toplevel(self.tkconsole.root)
@@ -656,14 +656,14 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
     eleza execfile(self, filename, source=Tupu):
         "Execute an existing file"
         ikiwa source ni Tupu:
-            ukijumuisha tokenize.open(filename) kama fp:
+            ukijumuisha tokenize.open(filename) as fp:
                 source = fp.read()
                 ikiwa use_subprocess:
                     source = (f"__file__ = r'''{os.path.abspath(filename)}'''\n"
                               + source + "\ntoa __file__")
         jaribu:
             code = compile(source, filename, "exec")
-        tatizo (OverflowError, SyntaxError):
+        except (OverflowError, SyntaxError):
             self.tkconsole.resetoutput()
             andika('*** Error kwenye script ama command!\n'
                  'Traceback (most recent call last):',
@@ -695,8 +695,8 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
         "Prepend sys.path ukijumuisha file's directory ikiwa sio already included"
         self.runcommand("""ikiwa 1:
             _filename = %r
-            agiza sys kama _sys
-            kutoka os.path agiza dirname kama _dirname
+            agiza sys as _sys
+            kutoka os.path agiza dirname as _dirname
             _dir = _dirname(_filename)
             ikiwa sio _dir kwenye _sys.path:
                 _sys.path.insert(0, _dir)
@@ -745,7 +745,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
 
     eleza runcommand(self, code):
         "Run the code without invoking the debugger"
-        # The code better sio ashiria an exception!
+        # The code better sio  ashiria an exception!
         ikiwa self.tkconsole.executing:
             self.display_executing_dialog()
             rudisha 0
@@ -766,22 +766,22 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             ikiwa sio debugger na self.rpcclt ni sio Tupu:
                 self.active_seq = self.rpcclt.asyncqueue("exec", "runcode",
                                                         (code,), {})
-            lasivyo debugger:
+            elikiwa debugger:
                 debugger.run(code, self.locals)
             isipokua:
                 exec(code, self.locals)
-        tatizo SystemExit:
+        except SystemExit:
             ikiwa sio self.tkconsole.closing:
                 ikiwa tkMessageBox.askyesno(
                     "Exit?",
                     "Do you want to exit altogether?",
                     default="yes",
                     parent=self.tkconsole.text):
-                    ashiria
+                    raise
                 isipokua:
                     self.showtraceback()
             isipokua:
-                ashiria
+                raise
         tatizo:
             ikiwa use_subprocess:
                 andika("IDLE internal error kwenye runcode()",
@@ -798,8 +798,8 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             ikiwa sio use_subprocess:
                 jaribu:
                     self.tkconsole.endexecuting()
-                tatizo AttributeError:  # shell may have closed
-                    pita
+                except AttributeError:  # shell may have closed
+                    pass
 
     eleza write(self, s):
         "Override base kundi method"
@@ -921,7 +921,7 @@ kundi PyShell(OutputWindow):
             pydoc.pager = pydoc.plainpager
         tatizo:
             sys.stderr = sys.__stderr__
-            ashiria
+            raise
         #
         self.history = self.History(self.text)
         #
@@ -960,10 +960,10 @@ kundi PyShell(OutputWindow):
 
     eleza set_debugger_indicator(self):
         db = self.interp.getdebugger()
-        self.setvar("<<toggle-debugger>>", sio not db)
+        self.setvar("<<toggle-debugger>>", sio sio db)
 
     eleza toggle_jit_stack_viewer(self, event=Tupu):
-        pita # All we need ni the variable
+        pass # All we need ni the variable
 
     eleza close_debugger(self):
         db = self.interp.getdebugger()
@@ -1068,7 +1068,7 @@ kundi PyShell(OutputWindow):
 
     eleza stop_readline(self):
         ikiwa sio self.reading:  # no nested mainloop to exit.
-            rudisha
+            return
         self._stop_readline_flag = Kweli
         self.top.quit()
 
@@ -1089,7 +1089,7 @@ kundi PyShell(OutputWindow):
         ikiwa self.canceled:
             self.canceled = 0
             ikiwa sio use_subprocess:
-                ashiria KeyboardInterrupt
+                 ashiria KeyboardInterrupt
         ikiwa self.endoffile:
             self.endoffile = 0
             line = ""
@@ -1103,7 +1103,7 @@ kundi PyShell(OutputWindow):
             ikiwa self.text.compare("sel.first", "!=", "sel.last"):
                 rudisha # Active selection -- always use default binding
         tatizo:
-            pita
+            pass
         ikiwa sio (self.executing ama self.reading):
             self.resetoutput()
             self.interp.write("KeyboardInterrupt\n")
@@ -1123,7 +1123,7 @@ kundi PyShell(OutputWindow):
     eleza eof_callback(self, event):
         ikiwa self.executing na sio self.reading:
             rudisha # Let the default binding (delete next char) take over
-        ikiwa sio (self.text.compare("iomark", "==", "insert") na
+        ikiwa sio (self.text.compare("iomark", "==", "insert") and
                 self.text.compare("insert", "==", "end-1c")):
             rudisha # Let the default binding (delete next char) take over
         ikiwa sio self.executing:
@@ -1156,9 +1156,9 @@ kundi PyShell(OutputWindow):
                     self.recall(sel, event)
                     rudisha "koma"
         tatizo:
-            pita
+            pass
         # If we're strictly before the line containing iomark, recall
-        # the current line, less a leading prompt, less leading ama
+        # the current line, less a leading prompt, less leading or
         # trailing whitespace
         ikiwa self.text.compare("insert", "<", "iomark linestart"):
             # Check ikiwa there's a relevant stdin range -- ikiwa so, use it
@@ -1257,7 +1257,7 @@ kundi PyShell(OutputWindow):
                 "There ni no stack trace yet.\n"
                 "(sys.last_traceback ni sio defined)",
                 parent=self.text)
-            rudisha
+            return
         kutoka idlelib.stackviewer agiza StackBrowser
         StackBrowser(self.root, self.flist)
 
@@ -1299,19 +1299,19 @@ kundi PyShell(OutputWindow):
             count = OutputWindow.write(self, s, tags, "iomark")
             self.text.mark_gravity("iomark", "left")
         tatizo:
-            ashiria ###pita  # ### 11Aug07 KBK ikiwa we are expecting exceptions
+             ashiria ###pass  # ### 11Aug07 KBK ikiwa we are expecting exceptions
                            # let's find out what they are na be specific.
         ikiwa self.canceled:
             self.canceled = 0
             ikiwa sio use_subprocess:
-                ashiria KeyboardInterrupt
+                 ashiria KeyboardInterrupt
         rudisha count
 
     eleza rmenu_check_cut(self):
         jaribu:
             ikiwa self.text.compare('sel.first', '<', 'iomark'):
                 rudisha 'disabled'
-        tatizo TclError: # no selection, so the index 'sel.first' doesn't exist
+        except TclError: # no selection, so the index 'sel.first' doesn't exist
             rudisha 'disabled'
         rudisha super().rmenu_check_cut()
 
@@ -1349,16 +1349,16 @@ The following options will override the IDLE 'settings' configuration:
 
 The following options imply -i na will open a shell:
 
-  -c cmd     run the command kwenye a shell, ama
+  -c cmd     run the command kwenye a shell, or
   -r file    run script kutoka file
 
   -d         enable the debugger
-  -s         run $IDLESTARTUP ama $PYTHONSTARTUP before anything ama
+  -s         run $IDLESTARTUP ama $PYTHONSTARTUP before anything else
   -t title   set title of shell window
 
-A default edit window will be bypitaed when -c, -r, ama - are used.
+A default edit window will be bypassed when -c, -r, ama - are used.
 
-[arg]* are pitaed to the command (-c) ama script (-r) kwenye sys.argv[1:].
+[arg]* are passed to the command (-c) ama script (-r) kwenye sys.argv[1:].
 
 Examples:
 
@@ -1373,16 +1373,16 @@ idle -est "Baz" foo.py
         window ukijumuisha the title "Baz".
 
 idle -c "agiza sys; andika(sys.argv)" "foo"
-        Open a shell window na run the command, pitaing "-c" kwenye sys.argv[0]
+        Open a shell window na run the command, passing "-c" kwenye sys.argv[0]
         na "foo" kwenye sys.argv[1].
 
 idle -d -s -r foo.py "Hello World"
-        Open a shell window, run a startup script, enable the debugger, na
-        run foo.py, pitaing "foo.py" kwenye sys.argv[0] na "Hello World" in
+        Open a shell window, run a startup script, enable the debugger, and
+        run foo.py, passing "foo.py" kwenye sys.argv[0] na "Hello World" in
         sys.argv[1].
 
 echo "agiza sys; andika(sys.argv)" | idle - "foobar"
-        Open a shell window, run the script piped in, pitaing '' kwenye sys.argv[0]
+        Open a shell window, run the script piped in, passing '' kwenye sys.argv[0]
         na "foobar" kwenye sys.argv[1].
 """
 
@@ -1404,7 +1404,7 @@ eleza main():
     startup = Uongo
     jaribu:
         opts, args = getopt.getopt(sys.argv[1:], "c:deihnr:st:")
-    tatizo getopt.error kama msg:
+    except getopt.error as msg:
         andika("Error: %s\n%s" % (msg, usage_msg), file=sys.stderr)
         sys.exit(2)
     kila o, a kwenye opts:
@@ -1428,7 +1428,7 @@ eleza main():
         ikiwa o == '-r':
             script = a
             ikiwa os.path.isfile(script):
-                pita
+                pass
             isipokua:
                 andika("No script file: ", script)
                 sys.exit()
@@ -1447,11 +1447,11 @@ eleza main():
         sys.path[i] = os.path.abspath(sys.path[i])
     ikiwa args na args[0] == '-':
         sys.argv = [''] + args[1:]
-    lasivyo cmd:
+    elikiwa cmd:
         sys.argv = ['-c'] + args
-    lasivyo script:
+    elikiwa script:
         sys.argv = [script] + args
-    lasivyo args:
+    elikiwa args:
         enable_edit = Kweli
         pathx = []
         kila filename kwenye args:
@@ -1462,7 +1462,7 @@ eleza main():
                 sys.path.insert(0, dir)
     isipokua:
         dir = os.getcwd()
-        ikiwa dir haiko kwenye sys.path:
+        ikiwa dir sio kwenye sys.path:
             sys.path.insert(0, dir)
     # check the IDLE settings configuration (but command line overrides)
     edit_start = idleConf.GetOption('main', 'General',
@@ -1484,7 +1484,7 @@ eleza main():
     ikiwa system() == 'Windows':
         iconfile = os.path.join(icondir, 'idle.ico')
         root.wm_iconbitmap(default=iconfile)
-    lasivyo sio macosx.isAquaTk():
+    elikiwa sio macosx.isAquaTk():
         ext = '.png' ikiwa TkVersion >= 8.6 isipokua '.gif'
         iconfiles = [os.path.join(icondir, 'idle_%d%s' % (size, ext))
                      kila size kwenye (16, 32, 48)]
@@ -1531,16 +1531,16 @@ eleza main():
             shell.interp.execfile(filename)
     ikiwa cmd ama script:
         shell.interp.runcommand("""ikiwa 1:
-            agiza sys kama _sys
+            agiza sys as _sys
             _sys.argv = %r
             toa _sys
             \n""" % (sys.argv,))
         ikiwa cmd:
             shell.interp.execsource(cmd)
-        lasivyo script:
+        elikiwa script:
             shell.interp.prepend_syspath(script)
             shell.interp.execfile(script)
-    lasivyo shell:
+    elikiwa shell:
         # If there ni a shell window na no cmd ama script kwenye progress,
         # check kila problematic issues na print warning message(s) in
         # the IDLE shell window; this ni less intrusive than always

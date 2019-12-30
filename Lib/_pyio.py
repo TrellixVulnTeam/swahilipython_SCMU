@@ -10,369 +10,369 @@ agiza stat
 agiza sys
 # Import _thread instead of threading to reduce startup cost
 kutoka _thread agiza allocate_lock as Lock
-if sys.platform in {'win32', 'cygwin'}:
+ikiwa sys.platform kwenye {'win32', 'cygwin'}:
     kutoka msvcrt agiza setmode as _setmode
 isipokua:
-    _setmode = None
+    _setmode = Tupu
 
 agiza io
 kutoka io agiza (__all__, SEEK_SET, SEEK_CUR, SEEK_END)
 
 valid_seek_flags = {0, 1, 2}  # Hardwired values
-if hasattr(os, 'SEEK_HOLE') :
+ikiwa hasattr(os, 'SEEK_HOLE') :
     valid_seek_flags.add(os.SEEK_HOLE)
     valid_seek_flags.add(os.SEEK_DATA)
 
 # open() uses st_blksize whenever we can
 DEFAULT_BUFFER_SIZE = 8 * 1024  # bytes
 
-# NOTE: Base classes defined here are registered with the "official" ABCs
-# defined in io.py. We don't use real inheritance though, because we don't want
+# NOTE: Base classes defined here are registered ukijumuisha the "official" ABCs
+# defined kwenye io.py. We don't use real inheritance though, because we don't want
 # to inherit the C implementations.
 
-# Rebind for compatibility
+# Rebind kila compatibility
 BlockingIOError = BlockingIOError
 
-# Does io.IOBase finalizer log the exception if the close() method fails?
-# The exception is ignored silently by default in release build.
+# Does io.IOBase finalizer log the exception ikiwa the close() method fails?
+# The exception ni ignored silently by default kwenye release build.
 _IOBASE_EMITS_UNRAISABLE = (hasattr(sys, "gettotalrefcount") ama sys.flags.dev_mode)
 
 
-def open(file, mode="r", buffering=-1, encoding=None, errors=None,
-         newline=None, closefd=True, opener=None):
+eleza open(file, mode="r", buffering=-1, encoding=Tupu, errors=Tupu,
+         newline=Tupu, closefd=Kweli, opener=Tupu):
 
-    r"""Open file and return a stream.  Raise OSError upon failure.
+    r"""Open file na rudisha a stream.  Raise OSError upon failure.
 
-    file is either a text or byte string giving the name (and the path
-    if the file isn't in the current working directory) of the file to
-    be opened or an integer file descriptor of the file to be
-    wrapped. (If a file descriptor is given, it is closed when the
-    returned I/O object is closed, unless closefd is set to False.)
+    file ni either a text ama byte string giving the name (and the path
+    ikiwa the file isn't kwenye the current working directory) of the file to
+    be opened ama an integer file descriptor of the file to be
+    wrapped. (If a file descriptor ni given, it ni closed when the
+    returned I/O object ni closed, unless closefd ni set to Uongo.)
 
-    mode is an optional string that specifies the mode in which the file is
-    opened. It defaults to 'r' which means open for reading in text mode. Other
-    common values are 'w' for writing (truncating the file if it already
-    exists), 'x' for exclusive creation of a new file, and 'a' for appending
+    mode ni an optional string that specifies the mode kwenye which the file is
+    opened. It defaults to 'r' which means open kila reading kwenye text mode. Other
+    common values are 'w' kila writing (truncating the file ikiwa it already
+    exists), 'x' kila exclusive creation of a new file, na 'a' kila appending
     (which on some Unix systems, means that all writes append to the end of the
-    file regardless of the current seek position). In text mode, if encoding is
-    sio specified the encoding used is platform dependent. (For reading na
-    writing raw bytes use binary mode and leave encoding unspecified.) The
+    file regardless of the current seek position). In text mode, ikiwa encoding is
+    sio specified the encoding used ni platform dependent. (For reading and
+    writing raw bytes use binary mode na leave encoding unspecified.) The
     available modes are:
 
     ========= ===============================================================
     Character Meaning
     --------- ---------------------------------------------------------------
-    'r'       open for reading (default)
-    'w'       open for writing, truncating the file first
-    'x'       create a new file and open it for writing
-    'a'       open for writing, appending to the end of the file if it exists
+    'r'       open kila reading (default)
+    'w'       open kila writing, truncating the file first
+    'x'       create a new file na open it kila writing
+    'a'       open kila writing, appending to the end of the file ikiwa it exists
     'b'       binary mode
     't'       text mode (default)
-    '+'       open a disk file for updating (reading and writing)
+    '+'       open a disk file kila updating (reading na writing)
     'U'       universal newline mode (deprecated)
     ========= ===============================================================
 
-    The default mode is 'rt' (open for reading text). For binary random
-    access, the mode 'w+b' opens and truncates the file to 0 bytes, while
-    'r+b' opens the file without truncation. The 'x' mode implies 'w' na
-    raises an `FileExistsError` if the file already exists.
+    The default mode ni 'rt' (open kila reading text). For binary random
+    access, the mode 'w+b' opens na truncates the file to 0 bytes, while
+    'r+b' opens the file without truncation. The 'x' mode implies 'w' and
+    raises an `FileExistsError` ikiwa the file already exists.
 
-    Python distinguishes between files opened in binary and text modes,
+    Python distinguishes between files opened kwenye binary na text modes,
     even when the underlying operating system doesn't. Files opened in
-    binary mode (appending 'b' to the mode argument) return contents as
-    bytes objects without any decoding. In text mode (the default, or when
-    't' is appended to the mode argument), the contents of the file are
+    binary mode (appending 'b' to the mode argument) rudisha contents as
+    bytes objects without any decoding. In text mode (the default, ama when
+    't' ni appended to the mode argument), the contents of the file are
     returned as strings, the bytes having been first decoded using a
-    platform-dependent encoding or using the specified encoding if given.
+    platform-dependent encoding ama using the specified encoding ikiwa given.
 
-    'U' mode is deprecated and will ashiria an exception in future versions
-    of Python.  It has no effect in Python 3.  Use newline to control
+    'U' mode ni deprecated na will  ashiria an exception kwenye future versions
+    of Python.  It has no effect kwenye Python 3.  Use newline to control
     universal newlines mode.
 
-    buffering is an optional integer used to set the buffering policy.
-    Pass 0 to switch buffering off (only allowed in binary mode), 1 to select
-    line buffering (only usable in text mode), and an integer > 1 to indicate
+    buffering ni an optional integer used to set the buffering policy.
+    Pass 0 to switch buffering off (only allowed kwenye binary mode), 1 to select
+    line buffering (only usable kwenye text mode), na an integer > 1 to indicate
     the size of a fixed-size chunk buffer.  When no buffering argument is
     given, the default buffering policy works as follows:
 
-    * Binary files are buffered in fixed-size chunks; the size of the buffer
-      is chosen using a heuristic trying to determine the underlying device's
-      "block size" and falling back on `io.DEFAULT_BUFFER_SIZE`.
-      On many systems, the buffer will typically be 4096 or 8192 bytes long.
+    * Binary files are buffered kwenye fixed-size chunks; the size of the buffer
+      ni chosen using a heuristic trying to determine the underlying device's
+      "block size" na falling back on `io.DEFAULT_BUFFER_SIZE`.
+      On many systems, the buffer will typically be 4096 ama 8192 bytes long.
 
-    * "Interactive" text files (files for which isatty() returns True)
+    * "Interactive" text files (files kila which isatty() returns Kweli)
       use line buffering.  Other text files use the policy described above
-      for binary files.
+      kila binary files.
 
-    encoding is the str name of the encoding used to decode or encode the
-    file. This should only be used in text mode. The default encoding is
+    encoding ni the str name of the encoding used to decode ama encode the
+    file. This should only be used kwenye text mode. The default encoding is
     platform dependent, but any encoding supported by Python can be
-    passed.  See the codecs module for the list of supported encodings.
+    passed.  See the codecs module kila the list of supported encodings.
 
-    errors is an optional string that specifies how encoding errors are to
-    be handled---this argument should sio be used in binary mode. Pass
-    'strict' to ashiria a ValueError exception if there is an encoding error
-    (the default of None has the same effect), or pass 'ignore' to ignore
+    errors ni an optional string that specifies how encoding errors are to
+    be handled---this argument should sio be used kwenye binary mode. Pass
+    'strict' to  ashiria a ValueError exception ikiwa there ni an encoding error
+    (the default of Tupu has the same effect), ama pass 'ignore' to ignore
     errors. (Note that ignoring encoding errors can lead to data loss.)
-    See the documentation for codecs.register for a list of the permitted
+    See the documentation kila codecs.register kila a list of the permitted
     encoding error strings.
 
-    newline is a string controlling how universal newlines works (it only
-    applies to text mode). It can be None, '', '\n', '\r', and '\r\n'.  It works
+    newline ni a string controlling how universal newlines works (it only
+    applies to text mode). It can be Tupu, '', '\n', '\r', na '\r\n'.  It works
     as follows:
 
-    * On input, if newline is None, universal newlines mode is
-      enabled. Lines in the input can end in '\n', '\r', or '\r\n', na
+    * On input, ikiwa newline ni Tupu, universal newlines mode is
+      enabled. Lines kwenye the input can end kwenye '\n', '\r', ama '\r\n', and
       these are translated into '\n' before being returned to the
-      caller. If it is '', universal newline mode is enabled, but line
+      caller. If it ni '', universal newline mode ni enabled, but line
       endings are returned to the caller untranslated. If it has any of
       the other legal values, input lines are only terminated by the given
-      string, and the line ending is returned to the caller untranslated.
+      string, na the line ending ni returned to the caller untranslated.
 
-    * On output, if newline is None, any '\n' characters written are
+    * On output, ikiwa newline ni Tupu, any '\n' characters written are
       translated to the system default line separator, os.linesep. If
-      newline is '', no translation takes place. If newline is any of the
+      newline ni '', no translation takes place. If newline ni any of the
       other legal values, any '\n' characters written are translated to
       the given string.
 
-    closedfd is a bool. If closefd is False, the underlying file descriptor will
-    be kept open when the file is closed. This does sio work when a file name is
-    given and must be True in that case.
+    closedfd ni a bool. If closefd ni Uongo, the underlying file descriptor will
+    be kept open when the file ni closed. This does sio work when a file name is
+    given na must be Kweli kwenye that case.
 
-    The newly created file is non-inheritable.
+    The newly created file ni non-inheritable.
 
     A custom opener can be used by passing a callable as *opener*. The
-    underlying file descriptor for the file object is then obtained by calling
-    *opener* with (*file*, *flags*). *opener* must return an open file
-    descriptor (passing os.open as *opener* results in functionality similar to
-    passing None).
+    underlying file descriptor kila the file object ni then obtained by calling
+    *opener* ukijumuisha (*file*, *flags*). *opener* must rudisha an open file
+    descriptor (passing os.open as *opener* results kwenye functionality similar to
+    passing Tupu).
 
-    open() returns a file object whose type depends on the mode, na
-    through which the standard file operations such as reading and writing
-    are performed. When open() is used to open a file in a text mode ('w',
+    open() returns a file object whose type depends on the mode, and
+    through which the standard file operations such as reading na writing
+    are performed. When open() ni used to open a file kwenye a text mode ('w',
     'r', 'wt', 'rt', etc.), it returns a TextIOWrapper. When used to open
-    a file in a binary mode, the returned kundi varies: in read binary
-    mode, it returns a BufferedReader; in write binary and append binary
-    modes, it returns a BufferedWriter, and in read/write mode, it returns
+    a file kwenye a binary mode, the returned kundi varies: kwenye read binary
+    mode, it returns a BufferedReader; kwenye write binary na append binary
+    modes, it returns a BufferedWriter, na kwenye read/write mode, it returns
     a BufferedRandom.
 
-    It is also possible to use a string or bytearray as a file for both
-    reading and writing. For strings StringIO can be used like a file
-    opened in a text mode, and for bytes a BytesIO can be used like a file
-    opened in a binary mode.
+    It ni also possible to use a string ama bytearray as a file kila both
+    reading na writing. For strings StringIO can be used like a file
+    opened kwenye a text mode, na kila bytes a BytesIO can be used like a file
+    opened kwenye a binary mode.
     """
-    if sio isinstance(file, int):
+    ikiwa sio isinstance(file, int):
         file = os.fspath(file)
-    if sio isinstance(file, (str, bytes, int)):
-        ashiria TypeError("invalid file: %r" % file)
-    if sio isinstance(mode, str):
-        ashiria TypeError("invalid mode: %r" % mode)
-    if sio isinstance(buffering, int):
-        ashiria TypeError("invalid buffering: %r" % buffering)
-    if encoding ni sio None and sio isinstance(encoding, str):
-        ashiria TypeError("invalid encoding: %r" % encoding)
-    if errors ni sio None and sio isinstance(errors, str):
-        ashiria TypeError("invalid errors: %r" % errors)
+    ikiwa sio isinstance(file, (str, bytes, int)):
+         ashiria TypeError("invalid file: %r" % file)
+    ikiwa sio isinstance(mode, str):
+         ashiria TypeError("invalid mode: %r" % mode)
+    ikiwa sio isinstance(buffering, int):
+         ashiria TypeError("invalid buffering: %r" % buffering)
+    ikiwa encoding ni sio Tupu na sio isinstance(encoding, str):
+         ashiria TypeError("invalid encoding: %r" % encoding)
+    ikiwa errors ni sio Tupu na sio isinstance(errors, str):
+         ashiria TypeError("invalid errors: %r" % errors)
     modes = set(mode)
-    if modes - set("axrwb+tU") ama len(mode) > len(modes):
-        ashiria ValueError("invalid mode: %r" % mode)
-    creating = "x" in modes
-    reading = "r" in modes
-    writing = "w" in modes
-    appending = "a" in modes
-    updating = "+" in modes
-    text = "t" in modes
-    binary = "b" in modes
-    if "U" in modes:
-        if creating or writing or appending or updating:
-            ashiria ValueError("mode U cannot be combined with 'x', 'w', 'a', or '+'")
+    ikiwa modes - set("axrwb+tU") ama len(mode) > len(modes):
+         ashiria ValueError("invalid mode: %r" % mode)
+    creating = "x" kwenye modes
+    reading = "r" kwenye modes
+    writing = "w" kwenye modes
+    appending = "a" kwenye modes
+    updating = "+" kwenye modes
+    text = "t" kwenye modes
+    binary = "b" kwenye modes
+    ikiwa "U" kwenye modes:
+        ikiwa creating ama writing ama appending ama updating:
+             ashiria ValueError("mode U cannot be combined ukijumuisha 'x', 'w', 'a', ama '+'")
         agiza warnings
-        warnings.warn("'U' mode is deprecated",
+        warnings.warn("'U' mode ni deprecated",
                       DeprecationWarning, 2)
-        reading = True
-    if text and binary:
-        ashiria ValueError("can't have text and binary mode at once")
-    if creating + reading + writing + appending > 1:
-        ashiria ValueError("can't have read/write/append mode at once")
-    if sio (creating or reading or writing or appending):
-        ashiria ValueError("must have exactly one of read/write/append mode")
-    if binary and encoding ni sio None:
-        ashiria ValueError("binary mode doesn't take an encoding argument")
-    if binary and errors ni sio None:
-        ashiria ValueError("binary mode doesn't take an errors argument")
-    if binary and newline ni sio None:
-        ashiria ValueError("binary mode doesn't take a newline argument")
-    if binary and buffering == 1:
+        reading = Kweli
+    ikiwa text na binary:
+         ashiria ValueError("can't have text na binary mode at once")
+    ikiwa creating + reading + writing + appending > 1:
+         ashiria ValueError("can't have read/write/append mode at once")
+    ikiwa sio (creating ama reading ama writing ama appending):
+         ashiria ValueError("must have exactly one of read/write/append mode")
+    ikiwa binary na encoding ni sio Tupu:
+         ashiria ValueError("binary mode doesn't take an encoding argument")
+    ikiwa binary na errors ni sio Tupu:
+         ashiria ValueError("binary mode doesn't take an errors argument")
+    ikiwa binary na newline ni sio Tupu:
+         ashiria ValueError("binary mode doesn't take a newline argument")
+    ikiwa binary na buffering == 1:
         agiza warnings
-        warnings.warn("line buffering (buffering=1) isn't supported in binary "
+        warnings.warn("line buffering (buffering=1) isn't supported kwenye binary "
                       "mode, the default buffer size will be used",
                       RuntimeWarning, 2)
     raw = FileIO(file,
-                 (creating and "x" or "") +
-                 (reading and "r" or "") +
-                 (writing and "w" or "") +
-                 (appending and "a" or "") +
-                 (updating and "+" or ""),
+                 (creating na "x" ama "") +
+                 (reading na "r" ama "") +
+                 (writing na "w" ama "") +
+                 (appending na "a" ama "") +
+                 (updating na "+" ama ""),
                  closefd, opener=opener)
     result = raw
     jaribu:
-        line_buffering = False
-        if buffering == 1 or buffering < 0 and raw.isatty():
+        line_buffering = Uongo
+        ikiwa buffering == 1 ama buffering < 0 na raw.isatty():
             buffering = -1
-            line_buffering = True
-        if buffering < 0:
+            line_buffering = Kweli
+        ikiwa buffering < 0:
             buffering = DEFAULT_BUFFER_SIZE
             jaribu:
                 bs = os.fstat(raw.fileno()).st_blksize
-            tatizo (OSError, AttributeError):
+            except (OSError, AttributeError):
                 pass
             isipokua:
-                if bs > 1:
+                ikiwa bs > 1:
                     buffering = bs
-        if buffering < 0:
-            ashiria ValueError("invalid buffering size")
-        if buffering == 0:
-            if binary:
-                return result
-            ashiria ValueError("can't have unbuffered text I/O")
-        if updating:
+        ikiwa buffering < 0:
+             ashiria ValueError("invalid buffering size")
+        ikiwa buffering == 0:
+            ikiwa binary:
+                rudisha result
+             ashiria ValueError("can't have unbuffered text I/O")
+        ikiwa updating:
             buffer = BufferedRandom(raw, buffering)
-        lasivyo creating or writing or appending:
+        elikiwa creating ama writing ama appending:
             buffer = BufferedWriter(raw, buffering)
-        lasivyo reading:
+        elikiwa reading:
             buffer = BufferedReader(raw, buffering)
         isipokua:
-            ashiria ValueError("unknown mode: %r" % mode)
+             ashiria ValueError("unknown mode: %r" % mode)
         result = buffer
-        if binary:
-            return result
+        ikiwa binary:
+            rudisha result
         text = TextIOWrapper(buffer, encoding, errors, newline, line_buffering)
         result = text
         text.mode = mode
-        return result
+        rudisha result
     tatizo:
         result.close()
         raise
 
-# Define a default pure-Python implementation for open_code()
-# that does sio allow hooks. Warn on first use. Defined for tests.
-def _open_code_with_warning(path):
-    """Opens the provided file with mode ``'rb'``. This function
-    should be used when the intent is to treat the contents as
+# Define a default pure-Python implementation kila open_code()
+# that does sio allow hooks. Warn on first use. Defined kila tests.
+eleza _open_code_with_warning(path):
+    """Opens the provided file ukijumuisha mode ``'rb'``. This function
+    should be used when the intent ni to treat the contents as
     executable code.
 
     ``path`` should be an absolute path.
 
     When supported by the runtime, this function can be hooked
-    in order to allow embedders more control over code files.
+    kwenye order to allow embedders more control over code files.
     This functionality ni sio supported on the current runtime.
     """
     agiza warnings
     warnings.warn("_pyio.open_code() may sio be using hooks",
                   RuntimeWarning, 2)
-    return open(path, "rb")
+    rudisha open(path, "rb")
 
 jaribu:
     open_code = io.open_code
-tatizo AttributeError:
+except AttributeError:
     open_code = _open_code_with_warning
 
 
 kundi DocDescriptor:
-    """Helper for builtins.open.__doc__
+    """Helper kila builtins.open.__doc__
     """
-    def __get__(self, obj, typ=None):
-        return (
-            "open(file, mode='r', buffering=-1, encoding=None, "
-                 "errors=None, newline=None, closefd=True)\n\n" +
+    eleza __get__(self, obj, typ=Tupu):
+        rudisha (
+            "open(file, mode='r', buffering=-1, encoding=Tupu, "
+                 "errors=Tupu, newline=Tupu, closefd=Kweli)\n\n" +
             open.__doc__)
 
 kundi OpenWrapper:
-    """Wrapper for builtins.open
+    """Wrapper kila builtins.open
 
     Trick so that open won't become a bound method when stored
     as a kundi variable (as dbm.dumb does).
 
-    See initstdio() in Python/pylifecycle.c.
+    See initstdio() kwenye Python/pylifecycle.c.
     """
     __doc__ = DocDescriptor()
 
-    def __new__(cls, *args, **kwargs):
-        return open(*args, **kwargs)
+    eleza __new__(cls, *args, **kwargs):
+        rudisha open(*args, **kwargs)
 
 
 # In normal operation, both `UnsupportedOperation`s should be bound to the
 # same object.
 jaribu:
     UnsupportedOperation = io.UnsupportedOperation
-tatizo AttributeError:
+except AttributeError:
     kundi UnsupportedOperation(OSError, ValueError):
         pass
 
 
 kundi IOBase(metaclass=abc.ABCMeta):
 
-    """The abstract base kundi for all I/O classes, acting on streams of
-    bytes. There is no public constructor.
+    """The abstract base kundi kila all I/O classes, acting on streams of
+    bytes. There ni no public constructor.
 
-    This kundi provides dummy implementations for many methods that
+    This kundi provides dummy implementations kila many methods that
     derived classes can override selectively; the default implementations
-    represent a file that cannot be read, written or seeked.
+    represent a file that cannot be read, written ama seeked.
 
-    Even though IOBase does sio declare read or write because
-    their signatures will vary, implementations and clients should
+    Even though IOBase does sio declare read ama write because
+    their signatures will vary, implementations na clients should
     consider those methods part of the interface. Also, implementations
-    may ashiria UnsupportedOperation when operations they do sio support are
+    may  ashiria UnsupportedOperation when operations they do sio support are
     called.
 
-    The basic type used for binary data read kutoka or written to a file is
+    The basic type used kila binary data read kutoka ama written to a file is
     bytes. Other bytes-like objects are accepted as method arguments too.
-    Text I/O classes work with str data.
+    Text I/O classes work ukijumuisha str data.
 
     Note that calling any method (even inquiries) on a closed stream is
-    undefined. Implementations may ashiria OSError in this case.
+    undefined. Implementations may  ashiria OSError kwenye this case.
 
     IOBase (and its subclasses) support the iterator protocol, meaning
-    that an IOBase object can be iterated over yielding the lines in a
+    that an IOBase object can be iterated over yielding the lines kwenye a
     stream.
 
     IOBase also supports the :keyword:`with` statement. In this example,
-    fp is closed after the suite of the with statement is complete:
+    fp ni closed after the suite of the ukijumuisha statement ni complete:
 
-    with open('spam.txt', 'r') as fp:
-        fp.write('Spam and eggs!')
+    ukijumuisha open('spam.txt', 'r') as fp:
+        fp.write('Spam na eggs!')
     """
 
     ### Internal ###
 
-    def _unsupported(self, name):
-        """Internal: ashiria an OSError exception for unsupported operations."""
-        ashiria UnsupportedOperation("%s.%s() sio supported" %
+    eleza _unsupported(self, name):
+        """Internal:  ashiria an OSError exception kila unsupported operations."""
+         ashiria UnsupportedOperation("%s.%s() sio supported" %
                                    (self.__class__.__name__, name))
 
     ### Positioning ###
 
-    def seek(self, pos, whence=0):
+    eleza seek(self, pos, whence=0):
         """Change stream position.
 
         Change the stream position to byte offset pos. Argument pos is
         interpreted relative to the position indicated by whence.  Values
-        for whence are ints:
+        kila whence are ints:
 
-        * 0 -- start of stream (the default); offset should be zero or positive
+        * 0 -- start of stream (the default); offset should be zero ama positive
         * 1 -- current stream position; offset may be negative
-        * 2 -- end of stream; offset is usually negative
+        * 2 -- end of stream; offset ni usually negative
         Some operating systems / file systems could provide additional values.
 
         Return an int indicating the new absolute position.
         """
         self._unsupported("seek")
 
-    def tell(self):
+    eleza tell(self):
         """Return an int indicating the current stream position."""
-        return self.seek(0, 1)
+        rudisha self.seek(0, 1)
 
-    def truncate(self, pos=None):
+    eleza truncate(self, pos=Tupu):
         """Truncate file to size bytes.
 
         Size defaults to the current IO position as reported by tell().  Return
@@ -380,48 +380,48 @@ kundi IOBase(metaclass=abc.ABCMeta):
         """
         self._unsupported("truncate")
 
-    ### Flush and close ###
+    ### Flush na close ###
 
-    def flush(self):
-        """Flush write buffers, if applicable.
+    eleza flush(self):
+        """Flush write buffers, ikiwa applicable.
 
-        This ni sio implemented for read-only and non-blocking streams.
+        This ni sio implemented kila read-only na non-blocking streams.
         """
         self._checkClosed()
-        # XXX Should this return the number of bytes written???
+        # XXX Should this rudisha the number of bytes written???
 
-    __closed = False
+    __closed = Uongo
 
-    def close(self):
-        """Flush and close the IO object.
+    eleza close(self):
+        """Flush na close the IO object.
 
-        This method has no effect if the file is already closed.
+        This method has no effect ikiwa the file ni already closed.
         """
-        if sio self.__closed:
+        ikiwa sio self.__closed:
             jaribu:
                 self.flush()
             mwishowe:
-                self.__closed = True
+                self.__closed = Kweli
 
-    def __del__(self):
+    eleza __del__(self):
         """Destructor.  Calls close()."""
         jaribu:
             closed = self.closed
-        tatizo AttributeError:
-            # If getting closed fails, then the object is probably
-            # in an unusable state, so ignore.
+        except AttributeError:
+            # If getting closed fails, then the object ni probably
+            # kwenye an unusable state, so ignore.
             return
 
-        if closed:
+        ikiwa closed:
             return
 
-        if _IOBASE_EMITS_UNRAISABLE:
+        ikiwa _IOBASE_EMITS_UNRAISABLE:
             self.close()
         isipokua:
-            # The try/tatizo block is in case this is called at program
+            # The try/except block ni kwenye case this ni called at program
             # exit time, when it's possible that globals have already been
-            # deleted, and then the close() call might fail.  Since
-            # there's nothing we can do about such failures and they annoy
+            # deleted, na then the close() call might fail.  Since
+            # there's nothing we can do about such failures na they annoy
             # the end users, we suppress the traceback.
             jaribu:
                 self.close()
@@ -430,174 +430,174 @@ kundi IOBase(metaclass=abc.ABCMeta):
 
     ### Inquiries ###
 
-    def seekable(self):
+    eleza seekable(self):
         """Return a bool indicating whether object supports random access.
 
-        If False, seek(), tell() and truncate() will ashiria OSError.
+        If Uongo, seek(), tell() na truncate() will  ashiria OSError.
         This method may need to do a test seek().
         """
-        return False
+        rudisha Uongo
 
-    def _checkSeekable(self, msg=None):
-        """Internal: ashiria UnsupportedOperation if file ni sio seekable
+    eleza _checkSeekable(self, msg=Tupu):
+        """Internal:  ashiria UnsupportedOperation ikiwa file ni sio seekable
         """
-        if sio self.seekable():
-            ashiria UnsupportedOperation("File or stream ni sio seekable."
-                                       if msg is None isipokua msg)
+        ikiwa sio self.seekable():
+             ashiria UnsupportedOperation("File ama stream ni sio seekable."
+                                       ikiwa msg ni Tupu isipokua msg)
 
-    def readable(self):
-        """Return a bool indicating whether object was opened for reading.
+    eleza readable(self):
+        """Return a bool indicating whether object was opened kila reading.
 
-        If False, read() will ashiria OSError.
+        If Uongo, read() will  ashiria OSError.
         """
-        return False
+        rudisha Uongo
 
-    def _checkReadable(self, msg=None):
-        """Internal: ashiria UnsupportedOperation if file ni sio readable
+    eleza _checkReadable(self, msg=Tupu):
+        """Internal:  ashiria UnsupportedOperation ikiwa file ni sio readable
         """
-        if sio self.readable():
-            ashiria UnsupportedOperation("File or stream ni sio readable."
-                                       if msg is None isipokua msg)
+        ikiwa sio self.readable():
+             ashiria UnsupportedOperation("File ama stream ni sio readable."
+                                       ikiwa msg ni Tupu isipokua msg)
 
-    def writable(self):
-        """Return a bool indicating whether object was opened for writing.
+    eleza writable(self):
+        """Return a bool indicating whether object was opened kila writing.
 
-        If False, write() and truncate() will ashiria OSError.
+        If Uongo, write() na truncate() will  ashiria OSError.
         """
-        return False
+        rudisha Uongo
 
-    def _checkWritable(self, msg=None):
-        """Internal: ashiria UnsupportedOperation if file ni sio writable
+    eleza _checkWritable(self, msg=Tupu):
+        """Internal:  ashiria UnsupportedOperation ikiwa file ni sio writable
         """
-        if sio self.writable():
-            ashiria UnsupportedOperation("File or stream ni sio writable."
-                                       if msg is None isipokua msg)
+        ikiwa sio self.writable():
+             ashiria UnsupportedOperation("File ama stream ni sio writable."
+                                       ikiwa msg ni Tupu isipokua msg)
 
     @property
-    def closed(self):
-        """closed: bool.  True iff the file has been closed.
+    eleza closed(self):
+        """closed: bool.  Kweli iff the file has been closed.
 
-        For backwards compatibility, this is a property, sio a predicate.
+        For backwards compatibility, this ni a property, sio a predicate.
         """
-        return self.__closed
+        rudisha self.__closed
 
-    def _checkClosed(self, msg=None):
-        """Internal: ashiria a ValueError if file is closed
+    eleza _checkClosed(self, msg=Tupu):
+        """Internal:  ashiria a ValueError ikiwa file ni closed
         """
-        if self.closed:
-            ashiria ValueError("I/O operation on closed file."
-                             if msg is None isipokua msg)
+        ikiwa self.closed:
+             ashiria ValueError("I/O operation on closed file."
+                             ikiwa msg ni Tupu isipokua msg)
 
     ### Context manager ###
 
-    def __enter__(self):  # That's a forward reference
+    eleza __enter__(self):  # That's a forward reference
         """Context management protocol.  Returns self (an instance of IOBase)."""
         self._checkClosed()
-        return self
+        rudisha self
 
-    def __exit__(self, *args):
+    eleza __exit__(self, *args):
         """Context management protocol.  Calls close()"""
         self.close()
 
     ### Lower-level APIs ###
 
-    # XXX Should these be present even if unimplemented?
+    # XXX Should these be present even ikiwa unimplemented?
 
-    def fileno(self):
-        """Returns underlying file descriptor (an int) if one exists.
+    eleza fileno(self):
+        """Returns underlying file descriptor (an int) ikiwa one exists.
 
-        An OSError is raised if the IO object does sio use a file descriptor.
+        An OSError ni raised ikiwa the IO object does sio use a file descriptor.
         """
         self._unsupported("fileno")
 
-    def isatty(self):
-        """Return a bool indicating whether this is an 'interactive' stream.
+    eleza isatty(self):
+        """Return a bool indicating whether this ni an 'interactive' stream.
 
-        Return False if it can't be determined.
+        Return Uongo ikiwa it can't be determined.
         """
         self._checkClosed()
-        return False
+        rudisha Uongo
 
-    ### Readline[s] and writelines ###
+    ### Readline[s] na writelines ###
 
-    def readline(self, size=-1):
-        r"""Read and return a line of bytes kutoka the stream.
+    eleza readline(self, size=-1):
+        r"""Read na rudisha a line of bytes kutoka the stream.
 
-        If size is specified, at most size bytes will be read.
+        If size ni specified, at most size bytes will be read.
         Size should be an int.
 
-        The line terminator is always b'\n' for binary files; for text
+        The line terminator ni always b'\n' kila binary files; kila text
         files, the newlines argument to open can be used to select the line
         terminator(s) recognized.
         """
         # For backwards compatibility, a (slowish) readline().
-        if hasattr(self, "peek"):
-            def nreadahead():
+        ikiwa hasattr(self, "peek"):
+            eleza nreadahead():
                 readahead = self.peek(1)
-                if sio readahead:
-                    return 1
+                ikiwa sio readahead:
+                    rudisha 1
                 n = (readahead.find(b"\n") + 1) ama len(readahead)
-                if size >= 0:
+                ikiwa size >= 0:
                     n = min(n, size)
-                return n
+                rudisha n
         isipokua:
-            def nreadahead():
-                return 1
-        if size is None:
+            eleza nreadahead():
+                rudisha 1
+        ikiwa size ni Tupu:
             size = -1
         isipokua:
             jaribu:
                 size_index = size.__index__
-            tatizo AttributeError:
-                ashiria TypeError(f"{size!r} ni sio an integer")
+            except AttributeError:
+                 ashiria TypeError(f"{size!r} ni sio an integer")
             isipokua:
                 size = size_index()
         res = bytearray()
-        wakati size < 0 or len(res) < size:
+        wakati size < 0 ama len(res) < size:
             b = self.read(nreadahead())
-            if sio b:
+            ikiwa sio b:
                 koma
             res += b
-            if res.endswith(b"\n"):
+            ikiwa res.endswith(b"\n"):
                 koma
-        return bytes(res)
+        rudisha bytes(res)
 
-    def __iter__(self):
+    eleza __iter__(self):
         self._checkClosed()
-        return self
+        rudisha self
 
-    def __next__(self):
+    eleza __next__(self):
         line = self.readline()
-        if sio line:
-            ashiria StopIteration
-        return line
+        ikiwa sio line:
+             ashiria StopIteration
+        rudisha line
 
-    def readlines(self, hint=None):
+    eleza readlines(self, hint=Tupu):
         """Return a list of lines kutoka the stream.
 
         hint can be specified to control the number of lines read: no more
-        lines will be read if the total size (in bytes/characters) of all
+        lines will be read ikiwa the total size (in bytes/characters) of all
         lines so far exceeds hint.
         """
-        if hint is None or hint <= 0:
-            return list(self)
+        ikiwa hint ni Tupu ama hint <= 0:
+            rudisha list(self)
         n = 0
         lines = []
-        for line in self:
+        kila line kwenye self:
             lines.append(line)
             n += len(line)
-            if n >= hint:
+            ikiwa n >= hint:
                 koma
-        return lines
+        rudisha lines
 
-    def writelines(self, lines):
+    eleza writelines(self, lines):
         """Write a list of lines to the stream.
 
-        Line separators are sio added, so it is usual for each of the lines
+        Line separators are sio added, so it ni usual kila each of the lines
         provided to have a line separator at the end.
         """
         self._checkClosed()
-        for line in lines:
+        kila line kwenye lines:
             self.write(line)
 
 io.IOBase.register(IOBase)
@@ -605,62 +605,62 @@ io.IOBase.register(IOBase)
 
 kundi RawIOBase(IOBase):
 
-    """Base kundi for raw binary I/O."""
+    """Base kundi kila raw binary I/O."""
 
-    # The read() method is implemented by calling readinto(); derived
+    # The read() method ni implemented by calling readinto(); derived
     # classes that want to support read() only need to implement
     # readinto() as a primitive operation.  In general, readinto() can be
     # more efficient than read().
 
     # (It would be tempting to also provide an implementation of
-    # readinto() in terms of read(), in case the latter is a more suitable
-    # primitive operation, but that would lead to nasty recursion in case
+    # readinto() kwenye terms of read(), kwenye case the latter ni a more suitable
+    # primitive operation, but that would lead to nasty recursion kwenye case
     # a subkundi doesn't implement either.)
 
-    def read(self, size=-1):
-        """Read and return up to size bytes, where size is an int.
+    eleza read(self, size=-1):
+        """Read na rudisha up to size bytes, where size ni an int.
 
-        Returns an empty bytes object on EOF, or None if the object is
-        set sio to block and has no data to read.
+        Returns an empty bytes object on EOF, ama Tupu ikiwa the object is
+        set sio to block na has no data to read.
         """
-        if size is None:
+        ikiwa size ni Tupu:
             size = -1
-        if size < 0:
-            return self.readall()
+        ikiwa size < 0:
+            rudisha self.readall()
         b = bytearray(size.__index__())
         n = self.readinto(b)
-        if n is None:
-            return None
+        ikiwa n ni Tupu:
+            rudisha Tupu
         toa b[n:]
-        return bytes(b)
+        rudisha bytes(b)
 
-    def readall(self):
+    eleza readall(self):
         """Read until EOF, using multiple read() call."""
         res = bytearray()
-        wakati True:
+        wakati Kweli:
             data = self.read(DEFAULT_BUFFER_SIZE)
-            if sio data:
+            ikiwa sio data:
                 koma
             res += data
-        if res:
-            return bytes(res)
+        ikiwa res:
+            rudisha bytes(res)
         isipokua:
-            # b'' or None
-            return data
+            # b'' ama Tupu
+            rudisha data
 
-    def readinto(self, b):
+    eleza readinto(self, b):
         """Read bytes into a pre-allocated bytes-like object b.
 
-        Returns an int representing the number of bytes read (0 for EOF), ama
-        None if the object is set sio to block and has no data to read.
+        Returns an int representing the number of bytes read (0 kila EOF), or
+        Tupu ikiwa the object ni set sio to block na has no data to read.
         """
         self._unsupported("readinto")
 
-    def write(self, b):
+    eleza write(self, b):
         """Write the given buffer to the IO stream.
 
         Returns the number of bytes written, which may be less than the
-        length of b in bytes.
+        length of b kwenye bytes.
         """
         self._unsupported("write")
 
@@ -671,78 +671,78 @@ RawIOBase.register(FileIO)
 
 kundi BufferedIOBase(IOBase):
 
-    """Base kundi for buffered IO objects.
+    """Base kundi kila buffered IO objects.
 
-    The main difference with RawIOBase is that the read() method
-    supports omitting the size argument, and does sio have a default
+    The main difference ukijumuisha RawIOBase ni that the read() method
+    supports omitting the size argument, na does sio have a default
     implementation that defers to readinto().
 
-    In addition, read(), readinto() and write() may raise
-    BlockingIOError if the underlying raw stream is in non-blocking
-    mode and sio ready; unlike their raw counterparts, they will never
-    return None.
+    In addition, read(), readinto() na write() may raise
+    BlockingIOError ikiwa the underlying raw stream ni kwenye non-blocking
+    mode na sio ready; unlike their raw counterparts, they will never
+    rudisha Tupu.
 
     A typical implementation should sio inherit kutoka a RawIOBase
     implementation, but wrap one.
     """
 
-    def read(self, size=-1):
-        """Read and return up to size bytes, where size is an int.
+    eleza read(self, size=-1):
+        """Read na rudisha up to size bytes, where size ni an int.
 
-        If the argument is omitted, None, or negative, reads na
+        If the argument ni omitted, Tupu, ama negative, reads and
         returns all data until EOF.
 
-        If the argument is positive, and the underlying raw stream is
+        If the argument ni positive, na the underlying raw stream is
         sio 'interactive', multiple raw reads may be issued to satisfy
-        the byte count (unless EOF is reached first).  But for
-        interactive raw streams (XXX and for pipes?), at most one raw
-        read will be issued, and a short result does sio imply that
-        EOF is imminent.
+        the byte count (unless EOF ni reached first).  But for
+        interactive raw streams (XXX na kila pipes?), at most one raw
+        read will be issued, na a short result does sio imply that
+        EOF ni imminent.
 
         Returns an empty bytes array on EOF.
 
-        Raises BlockingIOError if the underlying raw stream has no
+        Raises BlockingIOError ikiwa the underlying raw stream has no
         data at the moment.
         """
         self._unsupported("read")
 
-    def read1(self, size=-1):
-        """Read up to size bytes with at most one read() system call,
-        where size is an int.
+    eleza read1(self, size=-1):
+        """Read up to size bytes ukijumuisha at most one read() system call,
+        where size ni an int.
         """
         self._unsupported("read1")
 
-    def readinto(self, b):
+    eleza readinto(self, b):
         """Read bytes into a pre-allocated bytes-like object b.
 
         Like read(), this may issue multiple reads to the underlying raw
-        stream, unless the latter is 'interactive'.
+        stream, unless the latter ni 'interactive'.
 
-        Returns an int representing the number of bytes read (0 for EOF).
+        Returns an int representing the number of bytes read (0 kila EOF).
 
-        Raises BlockingIOError if the underlying raw stream has no
+        Raises BlockingIOError ikiwa the underlying raw stream has no
         data at the moment.
         """
 
-        return self._readinto(b, read1=False)
+        rudisha self._readinto(b, read1=Uongo)
 
-    def readinto1(self, b):
+    eleza readinto1(self, b):
         """Read bytes into buffer *b*, using at most one system call
 
-        Returns an int representing the number of bytes read (0 for EOF).
+        Returns an int representing the number of bytes read (0 kila EOF).
 
-        Raises BlockingIOError if the underlying raw stream has no
+        Raises BlockingIOError ikiwa the underlying raw stream has no
         data at the moment.
         """
 
-        return self._readinto(b, read1=True)
+        rudisha self._readinto(b, read1=Kweli)
 
-    def _readinto(self, b, read1):
-        if sio isinstance(b, memoryview):
+    eleza _readinto(self, b, read1):
+        ikiwa sio isinstance(b, memoryview):
             b = memoryview(b)
         b = b.cast('B')
 
-        if read1:
+        ikiwa read1:
             data = self.read1(len(b))
         isipokua:
             data = self.read(len(b))
@@ -750,24 +750,24 @@ kundi BufferedIOBase(IOBase):
 
         b[:n] = data
 
-        return n
+        rudisha n
 
-    def write(self, b):
+    eleza write(self, b):
         """Write the given bytes buffer to the IO stream.
 
-        Return the number of bytes written, which is always the length of b
-        in bytes.
+        Return the number of bytes written, which ni always the length of b
+        kwenye bytes.
 
-        Raises BlockingIOError if the buffer is full and the
+        Raises BlockingIOError ikiwa the buffer ni full na the
         underlying raw stream cannot accept more data at the moment.
         """
         self._unsupported("write")
 
-    def detach(self):
+    eleza detach(self):
         """
-        Separate the underlying raw stream kutoka the buffer and return it.
+        Separate the underlying raw stream kutoka the buffer na rudisha it.
 
-        After the raw stream has been detached, the buffer is in an unusable
+        After the raw stream has been detached, the buffer ni kwenye an unusable
         state.
         """
         self._unsupported("detach")
@@ -777,106 +777,106 @@ io.BufferedIOBase.register(BufferedIOBase)
 
 kundi _BufferedIOMixin(BufferedIOBase):
 
-    """A mixin implementation of BufferedIOBase with an underlying raw stream.
+    """A mixin implementation of BufferedIOBase ukijumuisha an underlying raw stream.
 
     This passes most requests on to the underlying raw stream.  It
-    does *not* provide implementations of read(), readinto() ama
+    does *not* provide implementations of read(), readinto() or
     write().
     """
 
-    def __init__(self, raw):
+    eleza __init__(self, raw):
         self._raw = raw
 
     ### Positioning ###
 
-    def seek(self, pos, whence=0):
+    eleza seek(self, pos, whence=0):
         new_position = self.raw.seek(pos, whence)
-        if new_position < 0:
-            ashiria OSError("seek() returned an invalid position")
-        return new_position
+        ikiwa new_position < 0:
+             ashiria OSError("seek() returned an invalid position")
+        rudisha new_position
 
-    def tell(self):
+    eleza tell(self):
         pos = self.raw.tell()
-        if pos < 0:
-            ashiria OSError("tell() returned an invalid position")
-        return pos
+        ikiwa pos < 0:
+             ashiria OSError("tell() returned an invalid position")
+        rudisha pos
 
-    def truncate(self, pos=None):
-        # Flush the stream.  We're mixing buffered I/O with lower-level I/O,
-        # and a flush may be necessary to synch both views of the current
+    eleza truncate(self, pos=Tupu):
+        # Flush the stream.  We're mixing buffered I/O ukijumuisha lower-level I/O,
+        # na a flush may be necessary to synch both views of the current
         # file state.
         self.flush()
 
-        if pos is None:
+        ikiwa pos ni Tupu:
             pos = self.tell()
         # XXX: Should seek() be used, instead of passing the position
         # XXX  directly to truncate?
-        return self.raw.truncate(pos)
+        rudisha self.raw.truncate(pos)
 
-    ### Flush and close ###
+    ### Flush na close ###
 
-    def flush(self):
-        if self.closed:
-            ashiria ValueError("flush on closed file")
+    eleza flush(self):
+        ikiwa self.closed:
+             ashiria ValueError("flush on closed file")
         self.raw.flush()
 
-    def close(self):
-        if self.raw ni sio None and sio self.closed:
+    eleza close(self):
+        ikiwa self.raw ni sio Tupu na sio self.closed:
             jaribu:
-                # may ashiria BlockingIOError or BrokenPipeError etc
+                # may  ashiria BlockingIOError ama BrokenPipeError etc
                 self.flush()
             mwishowe:
                 self.raw.close()
 
-    def detach(self):
-        if self.raw is None:
-            ashiria ValueError("raw stream already detached")
+    eleza detach(self):
+        ikiwa self.raw ni Tupu:
+             ashiria ValueError("raw stream already detached")
         self.flush()
         raw = self._raw
-        self._raw = None
-        return raw
+        self._raw = Tupu
+        rudisha raw
 
     ### Inquiries ###
 
-    def seekable(self):
-        return self.raw.seekable()
+    eleza seekable(self):
+        rudisha self.raw.seekable()
 
     @property
-    def raw(self):
-        return self._raw
+    eleza raw(self):
+        rudisha self._raw
 
     @property
-    def closed(self):
-        return self.raw.closed
+    eleza closed(self):
+        rudisha self.raw.closed
 
     @property
-    def name(self):
-        return self.raw.name
+    eleza name(self):
+        rudisha self.raw.name
 
     @property
-    def mode(self):
-        return self.raw.mode
+    eleza mode(self):
+        rudisha self.raw.mode
 
-    def __getstate__(self):
-        ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
+    eleza __getstate__(self):
+         ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
 
-    def __repr__(self):
+    eleza __repr__(self):
         modname = self.__class__.__module__
         clsname = self.__class__.__qualname__
         jaribu:
             name = self.name
-        tatizo AttributeError:
-            return "<{}.{}>".format(modname, clsname)
+        except AttributeError:
+            rudisha "<{}.{}>".format(modname, clsname)
         isipokua:
-            return "<{}.{} name={!r}>".format(modname, clsname, name)
+            rudisha "<{}.{} name={!r}>".format(modname, clsname, name)
 
     ### Lower-level APIs ###
 
-    def fileno(self):
-        return self.raw.fileno()
+    eleza fileno(self):
+        rudisha self.raw.fileno()
 
-    def isatty(self):
-        return self.raw.isatty()
+    eleza isatty(self):
+        rudisha self.raw.isatty()
 
 
 kundi BytesIO(BufferedIOBase):
@@ -885,768 +885,768 @@ kundi BytesIO(BufferedIOBase):
 
     # Initialize _buffer as soon as possible since it's used by __del__()
     # which calls close()
-    _buffer = None
+    _buffer = Tupu
 
-    def __init__(self, initial_bytes=None):
+    eleza __init__(self, initial_bytes=Tupu):
         buf = bytearray()
-        if initial_bytes ni sio None:
+        ikiwa initial_bytes ni sio Tupu:
             buf += initial_bytes
         self._buffer = buf
         self._pos = 0
 
-    def __getstate__(self):
-        if self.closed:
-            ashiria ValueError("__getstate__ on closed file")
-        return self.__dict__.copy()
+    eleza __getstate__(self):
+        ikiwa self.closed:
+             ashiria ValueError("__getstate__ on closed file")
+        rudisha self.__dict__.copy()
 
-    def getvalue(self):
+    eleza getvalue(self):
         """Return the bytes value (contents) of the buffer
         """
-        if self.closed:
-            ashiria ValueError("getvalue on closed file")
-        return bytes(self._buffer)
+        ikiwa self.closed:
+             ashiria ValueError("getvalue on closed file")
+        rudisha bytes(self._buffer)
 
-    def getbuffer(self):
-        """Return a readable and writable view of the buffer.
+    eleza getbuffer(self):
+        """Return a readable na writable view of the buffer.
         """
-        if self.closed:
-            ashiria ValueError("getbuffer on closed file")
-        return memoryview(self._buffer)
+        ikiwa self.closed:
+             ashiria ValueError("getbuffer on closed file")
+        rudisha memoryview(self._buffer)
 
-    def close(self):
-        if self._buffer ni sio None:
+    eleza close(self):
+        ikiwa self._buffer ni sio Tupu:
             self._buffer.clear()
         super().close()
 
-    def read(self, size=-1):
-        if self.closed:
-            ashiria ValueError("read kutoka closed file")
-        if size is None:
+    eleza read(self, size=-1):
+        ikiwa self.closed:
+             ashiria ValueError("read kutoka closed file")
+        ikiwa size ni Tupu:
             size = -1
         isipokua:
             jaribu:
                 size_index = size.__index__
-            tatizo AttributeError:
-                ashiria TypeError(f"{size!r} ni sio an integer")
+            except AttributeError:
+                 ashiria TypeError(f"{size!r} ni sio an integer")
             isipokua:
                 size = size_index()
-        if size < 0:
+        ikiwa size < 0:
             size = len(self._buffer)
-        if len(self._buffer) <= self._pos:
-            return b""
+        ikiwa len(self._buffer) <= self._pos:
+            rudisha b""
         newpos = min(len(self._buffer), self._pos + size)
         b = self._buffer[self._pos : newpos]
         self._pos = newpos
-        return bytes(b)
+        rudisha bytes(b)
 
-    def read1(self, size=-1):
-        """This is the same as read.
+    eleza read1(self, size=-1):
+        """This ni the same as read.
         """
-        return self.read(size)
+        rudisha self.read(size)
 
-    def write(self, b):
-        if self.closed:
-            ashiria ValueError("write to closed file")
-        if isinstance(b, str):
-            ashiria TypeError("can't write str to binary stream")
-        with memoryview(b) as view:
+    eleza write(self, b):
+        ikiwa self.closed:
+             ashiria ValueError("write to closed file")
+        ikiwa isinstance(b, str):
+             ashiria TypeError("can't write str to binary stream")
+        ukijumuisha memoryview(b) as view:
             n = view.nbytes  # Size of any bytes-like object
-        if n == 0:
-            return 0
+        ikiwa n == 0:
+            rudisha 0
         pos = self._pos
-        if pos > len(self._buffer):
+        ikiwa pos > len(self._buffer):
             # Inserts null bytes between the current end of the file
-            # and the new write position.
+            # na the new write position.
             padding = b'\x00' * (pos - len(self._buffer))
             self._buffer += padding
         self._buffer[pos:pos + n] = b
         self._pos += n
-        return n
+        rudisha n
 
-    def seek(self, pos, whence=0):
-        if self.closed:
-            ashiria ValueError("seek on closed file")
+    eleza seek(self, pos, whence=0):
+        ikiwa self.closed:
+             ashiria ValueError("seek on closed file")
         jaribu:
             pos_index = pos.__index__
-        tatizo AttributeError:
-            ashiria TypeError(f"{pos!r} ni sio an integer")
+        except AttributeError:
+             ashiria TypeError(f"{pos!r} ni sio an integer")
         isipokua:
             pos = pos_index()
-        if whence == 0:
-            if pos < 0:
-                ashiria ValueError("negative seek position %r" % (pos,))
+        ikiwa whence == 0:
+            ikiwa pos < 0:
+                 ashiria ValueError("negative seek position %r" % (pos,))
             self._pos = pos
-        lasivyo whence == 1:
+        elikiwa whence == 1:
             self._pos = max(0, self._pos + pos)
-        lasivyo whence == 2:
+        elikiwa whence == 2:
             self._pos = max(0, len(self._buffer) + pos)
         isipokua:
-            ashiria ValueError("unsupported whence value")
-        return self._pos
+             ashiria ValueError("unsupported whence value")
+        rudisha self._pos
 
-    def tell(self):
-        if self.closed:
-            ashiria ValueError("tell on closed file")
-        return self._pos
+    eleza tell(self):
+        ikiwa self.closed:
+             ashiria ValueError("tell on closed file")
+        rudisha self._pos
 
-    def truncate(self, pos=None):
-        if self.closed:
-            ashiria ValueError("truncate on closed file")
-        if pos is None:
+    eleza truncate(self, pos=Tupu):
+        ikiwa self.closed:
+             ashiria ValueError("truncate on closed file")
+        ikiwa pos ni Tupu:
             pos = self._pos
         isipokua:
             jaribu:
                 pos_index = pos.__index__
-            tatizo AttributeError:
-                ashiria TypeError(f"{pos!r} ni sio an integer")
+            except AttributeError:
+                 ashiria TypeError(f"{pos!r} ni sio an integer")
             isipokua:
                 pos = pos_index()
-            if pos < 0:
-                ashiria ValueError("negative truncate position %r" % (pos,))
+            ikiwa pos < 0:
+                 ashiria ValueError("negative truncate position %r" % (pos,))
         toa self._buffer[pos:]
-        return pos
+        rudisha pos
 
-    def readable(self):
-        if self.closed:
-            ashiria ValueError("I/O operation on closed file.")
-        return True
+    eleza readable(self):
+        ikiwa self.closed:
+             ashiria ValueError("I/O operation on closed file.")
+        rudisha Kweli
 
-    def writable(self):
-        if self.closed:
-            ashiria ValueError("I/O operation on closed file.")
-        return True
+    eleza writable(self):
+        ikiwa self.closed:
+             ashiria ValueError("I/O operation on closed file.")
+        rudisha Kweli
 
-    def seekable(self):
-        if self.closed:
-            ashiria ValueError("I/O operation on closed file.")
-        return True
+    eleza seekable(self):
+        ikiwa self.closed:
+             ashiria ValueError("I/O operation on closed file.")
+        rudisha Kweli
 
 
 kundi BufferedReader(_BufferedIOMixin):
 
     """BufferedReader(raw[, buffer_size])
 
-    A buffer for a readable, sequential BaseRawIO object.
+    A buffer kila a readable, sequential BaseRawIO object.
 
-    The constructor creates a BufferedReader for the given readable raw
-    stream and buffer_size. If buffer_size is omitted, DEFAULT_BUFFER_SIZE
-    is used.
+    The constructor creates a BufferedReader kila the given readable raw
+    stream na buffer_size. If buffer_size ni omitted, DEFAULT_BUFFER_SIZE
+    ni used.
     """
 
-    def __init__(self, raw, buffer_size=DEFAULT_BUFFER_SIZE):
+    eleza __init__(self, raw, buffer_size=DEFAULT_BUFFER_SIZE):
         """Create a new buffered reader using the given readable raw IO object.
         """
-        if sio raw.readable():
-            ashiria OSError('"raw" argument must be readable.')
+        ikiwa sio raw.readable():
+             ashiria OSError('"raw" argument must be readable.')
 
         _BufferedIOMixin.__init__(self, raw)
-        if buffer_size <= 0:
-            ashiria ValueError("invalid buffer size")
+        ikiwa buffer_size <= 0:
+             ashiria ValueError("invalid buffer size")
         self.buffer_size = buffer_size
         self._reset_read_buf()
         self._read_lock = Lock()
 
-    def readable(self):
-        return self.raw.readable()
+    eleza readable(self):
+        rudisha self.raw.readable()
 
-    def _reset_read_buf(self):
+    eleza _reset_read_buf(self):
         self._read_buf = b""
         self._read_pos = 0
 
-    def read(self, size=None):
+    eleza read(self, size=Tupu):
         """Read size bytes.
 
         Returns exactly size bytes of data unless the underlying raw IO
-        stream reaches EOF or if the call would block in non-blocking
-        mode. If size is negative, read until EOF or until read() would
+        stream reaches EOF ama ikiwa the call would block kwenye non-blocking
+        mode. If size ni negative, read until EOF ama until read() would
         block.
         """
-        if size ni sio None and size < -1:
-            ashiria ValueError("invalid number of bytes to read")
-        with self._read_lock:
-            return self._read_unlocked(size)
+        ikiwa size ni sio Tupu na size < -1:
+             ashiria ValueError("invalid number of bytes to read")
+        ukijumuisha self._read_lock:
+            rudisha self._read_unlocked(size)
 
-    def _read_unlocked(self, n=None):
+    eleza _read_unlocked(self, n=Tupu):
         nodata_val = b""
-        empty_values = (b"", None)
+        empty_values = (b"", Tupu)
         buf = self._read_buf
         pos = self._read_pos
 
-        # Special case for when the number of bytes to read is unspecified.
-        if n is None or n == -1:
+        # Special case kila when the number of bytes to read ni unspecified.
+        ikiwa n ni Tupu ama n == -1:
             self._reset_read_buf()
-            if hasattr(self.raw, 'readall'):
+            ikiwa hasattr(self.raw, 'readall'):
                 chunk = self.raw.readall()
-                if chunk is None:
-                    return buf[pos:] or None
+                ikiwa chunk ni Tupu:
+                    rudisha buf[pos:] ama Tupu
                 isipokua:
-                    return buf[pos:] + chunk
+                    rudisha buf[pos:] + chunk
             chunks = [buf[pos:]]  # Strip the consumed bytes.
             current_size = 0
-            wakati True:
-                # Read until EOF or until read() would block.
+            wakati Kweli:
+                # Read until EOF ama until read() would block.
                 chunk = self.raw.read()
-                if chunk in empty_values:
+                ikiwa chunk kwenye empty_values:
                     nodata_val = chunk
                     koma
                 current_size += len(chunk)
                 chunks.append(chunk)
-            return b"".join(chunks) ama nodata_val
+            rudisha b"".join(chunks) ama nodata_val
 
-        # The number of bytes to read is specified, return at most n bytes.
+        # The number of bytes to read ni specified, rudisha at most n bytes.
         avail = len(buf) - pos  # Length of the available buffered data.
-        if n <= avail:
-            # Fast path: the data to read is fully buffered.
+        ikiwa n <= avail:
+            # Fast path: the data to read ni fully buffered.
             self._read_pos += n
-            return buf[pos:pos+n]
+            rudisha buf[pos:pos+n]
         # Slow path: read kutoka the stream until enough bytes are read,
-        # or until an EOF occurs or until read() would block.
+        # ama until an EOF occurs ama until read() would block.
         chunks = [buf[pos:]]
         wanted = max(self.buffer_size, n)
         wakati avail < n:
             chunk = self.raw.read(wanted)
-            if chunk in empty_values:
+            ikiwa chunk kwenye empty_values:
                 nodata_val = chunk
                 koma
             avail += len(chunk)
             chunks.append(chunk)
-        # n is more than avail only when an EOF occurred or when
+        # n ni more than avail only when an EOF occurred ama when
         # read() would have blocked.
         n = min(n, avail)
         out = b"".join(chunks)
-        self._read_buf = out[n:]  # Save the extra data in the buffer.
+        self._read_buf = out[n:]  # Save the extra data kwenye the buffer.
         self._read_pos = 0
-        return out[:n] if out isipokua nodata_val
+        rudisha out[:n] ikiwa out isipokua nodata_val
 
-    def peek(self, size=0):
+    eleza peek(self, size=0):
         """Returns buffered bytes without advancing the position.
 
         The argument indicates a desired minimal number of bytes; we
-        do at most one raw read to satisfy it.  We never return more
+        do at most one raw read to satisfy it.  We never rudisha more
         than self.buffer_size.
         """
-        with self._read_lock:
-            return self._peek_unlocked(size)
+        ukijumuisha self._read_lock:
+            rudisha self._peek_unlocked(size)
 
-    def _peek_unlocked(self, n=0):
+    eleza _peek_unlocked(self, n=0):
         want = min(n, self.buffer_size)
         have = len(self._read_buf) - self._read_pos
-        if have < want or have <= 0:
+        ikiwa have < want ama have <= 0:
             to_read = self.buffer_size - have
             current = self.raw.read(to_read)
-            if current:
+            ikiwa current:
                 self._read_buf = self._read_buf[self._read_pos:] + current
                 self._read_pos = 0
-        return self._read_buf[self._read_pos:]
+        rudisha self._read_buf[self._read_pos:]
 
-    def read1(self, size=-1):
-        """Reads up to size bytes, with at most one read() system call."""
-        # Returns up to size bytes.  If at least one byte is buffered, we
-        # only return buffered bytes.  Otherwise, we do one raw read.
-        if size < 0:
+    eleza read1(self, size=-1):
+        """Reads up to size bytes, ukijumuisha at most one read() system call."""
+        # Returns up to size bytes.  If at least one byte ni buffered, we
+        # only rudisha buffered bytes.  Otherwise, we do one raw read.
+        ikiwa size < 0:
             size = self.buffer_size
-        if size == 0:
-            return b""
-        with self._read_lock:
+        ikiwa size == 0:
+            rudisha b""
+        ukijumuisha self._read_lock:
             self._peek_unlocked(1)
-            return self._read_unlocked(
+            rudisha self._read_unlocked(
                 min(size, len(self._read_buf) - self._read_pos))
 
-    # Implementing readinto() and readinto1() ni sio strictly necessary (we
-    # could rely on the base kundi that provides an implementation in terms of
-    # read() and read1()). We do it anyway to keep the _pyio implementation
+    # Implementing readinto() na readinto1() ni sio strictly necessary (we
+    # could rely on the base kundi that provides an implementation kwenye terms of
+    # read() na read1()). We do it anyway to keep the _pyio implementation
     # similar to the io implementation (which implements the methods for
     # performance reasons).
-    def _readinto(self, buf, read1):
-        """Read data into *buf* with at most one system call."""
+    eleza _readinto(self, buf, read1):
+        """Read data into *buf* ukijumuisha at most one system call."""
 
         # Need to create a memoryview object of type 'b', otherwise
-        # we may sio be able to assign bytes to it, and slicing it
+        # we may sio be able to assign bytes to it, na slicing it
         # would create a new object.
-        if sio isinstance(buf, memoryview):
+        ikiwa sio isinstance(buf, memoryview):
             buf = memoryview(buf)
-        if buf.nbytes == 0:
-            return 0
+        ikiwa buf.nbytes == 0:
+            rudisha 0
         buf = buf.cast('B')
 
         written = 0
-        with self._read_lock:
+        ukijumuisha self._read_lock:
             wakati written < len(buf):
 
                 # First try to read kutoka internal buffer
                 avail = min(len(self._read_buf) - self._read_pos, len(buf))
-                if avail:
+                ikiwa avail:
                     buf[written:written+avail] = \
                         self._read_buf[self._read_pos:self._read_pos+avail]
                     self._read_pos += avail
                     written += avail
-                    if written == len(buf):
+                    ikiwa written == len(buf):
                         koma
 
-                # If remaining space in callers buffer is larger than
+                # If remaining space kwenye callers buffer ni larger than
                 # internal buffer, read directly into callers buffer
-                if len(buf) - written > self.buffer_size:
+                ikiwa len(buf) - written > self.buffer_size:
                     n = self.raw.readinto(buf[written:])
-                    if sio n:
+                    ikiwa sio n:
                         koma # eof
                     written += n
 
                 # Otherwise refill internal buffer - unless we're
-                # in read1 mode and already got some data
-                lasivyo sio (read1 and written):
-                    if sio self._peek_unlocked(1):
+                # kwenye read1 mode na already got some data
+                elikiwa sio (read1 na written):
+                    ikiwa sio self._peek_unlocked(1):
                         koma # eof
 
-                # In readinto1 mode, return as soon as we have some data
-                if read1 and written:
+                # In readinto1 mode, rudisha as soon as we have some data
+                ikiwa read1 na written:
                     koma
 
-        return written
+        rudisha written
 
-    def tell(self):
-        return _BufferedIOMixin.tell(self) - len(self._read_buf) + self._read_pos
+    eleza tell(self):
+        rudisha _BufferedIOMixin.tell(self) - len(self._read_buf) + self._read_pos
 
-    def seek(self, pos, whence=0):
-        if whence haiko kwenye valid_seek_flags:
-            ashiria ValueError("invalid whence value")
-        with self._read_lock:
-            if whence == 1:
+    eleza seek(self, pos, whence=0):
+        ikiwa whence sio kwenye valid_seek_flags:
+             ashiria ValueError("invalid whence value")
+        ukijumuisha self._read_lock:
+            ikiwa whence == 1:
                 pos -= len(self._read_buf) - self._read_pos
             pos = _BufferedIOMixin.seek(self, pos, whence)
             self._reset_read_buf()
-            return pos
+            rudisha pos
 
 kundi BufferedWriter(_BufferedIOMixin):
 
-    """A buffer for a writeable sequential RawIO object.
+    """A buffer kila a writeable sequential RawIO object.
 
-    The constructor creates a BufferedWriter for the given writeable raw
+    The constructor creates a BufferedWriter kila the given writeable raw
     stream. If the buffer_size ni sio given, it defaults to
     DEFAULT_BUFFER_SIZE.
     """
 
-    def __init__(self, raw, buffer_size=DEFAULT_BUFFER_SIZE):
-        if sio raw.writable():
-            ashiria OSError('"raw" argument must be writable.')
+    eleza __init__(self, raw, buffer_size=DEFAULT_BUFFER_SIZE):
+        ikiwa sio raw.writable():
+             ashiria OSError('"raw" argument must be writable.')
 
         _BufferedIOMixin.__init__(self, raw)
-        if buffer_size <= 0:
-            ashiria ValueError("invalid buffer size")
+        ikiwa buffer_size <= 0:
+             ashiria ValueError("invalid buffer size")
         self.buffer_size = buffer_size
         self._write_buf = bytearray()
         self._write_lock = Lock()
 
-    def writable(self):
-        return self.raw.writable()
+    eleza writable(self):
+        rudisha self.raw.writable()
 
-    def write(self, b):
-        if isinstance(b, str):
-            ashiria TypeError("can't write str to binary stream")
-        with self._write_lock:
-            if self.closed:
-                ashiria ValueError("write to closed file")
-            # XXX we can implement some more tricks to try and avoid
+    eleza write(self, b):
+        ikiwa isinstance(b, str):
+             ashiria TypeError("can't write str to binary stream")
+        ukijumuisha self._write_lock:
+            ikiwa self.closed:
+                 ashiria ValueError("write to closed file")
+            # XXX we can implement some more tricks to try na avoid
             # partial writes
-            if len(self._write_buf) > self.buffer_size:
+            ikiwa len(self._write_buf) > self.buffer_size:
                 # We're full, so let's pre-flush the buffer.  (This may
-                # ashiria BlockingIOError with characters_written == 0.)
+                #  ashiria BlockingIOError ukijumuisha characters_written == 0.)
                 self._flush_unlocked()
             before = len(self._write_buf)
             self._write_buf.extend(b)
             written = len(self._write_buf) - before
-            if len(self._write_buf) > self.buffer_size:
+            ikiwa len(self._write_buf) > self.buffer_size:
                 jaribu:
                     self._flush_unlocked()
-                tatizo BlockingIOError as e:
-                    if len(self._write_buf) > self.buffer_size:
+                except BlockingIOError as e:
+                    ikiwa len(self._write_buf) > self.buffer_size:
                         # We've hit the buffer_size. We have to accept a partial
-                        # write and cut back our buffer.
+                        # write na cut back our buffer.
                         overage = len(self._write_buf) - self.buffer_size
                         written -= overage
                         self._write_buf = self._write_buf[:self.buffer_size]
-                        ashiria BlockingIOError(e.errno, e.strerror, written)
-            return written
+                         ashiria BlockingIOError(e.errno, e.strerror, written)
+            rudisha written
 
-    def truncate(self, pos=None):
-        with self._write_lock:
+    eleza truncate(self, pos=Tupu):
+        ukijumuisha self._write_lock:
             self._flush_unlocked()
-            if pos is None:
+            ikiwa pos ni Tupu:
                 pos = self.raw.tell()
-            return self.raw.truncate(pos)
+            rudisha self.raw.truncate(pos)
 
-    def flush(self):
-        with self._write_lock:
+    eleza flush(self):
+        ukijumuisha self._write_lock:
             self._flush_unlocked()
 
-    def _flush_unlocked(self):
-        if self.closed:
-            ashiria ValueError("flush on closed file")
+    eleza _flush_unlocked(self):
+        ikiwa self.closed:
+             ashiria ValueError("flush on closed file")
         wakati self._write_buf:
             jaribu:
                 n = self.raw.write(self._write_buf)
-            tatizo BlockingIOError:
-                ashiria RuntimeError("self.raw should implement RawIOBase: it "
-                                   "should sio ashiria BlockingIOError")
-            if n is None:
-                ashiria BlockingIOError(
+            except BlockingIOError:
+                 ashiria RuntimeError("self.raw should implement RawIOBase: it "
+                                   "should sio  ashiria BlockingIOError")
+            ikiwa n ni Tupu:
+                 ashiria BlockingIOError(
                     errno.EAGAIN,
                     "write could sio complete without blocking", 0)
-            if n > len(self._write_buf) ama n < 0:
-                ashiria OSError("write() returned incorrect number of bytes")
+            ikiwa n > len(self._write_buf) ama n < 0:
+                 ashiria OSError("write() returned incorrect number of bytes")
             toa self._write_buf[:n]
 
-    def tell(self):
-        return _BufferedIOMixin.tell(self) + len(self._write_buf)
+    eleza tell(self):
+        rudisha _BufferedIOMixin.tell(self) + len(self._write_buf)
 
-    def seek(self, pos, whence=0):
-        if whence haiko kwenye valid_seek_flags:
-            ashiria ValueError("invalid whence value")
-        with self._write_lock:
+    eleza seek(self, pos, whence=0):
+        ikiwa whence sio kwenye valid_seek_flags:
+             ashiria ValueError("invalid whence value")
+        ukijumuisha self._write_lock:
             self._flush_unlocked()
-            return _BufferedIOMixin.seek(self, pos, whence)
+            rudisha _BufferedIOMixin.seek(self, pos, whence)
 
-    def close(self):
-        with self._write_lock:
-            if self.raw is None or self.closed:
+    eleza close(self):
+        ukijumuisha self._write_lock:
+            ikiwa self.raw ni Tupu ama self.closed:
                 return
-        # We have to release the lock and call self.flush() (which will
-        # probably just re-take the lock) in case flush has been overridden in
-        # a subkundi or the user set self.flush to something. This is the same
+        # We have to release the lock na call self.flush() (which will
+        # probably just re-take the lock) kwenye case flush has been overridden in
+        # a subkundi ama the user set self.flush to something. This ni the same
         # behavior as the C implementation.
         jaribu:
-            # may ashiria BlockingIOError or BrokenPipeError etc
+            # may  ashiria BlockingIOError ama BrokenPipeError etc
             self.flush()
         mwishowe:
-            with self._write_lock:
+            ukijumuisha self._write_lock:
                 self.raw.close()
 
 
 kundi BufferedRWPair(BufferedIOBase):
 
-    """A buffered reader and writer object together.
+    """A buffered reader na writer object together.
 
-    A buffered reader object and buffered writer object put together to
-    form a sequential IO object that can read and write. This is typically
-    used with a socket or two-way pipe.
+    A buffered reader object na buffered writer object put together to
+    form a sequential IO object that can read na write. This ni typically
+    used ukijumuisha a socket ama two-way pipe.
 
-    reader and writer are RawIOBase objects that are readable na
-    writeable respectively. If the buffer_size is omitted it defaults to
+    reader na writer are RawIOBase objects that are readable and
+    writeable respectively. If the buffer_size ni omitted it defaults to
     DEFAULT_BUFFER_SIZE.
     """
 
     # XXX The usefulness of this (compared to having two separate IO
-    # objects) is questionable.
+    # objects) ni questionable.
 
-    def __init__(self, reader, writer, buffer_size=DEFAULT_BUFFER_SIZE):
+    eleza __init__(self, reader, writer, buffer_size=DEFAULT_BUFFER_SIZE):
         """Constructor.
 
         The arguments are two RawIO instances.
         """
-        if sio reader.readable():
-            ashiria OSError('"reader" argument must be readable.')
+        ikiwa sio reader.readable():
+             ashiria OSError('"reader" argument must be readable.')
 
-        if sio writer.writable():
-            ashiria OSError('"writer" argument must be writable.')
+        ikiwa sio writer.writable():
+             ashiria OSError('"writer" argument must be writable.')
 
         self.reader = BufferedReader(reader, buffer_size)
         self.writer = BufferedWriter(writer, buffer_size)
 
-    def read(self, size=-1):
-        if size is None:
+    eleza read(self, size=-1):
+        ikiwa size ni Tupu:
             size = -1
-        return self.reader.read(size)
+        rudisha self.reader.read(size)
 
-    def readinto(self, b):
-        return self.reader.readinto(b)
+    eleza readinto(self, b):
+        rudisha self.reader.readinto(b)
 
-    def write(self, b):
-        return self.writer.write(b)
+    eleza write(self, b):
+        rudisha self.writer.write(b)
 
-    def peek(self, size=0):
-        return self.reader.peek(size)
+    eleza peek(self, size=0):
+        rudisha self.reader.peek(size)
 
-    def read1(self, size=-1):
-        return self.reader.read1(size)
+    eleza read1(self, size=-1):
+        rudisha self.reader.read1(size)
 
-    def readinto1(self, b):
-        return self.reader.readinto1(b)
+    eleza readinto1(self, b):
+        rudisha self.reader.readinto1(b)
 
-    def readable(self):
-        return self.reader.readable()
+    eleza readable(self):
+        rudisha self.reader.readable()
 
-    def writable(self):
-        return self.writer.writable()
+    eleza writable(self):
+        rudisha self.writer.writable()
 
-    def flush(self):
-        return self.writer.flush()
+    eleza flush(self):
+        rudisha self.writer.flush()
 
-    def close(self):
+    eleza close(self):
         jaribu:
             self.writer.close()
         mwishowe:
             self.reader.close()
 
-    def isatty(self):
-        return self.reader.isatty() ama self.writer.isatty()
+    eleza isatty(self):
+        rudisha self.reader.isatty() ama self.writer.isatty()
 
     @property
-    def closed(self):
-        return self.writer.closed
+    eleza closed(self):
+        rudisha self.writer.closed
 
 
 kundi BufferedRandom(BufferedWriter, BufferedReader):
 
     """A buffered interface to random access streams.
 
-    The constructor creates a reader and writer for a seekable stream,
-    raw, given in the first argument. If the buffer_size is omitted it
+    The constructor creates a reader na writer kila a seekable stream,
+    raw, given kwenye the first argument. If the buffer_size ni omitted it
     defaults to DEFAULT_BUFFER_SIZE.
     """
 
-    def __init__(self, raw, buffer_size=DEFAULT_BUFFER_SIZE):
+    eleza __init__(self, raw, buffer_size=DEFAULT_BUFFER_SIZE):
         raw._checkSeekable()
         BufferedReader.__init__(self, raw, buffer_size)
         BufferedWriter.__init__(self, raw, buffer_size)
 
-    def seek(self, pos, whence=0):
-        if whence haiko kwenye valid_seek_flags:
-            ashiria ValueError("invalid whence value")
+    eleza seek(self, pos, whence=0):
+        ikiwa whence sio kwenye valid_seek_flags:
+             ashiria ValueError("invalid whence value")
         self.flush()
-        if self._read_buf:
+        ikiwa self._read_buf:
             # Undo read ahead.
-            with self._read_lock:
+            ukijumuisha self._read_lock:
                 self.raw.seek(self._read_pos - len(self._read_buf), 1)
         # First do the raw seek, then empty the read buffer, so that
-        # if the raw seek fails, we don't lose buffered data forever.
+        # ikiwa the raw seek fails, we don't lose buffered data forever.
         pos = self.raw.seek(pos, whence)
-        with self._read_lock:
+        ukijumuisha self._read_lock:
             self._reset_read_buf()
-        if pos < 0:
-            ashiria OSError("seek() returned invalid position")
-        return pos
+        ikiwa pos < 0:
+             ashiria OSError("seek() returned invalid position")
+        rudisha pos
 
-    def tell(self):
-        if self._write_buf:
-            return BufferedWriter.tell(self)
+    eleza tell(self):
+        ikiwa self._write_buf:
+            rudisha BufferedWriter.tell(self)
         isipokua:
-            return BufferedReader.tell(self)
+            rudisha BufferedReader.tell(self)
 
-    def truncate(self, pos=None):
-        if pos is None:
+    eleza truncate(self, pos=Tupu):
+        ikiwa pos ni Tupu:
             pos = self.tell()
         # Use seek to flush the read buffer.
-        return BufferedWriter.truncate(self, pos)
+        rudisha BufferedWriter.truncate(self, pos)
 
-    def read(self, size=None):
-        if size is None:
+    eleza read(self, size=Tupu):
+        ikiwa size ni Tupu:
             size = -1
         self.flush()
-        return BufferedReader.read(self, size)
+        rudisha BufferedReader.read(self, size)
 
-    def readinto(self, b):
+    eleza readinto(self, b):
         self.flush()
-        return BufferedReader.readinto(self, b)
+        rudisha BufferedReader.readinto(self, b)
 
-    def peek(self, size=0):
+    eleza peek(self, size=0):
         self.flush()
-        return BufferedReader.peek(self, size)
+        rudisha BufferedReader.peek(self, size)
 
-    def read1(self, size=-1):
+    eleza read1(self, size=-1):
         self.flush()
-        return BufferedReader.read1(self, size)
+        rudisha BufferedReader.read1(self, size)
 
-    def readinto1(self, b):
+    eleza readinto1(self, b):
         self.flush()
-        return BufferedReader.readinto1(self, b)
+        rudisha BufferedReader.readinto1(self, b)
 
-    def write(self, b):
-        if self._read_buf:
+    eleza write(self, b):
+        ikiwa self._read_buf:
             # Undo readahead
-            with self._read_lock:
+            ukijumuisha self._read_lock:
                 self.raw.seek(self._read_pos - len(self._read_buf), 1)
                 self._reset_read_buf()
-        return BufferedWriter.write(self, b)
+        rudisha BufferedWriter.write(self, b)
 
 
 kundi FileIO(RawIOBase):
     _fd = -1
-    _created = False
-    _readable = False
-    _writable = False
-    _appending = False
-    _seekable = None
-    _closefd = True
+    _created = Uongo
+    _readable = Uongo
+    _writable = Uongo
+    _appending = Uongo
+    _seekable = Tupu
+    _closefd = Kweli
 
-    def __init__(self, file, mode='r', closefd=True, opener=None):
-        """Open a file.  The mode can be 'r' (default), 'w', 'x' or 'a' for reading,
-        writing, exclusive creation or appending.  The file will be created if it
-        doesn't exist when opened for writing or appending; it will be truncated
-        when opened for writing.  A FileExistsError will be raised if it already
-        exists when opened for creating. Opening a file for creating implies
-        writing so this mode behaves in a similar way to 'w'. Add a '+' to the mode
-        to allow simultaneous reading and writing. A custom opener can be used by
-        passing a callable as *opener*. The underlying file descriptor for the file
-        object is then obtained by calling opener with (*name*, *flags*).
-        *opener* must return an open file descriptor (passing os.open as *opener*
-        results in functionality similar to passing None).
+    eleza __init__(self, file, mode='r', closefd=Kweli, opener=Tupu):
+        """Open a file.  The mode can be 'r' (default), 'w', 'x' ama 'a' kila reading,
+        writing, exclusive creation ama appending.  The file will be created ikiwa it
+        doesn't exist when opened kila writing ama appending; it will be truncated
+        when opened kila writing.  A FileExistsError will be raised ikiwa it already
+        exists when opened kila creating. Opening a file kila creating implies
+        writing so this mode behaves kwenye a similar way to 'w'. Add a '+' to the mode
+        to allow simultaneous reading na writing. A custom opener can be used by
+        passing a callable as *opener*. The underlying file descriptor kila the file
+        object ni then obtained by calling opener ukijumuisha (*name*, *flags*).
+        *opener* must rudisha an open file descriptor (passing os.open as *opener*
+        results kwenye functionality similar to passing Tupu).
         """
-        if self._fd >= 0:
+        ikiwa self._fd >= 0:
             # Have to close the existing file first.
             jaribu:
-                if self._closefd:
+                ikiwa self._closefd:
                     os.close(self._fd)
             mwishowe:
                 self._fd = -1
 
-        if isinstance(file, float):
-            ashiria TypeError('integer argument expected, got float')
-        if isinstance(file, int):
+        ikiwa isinstance(file, float):
+             ashiria TypeError('integer argument expected, got float')
+        ikiwa isinstance(file, int):
             fd = file
-            if fd < 0:
-                ashiria ValueError('negative file descriptor')
+            ikiwa fd < 0:
+                 ashiria ValueError('negative file descriptor')
         isipokua:
             fd = -1
 
-        if sio isinstance(mode, str):
-            ashiria TypeError('invalid mode: %s' % (mode,))
-        if sio set(mode) <= set('xrwab+'):
-            ashiria ValueError('invalid mode: %s' % (mode,))
-        if sum(c in 'rwax' for c in mode) != 1 or mode.count('+') > 1:
-            ashiria ValueError('Must have exactly one of create/read/write/append '
-                             'mode and at most one plus')
+        ikiwa sio isinstance(mode, str):
+             ashiria TypeError('invalid mode: %s' % (mode,))
+        ikiwa sio set(mode) <= set('xrwab+'):
+             ashiria ValueError('invalid mode: %s' % (mode,))
+        ikiwa sum(c kwenye 'rwax' kila c kwenye mode) != 1 ama mode.count('+') > 1:
+             ashiria ValueError('Must have exactly one of create/read/write/append '
+                             'mode na at most one plus')
 
-        if 'x' in mode:
-            self._created = True
-            self._writable = True
+        ikiwa 'x' kwenye mode:
+            self._created = Kweli
+            self._writable = Kweli
             flags = os.O_EXCL | os.O_CREAT
-        lasivyo 'r' in mode:
-            self._readable = True
+        elikiwa 'r' kwenye mode:
+            self._readable = Kweli
             flags = 0
-        lasivyo 'w' in mode:
-            self._writable = True
+        elikiwa 'w' kwenye mode:
+            self._writable = Kweli
             flags = os.O_CREAT | os.O_TRUNC
-        lasivyo 'a' in mode:
-            self._writable = True
-            self._appending = True
+        elikiwa 'a' kwenye mode:
+            self._writable = Kweli
+            self._appending = Kweli
             flags = os.O_APPEND | os.O_CREAT
 
-        if '+' in mode:
-            self._readable = True
-            self._writable = True
+        ikiwa '+' kwenye mode:
+            self._readable = Kweli
+            self._writable = Kweli
 
-        if self._readable and self._writable:
+        ikiwa self._readable na self._writable:
             flags |= os.O_RDWR
-        lasivyo self._readable:
+        elikiwa self._readable:
             flags |= os.O_RDONLY
         isipokua:
             flags |= os.O_WRONLY
 
         flags |= getattr(os, 'O_BINARY', 0)
 
-        noinherit_flag = (getattr(os, 'O_NOINHERIT', 0) ama
+        noinherit_flag = (getattr(os, 'O_NOINHERIT', 0) or
                           getattr(os, 'O_CLOEXEC', 0))
         flags |= noinherit_flag
 
-        owned_fd = None
+        owned_fd = Tupu
         jaribu:
-            if fd < 0:
-                if sio closefd:
-                    ashiria ValueError('Cannot use closefd=False with file name')
-                if opener is None:
+            ikiwa fd < 0:
+                ikiwa sio closefd:
+                     ashiria ValueError('Cannot use closefd=Uongo ukijumuisha file name')
+                ikiwa opener ni Tupu:
                     fd = os.open(file, flags, 0o666)
                 isipokua:
                     fd = opener(file, flags)
-                    if sio isinstance(fd, int):
-                        ashiria TypeError('expected integer kutoka opener')
-                    if fd < 0:
-                        ashiria OSError('Negative file descriptor')
+                    ikiwa sio isinstance(fd, int):
+                         ashiria TypeError('expected integer kutoka opener')
+                    ikiwa fd < 0:
+                         ashiria OSError('Negative file descriptor')
                 owned_fd = fd
-                if sio noinherit_flag:
-                    os.set_inheritable(fd, False)
+                ikiwa sio noinherit_flag:
+                    os.set_inheritable(fd, Uongo)
 
             self._closefd = closefd
             fdfstat = os.fstat(fd)
             jaribu:
-                if stat.S_ISDIR(fdfstat.st_mode):
-                    ashiria IsADirectoryError(errno.EISDIR,
+                ikiwa stat.S_ISDIR(fdfstat.st_mode):
+                     ashiria IsADirectoryError(errno.EISDIR,
                                             os.strerror(errno.EISDIR), file)
-            tatizo AttributeError:
-                # Ignore the AttribueError if stat.S_ISDIR or errno.EISDIR
+            except AttributeError:
+                # Ignore the AttribueError ikiwa stat.S_ISDIR ama errno.EISDIR
                 # don't exist.
                 pass
             self._blksize = getattr(fdfstat, 'st_blksize', 0)
-            if self._blksize <= 1:
+            ikiwa self._blksize <= 1:
                 self._blksize = DEFAULT_BUFFER_SIZE
 
-            if _setmode:
+            ikiwa _setmode:
                 # don't translate newlines (\r\n <=> \n)
                 _setmode(fd, os.O_BINARY)
 
             self.name = file
-            if self._appending:
+            ikiwa self._appending:
                 # For consistent behaviour, we explicitly seek to the
                 # end of file (otherwise, it might be done only on the
                 # first write()).
                 os.lseek(fd, 0, SEEK_END)
         tatizo:
-            if owned_fd ni sio None:
+            ikiwa owned_fd ni sio Tupu:
                 os.close(owned_fd)
             raise
         self._fd = fd
 
-    def __del__(self):
-        if self._fd >= 0 and self._closefd and sio self.closed:
+    eleza __del__(self):
+        ikiwa self._fd >= 0 na self._closefd na sio self.closed:
             agiza warnings
             warnings.warn('unclosed file %r' % (self,), ResourceWarning,
                           stacklevel=2, source=self)
             self.close()
 
-    def __getstate__(self):
-        ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
+    eleza __getstate__(self):
+         ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
 
-    def __repr__(self):
+    eleza __repr__(self):
         class_name = '%s.%s' % (self.__class__.__module__,
                                 self.__class__.__qualname__)
-        if self.closed:
-            return '<%s [closed]>' % class_name
+        ikiwa self.closed:
+            rudisha '<%s [closed]>' % class_name
         jaribu:
             name = self.name
-        tatizo AttributeError:
-            return ('<%s fd=%d mode=%r closefd=%r>' %
+        except AttributeError:
+            rudisha ('<%s fd=%d mode=%r closefd=%r>' %
                     (class_name, self._fd, self.mode, self._closefd))
         isipokua:
-            return ('<%s name=%r mode=%r closefd=%r>' %
+            rudisha ('<%s name=%r mode=%r closefd=%r>' %
                     (class_name, name, self.mode, self._closefd))
 
-    def _checkReadable(self):
-        if sio self._readable:
-            ashiria UnsupportedOperation('File sio open for reading')
+    eleza _checkReadable(self):
+        ikiwa sio self._readable:
+             ashiria UnsupportedOperation('File sio open kila reading')
 
-    def _checkWritable(self, msg=None):
-        if sio self._writable:
-            ashiria UnsupportedOperation('File sio open for writing')
+    eleza _checkWritable(self, msg=Tupu):
+        ikiwa sio self._writable:
+             ashiria UnsupportedOperation('File sio open kila writing')
 
-    def read(self, size=None):
+    eleza read(self, size=Tupu):
         """Read at most size bytes, returned as bytes.
 
         Only makes one system call, so less data may be returned than requested
-        In non-blocking mode, returns None if no data is available.
+        In non-blocking mode, returns Tupu ikiwa no data ni available.
         Return an empty bytes object at EOF.
         """
         self._checkClosed()
         self._checkReadable()
-        if size is None or size < 0:
-            return self.readall()
+        ikiwa size ni Tupu ama size < 0:
+            rudisha self.readall()
         jaribu:
-            return os.read(self._fd, size)
-        tatizo BlockingIOError:
-            return None
+            rudisha os.read(self._fd, size)
+        except BlockingIOError:
+            rudisha Tupu
 
-    def readall(self):
+    eleza readall(self):
         """Read all data kutoka the file, returned as bytes.
 
-        In non-blocking mode, returns as much as is immediately available,
-        or None if no data is available.  Return an empty bytes object at EOF.
+        In non-blocking mode, returns as much as ni immediately available,
+        ama Tupu ikiwa no data ni available.  Return an empty bytes object at EOF.
         """
         self._checkClosed()
         self._checkReadable()
@@ -1654,292 +1654,292 @@ kundi FileIO(RawIOBase):
         jaribu:
             pos = os.lseek(self._fd, 0, SEEK_CUR)
             end = os.fstat(self._fd).st_size
-            if end >= pos:
+            ikiwa end >= pos:
                 bufsize = end - pos + 1
-        tatizo OSError:
+        except OSError:
             pass
 
         result = bytearray()
-        wakati True:
-            if len(result) >= bufsize:
+        wakati Kweli:
+            ikiwa len(result) >= bufsize:
                 bufsize = len(result)
                 bufsize += max(bufsize, DEFAULT_BUFFER_SIZE)
             n = bufsize - len(result)
             jaribu:
                 chunk = os.read(self._fd, n)
-            tatizo BlockingIOError:
-                if result:
+            except BlockingIOError:
+                ikiwa result:
                     koma
-                return None
-            if sio chunk: # reached the end of the file
+                rudisha Tupu
+            ikiwa sio chunk: # reached the end of the file
                 koma
             result += chunk
 
-        return bytes(result)
+        rudisha bytes(result)
 
-    def readinto(self, b):
+    eleza readinto(self, b):
         """Same as RawIOBase.readinto()."""
         m = memoryview(b).cast('B')
         data = self.read(len(m))
         n = len(data)
         m[:n] = data
-        return n
+        rudisha n
 
-    def write(self, b):
-        """Write bytes b to file, return number written.
+    eleza write(self, b):
+        """Write bytes b to file, rudisha number written.
 
         Only makes one system call, so sio all of the data may be written.
-        The number of bytes actually written is returned.  In non-blocking mode,
-        returns None if the write would block.
+        The number of bytes actually written ni returned.  In non-blocking mode,
+        returns Tupu ikiwa the write would block.
         """
         self._checkClosed()
         self._checkWritable()
         jaribu:
-            return os.write(self._fd, b)
-        tatizo BlockingIOError:
-            return None
+            rudisha os.write(self._fd, b)
+        except BlockingIOError:
+            rudisha Tupu
 
-    def seek(self, pos, whence=SEEK_SET):
+    eleza seek(self, pos, whence=SEEK_SET):
         """Move to new file position.
 
-        Argument offset is a byte count.  Optional argument whence defaults to
-        SEEK_SET or 0 (offset kutoka start of file, offset should be >= 0); other values
-        are SEEK_CUR or 1 (move relative to current position, positive or negative),
-        and SEEK_END or 2 (move relative to end of file, usually negative, although
+        Argument offset ni a byte count.  Optional argument whence defaults to
+        SEEK_SET ama 0 (offset kutoka start of file, offset should be >= 0); other values
+        are SEEK_CUR ama 1 (move relative to current position, positive ama negative),
+        na SEEK_END ama 2 (move relative to end of file, usually negative, although
         many platforms allow seeking beyond the end of a file).
 
         Note that sio all file objects are seekable.
         """
-        if isinstance(pos, float):
-            ashiria TypeError('an integer is required')
+        ikiwa isinstance(pos, float):
+             ashiria TypeError('an integer ni required')
         self._checkClosed()
-        return os.lseek(self._fd, pos, whence)
+        rudisha os.lseek(self._fd, pos, whence)
 
-    def tell(self):
+    eleza tell(self):
         """tell() -> int.  Current file position.
 
-        Can ashiria OSError for non seekable files."""
+        Can  ashiria OSError kila non seekable files."""
         self._checkClosed()
-        return os.lseek(self._fd, 0, SEEK_CUR)
+        rudisha os.lseek(self._fd, 0, SEEK_CUR)
 
-    def truncate(self, size=None):
+    eleza truncate(self, size=Tupu):
         """Truncate the file to at most size bytes.
 
         Size defaults to the current file position, as returned by tell().
-        The current file position is changed to the value of size.
+        The current file position ni changed to the value of size.
         """
         self._checkClosed()
         self._checkWritable()
-        if size is None:
+        ikiwa size ni Tupu:
             size = self.tell()
         os.ftruncate(self._fd, size)
-        return size
+        rudisha size
 
-    def close(self):
+    eleza close(self):
         """Close the file.
 
-        A closed file cannot be used for further I/O operations.  close() may be
+        A closed file cannot be used kila further I/O operations.  close() may be
         called more than once without error.
         """
-        if sio self.closed:
+        ikiwa sio self.closed:
             jaribu:
-                if self._closefd:
+                ikiwa self._closefd:
                     os.close(self._fd)
             mwishowe:
                 super().close()
 
-    def seekable(self):
-        """True if file supports random-access."""
+    eleza seekable(self):
+        """Kweli ikiwa file supports random-access."""
         self._checkClosed()
-        if self._seekable is None:
+        ikiwa self._seekable ni Tupu:
             jaribu:
                 self.tell()
-            tatizo OSError:
-                self._seekable = False
+            except OSError:
+                self._seekable = Uongo
             isipokua:
-                self._seekable = True
-        return self._seekable
+                self._seekable = Kweli
+        rudisha self._seekable
 
-    def readable(self):
-        """True if file was opened in a read mode."""
+    eleza readable(self):
+        """Kweli ikiwa file was opened kwenye a read mode."""
         self._checkClosed()
-        return self._readable
+        rudisha self._readable
 
-    def writable(self):
-        """True if file was opened in a write mode."""
+    eleza writable(self):
+        """Kweli ikiwa file was opened kwenye a write mode."""
         self._checkClosed()
-        return self._writable
+        rudisha self._writable
 
-    def fileno(self):
+    eleza fileno(self):
         """Return the underlying file descriptor (an integer)."""
         self._checkClosed()
-        return self._fd
+        rudisha self._fd
 
-    def isatty(self):
-        """True if the file is connected to a TTY device."""
+    eleza isatty(self):
+        """Kweli ikiwa the file ni connected to a TTY device."""
         self._checkClosed()
-        return os.isatty(self._fd)
+        rudisha os.isatty(self._fd)
 
     @property
-    def closefd(self):
-        """True if the file descriptor will be closed by close()."""
-        return self._closefd
+    eleza closefd(self):
+        """Kweli ikiwa the file descriptor will be closed by close()."""
+        rudisha self._closefd
 
     @property
-    def mode(self):
+    eleza mode(self):
         """String giving the file mode"""
-        if self._created:
-            if self._readable:
-                return 'xb+'
+        ikiwa self._created:
+            ikiwa self._readable:
+                rudisha 'xb+'
             isipokua:
-                return 'xb'
-        lasivyo self._appending:
-            if self._readable:
-                return 'ab+'
+                rudisha 'xb'
+        elikiwa self._appending:
+            ikiwa self._readable:
+                rudisha 'ab+'
             isipokua:
-                return 'ab'
-        lasivyo self._readable:
-            if self._writable:
-                return 'rb+'
+                rudisha 'ab'
+        elikiwa self._readable:
+            ikiwa self._writable:
+                rudisha 'rb+'
             isipokua:
-                return 'rb'
+                rudisha 'rb'
         isipokua:
-            return 'wb'
+            rudisha 'wb'
 
 
 kundi TextIOBase(IOBase):
 
-    """Base kundi for text I/O.
+    """Base kundi kila text I/O.
 
-    This kundi provides a character and line based interface to stream
-    I/O. There is no public constructor.
+    This kundi provides a character na line based interface to stream
+    I/O. There ni no public constructor.
     """
 
-    def read(self, size=-1):
-        """Read at most size characters kutoka stream, where size is an int.
+    eleza read(self, size=-1):
+        """Read at most size characters kutoka stream, where size ni an int.
 
-        Read kutoka underlying buffer until we have size characters or we hit EOF.
-        If size is negative or omitted, read until EOF.
+        Read kutoka underlying buffer until we have size characters ama we hit EOF.
+        If size ni negative ama omitted, read until EOF.
 
         Returns a string.
         """
         self._unsupported("read")
 
-    def write(self, s):
-        """Write string s to stream and returning an int."""
+    eleza write(self, s):
+        """Write string s to stream na returning an int."""
         self._unsupported("write")
 
-    def truncate(self, pos=None):
-        """Truncate size to pos, where pos is an int."""
+    eleza truncate(self, pos=Tupu):
+        """Truncate size to pos, where pos ni an int."""
         self._unsupported("truncate")
 
-    def readline(self):
-        """Read until newline or EOF.
+    eleza readline(self):
+        """Read until newline ama EOF.
 
-        Returns an empty string if EOF is hit immediately.
+        Returns an empty string ikiwa EOF ni hit immediately.
         """
         self._unsupported("readline")
 
-    def detach(self):
+    eleza detach(self):
         """
-        Separate the underlying buffer kutoka the TextIOBase and return it.
+        Separate the underlying buffer kutoka the TextIOBase na rudisha it.
 
-        After the underlying buffer has been detached, the TextIO is in an
+        After the underlying buffer has been detached, the TextIO ni kwenye an
         unusable state.
         """
         self._unsupported("detach")
 
     @property
-    def encoding(self):
+    eleza encoding(self):
         """Subclasses should override."""
-        return None
+        rudisha Tupu
 
     @property
-    def newlines(self):
+    eleza newlines(self):
         """Line endings translated so far.
 
         Only line endings translated during reading are considered.
 
         Subclasses should override.
         """
-        return None
+        rudisha Tupu
 
     @property
-    def errors(self):
-        """Error setting of the decoder or encoder.
+    eleza errors(self):
+        """Error setting of the decoder ama encoder.
 
         Subclasses should override."""
-        return None
+        rudisha Tupu
 
 io.TextIOBase.register(TextIOBase)
 
 
 kundi IncrementalNewlineDecoder(codecs.IncrementalDecoder):
-    r"""Codec used when reading a file in universal newlines mode.  It wraps
-    another incremental decoder, translating \r\n and \r into \n.  It also
+    r"""Codec used when reading a file kwenye universal newlines mode.  It wraps
+    another incremental decoder, translating \r\n na \r into \n.  It also
     records the types of newlines encountered.  When used with
-    translate=False, it ensures that the newline sequence is returned in
+    translate=Uongo, it ensures that the newline sequence ni returned in
     one piece.
     """
-    def __init__(self, decoder, translate, errors='strict'):
+    eleza __init__(self, decoder, translate, errors='strict'):
         codecs.IncrementalDecoder.__init__(self, errors=errors)
         self.translate = translate
         self.decoder = decoder
         self.seennl = 0
-        self.pendingcr = False
+        self.pendingcr = Uongo
 
-    def decode(self, input, final=False):
-        # decode input (with the eventual \r kutoka a previous pass)
-        if self.decoder is None:
+    eleza decode(self, input, final=Uongo):
+        # decode input (ukijumuisha the eventual \r kutoka a previous pass)
+        ikiwa self.decoder ni Tupu:
             output = input
         isipokua:
             output = self.decoder.decode(input, final=final)
-        if self.pendingcr and (output or final):
+        ikiwa self.pendingcr na (output ama final):
             output = "\r" + output
-            self.pendingcr = False
+            self.pendingcr = Uongo
 
         # retain last \r even when sio translating data:
-        # then readline() is sure to get \r\n in one pass
-        if output.endswith("\r") and sio final:
+        # then readline() ni sure to get \r\n kwenye one pass
+        ikiwa output.endswith("\r") na sio final:
             output = output[:-1]
-            self.pendingcr = True
+            self.pendingcr = Kweli
 
         # Record which newlines are read
         crlf = output.count('\r\n')
         cr = output.count('\r') - crlf
         lf = output.count('\n') - crlf
-        self.seennl |= (lf and self._LF) | (cr and self._CR) \
-                    | (crlf and self._CRLF)
+        self.seennl |= (lf na self._LF) | (cr na self._CR) \
+                    | (crlf na self._CRLF)
 
-        if self.translate:
-            if crlf:
+        ikiwa self.translate:
+            ikiwa crlf:
                 output = output.replace("\r\n", "\n")
-            if cr:
+            ikiwa cr:
                 output = output.replace("\r", "\n")
 
-        return output
+        rudisha output
 
-    def getstate(self):
-        if self.decoder is None:
+    eleza getstate(self):
+        ikiwa self.decoder ni Tupu:
             buf = b""
             flag = 0
         isipokua:
             buf, flag = self.decoder.getstate()
         flag <<= 1
-        if self.pendingcr:
+        ikiwa self.pendingcr:
             flag |= 1
-        return buf, flag
+        rudisha buf, flag
 
-    def setstate(self, state):
+    eleza setstate(self, state):
         buf, flag = state
         self.pendingcr = bool(flag & 1)
-        if self.decoder ni sio None:
+        ikiwa self.decoder ni sio Tupu:
             self.decoder.setstate((buf, flag >> 1))
 
-    def reset(self):
+    eleza reset(self):
         self.seennl = 0
-        self.pendingcr = False
-        if self.decoder ni sio None:
+        self.pendingcr = Uongo
+        ikiwa self.decoder ni sio Tupu:
             self.decoder.reset()
 
     _LF = 1
@@ -1947,8 +1947,8 @@ kundi IncrementalNewlineDecoder(codecs.IncrementalDecoder):
     _CRLF = 4
 
     @property
-    def newlines(self):
-        return (None,
+    eleza newlines(self):
+        rudisha (Tupu,
                 "\n",
                 "\r",
                 ("\r", "\n"),
@@ -1961,25 +1961,25 @@ kundi IncrementalNewlineDecoder(codecs.IncrementalDecoder):
 
 kundi TextIOWrapper(TextIOBase):
 
-    r"""Character and line based layer over a BufferedIOBase object, buffer.
+    r"""Character na line based layer over a BufferedIOBase object, buffer.
 
     encoding gives the name of the encoding that the stream will be
-    decoded or encoded with. It defaults to locale.getpreferredencoding(False).
+    decoded ama encoded with. It defaults to locale.getpreferredencoding(Uongo).
 
-    errors determines the strictness of encoding and decoding (see the
-    codecs.register) and defaults to "strict".
+    errors determines the strictness of encoding na decoding (see the
+    codecs.register) na defaults to "strict".
 
-    newline can be None, '', '\n', '\r', or '\r\n'.  It controls the
-    handling of line endings. If it is None, universal newlines is
+    newline can be Tupu, '', '\n', '\r', ama '\r\n'.  It controls the
+    handling of line endings. If it ni Tupu, universal newlines is
     enabled.  With this enabled, on input, the lines endings '\n', '\r',
-    or '\r\n' are translated to '\n' before being returned to the
-    caller. Conversely, on output, '\n' is translated to the system
-    default line separator, os.linesep. If newline is any other of its
-    legal values, that newline becomes the newline when the file is read
-    and it is returned untranslated. On output, '\n' is converted to the
+    ama '\r\n' are translated to '\n' before being returned to the
+    caller. Conversely, on output, '\n' ni translated to the system
+    default line separator, os.linesep. If newline ni any other of its
+    legal values, that newline becomes the newline when the file ni read
+    na it ni returned untranslated. On output, '\n' ni converted to the
     newline.
 
-    If line_buffering is True, a call to flush is implied when a call to
+    If line_buffering ni Kweli, a call to flush ni implied when a call to
     write contains a newline character.
     """
 
@@ -1987,339 +1987,339 @@ kundi TextIOWrapper(TextIOBase):
 
     # Initialize _buffer as soon as possible since it's used by __del__()
     # which calls close()
-    _buffer = None
+    _buffer = Tupu
 
     # The write_through argument has no effect here since this
-    # implementation always writes through.  The argument is present only
+    # implementation always writes through.  The argument ni present only
     # so that the signature can match the signature of the C version.
-    def __init__(self, buffer, encoding=None, errors=None, newline=None,
-                 line_buffering=False, write_through=False):
+    eleza __init__(self, buffer, encoding=Tupu, errors=Tupu, newline=Tupu,
+                 line_buffering=Uongo, write_through=Uongo):
         self._check_newline(newline)
-        if encoding is None:
+        ikiwa encoding ni Tupu:
             jaribu:
                 encoding = os.device_encoding(buffer.fileno())
-            tatizo (AttributeError, UnsupportedOperation):
+            except (AttributeError, UnsupportedOperation):
                 pass
-            if encoding is None:
+            ikiwa encoding ni Tupu:
                 jaribu:
                     agiza locale
-                tatizo ImportError:
-                    # Importing locale may fail if Python is being built
+                except ImportError:
+                    # Importing locale may fail ikiwa Python ni being built
                     encoding = "ascii"
                 isipokua:
-                    encoding = locale.getpreferredencoding(False)
+                    encoding = locale.getpreferredencoding(Uongo)
 
-        if sio isinstance(encoding, str):
-            ashiria ValueError("invalid encoding: %r" % encoding)
+        ikiwa sio isinstance(encoding, str):
+             ashiria ValueError("invalid encoding: %r" % encoding)
 
-        if sio codecs.lookup(encoding)._is_text_encoding:
+        ikiwa sio codecs.lookup(encoding)._is_text_encoding:
             msg = ("%r ni sio a text encoding; "
                    "use codecs.open() to handle arbitrary codecs")
-            ashiria LookupError(msg % encoding)
+             ashiria LookupError(msg % encoding)
 
-        if errors is None:
+        ikiwa errors ni Tupu:
             errors = "strict"
         isipokua:
-            if sio isinstance(errors, str):
-                ashiria ValueError("invalid errors: %r" % errors)
+            ikiwa sio isinstance(errors, str):
+                 ashiria ValueError("invalid errors: %r" % errors)
 
         self._buffer = buffer
-        self._decoded_chars = ''  # buffer for text returned kutoka decoder
-        self._decoded_chars_used = 0  # offset into _decoded_chars for read()
-        self._snapshot = None  # info for reconstructing decoder state
+        self._decoded_chars = ''  # buffer kila text returned kutoka decoder
+        self._decoded_chars_used = 0  # offset into _decoded_chars kila read()
+        self._snapshot = Tupu  # info kila reconstructing decoder state
         self._seekable = self._telling = self.buffer.seekable()
         self._has_read1 = hasattr(self.buffer, 'read1')
         self._configure(encoding, errors, newline,
                         line_buffering, write_through)
 
-    def _check_newline(self, newline):
-        if newline ni sio None and sio isinstance(newline, str):
-            ashiria TypeError("illegal newline type: %r" % (type(newline),))
-        if newline haiko kwenye (None, "", "\n", "\r", "\r\n"):
-            ashiria ValueError("illegal newline value: %r" % (newline,))
+    eleza _check_newline(self, newline):
+        ikiwa newline ni sio Tupu na sio isinstance(newline, str):
+             ashiria TypeError("illegal newline type: %r" % (type(newline),))
+        ikiwa newline sio kwenye (Tupu, "", "\n", "\r", "\r\n"):
+             ashiria ValueError("illegal newline value: %r" % (newline,))
 
-    def _configure(self, encoding=None, errors=None, newline=None,
-                   line_buffering=False, write_through=False):
+    eleza _configure(self, encoding=Tupu, errors=Tupu, newline=Tupu,
+                   line_buffering=Uongo, write_through=Uongo):
         self._encoding = encoding
         self._errors = errors
-        self._encoder = None
-        self._decoder = None
+        self._encoder = Tupu
+        self._decoder = Tupu
         self._b2cratio = 0.0
 
         self._readuniversal = sio newline
-        self._readtranslate = newline is None
+        self._readtranslate = newline ni Tupu
         self._readnl = newline
         self._writetranslate = newline != ''
-        self._writenl = newline or os.linesep
+        self._writenl = newline ama os.linesep
 
         self._line_buffering = line_buffering
         self._write_through = write_through
 
-        # don't write a BOM in the middle of a file
-        if self._seekable and self.writable():
+        # don't write a BOM kwenye the middle of a file
+        ikiwa self._seekable na self.writable():
             position = self.buffer.tell()
-            if position != 0:
+            ikiwa position != 0:
                 jaribu:
                     self._get_encoder().setstate(0)
-                tatizo LookupError:
+                except LookupError:
                     # Sometimes the encoder doesn't exist
                     pass
 
-    # self._snapshot is either None, or a tuple (dec_flags, next_input)
-    # where dec_flags is the second (integer) item of the decoder state
-    # and next_input is the chunk of input bytes that comes next after the
-    # snapshot point.  We use this to reconstruct decoder states in tell().
+    # self._snapshot ni either Tupu, ama a tuple (dec_flags, next_input)
+    # where dec_flags ni the second (integer) item of the decoder state
+    # na next_input ni the chunk of input bytes that comes next after the
+    # snapshot point.  We use this to reconstruct decoder states kwenye tell().
 
     # Naming convention:
-    #   - "bytes_..." for integer variables that count input bytes
-    #   - "chars_..." for integer variables that count decoded characters
+    #   - "bytes_..." kila integer variables that count input bytes
+    #   - "chars_..." kila integer variables that count decoded characters
 
-    def __repr__(self):
+    eleza __repr__(self):
         result = "<{}.{}".format(self.__class__.__module__,
                                  self.__class__.__qualname__)
         jaribu:
             name = self.name
-        tatizo AttributeError:
+        except AttributeError:
             pass
         isipokua:
             result += " name={0!r}".format(name)
         jaribu:
             mode = self.mode
-        tatizo AttributeError:
+        except AttributeError:
             pass
         isipokua:
             result += " mode={0!r}".format(mode)
-        return result + " encoding={0!r}>".format(self.encoding)
+        rudisha result + " encoding={0!r}>".format(self.encoding)
 
     @property
-    def encoding(self):
-        return self._encoding
+    eleza encoding(self):
+        rudisha self._encoding
 
     @property
-    def errors(self):
-        return self._errors
+    eleza errors(self):
+        rudisha self._errors
 
     @property
-    def line_buffering(self):
-        return self._line_buffering
+    eleza line_buffering(self):
+        rudisha self._line_buffering
 
     @property
-    def write_through(self):
-        return self._write_through
+    eleza write_through(self):
+        rudisha self._write_through
 
     @property
-    def buffer(self):
-        return self._buffer
+    eleza buffer(self):
+        rudisha self._buffer
 
-    def reconfigure(self, *,
-                    encoding=None, errors=None, newline=Ellipsis,
-                    line_buffering=None, write_through=None):
-        """Reconfigure the text stream with new parameters.
+    eleza reconfigure(self, *,
+                    encoding=Tupu, errors=Tupu, newline=Ellipsis,
+                    line_buffering=Tupu, write_through=Tupu):
+        """Reconfigure the text stream ukijumuisha new parameters.
 
         This also flushes the stream.
         """
-        if (self._decoder ni sio None
-                and (encoding ni sio None or errors ni sio None
-                     or newline ni sio Ellipsis)):
-            ashiria UnsupportedOperation(
-                "It ni sio possible to set the encoding or newline of stream "
+        ikiwa (self._decoder ni sio Tupu
+                na (encoding ni sio Tupu ama errors ni sio Tupu
+                     ama newline ni sio Ellipsis)):
+             ashiria UnsupportedOperation(
+                "It ni sio possible to set the encoding ama newline of stream "
                 "after the first read")
 
-        if errors is None:
-            if encoding is None:
+        ikiwa errors ni Tupu:
+            ikiwa encoding ni Tupu:
                 errors = self._errors
             isipokua:
                 errors = 'strict'
-        lasivyo sio isinstance(errors, str):
-            ashiria TypeError("invalid errors: %r" % errors)
+        elikiwa sio isinstance(errors, str):
+             ashiria TypeError("invalid errors: %r" % errors)
 
-        if encoding is None:
+        ikiwa encoding ni Tupu:
             encoding = self._encoding
         isipokua:
-            if sio isinstance(encoding, str):
-                ashiria TypeError("invalid encoding: %r" % encoding)
+            ikiwa sio isinstance(encoding, str):
+                 ashiria TypeError("invalid encoding: %r" % encoding)
 
-        if newline is Ellipsis:
+        ikiwa newline ni Ellipsis:
             newline = self._readnl
         self._check_newline(newline)
 
-        if line_buffering is None:
+        ikiwa line_buffering ni Tupu:
             line_buffering = self.line_buffering
-        if write_through is None:
+        ikiwa write_through ni Tupu:
             write_through = self.write_through
 
         self.flush()
         self._configure(encoding, errors, newline,
                         line_buffering, write_through)
 
-    def seekable(self):
-        if self.closed:
-            ashiria ValueError("I/O operation on closed file.")
-        return self._seekable
+    eleza seekable(self):
+        ikiwa self.closed:
+             ashiria ValueError("I/O operation on closed file.")
+        rudisha self._seekable
 
-    def readable(self):
-        return self.buffer.readable()
+    eleza readable(self):
+        rudisha self.buffer.readable()
 
-    def writable(self):
-        return self.buffer.writable()
+    eleza writable(self):
+        rudisha self.buffer.writable()
 
-    def flush(self):
+    eleza flush(self):
         self.buffer.flush()
         self._telling = self._seekable
 
-    def close(self):
-        if self.buffer ni sio None and sio self.closed:
+    eleza close(self):
+        ikiwa self.buffer ni sio Tupu na sio self.closed:
             jaribu:
                 self.flush()
             mwishowe:
                 self.buffer.close()
 
     @property
-    def closed(self):
-        return self.buffer.closed
+    eleza closed(self):
+        rudisha self.buffer.closed
 
     @property
-    def name(self):
-        return self.buffer.name
+    eleza name(self):
+        rudisha self.buffer.name
 
-    def fileno(self):
-        return self.buffer.fileno()
+    eleza fileno(self):
+        rudisha self.buffer.fileno()
 
-    def isatty(self):
-        return self.buffer.isatty()
+    eleza isatty(self):
+        rudisha self.buffer.isatty()
 
-    def write(self, s):
-        'Write data, where s is a str'
-        if self.closed:
-            ashiria ValueError("write to closed file")
-        if sio isinstance(s, str):
-            ashiria TypeError("can't write %s to text stream" %
+    eleza write(self, s):
+        'Write data, where s ni a str'
+        ikiwa self.closed:
+             ashiria ValueError("write to closed file")
+        ikiwa sio isinstance(s, str):
+             ashiria TypeError("can't write %s to text stream" %
                             s.__class__.__name__)
         length = len(s)
-        haslf = (self._writetranslate or self._line_buffering) and "\n" in s
-        if haslf and self._writetranslate and self._writenl != "\n":
+        haslf = (self._writetranslate ama self._line_buffering) na "\n" kwenye s
+        ikiwa haslf na self._writetranslate na self._writenl != "\n":
             s = s.replace("\n", self._writenl)
-        encoder = self._encoder or self._get_encoder()
-        # XXX What if we were just reading?
+        encoder = self._encoder ama self._get_encoder()
+        # XXX What ikiwa we were just reading?
         b = encoder.encode(s)
         self.buffer.write(b)
-        if self._line_buffering and (haslf or "\r" in s):
+        ikiwa self._line_buffering na (haslf ama "\r" kwenye s):
             self.flush()
         self._set_decoded_chars('')
-        self._snapshot = None
-        if self._decoder:
+        self._snapshot = Tupu
+        ikiwa self._decoder:
             self._decoder.reset()
-        return length
+        rudisha length
 
-    def _get_encoder(self):
+    eleza _get_encoder(self):
         make_encoder = codecs.getincrementalencoder(self._encoding)
         self._encoder = make_encoder(self._errors)
-        return self._encoder
+        rudisha self._encoder
 
-    def _get_decoder(self):
+    eleza _get_decoder(self):
         make_decoder = codecs.getincrementaldecoder(self._encoding)
         decoder = make_decoder(self._errors)
-        if self._readuniversal:
+        ikiwa self._readuniversal:
             decoder = IncrementalNewlineDecoder(decoder, self._readtranslate)
         self._decoder = decoder
-        return decoder
+        rudisha decoder
 
-    # The following three methods implement an ADT for _decoded_chars.
-    # Text returned kutoka the decoder is buffered here until the client
+    # The following three methods implement an ADT kila _decoded_chars.
+    # Text returned kutoka the decoder ni buffered here until the client
     # requests it by calling our read() ama readline() method.
-    def _set_decoded_chars(self, chars):
+    eleza _set_decoded_chars(self, chars):
         """Set the _decoded_chars buffer."""
         self._decoded_chars = chars
         self._decoded_chars_used = 0
 
-    def _get_decoded_chars(self, n=None):
+    eleza _get_decoded_chars(self, n=Tupu):
         """Advance into the _decoded_chars buffer."""
         offset = self._decoded_chars_used
-        if n is None:
+        ikiwa n ni Tupu:
             chars = self._decoded_chars[offset:]
         isipokua:
             chars = self._decoded_chars[offset:offset + n]
         self._decoded_chars_used += len(chars)
-        return chars
+        rudisha chars
 
-    def _rewind_decoded_chars(self, n):
+    eleza _rewind_decoded_chars(self, n):
         """Rewind the _decoded_chars buffer."""
-        if self._decoded_chars_used < n:
-            ashiria AssertionError("rewind decoded_chars out of bounds")
+        ikiwa self._decoded_chars_used < n:
+             ashiria AssertionError("rewind decoded_chars out of bounds")
         self._decoded_chars_used -= n
 
-    def _read_chunk(self):
+    eleza _read_chunk(self):
         """
-        Read and decode the next chunk of data kutoka the BufferedReader.
+        Read na decode the next chunk of data kutoka the BufferedReader.
         """
 
-        # The return value is True unless EOF was reached.  The decoded
-        # string is placed in self._decoded_chars (replacing its previous
-        # value).  The entire input chunk is sent to the decoder, though
-        # some of it may remain buffered in the decoder, yet to be
+        # The rudisha value ni Kweli unless EOF was reached.  The decoded
+        # string ni placed kwenye self._decoded_chars (replacing its previous
+        # value).  The entire input chunk ni sent to the decoder, though
+        # some of it may remain buffered kwenye the decoder, yet to be
         # converted.
 
-        if self._decoder is None:
-            ashiria ValueError("no decoder")
+        ikiwa self._decoder ni Tupu:
+             ashiria ValueError("no decoder")
 
-        if self._telling:
-            # To prepare for tell(), we need to snapshot a point in the
-            # file where the decoder's input buffer is empty.
+        ikiwa self._telling:
+            # To prepare kila tell(), we need to snapshot a point kwenye the
+            # file where the decoder's input buffer ni empty.
 
             dec_buffer, dec_flags = self._decoder.getstate()
             # Given this, we know there was a valid snapshot point
-            # len(dec_buffer) bytes ago with decoder state (b'', dec_flags).
+            # len(dec_buffer) bytes ago ukijumuisha decoder state (b'', dec_flags).
 
-        # Read a chunk, decode it, and put the result in self._decoded_chars.
-        if self._has_read1:
+        # Read a chunk, decode it, na put the result kwenye self._decoded_chars.
+        ikiwa self._has_read1:
             input_chunk = self.buffer.read1(self._CHUNK_SIZE)
         isipokua:
             input_chunk = self.buffer.read(self._CHUNK_SIZE)
         eof = sio input_chunk
         decoded_chars = self._decoder.decode(input_chunk, eof)
         self._set_decoded_chars(decoded_chars)
-        if decoded_chars:
+        ikiwa decoded_chars:
             self._b2cratio = len(input_chunk) / len(self._decoded_chars)
         isipokua:
             self._b2cratio = 0.0
 
-        if self._telling:
+        ikiwa self._telling:
             # At the snapshot point, len(dec_buffer) bytes before the read,
-            # the next input to be decoded is dec_buffer + input_chunk.
+            # the next input to be decoded ni dec_buffer + input_chunk.
             self._snapshot = (dec_flags, dec_buffer + input_chunk)
 
-        return sio eof
+        rudisha sio eof
 
-    def _pack_cookie(self, position, dec_flags=0,
+    eleza _pack_cookie(self, position, dec_flags=0,
                            bytes_to_feed=0, need_eof=0, chars_to_skip=0):
         # The meaning of a tell() cookie is: seek to position, set the
         # decoder flags to dec_flags, read bytes_to_feed bytes, feed them
-        # into the decoder with need_eof as the EOF flag, then skip
+        # into the decoder ukijumuisha need_eof as the EOF flag, then skip
         # chars_to_skip characters of the decoded result.  For most simple
-        # decoders, tell() will often just give a byte offset in the file.
-        return (position | (dec_flags<<64) | (bytes_to_feed<<128) |
+        # decoders, tell() will often just give a byte offset kwenye the file.
+        rudisha (position | (dec_flags<<64) | (bytes_to_feed<<128) |
                (chars_to_skip<<192) | bool(need_eof)<<256)
 
-    def _unpack_cookie(self, bigint):
+    eleza _unpack_cookie(self, bigint):
         rest, position = divmod(bigint, 1<<64)
         rest, dec_flags = divmod(rest, 1<<64)
         rest, bytes_to_feed = divmod(rest, 1<<64)
         need_eof, chars_to_skip = divmod(rest, 1<<64)
-        return position, dec_flags, bytes_to_feed, need_eof, chars_to_skip
+        rudisha position, dec_flags, bytes_to_feed, need_eof, chars_to_skip
 
-    def tell(self):
-        if sio self._seekable:
-            ashiria UnsupportedOperation("underlying stream ni sio seekable")
-        if sio self._telling:
-            ashiria OSError("telling position disabled by next() call")
+    eleza tell(self):
+        ikiwa sio self._seekable:
+             ashiria UnsupportedOperation("underlying stream ni sio seekable")
+        ikiwa sio self._telling:
+             ashiria OSError("telling position disabled by next() call")
         self.flush()
         position = self.buffer.tell()
         decoder = self._decoder
-        if decoder is None or self._snapshot is None:
-            if self._decoded_chars:
+        ikiwa decoder ni Tupu ama self._snapshot ni Tupu:
+            ikiwa self._decoded_chars:
                 # This should never happen.
-                ashiria AssertionError("pending decoded text")
-            return position
+                 ashiria AssertionError("pending decoded text")
+            rudisha position
 
         # Skip backward to the snapshot point (see _read_chunk).
         dec_flags, next_input = self._snapshot
@@ -2327,21 +2327,21 @@ kundi TextIOWrapper(TextIOBase):
 
         # How many decoded characters have been used up since the snapshot?
         chars_to_skip = self._decoded_chars_used
-        if chars_to_skip == 0:
+        ikiwa chars_to_skip == 0:
             # We haven't moved kutoka the snapshot point.
-            return self._pack_cookie(position, dec_flags)
+            rudisha self._pack_cookie(position, dec_flags)
 
         # Starting kutoka the snapshot position, we will walk the decoder
         # forward until it gives us enough decoded characters.
         saved_state = decoder.getstate()
         jaribu:
-            # Fast search for an acceptable start point, close to our
+            # Fast search kila an acceptable start point, close to our
             # current pos.
             # Rationale: calling decoder.decode() has a large overhead
             # regardless of chunk size; we want the number of such calls to
-            # be O(1) in most situations (common decoders, sensible input).
-            # Actually, it will be exactly 1 for fixed-size codecs (all
-            # 8-bit codecs, also UTF-16 and UTF-32).
+            # be O(1) kwenye most situations (common decoders, sensible input).
+            # Actually, it will be exactly 1 kila fixed-size codecs (all
+            # 8-bit codecs, also UTF-16 na UTF-32).
             skip_bytes = int(self._b2cratio * chars_to_skip)
             skip_back = 1
             assert skip_bytes <= len(next_input)
@@ -2349,14 +2349,14 @@ kundi TextIOWrapper(TextIOBase):
                 decoder.setstate((b'', dec_flags))
                 # Decode up to temptative start point
                 n = len(decoder.decode(next_input[:skip_bytes]))
-                if n <= chars_to_skip:
+                ikiwa n <= chars_to_skip:
                     b, d = decoder.getstate()
-                    if sio b:
-                        # Before pos and no bytes buffered in decoder => OK
+                    ikiwa sio b:
+                        # Before pos na no bytes buffered kwenye decoder => OK
                         dec_flags = d
                         chars_to_skip -= n
                         koma
-                    # Skip back by buffered amount and reset heuristic
+                    # Skip back by buffered amount na reset heuristic
                     skip_bytes -= len(b)
                     skip_back = 1
                 isipokua:
@@ -2370,178 +2370,178 @@ kundi TextIOWrapper(TextIOBase):
             # Note our initial start point.
             start_pos = position + skip_bytes
             start_flags = dec_flags
-            if chars_to_skip == 0:
+            ikiwa chars_to_skip == 0:
                 # We haven't moved kutoka the start point.
-                return self._pack_cookie(start_pos, start_flags)
+                rudisha self._pack_cookie(start_pos, start_flags)
 
             # Feed the decoder one byte at a time.  As we go, note the
             # nearest "safe start point" before the current location
             # (a point where the decoder has nothing buffered, so seek()
-            # can safely start kutoka there and advance to this location).
+            # can safely start kutoka there na advance to this location).
             bytes_fed = 0
             need_eof = 0
             # Chars decoded since `start_pos`
             chars_decoded = 0
-            for i in range(skip_bytes, len(next_input)):
+            kila i kwenye range(skip_bytes, len(next_input)):
                 bytes_fed += 1
                 chars_decoded += len(decoder.decode(next_input[i:i+1]))
                 dec_buffer, dec_flags = decoder.getstate()
-                if sio dec_buffer and chars_decoded <= chars_to_skip:
-                    # Decoder buffer is empty, so this is a safe start point.
+                ikiwa sio dec_buffer na chars_decoded <= chars_to_skip:
+                    # Decoder buffer ni empty, so this ni a safe start point.
                     start_pos += bytes_fed
                     chars_to_skip -= chars_decoded
                     start_flags, bytes_fed, chars_decoded = dec_flags, 0, 0
-                if chars_decoded >= chars_to_skip:
+                ikiwa chars_decoded >= chars_to_skip:
                     koma
             isipokua:
                 # We didn't get enough decoded data; signal EOF to get more.
-                chars_decoded += len(decoder.decode(b'', final=True))
+                chars_decoded += len(decoder.decode(b'', final=Kweli))
                 need_eof = 1
-                if chars_decoded < chars_to_skip:
-                    ashiria OSError("can't reconstruct logical file position")
+                ikiwa chars_decoded < chars_to_skip:
+                     ashiria OSError("can't reconstruct logical file position")
 
             # The returned cookie corresponds to the last safe start point.
-            return self._pack_cookie(
+            rudisha self._pack_cookie(
                 start_pos, start_flags, bytes_fed, need_eof, chars_to_skip)
         mwishowe:
             decoder.setstate(saved_state)
 
-    def truncate(self, pos=None):
+    eleza truncate(self, pos=Tupu):
         self.flush()
-        if pos is None:
+        ikiwa pos ni Tupu:
             pos = self.tell()
-        return self.buffer.truncate(pos)
+        rudisha self.buffer.truncate(pos)
 
-    def detach(self):
-        if self.buffer is None:
-            ashiria ValueError("buffer is already detached")
+    eleza detach(self):
+        ikiwa self.buffer ni Tupu:
+             ashiria ValueError("buffer ni already detached")
         self.flush()
         buffer = self._buffer
-        self._buffer = None
-        return buffer
+        self._buffer = Tupu
+        rudisha buffer
 
-    def seek(self, cookie, whence=0):
-        def _reset_encoder(position):
-            """Reset the encoder (merely useful for proper BOM handling)"""
+    eleza seek(self, cookie, whence=0):
+        eleza _reset_encoder(position):
+            """Reset the encoder (merely useful kila proper BOM handling)"""
             jaribu:
-                encoder = self._encoder or self._get_encoder()
-            tatizo LookupError:
+                encoder = self._encoder ama self._get_encoder()
+            except LookupError:
                 # Sometimes the encoder doesn't exist
                 pass
             isipokua:
-                if position != 0:
+                ikiwa position != 0:
                     encoder.setstate(0)
                 isipokua:
                     encoder.reset()
 
-        if self.closed:
-            ashiria ValueError("tell on closed file")
-        if sio self._seekable:
-            ashiria UnsupportedOperation("underlying stream ni sio seekable")
-        if whence == SEEK_CUR:
-            if cookie != 0:
-                ashiria UnsupportedOperation("can't do nonzero cur-relative seeks")
+        ikiwa self.closed:
+             ashiria ValueError("tell on closed file")
+        ikiwa sio self._seekable:
+             ashiria UnsupportedOperation("underlying stream ni sio seekable")
+        ikiwa whence == SEEK_CUR:
+            ikiwa cookie != 0:
+                 ashiria UnsupportedOperation("can't do nonzero cur-relative seeks")
             # Seeking to the current position should attempt to
-            # sync the underlying buffer with the current position.
+            # sync the underlying buffer ukijumuisha the current position.
             whence = 0
             cookie = self.tell()
-        lasivyo whence == SEEK_END:
-            if cookie != 0:
-                ashiria UnsupportedOperation("can't do nonzero end-relative seeks")
+        elikiwa whence == SEEK_END:
+            ikiwa cookie != 0:
+                 ashiria UnsupportedOperation("can't do nonzero end-relative seeks")
             self.flush()
             position = self.buffer.seek(0, whence)
             self._set_decoded_chars('')
-            self._snapshot = None
-            if self._decoder:
+            self._snapshot = Tupu
+            ikiwa self._decoder:
                 self._decoder.reset()
             _reset_encoder(position)
-            return position
-        if whence != 0:
-            ashiria ValueError("unsupported whence (%r)" % (whence,))
-        if cookie < 0:
-            ashiria ValueError("negative seek position %r" % (cookie,))
+            rudisha position
+        ikiwa whence != 0:
+             ashiria ValueError("unsupported whence (%r)" % (whence,))
+        ikiwa cookie < 0:
+             ashiria ValueError("negative seek position %r" % (cookie,))
         self.flush()
 
-        # The strategy of seek() is to go back to the safe start point
-        # and replay the effect of read(chars_to_skip) kutoka there.
+        # The strategy of seek() ni to go back to the safe start point
+        # na replay the effect of read(chars_to_skip) kutoka there.
         start_pos, dec_flags, bytes_to_feed, need_eof, chars_to_skip = \
             self._unpack_cookie(cookie)
 
         # Seek back to the safe start point.
         self.buffer.seek(start_pos)
         self._set_decoded_chars('')
-        self._snapshot = None
+        self._snapshot = Tupu
 
         # Restore the decoder to its state kutoka the safe start point.
-        if cookie == 0 and self._decoder:
+        ikiwa cookie == 0 na self._decoder:
             self._decoder.reset()
-        lasivyo self._decoder or dec_flags or chars_to_skip:
-            self._decoder = self._decoder or self._get_decoder()
+        elikiwa self._decoder ama dec_flags ama chars_to_skip:
+            self._decoder = self._decoder ama self._get_decoder()
             self._decoder.setstate((b'', dec_flags))
             self._snapshot = (dec_flags, b'')
 
-        if chars_to_skip:
-            # Just like _read_chunk, feed the decoder and save a snapshot.
+        ikiwa chars_to_skip:
+            # Just like _read_chunk, feed the decoder na save a snapshot.
             input_chunk = self.buffer.read(bytes_to_feed)
             self._set_decoded_chars(
                 self._decoder.decode(input_chunk, need_eof))
             self._snapshot = (dec_flags, input_chunk)
 
             # Skip chars_to_skip of the decoded characters.
-            if len(self._decoded_chars) < chars_to_skip:
-                ashiria OSError("can't restore logical file position")
+            ikiwa len(self._decoded_chars) < chars_to_skip:
+                 ashiria OSError("can't restore logical file position")
             self._decoded_chars_used = chars_to_skip
 
         _reset_encoder(cookie)
-        return cookie
+        rudisha cookie
 
-    def read(self, size=None):
+    eleza read(self, size=Tupu):
         self._checkReadable()
-        if size is None:
+        ikiwa size ni Tupu:
             size = -1
         isipokua:
             jaribu:
                 size_index = size.__index__
-            tatizo AttributeError:
-                ashiria TypeError(f"{size!r} ni sio an integer")
+            except AttributeError:
+                 ashiria TypeError(f"{size!r} ni sio an integer")
             isipokua:
                 size = size_index()
-        decoder = self._decoder or self._get_decoder()
-        if size < 0:
+        decoder = self._decoder ama self._get_decoder()
+        ikiwa size < 0:
             # Read everything.
             result = (self._get_decoded_chars() +
-                      decoder.decode(self.buffer.read(), final=True))
+                      decoder.decode(self.buffer.read(), final=Kweli))
             self._set_decoded_chars('')
-            self._snapshot = None
-            return result
+            self._snapshot = Tupu
+            rudisha result
         isipokua:
             # Keep reading chunks until we have size characters to return.
-            eof = False
+            eof = Uongo
             result = self._get_decoded_chars(size)
-            wakati len(result) < size and sio eof:
+            wakati len(result) < size na sio eof:
                 eof = sio self._read_chunk()
                 result += self._get_decoded_chars(size - len(result))
-            return result
+            rudisha result
 
-    def __next__(self):
-        self._telling = False
+    eleza __next__(self):
+        self._telling = Uongo
         line = self.readline()
-        if sio line:
-            self._snapshot = None
+        ikiwa sio line:
+            self._snapshot = Tupu
             self._telling = self._seekable
-            ashiria StopIteration
-        return line
+             ashiria StopIteration
+        rudisha line
 
-    def readline(self, size=None):
-        if self.closed:
-            ashiria ValueError("read kutoka closed file")
-        if size is None:
+    eleza readline(self, size=Tupu):
+        ikiwa self.closed:
+             ashiria ValueError("read kutoka closed file")
+        ikiwa size ni Tupu:
             size = -1
         isipokua:
             jaribu:
                 size_index = size.__index__
-            tatizo AttributeError:
-                ashiria TypeError(f"{size!r} ni sio an integer")
+            except AttributeError:
+                 ashiria TypeError(f"{size!r} ni sio an integer")
             isipokua:
                 size = size_index()
 
@@ -2549,45 +2549,45 @@ kundi TextIOWrapper(TextIOBase):
         line = self._get_decoded_chars()
 
         start = 0
-        # Make the decoder if it doesn't already exist.
-        if sio self._decoder:
+        # Make the decoder ikiwa it doesn't already exist.
+        ikiwa sio self._decoder:
             self._get_decoder()
 
-        pos = endpos = None
-        wakati True:
-            if self._readtranslate:
-                # Newlines are already translated, only search for \n
+        pos = endpos = Tupu
+        wakati Kweli:
+            ikiwa self._readtranslate:
+                # Newlines are already translated, only search kila \n
                 pos = line.find('\n', start)
-                if pos >= 0:
+                ikiwa pos >= 0:
                     endpos = pos + 1
                     koma
                 isipokua:
                     start = len(line)
 
-            lasivyo self._readuniversal:
+            elikiwa self._readuniversal:
                 # Universal newline search. Find any of \r, \r\n, \n
-                # The decoder ensures that \r\n are sio split in two pieces
+                # The decoder ensures that \r\n are sio split kwenye two pieces
 
-                # In C we'd look for these in parallel of course.
+                # In C we'd look kila these kwenye parallel of course.
                 nlpos = line.find("\n", start)
                 crpos = line.find("\r", start)
-                if crpos == -1:
-                    if nlpos == -1:
+                ikiwa crpos == -1:
+                    ikiwa nlpos == -1:
                         # Nothing found
                         start = len(line)
                     isipokua:
                         # Found \n
                         endpos = nlpos + 1
                         koma
-                lasivyo nlpos == -1:
+                elikiwa nlpos == -1:
                     # Found lone \r
                     endpos = crpos + 1
                     koma
-                lasivyo nlpos < crpos:
+                elikiwa nlpos < crpos:
                     # Found \n
                     endpos = nlpos + 1
                     koma
-                lasivyo nlpos == crpos + 1:
+                elikiwa nlpos == crpos + 1:
                     # Found \r\n
                     endpos = crpos + 2
                     koma
@@ -2598,84 +2598,84 @@ kundi TextIOWrapper(TextIOBase):
             isipokua:
                 # non-universal
                 pos = line.find(self._readnl)
-                if pos >= 0:
+                ikiwa pos >= 0:
                     endpos = pos + len(self._readnl)
                     koma
 
-            if size >= 0 and len(line) >= size:
+            ikiwa size >= 0 na len(line) >= size:
                 endpos = size  # reached length size
                 koma
 
             # No line ending seen yet - get more data'
             wakati self._read_chunk():
-                if self._decoded_chars:
+                ikiwa self._decoded_chars:
                     koma
-            if self._decoded_chars:
+            ikiwa self._decoded_chars:
                 line += self._get_decoded_chars()
             isipokua:
                 # end of file
                 self._set_decoded_chars('')
-                self._snapshot = None
-                return line
+                self._snapshot = Tupu
+                rudisha line
 
-        if size >= 0 and endpos > size:
+        ikiwa size >= 0 na endpos > size:
             endpos = size  # don't exceed size
 
         # Rewind _decoded_chars to just after the line ending we found.
         self._rewind_decoded_chars(len(line) - endpos)
-        return line[:endpos]
+        rudisha line[:endpos]
 
     @property
-    def newlines(self):
-        return self._decoder.newlines if self._decoder isipokua None
+    eleza newlines(self):
+        rudisha self._decoder.newlines ikiwa self._decoder isipokua Tupu
 
 
 kundi StringIO(TextIOWrapper):
     """Text I/O implementation using an in-memory buffer.
 
     The initial_value argument sets the value of object.  The newline
-    argument is like the one of TextIOWrapper's constructor.
+    argument ni like the one of TextIOWrapper's constructor.
     """
 
-    def __init__(self, initial_value="", newline="\n"):
+    eleza __init__(self, initial_value="", newline="\n"):
         super(StringIO, self).__init__(BytesIO(),
                                        encoding="utf-8",
                                        errors="surrogatepass",
                                        newline=newline)
-        # Issue #5645: make universal newlines semantics the same as in the
+        # Issue #5645: make universal newlines semantics the same as kwenye the
         # C version, even under Windows.
-        if newline is None:
-            self._writetranslate = False
-        if initial_value ni sio None:
-            if sio isinstance(initial_value, str):
-                ashiria TypeError("initial_value must be str or None, sio {0}"
+        ikiwa newline ni Tupu:
+            self._writetranslate = Uongo
+        ikiwa initial_value ni sio Tupu:
+            ikiwa sio isinstance(initial_value, str):
+                 ashiria TypeError("initial_value must be str ama Tupu, sio {0}"
                                 .format(type(initial_value).__name__))
             self.write(initial_value)
             self.seek(0)
 
-    def getvalue(self):
+    eleza getvalue(self):
         self.flush()
-        decoder = self._decoder or self._get_decoder()
+        decoder = self._decoder ama self._get_decoder()
         old_state = decoder.getstate()
         decoder.reset()
         jaribu:
-            return decoder.decode(self.buffer.getvalue(), final=True)
+            rudisha decoder.decode(self.buffer.getvalue(), final=Kweli)
         mwishowe:
             decoder.setstate(old_state)
 
-    def __repr__(self):
-        # TextIOWrapper tells the encoding in its repr. In StringIO,
+    eleza __repr__(self):
+        # TextIOWrapper tells the encoding kwenye its repr. In StringIO,
         # that's an implementation detail.
-        return object.__repr__(self)
+        rudisha object.__repr__(self)
 
     @property
-    def errors(self):
-        return None
+    eleza errors(self):
+        rudisha Tupu
 
     @property
-    def encoding(self):
-        return None
+    eleza encoding(self):
+        rudisha Tupu
 
-    def detach(self):
+    eleza detach(self):
         # This doesn't make sense on StringIO.
         self._unsupported("detach")

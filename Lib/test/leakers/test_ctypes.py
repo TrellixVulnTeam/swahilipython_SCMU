@@ -1,15 +1,15 @@
 
-# Taken from Lib/ctypes/test/test_keeprefs.py, PointerToStructure.test().
+# Taken kutoka Lib/ctypes/test/test_keeprefs.py, PointerToStructure.test().
 
-from ctypes import Structure, c_int, POINTER
-import gc
+kutoka ctypes agiza Structure, c_int, POINTER
+agiza gc
 
-def leak_inner():
-    class POINT(Structure):
+eleza leak_inner():
+    kundi POINT(Structure):
         _fields_ = [("x", c_int)]
-    class RECT(Structure):
+    kundi RECT(Structure):
         _fields_ = [("a", POINTER(POINT))]
 
-def leak():
+eleza leak():
     leak_inner()
     gc.collect()

@@ -25,7 +25,7 @@ kundi Popen(object):
         ikiwa self.returncode ni Tupu:
             jaribu:
                 pid, sts = os.waitpid(self.pid, flag)
-            tatizo OSError kama e:
+            except OSError as e:
                 # Child process sio yet created. See #1731717
                 # e.errno == errno.ECHILD == 10
                 rudisha Tupu
@@ -43,7 +43,7 @@ kundi Popen(object):
                 kutoka multiprocessing.connection agiza wait
                 ikiwa sio wait([self.sentinel], timeout):
                     rudisha Tupu
-            # This shouldn't block ikiwa wait() rudishaed successfully.
+            # This shouldn't block ikiwa wait() returned successfully.
             rudisha self.poll(os.WNOHANG ikiwa timeout == 0.0 isipokua 0)
         rudisha self.returncode
 
@@ -51,11 +51,11 @@ kundi Popen(object):
         ikiwa self.returncode ni Tupu:
             jaribu:
                 os.kill(self.pid, sig)
-            tatizo ProcessLookupError:
-                pita
-            tatizo OSError:
+            except ProcessLookupError:
+                pass
+            except OSError:
                 ikiwa self.wait(timeout=0.1) ni Tupu:
-                    ashiria
+                    raise
 
     eleza terminate(self):
         self._send_signal(signal.SIGTERM)

@@ -39,7 +39,7 @@ eleza test_pdb_displayhook():
 
     >>> eleza test_function(foo, bar):
     ...     agiza pdb; pdb.Pdb(nosigint=Kweli, readrc=Uongo).set_trace()
-    ...     pita
+    ...     pass
 
     >>> ukijumuisha PdbTestInput([
     ...     'foo',
@@ -49,7 +49,7 @@ eleza test_pdb_displayhook():
     ... ]):
     ...     test_function(1, Tupu)
     > <doctest test.test_pdb.test_pdb_displayhook[0]>(3)test_function()
-    -> pita
+    -> pass
     (Pdb) foo
     1
     (Pdb) bar
@@ -78,10 +78,10 @@ eleza test_pdb_basic_commands():
     ...     rudisha foo.upper()
 
     >>> eleza test_function3(arg=Tupu, *, kwonly=Tupu):
-    ...     pita
+    ...     pass
 
     >>> eleza test_function4(a, b, c, /):
-    ...     pita
+    ...     pass
 
     >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=Kweli, readrc=Uongo).set_trace()
@@ -103,12 +103,12 @@ eleza test_pdb_basic_commands():
     ...     'until',      # continuing until out of the kila loop
     ...     'next',       # executing the andika(bar)
     ...     'jump 8',     # jump over second kila loop
-    ...     'rudisha',     # rudisha out of function
+    ...     'return',     # rudisha out of function
     ...     'retval',     # display rudisha value
     ...     'next',       # step to test_function3()
     ...     'step',       # stepping into test_function3()
     ...     'args',       # display function args
-    ...     'rudisha',     # rudisha out of function
+    ...     'return',     # rudisha out of function
     ...     'next',       # step to test_function4()
     ...     'step',       # stepping to test_function4()
     ...     'args',       # display function args
@@ -175,7 +175,7 @@ eleza test_pdb_basic_commands():
     (Pdb) jump 8
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(8)test_function_2()
     -> andika('after for')
-    (Pdb) rudisha
+    (Pdb) return
     after for
     ...
     --Return--
@@ -193,10 +193,10 @@ eleza test_pdb_basic_commands():
     (Pdb) args
     arg = Tupu
     kwonly = Kweli
-    (Pdb) rudisha
+    (Pdb) return
     --Return--
     > <doctest test.test_pdb.test_pdb_basic_commands[1]>(2)test_function3()->Tupu
-    -> pita
+    -> pass
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_basic_commands[3]>(5)test_function()
     -> test_function4(1, 2, 3)
@@ -250,7 +250,7 @@ eleza test_pdb_komapoint_commands():
     ...     'clear 1',
     ...     'commands 2',
     ...     'p "42"',
-    ...     'andika("42", 7*6)',     # Issue 18764 (sio about komapoints)
+    ...     'andika("42", 7*6)',     # Issue 18764 (not about komapoints)
     ...     'end',
     ...     'endelea',  # will stop at komapoint 2 (line 4)
     ...     'clear',     # clear all!
@@ -324,7 +324,7 @@ eleza test_pdb_komapoint_commands():
 
 
 eleza do_nothing():
-    pita
+    pass
 
 eleza do_something():
     andika(42)
@@ -359,8 +359,8 @@ eleza test_list_commands():
     ...     'list',      # endelea listing to EOF
     ...     'list 1,3',  # list specific lines
     ...     'list x',    # invalid argument
-    ...     'next',      # step to agiza
-    ...     'next',      # step over agiza
+    ...     'next',      # step to import
+    ...     'next',      # step over import
     ...     'step',      # step into do_nothing
     ...     'longlist',  # list all lines
     ...     'source do_something',  # list all lines of function
@@ -415,7 +415,7 @@ eleza test_list_commands():
     -> eleza do_nothing():
     (Pdb) longlist
     ...  ->     eleza do_nothing():
-    ...             pita
+    ...             pass
     (Pdb) source do_something
     ...         eleza do_something():
     ...             andika(42)
@@ -449,8 +449,8 @@ eleza test_post_mortem():
     ... ]):
     ...    jaribu:
     ...        test_function()
-    ...    tatizo ZeroDivisionError:
-    ...        andika('Correctly reashiriad.')
+    ...    except ZeroDivisionError:
+    ...        andika('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem[1]>(3)test_function()
     -> test_function_2()
     (Pdb) next
@@ -483,7 +483,7 @@ eleza test_post_mortem():
       5  ->             andika('Exception!')
     [EOF]
     (Pdb) endelea
-    Correctly reashiriad.
+    Correctly reraised.
     """
 
 
@@ -533,7 +533,7 @@ eleza test_pdb_skip_modules_with_callback():
     ...     'endelea',
     ... ]):
     ...     skip_module()
-    ...     pita  # provides something to "step" to
+    ...     pass  # provides something to "step" to
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(5)skip_module()
     -> mod.foo_pony(callback)
     (Pdb) step
@@ -553,7 +553,7 @@ eleza test_pdb_skip_modules_with_callback():
     -> mod.foo_pony(callback)
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[1]>(10)<module>()
-    -> pita  # provides something to "step" to
+    -> pass  # provides something to "step" to
     (Pdb) endelea
     """
 
@@ -622,7 +622,7 @@ eleza test_pdb_run_with_incorrect_argument():
 
 
 eleza test_pdb_run_with_code_object():
-    """Testing run na runeval ukijumuisha code object kama a first argument.
+    """Testing run na runeval ukijumuisha code object as a first argument.
 
     >>> ukijumuisha PdbTestInput(['step','x', 'endelea']):  # doctest: +ELLIPSIS
     ...     pdb_invoke('run', compile('x=1', '<string>', 'exec'))
@@ -643,7 +643,7 @@ eleza test_pdb_run_with_code_object():
     (Pdb) endelea
     """
 
-eleza test_next_until_rudisha_at_rudisha_event():
+eleza test_next_until_return_at_return_event():
     """Test that pdb stops after a next/until/rudisha issued at a rudisha debug event.
 
     >>> eleza test_function_2():
@@ -661,49 +661,49 @@ eleza test_next_until_rudisha_at_rudisha_event():
     >>> Breakpoint.next = 1
     >>> ukijumuisha PdbTestInput(['koma test_function_2',
     ...                    'endelea',
-    ...                    'rudisha',
+    ...                    'return',
     ...                    'next',
     ...                    'endelea',
-    ...                    'rudisha',
+    ...                    'return',
     ...                    'until',
     ...                    'endelea',
-    ...                    'rudisha',
-    ...                    'rudisha',
+    ...                    'return',
+    ...                    'return',
     ...                    'endelea']):
     ...     test_function()
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[1]>(3)test_function()
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(3)test_function()
     -> test_function_2()
     (Pdb) koma test_function_2
-    Breakpoint 1 at <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[0]>:1
+    Breakpoint 1 at <doctest test.test_pdb.test_next_until_return_at_return_event[0]>:1
     (Pdb) endelea
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[0]>(2)test_function_2()
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(2)test_function_2()
     -> x = 1
-    (Pdb) rudisha
+    (Pdb) return
     --Return--
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[0]>(3)test_function_2()->Tupu
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Tupu
     -> x = 2
     (Pdb) next
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[1]>(4)test_function()
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(4)test_function()
     -> test_function_2()
     (Pdb) endelea
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[0]>(2)test_function_2()
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(2)test_function_2()
     -> x = 1
-    (Pdb) rudisha
+    (Pdb) return
     --Return--
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[0]>(3)test_function_2()->Tupu
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Tupu
     -> x = 2
     (Pdb) until
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[1]>(5)test_function()
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(5)test_function()
     -> test_function_2()
     (Pdb) endelea
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[0]>(2)test_function_2()
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(2)test_function_2()
     -> x = 1
-    (Pdb) rudisha
+    (Pdb) return
     --Return--
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[0]>(3)test_function_2()->Tupu
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Tupu
     -> x = 2
-    (Pdb) rudisha
-    > <doctest test.test_pdb.test_next_until_rudisha_at_rudisha_event[1]>(6)test_function()
+    (Pdb) return
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(6)test_function()
     -> end = 1
     (Pdb) endelea
     """
@@ -721,11 +721,11 @@ eleza test_pdb_next_command_for_generator():
     ...     it = test_gen()
     ...     jaribu:
     ...         ikiwa next(it) != 0:
-    ...             ashiria AssertionError
+    ...              ashiria AssertionError
     ...         next(it)
-    ...     tatizo StopIteration kama ex:
+    ...     except StopIteration as ex:
     ...         ikiwa ex.value != 1:
-    ...             ashiria AssertionError
+    ...              ashiria AssertionError
     ...     andika("finished")
 
     >>> ukijumuisha PdbTestInput(['step',
@@ -884,9 +884,9 @@ eleza test_pdb_next_command_for_asyncgen():
     finished
     """
 
-eleza test_pdb_rudisha_command_for_generator():
+eleza test_pdb_return_command_for_generator():
     """Testing no unwindng stack on tuma kila generators
-       kila "rudisha" command
+       kila "return" command
 
     >>> eleza test_gen():
     ...     tuma 0
@@ -898,49 +898,49 @@ eleza test_pdb_rudisha_command_for_generator():
     ...     it = test_gen()
     ...     jaribu:
     ...         ikiwa next(it) != 0:
-    ...             ashiria AssertionError
+    ...              ashiria AssertionError
     ...         next(it)
-    ...     tatizo StopIteration kama ex:
+    ...     except StopIteration as ex:
     ...         ikiwa ex.value != 1:
-    ...             ashiria AssertionError
+    ...              ashiria AssertionError
     ...     andika("finished")
 
     >>> ukijumuisha PdbTestInput(['step',
     ...                    'step',
     ...                    'step',
-    ...                    'rudisha',
+    ...                    'return',
     ...                    'step',
     ...                    'step',
     ...                    'endelea']):
     ...     test_function()
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_generator[1]>(3)test_function()
+    > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(3)test_function()
     -> it = test_gen()
     (Pdb) step
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_generator[1]>(4)test_function()
+    > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(4)test_function()
     -> jaribu:
     (Pdb) step
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_generator[1]>(5)test_function()
+    > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(5)test_function()
     -> ikiwa next(it) != 0:
     (Pdb) step
     --Call--
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_generator[0]>(1)test_gen()
+    > <doctest test.test_pdb.test_pdb_return_command_for_generator[0]>(1)test_gen()
     -> eleza test_gen():
-    (Pdb) rudisha
+    (Pdb) return
     StopIteration: 1
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_generator[1]>(7)test_function()
+    > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(7)test_function()
     -> next(it)
     (Pdb) step
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_generator[1]>(8)test_function()
-    -> tatizo StopIteration kama ex:
+    > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(8)test_function()
+    -> except StopIteration as ex:
     (Pdb) step
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_generator[1]>(9)test_function()
+    > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(9)test_function()
     -> ikiwa ex.value != 1:
     (Pdb) endelea
     finished
     """
 
-eleza test_pdb_rudisha_command_for_coroutine():
-    """Testing no unwindng stack on tuma kila coroutines kila "rudisha" command
+eleza test_pdb_return_command_for_coroutine():
+    """Testing no unwindng stack on tuma kila coroutines kila "return" command
 
     >>> agiza asyncio
 
@@ -965,17 +965,17 @@ eleza test_pdb_rudisha_command_for_coroutine():
     ...                    'next',
     ...                    'endelea']):
     ...     test_function()
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_coroutine[2]>(3)test_main()
+    > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[2]>(3)test_main()
     -> await test_coro()
     (Pdb) step
     --Call--
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_coroutine[1]>(1)test_coro()
+    > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[1]>(1)test_coro()
     -> async eleza test_coro():
     (Pdb) step
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_coroutine[1]>(2)test_coro()
+    > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[1]>(2)test_coro()
     -> await asyncio.sleep(0)
     (Pdb) next
-    > <doctest test.test_pdb.test_pdb_rudisha_command_for_coroutine[1]>(3)test_coro()
+    > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[1]>(3)test_coro()
     -> await asyncio.sleep(0)
     (Pdb) endelea
     finished
@@ -1073,7 +1073,7 @@ eleza test_pdb_until_command_for_coroutine():
     """
 
 eleza test_pdb_next_command_in_generator_for_loop():
-    """The next command on rudishaing kutoka a generator controlled by a kila loop.
+    """The next command on returning kutoka a generator controlled by a kila loop.
 
     >>> eleza test_gen():
     ...     tuma 0
@@ -1197,7 +1197,7 @@ kundi PdbTestCase(unittest.TestCase):
                 stdout=subprocess.PIPE,
                 stdin=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
-        ) kama proc:
+        ) as proc:
             stdout, stderr = proc.communicate(str.encode(commands))
         stdout = stdout na bytes.decode(stdout)
         stderr = stderr na bytes.decode(stderr)
@@ -1206,21 +1206,21 @@ kundi PdbTestCase(unittest.TestCase):
     eleza run_pdb_script(self, script, commands):
         """Run 'script' lines ukijumuisha pdb na the pdb 'commands'."""
         filename = 'main.py'
-        ukijumuisha open(filename, 'w') kama f:
+        ukijumuisha open(filename, 'w') as f:
             f.write(textwrap.dedent(script))
         self.addCleanup(support.unlink, filename)
         rudisha self._run_pdb([filename], commands)
 
     eleza run_pdb_module(self, script, commands):
-        """Runs the script code kama part of a module"""
+        """Runs the script code as part of a module"""
         self.module_name = 't_main'
         support.rmtree(self.module_name)
         main_file = self.module_name + '/__main__.py'
         init_file = self.module_name + '/__init__.py'
         os.mkdir(self.module_name)
-        ukijumuisha open(init_file, 'w') kama f:
-            pita
-        ukijumuisha open(main_file, 'w') kama f:
+        ukijumuisha open(init_file, 'w') as f:
+            pass
+        ukijumuisha open(main_file, 'w') as f:
             f.write(textwrap.dedent(script))
         self.addCleanup(support.rmtree, self.module_name)
         rudisha self._run_pdb(['-m', self.module_name], commands)
@@ -1228,7 +1228,7 @@ kundi PdbTestCase(unittest.TestCase):
     eleza _assert_find_function(self, file_content, func_name, expected):
         file_content = textwrap.dedent(file_content)
 
-        ukijumuisha open(support.TESTFN, 'w') kama f:
+        ukijumuisha open(support.TESTFN, 'w') as f:
             f.write(file_content)
 
         expected = Tupu ikiwa sio expected isipokua (
@@ -1243,21 +1243,21 @@ kundi PdbTestCase(unittest.TestCase):
         self._assert_find_function(
             """\
             eleza foo():
-                pita
+                pass
 
             eleza bar():
-                pita
+                pass
 
             eleza quux():
-                pita
+                pass
             """,
             'bar',
             ('bar', 4),
         )
 
     eleza test_issue7964(self):
-        # open the file kama binary so we can force \r\n newline
-        ukijumuisha open(support.TESTFN, 'wb') kama f:
+        # open the file as binary so we can force \r\n newline
+        ukijumuisha open(support.TESTFN, 'wb') as f:
             f.write(b'andika("testing my pdb")\r\n')
         cmd = [sys.executable, '-m', 'pdb', support.TESTFN]
         proc = subprocess.Popen(cmd,
@@ -1278,7 +1278,7 @@ kundi PdbTestCase(unittest.TestCase):
                 bar()
 
             eleza nope():
-                pita
+                pass
 
             eleza foobar():
                 foo()
@@ -1296,21 +1296,21 @@ kundi PdbTestCase(unittest.TestCase):
         """
         bar = """
             eleza bar():
-                pita
+                pass
         """
-        ukijumuisha open('bar.py', 'w') kama f:
+        ukijumuisha open('bar.py', 'w') as f:
             f.write(textwrap.dedent(bar))
         self.addCleanup(support.unlink, 'bar.py')
         stdout, stderr = self.run_pdb_script(script, commands)
         self.assertKweli(
             any('main.py(5)foo()->Tupu' kwenye l kila l kwenye stdout.splitlines()),
-            'Fail to step into the caller after a rudisha')
+            'Fail to step into the caller after a return')
 
     eleza test_issue13120(self):
         # Invoking "endelea" on a non-main thread triggered an exception
         # inside signal.signal.
 
-        ukijumuisha open(support.TESTFN, 'wb') kama f:
+        ukijumuisha open(support.TESTFN, 'wb') as f:
             f.write(textwrap.dedent("""
                 agiza threading
                 agiza pdb
@@ -1335,7 +1335,7 @@ kundi PdbTestCase(unittest.TestCase):
 
     eleza test_issue36250(self):
 
-        ukijumuisha open(support.TESTFN, 'wb') kama f:
+        ukijumuisha open(support.TESTFN, 'wb') as f:
             f.write(textwrap.dedent("""
                 agiza threading
                 agiza pdb
@@ -1364,7 +1364,7 @@ kundi PdbTestCase(unittest.TestCase):
 
     eleza test_issue16180(self):
         # A syntax error kwenye the debuggee.
-        script = "eleza f: pita\n"
+        script = "eleza f: pass\n"
         commands = ''
         expected = "SyntaxError:"
         stdout, stderr = self.run_pdb_script(script, commands)
@@ -1384,10 +1384,10 @@ kundi PdbTestCase(unittest.TestCase):
         save_home = os.environ.pop('HOME', Tupu)
         jaribu:
             ukijumuisha support.temp_cwd():
-                ukijumuisha open('.pdbrc', 'w') kama f:
+                ukijumuisha open('.pdbrc', 'w') as f:
                     f.write("invalid\n")
 
-                ukijumuisha open('main.py', 'w') kama f:
+                ukijumuisha open('main.py', 'w') as f:
                     f.write(script)
 
                 cmd = [sys.executable, 'main.py']
@@ -1408,11 +1408,11 @@ kundi PdbTestCase(unittest.TestCase):
 
     eleza test_readrc_homedir(self):
         save_home = os.environ.pop("HOME", Tupu)
-        ukijumuisha support.temp_dir() kama temp_dir, patch("os.path.expanduser"):
+        ukijumuisha support.temp_dir() as temp_dir, patch("os.path.expanduser"):
             rc_path = os.path.join(temp_dir, ".pdbrc")
-            os.path.expanduser.rudisha_value = rc_path
+            os.path.expanduser.return_value = rc_path
             jaribu:
-                ukijumuisha open(rc_path, "w") kama f:
+                ukijumuisha open(rc_path, "w") as f:
                     f.write("invalid")
                 self.assertEqual(pdb.Pdb().rcLines[0], "invalid")
             mwishowe:
@@ -1422,7 +1422,7 @@ kundi PdbTestCase(unittest.TestCase):
     eleza test_header(self):
         stdout = StringIO()
         header = 'Nobody expects... blah, blah, blah'
-        ukijumuisha ExitStack() kama resources:
+        ukijumuisha ExitStack() as resources:
             resources.enter_context(patch('sys.stdout', stdout))
             resources.enter_context(patch.object(pdb.Pdb, 'set_trace'))
             pdb.set_trace(header=header)
@@ -1452,9 +1452,9 @@ kundi PdbTestCase(unittest.TestCase):
     eleza test_komapoint(self):
         script = """
             ikiwa __name__ == '__main__':
-                pita
+                pass
                 andika("SUCCESS")
-                pita
+                pass
         """
         commands = """
             b 3
@@ -1462,7 +1462,7 @@ kundi PdbTestCase(unittest.TestCase):
         """
         stdout, stderr = self.run_pdb_module(script, commands)
         self.assertKweli(any("Breakpoint 1 at" kwenye l kila l kwenye stdout.splitlines()), stdout)
-        self.assertKweli(all("SUCCESS" haiko kwenye l kila l kwenye stdout.splitlines()), stdout)
+        self.assertKweli(all("SUCCESS" sio kwenye l kila l kwenye stdout.splitlines()), stdout)
 
     eleza test_run_pdb_with_pdb(self):
         commands = """
@@ -1480,8 +1480,8 @@ kundi PdbTestCase(unittest.TestCase):
         support.rmtree(module_name)
         init_file = module_name + '/__init__.py'
         os.mkdir(module_name)
-        ukijumuisha open(init_file, 'w') kama f:
-            pita
+        ukijumuisha open(init_file, 'w') as f:
+            pass
         self.addCleanup(support.rmtree, module_name)
         stdout, stderr = self._run_pdb(['-m', module_name], "")
         self.assertIn("ImportError: No module named t_main.__main__",
@@ -1500,7 +1500,7 @@ kundi PdbTestCase(unittest.TestCase):
         self.assertKweli(any("__main__.py(4)<module>()"
                             kwenye l kila l kwenye stdout.splitlines()), stdout)
 
-    eleza test_relative_agizas(self):
+    eleza test_relative_imports(self):
         self.module_name = 't_main'
         support.rmtree(self.module_name)
         main_file = self.module_name + '/__main__.py'
@@ -1508,18 +1508,18 @@ kundi PdbTestCase(unittest.TestCase):
         module_file = self.module_name + '/module.py'
         self.addCleanup(support.rmtree, self.module_name)
         os.mkdir(self.module_name)
-        ukijumuisha open(init_file, 'w') kama f:
+        ukijumuisha open(init_file, 'w') as f:
             f.write(textwrap.dedent("""
                 top_var = "VAR kutoka top"
             """))
-        ukijumuisha open(main_file, 'w') kama f:
+        ukijumuisha open(main_file, 'w') as f:
             f.write(textwrap.dedent("""
                 kutoka . agiza top_var
                 kutoka .module agiza var
                 kutoka . agiza module
-                pita # We'll stop here na print the vars
+                pass # We'll stop here na print the vars
             """))
-        ukijumuisha open(module_file, 'w') kama f:
+        ukijumuisha open(module_file, 'w') as f:
             f.write(textwrap.dedent("""
                 var = "VAR kutoka module"
                 var2 = "second var"
@@ -1537,7 +1537,7 @@ kundi PdbTestCase(unittest.TestCase):
         self.assertKweli(any("VAR kutoka top" kwenye l kila l kwenye stdout.splitlines()))
         self.assertKweli(any("second var" kwenye l kila l kwenye stdout.splitlines()))
 
-    eleza test_relative_agizas_on_plain_module(self):
+    eleza test_relative_imports_on_plain_module(self):
         # Validates running a plain module. See bpo32691
         self.module_name = 't_main'
         support.rmtree(self.module_name)
@@ -1546,16 +1546,16 @@ kundi PdbTestCase(unittest.TestCase):
         module_file = self.module_name + '/module.py'
         self.addCleanup(support.rmtree, self.module_name)
         os.mkdir(self.module_name)
-        ukijumuisha open(init_file, 'w') kama f:
+        ukijumuisha open(init_file, 'w') as f:
             f.write(textwrap.dedent("""
                 top_var = "VAR kutoka top"
             """))
-        ukijumuisha open(main_file, 'w') kama f:
+        ukijumuisha open(main_file, 'w') as f:
             f.write(textwrap.dedent("""
                 kutoka . agiza module
-                pita # We'll stop here na print the vars
+                pass # We'll stop here na print the vars
             """))
-        ukijumuisha open(module_file, 'w') kama f:
+        ukijumuisha open(module_file, 'w') as f:
             f.write(textwrap.dedent("""
                 var = "VAR kutoka module"
             """))

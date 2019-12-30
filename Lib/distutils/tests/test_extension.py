@@ -1,20 +1,20 @@
-"""Tests for distutils.extension."""
-import unittest
-import os
-import warnings
+"""Tests kila distutils.extension."""
+agiza unittest
+agiza os
+agiza warnings
 
-from test.support import check_warnings, run_unittest
-from distutils.extension import read_setup_file, Extension
+kutoka test.support agiza check_warnings, run_unittest
+kutoka distutils.extension agiza read_setup_file, Extension
 
-class ExtensionTestCase(unittest.TestCase):
+kundi ExtensionTestCase(unittest.TestCase):
 
-    def test_read_setup_file(self):
+    eleza test_read_setup_file(self):
         # trying to read a Setup file
-        # (sample extracted from the PyGame project)
+        # (sample extracted kutoka the PyGame project)
         setup = os.path.join(os.path.dirname(__file__), 'Setup.sample')
 
         exts = read_setup_file(setup)
-        names = [ext.name for ext in exts]
+        names = [ext.name kila ext kwenye exts]
         names.sort()
 
         # here are the extensions read_setup_file should have created
@@ -30,13 +30,13 @@ class ExtensionTestCase(unittest.TestCase):
 
         self.assertEqual(names, wanted)
 
-    def test_extension_init(self):
-        # the first argument, which is the name, must be a string
+    eleza test_extension_init(self):
+        # the first argument, which ni the name, must be a string
         self.assertRaises(AssertionError, Extension, 1, [])
         ext = Extension('name', [])
         self.assertEqual(ext.name, 'name')
 
-        # the second argument, which is the list of files, must
+        # the second argument, which ni the list of files, must
         # be a list of strings
         self.assertRaises(AssertionError, Extension, 'name', 'file')
         self.assertRaises(AssertionError, Extension, 'name', ['file', 1])
@@ -44,26 +44,26 @@ class ExtensionTestCase(unittest.TestCase):
         self.assertEqual(ext.sources, ['file1', 'file2'])
 
         # others arguments have defaults
-        for attr in ('include_dirs', 'define_macros', 'undef_macros',
+        kila attr kwenye ('include_dirs', 'define_macros', 'undef_macros',
                      'library_dirs', 'libraries', 'runtime_library_dirs',
                      'extra_objects', 'extra_compile_args', 'extra_link_args',
                      'export_symbols', 'swig_opts', 'depends'):
             self.assertEqual(getattr(ext, attr), [])
 
-        self.assertEqual(ext.language, None)
-        self.assertEqual(ext.optional, None)
+        self.assertEqual(ext.language, Tupu)
+        self.assertEqual(ext.optional, Tupu)
 
-        # if there are unknown keyword options, warn about them
-        with check_warnings() as w:
+        # ikiwa there are unknown keyword options, warn about them
+        ukijumuisha check_warnings() as w:
             warnings.simplefilter('always')
-            ext = Extension('name', ['file1', 'file2'], chic=True)
+            ext = Extension('name', ['file1', 'file2'], chic=Kweli)
 
         self.assertEqual(len(w.warnings), 1)
         self.assertEqual(str(w.warnings[0].message),
                           "Unknown Extension options: 'chic'")
 
-def test_suite():
-    return unittest.makeSuite(ExtensionTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(ExtensionTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

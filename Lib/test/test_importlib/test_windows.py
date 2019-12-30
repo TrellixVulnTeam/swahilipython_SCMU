@@ -1,4 +1,4 @@
-kutoka . agiza util kama test_util
+kutoka . agiza util as test_util
 machinery = test_util.import_importlib('importlib.machinery')
 
 agiza os
@@ -20,13 +20,13 @@ kutoka winreg agiza (
 eleza delete_registry_tree(root, subkey):
     jaribu:
         hkey = OpenKey(root, subkey, access=KEY_ALL_ACCESS)
-    tatizo OSError:
+    except OSError:
         # subkey does sio exist
-        rudisha
+        return
     wakati Kweli:
         jaribu:
             subsubkey = EnumKey(hkey, 0)
-        tatizo OSError:
+        except OSError:
             # no more subkeys
             koma
         delete_registry_tree(hkey, subsubkey)
@@ -42,12 +42,12 @@ eleza setup_module(machinery, name, path=Tupu):
     key = root.format(fullname=name,
                       sys_version='%d.%d' % sys.version_info[:2])
     jaribu:
-        ukijumuisha temp_module(name, "a = 1") kama location:
+        ukijumuisha temp_module(name, "a = 1") as location:
             subkey = CreateKey(HKEY_CURRENT_USER, key)
             ikiwa path ni Tupu:
                 path = location + ".py"
             SetValue(subkey, "", REG_SZ, path)
-            tuma
+            yield
     mwishowe:
         ikiwa machinery.WindowsRegistryFinder.DEBUG_BUILD:
             key = os.path.dirname(key)
@@ -94,7 +94,7 @@ kundi WindowsExtensionSuffixTests:
             re.sub('[^a-zA-Z0-9]', '_', get_platform()))
         jaribu:
             untagged_i = suffixes.index(".pyd")
-        tatizo ValueError:
+        except ValueError:
             untagged_i = suffixes.index("_d.pyd")
             expected_tag = "_d" + expected_tag
 

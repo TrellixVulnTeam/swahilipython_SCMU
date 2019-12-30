@@ -7,7 +7,7 @@ g.throw(E, V, T) -> g.throw(E(V).with_traceback(T))
 g.throw("foo"[, V[, T]]) will warn about string exceptions."""
 # Author: Collin Winter
 
-# Local agizas
+# Local imports
 kutoka .. agiza pytree
 kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
@@ -29,12 +29,12 @@ kundi FixThrow(fixer_base.BaseFix):
         exc = results["exc"].clone()
         ikiwa exc.type ni token.STRING:
             self.cannot_convert(node, "Python 3 does sio support string exceptions")
-            rudisha
+            return
 
         # Leave "g.throw(E)" alone
         val = results.get("val")
         ikiwa val ni Tupu:
-            rudisha
+            return
 
         val = val.clone()
         ikiwa is_tuple(val):

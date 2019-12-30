@@ -4,15 +4,15 @@ The problem:
 ------------
 
 Suppose you have some data that you want to convert to another format,
-such kama kutoka GIF image format to PPM image format.  Maybe the
-conversion involves several steps (e.g. piping it through compress ama
+such as kutoka GIF image format to PPM image format.  Maybe the
+conversion involves several steps (e.g. piping it through compress or
 uuencode).  Some of the conversion steps may require that their input
 is a disk file, others may be able to read standard input; similar for
 their output.  The input to the entire conversion may also be read
 kutoka a disk file ama kutoka an open file, na similar kila its output.
 
-The module lets you construct a pipeline template by sticking one ama
-more conversion steps together.  It will take care of creating na
+The module lets you construct a pipeline template by sticking one or
+more conversion steps together.  It will take care of creating and
 removing temporary files ikiwa they are necessary to hold intermediate
 data.  You can then use the template to do conversions kutoka many
 different sources to many different destinations.  The temporary
@@ -34,7 +34,7 @@ To add a conversion step to a template:
 where kind ni a string of two characters: the first ni '-' ikiwa the
 command reads its standard input ama 'f' ikiwa it requires a file; the
 second likewise kila the output. The command must be valid /bin/sh
-syntax.  If input ama output files are required, they are pitaed as
+syntax.  If input ama output files are required, they are passed as
 $IN na $OUT; otherwise, it must be  possible to use the command in
 a pipeline.
 
@@ -43,7 +43,7 @@ To add a conversion step at the beginning:
 
 To convert a file to another file using a template:
   sts = t.copy(infile, outfile)
-If infile ama outfile are the empty string, standard input ni read ama
+If infile ama outfile are the empty string, standard input ni read or
 standard output ni written, respectively.  The rudisha value ni the
 exit status of the conversion pipeline.
 
@@ -83,7 +83,7 @@ kundi Template:
     """Class representing a pipeline template."""
 
     eleza __init__(self):
-        """Template() rudishas a fresh pipeline template."""
+        """Template() returns a fresh pipeline template."""
         self.debugging = 0
         self.reset()
 
@@ -96,8 +96,8 @@ kundi Template:
         self.steps = []
 
     eleza clone(self):
-        """t.clone() rudishas a new pipeline template ukijumuisha identical
-        initial state kama the current one."""
+        """t.clone() returns a new pipeline template ukijumuisha identical
+        initial state as the current one."""
         t = Template()
         t.steps = self.steps[:]
         t.debugging = self.debugging
@@ -110,43 +110,43 @@ kundi Template:
     eleza append(self, cmd, kind):
         """t.append(cmd, kind) adds a new step at the end."""
         ikiwa type(cmd) ni sio type(''):
-            ashiria TypeError('Template.append: cmd must be a string')
-        ikiwa kind haiko kwenye stepkinds:
-            ashiria ValueError('Template.append: bad kind %r' % (kind,))
+             ashiria TypeError('Template.append: cmd must be a string')
+        ikiwa kind sio kwenye stepkinds:
+             ashiria ValueError('Template.append: bad kind %r' % (kind,))
         ikiwa kind == SOURCE:
-            ashiria ValueError('Template.append: SOURCE can only be prepended')
+             ashiria ValueError('Template.append: SOURCE can only be prepended')
         ikiwa self.steps na self.steps[-1][1] == SINK:
-            ashiria ValueError('Template.append: already ends ukijumuisha SINK')
+             ashiria ValueError('Template.append: already ends ukijumuisha SINK')
         ikiwa kind[0] == 'f' na sio re.search(r'\$IN\b', cmd):
-            ashiria ValueError('Template.append: missing $IN kwenye cmd')
+             ashiria ValueError('Template.append: missing $IN kwenye cmd')
         ikiwa kind[1] == 'f' na sio re.search(r'\$OUT\b', cmd):
-            ashiria ValueError('Template.append: missing $OUT kwenye cmd')
+             ashiria ValueError('Template.append: missing $OUT kwenye cmd')
         self.steps.append((cmd, kind))
 
     eleza prepend(self, cmd, kind):
         """t.prepend(cmd, kind) adds a new step at the front."""
         ikiwa type(cmd) ni sio type(''):
-            ashiria TypeError('Template.prepend: cmd must be a string')
-        ikiwa kind haiko kwenye stepkinds:
-            ashiria ValueError('Template.prepend: bad kind %r' % (kind,))
+             ashiria TypeError('Template.prepend: cmd must be a string')
+        ikiwa kind sio kwenye stepkinds:
+             ashiria ValueError('Template.prepend: bad kind %r' % (kind,))
         ikiwa kind == SINK:
-            ashiria ValueError('Template.prepend: SINK can only be appended')
+             ashiria ValueError('Template.prepend: SINK can only be appended')
         ikiwa self.steps na self.steps[0][1] == SOURCE:
-            ashiria ValueError('Template.prepend: already begins ukijumuisha SOURCE')
+             ashiria ValueError('Template.prepend: already begins ukijumuisha SOURCE')
         ikiwa kind[0] == 'f' na sio re.search(r'\$IN\b', cmd):
-            ashiria ValueError('Template.prepend: missing $IN kwenye cmd')
+             ashiria ValueError('Template.prepend: missing $IN kwenye cmd')
         ikiwa kind[1] == 'f' na sio re.search(r'\$OUT\b', cmd):
-            ashiria ValueError('Template.prepend: missing $OUT kwenye cmd')
+             ashiria ValueError('Template.prepend: missing $OUT kwenye cmd')
         self.steps.insert(0, (cmd, kind))
 
     eleza open(self, file, rw):
-        """t.open(file, rw) rudishas a pipe ama file object open for
+        """t.open(file, rw) returns a pipe ama file object open for
         reading ama writing; the file ni the other end of the pipeline."""
         ikiwa rw == 'r':
             rudisha self.open_r(file)
         ikiwa rw == 'w':
             rudisha self.open_w(file)
-        ashiria ValueError('Template.open: rw must be \'r\' ama \'w\', sio %r'
+         ashiria ValueError('Template.open: rw must be \'r\' ama \'w\', sio %r'
                          % (rw,))
 
     eleza open_r(self, file):
@@ -155,7 +155,7 @@ kundi Template:
         ikiwa sio self.steps:
             rudisha open(file, 'r')
         ikiwa self.steps[-1][1] == SINK:
-            ashiria ValueError('Template.open_r: pipeline ends width SINK')
+             ashiria ValueError('Template.open_r: pipeline ends width SINK')
         cmd = self.makepipeline(file, '')
         rudisha os.popen(cmd, 'r')
 
@@ -163,7 +163,7 @@ kundi Template:
         ikiwa sio self.steps:
             rudisha open(file, 'w')
         ikiwa self.steps[0][1] == SOURCE:
-            ashiria ValueError('Template.open_w: pipeline begins ukijumuisha SOURCE')
+             ashiria ValueError('Template.open_w: pipeline begins ukijumuisha SOURCE')
         cmd = self.makepipeline('', file)
         rudisha os.popen(cmd, 'w')
 

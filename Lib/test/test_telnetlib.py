@@ -15,8 +15,8 @@ eleza server(evt, serv):
     jaribu:
         conn, addr = serv.accept()
         conn.close()
-    tatizo socket.timeout:
-        pita
+    except socket.timeout:
+        pass
     mwishowe:
         serv.close()
 
@@ -42,7 +42,7 @@ kundi GeneralTests(unittest.TestCase):
         telnet.sock.close()
 
     eleza testContextManager(self):
-        ukijumuisha telnetlib.Telnet(HOST, self.port) kama tn:
+        ukijumuisha telnetlib.Telnet(HOST, self.port) as tn:
             self.assertIsNotTupu(tn.get_socket())
         self.assertIsTupu(tn.get_socket())
 
@@ -105,15 +105,15 @@ kundi SocketStub(object):
 
 kundi TelnetAlike(telnetlib.Telnet):
     eleza fileno(self):
-        ashiria NotImplementedError()
-    eleza close(self): pita
+         ashiria NotImplementedError()
+    eleza close(self): pass
     eleza sock_avail(self):
-        rudisha (sio self.sock.block)
+        rudisha (not self.sock.block)
     eleza msg(self, msg, *args):
-        ukijumuisha support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() as out:
             telnetlib.Telnet.msg(self, msg, *args)
         self._messages += out.getvalue()
-        rudisha
+        return
 
 kundi MockSelector(selectors.BaseSelector):
 
@@ -157,7 +157,7 @@ eleza test_socket(reads):
         tuma Tupu
     mwishowe:
         socket.create_connection = old_conn
-    rudisha
+    return
 
 eleza test_telnet(reads=(), cls=TelnetAlike):
     ''' rudisha a telnetlib.Telnet object that uses a SocketStub with
@@ -204,7 +204,7 @@ kundi ReadTests(ExpectAndReadTestCase):
         telnet = test_telnet(reads)
         data = telnet.read_all()
         self.assertEqual(data, expect)
-        rudisha
+        return
 
     eleza test_read_some(self):
         """
@@ -236,7 +236,7 @@ kundi ReadTests(ExpectAndReadTestCase):
         wakati Kweli:
             jaribu:
                 data += func()
-            tatizo EOFError:
+            except EOFError:
                 koma
         self.assertEqual(data, want)
 
@@ -246,7 +246,7 @@ kundi ReadTests(ExpectAndReadTestCase):
         self._read_eager('read_eager')
         self._read_eager('read_very_eager')
         # NB -- we need to test the IAC block which ni mentioned kwenye the
-        # docstring but haiko kwenye the module docs
+        # docstring but sio kwenye the module docs
 
     eleza read_very_lazy(self):
         want = b'x' * 100
@@ -269,7 +269,7 @@ kundi ReadTests(ExpectAndReadTestCase):
                 data += read_data
                 ikiwa sio read_data:
                     telnet.fill_rawq()
-            tatizo EOFError:
+            except EOFError:
                 koma
             self.assertKweli(want.startswith(data))
         self.assertEqual(data, want)
@@ -365,7 +365,7 @@ kundi OptionTests(unittest.TestCase):
             telnet.set_debuglevel(1)
             txt = telnet.read_all()
             self.assertIn(b, telnet._messages)
-        rudisha
+        return
 
     eleza test_debuglevel_write(self):
         telnet = test_telnet()

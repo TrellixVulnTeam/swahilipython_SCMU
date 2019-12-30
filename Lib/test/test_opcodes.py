@@ -10,13 +10,13 @@ kundi OpcodeTest(unittest.TestCase):
         kila i kwenye range(10):
             n = n+i
             jaribu: 1/0
-            tatizo NameError: pita
-            tatizo ZeroDivisionError: pita
-            tatizo TypeError: pita
-            jaribu: pita
-            tatizo: pita
-            jaribu: pita
-            mwishowe: pita
+            except NameError: pass
+            except ZeroDivisionError: pass
+            except TypeError: pass
+            jaribu: pass
+            tatizo: pass
+            jaribu: pass
+            mwishowe: pass
             n = n+i
         ikiwa n != 90:
             self.fail('try inside for')
@@ -24,15 +24,15 @@ kundi OpcodeTest(unittest.TestCase):
     eleza test_setup_annotations_line(self):
         # check that SETUP_ANNOTATIONS does sio create spurious line numbers
         jaribu:
-            ukijumuisha open(ann_module.__file__) kama f:
+            ukijumuisha open(ann_module.__file__) as f:
                 txt = f.read()
             co = compile(txt, ann_module.__file__, 'exec')
             self.assertEqual(co.co_firstlineno, 3)
-        tatizo OSError:
-            pita
+        except OSError:
+            pass
 
     eleza test_no_annotations_if_not_needed(self):
-        kundi C: pita
+        kundi C: pass
         ukijumuisha self.assertRaises(AttributeError):
             C.__annotations__
 
@@ -50,45 +50,45 @@ kundi OpcodeTest(unittest.TestCase):
                 ukijumuisha self.assertRaises(NameError):
                     x: int
 
-    eleza test_ashiria_class_exceptions(self):
+    eleza test_raise_class_exceptions(self):
 
-        kundi AClass(Exception): pita
-        kundi BClass(AClass): pita
-        kundi CClass(Exception): pita
+        kundi AClass(Exception): pass
+        kundi BClass(AClass): pass
+        kundi CClass(Exception): pass
         kundi DClass(AClass):
             eleza __init__(self, ignore):
-                pita
+                pass
 
-        jaribu: ashiria AClass()
-        tatizo: pita
+        jaribu:  ashiria AClass()
+        tatizo: pass
 
-        jaribu: ashiria AClass()
-        tatizo AClass: pita
+        jaribu:  ashiria AClass()
+        except AClass: pass
 
-        jaribu: ashiria BClass()
-        tatizo AClass: pita
+        jaribu:  ashiria BClass()
+        except AClass: pass
 
-        jaribu: ashiria BClass()
-        tatizo CClass: self.fail()
-        tatizo: pita
+        jaribu:  ashiria BClass()
+        except CClass: self.fail()
+        tatizo: pass
 
         a = AClass()
         b = BClass()
 
         jaribu:
-            ashiria b
-        tatizo AClass kama v:
+             ashiria b
+        except AClass as v:
             self.assertEqual(v, b)
         isipokua:
             self.fail("no exception")
 
         # sio enough arguments
-        ##jaribu:  ashiria BClass, a
-        ##tatizo TypeError: pita
+        ##jaribu:   ashiria BClass, a
+        ##except TypeError: pass
         ##isipokua: self.fail("no exception")
 
-        jaribu:  ashiria DClass(a)
-        tatizo DClass kama v:
+        jaribu:   ashiria DClass(a)
+        except DClass as v:
             self.assertIsInstance(v, DClass)
         isipokua:
             self.fail("no exception")

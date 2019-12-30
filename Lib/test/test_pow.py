@@ -41,9 +41,9 @@ kundi PowTest(unittest.TestCase):
         ikiwa type == float:
             il = 1
             asseq = self.assertAlmostEqual
-        lasivyo type == int:
+        elikiwa type == int:
             jl = 0
-        lasivyo type == int:
+        elikiwa type == int:
             jl, jh = 0, 15
         kila i kwenye range(il, ih+1):
             kila j kwenye range(jl, jh+1):
@@ -100,12 +100,12 @@ kundi PowTest(unittest.TestCase):
         Tupu ** TestRpow() # Won't fail when __rpow__ invoked.  SF bug #643260.
 
     eleza test_bug705231(self):
-        # -1.0 ashiriad to an integer should never blow up.  It did ikiwa the
+        # -1.0 raised to an integer should never blow up.  It did ikiwa the
         # platform pow() was buggy, na Python didn't worm around it.
         eq = self.assertEqual
         a = -1.0
         # The next two tests can still fail ikiwa the platform floor()
-        # function doesn't treat all large inputs kama integers
+        # function doesn't treat all large inputs as integers
         # test_math should also fail ikiwa that ni happening
         eq(pow(a, 1.23e167), 1.0)
         eq(pow(a, -1.23e167), 1.0)
@@ -126,7 +126,7 @@ kundi PowTest(unittest.TestCase):
                 ukijumuisha self.subTest(a=a, m=m):
                     ikiwa m != 0 na math.gcd(a, m) == 1:
                         # Exponent -1 should give an inverse, ukijumuisha the
-                        # same sign kama m.
+                        # same sign as m.
                         inv = pow(a, -1, m)
                         self.assertEqual(inv, inv % m)
                         self.assertEqual((inv * a - 1) % m, 0)

@@ -16,29 +16,29 @@ __all__ = ["compile", "main", "PyCompileError", "PycInvalidationMode"]
 
 
 kundi PyCompileError(Exception):
-    """Exception ashiriad when an error occurs wakati attempting to
+    """Exception raised when an error occurs wakati attempting to
     compile the file.
 
-    To ashiria this exception, use
+    To  ashiria this exception, use
 
-        ashiria PyCompileError(exc_type,exc_value,file[,msg])
+         ashiria PyCompileError(exc_type,exc_value,file[,msg])
 
     where
 
         exc_type:   exception type to be used kwenye error message
-                    type name can be accesses kama kundi variable
+                    type name can be accesses as kundi variable
                     'exc_type_name'
 
         exc_value:  exception value to be used kwenye error message
-                    can be accesses kama kundi variable 'exc_value'
+                    can be accesses as kundi variable 'exc_value'
 
         file:       name of file being compiled to be used kwenye error message
-                    can be accesses kama kundi variable 'file'
+                    can be accesses as kundi variable 'file'
 
-        msg:        string message to be written kama error message
+        msg:        string message to be written as error message
                     If no value ni given, a default exception message will be
                     given, consistent ukijumuisha 'standard' py_compile output.
-                    message (or default) can be accesses kama kundi variable
+                    message (or default) can be accesses as kundi variable
                     'msg'
 
     """
@@ -76,7 +76,7 @@ eleza _get_default_invalidation_mode():
         rudisha PycInvalidationMode.TIMESTAMP
 
 
-eleza compile(file, cfile=Tupu, dfile=Tupu, doashiria=Uongo, optimize=-1,
+eleza compile(file, cfile=Tupu, dfile=Tupu, doraise=Uongo, optimize=-1,
             invalidation_mode=Tupu, quiet=0):
     """Byte-compile one Python source file to Python bytecode.
 
@@ -85,20 +85,20 @@ eleza compile(file, cfile=Tupu, dfile=Tupu, doashiria=Uongo, optimize=-1,
         defaults to the PEP 3147/PEP 488 location.
     :param dfile: Purported file name, i.e. the file name that shows up in
         error messages.  Defaults to the source file name.
-    :param doashiria: Flag indicating whether ama sio an exception should be
-        ashiriad when a compile error ni found.  If an exception occurs na this
+    :param doraise: Flag indicating whether ama sio an exception should be
+        raised when a compile error ni found.  If an exception occurs na this
         flag ni set to Uongo, a string indicating the nature of the exception
         will be printed, na the function will rudisha to the caller. If an
         exception occurs na this flag ni set to Kweli, a PyCompileError
-        exception will be ashiriad.
+        exception will be raised.
     :param optimize: The optimization level kila the compiler.  Valid values
         are -1, 0, 1 na 2.  A value of -1 means to use the optimization
-        level of the current interpreter, kama given by -O command line options.
+        level of the current interpreter, as given by -O command line options.
     :param invalidation_mode:
     :param quiet: Return full output ukijumuisha Uongo ama 0, errors only ukijumuisha 1,
         na no output ukijumuisha 2.
 
-    :rudisha: Path to the resulting byte compiled file.
+    :return: Path to the resulting byte compiled file.
 
     Note that it isn't necessary to byte-compile Python modules for
     execution efficiency -- Python itself byte-compiles a module when
@@ -116,7 +116,7 @@ eleza compile(file, cfile=Tupu, dfile=Tupu, doashiria=Uongo, optimize=-1,
     byte-compile all installed files (or all files kwenye selected
     directories).
 
-    Do note that FileExistsError ni ashiriad ikiwa cfile ends up pointing at a
+    Do note that FileExistsError ni raised ikiwa cfile ends up pointing at a
     non-regular file ama symlink. Because the compilation uses a file renaming,
     the resulting file would be regular na thus sio the same type of file as
     it was previously.
@@ -133,30 +133,30 @@ eleza compile(file, cfile=Tupu, dfile=Tupu, doashiria=Uongo, optimize=-1,
     ikiwa os.path.islink(cfile):
         msg = ('{} ni a symlink na will be changed into a regular file ikiwa '
                'agiza writes a byte-compiled file to it')
-        ashiria FileExistsError(msg.format(cfile))
-    lasivyo os.path.exists(cfile) na sio os.path.isfile(cfile):
+         ashiria FileExistsError(msg.format(cfile))
+    elikiwa os.path.exists(cfile) na sio os.path.isfile(cfile):
         msg = ('{} ni a non-regular file na will be changed into a regular '
                'one ikiwa agiza writes a byte-compiled file to it')
-        ashiria FileExistsError(msg.format(cfile))
+         ashiria FileExistsError(msg.format(cfile))
     loader = importlib.machinery.SourceFileLoader('<py_compile>', file)
     source_bytes = loader.get_data(file)
     jaribu:
         code = loader.source_to_code(source_bytes, dfile ama file,
                                      _optimize=optimize)
-    tatizo Exception kama err:
+    except Exception as err:
         py_exc = PyCompileError(err.__class__, err, dfile ama file)
         ikiwa quiet < 2:
-            ikiwa doashiria:
-                ashiria py_exc
+            ikiwa doraise:
+                 ashiria py_exc
             isipokua:
                 sys.stderr.write(py_exc.msg + '\n')
-        rudisha
+        return
     jaribu:
         dirname = os.path.dirname(cfile)
         ikiwa dirname:
             os.makedirs(dirname)
-    tatizo FileExistsError:
-        pita
+    except FileExistsError:
+        pass
     ikiwa invalidation_mode == PycInvalidationMode.TIMESTAMP:
         source_stats = loader.path_stats(file)
         bytecode = importlib._bootstrap_external._code_to_timestamp_pyc(
@@ -194,20 +194,20 @@ eleza main(args=Tupu):
                 koma
             filename = filename.rstrip('\n')
             jaribu:
-                compile(filename, doashiria=Kweli)
-            tatizo PyCompileError kama error:
+                compile(filename, doraise=Kweli)
+            except PyCompileError as error:
                 rv = 1
                 ikiwa quiet < 2:
                     sys.stderr.write("%s\n" % error.msg)
-            tatizo OSError kama error:
+            except OSError as error:
                 rv = 1
                 ikiwa quiet < 2:
                     sys.stderr.write("%s\n" % error)
     isipokua:
         kila filename kwenye args:
             jaribu:
-                compile(filename, doashiria=Kweli)
-            tatizo PyCompileError kama error:
+                compile(filename, doraise=Kweli)
+            except PyCompileError as error:
                 # rudisha value to indicate at least one failure
                 rv = 1
                 ikiwa quiet < 2:

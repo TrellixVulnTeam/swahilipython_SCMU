@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec for CP1125
+""" Python Character Mapping Codec kila CP1125
 
 """#"
 
@@ -23,10 +23,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pita
+    pass
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pita
+    pass
 
 ### encodings module API
 

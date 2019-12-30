@@ -19,7 +19,7 @@ kundi Test_pygettext(unittest.TestCase):
     script = os.path.join(toolsdir,'i18n', 'pygettext.py')
 
     eleza get_header(self, data):
-        """ utility: rudisha the header of a .po file kama a dictionary """
+        """ utility: rudisha the header of a .po file as a dictionary """
         headers = {}
         kila line kwenye data.split('\n'):
             ikiwa sio line ama line.startswith(('#', 'msgid','msgstr')):
@@ -30,7 +30,7 @@ kundi Test_pygettext(unittest.TestCase):
         rudisha headers
 
     eleza get_msgids(self, data):
-        """ utility: rudisha all msgids kwenye .po file kama a list of strings """
+        """ utility: rudisha all msgids kwenye .po file as a list of strings """
         msgids = []
         reading_msgid = Uongo
         cur_msgid = []
@@ -56,11 +56,11 @@ kundi Test_pygettext(unittest.TestCase):
     eleza extract_docstrings_from_str(self, module_content):
         """ utility: rudisha all msgids extracted kutoka module_content """
         filename = 'test_docstrings.py'
-        ukijumuisha temp_cwd(Tupu) kama cwd:
-            ukijumuisha open(filename, 'w') kama fp:
+        ukijumuisha temp_cwd(Tupu) as cwd:
+            ukijumuisha open(filename, 'w') as fp:
                 fp.write(module_content)
             assert_python_ok(self.script, '-D', filename)
-            ukijumuisha open('messages.pot') kama fp:
+            ukijumuisha open('messages.pot') as fp:
                 data = fp.read()
         rudisha self.get_msgids(data)
 
@@ -68,9 +68,9 @@ kundi Test_pygettext(unittest.TestCase):
         """Make sure the required fields are kwenye the header, according to:
            http://www.gnu.org/software/gettext/manual/gettext.html#Header-Entry
         """
-        ukijumuisha temp_cwd(Tupu) kama cwd:
+        ukijumuisha temp_cwd(Tupu) as cwd:
             assert_python_ok(self.script)
-            ukijumuisha open('messages.pot') kama fp:
+            ukijumuisha open('messages.pot') as fp:
                 data = fp.read()
             header = self.get_header(data)
 
@@ -95,9 +95,9 @@ kundi Test_pygettext(unittest.TestCase):
     eleza test_POT_Creation_Date(self):
         """ Match the date format kutoka xgettext kila POT-Creation-Date """
         kutoka datetime agiza datetime
-        ukijumuisha temp_cwd(Tupu) kama cwd:
+        ukijumuisha temp_cwd(Tupu) as cwd:
             assert_python_ok(self.script)
-            ukijumuisha open('messages.pot') kama fp:
+            ukijumuisha open('messages.pot') as fp:
                 data = fp.read()
             header = self.get_header(data)
             creationDate = header['POT-Creation-Date']
@@ -106,7 +106,7 @@ kundi Test_pygettext(unittest.TestCase):
             ikiwa creationDate.endswith('\\n'):
                 creationDate = creationDate[:-len('\\n')]
 
-            # This will ashiria ikiwa the date format does sio exactly match.
+            # This will  ashiria ikiwa the date format does sio exactly match.
             datetime.strptime(creationDate, '%Y-%m-%d %H:%M%z')
 
     eleza test_funcdocstring(self):
@@ -176,7 +176,7 @@ kundi Test_pygettext(unittest.TestCase):
         '''))
         self.assertIn('doc', msgids)
 
-    eleza test_funcdocstring_annotated_rudisha(self):
+    eleza test_funcdocstring_annotated_return(self):
         """ Test docstrings kila functions ukijumuisha annotated rudisha type """
         msgids = self.extract_docstrings_from_str(dedent('''\
         eleza foo(bar) -> str:
@@ -227,18 +227,18 @@ kundi Test_pygettext(unittest.TestCase):
         text1 = 'Text to translate1'
         text2 = 'Text to translate2'
         text3 = 'Text to ignore'
-        ukijumuisha temp_cwd(Tupu), temp_dir(Tupu) kama sdir:
+        ukijumuisha temp_cwd(Tupu), temp_dir(Tupu) as sdir:
             os.mkdir(os.path.join(sdir, 'pypkg'))
-            ukijumuisha open(os.path.join(sdir, 'pypkg', 'pymod.py'), 'w') kama sfile:
+            ukijumuisha open(os.path.join(sdir, 'pypkg', 'pymod.py'), 'w') as sfile:
                 sfile.write(f'_({text1!r})')
             os.mkdir(os.path.join(sdir, 'pkg.py'))
-            ukijumuisha open(os.path.join(sdir, 'pkg.py', 'pymod2.py'), 'w') kama sfile:
+            ukijumuisha open(os.path.join(sdir, 'pkg.py', 'pymod2.py'), 'w') as sfile:
                 sfile.write(f'_({text2!r})')
             os.mkdir(os.path.join(sdir, 'CVS'))
-            ukijumuisha open(os.path.join(sdir, 'CVS', 'pymod3.py'), 'w') kama sfile:
+            ukijumuisha open(os.path.join(sdir, 'CVS', 'pymod3.py'), 'w') as sfile:
                 sfile.write(f'_({text3!r})')
             assert_python_ok(self.script, sdir)
-            ukijumuisha open('messages.pot') kama fp:
+            ukijumuisha open('messages.pot') as fp:
                 data = fp.read()
             self.assertIn(f'msgid "{text1}"', data)
             self.assertIn(f'msgid "{text2}"', data)

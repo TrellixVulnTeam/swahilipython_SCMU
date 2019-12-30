@@ -9,13 +9,13 @@ agiza time
 agiza unittest
 
 ikiwa sio hasattr(select, "kqueue"):
-    ashiria unittest.SkipTest("test works only on BSD")
+     ashiria unittest.SkipTest("test works only on BSD")
 
 kundi TestKQueue(unittest.TestCase):
     eleza test_create_queue(self):
         kq = select.kqueue()
         self.assertKweli(kq.fileno() > 0, kq.fileno())
-        self.assertKweli(sio kq.closed)
+        self.assertKweli(not kq.closed)
         kq.close()
         self.assertKweli(kq.closed)
         self.assertRaises(ValueError, kq.fileno)
@@ -115,15 +115,15 @@ kundi TestKQueue(unittest.TestCase):
         client.setblocking(Uongo)
         jaribu:
             client.connect(('127.0.0.1', serverSocket.getsockname()[1]))
-        tatizo OSError kama e:
+        except OSError as e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
         isipokua:
-            #ashiria AssertionError("Connect should have ashiriad EINPROGRESS")
-            pita # FreeBSD doesn't ashiria an exception here
+            # ashiria AssertionError("Connect should have raised EINPROGRESS")
+            pass # FreeBSD doesn't  ashiria an exception here
         server, addr = serverSocket.accept()
 
         kq = select.kqueue()
-        kq2 = select.kqueue.kutokafd(kq.fileno())
+        kq2 = select.kqueue.fromfd(kq.fileno())
 
         ev = select.kevent(server.fileno(),
                            select.KQ_FILTER_WRITE,

@@ -2,9 +2,9 @@
 
 reload(s) -> importlib.reload(s)"""
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
-kutoka ..fixer_util agiza ImportAndCall, touch_agiza
+kutoka ..fixer_util agiza ImportAndCall, touch_import
 
 
 kundi FixReload(fixer_base.BaseFix):
@@ -15,7 +15,7 @@ kundi FixReload(fixer_base.BaseFix):
     power< 'reload'
            trailer< lpar='('
                     ( not(arglist | argument<any '=' any>) obj=any
-                      | obj=arglist<(sio argument<any '=' any>) any ','> )
+                      | obj=arglist<(not argument<any '=' any>) any ','> )
                     rpar=')' >
            after=any*
     >
@@ -29,10 +29,10 @@ kundi FixReload(fixer_base.BaseFix):
             ikiwa obj:
                 ikiwa obj.type == self.syms.star_expr:
                     rudisha  # Make no change.
-                ikiwa (obj.type == self.syms.argument na
+                ikiwa (obj.type == self.syms.argument and
                     obj.children[0].value == '**'):
                     rudisha  # Make no change.
         names = ('importlib', 'reload')
         new = ImportAndCall(node, results, names)
-        touch_agiza(Tupu, 'importlib', node)
+        touch_import(Tupu, 'importlib', node)
         rudisha new

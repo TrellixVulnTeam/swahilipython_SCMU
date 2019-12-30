@@ -34,7 +34,7 @@ kundi Compare_Digest_Tests(unittest.TestCase):
             self.assertUongo(secrets.compare_digest(a.encode('utf-8'), b.encode('utf-8')))
 
     eleza test_bad_types(self):
-        # Test that compare_digest ashirias ukijumuisha mixed types.
+        # Test that compare_digest raises ukijumuisha mixed types.
         a = 'abcde'
         b = a.encode('utf-8')
         assert isinstance(a, str)
@@ -43,7 +43,7 @@ kundi Compare_Digest_Tests(unittest.TestCase):
         self.assertRaises(TypeError, secrets.compare_digest, b, a)
 
     eleza test_bool(self):
-        # Test that compare_digest rudishas a bool.
+        # Test that compare_digest returns a bool.
         self.assertIsInstance(secrets.compare_digest("abc", "abc"), bool)
         self.assertIsInstance(secrets.compare_digest("abc", "xyz"), bool)
 
@@ -53,7 +53,7 @@ kundi Random_Tests(unittest.TestCase):
 
     eleza test_randbits(self):
         # Test randbits.
-        errmsg = "randbits(%d) rudishaed %d"
+        errmsg = "randbits(%d) returned %d"
         kila numbits kwenye (3, 12, 30):
             kila i kwenye range(6):
                 n = secrets.randbits(numbits)
@@ -84,11 +84,11 @@ kundi Token_Tests(unittest.TestCase):
                 name = func.__name__
                 jaribu:
                     func()
-                tatizo TypeError:
+                except TypeError:
                     self.fail("%s cannot be called ukijumuisha no argument" % name)
                 jaribu:
                     func(Tupu)
-                tatizo TypeError:
+                except TypeError:
                     self.fail("%s cannot be called ukijumuisha Tupu" % name)
         size = secrets.DEFAULT_ENTROPY
         self.assertEqual(len(secrets.token_bytes(Tupu)), size)

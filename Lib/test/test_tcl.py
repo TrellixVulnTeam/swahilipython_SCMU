@@ -14,7 +14,7 @@ kutoka _tkinter agiza TclError
 
 jaribu:
     kutoka _testcapi agiza INT_MAX, PY_SSIZE_T_MAX
-tatizo ImportError:
+except ImportError:
     INT_MAX = PY_SSIZE_T_MAX = sys.maxsize
 
 tcl_version = tuple(map(int, _tkinter.TCL_VERSION.split('.')))
@@ -131,7 +131,7 @@ kundi TclTest(unittest.TestCase):
     eleza get_integers(self):
         integers = (0, 1, -1, 2**31-1, -2**31, 2**31, -2**31-1, 2**63-1, -2**63)
         # bignum was added kwenye Tcl 8.5, but its support ni able only since 8.5.8
-        ikiwa (get_tk_patchlevel() >= (8, 6, 0, 'final') ama
+        ikiwa (get_tk_patchlevel() >= (8, 6, 0, 'final') or
             (8, 5, 8) <= get_tk_patchlevel() < (8, 6)):
             integers += (2**63, -2**63-1, 2**1000, -2**1000)
         rudisha integers
@@ -190,7 +190,7 @@ kundi TclTest(unittest.TestCase):
 
     eleza testEvalFile(self):
         tcl = self.interp
-        ukijumuisha open(support.TESTFN, 'w') kama f:
+        ukijumuisha open(support.TESTFN, 'w') as f:
             self.addCleanup(support.unlink, support.TESTFN)
             f.write("""set a 1
             set b 2
@@ -203,7 +203,7 @@ kundi TclTest(unittest.TestCase):
 
     eleza test_evalfile_null_in_result(self):
         tcl = self.interp
-        ukijumuisha open(support.TESTFN, 'w') kama f:
+        ukijumuisha open(support.TESTFN, 'w') as f:
             self.addCleanup(support.unlink, support.TESTFN)
             f.write("""
             set a "a\0b"
@@ -218,8 +218,8 @@ kundi TclTest(unittest.TestCase):
         filename = "doesnotexists"
         jaribu:
             os.remove(filename)
-        tatizo Exception kama e:
-            pita
+        except Exception as e:
+            pass
         self.assertRaises(TclError,tcl.evalfile,filename)
 
     eleza testPackageRequireException(self):
@@ -234,14 +234,14 @@ kundi TclTest(unittest.TestCase):
 
         fullname = os.path.abspath(sys.executable)
         ikiwa fullname[1] != ':':
-            ashiria unittest.SkipTest('Absolute path should have drive part')
+             ashiria unittest.SkipTest('Absolute path should have drive part')
         unc_name = r'\\%s\%s$\%s' % (os.environ['COMPUTERNAME'],
                                     fullname[0],
                                     fullname[3:])
         ikiwa sio os.path.exists(unc_name):
-            ashiria unittest.SkipTest('Cannot connect to UNC Path')
+             ashiria unittest.SkipTest('Cannot connect to UNC Path')
 
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env.unset("TCL_LIBRARY")
             stdout = subprocess.check_output(
                     [unc_name, '-c', 'agiza tkinter; andika(tkinter)'])
@@ -421,49 +421,49 @@ kundi TclTest(unittest.TestCase):
         ikiwa tcl_version < (8, 5):  # bignum was added kwenye Tcl 8.5
             self.assertRaises(TclError, tcl.call, 'expr', str(2**1000))
 
-    eleza test_pitaing_values(self):
-        eleza pitaValue(value):
+    eleza test_passing_values(self):
+        eleza passValue(value):
             rudisha self.interp.call('set', '_', value)
 
-        self.assertEqual(pitaValue(Kweli), Kweli ikiwa self.wantobjects isipokua '1')
-        self.assertEqual(pitaValue(Uongo), Uongo ikiwa self.wantobjects isipokua '0')
-        self.assertEqual(pitaValue('string'), 'string')
-        self.assertEqual(pitaValue('string\u20ac'), 'string\u20ac')
-        self.assertEqual(pitaValue('string\U0001f4bb'), 'string\U0001f4bb')
-        self.assertEqual(pitaValue('str\x00ing'), 'str\x00ing')
-        self.assertEqual(pitaValue('str\x00ing\xbd'), 'str\x00ing\xbd')
-        self.assertEqual(pitaValue('str\x00ing\u20ac'), 'str\x00ing\u20ac')
-        self.assertEqual(pitaValue('str\x00ing\U0001f4bb'),
+        self.assertEqual(passValue(Kweli), Kweli ikiwa self.wantobjects isipokua '1')
+        self.assertEqual(passValue(Uongo), Uongo ikiwa self.wantobjects isipokua '0')
+        self.assertEqual(passValue('string'), 'string')
+        self.assertEqual(passValue('string\u20ac'), 'string\u20ac')
+        self.assertEqual(passValue('string\U0001f4bb'), 'string\U0001f4bb')
+        self.assertEqual(passValue('str\x00ing'), 'str\x00ing')
+        self.assertEqual(passValue('str\x00ing\xbd'), 'str\x00ing\xbd')
+        self.assertEqual(passValue('str\x00ing\u20ac'), 'str\x00ing\u20ac')
+        self.assertEqual(passValue('str\x00ing\U0001f4bb'),
                          'str\x00ing\U0001f4bb')
-        self.assertEqual(pitaValue(b'str\x00ing'),
+        self.assertEqual(passValue(b'str\x00ing'),
                          b'str\x00ing' ikiwa self.wantobjects isipokua 'str\x00ing')
-        self.assertEqual(pitaValue(b'str\xc0\x80ing'),
+        self.assertEqual(passValue(b'str\xc0\x80ing'),
                          b'str\xc0\x80ing' ikiwa self.wantobjects isipokua 'str\xc0\x80ing')
-        self.assertEqual(pitaValue(b'str\xbding'),
+        self.assertEqual(passValue(b'str\xbding'),
                          b'str\xbding' ikiwa self.wantobjects isipokua 'str\xbding')
         kila i kwenye self.get_integers():
-            self.assertEqual(pitaValue(i), i ikiwa self.wantobjects isipokua str(i))
+            self.assertEqual(passValue(i), i ikiwa self.wantobjects isipokua str(i))
         ikiwa tcl_version < (8, 5):  # bignum was added kwenye Tcl 8.5
-            self.assertEqual(pitaValue(2**1000), str(2**1000))
+            self.assertEqual(passValue(2**1000), str(2**1000))
         kila f kwenye (0.0, 1.0, -1.0, 1/3,
                   sys.float_info.min, sys.float_info.max,
                   -sys.float_info.min, -sys.float_info.max):
             ikiwa self.wantobjects:
-                self.assertEqual(pitaValue(f), f)
+                self.assertEqual(passValue(f), f)
             isipokua:
-                self.assertEqual(float(pitaValue(f)), f)
+                self.assertEqual(float(passValue(f)), f)
         ikiwa self.wantobjects:
-            f = pitaValue(float('nan'))
+            f = passValue(float('nan'))
             self.assertNotEqual(f, f)
-            self.assertEqual(pitaValue(float('inf')), float('inf'))
-            self.assertEqual(pitaValue(-float('inf')), -float('inf'))
+            self.assertEqual(passValue(float('inf')), float('inf'))
+            self.assertEqual(passValue(-float('inf')), -float('inf'))
         isipokua:
-            self.assertEqual(float(pitaValue(float('inf'))), float('inf'))
-            self.assertEqual(float(pitaValue(-float('inf'))), -float('inf'))
+            self.assertEqual(float(passValue(float('inf'))), float('inf'))
+            self.assertEqual(float(passValue(-float('inf'))), -float('inf'))
             # XXX NaN representation can be sio parsable by float()
-        self.assertEqual(pitaValue((1, '2', (3.4,))),
+        self.assertEqual(passValue((1, '2', (3.4,))),
                          (1, '2', (3.4,)) ikiwa self.wantobjects isipokua '1 2 3.4')
-        self.assertEqual(pitaValue(['a', ['b', 'c']]),
+        self.assertEqual(passValue(['a', ['b', 'c']]),
                          ('a', ('b', 'c')) ikiwa self.wantobjects isipokua 'a {b c}')
 
     eleza test_user_command(self):
@@ -549,7 +549,7 @@ kundi TclTest(unittest.TestCase):
             ([], ()),
             (['a', ['b', 'c']], ('a', ['b', 'c'])),
             (call('list', 1, '2', (3.4,)),
-                (1, '2', (3.4,)) ikiwa self.wantobjects ama
+                (1, '2', (3.4,)) ikiwa self.wantobjects else
                 ('1', '2', '3.4')),
         ]
         tk_patchlevel = get_tk_patchlevel()
@@ -603,7 +603,7 @@ kundi TclTest(unittest.TestCase):
             (['a', 'b c'], ('a', ('b', 'c'))),
             (['a', ['b', 'c']], ('a', ('b', 'c'))),
             (call('list', 1, '2', (3.4,)),
-                (1, '2', (3.4,)) ikiwa self.wantobjects ama
+                (1, '2', (3.4,)) ikiwa self.wantobjects else
                 ('1', '2', '3.4')),
         ]
         ikiwa tcl_version >= (8, 5):

@@ -19,7 +19,7 @@ kundi defaultdict(dict):
     eleza __getitem__(self, key):
         jaribu:
             rudisha dict.__getitem__(self, key)
-        tatizo KeyError:
+        except KeyError:
             rudisha self.default
 
     eleza get(self, key, *args):
@@ -29,7 +29,7 @@ kundi defaultdict(dict):
 
     eleza merge(self, other):
         kila key kwenye other:
-            ikiwa key haiko kwenye self:
+            ikiwa key sio kwenye self:
                 self[key] = other[key]
 
 test_1 = """
@@ -62,7 +62,7 @@ Here's the new type at work:
     >>>
 
 We can also use the new type kwenye contexts where classic only allows "real"
-dictionaries, such kama the locals/globals dictionaries kila the exec
+dictionaries, such as the locals/globals dictionaries kila the exec
 statement ama the built-in function eval():
 
     >>> andika(sorted(a.keys()))
@@ -109,7 +109,7 @@ kundi defaultdict2(dict):
     eleza __getitem__(self, key):
         jaribu:
             rudisha dict.__getitem__(self, key)
-        tatizo KeyError:
+        except KeyError:
             rudisha self.default
 
     eleza get(self, key, *args):
@@ -119,7 +119,7 @@ kundi defaultdict2(dict):
 
     eleza merge(self, other):
         kila key kwenye other:
-            ikiwa key haiko kwenye self:
+            ikiwa key sio kwenye self:
                 self[key] = other[key]
 
 test_2 = """
@@ -146,7 +146,7 @@ test_3 = """
 
 Introspecting instances of built-in types
 
-For instance of built-in types, x.__class__ ni now the same kama type(x):
+For instance of built-in types, x.__class__ ni now the same as type(x):
 
     >>> type([])
     <kundi 'list'>
@@ -218,11 +218,11 @@ normally invoked through special notations, e.g. __iadd__ (+=), __len__
 (len), __ne__ (!=). You can invoke any method kutoka this list directly:
 
     >>> a = ['tic', 'tac']
-    >>> list.__len__(a)          # same kama len(a)
+    >>> list.__len__(a)          # same as len(a)
     2
     >>> a.__len__()              # ditto
     2
-    >>> list.append(a, 'toe')    # same kama a.append('toe')
+    >>> list.append(a, 'toe')    # same as a.append('toe')
     >>> a
     ['tic', 'tac', 'toe']
     >>>
@@ -265,7 +265,7 @@ implicit first argument that ni the *class* kila which they are invoked.
     classmethod <kundi 'test.test_descrtut.C'> 1
 
     >>> kundi D(C):
-    ...     pita
+    ...     pass
 
     >>> D.foo(1)
     classmethod <kundi 'test.test_descrtut.D'> 1
@@ -274,7 +274,7 @@ implicit first argument that ni the *class* kila which they are invoked.
     classmethod <kundi 'test.test_descrtut.D'> 1
 
 This prints "classmethod __main__.D 1" both times; kwenye other words, the
-kundi pitaed kama the first argument of foo() ni the kundi involved kwenye the
+kundi passed as the first argument of foo() ni the kundi involved kwenye the
 call, sio the kundi involved kwenye the definition of foo().
 
 But notice this:
@@ -293,11 +293,11 @@ But notice this:
     E.foo() called
     classmethod <kundi 'test.test_descrtut.C'> 1
 
-In this example, the call to C.foo() kutoka E.foo() will see kundi C kama its
+In this example, the call to C.foo() kutoka E.foo() will see kundi C as its
 first argument, sio kundi E. This ni to be expected, since the call
 specifies the kundi C. But it stresses the difference between these class
 methods na methods defined kwenye metaclasses (where an upcall to a metamethod
-would pita the target kundi kama an explicit first argument).
+would pass the target kundi as an explicit first argument).
 """
 
 test_5 = """
@@ -316,7 +316,7 @@ Attributes defined by get/set methods
     ...
     ...     eleza __set__(self, inst, value):
     ...         ikiwa self.__set ni Tupu:
-    ...             ashiria AttributeError("this attribute ni read-only")
+    ...              ashiria AttributeError("this attribute ni read-only")
     ...         rudisha self.__set(inst, value)
 
 Now let's define a kundi ukijumuisha an attribute x defined by a pair of methods,
@@ -384,12 +384,12 @@ This example ni implicit kwenye the writeup.
 ...     eleza save(self):
 ...         andika("called A.save()")
 >>> kundi B(A):
-...     pita
+...     pass
 >>> kundi C(A):
 ...     eleza save(self):
 ...         andika("called C.save()")
 >>> kundi D(B, C):
-...     pita
+...     pass
 
 >>> D().save()
 called C.save()
@@ -398,12 +398,12 @@ called C.save()
 ...     eleza save(self):
 ...         andika("called A.save()")
 >>> kundi B(A):
-...     pita
+...     pass
 >>> kundi C(A):
 ...     eleza save(self):
 ...         andika("called C.save()")
 >>> kundi D(B, C):
-...     pita
+...     pass
 
 >>> D().save()
 called C.save()
@@ -443,7 +443,7 @@ Backwards incompatibilities
 ...         andika("called A.foo()")
 
 >>> kundi B(A):
-...     pita
+...     pass
 
 >>> kundi C(A):
 ...     eleza foo(self):
@@ -468,12 +468,12 @@ __test__ = {"tut1": test_1,
             "tut7": test_7,
             "tut8": test_8}
 
-# Magic test name that regrtest.py invokes *after* agizaing this module.
+# Magic test name that regrtest.py invokes *after* importing this module.
 # This worms around a bootstrap problem.
 # Note that doctest na regrtest both look kwenye sys.argv kila a "-v" argument,
-# so this works kama expected kwenye both ways of running regrtest.
+# so this works as expected kwenye both ways of running regrtest.
 eleza test_main(verbose=Tupu):
-    # Obscure:  agiza this module kama test.test_descrtut instead of as
+    # Obscure:  agiza this module as test.test_descrtut instead of as
     # plain test_descrtut because the name of this module works its way
     # into the doctest examples, na unless the full test.test_descrtut
     # business ni used the name can change depending on how the test is

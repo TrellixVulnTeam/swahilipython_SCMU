@@ -1,12 +1,12 @@
 """Python 'zlib_codec' Codec - zlib compression encoding.
 
-This codec de/encodes from bytes to bytes.
+This codec de/encodes kutoka bytes to bytes.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 """
 
 agiza codecs
-import zlib # this codec needs the optional zlib module !
+agiza zlib # this codec needs the optional zlib module !
 
 ### Codec APIs
 
@@ -31,7 +31,7 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
         self.compressobj = zlib.compressobj()
 
     eleza encode(self, input, final=Uongo):
-        if final:
+        ikiwa final:
             c = self.compressobj.compress(input)
             rudisha c + self.compressobj.flush()
         isipokua:
@@ -47,7 +47,7 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         self.decompressobj = zlib.decompressobj()
 
     eleza decode(self, input, final=Uongo):
-        if final:
+        ikiwa final:
             c = self.decompressobj.decompress(input)
             rudisha c + self.decompressobj.flush()
         isipokua:

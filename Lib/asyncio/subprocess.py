@@ -65,7 +65,7 @@ kundi SubprocessStreamProtocol(streams.FlowControlMixin,
     eleza pipe_data_received(self, fd, data):
         ikiwa fd == 1:
             reader = self.stdout
-        lasivyo fd == 2:
+        elikiwa fd == 2:
             reader = self.stderr
         isipokua:
             reader = Tupu
@@ -82,10 +82,10 @@ kundi SubprocessStreamProtocol(streams.FlowControlMixin,
                 self._stdin_closed.set_result(Tupu)
             isipokua:
                 self._stdin_closed.set_exception(exc)
-            rudisha
+            return
         ikiwa fd == 1:
             reader = self.stdout
-        lasivyo fd == 2:
+        elikiwa fd == 2:
             reader = self.stderr
         isipokua:
             reader = Tupu
@@ -151,7 +151,7 @@ kundi Process:
                 '%r communicate: feed stdin (%s bytes)', self, len(input))
         jaribu:
             await self.stdin.drain()
-        tatizo (BrokenPipeError, ConnectionResetError) kama exc:
+        except (BrokenPipeError, ConnectionResetError) as exc:
             # communicate() ignores BrokenPipeError na ConnectionResetError
             ikiwa debug:
                 logger.debug('%r communicate: stdin got %r', self, exc)

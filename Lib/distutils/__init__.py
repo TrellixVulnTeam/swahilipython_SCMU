@@ -1,13 +1,13 @@
 """distutils
 
-The main package for the Python Module Distribution Utilities.  Normally
-used from a setup script as
+The main package kila the Python Module Distribution Utilities.  Normally
+used kutoka a setup script as
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
 
    setup (...)
 """
 
-import sys
+agiza sys
 
 __version__ = sys.version[:sys.version.index(' ')]

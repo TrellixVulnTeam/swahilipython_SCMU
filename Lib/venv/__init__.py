@@ -80,7 +80,7 @@ kundi EnvBuilder:
             fn = os.path.join(path, fn)
             ikiwa os.path.islink(fn) ama os.path.isfile(fn):
                 os.remove(fn)
-            lasivyo os.path.isdir(fn):
+            elikiwa os.path.isdir(fn):
                 shutil.rmtree(fn)
 
     eleza ensure_directories(self, env_dir):
@@ -94,8 +94,8 @@ kundi EnvBuilder:
         eleza create_if_needed(d):
             ikiwa sio os.path.exists(d):
                 os.makedirs(d)
-            lasivyo os.path.islink(d) ama os.path.isfile(d):
-                ashiria ValueError('Unable to create directory %r' % d)
+            elikiwa os.path.islink(d) ama os.path.isfile(d):
+                 ashiria ValueError('Unable to create directory %r' % d)
 
         ikiwa os.path.exists(env_dir) na self.clear:
             self.clear_directory(env_dir)
@@ -123,8 +123,8 @@ kundi EnvBuilder:
         context.inc_path = path = os.path.join(env_dir, incpath)
         create_if_needed(path)
         create_if_needed(libpath)
-        # Issue 21197: create lib64 kama a symlink to lib on 64-bit non-OS X POSIX
-        ikiwa ((sys.maxsize > 2**32) na (os.name == 'posix') na
+        # Issue 21197: create lib64 as a symlink to lib on 64-bit non-OS X POSIX
+        ikiwa ((sys.maxsize > 2**32) na (os.name == 'posix') and
             (sys.platform != 'darwin')):
             link_path = os.path.join(env_dir, 'lib64')
             ikiwa sio os.path.exists(link_path):   # Issue #21643
@@ -138,14 +138,14 @@ kundi EnvBuilder:
     eleza create_configuration(self, context):
         """
         Create a configuration file indicating where the environment's Python
-        was copied kutoka, na whether the system site-packages should be made
+        was copied from, na whether the system site-packages should be made
         available kwenye the environment.
 
         :param context: The information kila the environment creation request
                         being processed.
         """
         context.cfg_path = path = os.path.join(context.env_dir, 'pyvenv.cfg')
-        ukijumuisha open(path, 'w', encoding='utf-8') kama f:
+        ukijumuisha open(path, 'w', encoding='utf-8') as f:
             f.write('home = %s\n' % context.python_dir)
             ikiwa self.system_site_packages:
                 incl = 'true'
@@ -170,7 +170,7 @@ kundi EnvBuilder:
                             os.symlink(os.path.basename(src), dst)
                         isipokua:
                             os.symlink(src, dst)
-                tatizo Exception:   # may need to use a more specific exception
+                except Exception:   # may need to use a more specific exception
                     logger.warning('Unable to symlink %r to %r', src, dst)
                     force_copy = Kweli
             ikiwa force_copy:
@@ -188,8 +188,8 @@ kundi EnvBuilder:
                         os.symlink(os.path.basename(src), dst)
                     isipokua:
                         os.symlink(src, dst)
-                    rudisha
-                tatizo Exception:   # may need to use a more specific exception
+                    return
+                except Exception:   # may need to use a more specific exception
                     logger.warning('Unable to symlink %r to %r', src, dst)
 
             # On Windows, we rewrite symlinks to our base python.exe into
@@ -200,14 +200,14 @@ kundi EnvBuilder:
                                  "nt",
                                  basename + ext)
             # Builds ama venv's kutoka builds need to remap source file
-            # locations, kama we do sio put them into Lib/venv/scripts
+            # locations, as we do sio put them into Lib/venv/scripts
             ikiwa sysconfig.is_python_build(Kweli) ama sio os.path.isfile(srcfn):
                 ikiwa basename.endswith('_d'):
                     ext = '_d' + ext
                     basename = basename[:-2]
                 ikiwa basename == 'python':
                     basename = 'venvlauncher'
-                lasivyo basename == 'pythonw':
+                elikiwa basename == 'pythonw':
                     basename = 'venvwlauncher'
                 src = os.path.join(os.path.dirname(src), basename + ext)
             isipokua:
@@ -215,7 +215,7 @@ kundi EnvBuilder:
             ikiwa sio os.path.exists(src):
                 ikiwa sio bad_src:
                     logger.warning('Unable to copy %r', src)
-                rudisha
+                return
 
             shutil.copyfile(src, dst)
 
@@ -281,8 +281,8 @@ kundi EnvBuilder:
 
     eleza _setup_pip(self, context):
         """Installs ama upgrades pip kwenye a virtual environment"""
-        # We run ensurepip kwenye isolated mode to avoid side effects kutoka
-        # environment vars, the current directory na anything ama
+        # We run ensurepip kwenye isolated mode to avoid side effects from
+        # environment vars, the current directory na anything else
         # intended kila the global Python environment
         cmd = [context.env_exe, '-Im', 'ensurepip', '--upgrade',
                                                     '--default-pip']
@@ -296,7 +296,7 @@ kundi EnvBuilder:
         being created. You can prevent the default installation by overriding
         this method ikiwa you really need to, ama ikiwa you need to specify
         a different location kila the scripts to install. By default, the
-        'scripts' directory kwenye the venv package ni used kama the source of
+        'scripts' directory kwenye the venv package ni used as the source of
         scripts to install.
         """
         path = os.path.abspath(os.path.dirname(__file__))
@@ -311,14 +311,14 @@ kundi EnvBuilder:
         :param context: The information kila the environment creation request
                         being processed.
         """
-        pita
+        pass
 
     eleza replace_variables(self, text, context):
         """
         Replace variable placeholders kwenye script text ukijumuisha context-specific
         variables.
 
-        Return the text pitaed kwenye , but ukijumuisha variables replaced.
+        Return the text passed kwenye , but ukijumuisha variables replaced.
 
         :param text: The text kwenye which to replace placeholder variables.
         :param context: The information kila the environment creation request
@@ -349,7 +349,7 @@ kundi EnvBuilder:
         kila root, dirs, files kwenye os.walk(path):
             ikiwa root == path: # at top-level, remove irrelevant dirs
                 kila d kwenye dirs[:]:
-                    ikiwa d haiko kwenye ('common', os.name):
+                    ikiwa d sio kwenye ('common', os.name):
                         dirs.remove(d)
                 endelea # ignore files kwenye top level
             kila f kwenye files:
@@ -365,19 +365,19 @@ kundi EnvBuilder:
                 ikiwa sio os.path.exists(dstdir):
                     os.makedirs(dstdir)
                 dstfile = os.path.join(dstdir, f)
-                ukijumuisha open(srcfile, 'rb') kama f:
+                ukijumuisha open(srcfile, 'rb') as f:
                     data = f.read()
                 ikiwa sio srcfile.endswith(('.exe', '.pdb')):
                     jaribu:
                         data = data.decode('utf-8')
                         data = self.replace_variables(data, context)
                         data = data.encode('utf-8')
-                    tatizo UnicodeError kama e:
+                    except UnicodeError as e:
                         data = Tupu
                         logger.warning('unable to copy script %r, '
                                        'may be binary: %s', srcfile, e)
                 ikiwa data ni sio Tupu:
-                    ukijumuisha open(dstfile, 'wb') kama f:
+                    ukijumuisha open(dstfile, 'wb') as f:
                         f.write(data)
                     shutil.copymode(srcfile, dstfile)
 
@@ -394,10 +394,10 @@ eleza main(args=Tupu):
     compatible = Kweli
     ikiwa sys.version_info < (3, 3):
         compatible = Uongo
-    lasivyo sio hasattr(sys, 'base_prefix'):
+    elikiwa sio hasattr(sys, 'base_prefix'):
         compatible = Uongo
     ikiwa sio compatible:
-        ashiria ValueError('This script ni only kila use ukijumuisha Python >= 3.3')
+         ashiria ValueError('This script ni only kila use ukijumuisha Python >= 3.3')
     isipokua:
         agiza argparse
 
@@ -452,7 +452,7 @@ eleza main(args=Tupu):
                                  'this environment.')
         options = parser.parse_args(args)
         ikiwa options.upgrade na options.clear:
-            ashiria ValueError('you cannot supply --upgrade na --clear together.')
+             ashiria ValueError('you cannot supply --upgrade na --clear together.')
         builder = EnvBuilder(system_site_packages=options.system_site,
                              clear=options.clear,
                              symlinks=options.symlinks,
@@ -467,6 +467,6 @@ ikiwa __name__ == '__main__':
     jaribu:
         main()
         rc = 0
-    tatizo Exception kama e:
+    except Exception as e:
         andika('Error: %s' % e, file=sys.stderr)
     sys.exit(rc)

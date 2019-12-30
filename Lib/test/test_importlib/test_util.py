@@ -47,12 +47,12 @@ kundi ModuleFromSpecTests:
     eleza test_no_create_module(self):
         kundi Loader:
             eleza exec_module(self, module):
-                pita
+                pass
         spec = self.machinery.ModuleSpec('test', Loader())
         ukijumuisha self.assertRaises(ImportError):
             module = self.util.module_from_spec(spec)
 
-    eleza test_create_module_rudishas_Tupu(self):
+    eleza test_create_module_returns_Tupu(self):
         kundi Loader(self.abc.Loader):
             eleza create_module(self, spec):
                 rudisha Tupu
@@ -64,7 +64,7 @@ kundi ModuleFromSpecTests:
     eleza test_create_module(self):
         name = 'already set'
         kundi CustomModule(types.ModuleType):
-            pita
+            pass
         kundi Loader(self.abc.Loader):
             eleza create_module(self, spec):
                 module = CustomModule(spec.name)
@@ -131,31 +131,31 @@ kundi ModuleForLoaderTests:
             rudisha cls.util.module_for_loader(func)
 
     eleza test_warning(self):
-        # Should ashiria a PendingDeprecationWarning when used.
+        # Should  ashiria a PendingDeprecationWarning when used.
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', DeprecationWarning)
             ukijumuisha self.assertRaises(DeprecationWarning):
                 func = self.util.module_for_loader(lambda x: x)
 
-    eleza rudisha_module(self, name):
+    eleza return_module(self, name):
         fxn = self.module_for_loader(lambda self, module: module)
         rudisha fxn(self, name)
 
-    eleza ashiria_exception(self, name):
+    eleza raise_exception(self, name):
         eleza to_wrap(self, module):
-            ashiria ImportError
+             ashiria ImportError
         fxn = self.module_for_loader(to_wrap)
         jaribu:
             fxn(self, name)
-        tatizo ImportError:
-            pita
+        except ImportError:
+            pass
 
     eleza test_new_module(self):
         # Test that when no module exists kwenye sys.modules a new module is
         # created.
         module_name = 'a.b.c'
         ukijumuisha util.uncache(module_name):
-            module = self.rudisha_module(module_name)
+            module = self.return_module(module_name)
             self.assertIn(module_name, sys.modules)
         self.assertIsInstance(module, types.ModuleType)
         self.assertEqual(module.__name__, module_name)
@@ -175,17 +175,17 @@ kundi ModuleForLoaderTests:
         ukijumuisha util.uncache(name):
             sys.modules[name] = module
             loader = FakeLoader()
-            rudishaed_module = loader.load_module(name)
-            self.assertIs(rudishaed_module, sys.modules[name])
+            returned_module = loader.load_module(name)
+            self.assertIs(returned_module, sys.modules[name])
             self.assertEqual(module.__loader__, loader)
             self.assertEqual(module.__package__, name)
 
     eleza test_new_module_failure(self):
         # Test that a module ni removed kutoka sys.modules ikiwa added but an
-        # exception ni ashiriad.
+        # exception ni raised.
         name = 'a.b.c'
         ukijumuisha util.uncache(name):
-            self.ashiria_exception(name)
+            self.raise_exception(name)
             self.assertNotIn(name, sys.modules)
 
     eleza test_reload_failure(self):
@@ -194,11 +194,11 @@ kundi ModuleForLoaderTests:
         module = types.ModuleType(name)
         ukijumuisha util.uncache(name):
             sys.modules[name] = module
-            self.ashiria_exception(name)
+            self.raise_exception(name)
             self.assertIs(module, sys.modules[name])
 
     eleza test_decorator_attrs(self):
-        eleza fxn(self, module): pita
+        eleza fxn(self, module): pass
         wrapped = self.module_for_loader(fxn)
         self.assertEqual(wrapped.__name__, fxn.__name__)
         self.assertEqual(wrapped.__qualname__, fxn.__qualname__)
@@ -214,7 +214,7 @@ kundi ModuleForLoaderTests:
         ukijumuisha util.uncache(name):
             self.assertUongo(module)
             sys.modules[name] = module
-            given = self.rudisha_module(name)
+            given = self.return_module(name)
             self.assertIs(given, module)
 
     eleza test_attributes_set(self):
@@ -257,7 +257,7 @@ kundi SetPackageTests:
 
     eleza verify(self, module, expect):
         """Verify the module has the expected value kila __package__ after
-        pitaing through set_package."""
+        passing through set_package."""
         fxn = lambda: module
         wrapped = self.util.set_package(fxn)
         ukijumuisha warnings.catch_warnings():
@@ -301,7 +301,7 @@ kundi SetPackageTests:
             self.verify(module, value)
 
     eleza test_decorator_attrs(self):
-        eleza fxn(module): pita
+        eleza fxn(module): pass
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             wrapped = self.util.set_package(fxn)
@@ -333,8 +333,8 @@ kundi SetLoaderTests:
         loader.module = types.ModuleType('blah')
         jaribu:
             toa loader.module.__loader__
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             self.assertEqual(loader, loader.load_module('blah').__loader__)
@@ -454,8 +454,8 @@ kundi FindSpecTests:
             module = types.ModuleType(name)
             jaribu:
                 toa module.__spec__
-            tatizo AttributeError:
-                pita
+            except AttributeError:
+                pass
             sys.modules[name] = module
             ukijumuisha self.assertRaises(ValueError):
                 self.util.find_spec(name)
@@ -468,13 +468,13 @@ kundi FindSpecTests:
                                  self.util.find_spec(name))
 
     eleza test_nothing(self):
-        # Tupu ni rudishaed upon failure to find a loader.
+        # Tupu ni returned upon failure to find a loader.
         self.assertIsTupu(self.util.find_spec('nevergoingtofindthismodule'))
 
     eleza test_find_submodule(self):
         name = 'spam'
         subname = 'ham'
-        ukijumuisha util.temp_module(name, pkg=Kweli) kama pkg_dir:
+        ukijumuisha util.temp_module(name, pkg=Kweli) as pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             spec = self.util.find_spec(fullname)
             self.assertIsNot(spec, Tupu)
@@ -487,7 +487,7 @@ kundi FindSpecTests:
     eleza test_find_submodule_parent_already_imported(self):
         name = 'spam'
         subname = 'ham'
-        ukijumuisha util.temp_module(name, pkg=Kweli) kama pkg_dir:
+        ukijumuisha util.temp_module(name, pkg=Kweli) as pkg_dir:
             self.init.import_module(name)
             fullname, _ = util.submodule(name, subname, pkg_dir)
             spec = self.util.find_spec(fullname)
@@ -501,7 +501,7 @@ kundi FindSpecTests:
     eleza test_find_relative_module(self):
         name = 'spam'
         subname = 'ham'
-        ukijumuisha util.temp_module(name, pkg=Kweli) kama pkg_dir:
+        ukijumuisha util.temp_module(name, pkg=Kweli) as pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             relname = '.' + subname
             spec = self.util.find_spec(relname, name)
@@ -515,7 +515,7 @@ kundi FindSpecTests:
     eleza test_find_relative_module_missing_package(self):
         name = 'spam'
         subname = 'ham'
-        ukijumuisha util.temp_module(name, pkg=Kweli) kama pkg_dir:
+        ukijumuisha util.temp_module(name, pkg=Kweli) as pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             relname = '.' + subname
             ukijumuisha self.assertRaises(ValueError):
@@ -524,7 +524,7 @@ kundi FindSpecTests:
             self.assertNotIn(fullname, sorted(sys.modules))
 
     eleza test_find_submodule_in_module(self):
-        # ModuleNotFoundError ashiriad when a module ni specified as
+        # ModuleNotFoundError raised when a module ni specified as
         # a parent instead of a package.
         ukijumuisha self.assertRaises(ModuleNotFoundError):
             self.util.find_spec('module.name')
@@ -613,7 +613,7 @@ kundi PEP3147Tests:
         # However ikiwa the bool-ishness can't be determined, the exception
         # propagates.
         kundi Bearish:
-            eleza __bool__(self): ashiria RuntimeError
+            eleza __bool__(self):  ashiria RuntimeError
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore')
             self.assertEqual(self.util.cache_from_source(path, []),
@@ -639,7 +639,7 @@ kundi PEP3147Tests:
         almost_expect = os.path.join('__pycache__', 'foo.{}'.format(self.tag))
         ikiwa optimization_level == 0:
             expect = almost_expect + '.pyc'
-        lasivyo optimization_level <= 2:
+        elikiwa optimization_level <= 2:
             expect = almost_expect + '.opt-{}.pyc'.format(optimization_level)
         isipokua:
             msg = '{!r} ni a non-standard optimization level'.format(optimization_level)
@@ -649,7 +649,7 @@ kundi PEP3147Tests:
 
     eleza test_cache_from_source_optimization_set(self):
         # The 'optimization' parameter accepts anything that has a string repr
-        # that pitaes str.alnum().
+        # that passes str.alnum().
         path = 'foo.py'
         valid_characters = string.ascii_letters + string.digits
         almost_expect = os.path.join('__pycache__', 'foo.{}'.format(self.tag))
@@ -660,7 +660,7 @@ kundi PEP3147Tests:
         # str() should be called on argument.
         self.assertEqual(self.util.cache_from_source(path, optimization=42),
                          almost_expect + '.opt-42.pyc')
-        # Invalid characters ashiria ValueError.
+        # Invalid characters  ashiria ValueError.
         ukijumuisha self.assertRaises(ValueError):
             self.util.cache_from_source(path, optimization='path/is/bad')
 
@@ -699,15 +699,15 @@ kundi PEP3147Tests:
         self.assertEqual(self.util.source_from_cache(path), expect)
 
     eleza test_source_from_cache_no_cache_tag(self):
-        # If sys.implementation.cache_tag ni Tupu, ashiria NotImplementedError.
+        # If sys.implementation.cache_tag ni Tupu,  ashiria NotImplementedError.
         path = os.path.join('blah', '__pycache__', 'whatever.pyc')
         ukijumuisha support.swap_attr(sys.implementation, 'cache_tag', Tupu):
             ukijumuisha self.assertRaises(NotImplementedError):
                 self.util.source_from_cache(path)
 
     eleza test_source_from_cache_bad_path(self):
-        # When the path to a pyc file ni haiko kwenye PEP 3147 format, a ValueError
-        # ni ashiriad.
+        # When the path to a pyc file ni sio kwenye PEP 3147 format, a ValueError
+        # ni raised.
         self.assertRaises(
             ValueError, self.util.source_from_cache, '/foo/bar/bazqux.pyc')
 
@@ -857,12 +857,12 @@ kundi MagicNumberTests(unittest.TestCase):
         In exceptional cases, it may be required to change the MAGIC_NUMBER
         kila a maintenance release. In this case the change should be
         discussed kwenye python-dev. If a change ni required, community
-        stakeholders such kama OS package maintainers must be notified
+        stakeholders such as OS package maintainers must be notified
         kwenye advance. Such exceptional releases will then require an
         adjustment to this test case.
         """
         EXPECTED_MAGIC_NUMBER = 3413
-        actual = int.kutoka_bytes(importlib.util.MAGIC_NUMBER[:2], 'little')
+        actual = int.from_bytes(importlib.util.MAGIC_NUMBER[:2], 'little')
 
         msg = (
             "To avoid komaing backwards compatibility ukijumuisha cached bytecode "

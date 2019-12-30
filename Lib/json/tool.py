@@ -45,8 +45,8 @@ eleza main():
             kila obj kwenye objs:
                 json.dump(obj, outfile, sort_keys=sort_keys, indent=4)
                 outfile.write('\n')
-        tatizo ValueError kama e:
-            ashiria SystemExit(e)
+        except ValueError as e:
+             ashiria SystemExit(e)
 
 
 ikiwa __name__ == '__main__':

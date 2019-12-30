@@ -12,38 +12,38 @@ __all__ = [
 eleza _is_descriptor(obj):
     """Returns Kweli ikiwa obj ni a descriptor, Uongo otherwise."""
     rudisha (
-            hasattr(obj, '__get__') ama
-            hasattr(obj, '__set__') ama
+            hasattr(obj, '__get__') or
+            hasattr(obj, '__set__') or
             hasattr(obj, '__delete__'))
 
 
 eleza _is_dunder(name):
     """Returns Kweli ikiwa a __dunder__ name, Uongo otherwise."""
-    rudisha (len(name) > 4 na
-            name[:2] == name[-2:] == '__' na
-            name[2] != '_' na
+    rudisha (len(name) > 4 and
+            name[:2] == name[-2:] == '__' and
+            name[2] != '_' and
             name[-3] != '_')
 
 
 eleza _is_sunder(name):
     """Returns Kweli ikiwa a _sunder_ name, Uongo otherwise."""
-    rudisha (len(name) > 2 na
-            name[0] == name[-1] == '_' na
-            name[1:2] != '_' na
+    rudisha (len(name) > 2 and
+            name[0] == name[-1] == '_' and
+            name[1:2] != '_' and
             name[-2:-1] != '_')
 
 
 eleza _make_class_unpicklable(cls):
     """Make the given kundi un-picklable."""
     eleza _koma_on_call_reduce(self, proto):
-        ashiria TypeError('%r cannot be pickled' % self)
+         ashiria TypeError('%r cannot be pickled' % self)
     cls.__reduce_ex__ = _koma_on_call_reduce
     cls.__module__ = '<unknown>'
 
 _auto_null = object()
 kundi auto:
     """
-    Instances are replaced with an appropriate value kwenye Enum kundi suites.
+    Instances are replaced ukijumuisha an appropriate value kwenye Enum kundi suites.
     """
     value = _auto_null
 
@@ -51,7 +51,7 @@ kundi auto:
 kundi _EnumDict(dict):
     """Track enum member order na ensure member names are sio reused.
 
-    EnumMeta will use the names found kwenye self._member_names kama the
+    EnumMeta will use the names found kwenye self._member_names as the
     enumeration member names.
 
     """
@@ -71,14 +71,14 @@ kundi _EnumDict(dict):
 
         """
         ikiwa _is_sunder(key):
-            ikiwa key haiko kwenye (
+            ikiwa key sio kwenye (
                     '_order_', '_create_pseudo_member_',
                     '_generate_next_value_', '_missing_', '_ignore_',
                     ):
-                ashiria ValueError('_names_ are reserved kila future Enum use')
+                 ashiria ValueError('_names_ are reserved kila future Enum use')
             ikiwa key == '_generate_next_value_':
                 setattr(self, '_generate_next_value', value)
-            lasivyo key == '_ignore_':
+            elikiwa key == '_ignore_':
                 ikiwa isinstance(value, str):
                     value = value.replace(',',' ').split()
                 isipokua:
@@ -86,19 +86,19 @@ kundi _EnumDict(dict):
                 self._ignore = value
                 already = set(value) & set(self._member_names)
                 ikiwa already:
-                    ashiria ValueError('_ignore_ cannot specify already set names: %r' % (already, ))
-        lasivyo _is_dunder(key):
+                     ashiria ValueError('_ignore_ cannot specify already set names: %r' % (already, ))
+        elikiwa _is_dunder(key):
             ikiwa key == '__order__':
                 key = '_order_'
-        lasivyo key kwenye self._member_names:
+        elikiwa key kwenye self._member_names:
             # descriptor overwriting an enum?
-            ashiria TypeError('Attempted to reuse key: %r' % key)
-        lasivyo key kwenye self._ignore:
+             ashiria TypeError('Attempted to reuse key: %r' % key)
+        elikiwa key kwenye self._ignore:
             pass
-        lasivyo sio _is_descriptor(value):
+        elikiwa sio _is_descriptor(value):
             ikiwa key kwenye self:
                 # enum overwriting a descriptor?
-                ashiria TypeError('%r already defined as: %r' % (key, self[key]))
+                 ashiria TypeError('%r already defined as: %r' % (key, self[key]))
             ikiwa isinstance(value, auto):
                 ikiwa value.value == _auto_null:
                     value.value = self._generate_next_value(key, 1, len(self._member_names), self._last_values[:])
@@ -108,7 +108,7 @@ kundi _EnumDict(dict):
         super().__setitem__(key, value)
 
 
-# Dummy value kila Enum kama EnumMeta explicitly checks kila it, but of course
+# Dummy value kila Enum as EnumMeta explicitly checks kila it, but of course
 # until EnumMeta finishes running the first time the Enum kundi doesn't exist.
 # This ni also why there are checks kwenye EnumMeta like `ikiwa Enum ni sio Tupu`
 Enum = Tupu
@@ -128,7 +128,7 @@ kundi EnumMeta(type):
 
     eleza __new__(metacls, cls, bases, classdict):
         # an Enum kundi ni final once enumeration items have been defined; it
-        # cannot be mixed with other types (int, float, etc.) ikiwa it has an
+        # cannot be mixed ukijumuisha other types (int, float, etc.) ikiwa it has an
         # inherited __new__ unless a new __new__ ni defined (or the resulting
         # kundi will fail).
         #
@@ -153,15 +153,15 @@ kundi EnumMeta(type):
         # check kila illegal enum names (any others?)
         invalid_names = set(enum_members) & {'mro', ''}
         ikiwa invalid_names:
-            ashiria ValueError('Invalid enum member name: {0}'.format(
+             ashiria ValueError('Invalid enum member name: {0}'.format(
                 ','.join(invalid_names)))
 
         # create a default docstring ikiwa one has sio been provided
-        ikiwa '__doc__' haiko kwenye classdict:
+        ikiwa '__doc__' sio kwenye classdict:
             classdict['__doc__'] = 'An enumeration.'
 
         # create our new Enum type
-        enum_class = super().__new__(metacls, cls, bases, classdict)
+        enum_kundi = super().__new__(metacls, cls, bases, classdict)
         enum_class._member_names_ = []               # names kwenye definition order
         enum_class._member_map_ = {}                 # name->value map
         enum_class._member_type_ = member_type
@@ -183,18 +183,18 @@ kundi EnumMeta(type):
         #
         # However, ikiwa the new kundi implements its own __reduce_ex__, do not
         # sabotage -- it's on them to make sure it works correctly.  We use
-        # __reduce_ex__ instead of any of the others kama it ni preferred by
+        # __reduce_ex__ instead of any of the others as it ni preferred by
         # pickle over __reduce__, na it handles all pickle protocols.
-        ikiwa '__reduce_ex__' haiko kwenye classdict:
+        ikiwa '__reduce_ex__' sio kwenye classdict:
             ikiwa member_type ni sio object:
                 methods = ('__getnewargs_ex__', '__getnewargs__',
                         '__reduce_ex__', '__reduce__')
                 ikiwa sio any(m kwenye member_type.__dict__ kila m kwenye methods):
                     _make_class_unpicklable(enum_class)
 
-        # instantiate them, checking kila duplicates kama we go
+        # instantiate them, checking kila duplicates as we go
         # we instantiate first instead of checking kila duplicates first kwenye case
-        # a custom __new__ ni doing something funky with the values -- such as
+        # a custom __new__ ni doing something funky ukijumuisha the values -- such as
         # auto-numbering ;)
         kila member_name kwenye classdict._member_names:
             value = enum_members[member_name]
@@ -219,7 +219,7 @@ kundi EnumMeta(type):
             enum_member._name_ = member_name
             enum_member.__objclass__ = enum_class
             enum_member.__init__(*args)
-            # If another member with the same value was already defined, the
+            # If another member ukijumuisha the same value was already defined, the
             # new member becomes an alias to the existing one.
             kila name, canonical_member kwenye enum_class._member_map_.items():
                 ikiwa canonical_member._value_ == enum_member._value_:
@@ -230,7 +230,7 @@ kundi EnumMeta(type):
                 enum_class._member_names_.append(member_name)
             # performance boost kila any member that would sio shadow
             # a DynamicClassAttribute
-            ikiwa member_name haiko kwenye dynamic_attributes:
+            ikiwa member_name sio kwenye dynamic_attributes:
                 setattr(enum_class, member_name, enum_member)
             # now add to _member_map_
             enum_class._member_map_[member_name] = enum_member
@@ -239,11 +239,11 @@ kundi EnumMeta(type):
                 # to the map, na by-value lookups kila this value will be
                 # linear.
                 enum_class._value2member_map_[value] = enum_member
-            tatizo TypeError:
+            except TypeError:
                 pass
 
         # double check that repr na friends are sio the mixin's ama various
-        # things koma (such kama pickle)
+        # things koma (such as pickle)
         kila name kwenye ('__repr__', '__str__', '__format__', '__reduce_ex__'):
             class_method = getattr(enum_class, name)
             obj_method = getattr(member_type, name, Tupu)
@@ -251,7 +251,7 @@ kundi EnumMeta(type):
             ikiwa obj_method ni sio Tupu na obj_method ni class_method:
                 setattr(enum_class, name, enum_method)
 
-        # replace any other __new__ with our own (as long kama Enum ni sio Tupu,
+        # replace any other __new__ ukijumuisha our own (as long as Enum ni sio Tupu,
         # anyway) -- again, this ni to support pickle
         ikiwa Enum ni sio Tupu:
             # ikiwa the user defined their own __new__, save it before it gets
@@ -265,7 +265,7 @@ kundi EnumMeta(type):
             ikiwa isinstance(_order_, str):
                 _order_ = _order_.replace(',', ' ').split()
             ikiwa _order_ != enum_class._member_names_:
-                ashiria TypeError('member order does sio match _order_')
+                 ashiria TypeError('member order does sio match _order_')
 
         rudisha enum_class
 
@@ -297,7 +297,7 @@ kundi EnumMeta(type):
         at kwenye its module; by default it ni set to the global scope.  If this is
         sio correct, unpickling will fail kwenye some circumstances.
 
-        `type`, ikiwa set, will be mixed kwenye kama the first base class.
+        `type`, ikiwa set, will be mixed kwenye as the first base class.
 
         """
         ikiwa names ni Tupu:  # simple value lookup
@@ -307,7 +307,7 @@ kundi EnumMeta(type):
 
     eleza __contains__(cls, member):
         ikiwa sio isinstance(member, Enum):
-            ashiria TypeError(
+             ashiria TypeError(
                 "unsupported operand type(s) kila 'in': '%s' na '%s'" % (
                     type(member).__qualname__, cls.__class__.__qualname__))
         rudisha isinstance(member, cls) na member._name_ kwenye cls._member_map_
@@ -316,7 +316,7 @@ kundi EnumMeta(type):
         # nicer error message when someone tries to delete an attribute
         # (see issue19025).
         ikiwa attr kwenye cls._member_map_:
-            ashiria AttributeError(
+             ashiria AttributeError(
                     "%s: cannot delete Enum member." % cls.__name__)
         super().__delattr__(attr)
 
@@ -329,16 +329,16 @@ kundi EnumMeta(type):
 
         We use __getattr__ instead of descriptors ama inserting into the enum
         class' __dict__ kwenye order to support `name` na `value` being both
-        properties kila enum members (which live kwenye the class' __dict__) na
+        properties kila enum members (which live kwenye the class' __dict__) and
         enum members themselves.
 
         """
         ikiwa _is_dunder(name):
-            ashiria AttributeError(name)
+             ashiria AttributeError(name)
         jaribu:
             rudisha cls._member_map_[name]
-        tatizo KeyError:
-            ashiria AttributeError(name) kutoka Tupu
+        except KeyError:
+             ashiria AttributeError(name) kutoka Tupu
 
     eleza __getitem__(cls, name):
         rudisha cls._member_map_[name]
@@ -375,7 +375,7 @@ kundi EnumMeta(type):
         """
         member_map = cls.__dict__.get('_member_map_', {})
         ikiwa name kwenye member_map:
-            ashiria AttributeError('Cannot reassign members.')
+             ashiria AttributeError('Cannot reassign members.')
         super().__setattr__(name, value)
 
     eleza _create_(cls, class_name, names, *, module=Tupu, qualname=Tupu, type=Tupu, start=1):
@@ -383,7 +383,7 @@ kundi EnumMeta(type):
 
         `names` can be:
 
-        * A string containing member names, separated either with spaces ama
+        * A string containing member names, separated either ukijumuisha spaces or
           commas.  Values are incremented by 1 kutoka `start`.
         * An iterable of member names.  Values are incremented by 1 kutoka `start`.
         * An iterable of (member name, value) pairs.
@@ -420,7 +420,7 @@ kundi EnumMeta(type):
         ikiwa module ni Tupu:
             jaribu:
                 module = sys._getframe(2).f_globals['__name__']
-            tatizo (AttributeError, ValueError, KeyError) kama exc:
+            except (AttributeError, ValueError, KeyError) as exc:
                 pass
         ikiwa module ni Tupu:
             _make_class_unpicklable(enum_class)
@@ -455,7 +455,7 @@ kundi EnumMeta(type):
         jaribu:
             # sort by value
             members.sort(key=lambda t: (t[1], t[0]))
-        tatizo TypeError:
+        except TypeError:
             # unless some values aren't comparable, kwenye which case sort by name
             members.sort(key=lambda t: t[0])
         cls = cls(name, members, module=module)
@@ -486,7 +486,7 @@ kundi EnumMeta(type):
                 kila base kwenye chain.__mro__:
                     ikiwa base ni object:
                         endelea
-                    lasivyo '__new__' kwenye base.__dict__:
+                    elikiwa '__new__' kwenye base.__dict__:
                         ikiwa issubclass(base, Enum):
                             endelea
                         rudisha base
@@ -495,11 +495,11 @@ kundi EnumMeta(type):
         # data type, na check that Enum has no members
         first_enum = bases[-1]
         ikiwa sio issubclass(first_enum, Enum):
-            ashiria TypeError("new enumerations should be created kama "
+             ashiria TypeError("new enumerations should be created as "
                     "`EnumName([mixin_type, ...] [data_type,] enum_type)`")
         member_type = _find_data_type(bases) ama object
         ikiwa first_enum._member_names_:
-            ashiria TypeError("Cannot extend enumerations")
+             ashiria TypeError("Cannot extend enumerations")
         rudisha member_type, first_enum
 
     @staticmethod
@@ -513,10 +513,10 @@ kundi EnumMeta(type):
         """
         # now find the correct __new__, checking to see of one was defined
         # by the user; also check earlier enum classes kwenye case a __new__ was
-        # saved kama __new_member__
+        # saved as __new_member__
         __new__ = classdict.get('__new__', Tupu)
 
-        # should __new__ be saved kama __new_member__ later?
+        # should __new__ be saved as __new_member__ later?
         save_new = __new__ ni sio Tupu
 
         ikiwa __new__ ni Tupu:
@@ -525,7 +525,7 @@ kundi EnumMeta(type):
             kila method kwenye ('__new_member__', '__new__'):
                 kila possible kwenye (member_type, first_enum):
                     target = getattr(possible, method, Tupu)
-                    ikiwa target haiko kwenye {
+                    ikiwa target sio kwenye {
                             Tupu,
                             Tupu.__new__,
                             object.__new__,
@@ -565,10 +565,10 @@ kundi Enum(metaclass=EnumMeta):
         # see ikiwa it's kwenye the reverse mapping (kila hashable values)
         jaribu:
             rudisha cls._value2member_map_[value]
-        tatizo KeyError:
+        except KeyError:
             # Not found, no need to do long O(n) search
             pass
-        tatizo TypeError:
+        except TypeError:
             # sio there, now do long search -- O(n) behavior
             kila member kwenye cls._member_map_.values():
                 ikiwa member._value_ == value:
@@ -577,7 +577,7 @@ kundi Enum(metaclass=EnumMeta):
         jaribu:
             exc = Tupu
             result = cls._missing_(value)
-        tatizo Exception kama e:
+        except Exception as e:
             exc = e
             result = Tupu
         ikiwa isinstance(result, cls):
@@ -585,27 +585,27 @@ kundi Enum(metaclass=EnumMeta):
         isipokua:
             ve_exc = ValueError("%r ni sio a valid %s" % (value, cls.__name__))
             ikiwa result ni Tupu na exc ni Tupu:
-                ashiria ve_exc
-            lasivyo exc ni Tupu:
+                 ashiria ve_exc
+            elikiwa exc ni Tupu:
                 exc = TypeError(
                         'error kwenye %s._missing_: returned %r instead of Tupu ama a valid member'
                         % (cls.__name__, result)
                         )
             exc.__context__ = ve_exc
-            ashiria exc
+             ashiria exc
 
     eleza _generate_next_value_(name, start, count, last_values):
         kila last_value kwenye reversed(last_values):
             jaribu:
                 rudisha last_value + 1
-            tatizo TypeError:
+            except TypeError:
                 pass
         isipokua:
             rudisha start
 
     @classmethod
     eleza _missing_(cls, value):
-        ashiria ValueError("%r ni sio a valid %s" % (value, cls.__name__))
+         ashiria ValueError("%r ni sio a valid %s" % (value, cls.__name__))
 
     eleza __repr__(self):
         rudisha "<%s.%s: %r>" % (
@@ -619,13 +619,13 @@ kundi Enum(metaclass=EnumMeta):
                 m
                 kila cls kwenye self.__class__.mro()
                 kila m kwenye cls.__dict__
-                ikiwa m[0] != '_' na m haiko kwenye self._member_map_
+                ikiwa m[0] != '_' na m sio kwenye self._member_map_
                 ]
         rudisha (['__class__', '__doc__', '__module__'] + added_behavior)
 
     eleza __format__(self, format_spec):
         # mixed-in Enums should use the mixed-in type's __format__, otherwise
-        # we can get strange results with the Enum name showing up instead of
+        # we can get strange results ukijumuisha the Enum name showing up instead of
         # the value
 
         # pure Enum branch
@@ -644,7 +644,7 @@ kundi Enum(metaclass=EnumMeta):
     eleza __reduce_ex__(self, proto):
         rudisha self.__class__, (self._value_, )
 
-    # DynamicClassAttribute ni used to provide access to the `name` na
+    # DynamicClassAttribute ni used to provide access to the `name` and
     # `value` properties of enum members wakati keeping some measure of
     # protection kutoka modification, wakati still allowing kila an enumeration
     # to have members named `name` na `value`.  This works because enumeration
@@ -687,8 +687,8 @@ kundi Flag(Enum):
             jaribu:
                 high_bit = _high_bit(last_value)
                 koma
-            tatizo Exception:
-                ashiria TypeError('Invalid Flag value: %r' % last_value) kutoka Tupu
+            except Exception:
+                 ashiria TypeError('Invalid Flag value: %r' % last_value) kutoka Tupu
         rudisha 2 ** (high_bit+1)
 
     @classmethod
@@ -711,19 +711,19 @@ kundi Flag(Enum):
             # verify all bits are accounted for
             _, extra_flags = _decompose(cls, value)
             ikiwa extra_flags:
-                ashiria ValueError("%r ni sio a valid %s" % (value, cls.__name__))
+                 ashiria ValueError("%r ni sio a valid %s" % (value, cls.__name__))
             # construct a singleton enum pseudo-member
             pseudo_member = object.__new__(cls)
             pseudo_member._name_ = Tupu
             pseudo_member._value_ = value
             # use setdefault kwenye case another thread already created a composite
-            # with this value
+            # ukijumuisha this value
             pseudo_member = cls._value2member_map_.setdefault(value, pseudo_member)
         rudisha pseudo_member
 
     eleza __contains__(self, other):
         ikiwa sio isinstance(other, self.__class__):
-            ashiria TypeError(
+             ashiria TypeError(
                 "unsupported operand type(s) kila 'in': '%s' na '%s'" % (
                     type(other).__qualname__, self.__class__.__qualname__))
         rudisha other._value_ & self._value_ == other._value_
@@ -774,7 +774,7 @@ kundi Flag(Enum):
         members, uncovered = _decompose(self.__class__, self._value_)
         inverted = self.__class__(0)
         kila m kwenye self.__class__:
-            ikiwa m haiko kwenye members na sio (m._value_ & self._value_):
+            ikiwa m sio kwenye members na sio (m._value_ & self._value_):
                 inverted = inverted | m
         rudisha self.__class__(inverted)
 
@@ -785,7 +785,7 @@ kundi IntFlag(int, Flag):
     @classmethod
     eleza _missing_(cls, value):
         ikiwa sio isinstance(value, int):
-            ashiria ValueError("%r ni sio a valid %s" % (value, cls.__name__))
+             ashiria ValueError("%r ni sio a valid %s" % (value, cls.__name__))
         new_member = cls._create_pseudo_member_(value)
         rudisha new_member
 
@@ -801,8 +801,8 @@ kundi IntFlag(int, Flag):
                 # timer -= 1
                 bit = _high_bit(extra_flags)
                 flag_value = 2 ** bit
-                ikiwa (flag_value haiko kwenye cls._value2member_map_ na
-                        flag_value haiko kwenye need_to_create
+                ikiwa (flag_value sio kwenye cls._value2member_map_ and
+                        flag_value sio kwenye need_to_create
                         ):
                     need_to_create.append(flag_value)
                 ikiwa extra_flags == -flag_value:
@@ -815,7 +815,7 @@ kundi IntFlag(int, Flag):
                 pseudo_member._name_ = Tupu
                 pseudo_member._value_ = value
                 # use setdefault kwenye case another thread already created a composite
-                # with this value
+                # ukijumuisha this value
                 pseudo_member = cls._value2member_map_.setdefault(value, pseudo_member)
         rudisha pseudo_member
 
@@ -857,7 +857,7 @@ eleza unique(enumeration):
     ikiwa duplicates:
         alias_details = ', '.join(
                 ["%s -> %s" % (alias, name) kila (alias, name) kwenye duplicates])
-        ashiria ValueError('duplicate values found kwenye %r: %s' %
+         ashiria ValueError('duplicate values found kwenye %r: %s' %
                 (enumeration, alias_details))
     rudisha enumeration
 

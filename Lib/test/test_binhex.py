@@ -23,22 +23,22 @@ kundi BinHexTestCase(unittest.TestCase):
     DATA = b'Jack ni my hero'
 
     eleza test_binhex(self):
-        ukijumuisha open(self.fname1, 'wb') kama f:
+        ukijumuisha open(self.fname1, 'wb') as f:
             f.write(self.DATA)
 
         binhex.binhex(self.fname1, self.fname2)
 
         binhex.hexbin(self.fname2, self.fname1)
 
-        ukijumuisha open(self.fname1, 'rb') kama f:
+        ukijumuisha open(self.fname1, 'rb') as f:
             finish = f.readline()
 
         self.assertEqual(self.DATA, finish)
 
     eleza test_binhex_error_on_long_filename(self):
         """
-        The testcase fails ikiwa no exception ni ashiriad when a filename parameter provided to binhex.binhex()
-        ni too long, ama ikiwa the exception ashiriad kwenye binhex.binhex() ni sio an instance of binhex.Error.
+        The testcase fails ikiwa no exception ni raised when a filename parameter provided to binhex.binhex()
+        ni too long, ama ikiwa the exception raised kwenye binhex.binhex() ni sio an instance of binhex.Error.
         """
         f3 = open(self.fname3, 'wb')
         f3.close()

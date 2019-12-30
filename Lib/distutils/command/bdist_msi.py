@@ -6,93 +6,93 @@
 Implements the bdist_msi command.
 """
 
-import sys, os
-from distutils.core import Command
-from distutils.dir_util import remove_tree
-from distutils.sysconfig import get_python_version
-from distutils.version import StrictVersion
-from distutils.errors import DistutilsOptionError
-from distutils.util import get_platform
-from distutils import log
-import msilib
-from msilib import schema, sequence, text
-from msilib import Directory, Feature, Dialog, add_data
+agiza sys, os
+kutoka distutils.core agiza Command
+kutoka distutils.dir_util agiza remove_tree
+kutoka distutils.sysconfig agiza get_python_version
+kutoka distutils.version agiza StrictVersion
+kutoka distutils.errors agiza DistutilsOptionError
+kutoka distutils.util agiza get_platform
+kutoka distutils agiza log
+agiza msilib
+kutoka msilib agiza schema, sequence, text
+kutoka msilib agiza Directory, Feature, Dialog, add_data
 
-class PyDialog(Dialog):
-    """Dialog class with a fixed layout: controls at the top, then a ruler,
+kundi PyDialog(Dialog):
+    """Dialog kundi ukijumuisha a fixed layout: controls at the top, then a ruler,
     then a list of buttons: back, next, cancel. Optionally a bitmap at the
     left."""
-    def __init__(self, *args, **kw):
+    eleza __init__(self, *args, **kw):
         """Dialog(database, name, x, y, w, h, attributes, title, first,
         default, cancel, bitmap=true)"""
         Dialog.__init__(self, *args)
         ruler = self.h - 36
         bmwidth = 152*ruler/328
-        #if kw.get("bitmap", True):
+        #ikiwa kw.get("bitmap", Kweli):
         #    self.bitmap("Bitmap", 0, 0, bmwidth, ruler, "PythonWin")
         self.line("BottomLine", 0, ruler, self.w, 0)
 
-    def title(self, title):
+    eleza title(self, title):
         "Set the title text of the dialog at the top."
         # name, x, y, w, h, flags=Visible|Enabled|Transparent|NoPrefix,
-        # text, in VerdanaBold10
+        # text, kwenye VerdanaBold10
         self.text("Title", 15, 10, 320, 60, 0x30003,
                   r"{\VerdanaBold10}%s" % title)
 
-    def back(self, title, next, name = "Back", active = 1):
-        """Add a back button with a given title, the tab-next button,
-        its name in the Control table, possibly initially disabled.
+    eleza back(self, title, next, name = "Back", active = 1):
+        """Add a back button ukijumuisha a given title, the tab-next button,
+        its name kwenye the Control table, possibly initially disabled.
 
         Return the button, so that events can be associated"""
-        if active:
+        ikiwa active:
             flags = 3 # Visible|Enabled
         isipokua:
             flags = 1 # Visible
-        return self.pushbutton(name, 180, self.h-27 , 56, 17, flags, title, next)
+        rudisha self.pushbutton(name, 180, self.h-27 , 56, 17, flags, title, next)
 
-    def cancel(self, title, next, name = "Cancel", active = 1):
-        """Add a cancel button with a given title, the tab-next button,
-        its name in the Control table, possibly initially disabled.
+    eleza cancel(self, title, next, name = "Cancel", active = 1):
+        """Add a cancel button ukijumuisha a given title, the tab-next button,
+        its name kwenye the Control table, possibly initially disabled.
 
         Return the button, so that events can be associated"""
-        if active:
+        ikiwa active:
             flags = 3 # Visible|Enabled
         isipokua:
             flags = 1 # Visible
-        return self.pushbutton(name, 304, self.h-27, 56, 17, flags, title, next)
+        rudisha self.pushbutton(name, 304, self.h-27, 56, 17, flags, title, next)
 
-    def next(self, title, next, name = "Next", active = 1):
-        """Add a Next button with a given title, the tab-next button,
-        its name in the Control table, possibly initially disabled.
+    eleza next(self, title, next, name = "Next", active = 1):
+        """Add a Next button ukijumuisha a given title, the tab-next button,
+        its name kwenye the Control table, possibly initially disabled.
 
         Return the button, so that events can be associated"""
-        if active:
+        ikiwa active:
             flags = 3 # Visible|Enabled
         isipokua:
             flags = 1 # Visible
-        return self.pushbutton(name, 236, self.h-27, 56, 17, flags, title, next)
+        rudisha self.pushbutton(name, 236, self.h-27, 56, 17, flags, title, next)
 
-    def xbutton(self, name, title, next, xpos):
-        """Add a button with a given title, the tab-next button,
-        its name in the Control table, giving its x position; the
-        y-position is aligned with the other buttons.
+    eleza xbutton(self, name, title, next, xpos):
+        """Add a button ukijumuisha a given title, the tab-next button,
+        its name kwenye the Control table, giving its x position; the
+        y-position ni aligned ukijumuisha the other buttons.
 
         Return the button, so that events can be associated"""
-        return self.pushbutton(name, int(self.w*xpos - 28), self.h-27, 56, 17, 3, title, next)
+        rudisha self.pushbutton(name, int(self.w*xpos - 28), self.h-27, 56, 17, 3, title, next)
 
-class bdist_msi(Command):
+kundi bdist_msi(Command):
 
     description = "create a Microsoft Installer (.msi) binary distribution"
 
-    user_options = [('bdist-dir=', None,
-                     "temporary directory for creating the distribution"),
+    user_options = [('bdist-dir=', Tupu,
+                     "temporary directory kila creating the distribution"),
                     ('plat-name=', 'p',
-                     "platform name to embed in generated filenames "
+                     "platform name to embed kwenye generated filenames "
                      "(default: %s)" % get_platform()),
                     ('keep-temp', 'k',
                      "keep the pseudo-installation tree around after " +
                      "creating the distribution archive"),
-                    ('target-version=', None,
+                    ('target-version=', Tupu,
                      "require a specific python version" +
                      " on the target system"),
                     ('no-target-compile', 'c',
@@ -102,14 +102,14 @@ class bdist_msi(Command):
                      "on the target system"),
                     ('dist-dir=', 'd',
                      "directory to put final built distributions in"),
-                    ('skip-build', None,
-                     "skip rebuilding everything (for testing/debugging)"),
-                    ('install-script=', None,
+                    ('skip-build', Tupu,
+                     "skip rebuilding everything (kila testing/debugging)"),
+                    ('install-script=', Tupu,
                      "basename of installation script to be run after "
-                     "installation or before deinstallation"),
-                    ('pre-install-script=', None,
+                     "installation ama before deinstallation"),
+                    ('pre-install-script=', Tupu,
                      "Fully qualified filename of a script to be run before "
-                     "any files are installed.  This script need sio be in the "
+                     "any files are installed.  This script need sio be kwenye the "
                      "distribution"),
                    ]
 
@@ -122,36 +122,36 @@ class bdist_msi(Command):
                     '3.5', '3.6', '3.7', '3.8', '3.9']
     other_version = 'X'
 
-    def initialize_options(self):
-        self.bdist_dir = None
-        self.plat_name = None
+    eleza initialize_options(self):
+        self.bdist_dir = Tupu
+        self.plat_name = Tupu
         self.keep_temp = 0
         self.no_target_compile = 0
         self.no_target_optimize = 0
-        self.target_version = None
-        self.dist_dir = None
-        self.skip_build = None
-        self.install_script = None
-        self.pre_install_script = None
-        self.versions = None
+        self.target_version = Tupu
+        self.dist_dir = Tupu
+        self.skip_build = Tupu
+        self.install_script = Tupu
+        self.pre_install_script = Tupu
+        self.versions = Tupu
 
-    def finalize_options(self):
+    eleza finalize_options(self):
         self.set_undefined_options('bdist', ('skip_build', 'skip_build'))
 
-        if self.bdist_dir is None:
+        ikiwa self.bdist_dir ni Tupu:
             bdist_base = self.get_finalized_command('bdist').bdist_base
             self.bdist_dir = os.path.join(bdist_base, 'msi')
 
         short_version = get_python_version()
-        if (sio self.target_version) and self.distribution.has_ext_modules():
+        ikiwa (not self.target_version) na self.distribution.has_ext_modules():
             self.target_version = short_version
 
-        if self.target_version:
+        ikiwa self.target_version:
             self.versions = [self.target_version]
-            if sio self.skip_build and self.distribution.has_ext_modules()\
-               and self.target_version != short_version:
-                ashiria DistutilsOptionError(
-                      "target version can only be %s, or the '--skip-build'"
+            ikiwa sio self.skip_build na self.distribution.has_ext_modules()\
+               na self.target_version != short_version:
+                 ashiria DistutilsOptionError(
+                      "target version can only be %s, ama the '--skip-build'"
                       " option must be specified" % (short_version,))
         isipokua:
             self.versions = list(self.all_versions)
@@ -161,22 +161,22 @@ class bdist_msi(Command):
                                    ('plat_name', 'plat_name'),
                                    )
 
-        if self.pre_install_script:
-            ashiria DistutilsOptionError(
+        ikiwa self.pre_install_script:
+             ashiria DistutilsOptionError(
                   "the pre-install-script feature ni sio yet implemented")
 
-        if self.install_script:
-            for script in self.distribution.scripts:
-                if self.install_script == os.path.basename(script):
+        ikiwa self.install_script:
+            kila script kwenye self.distribution.scripts:
+                ikiwa self.install_script == os.path.basename(script):
                     koma
             isipokua:
-                ashiria DistutilsOptionError(
-                      "install_script '%s' sio found in scripts"
+                 ashiria DistutilsOptionError(
+                      "install_script '%s' sio found kwenye scripts"
                       % self.install_script)
-        self.install_script_key = None
+        self.install_script_key = Tupu
 
-    def run(self):
-        if sio self.skip_build:
+    eleza run(self):
+        ikiwa sio self.skip_build:
             self.run_command('build')
 
         install = self.reinitialize_command('install', reinit_subcommands=1)
@@ -185,19 +185,19 @@ class bdist_msi(Command):
         install.warn_dir = 0
 
         install_lib = self.reinitialize_command('install_lib')
-        # we do sio want to include pyc or pyo files
+        # we do sio want to include pyc ama pyo files
         install_lib.compile = 0
         install_lib.optimize = 0
 
-        if self.distribution.has_ext_modules():
-            # If we are building an installer for a Python version other
+        ikiwa self.distribution.has_ext_modules():
+            # If we are building an installer kila a Python version other
             # than the one we are currently running, then we need to ensure
             # our build_lib reflects the other Python version rather than ours.
-            # Note that for target_version!=sys.version, we must have skipped the
-            # build step, so there is no issue with enforcing the build of this
+            # Note that kila target_version!=sys.version, we must have skipped the
+            # build step, so there ni no issue ukijumuisha enforcing the build of this
             # version.
             target_version = self.target_version
-            if sio target_version:
+            ikiwa sio target_version:
                 assert self.skip_build, "Should have already checked this"
                 target_version = '%d.%d' % sys.version_info[:2]
             plat_specifier = ".%s-%s" % (self.plat_name, target_version)
@@ -209,7 +209,7 @@ class bdist_msi(Command):
         install.ensure_finalized()
 
         # avoid warning of 'install_lib' about installing
-        # into a directory haiko kwenye sys.path
+        # into a directory sio kwenye sys.path
         sys.path.insert(0, os.path.join(self.bdist_dir, 'PURELIB'))
 
         install.run()
@@ -220,23 +220,23 @@ class bdist_msi(Command):
         fullname = self.distribution.get_fullname()
         installer_name = self.get_installer_filename(fullname)
         installer_name = os.path.abspath(installer_name)
-        if os.path.exists(installer_name): os.unlink(installer_name)
+        ikiwa os.path.exists(installer_name): os.unlink(installer_name)
 
         metadata = self.distribution.metadata
         author = metadata.author
-        if sio author:
+        ikiwa sio author:
             author = metadata.maintainer
-        if sio author:
+        ikiwa sio author:
             author = "UNKNOWN"
         version = metadata.get_version()
         # ProductVersion must be strictly numeric
-        # XXX need to deal with prerelease versions
+        # XXX need to deal ukijumuisha prerelease versions
         sversion = "%d.%d.%d" % StrictVersion(version).version
-        # Prefix ProductName with Python x.y, so that
-        # it sorts together with the other Python packages
-        # in Add-Remove-Programs (APR)
+        # Prefix ProductName ukijumuisha Python x.y, so that
+        # it sorts together ukijumuisha the other Python packages
+        # kwenye Add-Remove-Programs (APR)
         fullname = self.distribution.get_fullname()
-        if self.target_version:
+        ikiwa self.target_version:
             product_name = "Python %s %s" % (self.target_version, fullname)
         isipokua:
             product_name = "Python %s" % (fullname)
@@ -245,12 +245,12 @@ class bdist_msi(Command):
                 sversion, author)
         msilib.add_tables(self.db, sequence)
         props = [('DistVersion', version)]
-        email = metadata.author_email or metadata.maintainer_email
-        if email:
+        email = metadata.author_email ama metadata.maintainer_email
+        ikiwa email:
             props.append(("ARPCONTACT", email))
-        if metadata.url:
+        ikiwa metadata.url:
             props.append(("ARPURLINFOABOUT", metadata.url))
-        if props:
+        ikiwa props:
             add_data(self.db, 'Property', props)
 
         self.add_find_python()
@@ -259,32 +259,32 @@ class bdist_msi(Command):
         self.add_ui()
         self.db.Commit()
 
-        if hasattr(self.distribution, 'dist_files'):
-            tup = 'bdist_msi', self.target_version or 'any', fullname
+        ikiwa hasattr(self.distribution, 'dist_files'):
+            tup = 'bdist_msi', self.target_version ama 'any', fullname
             self.distribution.dist_files.append(tup)
 
-        if sio self.keep_temp:
+        ikiwa sio self.keep_temp:
             remove_tree(self.bdist_dir, dry_run=self.dry_run)
 
-    def add_files(self):
+    eleza add_files(self):
         db = self.db
         cab = msilib.CAB("distfiles")
         rootdir = os.path.abspath(self.bdist_dir)
 
-        root = Directory(db, cab, None, rootdir, "TARGETDIR", "SourceDir")
+        root = Directory(db, cab, Tupu, rootdir, "TARGETDIR", "SourceDir")
         f = Feature(db, "Python", "Python", "Everything",
                     0, 1, directory="TARGETDIR")
 
         items = [(f, root, '')]
-        for version in self.versions + [self.other_version]:
+        kila version kwenye self.versions + [self.other_version]:
             target = "TARGETDIR" + version
             name = default = "Python" + version
             desc = "Everything"
-            if version is self.other_version:
-                title = "Python from another location"
+            ikiwa version ni self.other_version:
+                title = "Python kutoka another location"
                 level = 2
             isipokua:
-                title = "Python %s from registry" % version
+                title = "Python %s kutoka registry" % version
                 level = 1
             f = Feature(db, name, title, desc, 1, level, directory=target)
             dir = Directory(db, cab, root, rootdir, target, default)
@@ -292,47 +292,47 @@ class bdist_msi(Command):
         db.Commit()
 
         seen = {}
-        for feature, dir, version in items:
+        kila feature, dir, version kwenye items:
             todo = [dir]
             wakati todo:
                 dir = todo.pop()
-                for file in os.listdir(dir.absolute):
+                kila file kwenye os.listdir(dir.absolute):
                     afile = os.path.join(dir.absolute, file)
-                    if os.path.isdir(afile):
+                    ikiwa os.path.isdir(afile):
                         short = "%s|%s" % (dir.make_short(file), file)
                         default = file + version
                         newdir = Directory(db, cab, dir, file, default, short)
                         todo.append(newdir)
                     isipokua:
-                        if sio dir.component:
+                        ikiwa sio dir.component:
                             dir.start_component(dir.logical, feature, 0)
-                        if afile haiko kwenye seen:
+                        ikiwa afile sio kwenye seen:
                             key = seen[afile] = dir.add_file(file)
-                            if file==self.install_script:
-                                if self.install_script_key:
-                                    ashiria DistutilsOptionError(
-                                          "Multiple files with name %s" % file)
+                            ikiwa file==self.install_script:
+                                ikiwa self.install_script_key:
+                                     ashiria DistutilsOptionError(
+                                          "Multiple files ukijumuisha name %s" % file)
                                 self.install_script_key = '[#%s]' % key
                         isipokua:
                             key = seen[afile]
                             add_data(self.db, "DuplicateFile",
-                                [(key + version, dir.component, key, None, dir.logical)])
+                                [(key + version, dir.component, key, Tupu, dir.logical)])
             db.Commit()
         cab.commit(db)
 
-    def add_find_python(self):
+    eleza add_find_python(self):
         """Adds code to the installer to compute the location of Python.
 
-        Properties PYTHON.MACHINE.X.Y and PYTHON.USER.X.Y will be set from the
-        registry for each version of Python.
+        Properties PYTHON.MACHINE.X.Y na PYTHON.USER.X.Y will be set kutoka the
+        registry kila each version of Python.
 
-        Properties TARGETDIRX.Y will be set from PYTHON.USER.X.Y if defined,
-        isipokua from PYTHON.MACHINE.X.Y.
+        Properties TARGETDIRX.Y will be set kutoka PYTHON.USER.X.Y ikiwa defined,
+        isipokua kutoka PYTHON.MACHINE.X.Y.
 
         Properties PYTHONX.Y will be set to TARGETDIRX.Y\\python.exe"""
 
         start = 402
-        for ver in self.versions:
+        kila ver kwenye self.versions:
             install_path = r"SOFTWARE\Python\PythonCore\%s\InstallPath" % ver
             machine_reg = "python.machine." + ver
             user_reg = "python.user." + ver
@@ -343,14 +343,14 @@ class bdist_msi(Command):
             exe_action = "PythonExe" + ver
             target_dir_prop = "TARGETDIR" + ver
             exe_prop = "PYTHON" + ver
-            if msilib.Win64:
+            ikiwa msilib.Win64:
                 # type: msidbLocatorTypeRawValue + msidbLocatorType64bit
                 Type = 2+16
             isipokua:
                 Type = 2
             add_data(self.db, "RegLocator",
-                    [(machine_reg, 2, install_path, None, Type),
-                     (user_reg, 1, install_path, None, Type)])
+                    [(machine_reg, 2, install_path, Tupu, Type),
+                     (user_reg, 1, install_path, Tupu, Type)])
             add_data(self.db, "AppSearch",
                     [(machine_prop, machine_reg),
                      (user_prop, user_reg)])
@@ -362,22 +362,22 @@ class bdist_msi(Command):
             add_data(self.db, "InstallExecuteSequence",
                     [(machine_action, machine_prop, start),
                      (user_action, user_prop, start + 1),
-                     (exe_action, None, start + 2),
+                     (exe_action, Tupu, start + 2),
                     ])
             add_data(self.db, "InstallUISequence",
                     [(machine_action, machine_prop, start),
                      (user_action, user_prop, start + 1),
-                     (exe_action, None, start + 2),
+                     (exe_action, Tupu, start + 2),
                     ])
             add_data(self.db, "Condition",
                     [("Python" + ver, 0, "NOT TARGETDIR" + ver)])
             start += 4
             assert start < 500
 
-    def add_scripts(self):
-        if self.install_script:
+    eleza add_scripts(self):
+        ikiwa self.install_script:
             start = 6800
-            for ver in self.versions + [self.other_version]:
+            kila ver kwenye self.versions + [self.other_version]:
                 install_action = "install_script." + ver
                 exe_prop = "PYTHON" + ver
                 add_data(self.db, "CustomAction",
@@ -385,14 +385,14 @@ class bdist_msi(Command):
                 add_data(self.db, "InstallExecuteSequence",
                         [(install_action, "&Python%s=3" % ver, start)])
                 start += 1
-        # XXX pre-install scripts are currently refused in finalize_options()
-        #     but if this feature is completed, it will also need to add
-        #     entries for each version as the above code does
-        if self.pre_install_script:
+        # XXX pre-install scripts are currently refused kwenye finalize_options()
+        #     but ikiwa this feature ni completed, it will also need to add
+        #     entries kila each version as the above code does
+        ikiwa self.pre_install_script:
             scriptfn = os.path.join(self.bdist_dir, "preinstall.bat")
-            with open(scriptfn, "w") as f:
-                # The batch file will be executed with [PYTHON], so that %1
-                # is the path to the Python interpreter; %0 will be the path
+            ukijumuisha open(scriptfn, "w") as f:
+                # The batch file will be executed ukijumuisha [PYTHON], so that %1
+                # ni the path to the Python interpreter; %0 will be the path
                 # of the batch file.
                 # rem ="""
                 # %1 %0
@@ -400,19 +400,19 @@ class bdist_msi(Command):
                 # """
                 # <actual script>
                 f.write('rem ="""\n%1 %0\nexit\n"""\n')
-                with open(self.pre_install_script) as fin:
+                ukijumuisha open(self.pre_install_script) as fin:
                     f.write(fin.read())
             add_data(self.db, "Binary",
                 [("PreInstall", msilib.Binary(scriptfn))
                 ])
             add_data(self.db, "CustomAction",
-                [("PreInstall", 2, "PreInstall", None)
+                [("PreInstall", 2, "PreInstall", Tupu)
                 ])
             add_data(self.db, "InstallExecuteSequence",
                     [("PreInstall", "NOT Installed", 450)])
 
 
-    def add_ui(self):
+    eleza add_ui(self):
         db = self.db
         x = y = 50
         w = 370
@@ -430,7 +430,7 @@ class bdist_msi(Command):
                  [("DefaultUIFont", "DlgFont8"),
                   # See "ErrorDialog Style Bit"
                   ("ErrorDialog", "ErrorDlg"),
-                  ("Progress1", "Install"),   # modified in maintenance type dlg
+                  ("Progress1", "Install"),   # modified kwenye maintenance type dlg
                   ("Progress2", "installs"),
                   ("MaintenanceForm_Action", "Repair"),
                   # possible values: ALL, JUSTME
@@ -439,23 +439,23 @@ class bdist_msi(Command):
 
         # Fonts, see "TextStyle Table"
         add_data(db, "TextStyle",
-                 [("DlgFont8", "Tahoma", 9, None, 0),
-                  ("DlgFontBold8", "Tahoma", 8, None, 1), #bold
-                  ("VerdanaBold10", "Verdana", 10, None, 1),
+                 [("DlgFont8", "Tahoma", 9, Tupu, 0),
+                  ("DlgFontBold8", "Tahoma", 8, Tupu, 1), #bold
+                  ("VerdanaBold10", "Verdana", 10, Tupu, 1),
                   ("VerdanaRed9", "Verdana", 9, 255, 0),
                  ])
 
         # UI Sequences, see "InstallUISequence Table", "Using a Sequence Table"
-        # Numbers indicate sequence; see sequence.py for how these action integrate
+        # Numbers indicate sequence; see sequence.py kila how these action integrate
         add_data(db, "InstallUISequence",
-                 [("PrepareDlg", "Not Privileged or Windows9x or Installed", 140),
-                  ("WhichUsersDlg", "Privileged and sio Windows9x and sio Installed", 141),
-                  # In the user interface, assume all-users installation if privileged.
+                 [("PrepareDlg", "Not Privileged ama Windows9x ama Installed", 140),
+                  ("WhichUsersDlg", "Privileged na sio Windows9x na sio Installed", 141),
+                  # In the user interface, assume all-users installation ikiwa privileged.
                   ("SelectFeaturesDlg", "Not Installed", 1230),
-                  # XXX no support for resume installations yet
+                  # XXX no support kila resume installations yet
                   #("ResumeDlg", "Installed AND (RESUME OR Preselected)", 1240),
                   ("MaintenanceTypeDlg", "Installed AND NOT RESUME AND NOT Preselected", 1250),
-                  ("ProgressDlg", None, 1280)])
+                  ("ProgressDlg", Tupu, 1280)])
 
         add_data(db, 'ActionText', text.ActionText)
         add_data(db, 'UIText', text.UIText)
@@ -502,15 +502,15 @@ class bdist_msi(Command):
                          x, y, w, h,
                          19,                # KeepModeless|Modal|Visible
                          title,
-                         "Retry", "Retry", "Retry", bitmap=False)
+                         "Retry", "Retry", "Retry", bitmap=Uongo)
         inuse.text("Title", 15, 6, 200, 15, 0x30003,
-                   r"{\DlgFontBold8}Files in Use")
+                   r"{\DlgFontBold8}Files kwenye Use")
         inuse.text("Description", 20, 23, 280, 20, 0x30003,
-               "Some files that need to be updated are currently in use.")
+               "Some files that need to be updated are currently kwenye use.")
         inuse.text("Text", 20, 55, 330, 50, 3,
-                   "The following applications are using files that need to be updated by this setup. Close these applications and then click Retry to endelea the installation or Cancel to exit it.")
+                   "The following applications are using files that need to be updated by this setup. Close these applications na then click Retry to endelea the installation ama Cancel to exit it.")
         inuse.control("List", "ListBox", 20, 107, 330, 130, 7, "FileInUseProcess",
-                      None, None, None)
+                      Tupu, Tupu, Tupu)
         c=inuse.back("Exit", "Ignore", name="Exit")
         c.event("EndDialog", "Exit")
         c=inuse.next("Ignore", "Retry", name="Ignore")
@@ -518,21 +518,21 @@ class bdist_msi(Command):
         c=inuse.cancel("Retry", "Exit", name="Retry")
         c.event("EndDialog","Retry")
 
-        # See "Error Dialog". See "ICE20" for the required names of the controls.
+        # See "Error Dialog". See "ICE20" kila the required names of the controls.
         error = Dialog(db, "ErrorDlg",
                        50, 10, 330, 101,
                        65543,       # Error|Minimize|Modal|Visible
                        title,
-                       "ErrorText", None, None)
+                       "ErrorText", Tupu, Tupu)
         error.text("ErrorText", 50,9,280,48,3, "")
-        #error.control("ErrorIcon", "Icon", 15, 9, 24, 24, 5242881, None, "py.ico", None, None)
-        error.pushbutton("N",120,72,81,21,3,"No",None).event("EndDialog","ErrorNo")
-        error.pushbutton("Y",240,72,81,21,3,"Yes",None).event("EndDialog","ErrorYes")
-        error.pushbutton("A",0,72,81,21,3,"Abort",None).event("EndDialog","ErrorAbort")
-        error.pushbutton("C",42,72,81,21,3,"Cancel",None).event("EndDialog","ErrorCancel")
-        error.pushbutton("I",81,72,81,21,3,"Ignore",None).event("EndDialog","ErrorIgnore")
-        error.pushbutton("O",159,72,81,21,3,"Ok",None).event("EndDialog","ErrorOk")
-        error.pushbutton("R",198,72,81,21,3,"Retry",None).event("EndDialog","ErrorRetry")
+        #error.control("ErrorIcon", "Icon", 15, 9, 24, 24, 5242881, Tupu, "py.ico", Tupu, Tupu)
+        error.pushbutton("N",120,72,81,21,3,"No",Tupu).event("EndDialog","ErrorNo")
+        error.pushbutton("Y",240,72,81,21,3,"Yes",Tupu).event("EndDialog","ErrorYes")
+        error.pushbutton("A",0,72,81,21,3,"Abort",Tupu).event("EndDialog","ErrorAbort")
+        error.pushbutton("C",42,72,81,21,3,"Cancel",Tupu).event("EndDialog","ErrorCancel")
+        error.pushbutton("I",81,72,81,21,3,"Ignore",Tupu).event("EndDialog","ErrorIgnore")
+        error.pushbutton("O",159,72,81,21,3,"Ok",Tupu).event("EndDialog","ErrorOk")
+        error.pushbutton("R",198,72,81,21,3,"Retry",Tupu).event("EndDialog","ErrorRetry")
 
         #####################################################################
         # Global "Query Cancel" dialog
@@ -540,8 +540,8 @@ class bdist_msi(Command):
                         "No", "No", "No")
         cancel.text("Text", 48, 15, 194, 30, 3,
                     "Are you sure you want to cancel [ProductName] installation?")
-        #cancel.control("Icon", "Icon", 15, 15, 24, 24, 5242881, None,
-        #               "py.ico", None, None)
+        #cancel.control("Icon", "Icon", 15, 15, 24, 24, 5242881, Tupu,
+        #               "py.ico", Tupu, Tupu)
         c=cancel.pushbutton("Yes", 72, 57, 56, 17, 3, "Yes", "No")
         c.event("EndDialog", "Exit")
 
@@ -549,16 +549,16 @@ class bdist_msi(Command):
         c.event("EndDialog", "Return")
 
         #####################################################################
-        # Global "Wait for costing" dialog
+        # Global "Wait kila costing" dialog
         costing = Dialog(db, "WaitForCostingDlg", 50, 10, 260, 85, modal, title,
                          "Return", "Return", "Return")
         costing.text("Text", 48, 15, 194, 30, 3,
                      "Please wait wakati the installer finishes determining your disk space requirements.")
-        c = costing.pushbutton("Return", 102, 57, 56, 17, 3, "Return", None)
+        c = costing.pushbutton("Return", 102, 57, 56, 17, 3, "Return", Tupu)
         c.event("EndDialog", "Exit")
 
         #####################################################################
-        # Preparation dialog: no user input tatizo cancellation
+        # Preparation dialog: no user input except cancellation
         prep = PyDialog(db, "PrepareDlg", x, y, w, h, modeless, title,
                         "Cancel", "Cancel", "Cancel")
         prep.text("Description", 15, 70, 320, 40, 0x30003,
@@ -566,11 +566,11 @@ class bdist_msi(Command):
         prep.title("Welcome to the [ProductName] Installer")
         c=prep.text("ActionText", 15, 110, 320, 20, 0x30003, "Pondering...")
         c.mapping("ActionText", "Text")
-        c=prep.text("ActionData", 15, 135, 320, 30, 0x30003, None)
+        c=prep.text("ActionData", 15, 135, 320, 30, 0x30003, Tupu)
         c.mapping("ActionData", "Text")
-        prep.back("Back", None, active=0)
-        prep.next("Next", None, active=0)
-        c=prep.cancel("Cancel", None)
+        prep.back("Back", Tupu, active=0)
+        prep.next("Next", Tupu, active=0)
+        c=prep.cancel("Cancel", Tupu)
         c.event("SpawnDialog", "CancelDlg")
 
         #####################################################################
@@ -583,11 +583,11 @@ class bdist_msi(Command):
                     "Select the Python locations where %s should be installed."
                     % self.distribution.get_fullname())
 
-        seldlg.back("< Back", None, active=0)
+        seldlg.back("< Back", Tupu, active=0)
         c = seldlg.next("Next >", "Cancel")
         order = 1
         c.event("[TARGETDIR]", "[SourceDir]", ordering=order)
-        for version in self.versions + [self.other_version]:
+        kila version kwenye self.versions + [self.other_version]:
             order += 1
             c.event("[TARGETDIR]", "[TARGETDIR%s]" % version,
                     "FEATURE_SELECTED AND &Python%s=3" % version,
@@ -598,7 +598,7 @@ class bdist_msi(Command):
         c.event("SpawnDialog", "CancelDlg")
 
         c = seldlg.control("Features", "SelectionTree", 15, 60, 300, 120, 3,
-                           "FEATURE", None, "PathEdit", None)
+                           "FEATURE", Tupu, "PathEdit", Tupu)
         c.event("[FEATURE_SELECTED]", "1")
         ver = self.other_version
         install_other_cond = "FEATURE_SELECTED AND &Python%s=3" % ver
@@ -612,7 +612,7 @@ class bdist_msi(Command):
         c.condition("Hide", dont_install_other_cond)
 
         c = seldlg.control("PathEdit", "PathEdit", 15, 215, 300, 16, 1,
-                           "TARGETDIR" + ver, None, "Next", None)
+                           "TARGETDIR" + ver, Tupu, "Next", Tupu)
         c.condition("Enable", install_other_cond)
         c.condition("Show", install_other_cond)
         c.condition("Disable", dont_install_other_cond)
@@ -621,42 +621,42 @@ class bdist_msi(Command):
         #####################################################################
         # Disk cost
         cost = PyDialog(db, "DiskCostDlg", x, y, w, h, modal, title,
-                        "OK", "OK", "OK", bitmap=False)
+                        "OK", "OK", "OK", bitmap=Uongo)
         cost.text("Title", 15, 6, 200, 15, 0x30003,
                  r"{\DlgFontBold8}Disk Space Requirements")
         cost.text("Description", 20, 20, 280, 20, 0x30003,
-                  "The disk space required for the installation of the selected features.")
+                  "The disk space required kila the installation of the selected features.")
         cost.text("Text", 20, 53, 330, 60, 3,
-                  "The highlighted volumes (if any) do sio have enough disk space "
-              "available for the currently selected features.  You can either "
-              "remove some files from the highlighted volumes, or choose to "
-              "install less features onto local drive(s), or select different "
+                  "The highlighted volumes (ikiwa any) do sio have enough disk space "
+              "available kila the currently selected features.  You can either "
+              "remove some files kutoka the highlighted volumes, ama choose to "
+              "install less features onto local drive(s), ama select different "
               "destination drive(s).")
         cost.control("VolumeList", "VolumeCostList", 20, 100, 330, 150, 393223,
-                     None, "{120}{70}{70}{70}{70}", None, None)
-        cost.xbutton("OK", "Ok", None, 0.5).event("EndDialog", "Return")
+                     Tupu, "{120}{70}{70}{70}{70}", Tupu, Tupu)
+        cost.xbutton("OK", "Ok", Tupu, 0.5).event("EndDialog", "Return")
 
         #####################################################################
-        # WhichUsers Dialog. Only available on NT, and for privileged users.
+        # WhichUsers Dialog. Only available on NT, na kila privileged users.
         # This must be run before FindRelatedProducts, because that will
         # take into account whether the previous installation was per-user
-        # or per-machine. We currently don't support going back to this
+        # ama per-machine. We currently don't support going back to this
         # dialog after "Next" was selected; to support this, we would need to
-        # find how to reset the ALLUSERS property, and how to re-run
+        # find how to reset the ALLUSERS property, na how to re-run
         # FindRelatedProducts.
-        # On Windows9x, the ALLUSERS property is ignored on the command line
-        # and in the Property table, but installer fails according to the documentation
-        # if a dialog attempts to set ALLUSERS.
+        # On Windows9x, the ALLUSERS property ni ignored on the command line
+        # na kwenye the Property table, but installer fails according to the documentation
+        # ikiwa a dialog attempts to set ALLUSERS.
         whichusers = PyDialog(db, "WhichUsersDlg", x, y, w, h, modal, title,
                             "AdminInstall", "Next", "Cancel")
-        whichusers.title("Select whether to install [ProductName] for all users of this computer.")
-        # A radio group with two options: allusers, justme
+        whichusers.title("Select whether to install [ProductName] kila all users of this computer.")
+        # A radio group ukijumuisha two options: allusers, justme
         g = whichusers.radiogroup("AdminInstall", 15, 60, 260, 50, 3,
                                   "WhichUsers", "", "Next")
-        g.add("ALL", 0, 5, 150, 20, "Install for all users")
-        g.add("JUSTME", 0, 25, 150, 20, "Install just for me")
+        g.add("ALL", 0, 5, 150, 20, "Install kila all users")
+        g.add("JUSTME", 0, 25, 150, 20, "Install just kila me")
 
-        whichusers.back("Back", None, active=0)
+        whichusers.back("Back", Tupu, active=0)
 
         c = whichusers.next("Next >", "Cancel")
         c.event("[ALLUSERS]", "1", 'WhichUsers="ALL"', 1)
@@ -668,7 +668,7 @@ class bdist_msi(Command):
         #####################################################################
         # Installation Progress dialog (modeless)
         progress = PyDialog(db, "ProgressDlg", x, y, w, h, modeless, title,
-                            "Cancel", "Cancel", "Cancel", bitmap=False)
+                            "Cancel", "Cancel", "Cancel", bitmap=Uongo)
         progress.text("Title", 20, 15, 200, 15, 0x30003,
                      r"{\DlgFontBold8}[Progress1] [ProductName]")
         progress.text("Text", 35, 65, 300, 30, 3,
@@ -679,15 +679,15 @@ class bdist_msi(Command):
         c=progress.text("ActionText", 70, 100, w-70, 20, 3, "Pondering...")
         c.mapping("ActionText", "Text")
 
-        #c=progress.text("ActionData", 35, 140, 300, 20, 3, None)
+        #c=progress.text("ActionData", 35, 140, 300, 20, 3, Tupu)
         #c.mapping("ActionData", "Text")
 
         c=progress.control("ProgressBar", "ProgressBar", 35, 120, 300, 10, 65537,
-                           None, "Progress done", None, None)
+                           Tupu, "Progress done", Tupu, Tupu)
         c.mapping("SetProgress", "Progress")
 
-        progress.back("< Back", "Next", active=False)
-        progress.next("Next >", "Cancel", active=False)
+        progress.back("< Back", "Next", active=Uongo)
+        progress.next("Next >", "Cancel", active=Uongo)
         progress.cancel("Cancel", "Back").event("SpawnDialog", "CancelDlg")
 
         ###################################################################
@@ -696,17 +696,17 @@ class bdist_msi(Command):
                          "Next", "Next", "Cancel")
         maint.title("Welcome to the [ProductName] Setup Wizard")
         maint.text("BodyText", 15, 63, 330, 42, 3,
-                   "Select whether you want to repair or remove [ProductName].")
+                   "Select whether you want to repair ama remove [ProductName].")
         g=maint.radiogroup("RepairRadioGroup", 15, 108, 330, 60, 3,
                             "MaintenanceForm_Action", "", "Next")
         #g.add("Change", 0, 0, 200, 17, "&Change [ProductName]")
         g.add("Repair", 0, 18, 200, 17, "&Repair [ProductName]")
         g.add("Remove", 0, 36, 200, 17, "Re&move [ProductName]")
 
-        maint.back("< Back", None, active=False)
+        maint.back("< Back", Tupu, active=Uongo)
         c=maint.next("Finish", "Cancel")
         # Change installation: Change progress dialog to "Change", then ask
-        # for feature selection
+        # kila feature selection
         #c.event("[Progress1]", "Change", 'MaintenanceForm_Action="Change"', 1)
         #c.event("[Progress2]", "changes", 'MaintenanceForm_Action="Change"', 2)
 
@@ -730,12 +730,12 @@ class bdist_msi(Command):
 
         maint.cancel("Cancel", "RepairRadioGroup").event("SpawnDialog", "CancelDlg")
 
-    def get_installer_filename(self, fullname):
-        # Factored out to allow overriding in subclasses
-        if self.target_version:
+    eleza get_installer_filename(self, fullname):
+        # Factored out to allow overriding kwenye subclasses
+        ikiwa self.target_version:
             base_name = "%s.%s-py%s.msi" % (fullname, self.plat_name,
                                             self.target_version)
         isipokua:
             base_name = "%s.%s.msi" % (fullname, self.plat_name)
         installer_name = os.path.join(self.dist_dir, base_name)
-        return installer_name
+        rudisha installer_name

@@ -1,15 +1,15 @@
-import unittest
-import test.support
-from ctypes import *
+agiza unittest
+agiza test.support
+kutoka ctypes agiza *
 
-class AnonTest(unittest.TestCase):
+kundi AnonTest(unittest.TestCase):
 
-    def test_anon(self):
-        class ANON(Union):
+    eleza test_anon(self):
+        kundi ANON(Union):
             _fields_ = [("a", c_int),
                         ("b", c_int)]
 
-        class Y(Structure):
+        kundi Y(Structure):
             _fields_ = [("x", c_int),
                         ("_", ANON),
                         ("y", c_int)]
@@ -21,14 +21,14 @@ class AnonTest(unittest.TestCase):
         self.assertEqual(ANON.a.offset, 0)
         self.assertEqual(ANON.b.offset, 0)
 
-    def test_anon_nonseq(self):
+    eleza test_anon_nonseq(self):
         # TypeError: _anonymous_ must be a sequence
         self.assertRaises(TypeError,
                               lambda: type(Structure)("Name",
                                                       (Structure,),
                                                       {"_fields_": [], "_anonymous_": 42}))
 
-    def test_anon_nonmember(self):
+    eleza test_anon_nonmember(self):
         # AttributeError: type object 'Name' has no attribute 'x'
         self.assertRaises(AttributeError,
                               lambda: type(Structure)("Name",
@@ -37,27 +37,27 @@ class AnonTest(unittest.TestCase):
                                                        "_anonymous_": ["x"]}))
 
     @test.support.cpython_only
-    def test_issue31490(self):
-        # There shouldn't be an assertion failure in case the class has an
-        # attribute whose name is specified in _anonymous_ but haiko kwenye _fields_.
+    eleza test_issue31490(self):
+        # There shouldn't be an assertion failure kwenye case the kundi has an
+        # attribute whose name ni specified kwenye _anonymous_ but sio kwenye _fields_.
 
-        # AttributeError: 'x' is specified in _anonymous_ but haiko kwenye _fields_
-        with self.assertRaises(AttributeError):
-            class Name(Structure):
+        # AttributeError: 'x' ni specified kwenye _anonymous_ but sio kwenye _fields_
+        ukijumuisha self.assertRaises(AttributeError):
+            kundi Name(Structure):
                 _fields_ = []
                 _anonymous_ = ["x"]
                 x = 42
 
-    def test_nested(self):
-        class ANON_S(Structure):
+    eleza test_nested(self):
+        kundi ANON_S(Structure):
             _fields_ = [("a", c_int)]
 
-        class ANON_U(Union):
+        kundi ANON_U(Union):
             _fields_ = [("_", ANON_S),
                         ("b", c_int)]
             _anonymous_ = ["_"]
 
-        class Y(Structure):
+        kundi Y(Structure):
             _fields_ = [("x", c_int),
                         ("_", ANON_U),
                         ("y", c_int)]
@@ -69,5 +69,5 @@ class AnonTest(unittest.TestCase):
         self.assertEqual(Y._.offset, sizeof(c_int))
         self.assertEqual(Y.y.offset, sizeof(c_int) * 2)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

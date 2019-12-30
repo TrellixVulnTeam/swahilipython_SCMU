@@ -3,7 +3,7 @@
 # Windows.
 #
 # A client which wants to pickle a resource registers it ukijumuisha the resource
-# sharer na gets an identifier kwenye rudisha.  The unpickling process will connect
+# sharer na gets an identifier kwenye return.  The unpickling process will connect
 # to the resource sharer, sends the identifier na its pid, na then receives
 # the resource.
 #
@@ -35,9 +35,9 @@ ikiwa sys.platform == 'win32':
 
         eleza detach(self):
             '''Get the socket.  This should only be called once.'''
-            ukijumuisha _resource_sharer.get_connection(self._id) kama conn:
+            ukijumuisha _resource_sharer.get_connection(self._id) as conn:
                 share = conn.recv_bytes()
-                rudisha socket.kutokashare(share)
+                rudisha socket.fromshare(share)
 
 isipokua:
     __all__ += ['DupFd']
@@ -54,7 +54,7 @@ isipokua:
 
         eleza detach(self):
             '''Get the fd.  This should only be called once.'''
-            ukijumuisha _resource_sharer.get_connection(self._id) kama conn:
+            ukijumuisha _resource_sharer.get_connection(self._id) as conn:
                 rudisha reduction.recv_handle(conn)
 
 
@@ -71,7 +71,7 @@ kundi _ResourceSharer(object):
         util.register_after_fork(self, _ResourceSharer._afterfork)
 
     eleza register(self, send, close):
-        '''Register resource, rudishaing an identifier.'''
+        '''Register resource, returning an identifier.'''
         ukijumuisha self._lock:
             ikiwa self._address ni Tupu:
                 self._start()
@@ -139,7 +139,7 @@ kundi _ResourceSharer(object):
             signal.pthread_sigmask(signal.SIG_BLOCK, signal.valid_signals())
         wakati 1:
             jaribu:
-                ukijumuisha self._listener.accept() kama conn:
+                ukijumuisha self._listener.accept() as conn:
                     msg = conn.recv()
                     ikiwa msg ni Tupu:
                         koma

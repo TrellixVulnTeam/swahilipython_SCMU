@@ -2,130 +2,130 @@
 # Author: Barry Warsaw, Thomas Wouters, Anthony Baxter
 # Contact: email-sig@python.org
 
-"""A parser of RFC 2822 and MIME email messages."""
+"""A parser of RFC 2822 na MIME email messages."""
 
 __all__ = ['Parser', 'HeaderParser', 'BytesParser', 'BytesHeaderParser',
            'FeedParser', 'BytesFeedParser']
 
-from io import StringIO, TextIOWrapper
+kutoka io agiza StringIO, TextIOWrapper
 
-from email.feedparser import FeedParser, BytesFeedParser
-from email._policybase import compat32
+kutoka email.feedparser agiza FeedParser, BytesFeedParser
+kutoka email._policybase agiza compat32
 
 
-class Parser:
-    def __init__(self, _class=None, *, policy=compat32):
-        """Parser of RFC 2822 and MIME email messages.
+kundi Parser:
+    eleza __init__(self, _class=Tupu, *, policy=compat32):
+        """Parser of RFC 2822 na MIME email messages.
 
         Creates an in-memory object tree representing the email message, which
-        can then be manipulated and turned over to a Generator to return the
+        can then be manipulated na turned over to a Generator to rudisha the
         textual representation of the message.
 
-        The string must be formatted as a block of RFC 2822 headers and header
+        The string must be formatted as a block of RFC 2822 headers na header
         continuation lines, optionally preceded by a `Unix-from' header.  The
-        header block is terminated either by the end of the string or by a
+        header block ni terminated either by the end of the string ama by a
         blank line.
 
-        _class is the class to instantiate for new message objects when they
-        must be created.  This class must have a constructor that can take
-        zero arguments.  Default is Message.Message.
+        _kundi ni the kundi to instantiate kila new message objects when they
+        must be created.  This kundi must have a constructor that can take
+        zero arguments.  Default ni Message.Message.
 
         The policy keyword specifies a policy object that controls a number of
         aspects of the parser's operation.  The default policy maintains
         backward compatibility.
 
         """
-        self._class = _class
+        self._kundi = _class
         self.policy = policy
 
-    def parse(self, fp, headersonly=False):
-        """Create a message structure from the data in a file.
+    eleza parse(self, fp, headersonly=Uongo):
+        """Create a message structure kutoka the data kwenye a file.
 
-        Reads all the data from the file and returns the root of the message
-        structure.  Optional headersonly is a flag specifying whether to stop
-        parsing after reading the headers or not.  The default is False,
+        Reads all the data kutoka the file na returns the root of the message
+        structure.  Optional headersonly ni a flag specifying whether to stop
+        parsing after reading the headers ama not.  The default ni Uongo,
         meaning it parses the entire contents of the file.
         """
         feedparser = FeedParser(self._class, policy=self.policy)
-        if headersonly:
+        ikiwa headersonly:
             feedparser._set_headersonly()
-        wakati True:
+        wakati Kweli:
             data = fp.read(8192)
-            if sio data:
+            ikiwa sio data:
                 koma
             feedparser.feed(data)
-        return feedparser.close()
+        rudisha feedparser.close()
 
-    def parsestr(self, text, headersonly=False):
-        """Create a message structure from a string.
+    eleza parsestr(self, text, headersonly=Uongo):
+        """Create a message structure kutoka a string.
 
-        Returns the root of the message structure.  Optional headersonly is a
-        flag specifying whether to stop parsing after reading the headers ama
-        not.  The default is False, meaning it parses the entire contents of
+        Returns the root of the message structure.  Optional headersonly ni a
+        flag specifying whether to stop parsing after reading the headers or
+        not.  The default ni Uongo, meaning it parses the entire contents of
         the file.
         """
-        return self.parse(StringIO(text), headersonly=headersonly)
+        rudisha self.parse(StringIO(text), headersonly=headersonly)
 
 
 
-class HeaderParser(Parser):
-    def parse(self, fp, headersonly=True):
-        return Parser.parse(self, fp, True)
+kundi HeaderParser(Parser):
+    eleza parse(self, fp, headersonly=Kweli):
+        rudisha Parser.parse(self, fp, Kweli)
 
-    def parsestr(self, text, headersonly=True):
-        return Parser.parsestr(self, text, True)
+    eleza parsestr(self, text, headersonly=Kweli):
+        rudisha Parser.parsestr(self, text, Kweli)
 
 
-class BytesParser:
+kundi BytesParser:
 
-    def __init__(self, *args, **kw):
-        """Parser of binary RFC 2822 and MIME email messages.
+    eleza __init__(self, *args, **kw):
+        """Parser of binary RFC 2822 na MIME email messages.
 
         Creates an in-memory object tree representing the email message, which
-        can then be manipulated and turned over to a Generator to return the
+        can then be manipulated na turned over to a Generator to rudisha the
         textual representation of the message.
 
-        The input must be formatted as a block of RFC 2822 headers and header
+        The input must be formatted as a block of RFC 2822 headers na header
         continuation lines, optionally preceded by a `Unix-from' header.  The
-        header block is terminated either by the end of the input or by a
+        header block ni terminated either by the end of the input ama by a
         blank line.
 
-        _class is the class to instantiate for new message objects when they
-        must be created.  This class must have a constructor that can take
-        zero arguments.  Default is Message.Message.
+        _kundi ni the kundi to instantiate kila new message objects when they
+        must be created.  This kundi must have a constructor that can take
+        zero arguments.  Default ni Message.Message.
         """
         self.parser = Parser(*args, **kw)
 
-    def parse(self, fp, headersonly=False):
-        """Create a message structure from the data in a binary file.
+    eleza parse(self, fp, headersonly=Uongo):
+        """Create a message structure kutoka the data kwenye a binary file.
 
-        Reads all the data from the file and returns the root of the message
-        structure.  Optional headersonly is a flag specifying whether to stop
-        parsing after reading the headers or not.  The default is False,
+        Reads all the data kutoka the file na returns the root of the message
+        structure.  Optional headersonly ni a flag specifying whether to stop
+        parsing after reading the headers ama not.  The default ni Uongo,
         meaning it parses the entire contents of the file.
         """
         fp = TextIOWrapper(fp, encoding='ascii', errors='surrogateescape')
         jaribu:
-            return self.parser.parse(fp, headersonly)
+            rudisha self.parser.parse(fp, headersonly)
         mwishowe:
             fp.detach()
 
 
-    def parsebytes(self, text, headersonly=False):
-        """Create a message structure from a byte string.
+    eleza parsebytes(self, text, headersonly=Uongo):
+        """Create a message structure kutoka a byte string.
 
-        Returns the root of the message structure.  Optional headersonly is a
-        flag specifying whether to stop parsing after reading the headers ama
-        not.  The default is False, meaning it parses the entire contents of
+        Returns the root of the message structure.  Optional headersonly ni a
+        flag specifying whether to stop parsing after reading the headers or
+        not.  The default ni Uongo, meaning it parses the entire contents of
         the file.
         """
         text = text.decode('ASCII', errors='surrogateescape')
-        return self.parser.parsestr(text, headersonly)
+        rudisha self.parser.parsestr(text, headersonly)
 
 
-class BytesHeaderParser(BytesParser):
-    def parse(self, fp, headersonly=True):
-        return BytesParser.parse(self, fp, headersonly=True)
+kundi BytesHeaderParser(BytesParser):
+    eleza parse(self, fp, headersonly=Kweli):
+        rudisha BytesParser.parse(self, fp, headersonly=Kweli)
 
-    def parsebytes(self, text, headersonly=True):
-        return BytesParser.parsebytes(self, text, headersonly=True)
+    eleza parsebytes(self, text, headersonly=Kweli):
+        rudisha BytesParser.parsebytes(self, text, headersonly=Kweli)

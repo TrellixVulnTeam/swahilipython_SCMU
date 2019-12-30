@@ -15,7 +15,7 @@ kutoka io agiza StringIO
 kutoka test agiza support
 kutoka unittest agiza mock
 kundi StdIOBuffer(StringIO):
-    pita
+    pass
 
 kundi TestCase(unittest.TestCase):
 
@@ -44,7 +44,7 @@ kundi TempDirMixin(object):
 
     eleza create_readonly_file(self, filename):
         file_path = os.path.join(self.temp_dir, filename)
-        ukijumuisha open(file_path, 'w') kama file:
+        ukijumuisha open(file_path, 'w') as file:
             file.write(filename)
         os.chmod(file_path, stat.S_IREAD)
 
@@ -86,8 +86,8 @@ eleza stderr_to_parser_error(parse_args, *args, **kwargs):
     ikiwa isinstance(sys.stderr, StdIOBuffer) ama isinstance(sys.stdout, StdIOBuffer):
         rudisha parse_args(*args, **kwargs)
 
-    # ikiwa this ni sio being called recursively, redirect stderr na
-    # use it kama the ArgumentParserError message
+    # ikiwa this ni sio being called recursively, redirect stderr and
+    # use it as the ArgumentParserError message
     old_stdout = sys.stdout
     old_stderr = sys.stderr
     sys.stdout = StdIOBuffer()
@@ -101,11 +101,11 @@ eleza stderr_to_parser_error(parse_args, *args, **kwargs):
                 ikiwa getattr(result, key) ni sys.stderr:
                     setattr(result, key, old_stderr)
             rudisha result
-        tatizo SystemExit:
+        except SystemExit:
             code = sys.exc_info()[1].code
             stdout = sys.stdout.getvalue()
             stderr = sys.stderr.getvalue()
-            ashiria ArgumentParserError("SystemExit", stdout, stderr, code)
+             ashiria ArgumentParserError("SystemExit", stdout, stderr, code)
     mwishowe:
         sys.stdout = old_stdout
         sys.stderr = old_stderr
@@ -144,7 +144,7 @@ kundi ParserTesterMetaclass(type):
 
     eleza __init__(cls, name, bases, bodydict):
         ikiwa name == 'ParserTestCase':
-            rudisha
+            return
 
         # default parser signature ni empty
         ikiwa sio hasattr(cls, 'parser_signature'):
@@ -176,7 +176,7 @@ kundi ParserTesterMetaclass(type):
         # functions kila parsing args
         # --------------------------
         eleza listargs(parser, args):
-            """Parse the args by pitaing kwenye a list"""
+            """Parse the args by passing kwenye a list"""
             rudisha parser.parse_args(args)
 
         eleza sysargs(parser, args):
@@ -207,8 +207,8 @@ kundi ParserTesterMetaclass(type):
                         test_func(self)
                     jaribu:
                         wrapper.__name__ = test_name
-                    tatizo TypeError:
-                        pita
+                    except TypeError:
+                        pass
                     setattr(tester_cls, test_name, wrapper)
 
             eleza _get_parser(self, tester):
@@ -436,7 +436,7 @@ kundi TestOptionalsAlternatePrefixChars(ParserTestCase):
 
 
 kundi TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
-    """When ``-`` haiko kwenye prefix_chars, default operators created kila help
+    """When ``-`` sio kwenye prefix_chars, default operators created kila help
        should use the prefix_chars kwenye use rather than - ama --
        http://bugs.python.org/issue9444"""
 
@@ -1397,10 +1397,10 @@ kundi TestArgumentsFromFile(TempDirMixin, ParserTestCase):
             ('invalid', '@no-such-path\n'),
         ]
         kila path, text kwenye file_texts:
-            ukijumuisha open(path, 'w') kama file:
+            ukijumuisha open(path, 'w') as file:
                 file.write(text)
 
-    parser_signature = Sig(kutokafile_prefix_chars='@')
+    parser_signature = Sig(fromfile_prefix_chars='@')
     argument_signatures = [
         Sig('-a'),
         Sig('x'),
@@ -1427,7 +1427,7 @@ kundi TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
             ('hello', 'hello world!\n'),
         ]
         kila path, text kwenye file_texts:
-            ukijumuisha open(path, 'w') kama file:
+            ukijumuisha open(path, 'w') as file:
                 file.write(text)
 
     kundi FromFileConverterArgumentParser(ErrorRaisingArgumentParser):
@@ -1438,7 +1438,7 @@ kundi TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
                     endelea
                 tuma arg
     parser_kundi = FromFileConverterArgumentParser
-    parser_signature = Sig(kutokafile_prefix_chars='@')
+    parser_signature = Sig(fromfile_prefix_chars='@')
     argument_signatures = [
         Sig('y', nargs='+'),
     ]
@@ -1509,7 +1509,7 @@ kundi TestFileTypeR(TempDirMixin, ParserTestCase):
     eleza setUp(self):
         super(TestFileTypeR, self).setUp()
         kila file_name kwenye ['foo', 'bar']:
-            ukijumuisha open(os.path.join(self.temp_dir, file_name), 'w') kama file:
+            ukijumuisha open(os.path.join(self.temp_dir, file_name), 'w') as file:
                 file.write(file_name)
         self.create_readonly_file('readonly')
 
@@ -1549,7 +1549,7 @@ kundi TestFileTypeRB(TempDirMixin, ParserTestCase):
     eleza setUp(self):
         super(TestFileTypeRB, self).setUp()
         kila file_name kwenye ['foo', 'bar']:
-            ukijumuisha open(os.path.join(self.temp_dir, file_name), 'w') kama file:
+            ukijumuisha open(os.path.join(self.temp_dir, file_name), 'w') as file:
                 file.write(file_name)
 
     argument_signatures = [
@@ -1572,7 +1572,7 @@ kundi WFile(object):
         self.name = name
 
     eleza __eq__(self, other):
-        ikiwa other haiko kwenye self.seen:
+        ikiwa other sio kwenye self.seen:
             text = 'Check that file ni writable.'
             ikiwa 'b' kwenye other.mode:
                 text = text.encode('ascii')
@@ -1631,7 +1631,7 @@ kundi TestFileTypeOpenArgs(TestCase):
             (FT('wb', encoding='big5'), ('wb', -1, 'big5', Tupu)),
             (FT('w', 0, 'l1', 'strict'), ('w', 0, 'l1', 'strict')),
         ]
-        ukijumuisha mock.patch('builtins.open') kama m:
+        ukijumuisha mock.patch('builtins.open') as m:
             kila type, args kwenye cases:
                 type('foo')
                 m.assert_called_with('foo', *args)
@@ -1640,23 +1640,23 @@ kundi TestFileTypeOpenArgs(TestCase):
 kundi TestFileTypeMissingInitialization(TestCase):
     """
     Test that add_argument throws an error ikiwa FileType class
-    object was pitaed instead of instance of FileType
+    object was passed instead of instance of FileType
     """
 
     eleza test(self):
         parser = argparse.ArgumentParser()
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             parser.add_argument('-x', type=argparse.FileType)
 
         self.assertEqual(
-            '%r ni a FileType kundi object, instance of it must be pitaed'
+            '%r ni a FileType kundi object, instance of it must be passed'
             % (argparse.FileType,),
             str(cm.exception)
         )
 
 
 kundi TestTypeCallable(ParserTestCase):
-    """Test some callables kama option/argument types"""
+    """Test some callables as option/argument types"""
 
     argument_signatures = [
         Sig('--eggs', type=complex),
@@ -1752,15 +1752,15 @@ kundi TestActionUserDefined(ParserTestCase):
                 expected_ns = NS(spam=0.25)
                 ikiwa value kwenye [0.125, 0.625]:
                     expected_ns.badger = 2
-                lasivyo value kwenye [2.0]:
+                elikiwa value kwenye [2.0]:
                     expected_ns.badger = 84
                 isipokua:
-                    ashiria AssertionError('value: %s' % value)
+                     ashiria AssertionError('value: %s' % value)
                 assert expected_ns == namespace, ('expected %s, got %s' %
                                                   (expected_ns, namespace))
-            tatizo AssertionError:
+            except AssertionError:
                 e = sys.exc_info()[1]
-                ashiria ArgumentParserError('opt_action failed: %s' % e)
+                 ashiria ArgumentParserError('opt_action failed: %s' % e)
             setattr(namespace, 'spam', value)
 
     kundi PositionalAction(argparse.Action):
@@ -1776,17 +1776,17 @@ kundi TestActionUserDefined(ParserTestCase):
                 expected_ns = NS(badger=2)
                 ikiwa value kwenye [42, 84]:
                     expected_ns.spam = 0.25
-                lasivyo value kwenye [1]:
+                elikiwa value kwenye [1]:
                     expected_ns.spam = 0.625
-                lasivyo value kwenye [2]:
+                elikiwa value kwenye [2]:
                     expected_ns.spam = 0.125
                 isipokua:
-                    ashiria AssertionError('value: %s' % value)
+                     ashiria AssertionError('value: %s' % value)
                 assert expected_ns == namespace, ('expected %s, got %s' %
                                                   (expected_ns, namespace))
-            tatizo AssertionError:
+            except AssertionError:
                 e = sys.exc_info()[1]
-                ashiria ArgumentParserError('arg_action failed: %s' % e)
+                 ashiria ArgumentParserError('arg_action failed: %s' % e)
             setattr(namespace, 'badger', value)
 
     argument_signatures = [
@@ -2119,7 +2119,7 @@ kundi TestAddSubparsers(TestCase):
             '''))
 
     eleza _test_subparser_help(self, args_str, expected_help):
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             self.parser.parse_args(args_str.split())
         self.assertEqual(expected_help, cm.exception.stdout)
 
@@ -2416,19 +2416,19 @@ kundi TestMutuallyExclusiveGroupErrors(TestCase):
 
     eleza test_invalid_add_argument_group(self):
         parser = ErrorRaisingArgumentParser()
-        ashirias = self.assertRaises
-        ashirias(TypeError, parser.add_mutually_exclusive_group, title='foo')
+        raises = self.assertRaises
+        raises(TypeError, parser.add_mutually_exclusive_group, title='foo')
 
     eleza test_invalid_add_argument(self):
         parser = ErrorRaisingArgumentParser()
         group = parser.add_mutually_exclusive_group()
         add_argument = group.add_argument
-        ashirias = self.assertRaises
-        ashirias(ValueError, add_argument, '--foo', required=Kweli)
-        ashirias(ValueError, add_argument, 'bar')
-        ashirias(ValueError, add_argument, 'bar', nargs='+')
-        ashirias(ValueError, add_argument, 'bar', nargs=1)
-        ashirias(ValueError, add_argument, 'bar', nargs=argparse.PARSER)
+        raises = self.assertRaises
+        raises(ValueError, add_argument, '--foo', required=Kweli)
+        raises(ValueError, add_argument, 'bar')
+        raises(ValueError, add_argument, 'bar', nargs='+')
+        raises(ValueError, add_argument, 'bar', nargs=1)
+        raises(ValueError, add_argument, 'bar', nargs=argparse.PARSER)
 
     eleza test_help(self):
         parser = ErrorRaisingArgumentParser(prog='PROG')
@@ -2868,42 +2868,42 @@ kundi MEPBase(object):
 
 kundi TestMutuallyExclusiveGroupErrorsParent(
     MEPBase, TestMutuallyExclusiveGroupErrors):
-    pita
+    pass
 
 
 kundi TestMutuallyExclusiveSimpleParent(
     MEPBase, TestMutuallyExclusiveSimple):
-    pita
+    pass
 
 
 kundi TestMutuallyExclusiveLongParent(
     MEPBase, TestMutuallyExclusiveLong):
-    pita
+    pass
 
 
 kundi TestMutuallyExclusiveFirstSuppressedParent(
     MEPBase, TestMutuallyExclusiveFirstSuppressed):
-    pita
+    pass
 
 
 kundi TestMutuallyExclusiveManySuppressedParent(
     MEPBase, TestMutuallyExclusiveManySuppressed):
-    pita
+    pass
 
 
 kundi TestMutuallyExclusiveOptionalAndPositionalParent(
     MEPBase, TestMutuallyExclusiveOptionalAndPositional):
-    pita
+    pass
 
 
 kundi TestMutuallyExclusiveOptionalsMixedParent(
     MEPBase, TestMutuallyExclusiveOptionalsMixed):
-    pita
+    pass
 
 
 kundi TestMutuallyExclusiveOptionalsAndPositionalsMixedParent(
     MEPBase, TestMutuallyExclusiveOptionalsAndPositionalsMixed):
-    pita
+    pass
 
 # =================
 # Set default tests
@@ -3049,7 +3049,7 @@ kundi TestHelpFormattingMetaclass(type):
 
     eleza __init__(cls, name, bases, bodydict):
         ikiwa name == 'HelpTestCase':
-            rudisha
+            return
 
         kundi AddTests(object):
 
@@ -3066,8 +3066,8 @@ kundi TestHelpFormattingMetaclass(type):
                         test_func(self)
                     jaribu:
                         test_wrapper.__name__ = test_name
-                    tatizo TypeError:
-                        pita
+                    except TypeError:
+                        pass
                     setattr(test_class, test_name, test_wrapper)
 
             eleza _get_parser(self, tester):
@@ -3204,13 +3204,13 @@ kundi TestShortColumns(HelpTestCase):
           -h, --help
             show this
             help
-            message na
+            message and
             exit
           -v, --version
             show
             program's
             version
-            number na
+            number and
             exit
           -x
             X HELP
@@ -4022,7 +4022,7 @@ kundi TestHelpTupu(HelpTestCase):
 
 
 kundi TestHelpTupleMetavar(HelpTestCase):
-    """Test specifying metavar kama a tuple"""
+    """Test specifying metavar as a tuple"""
 
     parser_signature = Sig(prog='PROG')
     argument_signatures = [
@@ -4054,13 +4054,13 @@ kundi TestHelpRawText(HelpTestCase):
     parser_signature = Sig(
         prog='PROG', formatter_class=argparse.RawTextHelpFormatter,
         description='Keep the formatting\n'
-                    '    exactly kama it ni written\n'
+                    '    exactly as it ni written\n'
                     '\n'
                     'here\n')
 
     argument_signatures = [
         Sig('--foo', help='    foo help should also\n'
-                          'appear kama given here'),
+                          'appear as given here'),
         Sig('spam', help='spam help'),
     ]
     argument_group_signatures = [
@@ -4075,7 +4075,7 @@ kundi TestHelpRawText(HelpTestCase):
     help = usage + '''\
 
         Keep the formatting
-            exactly kama it ni written
+            exactly as it ni written
 
         here
 
@@ -4085,7 +4085,7 @@ kundi TestHelpRawText(HelpTestCase):
         optional arguments:
           -h, --help  show this help message na exit
           --foo FOO       foo help should also
-                      appear kama given here
+                      appear as given here
 
         title:
               This text
@@ -4103,7 +4103,7 @@ kundi TestHelpRawDescription(HelpTestCase):
     parser_signature = Sig(
         prog='PROG', formatter_class=argparse.RawDescriptionHelpFormatter,
         description='Keep the formatting\n'
-                    '    exactly kama it ni written\n'
+                    '    exactly as it ni written\n'
                     '\n'
                     'here\n')
 
@@ -4124,7 +4124,7 @@ kundi TestHelpRawDescription(HelpTestCase):
     help = usage + '''\
 
         Keep the formatting
-            exactly kama it ni written
+            exactly as it ni written
 
         here
 
@@ -4372,14 +4372,14 @@ kundi TestInvalidArgumentConstructors(TestCase):
         self.assertValueError('foo', action='baz')
         self.assertValueError('--foo', action=('store', 'append'))
         parser = argparse.ArgumentParser()
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             parser.add_argument("--foo", action="store-true")
         self.assertIn('unknown action', str(cm.exception))
 
     eleza test_multiple_dest(self):
         parser = argparse.ArgumentParser()
         parser.add_argument(dest='foo')
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             parser.add_argument('bar', dest='baz')
         self.assertIn('dest supplied twice kila positional argument',
                       str(cm.exception))
@@ -4433,7 +4433,7 @@ kundi TestInvalidArgumentConstructors(TestCase):
     eleza test_user_defined_action(self):
 
         kundi Success(Exception):
-            pita
+            pass
 
         kundi Action(object):
 
@@ -4446,10 +4446,10 @@ kundi TestInvalidArgumentConstructors(TestCase):
                 ikiwa dest == 'spam':
                     ikiwa const ni Success:
                         ikiwa default ni Success:
-                            ashiria Success()
+                             ashiria Success()
 
             eleza __call__(self, *args, **kwargs):
-                pita
+                pass
 
         parser = argparse.ArgumentParser()
         self.assertRaises(Success, parser.add_argument, '--spam',
@@ -4458,7 +4458,7 @@ kundi TestInvalidArgumentConstructors(TestCase):
                           action=Action, default=Success, const=Success)
 
 # ================================
-# Actions rudishaed by add_argument
+# Actions returned by add_argument
 # ================================
 
 kundi TestActionsReturned(TestCase):
@@ -4540,7 +4540,7 @@ kundi TestOptionalsHelpVersionActions(TestCase):
     """Test the help na version actions"""
 
     eleza assertPrintHelpExit(self, parser, args_str):
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(args_str.split())
         self.assertEqual(parser.format_help(), cm.exception.stdout)
 
@@ -4557,7 +4557,7 @@ kundi TestOptionalsHelpVersionActions(TestCase):
     eleza test_version_format(self):
         parser = ErrorRaisingArgumentParser(prog='PPP')
         parser.add_argument('-v', '--version', action='version', version='%(prog)s 3.5')
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(['-v'])
         self.assertEqual('PPP 3.5\n', cm.exception.stdout)
 
@@ -4571,7 +4571,7 @@ kundi TestOptionalsHelpVersionActions(TestCase):
     eleza test_version_action(self):
         parser = ErrorRaisingArgumentParser(prog='XXX')
         parser.add_argument('-V', action='version', version='%(prog)s 3.7')
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(['-V'])
         self.assertEqual('XXX 3.7\n', cm.exception.stdout)
 
@@ -4709,7 +4709,7 @@ kundi TestNamespace(TestCase):
         self.assertKweli(ns2 != ns3)
         self.assertKweli(ns2 != ns4)
 
-    eleza test_equality_rudishas_notimplemented(self):
+    eleza test_equality_returns_notimplemented(self):
         # See issue 21481
         ns = argparse.Namespace(a=1, b=2)
         self.assertIs(ns.__eq__(Tupu), NotImplemented)
@@ -4725,7 +4725,7 @@ kundi TestEncoding(TestCase):
     eleza _test_module_encoding(self, path):
         path, _ = os.path.splitext(path)
         path += ".py"
-        ukijumuisha open(path, 'r', encoding='utf-8') kama f:
+        ukijumuisha open(path, 'r', encoding='utf-8') as f:
             f.read()
 
     eleza test_argparse_module_encoding(self):
@@ -4754,11 +4754,11 @@ kundi TestArgumentTypeError(TestCase):
     eleza test_argument_type_error(self):
 
         eleza spam(string):
-            ashiria argparse.ArgumentTypeError('spam!')
+             ashiria argparse.ArgumentTypeError('spam!')
 
         parser = ErrorRaisingArgumentParser(prog='PROG', add_help=Uongo)
         parser.add_argument('x', type=spam)
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(['XXX'])
         self.assertEqual('usage: PROG x\nPROG: error: argument x: spam!\n',
                          cm.exception.stderr)
@@ -4775,19 +4775,19 @@ kundi TestMessageContentError(TestCase):
         parser.add_argument('-req_opt', type=int, required=Kweli)
         parser.add_argument('need_one', type=str, nargs='+')
 
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args([])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
         self.assertRegex(msg, 'req_opt')
         self.assertRegex(msg, 'need_one')
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(['myXargument'])
         msg = str(cm.exception)
         self.assertNotIn(msg, 'req_pos')
         self.assertRegex(msg, 'req_opt')
         self.assertRegex(msg, 'need_one')
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(['myXargument', '-req_opt=1'])
         msg = str(cm.exception)
         self.assertNotIn(msg, 'req_pos')
@@ -4800,13 +4800,13 @@ kundi TestMessageContentError(TestCase):
         parser.add_argument('--req_opt', type=int, required=Kweli)
         parser.add_argument('--opt_opt', type=bool, nargs='?',
                             default=Kweli)
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args([])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
         self.assertRegex(msg, 'req_opt')
         self.assertNotIn(msg, 'opt_opt')
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(['--req_opt=1'])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
@@ -4817,7 +4817,7 @@ kundi TestMessageContentError(TestCase):
         parser = ErrorRaisingArgumentParser(prog='PROG', usage='')
         parser.add_argument('req_pos')
         parser.add_argument('optional_positional', nargs='?', default='eggs')
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args([])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
@@ -4972,7 +4972,7 @@ kundi TestIntermixedArgs(TestCase):
         argv = 'X A B -z Z'.split()
         # intermixed fails ukijumuisha '...' (also 'A...')
         # self.assertRaises(TypeError, parser.parse_intermixed_args, argv)
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             parser.parse_intermixed_args(argv)
         self.assertRegex(str(cm.exception), r'\.\.\.')
 
@@ -5000,19 +5000,19 @@ kundi TestIntermixedArgs(TestCase):
 
 kundi TestIntermixedMessageContentError(TestCase):
     # case where Intermixed gives different error message
-    # error ni ashiriad by 1st parsing step
+    # error ni raised by 1st parsing step
     eleza test_missing_argument_name_in_message(self):
         parser = ErrorRaisingArgumentParser(prog='PROG', usage='')
         parser.add_argument('req_pos', type=str)
         parser.add_argument('-req_opt', type=int, required=Kweli)
 
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args([])
         msg = str(cm.exception)
         self.assertRegex(msg, 'req_pos')
         self.assertRegex(msg, 'req_opt')
 
-        ukijumuisha self.assertRaises(ArgumentParserError) kama cm:
+        ukijumuisha self.assertRaises(ArgumentParserError) as cm:
             parser.parse_intermixed_args([])
         msg = str(cm.exception)
         self.assertNotRegex(msg, 'req_pos')
@@ -5032,7 +5032,7 @@ kundi TestAddArgumentMetavar(TestCase):
 
     eleza do_test_exception(self, nargs, metavar):
         parser = argparse.ArgumentParser()
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             parser.add_argument("--foo", nargs=nargs, metavar=metavar)
         self.assertEqual(cm.exception.args[0], self.EXPECTED_MESSAGE)
 
@@ -5194,18 +5194,18 @@ kundi TestInvalidNargs(TestCase):
 
     EXPECTED_INVALID_MESSAGE = "invalid nargs value"
     EXPECTED_RANGE_MESSAGE = ("nargs kila store actions must be != 0; ikiwa you "
-                              "have nothing to store, actions such kama store "
+                              "have nothing to store, actions such as store "
                               "true ama store const may be more appropriate")
 
     eleza do_test_range_exception(self, nargs):
         parser = argparse.ArgumentParser()
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             parser.add_argument("--foo", nargs=nargs)
         self.assertEqual(cm.exception.args[0], self.EXPECTED_RANGE_MESSAGE)
 
     eleza do_test_invalid_exception(self, nargs):
         parser = argparse.ArgumentParser()
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             parser.add_argument("--foo", nargs=nargs)
         self.assertEqual(cm.exception.args[0], self.EXPECTED_INVALID_MESSAGE)
 

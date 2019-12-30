@@ -22,7 +22,7 @@
 # associated documentation, you agree that you have read, understood,
 # na will comply ukijumuisha the following terms na conditions:
 #
-# Permission to use, copy, modify, na distribute this software na
+# Permission to use, copy, modify, na distribute this software and
 # its associated documentation kila any purpose na without fee is
 # hereby granted, provided that the above copyright notice appears in
 # all copies, na that both that copyright notice na this permission
@@ -60,7 +60,7 @@ XINCLUDE_FALLBACK = XINCLUDE + "fallback"
 # Fatal include error.
 
 kundi FatalIncludeError(SyntaxError):
-    pita
+    pass
 
 ##
 # Default loader.  This loader reads an included resource kutoka disk.
@@ -71,17 +71,17 @@ kundi FatalIncludeError(SyntaxError):
 # @rudisha The expanded resource.  If the parse mode ni "xml", this
 #    ni an ElementTree instance.  If the parse mode ni "text", this
 #    ni a Unicode string.  If the loader fails, it can rudisha Tupu
-#    ama ashiria an OSError exception.
+#    ama  ashiria an OSError exception.
 # @throws OSError If the loader fails to load the resource.
 
 eleza default_loader(href, parse, encoding=Tupu):
     ikiwa parse == "xml":
-        ukijumuisha open(href, 'rb') kama file:
+        ukijumuisha open(href, 'rb') as file:
             data = ElementTree.parse(file).getroot()
     isipokua:
         ikiwa sio encoding:
             encoding = 'UTF-8'
-        ukijumuisha open(href, 'r', encoding=encoding) kama file:
+        ukijumuisha open(href, 'r', encoding=encoding) as file:
             data = file.read()
     rudisha data
 
@@ -91,7 +91,7 @@ eleza default_loader(href, parse, encoding=Tupu):
 # @param elem Root element.
 # @param loader Optional resource loader.  If omitted, it defaults
 #     to {@link default_loader}.  If given, it should be a callable
-#     that implements the same interface kama <b>default_loader</b>.
+#     that implements the same interface as <b>default_loader</b>.
 # @throws FatalIncludeError If the function fails to include a given
 #     resource, ama ikiwa the tree contains malformed XInclude elements.
 # @throws OSError If the function fails to load a given resource.
@@ -110,18 +110,18 @@ eleza include(elem, loader=Tupu):
             ikiwa parse == "xml":
                 node = loader(href, parse)
                 ikiwa node ni Tupu:
-                    ashiria FatalIncludeError(
-                        "cannot load %r kama %r" % (href, parse)
+                     ashiria FatalIncludeError(
+                        "cannot load %r as %r" % (href, parse)
                         )
                 node = copy.copy(node)
                 ikiwa e.tail:
                     node.tail = (node.tail ama "") + e.tail
                 elem[i] = node
-            lasivyo parse == "text":
+            elikiwa parse == "text":
                 text = loader(href, parse, e.get("encoding"))
                 ikiwa text ni Tupu:
-                    ashiria FatalIncludeError(
-                        "cannot load %r kama %r" % (href, parse)
+                     ashiria FatalIncludeError(
+                        "cannot load %r as %r" % (href, parse)
                         )
                 ikiwa i:
                     node = elem[i-1]
@@ -131,11 +131,11 @@ eleza include(elem, loader=Tupu):
                 toa elem[i]
                 endelea
             isipokua:
-                ashiria FatalIncludeError(
+                 ashiria FatalIncludeError(
                     "unknown parse type kwenye xi:include tag (%r)" % parse
                 )
-        lasivyo e.tag == XINCLUDE_FALLBACK:
-            ashiria FatalIncludeError(
+        elikiwa e.tag == XINCLUDE_FALLBACK:
+             ashiria FatalIncludeError(
                 "xi:fallback tag must be child of xi:include (%r)" % e.tag
                 )
         isipokua:

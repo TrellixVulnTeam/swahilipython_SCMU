@@ -13,7 +13,7 @@ ukijumuisha SuppressCrashReport():
 
         jaribu:
             os.write(fd, b"blat")
-        tatizo OSError:
+        except OSError:
             # Success -- could sio write to fd.
             sys.exit(0)
         isipokua:
@@ -21,7 +21,7 @@ ukijumuisha SuppressCrashReport():
                 sys.stderr.write("fd %d ni open kwenye child" % fd)
             sys.exit(1)
 
-    tatizo Exception:
+    except Exception:
         ikiwa verbose:
-            ashiria
+            raise
         sys.exit(1)

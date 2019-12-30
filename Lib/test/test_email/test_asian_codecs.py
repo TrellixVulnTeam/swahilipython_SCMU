@@ -13,8 +13,8 @@ kutoka email.message agiza Message
 # codecs, so we have to skip all these tests.
 jaribu:
     str(b'foo', 'euc-jp')
-tatizo LookupError:
-    ashiria unittest.SkipTest
+except LookupError:
+     ashiria unittest.SkipTest
 
 
 
@@ -33,7 +33,7 @@ kundi TestEmailAsianCodecs(TestEmailBase):
         h.append(ghello, g)
         # BAW: This used to -- na maybe should -- fold the two iso-8859-1
         # chunks into a single encoded word.  However it doesn't violate the
-        # standard to have them kama two encoded chunks na maybe it's
+        # standard to have them as two encoded chunks na maybe it's
         # reasonable <wink> kila each .append() call to result kwenye a separate
         # encoded word.
         eq(h.encode(), """\

@@ -11,7 +11,7 @@ kutoka test agiza support
 
 kutoka zipfile agiza ZipFile, ZipInfo, ZIP_STORED, ZIP_DEFLATED
 
-agiza zipagiza
+agiza zipimport
 agiza linecache
 agiza doctest
 agiza inspect
@@ -19,7 +19,7 @@ agiza io
 kutoka traceback agiza extract_tb, extract_stack, print_tb
 jaribu:
     agiza zlib
-tatizo ImportError:
+except ImportError:
     zlib = Tupu
 
 test_src = """\
@@ -29,7 +29,7 @@ eleza get_file():
     rudisha __file__
 """
 test_co = compile(test_src, "<???>", "exec")
-ashiria_src = 'eleza do_ashiria(): ashiria TypeError\n'
+raise_src = 'eleza do_raise():  ashiria TypeError\n'
 
 eleza make_pyc(co, mtime, size):
     data = marshal.dumps(co)
@@ -85,7 +85,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # We're reusing the zip archive path, so we must clear the
         # cached directory info na linecache.
         linecache.clearcache()
-        zipagiza._zip_directory_cache.clear()
+        zipimport._zip_directory_cache.clear()
         ImportHooksBaseTestCase.setUp(self)
 
     eleza makeTree(self, files, dirName=TEMP_DIR):
@@ -102,7 +102,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 dname = os.path.dirname(path)
                 ikiwa sio os.path.isdir(dname):
                     os.makedirs(dname)
-                ukijumuisha open(path, 'wb') kama fp:
+                ukijumuisha open(path, 'wb') as fp:
                     fp.write(data)
 
     eleza makeZip(self, files, zipName=TEMP_ZIP, **kw):
@@ -111,7 +111,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # key 'stuff' exists kwenye kw it ni prepended to the archive.
         self.addCleanup(support.unlink, zipName)
 
-        ukijumuisha ZipFile(zipName, "w") kama z:
+        ukijumuisha ZipFile(zipName, "w") as z:
             kila name, (mtime, data) kwenye files.items():
                 zinfo = ZipInfo(name, time.localtime(mtime))
                 zinfo.compress_type = self.compression
@@ -123,9 +123,9 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         stuff = kw.get("stuff", Tupu)
         ikiwa stuff ni sio Tupu:
             # Prepend 'stuff' to the start of the zipfile
-            ukijumuisha open(zipName, "rb") kama f:
+            ukijumuisha open(zipName, "rb") as f:
                 data = f.read()
-            ukijumuisha open(zipName, "wb") kama f:
+            ukijumuisha open(zipName, "wb") as f:
                 f.write(stuff)
                 f.write(data)
 
@@ -147,7 +147,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     eleza testAFakeZlib(self):
         #
-        # This could cause a stack overflow before: agizaing zlib.py
+        # This could cause a stack overflow before: importing zlib.py
         # kutoka a compressed archive would cause zlib to be imported
         # which would find zlib.py kwenye the archive, which would... etc.
         #
@@ -170,12 +170,12 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         files = {"zlib.py": (NOW, test_src)}
         jaribu:
             self.doTest(".py", files, "zlib")
-        tatizo ImportError:
+        except ImportError:
             ikiwa self.compression != ZIP_DEFLATED:
-                self.fail("expected test to sio ashiria ImportError")
+                self.fail("expected test to sio  ashiria ImportError")
         isipokua:
             ikiwa self.compression != ZIP_STORED:
-                self.fail("expected test to ashiria ImportError")
+                self.fail("expected test to  ashiria ImportError")
 
     eleza testPy(self):
         files = {TESTMOD + ".py": (NOW, test_src)}
@@ -223,14 +223,14 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         files = {TESTMOD + pyc_ext: (NOW, badmagic_pyc)}
         jaribu:
             self.doTest(".py", files, TESTMOD)
-        tatizo ImportError:
-            pita
+        except ImportError:
+            pass
         isipokua:
             self.fail("expected ImportError; agiza kutoka bad pyc")
 
     eleza testBadMTime(self):
         badtime_pyc = bytearray(test_pyc)
-        # flip the second bit -- sio the first kama that one isn't stored kwenye the
+        # flip the second bit -- sio the first as that one isn't stored kwenye the
         # .py's mtime kwenye the zip archive.
         badtime_pyc[11] ^= 0x02
         files = {TESTMOD + ".py": (NOW, test_src),
@@ -295,7 +295,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # ikiwa TESTPACK ni functioning kama a namespace pkg then
+        # ikiwa TESTPACK ni functioning as a namespace pkg then
         # there should be two entries kwenye the __path__.
         # First should be path2 na second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -303,7 +303,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(os.path.basename(TEMP_DIR), p1.split(os.sep)[-2])
         self.assertEqual("path1.zip", p2.split(os.sep)[-2])
 
-        # packdir3 should agiza kama a namespace package.
+        # packdir3 should agiza as a namespace package.
         # Its __path__ ni an iterable of 1 element kutoka zip1.
         mod = importlib.import_module(packdir3.replace(os.sep, '.')[:-1])
         self.assertEqual(1, len(mod.__path__))
@@ -371,7 +371,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # ikiwa TESTPACK ni functioning kama a namespace pkg then
+        # ikiwa TESTPACK ni functioning as a namespace pkg then
         # there should be two entries kwenye the __path__.
         # First should be path2 na second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -379,7 +379,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual("path2.zip", p1.split(os.sep)[-2])
         self.assertEqual("path1.zip", p2.split(os.sep)[-2])
 
-        # packdir3 should agiza kama a namespace package.
+        # packdir3 should agiza as a namespace package.
         # Tts __path__ ni an iterable of 1 element kutoka zip1.
         mod = importlib.import_module(packdir3.replace(os.sep, '.')[:-1])
         self.assertEqual(1, len(mod.__path__))
@@ -423,20 +423,20 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                  "spam" + pyc_ext: (NOW, test_pyc)}
 
         self.addCleanup(support.unlink, TEMP_ZIP)
-        ukijumuisha ZipFile(TEMP_ZIP, "w") kama z:
+        ukijumuisha ZipFile(TEMP_ZIP, "w") as z:
             kila name, (mtime, data) kwenye files.items():
                 zinfo = ZipInfo(name, time.localtime(mtime))
                 zinfo.compress_type = self.compression
                 zinfo.comment = b"spam"
                 z.writestr(zinfo, data)
 
-        zi = zipagiza.zipimporter(TEMP_ZIP)
+        zi = zipimport.zipimporter(TEMP_ZIP)
         self.assertEqual(zi.archive, TEMP_ZIP)
         self.assertEqual(zi.is_package(TESTPACK), Kweli)
 
         find_mod = zi.find_module('spam')
         self.assertIsNotTupu(find_mod)
-        self.assertIsInstance(find_mod, zipagiza.zipimporter)
+        self.assertIsInstance(find_mod, zipimport.zipimporter)
         self.assertUongo(find_mod.is_package('spam'))
         load_mod = find_mod.load_module('spam')
         self.assertEqual(find_mod.get_filename('spam'), load_mod.__file__)
@@ -459,14 +459,14 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(zi.get_source(TESTPACK), Tupu)
         self.assertEqual(zi.get_source(mod_path), Tupu)
         self.assertEqual(zi.get_filename(mod_path), mod.__file__)
-        # To pita kwenye the module name instead of the path, we must use the
+        # To pass kwenye the module name instead of the path, we must use the
         # right importer
         loader = mod.__loader__
         self.assertEqual(loader.get_source(mod_name), Tupu)
         self.assertEqual(loader.get_filename(mod_name), mod.__file__)
 
         # test prefix na archivepath members
-        zi2 = zipagiza.zipimporter(TEMP_ZIP + os.sep + TESTPACK)
+        zi2 = zipimport.zipimporter(TEMP_ZIP + os.sep + TESTPACK)
         self.assertEqual(zi2.archive, TEMP_ZIP)
         self.assertEqual(zi2.prefix, TESTPACK + os.sep)
 
@@ -477,14 +477,14 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                  packdir2 + TESTMOD + pyc_ext: (NOW, test_pyc)}
 
         self.addCleanup(support.unlink, TEMP_ZIP)
-        ukijumuisha ZipFile(TEMP_ZIP, "w") kama z:
+        ukijumuisha ZipFile(TEMP_ZIP, "w") as z:
             kila name, (mtime, data) kwenye files.items():
                 zinfo = ZipInfo(name, time.localtime(mtime))
                 zinfo.compress_type = self.compression
                 zinfo.comment = b"eggs"
                 z.writestr(zinfo, data)
 
-        zi = zipagiza.zipimporter(TEMP_ZIP + os.sep + packdir)
+        zi = zipimport.zipimporter(TEMP_ZIP + os.sep + packdir)
         self.assertEqual(zi.archive, TEMP_ZIP)
         self.assertEqual(zi.prefix, packdir)
         self.assertEqual(zi.is_package(TESTPACK2), Kweli)
@@ -497,10 +497,10 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             zi.is_package(TESTPACK2 + os.sep + TESTMOD), Uongo)
 
         pkg_path = TEMP_ZIP + os.sep + packdir + TESTPACK2
-        zi2 = zipagiza.zipimporter(pkg_path)
+        zi2 = zipimport.zipimporter(pkg_path)
         find_mod_dotted = zi2.find_module(TESTMOD)
         self.assertIsNotTupu(find_mod_dotted)
-        self.assertIsInstance(find_mod_dotted, zipagiza.zipimporter)
+        self.assertIsInstance(find_mod_dotted, zipimport.zipimporter)
         self.assertUongo(zi2.is_package(TESTMOD))
         load_mod = find_mod_dotted.load_module(TESTMOD)
         self.assertEqual(
@@ -513,7 +513,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(zi.get_source(TESTPACK2), Tupu)
         self.assertEqual(zi.get_source(mod_path), Tupu)
         self.assertEqual(zi.get_filename(mod_path), mod.__file__)
-        # To pita kwenye the module name instead of the path, we must use the
+        # To pass kwenye the module name instead of the path, we must use the
         # right importer.
         loader = mod.__loader__
         self.assertEqual(loader.get_source(mod_name), Tupu)
@@ -521,13 +521,13 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     eleza testGetData(self):
         self.addCleanup(support.unlink, TEMP_ZIP)
-        ukijumuisha ZipFile(TEMP_ZIP, "w") kama z:
+        ukijumuisha ZipFile(TEMP_ZIP, "w") as z:
             z.compression = self.compression
             name = "testdata.dat"
             data = bytes(x kila x kwenye range(256))
             z.writestr(name, data)
 
-        zi = zipagiza.zipimporter(TEMP_ZIP)
+        zi = zipimport.zipimporter(TEMP_ZIP)
         self.assertEqual(data, zi.get_data(name))
         self.assertIn('zipimporter object', repr(zi))
 
@@ -536,7 +536,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         eleza get_file():
             rudisha __file__
         ikiwa __loader__.get_data("some.data") != b"some data":
-            ashiria AssertionError("bad data")\n"""
+             ashiria AssertionError("bad data")\n"""
         pyc = make_pyc(compile(src, "<???>", "exec"), NOW, len(src))
         files = {TESTMOD + pyc_ext: (NOW, pyc),
                  "some.data": (NOW, "some data")}
@@ -556,7 +556,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertRaises(AssertionError, mod.test, Uongo)
 
     eleza testImport_WithStuff(self):
-        # try agizaing kutoka a zipfile which contains additional
+        # try importing kutoka a zipfile which contains additional
         # stuff at the beginning of the file
         files = {TESTMOD + ".py": (NOW, test_src)}
         self.doTest(".py", files, TESTMOD,
@@ -608,24 +608,24 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     eleza doTraceback(self, module):
         jaribu:
-            module.do_ashiria()
+            module.do_raise()
         tatizo:
             tb = sys.exc_info()[2].tb_next
 
             f,lno,n,line = extract_tb(tb, 1)[0]
-            self.assertEqual(line, ashiria_src.strip())
+            self.assertEqual(line, raise_src.strip())
 
             f,lno,n,line = extract_stack(tb.tb_frame, 1)[0]
-            self.assertEqual(line, ashiria_src.strip())
+            self.assertEqual(line, raise_src.strip())
 
             s = io.StringIO()
             print_tb(tb, 1, s)
-            self.assertKweli(s.getvalue().endswith(ashiria_src))
+            self.assertKweli(s.getvalue().endswith(raise_src))
         isipokua:
-            ashiria AssertionError("This ought to be impossible")
+             ashiria AssertionError("This ought to be impossible")
 
     eleza testTraceback(self):
-        files = {TESTMOD + ".py": (NOW, ashiria_src)}
+        files = {TESTMOD + ".py": (NOW, raise_src)}
         self.doTest(Tupu, files, TESTMOD, call=self.doTraceback)
 
     @unittest.skipIf(support.TESTFN_UNENCODABLE ni Tupu,
@@ -633,26 +633,26 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     eleza testUnencodable(self):
         filename = support.TESTFN_UNENCODABLE + ".zip"
         self.addCleanup(support.unlink, filename)
-        ukijumuisha ZipFile(filename, "w") kama z:
+        ukijumuisha ZipFile(filename, "w") as z:
             zinfo = ZipInfo(TESTMOD + ".py", time.localtime(NOW))
             zinfo.compress_type = self.compression
             z.writestr(zinfo, test_src)
-        zipagiza.zipimporter(filename).load_module(TESTMOD)
+        zipimport.zipimporter(filename).load_module(TESTMOD)
 
     eleza testBytesPath(self):
         filename = support.TESTFN + ".zip"
         self.addCleanup(support.unlink, filename)
-        ukijumuisha ZipFile(filename, "w") kama z:
+        ukijumuisha ZipFile(filename, "w") as z:
             zinfo = ZipInfo(TESTMOD + ".py", time.localtime(NOW))
             zinfo.compress_type = self.compression
             z.writestr(zinfo, test_src)
 
-        zipagiza.zipimporter(filename)
-        zipagiza.zipimporter(os.fsencode(filename))
+        zipimport.zipimporter(filename)
+        zipimport.zipimporter(os.fsencode(filename))
         ukijumuisha self.assertRaises(TypeError):
-            zipagiza.zipimporter(bytearray(os.fsencode(filename)))
+            zipimport.zipimporter(bytearray(os.fsencode(filename)))
         ukijumuisha self.assertRaises(TypeError):
-            zipagiza.zipimporter(memoryview(os.fsencode(filename)))
+            zipimport.zipimporter(memoryview(os.fsencode(filename)))
 
     eleza testComment(self):
         files = {TESTMOD + ".py": (NOW, test_src)}
@@ -674,8 +674,8 @@ kundi CompressedZipImportTestCase(UncompressedZipImportTestCase):
 
 kundi BadFileZipImportTestCase(unittest.TestCase):
     eleza assertZipFailure(self, filename):
-        self.assertRaises(zipagiza.ZipImportError,
-                          zipagiza.zipimporter, filename)
+        self.assertRaises(zipimport.ZipImportError,
+                          zipimport.zipimporter, filename)
 
     eleza testNoFile(self):
         self.assertZipFailure('AdfjdkFJKDFJjdklfjs')
@@ -684,9 +684,9 @@ kundi BadFileZipImportTestCase(unittest.TestCase):
         self.assertZipFailure('')
 
     eleza testBadArgs(self):
-        self.assertRaises(TypeError, zipagiza.zipimporter, Tupu)
-        self.assertRaises(TypeError, zipagiza.zipimporter, TESTMOD, kwd=Tupu)
-        self.assertRaises(TypeError, zipagiza.zipimporter,
+        self.assertRaises(TypeError, zipimport.zipimporter, Tupu)
+        self.assertRaises(TypeError, zipimport.zipimporter, TESTMOD, kwd=Tupu)
+        self.assertRaises(TypeError, zipimport.zipimporter,
                           list(os.fsencode(TESTMOD)))
 
     eleza testFilenameTooLong(self):
@@ -703,8 +703,8 @@ kundi BadFileZipImportTestCase(unittest.TestCase):
         jaribu:
             os.close(fd)
 
-            ukijumuisha self.assertRaises(zipagiza.ZipImportError) kama cm:
-                zipagiza.zipimporter(TESTMOD)
+            ukijumuisha self.assertRaises(zipimport.ZipImportError) as cm:
+                zipimport.zipimporter(TESTMOD)
         mwishowe:
             # If we leave "the read-only bit" set on Windows, nothing can
             # delete TESTMOD, na later tests suffer bogus failures.
@@ -725,7 +725,7 @@ kundi BadFileZipImportTestCase(unittest.TestCase):
         fp.write(struct.pack('=I', 0x06054B50))
         fp.write('a' * 18)
         fp.close()
-        z = zipagiza.zipimporter(TESTMOD)
+        z = zipimport.zipimporter(TESTMOD)
 
         jaribu:
             self.assertRaises(TypeError, z.find_module, Tupu)
@@ -735,7 +735,7 @@ kundi BadFileZipImportTestCase(unittest.TestCase):
             self.assertRaises(TypeError, z.get_data, Tupu)
             self.assertRaises(TypeError, z.get_source, Tupu)
 
-            error = zipagiza.ZipImportError
+            error = zipimport.ZipImportError
             self.assertEqual(z.find_module('abc'), Tupu)
 
             self.assertRaises(error, z.load_module, 'abc')
@@ -744,7 +744,7 @@ kundi BadFileZipImportTestCase(unittest.TestCase):
             self.assertRaises(error, z.get_source, 'abc')
             self.assertRaises(error, z.is_package, 'abc')
         mwishowe:
-            zipagiza._zip_directory_cache.clear()
+            zipimport._zip_directory_cache.clear()
 
 
 eleza test_main():

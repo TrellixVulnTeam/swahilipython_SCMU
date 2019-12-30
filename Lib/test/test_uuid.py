@@ -16,7 +16,7 @@ py_uuid = support.import_fresh_module('uuid', blocked=['_uuid'])
 c_uuid = support.import_fresh_module('uuid', fresh=['_uuid'])
 
 
-eleza agizaable(name):
+eleza importable(name):
     jaribu:
         __import__(name)
         rudisha Kweli
@@ -454,7 +454,7 @@ kundi BaseTestUUID:
     # need sio necessarily be 48 bits (e.g., EUI-64).
     eleza test_uuid1_eui64(self):
         # Confirm that uuid.getnode ignores hardware addresses larger than 48
-        # bits. Mock out each platform's *_getnode helper functions to rudisha
+        # bits. Mock out each platform's *_getnode helper functions to return
         # something just larger than 48 bits to test. This will cause
         # uuid.getnode to fall back on uuid._random_getnode, which will
         # generate a valid value.
@@ -472,7 +472,7 @@ kundi BaseTestUUID:
         # the value kutoka too_large_getter above.
         jaribu:
             self.uuid.uuid1(node=node)
-        tatizo ValueError kama e:
+        except ValueError as e:
             self.fail('uuid1 was given an invalid node ID')
 
     eleza test_uuid1(self):
@@ -513,7 +513,7 @@ kundi BaseTestUUID:
         equal(((u.clock_seq_hi_variant & 0x3f) << 8) |
                          u.clock_seq_low, 0x3fff)
 
-    # bpo-29925: On Mac OS X Tiger, self.uuid.uuid1().is_safe rudishas
+    # bpo-29925: On Mac OS X Tiger, self.uuid.uuid1().is_safe returns
     # self.uuid.SafeUUID.unknown
     @support.requires_mac_ver(10, 5)
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
@@ -522,7 +522,7 @@ kundi BaseTestUUID:
             self.skipTest('requires uuid_generate_time_safe(3)')
 
         u = self.uuid.uuid1()
-        # uuid_generate_time_safe() may rudisha 0 ama -1 but what it rudishas is
+        # uuid_generate_time_safe() may rudisha 0 ama -1 but what it returns is
         # dependent on the underlying platform support.  At least it cannot be
         # unknown (unless I suppose the platform ni buggy).
         self.assertNotEqual(u.is_safe, self.uuid.SafeUUID.unknown)
@@ -540,7 +540,7 @@ kundi BaseTestUUID:
             self.skipTest('need uuid._generate_time_safe')
         ukijumuisha unittest.mock.patch.object(self.uuid, '_generate_time_safe',
                                         lambda: (f()[0], safe_value)):
-            tuma
+            yield
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     eleza test_uuid1_unknown(self):
@@ -563,7 +563,7 @@ kundi BaseTestUUID:
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unsafe)
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
-    eleza test_uuid1_bogus_rudisha_value(self):
+    eleza test_uuid1_bogus_return_value(self):
         ukijumuisha self.mock_generate_time_safe(3):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
@@ -572,16 +572,16 @@ kundi BaseTestUUID:
         ukijumuisha mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', Uongo), \
              mock.patch.object(self.uuid, '_generate_time_safe', Tupu), \
              mock.patch.object(self.uuid, '_last_timestamp', Tupu), \
-             mock.patch.object(self.uuid, 'getnode', rudisha_value=93328246233727), \
-             mock.patch('time.time_ns', rudisha_value=1545052026752910643), \
-             mock.patch('random.getrandbits', rudisha_value=5317): # guaranteed to be random
+             mock.patch.object(self.uuid, 'getnode', return_value=93328246233727), \
+             mock.patch('time.time_ns', return_value=1545052026752910643), \
+             mock.patch('random.getrandbits', return_value=5317): # guaranteed to be random
             u = self.uuid.uuid1()
             self.assertEqual(u, self.uuid.UUID('a7a55b92-01fc-11e9-94c5-54e1acf6da7f'))
 
         ukijumuisha mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', Uongo), \
              mock.patch.object(self.uuid, '_generate_time_safe', Tupu), \
              mock.patch.object(self.uuid, '_last_timestamp', Tupu), \
-             mock.patch('time.time_ns', rudisha_value=1545052026752910643):
+             mock.patch('time.time_ns', return_value=1545052026752910643):
             u = self.uuid.uuid1(node=93328246233727, clock_seq=5317)
             self.assertEqual(u, self.uuid.UUID('a7a55b92-01fc-11e9-94c5-54e1acf6da7f'))
 
@@ -686,9 +686,9 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         popen.stdout = io.BytesIO(data.encode())
 
         ukijumuisha unittest.mock.patch.object(shutil, 'which',
-                                        rudisha_value='/sbin/ifconfig'):
+                                        return_value='/sbin/ifconfig'):
             ukijumuisha unittest.mock.patch.object(subprocess, 'Popen',
-                                            rudisha_value=popen):
+                                            return_value=popen):
                 mac = self.uuid._find_mac(
                     command='ifconfig',
                     args='',
@@ -742,8 +742,8 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         node = self.uuid._ipconfig_getnode()
         self.check_node(node, 'ipconfig')
 
-    @unittest.skipUnless(agizaable('win32wnet'), 'requires win32wnet')
-    @unittest.skipUnless(agizaable('netbios'), 'requires netbios')
+    @unittest.skipUnless(importable('win32wnet'), 'requires win32wnet')
+    @unittest.skipUnless(importable('netbios'), 'requires netbios')
     eleza test_netbios_getnode(self):
         node = self.uuid._netbios_getnode()
         self.check_node(node)
@@ -761,16 +761,16 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
 
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
     eleza test_unix_getnode(self):
-        ikiwa sio agizaable('_uuid') na sio agizaable('ctypes'):
+        ikiwa sio importable('_uuid') na sio importable('ctypes'):
             self.skipTest("neither _uuid extension nor ctypes available")
         jaribu: # Issues 1481, 3581: _uuid_generate_time() might be Tupu.
             node = self.uuid._unix_getnode()
-        tatizo TypeError:
+        except TypeError:
             self.skipTest('requires uuid_generate_time')
         self.check_node(node, 'unix')
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
-    @unittest.skipUnless(agizaable('ctypes'), 'requires ctypes')
+    @unittest.skipUnless(importable('ctypes'), 'requires ctypes')
     eleza test_windll_getnode(self):
         node = self.uuid._windll_getnode()
         self.check_node(node)

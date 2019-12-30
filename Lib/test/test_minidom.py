@@ -21,7 +21,7 @@ sample = ("<?xml version='1.0' encoding='us-ascii'?>\n"
           "]><doc attr='value'> text\n"
           "<?pi sample?> <!-- comment --> <e/> </doc>")
 
-# The tests of DocumentType agizaing use these helpers to construct
+# The tests of DocumentType importing use these helpers to construct
 # the documents to work with, since sio all DOM builders actually
 # create the DocumentType nodes.
 eleza create_doc_without_doctype(doctype=Tupu):
@@ -64,13 +64,13 @@ kundi MinidomTest(unittest.TestCase):
         self.assertUongo(Document.async_)
 
     eleza testParseFromBinaryFile(self):
-        ukijumuisha open(tstfile, 'rb') kama file:
+        ukijumuisha open(tstfile, 'rb') as file:
             dom = parse(file)
             dom.unlink()
             self.confirm(isinstance(dom, Document))
 
     eleza testParseFromTextFile(self):
-        ukijumuisha open(tstfile, 'r', encoding='iso-8859-1') kama file:
+        ukijumuisha open(tstfile, 'r', encoding='iso-8859-1') as file:
             dom = parse(file)
             dom.unlink()
             self.confirm(isinstance(dom, Document))
@@ -221,7 +221,7 @@ kundi MinidomTest(unittest.TestCase):
         dom = parse(tstfile)
         self.confirm(dom)# should sio be zero
         dom.appendChild(dom.createComment("foo"))
-        self.confirm(sio dom.childNodes[-1].childNodes)
+        self.confirm(not dom.childNodes[-1].childNodes)
         dom.unlink()
 
     eleza testUnlink(self):
@@ -231,7 +231,7 @@ kundi MinidomTest(unittest.TestCase):
         self.assertUongo(dom.childNodes)
 
     eleza testContext(self):
-        ukijumuisha parse(tstfile) kama dom:
+        ukijumuisha parse(tstfile) as dom:
             self.assertKweli(dom.childNodes)
         self.assertUongo(dom.childNodes)
 
@@ -381,13 +381,13 @@ kundi MinidomTest(unittest.TestCase):
         dom.unlink()
 
     eleza testGetAttrList(self):
-        pita
+        pass
 
     eleza testGetAttrValues(self):
-        pita
+        pass
 
     eleza testGetAttrLength(self):
-        pita
+        pass
 
     eleza testGetAttribute(self):
         dom = Document()
@@ -409,7 +409,7 @@ kundi MinidomTest(unittest.TestCase):
         self.assertEqual(child2.getAttributeNS("http://www.python.org", "missing"),
                          '')
 
-    eleza testGetAttributeNode(self): pita
+    eleza testGetAttributeNode(self): pass
 
     eleza testGetElementsByTagNameNS(self):
         d="""<foo xmlns:minidom='http://pyxml.sf.net/minidom'>
@@ -481,7 +481,7 @@ kundi MinidomTest(unittest.TestCase):
         self.confirm(str(node) == repr(node))
         dom.unlink()
 
-    eleza testTextNodeRepr(self): pita
+    eleza testTextNodeRepr(self): pass
 
     eleza testWriteXML(self):
         str = '<?xml version="1.0" ?><a b="c"/>'
@@ -546,41 +546,41 @@ kundi MinidomTest(unittest.TestCase):
                 na pi.localName ni Tupu
                 na pi.namespaceURI == xml.dom.EMPTY_NAMESPACE)
 
-    eleza testProcessingInstructionRepr(self): pita
+    eleza testProcessingInstructionRepr(self): pass
 
-    eleza testTextRepr(self): pita
+    eleza testTextRepr(self): pass
 
-    eleza testWriteText(self): pita
+    eleza testWriteText(self): pass
 
-    eleza testDocumentElement(self): pita
+    eleza testDocumentElement(self): pass
 
     eleza testTooManyDocumentElements(self):
         doc = parseString("<doc/>")
         elem = doc.createElement("extra")
-        # Should ashiria an exception when adding an extra document element.
+        # Should  ashiria an exception when adding an extra document element.
         self.assertRaises(xml.dom.HierarchyRequestErr, doc.appendChild, elem)
         elem.unlink()
         doc.unlink()
 
-    eleza testCreateElementNS(self): pita
+    eleza testCreateElementNS(self): pass
 
-    eleza testCreateAttributeNS(self): pita
+    eleza testCreateAttributeNS(self): pass
 
-    eleza testParse(self): pita
+    eleza testParse(self): pass
 
-    eleza testParseString(self): pita
+    eleza testParseString(self): pass
 
-    eleza testComment(self): pita
+    eleza testComment(self): pass
 
-    eleza testAttrListItem(self): pita
+    eleza testAttrListItem(self): pass
 
-    eleza testAttrListItems(self): pita
+    eleza testAttrListItems(self): pass
 
-    eleza testAttrListItemNS(self): pita
+    eleza testAttrListItemNS(self): pass
 
-    eleza testAttrListKeys(self): pita
+    eleza testAttrListKeys(self): pass
 
-    eleza testAttrListKeysNS(self): pita
+    eleza testAttrListKeysNS(self): pass
 
     eleza testRemoveNamedItem(self):
         doc = parseString("<doc a=''/>")
@@ -601,29 +601,29 @@ kundi MinidomTest(unittest.TestCase):
         self.assertRaises(xml.dom.NotFoundErr, attrs.removeNamedItemNS,
                           "http://xml.python.org/", "b")
 
-    eleza testAttrListValues(self): pita
+    eleza testAttrListValues(self): pass
 
-    eleza testAttrListLength(self): pita
+    eleza testAttrListLength(self): pass
 
-    eleza testAttrList__getitem__(self): pita
+    eleza testAttrList__getitem__(self): pass
 
-    eleza testAttrList__setitem__(self): pita
+    eleza testAttrList__setitem__(self): pass
 
-    eleza testSetAttrValueandNodeValue(self): pita
+    eleza testSetAttrValueandNodeValue(self): pass
 
-    eleza testParseElement(self): pita
+    eleza testParseElement(self): pass
 
-    eleza testParseAttributes(self): pita
+    eleza testParseAttributes(self): pass
 
-    eleza testParseElementNamespaces(self): pita
+    eleza testParseElementNamespaces(self): pass
 
-    eleza testParseAttributeNamespaces(self): pita
+    eleza testParseAttributeNamespaces(self): pass
 
-    eleza testParseProcessingInstructions(self): pita
+    eleza testParseProcessingInstructions(self): pass
 
-    eleza testChildNodes(self): pita
+    eleza testChildNodes(self): pass
 
-    eleza testFirstChild(self): pita
+    eleza testFirstChild(self): pass
 
     eleza testHasChildNodes(self):
         dom = parseString("<doc><foo/></doc>")
@@ -703,7 +703,7 @@ kundi MinidomTest(unittest.TestCase):
                     "]>\n"
                     "<doc attr='value'/>")
         doc2 = doc.cloneNode(1)
-        self.confirm(sio (doc.isSameNode(doc2) ama doc2.isSameNode(doc)),
+        self.confirm(not (doc.isSameNode(doc2) ama doc2.isSameNode(doc)),
                 "testCloneDocumentDeep: document objects sio distinct")
         self.confirm(len(doc.childNodes) == len(doc2.childNodes),
                 "testCloneDocumentDeep: wrong number of Document children")
@@ -711,14 +711,14 @@ kundi MinidomTest(unittest.TestCase):
                 "testCloneDocumentDeep: documentElement sio an ELEMENT_NODE")
         self.confirm(doc2.documentElement.ownerDocument.isSameNode(doc2),
             "testCloneDocumentDeep: documentElement owner ni sio new document")
-        self.confirm(sio doc.documentElement.isSameNode(doc2.documentElement),
+        self.confirm(not doc.documentElement.isSameNode(doc2.documentElement),
                 "testCloneDocumentDeep: documentElement should sio be shared")
         ikiwa doc.doctype ni sio Tupu:
             # check the doctype iff the original DOM maintained it
             self.confirm(doc2.doctype.nodeType == Node.DOCUMENT_TYPE_NODE,
                     "testCloneDocumentDeep: doctype sio a DOCUMENT_TYPE_NODE")
             self.confirm(doc2.doctype.ownerDocument.isSameNode(doc2))
-            self.confirm(sio doc.doctype.isSameNode(doc2.doctype))
+            self.confirm(not doc.doctype.isSameNode(doc2.doctype))
 
     eleza testCloneDocumentTypeDeepOk(self):
         doctype = create_nonempty_doctype()
@@ -736,8 +736,8 @@ kundi MinidomTest(unittest.TestCase):
         kila i kwenye range(len(doctype.entities)):
             se = doctype.entities.item(i)
             ce = clone.entities.item(i)
-            self.confirm((sio se.isSameNode(ce))
-                    na (sio ce.isSameNode(se))
+            self.confirm((not se.isSameNode(ce))
+                    na (not ce.isSameNode(se))
                     na ce.nodeName == se.nodeName
                     na ce.notationName == se.notationName
                     na ce.publicId == se.publicId
@@ -748,8 +748,8 @@ kundi MinidomTest(unittest.TestCase):
         kila i kwenye range(len(doctype.notations)):
             sn = doctype.notations.item(i)
             cn = clone.notations.item(i)
-            self.confirm((sio sn.isSameNode(cn))
-                    na (sio cn.isSameNode(sn))
+            self.confirm((not sn.isSameNode(cn))
+                    na (not cn.isSameNode(sn))
                     na cn.nodeName == sn.nodeName
                     na cn.publicId == sn.publicId
                     na cn.systemId == sn.systemId)
@@ -781,7 +781,7 @@ kundi MinidomTest(unittest.TestCase):
     eleza check_import_document(self, deep, testName):
         doc1 = parseString("<doc/>")
         doc2 = parseString("<doc/>")
-        self.assertRaises(xml.dom.NotSupportedErr, doc1.agizaNode, doc2, deep)
+        self.assertRaises(xml.dom.NotSupportedErr, doc1.importNode, doc2, deep)
 
     eleza testImportDocumentShallow(self):
         self.check_import_document(0, "testImportDocumentShallow")
@@ -792,13 +792,13 @@ kundi MinidomTest(unittest.TestCase):
     eleza testImportDocumentTypeShallow(self):
         src = create_doc_with_doctype()
         target = create_doc_without_doctype()
-        self.assertRaises(xml.dom.NotSupportedErr, target.agizaNode,
+        self.assertRaises(xml.dom.NotSupportedErr, target.importNode,
                           src.doctype, 0)
 
     eleza testImportDocumentTypeDeep(self):
         src = create_doc_with_doctype()
         target = create_doc_without_doctype()
-        self.assertRaises(xml.dom.NotSupportedErr, target.agizaNode,
+        self.assertRaises(xml.dom.NotSupportedErr, target.importNode,
                           src.doctype, 1)
 
     # Testing attribute clones uses a helper, na should always be deep,
@@ -808,8 +808,8 @@ kundi MinidomTest(unittest.TestCase):
         attr = doc.documentElement.getAttributeNode("attr")
         self.assertNotEqual(attr, Tupu)
         clone = attr.cloneNode(deep)
-        self.confirm(sio clone.isSameNode(attr))
-        self.confirm(sio attr.isSameNode(clone))
+        self.confirm(not clone.isSameNode(attr))
+        self.confirm(not attr.isSameNode(clone))
         self.confirm(clone.ownerElement ni Tupu,
                 testName + ": ownerElement should be Tupu")
         self.confirm(clone.ownerDocument.isSameNode(attr.ownerDocument),
@@ -1095,11 +1095,11 @@ kundi MinidomTest(unittest.TestCase):
         root = doc.documentElement
         (pi, text, elm) = root.childNodes
 
-        self.confirm(pi.nextSibling ni text na
-                pi.previousSibling ni Tupu na
-                text.nextSibling ni elm na
-                text.previousSibling ni pi na
-                elm.nextSibling ni Tupu na
+        self.confirm(pi.nextSibling ni text and
+                pi.previousSibling ni Tupu and
+                text.nextSibling ni elm and
+                text.previousSibling ni pi and
+                elm.nextSibling ni Tupu and
                 elm.previousSibling ni text, "testSiblings")
 
         doc.unlink()
@@ -1112,10 +1112,10 @@ kundi MinidomTest(unittest.TestCase):
         (elm2a, elm2b) = elm1.childNodes
         elm3 = elm2b.childNodes[0]
 
-        self.confirm(root.parentNode ni doc na
-                elm1.parentNode ni root na
-                elm2a.parentNode ni elm1 na
-                elm2b.parentNode ni elm1 na
+        self.confirm(root.parentNode ni doc and
+                elm1.parentNode ni root and
+                elm2a.parentNode ni elm1 and
+                elm2b.parentNode ni elm1 and
                 elm3.parentNode ni elm2b, "testParents")
         doc.unlink()
 
@@ -1145,7 +1145,7 @@ kundi MinidomTest(unittest.TestCase):
             '<?xml version="1.0" encoding="utf-16"?>'
             '<foo>\u20ac</foo>'.encode('utf-16'))
 
-        # Verify that character decoding errors ashiria exceptions instead
+        # Verify that character decoding errors  ashiria exceptions instead
         # of crashing
         self.assertRaises(UnicodeDecodeError, parseString,
                 b'<fran\xe7ais>Comment \xe7a va ? Tr\xe8s bien ?</fran\xe7ais>')
@@ -1486,9 +1486,9 @@ kundi MinidomTest(unittest.TestCase):
         a3.value = "v"
         e.setAttributeNode(a3)
         self.confirm(e.isSameNode(doc.getElementById("w")))
-        self.confirm(sio a1.isId)
+        self.confirm(not a1.isId)
         self.confirm(a2.isId)
-        self.confirm(sio a3.isId)
+        self.confirm(not a3.isId)
         self.confirm(doc.getElementById("v") ni Tupu)
         # renaming an attribute should sio affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")
@@ -1522,9 +1522,9 @@ kundi MinidomTest(unittest.TestCase):
         a3.value = "v"
         e.setAttributeNode(a3)
         self.confirm(e.isSameNode(doc.getElementById("w")))
-        self.confirm(sio a1.isId)
+        self.confirm(not a1.isId)
         self.confirm(a2.isId)
-        self.confirm(sio a3.isId)
+        self.confirm(not a3.isId)
         self.confirm(doc.getElementById("v") ni Tupu)
         # renaming an attribute should sio affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")

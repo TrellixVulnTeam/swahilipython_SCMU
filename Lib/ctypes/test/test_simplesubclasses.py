@@ -1,38 +1,38 @@
-import unittest
-from ctypes import *
+agiza unittest
+kutoka ctypes agiza *
 
-class MyInt(c_int):
-    def __eq__(self, other):
-        if type(other) != MyInt:
-            return NotImplementedError
-        return self.value == other.value
+kundi MyInt(c_int):
+    eleza __eq__(self, other):
+        ikiwa type(other) != MyInt:
+            rudisha NotImplementedError
+        rudisha self.value == other.value
 
-class Test(unittest.TestCase):
+kundi Test(unittest.TestCase):
 
-    def test_compare(self):
+    eleza test_compare(self):
         self.assertEqual(MyInt(3), MyInt(3))
         self.assertNotEqual(MyInt(42), MyInt(43))
 
-    def test_ignore_retval(self):
-        # Test if the return value of a callback is ignored
-        # if restype is None
-        proto = CFUNCTYPE(None)
-        def func():
-            return (1, "abc", None)
+    eleza test_ignore_retval(self):
+        # Test ikiwa the rudisha value of a callback ni ignored
+        # ikiwa restype ni Tupu
+        proto = CFUNCTYPE(Tupu)
+        eleza func():
+            rudisha (1, "abc", Tupu)
 
         cb = proto(func)
-        self.assertEqual(None, cb())
+        self.assertEqual(Tupu, cb())
 
 
-    def test_int_callback(self):
+    eleza test_int_callback(self):
         args = []
-        def func(arg):
+        eleza func(arg):
             args.append(arg)
-            return arg
+            rudisha arg
 
-        cb = CFUNCTYPE(None, MyInt)(func)
+        cb = CFUNCTYPE(Tupu, MyInt)(func)
 
-        self.assertEqual(None, cb(42))
+        self.assertEqual(Tupu, cb(42))
         self.assertEqual(type(args[-1]), MyInt)
 
         cb = CFUNCTYPE(c_int, c_int)(func)
@@ -40,8 +40,8 @@ class Test(unittest.TestCase):
         self.assertEqual(42, cb(42))
         self.assertEqual(type(args[-1]), int)
 
-    def test_int_struct(self):
-        class X(Structure):
+    eleza test_int_struct(self):
+        kundi X(Structure):
             _fields_ = [("x", MyInt)]
 
         self.assertEqual(X().x, MyInt())
@@ -51,5 +51,5 @@ class Test(unittest.TestCase):
 
         self.assertEqual(s.x, MyInt(42))
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

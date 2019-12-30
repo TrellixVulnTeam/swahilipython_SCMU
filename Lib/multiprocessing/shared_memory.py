@@ -72,11 +72,11 @@ kundi SharedMemory:
 
     eleza __init__(self, name=Tupu, create=Uongo, size=0):
         ikiwa sio size >= 0:
-            ashiria ValueError("'size' must be a positive integer")
+             ashiria ValueError("'size' must be a positive integer")
         ikiwa create:
             self._flags = _O_CREX | os.O_RDWR
         ikiwa name ni Tupu na sio self._flags & os.O_EXCL:
-            ashiria ValueError("'name' can only be Tupu ikiwa create=Kweli")
+             ashiria ValueError("'name' can only be Tupu ikiwa create=Kweli")
 
         ikiwa _USE_POSIX:
 
@@ -91,7 +91,7 @@ kundi SharedMemory:
                             self._flags,
                             mode=self._mode
                         )
-                    tatizo FileExistsError:
+                    except FileExistsError:
                         endelea
                     self._name = name
                     koma
@@ -109,9 +109,9 @@ kundi SharedMemory:
                 stats = os.fstat(self._fd)
                 size = stats.st_size
                 self._mmap = mmap.mmap(self._fd, size)
-            tatizo OSError:
+            except OSError:
                 self.unlink()
-                ashiria
+                raise
 
             kutoka .resource_tracker agiza register
             register(self._name, "shared_memory")
@@ -137,7 +137,7 @@ kundi SharedMemory:
                         last_error_code = _winapi.GetLastError()
                         ikiwa last_error_code == _winapi.ERROR_ALREADY_EXISTS:
                             ikiwa name ni sio Tupu:
-                                ashiria FileExistsError(
+                                 ashiria FileExistsError(
                                     errno.EEXIST,
                                     os.strerror(errno.EEXIST),
                                     name,
@@ -179,8 +179,8 @@ kundi SharedMemory:
     eleza __del__(self):
         jaribu:
             self.close()
-        tatizo OSError:
-            pita
+        except OSError:
+            pass
 
     eleza __reduce__(self):
         rudisha (
@@ -247,7 +247,7 @@ kundi ShareableList:
     lists can sio change their overall length (i.e. no append, insert,
     etc.)
 
-    Because values are packed into a memoryview kama bytes, the struct
+    Because values are packed into a memoryview as bytes, the struct
     packing format kila any storable value must require no more than 8
     characters to describe its format."""
 
@@ -270,13 +270,13 @@ kundi ShareableList:
     @staticmethod
     eleza _extract_recreation_code(value):
         """Used kwenye concert ukijumuisha _back_transforms_mapping to convert values
-        into the appropriate Python objects when retrieving them kutoka
-        the list kama well kama when storing them."""
+        into the appropriate Python objects when retrieving them from
+        the list as well as when storing them."""
         ikiwa sio isinstance(value, (str, bytes, Tupu.__class__)):
             rudisha 0
-        lasivyo isinstance(value, str):
+        elikiwa isinstance(value, str):
             rudisha 1
-        lasivyo isinstance(value, bytes):
+        elikiwa isinstance(value, bytes):
             rudisha 2
         isipokua:
             rudisha 3  # TupuType
@@ -345,7 +345,7 @@ kundi ShareableList:
 
         isipokua:
             self._list_len = len(self)  # Obtains size kutoka offset 0 kwenye buffer.
-            self._allocated_bytes = struct.unpack_kutoka(
+            self._allocated_bytes = struct.unpack_from(
                 self._format_size_metainfo,
                 self.shm.buf,
                 1 * 8
@@ -355,9 +355,9 @@ kundi ShareableList:
         "Gets the packing format kila a single value stored kwenye the list."
         position = position ikiwa position >= 0 isipokua position + self._list_len
         ikiwa (position >= self._list_len) ama (self._list_len < 0):
-            ashiria IndexError("Requested position out of range.")
+             ashiria IndexError("Requested position out of range.")
 
-        v = struct.unpack_kutoka(
+        v = struct.unpack_from(
             "8s",
             self.shm.buf,
             self._offset_packing_formats + position * 8
@@ -372,9 +372,9 @@ kundi ShareableList:
 
         position = position ikiwa position >= 0 isipokua position + self._list_len
         ikiwa (position >= self._list_len) ama (self._list_len < 0):
-            ashiria IndexError("Requested position out of range.")
+             ashiria IndexError("Requested position out of range.")
 
-        transform_code = struct.unpack_kutoka(
+        transform_code = struct.unpack_from(
             "b",
             self.shm.buf,
             self._offset_back_transform_codes + position
@@ -389,7 +389,7 @@ kundi ShareableList:
 
         position = position ikiwa position >= 0 isipokua position + self._list_len
         ikiwa (position >= self._list_len) ama (self._list_len < 0):
-            ashiria IndexError("Requested position out of range.")
+             ashiria IndexError("Requested position out of range.")
 
         struct.pack_into(
             "8s",
@@ -410,13 +410,13 @@ kundi ShareableList:
         jaribu:
             offset = self._offset_data_start \
                      + sum(self._allocated_bytes[:position])
-            (v,) = struct.unpack_kutoka(
+            (v,) = struct.unpack_from(
                 self._get_packing_format(position),
                 self.shm.buf,
                 offset
             )
-        tatizo IndexError:
-            ashiria IndexError("index out of range")
+        except IndexError:
+             ashiria IndexError("index out of range")
 
         back_transform = self._get_back_transform(position)
         v = back_transform(v)
@@ -428,14 +428,14 @@ kundi ShareableList:
             offset = self._offset_data_start \
                      + sum(self._allocated_bytes[:position])
             current_format = self._get_packing_format(position)
-        tatizo IndexError:
-            ashiria IndexError("assignment index out of range")
+        except IndexError:
+             ashiria IndexError("assignment index out of range")
 
         ikiwa sio isinstance(value, (str, bytes)):
             new_format = self._types_mapping[type(value)]
         isipokua:
             ikiwa len(value) > self._allocated_bytes[position]:
-                ashiria ValueError("exceeds available storage kila existing str")
+                 ashiria ValueError("exceeds available storage kila existing str")
             ikiwa current_format[-1] == "s":
                 new_format = current_format
             isipokua:
@@ -455,7 +455,7 @@ kundi ShareableList:
         rudisha partial(self.__class__, name=self.shm.name), ()
 
     eleza __len__(self):
-        rudisha struct.unpack_kutoka("q", self.shm.buf, 0)[0]
+        rudisha struct.unpack_from("q", self.shm.buf, 0)[0]
 
     eleza __repr__(self):
         rudisha f'{self.__class__.__name__}({list(self)}, name={self.shm.name!r})'
@@ -507,4 +507,4 @@ kundi ShareableList:
             ikiwa value == enjaribu:
                 rudisha position
         isipokua:
-            ashiria ValueError(f"{value!r} haiko kwenye this container")
+             ashiria ValueError(f"{value!r} sio kwenye this container")

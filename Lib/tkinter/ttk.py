@@ -2,13 +2,13 @@
 
 This module provides classes to allow using Tk themed widget set.
 
-Ttk is based on a revised and enhanced version of
+Ttk ni based on a revised na enhanced version of
 TIP #48 (http://tip.tcl.tk/48) specified style engine.
 
-Its basic idea is to separate, to the extent possible, the code
-implementing a widget's behavior from the code implementing its
-appearance. Widget class bindings are primarily responsible for
-maintaining the widget state and invoking callbacks, all aspects
+Its basic idea ni to separate, to the extent possible, the code
+implementing a widget's behavior kutoka the code implementing its
+appearance. Widget kundi bindings are primarily responsible for
+maintaining the widget state na invoking callbacks, all aspects
 of the widgets appearance lies at Themes.
 """
 
@@ -25,80 +25,80 @@ __all__ = ["Button", "Checkbutton", "Combobox", "Entry", "Frame", "Label",
            # functions
            "tclobjs_to_py", "setup_master"]
 
-import tkinter
-from tkinter agiza _flatten, _join, _stringify, _splitdict
+agiza tkinter
+kutoka tkinter agiza _flatten, _join, _stringify, _splitdict
 
-# Verify if Tk is new enough to sio need the Tile package
-_REQUIRE_TILE = True if tkinter.TkVersion < 8.5 isipokua False
+# Verify ikiwa Tk ni new enough to sio need the Tile package
+_REQUIRE_TILE = Kweli ikiwa tkinter.TkVersion < 8.5 isipokua Uongo
 
-def _load_tile(master):
-    if _REQUIRE_TILE:
-        import os
+eleza _load_tile(master):
+    ikiwa _REQUIRE_TILE:
+        agiza os
         tilelib = os.environ.get('TILE_LIBRARY')
-        if tilelib:
+        ikiwa tilelib:
             # append custom tile path to the list of directories that
-            # Tcl uses when attempting to resolve packages with the package
+            # Tcl uses when attempting to resolve packages ukijumuisha the package
             # command
             master.tk.eval(
                     'global auto_path; '
                     'lappend auto_path {%s}' % tilelib)
 
         master.tk.eval('package require tile') # TclError may be raised here
-        master._tile_loaded = True
+        master._tile_loaded = Kweli
 
-def _format_optvalue(value, script=False):
+eleza _format_optvalue(value, script=Uongo):
     """Internal function."""
-    if script:
-        # if caller passes a Tcl script to tk.call, all the values need to
-        # be grouped into words (arguments to a command in Tcl dialect)
+    ikiwa script:
+        # ikiwa caller passes a Tcl script to tk.call, all the values need to
+        # be grouped into words (arguments to a command kwenye Tcl dialect)
         value = _stringify(value)
-    lasivyo isinstance(value, (list, tuple)):
+    elikiwa isinstance(value, (list, tuple)):
         value = _join(value)
-    return value
+    rudisha value
 
-def _format_optdict(optdict, script=False, ignore=None):
+eleza _format_optdict(optdict, script=Uongo, ignore=Tupu):
     """Formats optdict to a tuple to pass it to tk.call.
 
-    E.g. (script=False):
+    E.g. (script=Uongo):
       {'foreground': 'blue', 'padding': [1, 2, 3, 4]} returns:
       ('-foreground', 'blue', '-padding', '1 2 3 4')"""
 
     opts = []
-    for opt, value in optdict.items():
-        if sio ignore or opt haiko kwenye ignore:
+    kila opt, value kwenye optdict.items():
+        ikiwa sio ignore ama opt sio kwenye ignore:
             opts.append("-%s" % opt)
-            if value ni sio None:
+            ikiwa value ni sio Tupu:
                 opts.append(_format_optvalue(value, script))
 
-    return _flatten(opts)
+    rudisha _flatten(opts)
 
-def _mapdict_values(items):
-    # each value in mapdict is expected to be a sequence, where each item
-    # is another sequence containing a state (or several) and a value
-    # E.g. (script=False):
+eleza _mapdict_values(items):
+    # each value kwenye mapdict ni expected to be a sequence, where each item
+    # ni another sequence containing a state (or several) na a value
+    # E.g. (script=Uongo):
     #   [('active', 'selected', 'grey'), ('focus', [1, 2, 3, 4])]
     #   returns:
     #   ['active selected', 'grey', 'focus', [1, 2, 3, 4]]
     opt_val = []
-    for *state, val in items:
-        # hacks for backward compatibility
-        state[0] # ashiria IndexError if empty
-        if len(state) == 1:
-            # if it is empty (something that evaluates to False), then
+    kila *state, val kwenye items:
+        # hacks kila backward compatibility
+        state[0] #  ashiria IndexError ikiwa empty
+        ikiwa len(state) == 1:
+            # ikiwa it ni empty (something that evaluates to Uongo), then
             # format it to Tcl code to denote the "normal" state
-            state = state[0] or ''
+            state = state[0] ama ''
         isipokua:
             # group multiple states
-            state = ' '.join(state) # ashiria TypeError if sio str
+            state = ' '.join(state) #  ashiria TypeError ikiwa sio str
         opt_val.append(state)
-        if val ni sio None:
+        ikiwa val ni sio Tupu:
             opt_val.append(val)
-    return opt_val
+    rudisha opt_val
 
-def _format_mapdict(mapdict, script=False):
+eleza _format_mapdict(mapdict, script=Uongo):
     """Formats mapdict to pass it to tk.call.
 
-    E.g. (script=False):
+    E.g. (script=Uongo):
       {'expand': [('active', 'selected', 'grey'), ('focus', [1, 2, 3, 4])]}
 
       returns:
@@ -106,56 +106,56 @@ def _format_mapdict(mapdict, script=False):
       ('-expand', '{active selected} grey focus {1, 2, 3, 4}')"""
 
     opts = []
-    for opt, value in mapdict.items():
+    kila opt, value kwenye mapdict.items():
         opts.extend(("-%s" % opt,
                      _format_optvalue(_mapdict_values(value), script)))
 
-    return _flatten(opts)
+    rudisha _flatten(opts)
 
-def _format_elemcreate(etype, script=False, *args, **kw):
-    """Formats args and kw according to the given element factory etype."""
-    spec = None
+eleza _format_elemcreate(etype, script=Uongo, *args, **kw):
+    """Formats args na kw according to the given element factory etype."""
+    spec = Tupu
     opts = ()
-    if etype in ("image", "vsapi"):
-        if etype == "image": # define an element based on an image
+    ikiwa etype kwenye ("image", "vsapi"):
+        ikiwa etype == "image": # define an element based on an image
             # first arg should be the default image name
             iname = args[0]
-            # next args, if any, are statespec/value pairs which is almost
+            # next args, ikiwa any, are statespec/value pairs which ni almost
             # a mapdict, but we just need the value
             imagespec = _join(_mapdict_values(args[1:]))
             spec = "%s %s" % (iname, imagespec)
 
         isipokua:
-            # define an element whose visual appearance is drawn using the
-            # Microsoft Visual Styles API which is responsible for the
-            # themed styles on Windows XP and Vista.
-            # Availability: Tk 8.6, Windows XP and Vista.
+            # define an element whose visual appearance ni drawn using the
+            # Microsoft Visual Styles API which ni responsible kila the
+            # themed styles on Windows XP na Vista.
+            # Availability: Tk 8.6, Windows XP na Vista.
             class_name, part_id = args[:2]
             statemap = _join(_mapdict_values(args[2:]))
             spec = "%s %s %s" % (class_name, part_id, statemap)
 
         opts = _format_optdict(kw, script)
 
-    lasivyo etype == "from": # clone an element
-        # it expects a themename and optionally an element to clone from,
+    elikiwa etype == "from": # clone an element
+        # it expects a themename na optionally an element to clone from,
         # otherwise it will clone {} (empty element)
         spec = args[0] # theme name
-        if len(args) > 1: # elementfrom specified
+        ikiwa len(args) > 1: # elementkutoka specified
             opts = (_format_optvalue(args[1], script),)
 
-    if script:
+    ikiwa script:
         spec = '{%s}' % spec
         opts = ' '.join(opts)
 
-    return spec, opts
+    rudisha spec, opts
 
-def _format_layoutlist(layout, indent=0, indent_size=2):
+eleza _format_layoutlist(layout, indent=0, indent_size=2):
     """Formats a layout list so we can pass the result to ttk::style
-    layout and ttk::style settings. Note that the layout doesn't have to
+    layout na ttk::style settings. Note that the layout doesn't have to
     be a list necessarily.
 
     E.g.:
-      [("Menubutton.background", None),
+      [("Menubutton.background", Tupu),
        ("Menubutton.button", {"children":
            [("Menubutton.focus", {"children":
                [("Menubutton.padding", {"children":
@@ -179,13 +179,13 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
       Menubutton.indicator -side right"""
     script = []
 
-    for layout_elem in layout:
+    kila layout_elem kwenye layout:
         elem, opts = layout_elem
-        opts = opts or {}
-        fopts = ' '.join(_format_optdict(opts, True, ("children",)))
-        head = "%s%s%s" % (' ' * indent, elem, (" %s" % fopts) if fopts isipokua '')
+        opts = opts ama {}
+        fopts = ' '.join(_format_optdict(opts, Kweli, ("children",)))
+        head = "%s%s%s" % (' ' * indent, elem, (" %s" % fopts) ikiwa fopts isipokua '')
 
-        if "children" in opts:
+        ikiwa "children" kwenye opts:
             script.append(head + " -children {")
             indent += indent_size
             newscript, indent = _format_layoutlist(opts['children'], indent,
@@ -196,69 +196,69 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
         isipokua:
             script.append(head)
 
-    return '\n'.join(script), indent
+    rudisha '\n'.join(script), indent
 
-def _script_from_settings(settings):
+eleza _script_from_settings(settings):
     """Returns an appropriate script, based on settings, according to
-    theme_settings definition to be used by theme_settings na
+    theme_settings definition to be used by theme_settings and
     theme_create."""
     script = []
     # a script will be generated according to settings passed, which
     # will then be evaluated by Tcl
-    for name, opts in settings.items():
+    kila name, opts kwenye settings.items():
         # will format specific keys according to Tcl code
-        if opts.get('configure'): # format 'configure'
-            s = ' '.join(_format_optdict(opts['configure'], True))
+        ikiwa opts.get('configure'): # format 'configure'
+            s = ' '.join(_format_optdict(opts['configure'], Kweli))
             script.append("ttk::style configure %s %s;" % (name, s))
 
-        if opts.get('map'): # format 'map'
-            s = ' '.join(_format_mapdict(opts['map'], True))
+        ikiwa opts.get('map'): # format 'map'
+            s = ' '.join(_format_mapdict(opts['map'], Kweli))
             script.append("ttk::style map %s %s;" % (name, s))
 
-        if 'layout' in opts: # format 'layout' which may be empty
-            if sio opts['layout']:
+        ikiwa 'layout' kwenye opts: # format 'layout' which may be empty
+            ikiwa sio opts['layout']:
                 s = 'null' # could be any other word, but this one makes sense
             isipokua:
                 s, _ = _format_layoutlist(opts['layout'])
             script.append("ttk::style layout %s {\n%s\n}" % (name, s))
 
-        if opts.get('element create'): # format 'element create'
+        ikiwa opts.get('element create'): # format 'element create'
             eopts = opts['element create']
             etype = eopts[0]
 
-            # find where args end, and where kwargs start
+            # find where args end, na where kwargs start
             argc = 1 # etype was the first one
-            wakati argc < len(eopts) and sio hasattr(eopts[argc], 'items'):
+            wakati argc < len(eopts) na sio hasattr(eopts[argc], 'items'):
                 argc += 1
 
             elemargs = eopts[1:argc]
-            elemkw = eopts[argc] if argc < len(eopts) and eopts[argc] isipokua {}
-            spec, opts = _format_elemcreate(etype, True, *elemargs, **elemkw)
+            elemkw = eopts[argc] ikiwa argc < len(eopts) na eopts[argc] isipokua {}
+            spec, opts = _format_elemcreate(etype, Kweli, *elemargs, **elemkw)
 
             script.append("ttk::style element create %s %s %s %s" % (
                 name, etype, spec, opts))
 
-    return '\n'.join(script)
+    rudisha '\n'.join(script)
 
-def _list_from_statespec(stuple):
-    """Construct a list from the given statespec tuple according to the
+eleza _list_from_statespec(stuple):
+    """Construct a list kutoka the given statespec tuple according to the
     accepted statespec accepted by _format_mapdict."""
     nval = []
-    for val in stuple:
-        typename = getattr(val, 'typename', None)
-        if typename is None:
+    kila val kwenye stuple:
+        typename = getattr(val, 'typename', Tupu)
+        ikiwa typename ni Tupu:
             nval.append(val)
-        isipokua: # this is a Tcl object
+        isipokua: # this ni a Tcl object
             val = str(val)
-            if typename == 'StateSpec':
+            ikiwa typename == 'StateSpec':
                 val = val.split()
             nval.append(val)
 
     it = iter(nval)
-    return [_flatten(spec) for spec in zip(it, it)]
+    rudisha [_flatten(spec) kila spec kwenye zip(it, it)]
 
-def _list_from_layouttuple(tk, ltuple):
-    """Construct a list from the tuple returned by ttk::layout, this is
+eleza _list_from_layouttuple(tk, ltuple):
+    """Construct a list kutoka the tuple returned by ttk::layout, this is
     somewhat the reverse of _format_layoutlist."""
     ltuple = tk.splitlist(ltuple)
     res = []
@@ -272,163 +272,163 @@ def _list_from_layouttuple(tk, ltuple):
 
         wakati indx < len(ltuple): # grab name's options
             opt, val = ltuple[indx:indx + 2]
-            if sio opt.startswith('-'): # found next name
+            ikiwa sio opt.startswith('-'): # found next name
                 koma
 
-            opt = opt[1:] # remove the '-' from the option
+            opt = opt[1:] # remove the '-' kutoka the option
             indx += 2
 
-            if opt == 'children':
+            ikiwa opt == 'children':
                 val = _list_from_layouttuple(tk, val)
 
             opts[opt] = val
 
-    return res
+    rudisha res
 
-def _val_or_dict(tk, options, *args):
-    """Format options then call Tk command with args and options and return
+eleza _val_or_dict(tk, options, *args):
+    """Format options then call Tk command ukijumuisha args na options na return
     the appropriate result.
 
-    If no option is specified, a dict is returned. If an option is
-    specified with the None value, the value for that option is returned.
-    Otherwise, the function just sets the passed options and the caller
-    shouldn't be expecting a return value anyway."""
+    If no option ni specified, a dict ni returned. If an option is
+    specified ukijumuisha the Tupu value, the value kila that option ni returned.
+    Otherwise, the function just sets the passed options na the caller
+    shouldn't be expecting a rudisha value anyway."""
     options = _format_optdict(options)
     res = tk.call(*(args + options))
 
-    if len(options) % 2: # option specified without a value, return its value
-        return res
+    ikiwa len(options) % 2: # option specified without a value, rudisha its value
+        rudisha res
 
-    return _splitdict(tk, res, conv=_tclobj_to_py)
+    rudisha _splitdict(tk, res, conv=_tclobj_to_py)
 
-def _convert_stringval(value):
+eleza _convert_stringval(value):
     """Converts a value to, hopefully, a more appropriate Python object."""
     value = str(value)
     jaribu:
         value = int(value)
-    tatizo (ValueError, TypeError):
+    except (ValueError, TypeError):
         pass
 
-    return value
+    rudisha value
 
-def _to_number(x):
-    if isinstance(x, str):
-        if '.' in x:
+eleza _to_number(x):
+    ikiwa isinstance(x, str):
+        ikiwa '.' kwenye x:
             x = float(x)
         isipokua:
             x = int(x)
-    return x
+    rudisha x
 
-def _tclobj_to_py(val):
-    """Return value converted from Tcl object to Python object."""
-    if val and hasattr(val, '__len__') and sio isinstance(val, str):
-        if getattr(val[0], 'typename', None) == 'StateSpec':
+eleza _tclobj_to_py(val):
+    """Return value converted kutoka Tcl object to Python object."""
+    ikiwa val na hasattr(val, '__len__') na sio isinstance(val, str):
+        ikiwa getattr(val[0], 'typename', Tupu) == 'StateSpec':
             val = _list_from_statespec(val)
         isipokua:
             val = list(map(_convert_stringval, val))
 
-    lasivyo hasattr(val, 'typename'): # some other (single) Tcl object
+    elikiwa hasattr(val, 'typename'): # some other (single) Tcl object
         val = _convert_stringval(val)
 
-    return val
+    rudisha val
 
-def tclobjs_to_py(adict):
-    """Returns adict with its values converted from Tcl objects to Python
+eleza tclobjs_to_py(adict):
+    """Returns adict ukijumuisha its values converted kutoka Tcl objects to Python
     objects."""
-    for opt, val in adict.items():
+    kila opt, val kwenye adict.items():
         adict[opt] = _tclobj_to_py(val)
 
-    return adict
+    rudisha adict
 
-def setup_master(master=None):
-    """If master ni sio None, itself is returned. If master is None,
-    the default master is returned if there is one, otherwise a new
-    master is created and returned.
+eleza setup_master(master=Tupu):
+    """If master ni sio Tupu, itself ni returned. If master ni Tupu,
+    the default master ni returned ikiwa there ni one, otherwise a new
+    master ni created na returned.
 
-    If it ni sio allowed to use the default root and master is None,
-    RuntimeError is raised."""
-    if master is None:
-        if tkinter._support_default_root:
-            master = tkinter._default_root or tkinter.Tk()
+    If it ni sio allowed to use the default root na master ni Tupu,
+    RuntimeError ni raised."""
+    ikiwa master ni Tupu:
+        ikiwa tkinter._support_default_root:
+            master = tkinter._default_root ama tkinter.Tk()
         isipokua:
-            ashiria RuntimeError(
-                    "No master specified and tkinter is "
+             ashiria RuntimeError(
+                    "No master specified na tkinter ni "
                     "configured to sio support default root")
-    return master
+    rudisha master
 
 
-class Style(object):
+kundi Style(object):
     """Manipulate style database."""
 
     _name = "ttk::style"
 
-    def __init__(self, master=None):
+    eleza __init__(self, master=Tupu):
         master = setup_master(master)
 
-        if sio getattr(master, '_tile_loaded', False):
-            # Load tile now, if needed
+        ikiwa sio getattr(master, '_tile_loaded', Uongo):
+            # Load tile now, ikiwa needed
             _load_tile(master)
 
         self.master = master
         self.tk = self.master.tk
 
 
-    def configure(self, style, query_opt=None, **kw):
-        """Query or sets the default value of the specified option(s) in
+    eleza configure(self, style, query_opt=Tupu, **kw):
+        """Query ama sets the default value of the specified option(s) in
         style.
 
-        Each key in kw is an option and each value is either a string ama
-        a sequence identifying the value for that option."""
-        if query_opt ni sio None:
-            kw[query_opt] = None
+        Each key kwenye kw ni an option na each value ni either a string or
+        a sequence identifying the value kila that option."""
+        ikiwa query_opt ni sio Tupu:
+            kw[query_opt] = Tupu
         result = _val_or_dict(self.tk, kw, self._name, "configure", style)
-        if result or query_opt:
-            return result
+        ikiwa result ama query_opt:
+            rudisha result
 
 
-    def map(self, style, query_opt=None, **kw):
-        """Query or sets dynamic values of the specified option(s) in
+    eleza map(self, style, query_opt=Tupu, **kw):
+        """Query ama sets dynamic values of the specified option(s) in
         style.
 
-        Each key in kw is an option and each value should be a list or a
-        tuple (usually) containing statespecs grouped in tuples, or list,
-        or something isipokua of your preference. A statespec is compound of
-        one or more states and then a value."""
-        if query_opt ni sio None:
-            return _list_from_statespec(self.tk.splitlist(
+        Each key kwenye kw ni an option na each value should be a list ama a
+        tuple (usually) containing statespecs grouped kwenye tuples, ama list,
+        ama something isipokua of your preference. A statespec ni compound of
+        one ama more states na then a value."""
+        ikiwa query_opt ni sio Tupu:
+            rudisha _list_from_statespec(self.tk.splitlist(
                 self.tk.call(self._name, "map", style, '-%s' % query_opt)))
 
-        return _splitdict(
+        rudisha _splitdict(
             self.tk,
             self.tk.call(self._name, "map", style, *_format_mapdict(kw)),
             conv=_tclobj_to_py)
 
 
-    def lookup(self, style, option, state=None, default=None):
-        """Returns the value specified for option in style.
+    eleza lookup(self, style, option, state=Tupu, default=Tupu):
+        """Returns the value specified kila option kwenye style.
 
-        If state is specified it is expected to be a sequence of one
-        or more states. If the default argument is set, it is used as
-        a fallback value in case no specification for option is found."""
-        state = ' '.join(state) if state isipokua ''
+        If state ni specified it ni expected to be a sequence of one
+        ama more states. If the default argument ni set, it ni used as
+        a fallback value kwenye case no specification kila option ni found."""
+        state = ' '.join(state) ikiwa state isipokua ''
 
-        return self.tk.call(self._name, "lookup", style, '-%s' % option,
+        rudisha self.tk.call(self._name, "lookup", style, '-%s' % option,
             state, default)
 
 
-    def layout(self, style, layoutspec=None):
-        """Define the widget layout for given style. If layoutspec is
-        omitted, return the layout specification for given style.
+    eleza layout(self, style, layoutspec=Tupu):
+        """Define the widget layout kila given style. If layoutspec is
+        omitted, rudisha the layout specification kila given style.
 
-        layoutspec is expected to be a list or an object different than
-        None that evaluates to False if you want to "turn off" that style.
-        If it is a list (or tuple, or something else), each item should be
-        a tuple where the first item is the layout name and the second item
+        layoutspec ni expected to be a list ama an object different than
+        Tupu that evaluates to Uongo ikiwa you want to "turn off" that style.
+        If it ni a list (or tuple, ama something else), each item should be
+        a tuple where the first item ni the layout name na the second item
         should have the format described below:
 
         LAYOUTS
 
-            A layout can contain the value None, if takes no options, ama
+            A layout can contain the value Tupu, ikiwa takes no options, or
             a dict of options specifying how to arrange the element.
             The layout mechanism uses a simplified version of the pack
             geometry manager: given an initial cavity, each element is
@@ -436,58 +436,58 @@ class Style(object):
 
                 side: whichside
                     Specifies which side of the cavity to place the
-                    element; one of top, right, bottom or left. If
+                    element; one of top, right, bottom ama left. If
                     omitted, the element occupies the entire cavity.
 
                 sticky: nswe
-                    Specifies where the element is placed inside its
+                    Specifies where the element ni placed inside its
                     allocated parcel.
 
                 children: [sublayout... ]
                     Specifies a list of elements to place inside the
-                    element. Each element is a tuple (or other sequence)
-                    where the first item is the layout name, and the other
-                    is a LAYOUT."""
-        lspec = None
-        if layoutspec:
+                    element. Each element ni a tuple (or other sequence)
+                    where the first item ni the layout name, na the other
+                    ni a LAYOUT."""
+        lspec = Tupu
+        ikiwa layoutspec:
             lspec = _format_layoutlist(layoutspec)[0]
-        lasivyo layoutspec ni sio None: # will disable the layout ({}, '', etc)
+        elikiwa layoutspec ni sio Tupu: # will disable the layout ({}, '', etc)
             lspec = "null" # could be any other word, but this may make sense
                            # when calling layout(style) later
 
-        return _list_from_layouttuple(self.tk,
+        rudisha _list_from_layouttuple(self.tk,
             self.tk.call(self._name, "layout", style, lspec))
 
 
-    def element_create(self, elementname, etype, *args, **kw):
-        """Create a new element in the current theme of given etype."""
-        spec, opts = _format_elemcreate(etype, False, *args, **kw)
+    eleza element_create(self, elementname, etype, *args, **kw):
+        """Create a new element kwenye the current theme of given etype."""
+        spec, opts = _format_elemcreate(etype, Uongo, *args, **kw)
         self.tk.call(self._name, "element", "create", elementname, etype,
             spec, *opts)
 
 
-    def element_names(self):
-        """Returns the list of elements defined in the current theme."""
-        return tuple(n.lstrip('-') for n in self.tk.splitlist(
+    eleza element_names(self):
+        """Returns the list of elements defined kwenye the current theme."""
+        rudisha tuple(n.lstrip('-') kila n kwenye self.tk.splitlist(
             self.tk.call(self._name, "element", "names")))
 
 
-    def element_options(self, elementname):
+    eleza element_options(self, elementname):
         """Return the list of elementname's options."""
-        return tuple(o.lstrip('-') for o in self.tk.splitlist(
+        rudisha tuple(o.lstrip('-') kila o kwenye self.tk.splitlist(
             self.tk.call(self._name, "element", "options", elementname)))
 
 
-    def theme_create(self, themename, parent=None, settings=None):
+    eleza theme_create(self, themename, parent=Tupu, settings=Tupu):
         """Creates a new theme.
 
-        It is an error if themename already exists. If parent is
-        specified, the new theme will inherit styles, elements na
-        layouts from the specified parent theme. If settings are present,
-        they are expected to have the same syntax used for theme_settings."""
-        script = _script_from_settings(settings) if settings isipokua ''
+        It ni an error ikiwa themename already exists. If parent is
+        specified, the new theme will inherit styles, elements and
+        layouts kutoka the specified parent theme. If settings are present,
+        they are expected to have the same syntax used kila theme_settings."""
+        script = _script_from_settings(settings) ikiwa settings isipokua ''
 
-        if parent:
+        ikiwa parent:
             self.tk.call(self._name, "theme", "create", themename,
                 "-parent", parent, "-settings", script)
         isipokua:
@@ -495,43 +495,43 @@ class Style(object):
                 "-settings", script)
 
 
-    def theme_settings(self, themename, settings):
+    eleza theme_settings(self, themename, settings):
         """Temporarily sets the current theme to themename, apply specified
-        settings and then restore the previous theme.
+        settings na then restore the previous theme.
 
-        Each key in settings is a style and each value may contain the
-        keys 'configure', 'map', 'layout' and 'element create' and they
+        Each key kwenye settings ni a style na each value may contain the
+        keys 'configure', 'map', 'layout' na 'element create' na they
         are expected to have the same format as specified by the methods
-        configure, map, layout and element_create respectively."""
+        configure, map, layout na element_create respectively."""
         script = _script_from_settings(settings)
         self.tk.call(self._name, "theme", "settings", themename, script)
 
 
-    def theme_names(self):
+    eleza theme_names(self):
         """Returns a list of all known themes."""
-        return self.tk.splitlist(self.tk.call(self._name, "theme", "names"))
+        rudisha self.tk.splitlist(self.tk.call(self._name, "theme", "names"))
 
 
-    def theme_use(self, themename=None):
-        """If themename is None, returns the theme in use, otherwise, set
-        the current theme to themename, refreshes all widgets and emits
+    eleza theme_use(self, themename=Tupu):
+        """If themename ni Tupu, returns the theme kwenye use, otherwise, set
+        the current theme to themename, refreshes all widgets na emits
         a <<ThemeChanged>> event."""
-        if themename is None:
-            # Starting on Tk 8.6, checking this global is no longer needed
+        ikiwa themename ni Tupu:
+            # Starting on Tk 8.6, checking this global ni no longer needed
             # since it allows doing self.tk.call(self._name, "theme", "use")
-            return self.tk.eval("return $ttk::currentTheme")
+            rudisha self.tk.eval("rudisha $ttk::currentTheme")
 
         # using "ttk::setTheme" instead of "ttk::style theme use" causes
         # the variable currentTheme to be updated, also, ttk::setTheme calls
-        # "ttk::style theme use" in order to change theme.
+        # "ttk::style theme use" kwenye order to change theme.
         self.tk.call("ttk::setTheme", themename)
 
 
-class Widget(tkinter.Widget):
-    """Base class for Tk themed widgets."""
+kundi Widget(tkinter.Widget):
+    """Base kundi kila Tk themed widgets."""
 
-    def __init__(self, master, widgetname, kw=None):
-        """Constructs a Ttk Widget with the parent master.
+    eleza __init__(self, master, widgetname, kw=Tupu):
+        """Constructs a Ttk Widget ukijumuisha the parent master.
 
         STANDARD OPTIONS
 
@@ -551,54 +551,54 @@ class Widget(tkinter.Widget):
             readonly, alternate, invalid
         """
         master = setup_master(master)
-        if sio getattr(master, '_tile_loaded', False):
-            # Load tile now, if needed
+        ikiwa sio getattr(master, '_tile_loaded', Uongo):
+            # Load tile now, ikiwa needed
             _load_tile(master)
         tkinter.Widget.__init__(self, master, widgetname, kw=kw)
 
 
-    def identify(self, x, y):
-        """Returns the name of the element at position x, y, or the empty
-        string if the point does sio lie within any element.
+    eleza identify(self, x, y):
+        """Returns the name of the element at position x, y, ama the empty
+        string ikiwa the point does sio lie within any element.
 
-        x and y are pixel coordinates relative to the widget."""
-        return self.tk.call(self._w, "identify", x, y)
+        x na y are pixel coordinates relative to the widget."""
+        rudisha self.tk.call(self._w, "identify", x, y)
 
 
-    def instate(self, statespec, callback=None, *args, **kw):
+    eleza instate(self, statespec, callback=Tupu, *args, **kw):
         """Test the widget's state.
 
-        If callback ni sio specified, returns True if the widget state
-        matches statespec and False otherwise. If callback is specified,
-        then it will be invoked with *args, **kw if the widget state
-        matches statespec. statespec is expected to be a sequence."""
+        If callback ni sio specified, returns Kweli ikiwa the widget state
+        matches statespec na Uongo otherwise. If callback ni specified,
+        then it will be invoked ukijumuisha *args, **kw ikiwa the widget state
+        matches statespec. statespec ni expected to be a sequence."""
         ret = self.tk.getboolean(
                 self.tk.call(self._w, "instate", ' '.join(statespec)))
-        if ret and callback:
-            return callback(*args, **kw)
+        ikiwa ret na callback:
+            rudisha callback(*args, **kw)
 
-        return ret
+        rudisha ret
 
 
-    def state(self, statespec=None):
-        """Modify or inquire widget state.
+    eleza state(self, statespec=Tupu):
+        """Modify ama inquire widget state.
 
-        Widget state is returned if statespec is None, otherwise it is
-        set according to the statespec flags and then a new state spec
-        is returned indicating which flags were changed. statespec is
+        Widget state ni returned ikiwa statespec ni Tupu, otherwise it is
+        set according to the statespec flags na then a new state spec
+        ni returned indicating which flags were changed. statespec is
         expected to be a sequence."""
-        if statespec ni sio None:
+        ikiwa statespec ni sio Tupu:
             statespec = ' '.join(statespec)
 
-        return self.tk.splitlist(str(self.tk.call(self._w, "state", statespec)))
+        rudisha self.tk.splitlist(str(self.tk.call(self._w, "state", statespec)))
 
 
-class Button(Widget):
-    """Ttk Button widget, displays a textual label and/or image, na
+kundi Button(Widget):
+    """Ttk Button widget, displays a textual label and/or image, and
     evaluates a command when pressed."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Button widget with the parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Button widget ukijumuisha the parent master.
 
         STANDARD OPTIONS
 
@@ -612,16 +612,16 @@ class Button(Widget):
         Widget.__init__(self, master, "ttk::button", kw)
 
 
-    def invoke(self):
-        """Invokes the command associated with the button."""
-        return self.tk.call(self._w, "invoke")
+    eleza invoke(self):
+        """Invokes the command associated ukijumuisha the button."""
+        rudisha self.tk.call(self._w, "invoke")
 
 
-class Checkbutton(Widget):
-    """Ttk Checkbutton widget which is either in on- or off-state."""
+kundi Checkbutton(Widget):
+    """Ttk Checkbutton widget which ni either kwenye on- ama off-state."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Checkbutton widget with the parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Checkbutton widget ukijumuisha the parent master.
 
         STANDARD OPTIONS
 
@@ -635,23 +635,23 @@ class Checkbutton(Widget):
         Widget.__init__(self, master, "ttk::checkbutton", kw)
 
 
-    def invoke(self):
-        """Toggles between the selected and deselected states na
-        invokes the associated command. If the widget is currently
+    eleza invoke(self):
+        """Toggles between the selected na deselected states and
+        invokes the associated command. If the widget ni currently
         selected, sets the option variable to the offvalue option
-        and deselects the widget; otherwise, sets the option variable
+        na deselects the widget; otherwise, sets the option variable
         to the option onvalue.
 
         Returns the result of the associated command."""
-        return self.tk.call(self._w, "invoke")
+        rudisha self.tk.call(self._w, "invoke")
 
 
-class Entry(Widget, tkinter.Entry):
-    """Ttk Entry widget displays a one-line text string and allows that
+kundi Entry(Widget, tkinter.Entry):
+    """Ttk Entry widget displays a one-line text string na allows that
     string to be edited by the user."""
 
-    def __init__(self, master=None, widget=None, **kw):
-        """Constructs a Ttk Entry widget with the parent master.
+    eleza __init__(self, master=Tupu, widget=Tupu, **kw):
+        """Constructs a Ttk Entry widget ukijumuisha the parent master.
 
         STANDARD OPTIONS
 
@@ -666,34 +666,34 @@ class Entry(Widget, tkinter.Entry):
 
             none, key, focus, focusin, focusout, all
         """
-        Widget.__init__(self, master, widget or "ttk::entry", kw)
+        Widget.__init__(self, master, widget ama "ttk::entry", kw)
 
 
-    def bbox(self, index):
+    eleza bbox(self, index):
         """Return a tuple of (x, y, width, height) which describes the
         bounding box of the character given by index."""
-        return self._getints(self.tk.call(self._w, "bbox", index))
+        rudisha self._getints(self.tk.call(self._w, "bbox", index))
 
 
-    def identify(self, x, y):
-        """Returns the name of the element at position x, y, or the
-        empty string if the coordinates are outside the window."""
-        return self.tk.call(self._w, "identify", x, y)
+    eleza identify(self, x, y):
+        """Returns the name of the element at position x, y, ama the
+        empty string ikiwa the coordinates are outside the window."""
+        rudisha self.tk.call(self._w, "identify", x, y)
 
 
-    def validate(self):
+    eleza validate(self):
         """Force revalidation, independent of the conditions specified
-        by the validate option. Returns False if validation fails, True
-        if it succeeds. Sets or clears the invalid state accordingly."""
-        return self.tk.getboolean(self.tk.call(self._w, "validate"))
+        by the validate option. Returns Uongo ikiwa validation fails, Kweli
+        ikiwa it succeeds. Sets ama clears the invalid state accordingly."""
+        rudisha self.tk.getboolean(self.tk.call(self._w, "validate"))
 
 
-class Combobox(Entry):
-    """Ttk Combobox widget combines a text field with a pop-down list of
+kundi Combobox(Entry):
+    """Ttk Combobox widget combines a text field ukijumuisha a pop-down list of
     values."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Combobox widget with the parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Combobox widget ukijumuisha the parent master.
 
         STANDARD OPTIONS
 
@@ -707,27 +707,27 @@ class Combobox(Entry):
         Entry.__init__(self, master, "ttk::combobox", **kw)
 
 
-    def current(self, newindex=None):
-        """If newindex is supplied, sets the combobox value to the
-        element at position newindex in the list of values. Otherwise,
-        returns the index of the current value in the list of values
-        or -1 if the current value does sio appear in the list."""
-        if newindex is None:
-            return self.tk.getint(self.tk.call(self._w, "current"))
-        return self.tk.call(self._w, "current", newindex)
+    eleza current(self, newindex=Tupu):
+        """If newindex ni supplied, sets the combobox value to the
+        element at position newindex kwenye the list of values. Otherwise,
+        returns the index of the current value kwenye the list of values
+        ama -1 ikiwa the current value does sio appear kwenye the list."""
+        ikiwa newindex ni Tupu:
+            rudisha self.tk.getint(self.tk.call(self._w, "current"))
+        rudisha self.tk.call(self._w, "current", newindex)
 
 
-    def set(self, value):
+    eleza set(self, value):
         """Sets the value of the combobox to value."""
         self.tk.call(self._w, "set", value)
 
 
-class Frame(Widget):
-    """Ttk Frame widget is a container, used to group other widgets
+kundi Frame(Widget):
+    """Ttk Frame widget ni a container, used to group other widgets
     together."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Frame with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Frame ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -740,11 +740,11 @@ class Frame(Widget):
         Widget.__init__(self, master, "ttk::frame", kw)
 
 
-class Label(Widget):
+kundi Label(Widget):
     """Ttk Label widget displays a textual label and/or image."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Label with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Label ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -759,13 +759,13 @@ class Label(Widget):
         Widget.__init__(self, master, "ttk::label", kw)
 
 
-class Labelframe(Widget):
-    """Ttk Labelframe widget is a container used to group other widgets
+kundi Labelframe(Widget):
+    """Ttk Labelframe widget ni a container used to group other widgets
     together. It has an optional label, which may be a plain text string
-    or another widget."""
+    ama another widget."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Labelframe with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Labelframe ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -780,12 +780,12 @@ class Labelframe(Widget):
 LabelFrame = Labelframe # tkinter name compatibility
 
 
-class Menubutton(Widget):
-    """Ttk Menubutton widget displays a textual label and/or image, na
+kundi Menubutton(Widget):
+    """Ttk Menubutton widget displays a textual label and/or image, and
     displays a menu when pressed."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Menubutton with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Menubutton ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -799,13 +799,13 @@ class Menubutton(Widget):
         Widget.__init__(self, master, "ttk::menubutton", kw)
 
 
-class Notebook(Widget):
-    """Ttk Notebook widget manages a collection of windows and displays
-    a single one at a time. Each child window is associated with a tab,
+kundi Notebook(Widget):
+    """Ttk Notebook widget manages a collection of windows na displays
+    a single one at a time. Each child window ni associated ukijumuisha a tab,
     which the user may select to change the currently-displayed window."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Notebook with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Notebook ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -821,96 +821,96 @@ class Notebook(Widget):
 
         TAB IDENTIFIERS (tab_id)
 
-            The tab_id argument found in several methods may take any of
+            The tab_id argument found kwenye several methods may take any of
             the following forms:
 
-                * An integer between zero and the number of tabs
+                * An integer between zero na the number of tabs
                 * The name of a child window
                 * A positional specification of the form "@x,y", which
                   defines the tab
                 * The string "current", which identifies the
                   currently-selected tab
                 * The string "end", which returns the number of tabs (only
-                  valid for method index)
+                  valid kila method index)
         """
         Widget.__init__(self, master, "ttk::notebook", kw)
 
 
-    def add(self, child, **kw):
+    eleza add(self, child, **kw):
         """Adds a new tab to the notebook.
 
-        If window is currently managed by the notebook but hidden, it is
+        If window ni currently managed by the notebook but hidden, it is
         restored to its previous position."""
         self.tk.call(self._w, "add", child, *(_format_optdict(kw)))
 
 
-    def forget(self, tab_id):
-        """Removes the tab specified by tab_id, unmaps and unmanages the
+    eleza forget(self, tab_id):
+        """Removes the tab specified by tab_id, unmaps na unmanages the
         associated window."""
         self.tk.call(self._w, "forget", tab_id)
 
 
-    def hide(self, tab_id):
+    eleza hide(self, tab_id):
         """Hides the tab specified by tab_id.
 
         The tab will sio be displayed, but the associated window remains
-        managed by the notebook and its configuration remembered. Hidden
-        tabs may be restored with the add command."""
+        managed by the notebook na its configuration remembered. Hidden
+        tabs may be restored ukijumuisha the add command."""
         self.tk.call(self._w, "hide", tab_id)
 
 
-    def identify(self, x, y):
-        """Returns the name of the tab element at position x, y, or the
-        empty string if none."""
-        return self.tk.call(self._w, "identify", x, y)
+    eleza identify(self, x, y):
+        """Returns the name of the tab element at position x, y, ama the
+        empty string ikiwa none."""
+        rudisha self.tk.call(self._w, "identify", x, y)
 
 
-    def index(self, tab_id):
-        """Returns the numeric index of the tab specified by tab_id, ama
-        the total number of tabs if tab_id is the string "end"."""
-        return self.tk.getint(self.tk.call(self._w, "index", tab_id))
+    eleza index(self, tab_id):
+        """Returns the numeric index of the tab specified by tab_id, or
+        the total number of tabs ikiwa tab_id ni the string "end"."""
+        rudisha self.tk.getint(self.tk.call(self._w, "index", tab_id))
 
 
-    def insert(self, pos, child, **kw):
+    eleza insert(self, pos, child, **kw):
         """Inserts a pane at the specified position.
 
-        pos is either the string end, an integer index, or the name of
-        a managed child. If child is already managed by the notebook,
+        pos ni either the string end, an integer index, ama the name of
+        a managed child. If child ni already managed by the notebook,
         moves it to the specified position."""
         self.tk.call(self._w, "insert", pos, child, *(_format_optdict(kw)))
 
 
-    def select(self, tab_id=None):
+    eleza select(self, tab_id=Tupu):
         """Selects the specified tab.
 
-        The associated child window will be displayed, and the
-        previously-selected window (if different) is unmapped. If tab_id
-        is omitted, returns the widget name of the currently selected
+        The associated child window will be displayed, na the
+        previously-selected window (ikiwa different) ni unmapped. If tab_id
+        ni omitted, returns the widget name of the currently selected
         pane."""
-        return self.tk.call(self._w, "select", tab_id)
+        rudisha self.tk.call(self._w, "select", tab_id)
 
 
-    def tab(self, tab_id, option=None, **kw):
-        """Query or modify the options of the specific tab_id.
+    eleza tab(self, tab_id, option=Tupu, **kw):
+        """Query ama modify the options of the specific tab_id.
 
         If kw ni sio given, returns a dict of the tab option values. If option
-        is specified, returns the value of that option. Otherwise, sets the
+        ni specified, returns the value of that option. Otherwise, sets the
         options to the corresponding values."""
-        if option ni sio None:
-            kw[option] = None
-        return _val_or_dict(self.tk, kw, self._w, "tab", tab_id)
+        ikiwa option ni sio Tupu:
+            kw[option] = Tupu
+        rudisha _val_or_dict(self.tk, kw, self._w, "tab", tab_id)
 
 
-    def tabs(self):
+    eleza tabs(self):
         """Returns a list of windows managed by the notebook."""
-        return self.tk.splitlist(self.tk.call(self._w, "tabs") ama ())
+        rudisha self.tk.splitlist(self.tk.call(self._w, "tabs") ama ())
 
 
-    def enable_traversal(self):
-        """Enable keyboard traversal for a toplevel window containing
+    eleza enable_traversal(self):
+        """Enable keyboard traversal kila a toplevel window containing
         this notebook.
 
-        This will extend the bindings for the toplevel window containing
+        This will extend the bindings kila the toplevel window containing
         this notebook as follows:
 
             Control-Tab: selects the tab following the currently selected
@@ -919,25 +919,25 @@ class Notebook(Widget):
             Shift-Control-Tab: selects the tab preceding the currently
                                selected one
 
-            Alt-K: where K is the mnemonic (underlined) character of any
+            Alt-K: where K ni the mnemonic (underlined) character of any
                    tab, will select that tab.
 
-        Multiple notebooks in a single toplevel may be enabled for
+        Multiple notebooks kwenye a single toplevel may be enabled for
         traversal, including nested notebooks. However, notebook traversal
-        only works properly if all panes are direct children of the
+        only works properly ikiwa all panes are direct children of the
         notebook."""
-        # The only, and good, difference I see is about mnemonics, which works
-        # after calling this method. Control-Tab and Shift-Control-Tab always
+        # The only, na good, difference I see ni about mnemonics, which works
+        # after calling this method. Control-Tab na Shift-Control-Tab always
         # works (here at least).
         self.tk.call("ttk::notebook::enableTraversal", self._w)
 
 
-class Panedwindow(Widget, tkinter.PanedWindow):
+kundi Panedwindow(Widget, tkinter.PanedWindow):
     """Ttk Panedwindow widget displays a number of subwindows, stacked
-    either vertically or horizontally."""
+    either vertically ama horizontally."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Panedwindow with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Panedwindow ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -957,49 +957,49 @@ class Panedwindow(Widget, tkinter.PanedWindow):
     forget = tkinter.PanedWindow.forget # overrides Pack.forget
 
 
-    def insert(self, pos, child, **kw):
+    eleza insert(self, pos, child, **kw):
         """Inserts a pane at the specified positions.
 
-        pos is either the string end, and integer index, or the name
-        of a child. If child is already managed by the paned window,
+        pos ni either the string end, na integer index, ama the name
+        of a child. If child ni already managed by the paned window,
         moves it to the specified position."""
         self.tk.call(self._w, "insert", pos, child, *(_format_optdict(kw)))
 
 
-    def pane(self, pane, option=None, **kw):
-        """Query or modify the options of the specified pane.
+    eleza pane(self, pane, option=Tupu, **kw):
+        """Query ama modify the options of the specified pane.
 
-        pane is either an integer index or the name of a managed subwindow.
+        pane ni either an integer index ama the name of a managed subwindow.
         If kw ni sio given, returns a dict of the pane option values. If
-        option is specified then the value for that option is returned.
+        option ni specified then the value kila that option ni returned.
         Otherwise, sets the options to the corresponding values."""
-        if option ni sio None:
-            kw[option] = None
-        return _val_or_dict(self.tk, kw, self._w, "pane", pane)
+        ikiwa option ni sio Tupu:
+            kw[option] = Tupu
+        rudisha _val_or_dict(self.tk, kw, self._w, "pane", pane)
 
 
-    def sashpos(self, index, newpos=None):
-        """If newpos is specified, sets the position of sash number index.
+    eleza sashpos(self, index, newpos=Tupu):
+        """If newpos ni specified, sets the position of sash number index.
 
         May adjust the positions of adjacent sashes to ensure that
         positions are monotonically increasing. Sash positions are further
-        constrained to be between 0 and the total size of the widget.
+        constrained to be between 0 na the total size of the widget.
 
         Returns the new position of sash number index."""
-        return self.tk.getint(self.tk.call(self._w, "sashpos", index, newpos))
+        rudisha self.tk.getint(self.tk.call(self._w, "sashpos", index, newpos))
 
 PanedWindow = Panedwindow # tkinter name compatibility
 
 
-class Progressbar(Widget):
+kundi Progressbar(Widget):
     """Ttk Progressbar widget shows the status of a long-running
-    operation. They can operate in two modes: determinate mode shows the
-    amount completed relative to the total amount of work to be done, na
+    operation. They can operate kwenye two modes: determinate mode shows the
+    amount completed relative to the total amount of work to be done, and
     indeterminate mode provides an animated display to let the user know
-    that something is happening."""
+    that something ni happening."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Progressbar with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Progressbar ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -1012,33 +1012,33 @@ class Progressbar(Widget):
         Widget.__init__(self, master, "ttk::progressbar", kw)
 
 
-    def start(self, interval=None):
+    eleza start(self, interval=Tupu):
         """Begin autoincrement mode: schedules a recurring timer event
         that calls method step every interval milliseconds.
 
-        interval defaults to 50 milliseconds (20 steps/second) if omitted."""
+        interval defaults to 50 milliseconds (20 steps/second) ikiwa omitted."""
         self.tk.call(self._w, "start", interval)
 
 
-    def step(self, amount=None):
+    eleza step(self, amount=Tupu):
         """Increments the value option by amount.
 
-        amount defaults to 1.0 if omitted."""
+        amount defaults to 1.0 ikiwa omitted."""
         self.tk.call(self._w, "step", amount)
 
 
-    def stop(self):
+    eleza stop(self):
         """Stop autoincrement mode: cancels any recurring timer event
         initiated by start."""
         self.tk.call(self._w, "stop")
 
 
-class Radiobutton(Widget):
-    """Ttk Radiobutton widgets are used in groups to show or change a
+kundi Radiobutton(Widget):
+    """Ttk Radiobutton widgets are used kwenye groups to show ama change a
     set of mutually-exclusive options."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Radiobutton with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Radiobutton ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -1052,21 +1052,21 @@ class Radiobutton(Widget):
         Widget.__init__(self, master, "ttk::radiobutton", kw)
 
 
-    def invoke(self):
+    eleza invoke(self):
         """Sets the option variable to the option value, selects the
-        widget, and invokes the associated command.
+        widget, na invokes the associated command.
 
-        Returns the result of the command, or an empty string if
-        no command is specified."""
-        return self.tk.call(self._w, "invoke")
+        Returns the result of the command, ama an empty string if
+        no command ni specified."""
+        rudisha self.tk.call(self._w, "invoke")
 
 
-class Scale(Widget, tkinter.Scale):
-    """Ttk Scale widget is typically used to control the numeric value of
+kundi Scale(Widget, tkinter.Scale):
+    """Ttk Scale widget ni typically used to control the numeric value of
     a linked variable that varies uniformly over some range."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Scale with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Scale ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -1079,32 +1079,32 @@ class Scale(Widget, tkinter.Scale):
         Widget.__init__(self, master, "ttk::scale", kw)
 
 
-    def configure(self, cnf=None, **kw):
-        """Modify or query scale options.
+    eleza configure(self, cnf=Tupu, **kw):
+        """Modify ama query scale options.
 
-        Setting a value for any of the "from", "from_" or "to" options
+        Setting a value kila any of the "from", "from_" ama "to" options
         generates a <<RangeChanged>> event."""
-        if cnf:
+        ikiwa cnf:
             kw.update(cnf)
         Widget.configure(self, **kw)
-        if any(['from' in kw, 'from_' in kw, 'to' in kw]):
+        ikiwa any(['from' kwenye kw, 'from_' kwenye kw, 'to' kwenye kw]):
             self.event_generate('<<RangeChanged>>')
 
 
-    def get(self, x=None, y=None):
-        """Get the current value of the value option, or the value
-        corresponding to the coordinates x, y if they are specified.
+    eleza get(self, x=Tupu, y=Tupu):
+        """Get the current value of the value option, ama the value
+        corresponding to the coordinates x, y ikiwa they are specified.
 
-        x and y are pixel coordinates relative to the scale widget
+        x na y are pixel coordinates relative to the scale widget
         origin."""
-        return self.tk.call(self._w, 'get', x, y)
+        rudisha self.tk.call(self._w, 'get', x, y)
 
 
-class Scrollbar(Widget, tkinter.Scrollbar):
+kundi Scrollbar(Widget, tkinter.Scrollbar):
     """Ttk Scrollbar controls the viewport of a scrollable widget."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Scrollbar with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Scrollbar ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -1117,12 +1117,12 @@ class Scrollbar(Widget, tkinter.Scrollbar):
         Widget.__init__(self, master, "ttk::scrollbar", kw)
 
 
-class Separator(Widget):
-    """Ttk Separator widget displays a horizontal or vertical separator
+kundi Separator(Widget):
+    """Ttk Separator widget displays a horizontal ama vertical separator
     bar."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Separator with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Separator ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -1135,12 +1135,12 @@ class Separator(Widget):
         Widget.__init__(self, master, "ttk::separator", kw)
 
 
-class Sizegrip(Widget):
+kundi Sizegrip(Widget):
     """Ttk Sizegrip allows the user to resize the containing toplevel
-    window by pressing and dragging the grip."""
+    window by pressing na dragging the grip."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Sizegrip with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Sizegrip ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -1149,15 +1149,15 @@ class Sizegrip(Widget):
         Widget.__init__(self, master, "ttk::sizegrip", kw)
 
 
-class Spinbox(Entry):
-    """Ttk Spinbox is an Entry with increment and decrement arrows
+kundi Spinbox(Entry):
+    """Ttk Spinbox ni an Entry ukijumuisha increment na decrement arrows
 
-    It is commonly used for number entry or to select from a list of
+    It ni commonly used kila number entry ama to select kutoka a list of
     string values.
     """
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Spinbox widget with the parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Spinbox widget ukijumuisha the parent master.
 
         STANDARD OPTIONS
 
@@ -1171,20 +1171,20 @@ class Spinbox(Entry):
         Entry.__init__(self, master, "ttk::spinbox", **kw)
 
 
-    def set(self, value):
+    eleza set(self, value):
         """Sets the value of the Spinbox to value."""
         self.tk.call(self._w, "set", value)
 
 
-class Treeview(Widget, tkinter.XView, tkinter.YView):
+kundi Treeview(Widget, tkinter.XView, tkinter.YView):
     """Ttk Treeview widget displays a hierarchical collection of items.
 
-    Each item has a textual label, an optional image, and an optional list
-    of data values. The data values are displayed in successive columns
+    Each item has a textual label, an optional image, na an optional list
+    of data values. The data values are displayed kwenye successive columns
     after the tree label."""
 
-    def __init__(self, master=None, **kw):
-        """Construct a Ttk Treeview with parent master.
+    eleza __init__(self, master=Tupu, **kw):
+        """Construct a Ttk Treeview ukijumuisha parent master.
 
         STANDARD OPTIONS
 
@@ -1206,81 +1206,81 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
         Widget.__init__(self, master, "ttk::treeview", kw)
 
 
-    def bbox(self, item, column=None):
+    eleza bbox(self, item, column=Tupu):
         """Returns the bounding box (relative to the treeview widget's
-        window) of the specified item in the form x y width height.
+        window) of the specified item kwenye the form x y width height.
 
-        If column is specified, returns the bounding box of that cell.
-        If the item ni sio visible (i.e., if it is a descendant of a
-        closed item or is scrolled offscreen), returns an empty string."""
-        return self._getints(self.tk.call(self._w, "bbox", item, column)) ama ''
+        If column ni specified, returns the bounding box of that cell.
+        If the item ni sio visible (i.e., ikiwa it ni a descendant of a
+        closed item ama ni scrolled offscreen), returns an empty string."""
+        rudisha self._getints(self.tk.call(self._w, "bbox", item, column)) ama ''
 
 
-    def get_children(self, item=None):
+    eleza get_children(self, item=Tupu):
         """Returns a tuple of children belonging to item.
 
         If item ni sio specified, returns root children."""
-        return self.tk.splitlist(
-                self.tk.call(self._w, "children", item or '') ama ())
+        rudisha self.tk.splitlist(
+                self.tk.call(self._w, "children", item ama '') ama ())
 
 
-    def set_children(self, item, *newchildren):
-        """Replaces item's child with newchildren.
+    eleza set_children(self, item, *newchildren):
+        """Replaces item's child ukijumuisha newchildren.
 
-        Children present in item that are sio present in newchildren
-        are detached from tree. No items in newchildren may be an
+        Children present kwenye item that are sio present kwenye newchildren
+        are detached kutoka tree. No items kwenye newchildren may be an
         ancestor of item."""
         self.tk.call(self._w, "children", item, newchildren)
 
 
-    def column(self, column, option=None, **kw):
-        """Query or modify the options for the specified column.
+    eleza column(self, column, option=Tupu, **kw):
+        """Query ama modify the options kila the specified column.
 
         If kw ni sio given, returns a dict of the column option values. If
-        option is specified then the value for that option is returned.
+        option ni specified then the value kila that option ni returned.
         Otherwise, sets the options to the corresponding values."""
-        if option ni sio None:
-            kw[option] = None
-        return _val_or_dict(self.tk, kw, self._w, "column", column)
+        ikiwa option ni sio Tupu:
+            kw[option] = Tupu
+        rudisha _val_or_dict(self.tk, kw, self._w, "column", column)
 
 
-    def delete(self, *items):
-        """Delete all specified items and all their descendants. The root
+    eleza delete(self, *items):
+        """Delete all specified items na all their descendants. The root
         item may sio be deleted."""
         self.tk.call(self._w, "delete", items)
 
 
-    def detach(self, *items):
-        """Unlinks all of the specified items from the tree.
+    eleza detach(self, *items):
+        """Unlinks all of the specified items kutoka the tree.
 
-        The items and all of their descendants are still present, and may
-        be reinserted at another point in the tree, but will sio be
+        The items na all of their descendants are still present, na may
+        be reinserted at another point kwenye the tree, but will sio be
         displayed. The root item may sio be detached."""
         self.tk.call(self._w, "detach", items)
 
 
-    def exists(self, item):
-        """Returns True if the specified item is present in the tree,
-        False otherwise."""
-        return self.tk.getboolean(self.tk.call(self._w, "exists", item))
+    eleza exists(self, item):
+        """Returns Kweli ikiwa the specified item ni present kwenye the tree,
+        Uongo otherwise."""
+        rudisha self.tk.getboolean(self.tk.call(self._w, "exists", item))
 
 
-    def focus(self, item=None):
-        """If item is specified, sets the focus item to item. Otherwise,
-        returns the current focus item, or '' if there is none."""
-        return self.tk.call(self._w, "focus", item)
+    eleza focus(self, item=Tupu):
+        """If item ni specified, sets the focus item to item. Otherwise,
+        returns the current focus item, ama '' ikiwa there ni none."""
+        rudisha self.tk.call(self._w, "focus", item)
 
 
-    def heading(self, column, option=None, **kw):
-        """Query or modify the heading options for the specified column.
+    eleza heading(self, column, option=Tupu, **kw):
+        """Query ama modify the heading options kila the specified column.
 
         If kw ni sio given, returns a dict of the heading option values. If
-        option is specified then the value for that option is returned.
+        option ni specified then the value kila that option ni returned.
         Otherwise, sets the options to the corresponding values.
 
         Valid options/values are:
             text: text
-                The text to display in the column heading
+                The text to display kwenye the column heading
             image: image_name
                 Specifies an image to display to the right of the column
                 heading
@@ -1291,38 +1291,38 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
                 A callback to be invoked when the heading label is
                 pressed.
 
-        To configure the tree column heading, call this with column = "#0" """
+        To configure the tree column heading, call this ukijumuisha column = "#0" """
         cmd = kw.get('command')
-        if cmd and sio isinstance(cmd, str):
+        ikiwa cmd na sio isinstance(cmd, str):
             # callback sio registered yet, do it now
             kw['command'] = self.master.register(cmd, self._substitute)
 
-        if option ni sio None:
-            kw[option] = None
+        ikiwa option ni sio Tupu:
+            kw[option] = Tupu
 
-        return _val_or_dict(self.tk, kw, self._w, 'heading', column)
+        rudisha _val_or_dict(self.tk, kw, self._w, 'heading', column)
 
 
-    def identify(self, component, x, y):
+    eleza identify(self, component, x, y):
         """Returns a description of the specified component under the
-        point given by x and y, or the empty string if no such component
-        is present at that position."""
-        return self.tk.call(self._w, "identify", component, x, y)
+        point given by x na y, ama the empty string ikiwa no such component
+        ni present at that position."""
+        rudisha self.tk.call(self._w, "identify", component, x, y)
 
 
-    def identify_row(self, y):
+    eleza identify_row(self, y):
         """Returns the item ID of the item at position y."""
-        return self.identify("row", 0, y)
+        rudisha self.identify("row", 0, y)
 
 
-    def identify_column(self, x):
+    eleza identify_column(self, x):
         """Returns the data column identifier of the cell at position x.
 
         The tree column has ID #0."""
-        return self.identify("column", x, 0)
+        rudisha self.identify("column", x, 0)
 
 
-    def identify_region(self, x, y):
+    eleza identify_region(self, x, y):
         """Returns one of:
 
         heading: Tree heading area.
@@ -1331,201 +1331,201 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
         cell: A data cell.
 
         * Availability: Tk 8.6"""
-        return self.identify("region", x, y)
+        rudisha self.identify("region", x, y)
 
 
-    def identify_element(self, x, y):
+    eleza identify_element(self, x, y):
         """Returns the element at position x, y.
 
         * Availability: Tk 8.6"""
-        return self.identify("element", x, y)
+        rudisha self.identify("element", x, y)
 
 
-    def index(self, item):
+    eleza index(self, item):
         """Returns the integer index of item within its parent's list
         of children."""
-        return self.tk.getint(self.tk.call(self._w, "index", item))
+        rudisha self.tk.getint(self.tk.call(self._w, "index", item))
 
 
-    def insert(self, parent, index, iid=None, **kw):
-        """Creates a new item and return the item identifier of the newly
+    eleza insert(self, parent, index, iid=Tupu, **kw):
+        """Creates a new item na rudisha the item identifier of the newly
         created item.
 
-        parent is the item ID of the parent item, or the empty string
-        to create a new top-level item. index is an integer, or the value
-        end, specifying where in the list of parent's children to insert
-        the new item. If index is less than or equal to zero, the new node
-        is inserted at the beginning, if index is greater than or equal to
-        the current number of children, it is inserted at the end. If iid
-        is specified, it is used as the item identifier, iid must not
-        already exist in the tree. Otherwise, a new unique identifier
-        is generated."""
+        parent ni the item ID of the parent item, ama the empty string
+        to create a new top-level item. index ni an integer, ama the value
+        end, specifying where kwenye the list of parent's children to insert
+        the new item. If index ni less than ama equal to zero, the new node
+        ni inserted at the beginning, ikiwa index ni greater than ama equal to
+        the current number of children, it ni inserted at the end. If iid
+        ni specified, it ni used as the item identifier, iid must not
+        already exist kwenye the tree. Otherwise, a new unique identifier
+        ni generated."""
         opts = _format_optdict(kw)
-        if iid ni sio None:
+        ikiwa iid ni sio Tupu:
             res = self.tk.call(self._w, "insert", parent, index,
                 "-id", iid, *opts)
         isipokua:
             res = self.tk.call(self._w, "insert", parent, index, *opts)
 
-        return res
+        rudisha res
 
 
-    def item(self, item, option=None, **kw):
-        """Query or modify the options for the specified item.
+    eleza item(self, item, option=Tupu, **kw):
+        """Query ama modify the options kila the specified item.
 
-        If no options are given, a dict with options/values for the item
-        is returned. If option is specified then the value for that option
-        is returned. Otherwise, sets the options to the corresponding
+        If no options are given, a dict ukijumuisha options/values kila the item
+        ni returned. If option ni specified then the value kila that option
+        ni returned. Otherwise, sets the options to the corresponding
         values as given by kw."""
-        if option ni sio None:
-            kw[option] = None
-        return _val_or_dict(self.tk, kw, self._w, "item", item)
+        ikiwa option ni sio Tupu:
+            kw[option] = Tupu
+        rudisha _val_or_dict(self.tk, kw, self._w, "item", item)
 
 
-    def move(self, item, parent, index):
-        """Moves item to position index in parent's list of children.
+    eleza move(self, item, parent, index):
+        """Moves item to position index kwenye parent's list of children.
 
-        It is illegal to move an item under one of its descendants. If
-        index is less than or equal to zero, item is moved to the
-        beginning, if greater than or equal to the number of children,
-        it is moved to the end. If item was detached it is reattached."""
+        It ni illegal to move an item under one of its descendants. If
+        index ni less than ama equal to zero, item ni moved to the
+        beginning, ikiwa greater than ama equal to the number of children,
+        it ni moved to the end. If item was detached it ni reattached."""
         self.tk.call(self._w, "move", item, parent, index)
 
-    reattach = move # A sensible method name for reattaching detached items
+    reattach = move # A sensible method name kila reattaching detached items
 
 
-    def next(self, item):
-        """Returns the identifier of item's next sibling, or '' if item
-        is the last child of its parent."""
-        return self.tk.call(self._w, "next", item)
+    eleza next(self, item):
+        """Returns the identifier of item's next sibling, ama '' ikiwa item
+        ni the last child of its parent."""
+        rudisha self.tk.call(self._w, "next", item)
 
 
-    def parent(self, item):
-        """Returns the ID of the parent of item, or '' if item is at the
+    eleza parent(self, item):
+        """Returns the ID of the parent of item, ama '' ikiwa item ni at the
         top level of the hierarchy."""
-        return self.tk.call(self._w, "parent", item)
+        rudisha self.tk.call(self._w, "parent", item)
 
 
-    def prev(self, item):
-        """Returns the identifier of item's previous sibling, or '' if
-        item is the first child of its parent."""
-        return self.tk.call(self._w, "prev", item)
+    eleza prev(self, item):
+        """Returns the identifier of item's previous sibling, ama '' if
+        item ni the first child of its parent."""
+        rudisha self.tk.call(self._w, "prev", item)
 
 
-    def see(self, item):
-        """Ensure that item is visible.
+    eleza see(self, item):
+        """Ensure that item ni visible.
 
-        Sets all of item's ancestors open option to True, and scrolls
-        the widget if necessary so that item is within the visible
+        Sets all of item's ancestors open option to Kweli, na scrolls
+        the widget ikiwa necessary so that item ni within the visible
         portion of the tree."""
         self.tk.call(self._w, "see", item)
 
 
-    def selection(self):
+    eleza selection(self):
         """Returns the tuple of selected items."""
-        return self.tk.splitlist(self.tk.call(self._w, "selection"))
+        rudisha self.tk.splitlist(self.tk.call(self._w, "selection"))
 
 
-    def _selection(self, selop, items):
-        if len(items) == 1 and isinstance(items[0], (tuple, list)):
+    eleza _selection(self, selop, items):
+        ikiwa len(items) == 1 na isinstance(items[0], (tuple, list)):
             items = items[0]
 
         self.tk.call(self._w, "selection", selop, items)
 
 
-    def selection_set(self, *items):
+    eleza selection_set(self, *items):
         """The specified items becomes the new selection."""
         self._selection("set", items)
 
 
-    def selection_add(self, *items):
+    eleza selection_add(self, *items):
         """Add all of the specified items to the selection."""
         self._selection("add", items)
 
 
-    def selection_remove(self, *items):
-        """Remove all of the specified items from the selection."""
+    eleza selection_remove(self, *items):
+        """Remove all of the specified items kutoka the selection."""
         self._selection("remove", items)
 
 
-    def selection_toggle(self, *items):
+    eleza selection_toggle(self, *items):
         """Toggle the selection state of each specified item."""
         self._selection("toggle", items)
 
 
-    def set(self, item, column=None, value=None):
-        """Query or set the value of given item.
+    eleza set(self, item, column=Tupu, value=Tupu):
+        """Query ama set the value of given item.
 
-        With one argument, return a dictionary of column/value pairs
-        for the specified item. With two arguments, return the current
+        With one argument, rudisha a dictionary of column/value pairs
+        kila the specified item. With two arguments, rudisha the current
         value of the specified column. With three arguments, set the
-        value of given column in given item to the specified value."""
+        value of given column kwenye given item to the specified value."""
         res = self.tk.call(self._w, "set", item, column, value)
-        if column is None and value is None:
-            return _splitdict(self.tk, res,
-                              cut_minus=False, conv=_tclobj_to_py)
+        ikiwa column ni Tupu na value ni Tupu:
+            rudisha _splitdict(self.tk, res,
+                              cut_minus=Uongo, conv=_tclobj_to_py)
         isipokua:
-            return res
+            rudisha res
 
 
-    def tag_bind(self, tagname, sequence=None, callback=None):
-        """Bind a callback for the given event sequence to the tag tagname.
-        When an event is delivered to an item, the callbacks for each
+    eleza tag_bind(self, tagname, sequence=Tupu, callback=Tupu):
+        """Bind a callback kila the given event sequence to the tag tagname.
+        When an event ni delivered to an item, the callbacks kila each
         of the item's tags option are called."""
         self._bind((self._w, "tag", "bind", tagname), sequence, callback, add=0)
 
 
-    def tag_configure(self, tagname, option=None, **kw):
-        """Query or modify the options for the specified tagname.
+    eleza tag_configure(self, tagname, option=Tupu, **kw):
+        """Query ama modify the options kila the specified tagname.
 
-        If kw ni sio given, returns a dict of the option settings for tagname.
-        If option is specified, returns the value for that option for the
+        If kw ni sio given, returns a dict of the option settings kila tagname.
+        If option ni specified, returns the value kila that option kila the
         specified tagname. Otherwise, sets the options to the corresponding
-        values for the given tagname."""
-        if option ni sio None:
-            kw[option] = None
-        return _val_or_dict(self.tk, kw, self._w, "tag", "configure",
+        values kila the given tagname."""
+        ikiwa option ni sio Tupu:
+            kw[option] = Tupu
+        rudisha _val_or_dict(self.tk, kw, self._w, "tag", "configure",
             tagname)
 
 
-    def tag_has(self, tagname, item=None):
-        """If item is specified, returns 1 or 0 depending on whether the
+    eleza tag_has(self, tagname, item=Tupu):
+        """If item ni specified, returns 1 ama 0 depending on whether the
         specified item has the given tagname. Otherwise, returns a list of
         all items which have the specified tag.
 
         * Availability: Tk 8.6"""
-        if item is None:
-            return self.tk.splitlist(
+        ikiwa item ni Tupu:
+            rudisha self.tk.splitlist(
                 self.tk.call(self._w, "tag", "has", tagname))
         isipokua:
-            return self.tk.getboolean(
+            rudisha self.tk.getboolean(
                 self.tk.call(self._w, "tag", "has", tagname, item))
 
 
 # Extensions
 
-class LabeledScale(Frame):
-    """A Ttk Scale widget with a Ttk Label widget indicating its
+kundi LabeledScale(Frame):
+    """A Ttk Scale widget ukijumuisha a Ttk Label widget indicating its
     current value.
 
-    The Ttk Scale can be accessed through instance.scale, and Ttk Label
+    The Ttk Scale can be accessed through instance.scale, na Ttk Label
     can be accessed through instance.label"""
 
-    def __init__(self, master=None, variable=None, from_=0, to=10, **kw):
-        """Construct a horizontal LabeledScale with parent master, a
-        variable to be associated with the Ttk Scale widget and its range.
-        If variable ni sio specified, a tkinter.IntVar is created.
+    eleza __init__(self, master=Tupu, variable=Tupu, from_=0, to=10, **kw):
+        """Construct a horizontal LabeledScale ukijumuisha parent master, a
+        variable to be associated ukijumuisha the Ttk Scale widget na its range.
+        If variable ni sio specified, a tkinter.IntVar ni created.
 
         WIDGET-SPECIFIC OPTIONS
 
-            compound: 'top' or 'bottom'
+            compound: 'top' ama 'bottom'
                 Specifies how to display the label relative to the scale.
                 Defaults to 'top'.
         """
         self._label_top = kw.pop('compound', 'top') == 'top'
 
         Frame.__init__(self, master, **kw)
-        self._variable = variable or tkinter.IntVar(master)
+        self._variable = variable ama tkinter.IntVar(master)
         self._variable.set(from_)
         self._last_valid = from_
 
@@ -1533,39 +1533,39 @@ class LabeledScale(Frame):
         self.scale = Scale(self, variable=self._variable, from_=from_, to=to)
         self.scale.bind('<<RangeChanged>>', self._adjust)
 
-        # position scale and label according to the compound option
-        scale_side = 'bottom' if self._label_top isipokua 'top'
-        label_side = 'top' if scale_side == 'bottom' isipokua 'bottom'
+        # position scale na label according to the compound option
+        scale_side = 'bottom' ikiwa self._label_top isipokua 'top'
+        label_side = 'top' ikiwa scale_side == 'bottom' isipokua 'bottom'
         self.scale.pack(side=scale_side, fill='x')
         tmp = Label(self).pack(side=label_side) # place holder
-        self.label.place(anchor='n' if label_side == 'top' isipokua 's')
+        self.label.place(anchor='n' ikiwa label_side == 'top' isipokua 's')
 
-        # update the label as scale or variable changes
+        # update the label as scale ama variable changes
         self.__tracecb = self._variable.trace_variable('w', self._adjust)
         self.bind('<Configure>', self._adjust)
         self.bind('<Map>', self._adjust)
 
 
-    def destroy(self):
-        """Destroy this widget and possibly its associated variable."""
+    eleza destroy(self):
+        """Destroy this widget na possibly its associated variable."""
         jaribu:
             self._variable.trace_vdelete('w', self.__tracecb)
-        tatizo AttributeError:
+        except AttributeError:
             pass
         isipokua:
             toa self._variable
         super().destroy()
-        self.label = None
-        self.scale = None
+        self.label = Tupu
+        self.scale = Tupu
 
 
-    def _adjust(self, *args):
+    eleza _adjust(self, *args):
         """Adjust the label position according to the scale."""
-        def adjust_label():
+        eleza adjust_label():
             self.update_idletasks() # "force" scale redraw
 
             x, y = self.scale.coords()
-            if self._label_top:
+            ikiwa self._label_top:
                 y = self.scale.winfo_y() - self.label.winfo_reqheight()
             isipokua:
                 y = self.scale.winfo_reqheight() + self.label.winfo_reqheight()
@@ -1574,10 +1574,10 @@ class LabeledScale(Frame):
 
         from_ = _to_number(self.scale['from'])
         to = _to_number(self.scale['to'])
-        if to < from_:
+        ikiwa to < from_:
             from_, to = to, from_
         newval = self._variable.get()
-        if sio from_ <= newval <= to:
+        ikiwa sio from_ <= newval <= to:
             # value outside range, set value back to the last valid one
             self.value = self._last_valid
             return
@@ -1587,74 +1587,74 @@ class LabeledScale(Frame):
         self.after_idle(adjust_label)
 
     @property
-    def value(self):
+    eleza value(self):
         """Return current scale value."""
-        return self._variable.get()
+        rudisha self._variable.get()
 
     @value.setter
-    def value(self, val):
+    eleza value(self, val):
         """Set new scale value."""
         self._variable.set(val)
 
 
-class OptionMenu(Menubutton):
+kundi OptionMenu(Menubutton):
     """Themed OptionMenu, based after tkinter's OptionMenu, which allows
-    the user to select a value from a menu."""
+    the user to select a value kutoka a menu."""
 
-    def __init__(self, master, variable, default=None, *values, **kwargs):
-        """Construct a themed OptionMenu widget with master as the parent,
+    eleza __init__(self, master, variable, default=Tupu, *values, **kwargs):
+        """Construct a themed OptionMenu widget ukijumuisha master as the parent,
         the resource textvariable set to variable, the initially selected
         value specified by the default parameter, the menu values given by
-        *values and additional keywords.
+        *values na additional keywords.
 
         WIDGET-SPECIFIC OPTIONS
 
             style: stylename
                 Menubutton style.
-            direction: 'above', 'below', 'left', 'right', or 'flush'
+            direction: 'above', 'below', 'left', 'right', ama 'flush'
                 Menubutton direction.
             command: callback
                 A callback that will be invoked after selecting an item.
         """
-        kw = {'textvariable': variable, 'style': kwargs.pop('style', None),
-              'direction': kwargs.pop('direction', None)}
+        kw = {'textvariable': variable, 'style': kwargs.pop('style', Tupu),
+              'direction': kwargs.pop('direction', Tupu)}
         Menubutton.__init__(self, master, **kw)
-        self['menu'] = tkinter.Menu(self, tearoff=False)
+        self['menu'] = tkinter.Menu(self, tearoff=Uongo)
 
         self._variable = variable
-        self._callback = kwargs.pop('command', None)
-        if kwargs:
-            ashiria tkinter.TclError('unknown option -%s' % (
+        self._callback = kwargs.pop('command', Tupu)
+        ikiwa kwargs:
+             ashiria tkinter.TclError('unknown option -%s' % (
                 next(iter(kwargs.keys()))))
 
         self.set_menu(default, *values)
 
 
-    def __getitem__(self, item):
-        if item == 'menu':
-            return self.nametowidget(Menubutton.__getitem__(self, item))
+    eleza __getitem__(self, item):
+        ikiwa item == 'menu':
+            rudisha self.nametowidget(Menubutton.__getitem__(self, item))
 
-        return Menubutton.__getitem__(self, item)
+        rudisha Menubutton.__getitem__(self, item)
 
 
-    def set_menu(self, default=None, *values):
-        """Build a new menu of radiobuttons with *values and optionally
+    eleza set_menu(self, default=Tupu, *values):
+        """Build a new menu of radiobuttons ukijumuisha *values na optionally
         a default value."""
         menu = self['menu']
         menu.delete(0, 'end')
-        for val in values:
+        kila val kwenye values:
             menu.add_radiobutton(label=val,
                 command=tkinter._setit(self._variable, val, self._callback),
                 variable=self._variable)
 
-        if default:
+        ikiwa default:
             self._variable.set(default)
 
 
-    def destroy(self):
-        """Destroy this widget and its associated variable."""
+    eleza destroy(self):
+        """Destroy this widget na its associated variable."""
         jaribu:
             toa self._variable
-        tatizo AttributeError:
+        except AttributeError:
             pass
         super().destroy()

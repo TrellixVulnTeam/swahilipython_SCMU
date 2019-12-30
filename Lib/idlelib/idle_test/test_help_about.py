@@ -79,7 +79,7 @@ kundi LiveDialogTest(unittest.TestCase):
                 button.invoke()
                 fn = findfile(filename, subdir='idlelib')
                 get = dialog._current_textview.viewframe.textframe.text.get
-                ukijumuisha open(fn, encoding='utf-8') kama f:
+                ukijumuisha open(fn, encoding='utf-8') as f:
                     self.assertEqual(f.readline().strip(), get('1.0', '1.end'))
                     f.readline()
                     self.assertEqual(f.readline().strip(), get('3.0', '3.end'))

@@ -1,14 +1,14 @@
-"""Wrapper to the POSIX crypt library call and associated functionality."""
+"""Wrapper to the POSIX crypt library call na associated functionality."""
 
 agiza sys as _sys
 
 jaribu:
     agiza _crypt
-tatizo ModuleNotFoundError:
-    if _sys.platform == 'win32':
-        ashiria ImportError("The crypt module ni sio supported on Windows")
+except ModuleNotFoundError:
+    ikiwa _sys.platform == 'win32':
+         ashiria ImportError("The crypt module ni sio supported on Windows")
     isipokua:
-        ashiria ImportError("The required _crypt module was sio built as part of CPython")
+         ashiria ImportError("The required _crypt module was sio built as part of CPython")
 
 agiza string as _string
 kutoka random agiza SystemRandom as _SystemRandom
@@ -21,78 +21,78 @@ _sr = _SystemRandom()
 
 kundi _Method(_namedtuple('_Method', 'name ident salt_chars total_size')):
 
-    """Class representing a salt method per the Modular Crypt Format or the
+    """Class representing a salt method per the Modular Crypt Format ama the
     legacy 2-character crypt method."""
 
-    def __repr__(self):
-        return '<crypt.METHOD_{}>'.format(self.name)
+    eleza __repr__(self):
+        rudisha '<crypt.METHOD_{}>'.format(self.name)
 
 
-def mksalt(method=None, *, rounds=None):
-    """Generate a salt for the specified method.
+eleza mksalt(method=Tupu, *, rounds=Tupu):
+    """Generate a salt kila the specified method.
 
     If sio specified, the strongest available method will be used.
 
     """
-    if method is None:
+    ikiwa method ni Tupu:
         method = methods[0]
-    if rounds ni sio None and sio isinstance(rounds, int):
-        ashiria TypeError(f'{rounds.__class__.__name__} object cannot be '
+    ikiwa rounds ni sio Tupu na sio isinstance(rounds, int):
+         ashiria TypeError(f'{rounds.__class__.__name__} object cannot be '
                         f'interpreted as an integer')
-    if sio method.ident:  # traditional
+    ikiwa sio method.ident:  # traditional
         s = ''
     isipokua:  # modular
         s = f'${method.ident}$'
 
-    if method.ident and method.ident[0] == '2':  # Blowfish variants
-        if rounds is None:
+    ikiwa method.ident na method.ident[0] == '2':  # Blowfish variants
+        ikiwa rounds ni Tupu:
             log_rounds = 12
         isipokua:
             log_rounds = int.bit_length(rounds-1)
-            if rounds != 1 << log_rounds:
-                ashiria ValueError('rounds must be a power of 2')
-            if sio 4 <= log_rounds <= 31:
-                ashiria ValueError('rounds out of the range 2**4 to 2**31')
+            ikiwa rounds != 1 << log_rounds:
+                 ashiria ValueError('rounds must be a power of 2')
+            ikiwa sio 4 <= log_rounds <= 31:
+                 ashiria ValueError('rounds out of the range 2**4 to 2**31')
         s += f'{log_rounds:02d}$'
-    lasivyo method.ident in ('5', '6'):  # SHA-2
-        if rounds ni sio None:
-            if sio 1000 <= rounds <= 999_999_999:
-                ashiria ValueError('rounds out of the range 1000 to 999_999_999')
+    elikiwa method.ident kwenye ('5', '6'):  # SHA-2
+        ikiwa rounds ni sio Tupu:
+            ikiwa sio 1000 <= rounds <= 999_999_999:
+                 ashiria ValueError('rounds out of the range 1000 to 999_999_999')
             s += f'rounds={rounds}$'
-    lasivyo rounds ni sio None:
-        ashiria ValueError(f"{method} doesn't support the rounds argument")
+    elikiwa rounds ni sio Tupu:
+         ashiria ValueError(f"{method} doesn't support the rounds argument")
 
-    s += ''.join(_sr.choice(_saltchars) for char in range(method.salt_chars))
-    return s
+    s += ''.join(_sr.choice(_saltchars) kila char kwenye range(method.salt_chars))
+    rudisha s
 
 
-def crypt(word, salt=None):
-    """Return a string representing the one-way hash of a password, with a salt
+eleza crypt(word, salt=Tupu):
+    """Return a string representing the one-way hash of a password, ukijumuisha a salt
     prepended.
 
-    If ``salt`` ni sio specified or is ``None``, the strongest
-    available method will be selected and a salt generated.  Otherwise,
-    ``salt`` may be one of the ``crypt.METHOD_*`` values, or a string as
+    If ``salt`` ni sio specified ama ni ``Tupu``, the strongest
+    available method will be selected na a salt generated.  Otherwise,
+    ``salt`` may be one of the ``crypt.METHOD_*`` values, ama a string as
     returned by ``crypt.mksalt()``.
 
     """
-    if salt is None or isinstance(salt, _Method):
+    ikiwa salt ni Tupu ama isinstance(salt, _Method):
         salt = mksalt(salt)
-    return _crypt.crypt(word, salt)
+    rudisha _crypt.crypt(word, salt)
 
 
 #  available salting/crypto methods
 methods = []
 
-def _add_method(name, *args, rounds=None):
+eleza _add_method(name, *args, rounds=Tupu):
     method = _Method(name, *args)
     globals()['METHOD_' + name] = method
     salt = mksalt(method, rounds=rounds)
     result = crypt('', salt)
-    if result and len(result) == method.total_size:
+    ikiwa result na len(result) == method.total_size:
         methods.append(method)
-        return True
-    return False
+        rudisha Kweli
+    rudisha Uongo
 
 _add_method('SHA512', '6', 16, 106)
 _add_method('SHA256', '5', 16, 63)
@@ -100,13 +100,13 @@ _add_method('SHA256', '5', 16, 63)
 # Choose the strongest supported version of Blowfish hashing.
 # Early versions have flaws.  Version 'a' fixes flaws of
 # the initial implementation, 'b' fixes flaws of 'a'.
-# 'y' is the same as 'b', for compatibility
-# with openwall crypt_blowfish.
-for _v in 'b', 'y', 'a', '':
-    if _add_method('BLOWFISH', '2' + _v, 22, 59 + len(_v), rounds=1<<4):
+# 'y' ni the same as 'b', kila compatibility
+# ukijumuisha openwall crypt_blowfish.
+kila _v kwenye 'b', 'y', 'a', '':
+    ikiwa _add_method('BLOWFISH', '2' + _v, 22, 59 + len(_v), rounds=1<<4):
         koma
 
 _add_method('MD5', '1', 8, 34)
-_add_method('CRYPT', None, 2, 13)
+_add_method('CRYPT', Tupu, 2, 13)
 
 toa _v, _add_method

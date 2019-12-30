@@ -88,7 +88,7 @@ eleza isort(shelf):
         wakati hole > 0 na shelf[i].size < shelf[hole - 1].size:
             hole = hole - 1
         shelf.insert(hole, shelf.pop(i))
-    rudisha
+    return
 
 eleza ssort(shelf):
     length = len(shelf)

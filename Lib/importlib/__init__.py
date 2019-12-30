@@ -1,4 +1,4 @@
-"""A pure Python implementation of agiza."""
+"""A pure Python implementation of import."""
 __all__ = ['__import__', 'import_module', 'invalidate_caches', 'reload']
 
 # Bootstrap help #####################################################
@@ -13,26 +13,26 @@ agiza _imp  # Just the builtin component, NOT the full Python module
 agiza sys
 
 jaribu:
-    agiza _frozen_importlib kama _bootstrap
-tatizo ImportError:
+    agiza _frozen_importlib as _bootstrap
+except ImportError:
     kutoka . agiza _bootstrap
     _bootstrap._setup(sys, _imp)
 isipokua:
-    # importlib._bootstrap ni the built-in agiza, ensure we don't create
+    # importlib._bootstrap ni the built-in import, ensure we don't create
     # a second copy of the module.
     _bootstrap.__name__ = 'importlib._bootstrap'
     _bootstrap.__package__ = 'importlib'
     jaribu:
         _bootstrap.__file__ = __file__.replace('__init__.py', '_bootstrap.py')
-    tatizo NameError:
+    except NameError:
         # __file__ ni sio guaranteed to be defined, e.g. ikiwa this code gets
         # frozen by a tool like cx_Freeze.
-        pita
+        pass
     sys.modules['importlib._bootstrap'] = _bootstrap
 
 jaribu:
-    agiza _frozen_importlib_external kama _bootstrap_external
-tatizo ImportError:
+    agiza _frozen_importlib_external as _bootstrap_external
+except ImportError:
     kutoka . agiza _bootstrap_external
     _bootstrap_external._setup(_bootstrap)
     _bootstrap._bootstrap_external = _bootstrap_external
@@ -41,13 +41,13 @@ isipokua:
     _bootstrap_external.__package__ = 'importlib'
     jaribu:
         _bootstrap_external.__file__ = __file__.replace('__init__.py', '_bootstrap_external.py')
-    tatizo NameError:
+    except NameError:
         # __file__ ni sio guaranteed to be defined, e.g. ikiwa this code gets
         # frozen by a tool like cx_Freeze.
-        pita
+        pass
     sys.modules['importlib._bootstrap_external'] = _bootstrap_external
 
-# To simplify agizas kwenye test code
+# To simplify imports kwenye test code
 _pack_uint32 = _bootstrap_external._pack_uint32
 _unpack_uint32 = _bootstrap_external._unpack_uint32
 
@@ -85,13 +85,13 @@ eleza find_loader(name, path=Tupu):
     jaribu:
         loader = sys.modules[name].__loader__
         ikiwa loader ni Tupu:
-            ashiria ValueError('{}.__loader__ ni Tupu'.format(name))
+             ashiria ValueError('{}.__loader__ ni Tupu'.format(name))
         isipokua:
             rudisha loader
-    tatizo KeyError:
-        pita
-    tatizo AttributeError:
-        ashiria ValueError('{}.__loader__ ni sio set'.format(name)) kutoka Tupu
+    except KeyError:
+        pass
+    except AttributeError:
+         ashiria ValueError('{}.__loader__ ni sio set'.format(name)) kutoka Tupu
 
     spec = _bootstrap._find_spec(name, path)
     # We won't worry about malformed specs (missing attributes).
@@ -99,9 +99,9 @@ eleza find_loader(name, path=Tupu):
         rudisha Tupu
     ikiwa spec.loader ni Tupu:
         ikiwa spec.submodule_search_locations ni Tupu:
-            ashiria ImportError('spec kila {} missing loader'.format(name),
+             ashiria ImportError('spec kila {} missing loader'.format(name),
                               name=name)
-        ashiria ImportError('namespace packages do sio have loaders',
+         ashiria ImportError('namespace packages do sio have loaders',
                           name=name)
     rudisha spec.loader
 
@@ -109,9 +109,9 @@ eleza find_loader(name, path=Tupu):
 eleza import_module(name, package=Tupu):
     """Import a module.
 
-    The 'package' argument ni required when performing a relative agiza. It
-    specifies the package to use kama the anchor point kutoka which to resolve the
-    relative agiza to an absolute agiza.
+    The 'package' argument ni required when performing a relative import. It
+    specifies the package to use as the anchor point kutoka which to resolve the
+    relative agiza to an absolute import.
 
     """
     level = 0
@@ -119,12 +119,12 @@ eleza import_module(name, package=Tupu):
         ikiwa sio package:
             msg = ("the 'package' argument ni required to perform a relative "
                    "agiza kila {!r}")
-            ashiria TypeError(msg.format(name))
+             ashiria TypeError(msg.format(name))
         kila character kwenye name:
             ikiwa character != '.':
                 koma
             level += 1
-    rudisha _bootstrap._gcd_agiza(name[level:], package, level)
+    rudisha _bootstrap._gcd_import(name[level:], package, level)
 
 
 _RELOADING = {}
@@ -137,15 +137,15 @@ eleza reload(module):
 
     """
     ikiwa sio module ama sio isinstance(module, types.ModuleType):
-        ashiria TypeError("reload() argument must be a module")
+         ashiria TypeError("reload() argument must be a module")
     jaribu:
         name = module.__spec__.name
-    tatizo AttributeError:
+    except AttributeError:
         name = module.__name__
 
     ikiwa sys.modules.get(name) ni sio module:
-        msg = "module {} haiko kwenye sys.modules"
-        ashiria ImportError(msg.format(name), name=name)
+        msg = "module {} sio kwenye sys.modules"
+         ashiria ImportError(msg.format(name), name=name)
     ikiwa name kwenye _RELOADING:
         rudisha _RELOADING[name]
     _RELOADING[name] = module
@@ -154,9 +154,9 @@ eleza reload(module):
         ikiwa parent_name:
             jaribu:
                 parent = sys.modules[parent_name]
-            tatizo KeyError:
-                msg = "parent {!r} haiko kwenye sys.modules"
-                ashiria ImportError(msg.format(parent_name),
+            except KeyError:
+                msg = "parent {!r} sio kwenye sys.modules"
+                 ashiria ImportError(msg.format(parent_name),
                                   name=parent_name) kutoka Tupu
             isipokua:
                 pkgpath = parent.__path__
@@ -165,12 +165,12 @@ eleza reload(module):
         target = module
         spec = module.__spec__ = _bootstrap._find_spec(name, pkgpath, target)
         ikiwa spec ni Tupu:
-            ashiria ModuleNotFoundError(f"spec sio found kila the module {name!r}", name=name)
+             ashiria ModuleNotFoundError(f"spec sio found kila the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself kwenye sys.modules!
         rudisha sys.modules[name]
     mwishowe:
         jaribu:
             toa _RELOADING[name]
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass

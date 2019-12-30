@@ -46,7 +46,7 @@ kundi ForkServer(object):
 
     eleza _stop_unlocked(self):
         ikiwa self._forkserver_pid ni Tupu:
-            rudisha
+            return
 
         # close the "alive" file descriptor asks the server to stop
         os.close(self._forkserver_alive_fd)
@@ -61,13 +61,13 @@ kundi ForkServer(object):
     eleza set_forkserver_preload(self, modules_names):
         '''Set list of module names to try to load kwenye forkserver process.'''
         ikiwa sio all(type(mod) ni str kila mod kwenye self._preload_modules):
-            ashiria TypeError('module_names must be a list of strings')
+             ashiria TypeError('module_names must be a list of strings')
         self._preload_modules = modules_names
 
     eleza get_inherited_fds(self):
         '''Return list of fds inherited kutoka parent process.
 
-        This rudishas Tupu ikiwa the current process was sio started by fork
+        This returns Tupu ikiwa the current process was sio started by fork
         server.
         '''
         rudisha self._inherited_fds
@@ -77,13 +77,13 @@ kundi ForkServer(object):
 
         Returns a pair of fds (status_r, data_w).  The calling process can read
         the child process's pid na (eventually) its returncode kutoka status_r.
-        The calling process should write to data_w the pickled preparation na
+        The calling process should write to data_w the pickled preparation and
         process data.
         '''
         self.ensure_running()
         ikiwa len(fds) + 4 >= MAXFDS_TO_SEND:
-            ashiria ValueError('too many fds')
-        ukijumuisha socket.socket(socket.AF_UNIX) kama client:
+             ashiria ValueError('too many fds')
+        ukijumuisha socket.socket(socket.AF_UNIX) as client:
             client.connect(self._forkserver_address)
             parent_r, child_w = os.pipe()
             child_r, parent_w = os.pipe()
@@ -96,7 +96,7 @@ kundi ForkServer(object):
             tatizo:
                 os.close(parent_r)
                 os.close(parent_w)
-                ashiria
+                raise
             mwishowe:
                 os.close(child_r)
                 os.close(child_w)
@@ -115,7 +115,7 @@ kundi ForkServer(object):
                 pid, status = os.waitpid(self._forkserver_pid, os.WNOHANG)
                 ikiwa sio pid:
                     # still alive
-                    rudisha
+                    return
                 # dead, launch it again
                 os.close(self._forkserver_alive_fd)
                 self._forkserver_address = Tupu
@@ -132,7 +132,7 @@ kundi ForkServer(object):
             isipokua:
                 data = {}
 
-            ukijumuisha socket.socket(socket.AF_UNIX) kama listener:
+            ukijumuisha socket.socket(socket.AF_UNIX) as listener:
                 address = connection.arbitrary_address('AF_UNIX')
                 listener.bind(address)
                 os.chmod(address, 0o600)
@@ -142,16 +142,16 @@ kundi ForkServer(object):
                 # when they all terminate the read end becomes ready.
                 alive_r, alive_w = os.pipe()
                 jaribu:
-                    fds_to_pita = [listener.fileno(), alive_r]
+                    fds_to_pass = [listener.fileno(), alive_r]
                     cmd %= (listener.fileno(), alive_r, self._preload_modules,
                             data)
                     exe = spawn.get_executable()
                     args = [exe] + util._args_from_interpreter_flags()
                     args += ['-c', cmd]
-                    pid = util.spawnv_pitafds(exe, args, fds_to_pita)
+                    pid = util.spawnv_passfds(exe, args, fds_to_pass)
                 tatizo:
                     os.close(alive_w)
-                    ashiria
+                    raise
                 mwishowe:
                     os.close(alive_r)
                 self._forkserver_address = address
@@ -174,8 +174,8 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
         kila modname kwenye preload:
             jaribu:
                 __import__(modname)
-            tatizo ImportError:
-                pita
+            except ImportError:
+                pass
 
     util._close_stdin()
 
@@ -185,7 +185,7 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
 
     eleza sigchld_handler(*_unused):
         # Dummy signal handler, doesn't do anything
-        pita
+        pass
 
     handlers = {
         # unblocking SIGCHLD allows the wakeup fd to notify our event loop
@@ -202,8 +202,8 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
     # map child pids to client fds
     pid_to_fd = {}
 
-    ukijumuisha socket.socket(socket.AF_UNIX, fileno=listener_fd) kama listener, \
-         selectors.DefaultSelector() kama selector:
+    ukijumuisha socket.socket(socket.AF_UNIX, fileno=listener_fd) as listener, \
+         selectors.DefaultSelector() as selector:
         _forkserver._forkserver_address = listener.getsockname()
 
         selector.register(listener, selectors.EVENT_READ)
@@ -220,7 +220,7 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
                 ikiwa alive_r kwenye rfds:
                     # EOF because no more client processes left
                     assert os.read(alive_r, 1) == b'', "Not at EOF?"
-                    ashiria SystemExit
+                     ashiria SystemExit
 
                 ikiwa sig_r kwenye rfds:
                     # Got SIGCHLD
@@ -229,7 +229,7 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
                         # Scan kila child processes
                         jaribu:
                             pid, sts = os.waitpid(-1, os.WNOHANG)
-                        tatizo ChildProcessError:
+                        except ChildProcessError:
                             koma
                         ikiwa pid == 0:
                             koma
@@ -239,29 +239,29 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
                                 returncode = -os.WTERMSIG(sts)
                             isipokua:
                                 ikiwa sio os.WIFEXITED(sts):
-                                    ashiria AssertionError(
+                                     ashiria AssertionError(
                                         "Child {0:n} status ni {1:n}".format(
                                             pid,sts))
                                 returncode = os.WEXITSTATUS(sts)
                             # Send exit code to client process
                             jaribu:
                                 write_signed(child_w, returncode)
-                            tatizo BrokenPipeError:
+                            except BrokenPipeError:
                                 # client vanished
-                                pita
+                                pass
                             os.close(child_w)
                         isipokua:
                             # This shouldn't happen really
-                            warnings.warn('forkserver: waitpid rudishaed '
+                            warnings.warn('forkserver: waitpid returned '
                                           'unexpected pid %d' % pid)
 
                 ikiwa listener kwenye rfds:
                     # Incoming fork request
-                    ukijumuisha listener.accept()[0] kama s:
+                    ukijumuisha listener.accept()[0] as s:
                         # Receive fds kutoka client
                         fds = reduction.recvfds(s, MAXFDS_TO_SEND + 1)
                         ikiwa len(fds) > MAXFDS_TO_SEND:
-                            ashiria RuntimeError(
+                             ashiria RuntimeError(
                                 "Too many ({0:n}) fds to send".format(
                                     len(fds)))
                         child_r, child_w, *fds = fds
@@ -278,7 +278,7 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
                                 code = _serve_one(child_r, fds,
                                                   unused_fds,
                                                   old_handlers)
-                            tatizo Exception:
+                            except Exception:
                                 sys.excepthook(*sys.exc_info())
                                 sys.stderr.flush()
                             mwishowe:
@@ -287,17 +287,17 @@ eleza main(listener_fd, alive_r, preload, main_path=Tupu, sys_path=Tupu):
                             # Send pid to client process
                             jaribu:
                                 write_signed(child_w, pid)
-                            tatizo BrokenPipeError:
+                            except BrokenPipeError:
                                 # client vanished
-                                pita
+                                pass
                             pid_to_fd[pid] = child_w
                             os.close(child_r)
                             kila fd kwenye fds:
                                 os.close(fd)
 
-            tatizo OSError kama e:
+            except OSError as e:
                 ikiwa e.errno != errno.ECONNABORTED:
-                    ashiria
+                    raise
 
 
 eleza _serve_one(child_r, fds, unused_fds, handlers):
@@ -329,7 +329,7 @@ eleza read_signed(fd):
     wakati len(data) < length:
         s = os.read(fd, length - len(data))
         ikiwa sio s:
-            ashiria EOFError('unexpected EOF')
+             ashiria EOFError('unexpected EOF')
         data += s
     rudisha SIGNED_STRUCT.unpack(data)[0]
 
@@ -338,7 +338,7 @@ eleza write_signed(fd, n):
     wakati msg:
         nbytes = os.write(fd, msg)
         ikiwa nbytes == 0:
-            ashiria RuntimeError('should sio get here')
+             ashiria RuntimeError('should sio get here')
         msg = msg[nbytes:]
 
 #

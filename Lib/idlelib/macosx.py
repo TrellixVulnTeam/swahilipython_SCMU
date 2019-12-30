@@ -24,9 +24,9 @@ eleza _init_tk_type():
         ws = root.tk.call('tk', 'windowingsystem')
         ikiwa 'x11' kwenye ws:
             _tk_type = "xquartz"
-        lasivyo 'aqua' haiko kwenye ws:
+        elikiwa 'aqua' sio kwenye ws:
             _tk_type = "other"
-        lasivyo 'AppKit' kwenye root.tk.call('winfo', 'server', '.'):
+        elikiwa 'AppKit' kwenye root.tk.call('winfo', 'server', '.'):
             _tk_type = "cocoa"
         isipokua:
             _tk_type = "carbon"
@@ -79,7 +79,7 @@ eleza tkVersionWarning(root):
 
     ikiwa isCocoaTk():
         patchlevel = root.tk.call('info', 'patchlevel')
-        ikiwa patchlevel haiko kwenye ('8.5.7', '8.5.9'):
+        ikiwa patchlevel sio kwenye ('8.5.7', '8.5.9'):
             rudisha Uongo
         rudisha ("WARNING: The version of Tcl/Tk ({0}) kwenye use may"
                 " be unstable.\n"
@@ -98,9 +98,9 @@ eleza readSystemPreferences():
 
     plist_path = expanduser('~/Library/Preferences/.GlobalPreferences.plist')
     jaribu:
-        ukijumuisha open(plist_path, 'rb') kama plist_file:
+        ukijumuisha open(plist_path, 'rb') as plist_file:
             rudisha plistlib.load(plist_file)
-    tatizo OSError:
+    except OSError:
         rudisha Tupu
 
 
@@ -127,7 +127,7 @@ eleza preferTabsPreferenceWarning():
 eleza addOpenEventSupport(root, flist):
     """
     This ensures that the application will respond to open AppleEvents, which
-    makes ni feasible to use IDLE kama the default application kila python files.
+    makes ni feasible to use IDLE as the default application kila python files.
     """
     eleza doOpenFile(*args):
         kila fn kwenye args:
@@ -141,9 +141,9 @@ eleza addOpenEventSupport(root, flist):
 eleza hideTkConsole(root):
     jaribu:
         root.tk.call('console', 'hide')
-    tatizo tkinter.TclError:
+    except tkinter.TclError:
         # Some versions of the Tk framework don't have a console object
-        pita
+        pass
 
 eleza overrideRootMenu(root, flist):
     """
@@ -167,7 +167,7 @@ eleza overrideRootMenu(root, flist):
 
     closeItem = mainmenu.menudefs[0][1][-2]
 
-    # Remove the last 3 items of the file menu: a separator, close window na
+    # Remove the last 3 items of the file menu: a separator, close window and
     # quit. Close window will be reinserted just above the save item, where
     # it should be according to the HIG. Quit ni kwenye the application menu.
     toa mainmenu.menudefs[0][1][-3:]
@@ -177,7 +177,7 @@ eleza overrideRootMenu(root, flist):
     # menu
     toa mainmenu.menudefs[-1][1][0:2]
     # Remove the 'Configure Idle' entry kutoka the options menu, it ni kwenye the
-    # application menu kama 'Preferences'
+    # application menu as 'Preferences'
     toa mainmenu.menudefs[-3][1][0:2]
     menubar = Menu(root)
     root.configure(menu=menubar)
@@ -209,7 +209,7 @@ eleza overrideRootMenu(root, flist):
 
         # Ensure that the root object has an instance_dict attribute,
         # mirrors code kwenye EditorWindow (although that sets the attribute
-        # on an EditorWindow instance that ni then pitaed kama the first
+        # on an EditorWindow instance that ni then passed as the first
         # argument to ConfigDialog)
         root.instance_dict = flist.inversedict
         configdialog.ConfigDialog(root, 'Settings')
@@ -273,7 +273,7 @@ eleza setupApp(root, flist):
     Some one-time customizations are performed here.
     Others are dynamically tested throughout idlelib by calls to the
     isAquaTk(), isCarbonTk(), isCocoaTk(), isXQuartz() functions which
-    are initialized here kama well.
+    are initialized here as well.
     """
     ikiwa isAquaTk():
         hideTkConsole(root)

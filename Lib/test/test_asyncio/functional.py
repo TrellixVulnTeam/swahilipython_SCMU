@@ -1,113 +1,113 @@
-import asyncio
-import asyncio.events
-import contextlib
-import os
-import pprint
-import select
-import socket
-import tempfile
-import threading
+agiza asyncio
+agiza asyncio.events
+agiza contextlib
+agiza os
+agiza pprint
+agiza select
+agiza socket
+agiza tempfile
+agiza threading
 
 
-class FunctionalTestCaseMixin:
+kundi FunctionalTestCaseMixin:
 
-    def new_loop(self):
-        return asyncio.new_event_loop()
+    eleza new_loop(self):
+        rudisha asyncio.new_event_loop()
 
-    def run_loop_briefly(self, *, delay=0.01):
+    eleza run_loop_briefly(self, *, delay=0.01):
         self.loop.run_until_complete(asyncio.sleep(delay))
 
-    def loop_exception_handler(self, loop, context):
+    eleza loop_exception_handler(self, loop, context):
         self.__unhandled_exceptions.append(context)
         self.loop.default_exception_handler(context)
 
-    def setUp(self):
+    eleza setUp(self):
         self.loop = self.new_loop()
-        asyncio.set_event_loop(None)
+        asyncio.set_event_loop(Tupu)
 
         self.loop.set_exception_handler(self.loop_exception_handler)
         self.__unhandled_exceptions = []
 
         # Disable `_get_running_loop`.
         self._old_get_running_loop = asyncio.events._get_running_loop
-        asyncio.events._get_running_loop = lambda: None
+        asyncio.events._get_running_loop = lambda: Tupu
 
-    def tearDown(self):
+    eleza tearDown(self):
         jaribu:
             self.loop.close()
 
-            if self.__unhandled_exceptions:
-                print('Unexpected calls to loop.call_exception_handler():')
-                pprint.pprint(self.__unhandled_exceptions)
+            ikiwa self.__unhandled_exceptions:
+                andika('Unexpected calls to loop.call_exception_handler():')
+                pprint.pandika(self.__unhandled_exceptions)
                 self.fail('unexpected calls to loop.call_exception_handler()')
 
         mwishowe:
             asyncio.events._get_running_loop = self._old_get_running_loop
-            asyncio.set_event_loop(None)
-            self.loop = None
+            asyncio.set_event_loop(Tupu)
+            self.loop = Tupu
 
-    def tcp_server(self, server_prog, *,
+    eleza tcp_server(self, server_prog, *,
                    family=socket.AF_INET,
-                   addr=None,
+                   addr=Tupu,
                    timeout=5,
                    backlog=1,
                    max_clients=10):
 
-        if addr is None:
-            if hasattr(socket, 'AF_UNIX') and family == socket.AF_UNIX:
-                with tempfile.NamedTemporaryFile() as tmp:
+        ikiwa addr ni Tupu:
+            ikiwa hasattr(socket, 'AF_UNIX') na family == socket.AF_UNIX:
+                ukijumuisha tempfile.NamedTemporaryFile() as tmp:
                     addr = tmp.name
             isipokua:
                 addr = ('127.0.0.1', 0)
 
         sock = socket.create_server(addr, family=family, backlog=backlog)
-        if timeout is None:
-            ashiria RuntimeError('timeout is required')
-        if timeout <= 0:
-            ashiria RuntimeError('only blocking sockets are supported')
+        ikiwa timeout ni Tupu:
+             ashiria RuntimeError('timeout ni required')
+        ikiwa timeout <= 0:
+             ashiria RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
-        return TestThreadedServer(
+        rudisha TestThreadedServer(
             self, sock, server_prog, timeout, max_clients)
 
-    def tcp_client(self, client_prog,
+    eleza tcp_client(self, client_prog,
                    family=socket.AF_INET,
                    timeout=10):
 
         sock = socket.socket(family, socket.SOCK_STREAM)
 
-        if timeout is None:
-            ashiria RuntimeError('timeout is required')
-        if timeout <= 0:
-            ashiria RuntimeError('only blocking sockets are supported')
+        ikiwa timeout ni Tupu:
+             ashiria RuntimeError('timeout ni required')
+        ikiwa timeout <= 0:
+             ashiria RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
-        return TestThreadedClient(
+        rudisha TestThreadedClient(
             self, sock, client_prog, timeout)
 
-    def unix_server(self, *args, **kwargs):
-        if sio hasattr(socket, 'AF_UNIX'):
-            ashiria NotImplementedError
-        return self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
+    eleza unix_server(self, *args, **kwargs):
+        ikiwa sio hasattr(socket, 'AF_UNIX'):
+             ashiria NotImplementedError
+        rudisha self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
 
-    def unix_client(self, *args, **kwargs):
-        if sio hasattr(socket, 'AF_UNIX'):
-            ashiria NotImplementedError
-        return self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
+    eleza unix_client(self, *args, **kwargs):
+        ikiwa sio hasattr(socket, 'AF_UNIX'):
+             ashiria NotImplementedError
+        rudisha self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
 
     @contextlib.contextmanager
-    def unix_sock_name(self):
-        with tempfile.TemporaryDirectory() as td:
+    eleza unix_sock_name(self):
+        ukijumuisha tempfile.TemporaryDirectory() as td:
             fn = os.path.join(td, 'sock')
             jaribu:
-                yield fn
+                tuma fn
             mwishowe:
                 jaribu:
                     os.unlink(fn)
-                tatizo OSError:
+                except OSError:
                     pass
 
-    def _abort_socket_test(self, ex):
+    eleza _abort_socket_test(self, ex):
         jaribu:
             self.loop.stop()
         mwishowe:
@@ -119,28 +119,28 @@ class FunctionalTestCaseMixin:
 ##############################################################################
 
 
-class TestSocketWrapper:
+kundi TestSocketWrapper:
 
-    def __init__(self, sock):
+    eleza __init__(self, sock):
         self.__sock = sock
 
-    def recv_all(self, n):
+    eleza recv_all(self, n):
         buf = b''
         wakati len(buf) < n:
             data = self.recv(n - len(buf))
-            if data == b'':
-                ashiria ConnectionAbortedError
+            ikiwa data == b'':
+                 ashiria ConnectionAbortedError
             buf += data
-        return buf
+        rudisha buf
 
-    def start_tls(self, ssl_context, *,
-                  server_side=False,
-                  server_hostname=None):
+    eleza start_tls(self, ssl_context, *,
+                  server_side=Uongo,
+                  server_hostname=Tupu):
 
         ssl_sock = ssl_context.wrap_socket(
             self.__sock, server_side=server_side,
             server_hostname=server_hostname,
-            do_handshake_on_connect=False)
+            do_handshake_on_connect=Uongo)
 
         jaribu:
             ssl_sock.do_handshake()
@@ -152,103 +152,103 @@ class TestSocketWrapper:
 
         self.__sock = ssl_sock
 
-    def __getattr__(self, name):
-        return getattr(self.__sock, name)
+    eleza __getattr__(self, name):
+        rudisha getattr(self.__sock, name)
 
-    def __repr__(self):
-        return '<{} {!r}>'.format(type(self).__name__, self.__sock)
+    eleza __repr__(self):
+        rudisha '<{} {!r}>'.format(type(self).__name__, self.__sock)
 
 
-class SocketThread(threading.Thread):
+kundi SocketThread(threading.Thread):
 
-    def stop(self):
-        self._active = False
+    eleza stop(self):
+        self._active = Uongo
         self.join()
 
-    def __enter__(self):
+    eleza __enter__(self):
         self.start()
-        return self
+        rudisha self
 
-    def __exit__(self, *exc):
+    eleza __exit__(self, *exc):
         self.stop()
 
 
-class TestThreadedClient(SocketThread):
+kundi TestThreadedClient(SocketThread):
 
-    def __init__(self, test, sock, prog, timeout):
-        threading.Thread.__init__(self, None, None, 'test-client')
-        self.daemon = True
+    eleza __init__(self, test, sock, prog, timeout):
+        threading.Thread.__init__(self, Tupu, Tupu, 'test-client')
+        self.daemon = Kweli
 
         self._timeout = timeout
         self._sock = sock
-        self._active = True
+        self._active = Kweli
         self._prog = prog
         self._test = test
 
-    def run(self):
+    eleza run(self):
         jaribu:
             self._prog(TestSocketWrapper(self._sock))
-        tatizo Exception as ex:
+        except Exception as ex:
             self._test._abort_socket_test(ex)
 
 
-class TestThreadedServer(SocketThread):
+kundi TestThreadedServer(SocketThread):
 
-    def __init__(self, test, sock, prog, timeout, max_clients):
-        threading.Thread.__init__(self, None, None, 'test-server')
-        self.daemon = True
+    eleza __init__(self, test, sock, prog, timeout, max_clients):
+        threading.Thread.__init__(self, Tupu, Tupu, 'test-server')
+        self.daemon = Kweli
 
         self._clients = 0
         self._finished_clients = 0
         self._max_clients = max_clients
         self._timeout = timeout
         self._sock = sock
-        self._active = True
+        self._active = Kweli
 
         self._prog = prog
 
         self._s1, self._s2 = socket.socketpair()
-        self._s1.setblocking(False)
+        self._s1.setblocking(Uongo)
 
         self._test = test
 
-    def stop(self):
+    eleza stop(self):
         jaribu:
-            if self._s2 and self._s2.fileno() != -1:
+            ikiwa self._s2 na self._s2.fileno() != -1:
                 jaribu:
                     self._s2.send(b'stop')
-                tatizo OSError:
+                except OSError:
                     pass
         mwishowe:
             super().stop()
 
-    def run(self):
+    eleza run(self):
         jaribu:
-            with self._sock:
+            ukijumuisha self._sock:
                 self._sock.setblocking(0)
                 self._run()
         mwishowe:
             self._s1.close()
             self._s2.close()
 
-    def _run(self):
+    eleza _run(self):
         wakati self._active:
-            if self._clients >= self._max_clients:
+            ikiwa self._clients >= self._max_clients:
                 return
 
             r, w, x = select.select(
                 [self._sock, self._s1], [], [], self._timeout)
 
-            if self._s1 in r:
+            ikiwa self._s1 kwenye r:
                 return
 
-            if self._sock in r:
+            ikiwa self._sock kwenye r:
                 jaribu:
                     conn, addr = self._sock.accept()
-                tatizo BlockingIOError:
+                except BlockingIOError:
                     endelea
-                tatizo socket.timeout:
-                    if sio self._active:
+                except socket.timeout:
+                    ikiwa sio self._active:
                         return
                     isipokua:
                         raise
@@ -256,18 +256,18 @@ class TestThreadedServer(SocketThread):
                     self._clients += 1
                     conn.settimeout(self._timeout)
                     jaribu:
-                        with conn:
+                        ukijumuisha conn:
                             self._handle_client(conn)
-                    tatizo Exception as ex:
-                        self._active = False
+                    except Exception as ex:
+                        self._active = Uongo
                         jaribu:
                             raise
                         mwishowe:
                             self._test._abort_socket_test(ex)
 
-    def _handle_client(self, sock):
+    eleza _handle_client(self, sock):
         self._prog(TestSocketWrapper(sock))
 
     @property
-    def addr(self):
-        return self._sock.getsockname()
+    eleza addr(self):
+        rudisha self._sock.getsockname()

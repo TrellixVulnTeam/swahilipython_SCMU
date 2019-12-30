@@ -116,5 +116,5 @@ kundi TestEnum:
         self.assertEqual(nd['j'], NEG_INF)
         self.assertKweli(isnan(nd['n']))
 
-kundi TestPyEnum(TestEnum, PyTest): pita
-kundi TestCEnum(TestEnum, CTest): pita
+kundi TestPyEnum(TestEnum, PyTest): pass
+kundi TestCEnum(TestEnum, CTest): pass

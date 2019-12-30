@@ -1,17 +1,17 @@
-"""Tests for distutils.command.install_headers."""
-import os
-import unittest
+"""Tests kila distutils.command.install_headers."""
+agiza os
+agiza unittest
 
-from distutils.command.install_headers import install_headers
-from distutils.tests import support
-from test.support import run_unittest
+kutoka distutils.command.install_headers agiza install_headers
+kutoka distutils.tests agiza support
+kutoka test.support agiza run_unittest
 
-class InstallHeadersTestCase(support.TempdirManager,
+kundi InstallHeadersTestCase(support.TempdirManager,
                              support.LoggingSilencer,
                              support.EnvironGuard,
                              unittest.TestCase):
 
-    def test_simple_run(self):
+    eleza test_simple_run(self):
         # we have two headers
         header_list = self.mkdtemp()
         header1 = os.path.join(header_list, 'header1')
@@ -32,8 +32,8 @@ class InstallHeadersTestCase(support.TempdirManager,
         # let's check the results
         self.assertEqual(len(cmd.get_outputs()), 2)
 
-def test_suite():
-    return unittest.makeSuite(InstallHeadersTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(InstallHeadersTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

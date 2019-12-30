@@ -13,7 +13,7 @@ kutoka test.support agiza FakePath
 
 
 eleza create_file(filename, data=b'foo'):
-    ukijumuisha open(filename, 'xb', 0) kama fp:
+    ukijumuisha open(filename, 'xb', 0) as fp:
         fp.write(data)
 
 
@@ -26,7 +26,7 @@ kundi GenericTest:
         kila attr kwenye self.common_attributes + self.attributes:
             ukijumuisha self.assertRaises(TypeError):
                 getattr(self.pathmodule, attr)()
-                ashiria self.fail("{}.{}() did sio ashiria a TypeError"
+                 ashiria self.fail("{}.{}() did sio  ashiria a TypeError"
                                 .format(self.pathmodule.__name__, attr))
 
     eleza test_commonprefix(self):
@@ -113,10 +113,10 @@ kundi GenericTest:
 
         create_file(filename, b'foo')
 
-        ukijumuisha open(filename, "ab", 0) kama f:
+        ukijumuisha open(filename, "ab", 0) as f:
             f.write(b"bar")
 
-        ukijumuisha open(filename, "rb", 0) kama f:
+        ukijumuisha open(filename, "rb", 0) as f:
             data = f.read()
         self.assertEqual(data, b"foobar")
 
@@ -248,7 +248,7 @@ kundi GenericTest:
     eleza test_samefile_on_link(self):
         jaribu:
             self._test_samefile_on_link_func(os.link)
-        tatizo PermissionError kama e:
+        except PermissionError as e:
             self.skipTest('os.link(): %s' % e)
 
     eleza test_samestat(self):
@@ -290,7 +290,7 @@ kundi GenericTest:
     eleza test_samestat_on_link(self):
         jaribu:
             self._test_samestat_on_link_func(os.link)
-        tatizo PermissionError kama e:
+        except PermissionError as e:
             self.skipTest('os.link(): %s' % e)
 
     eleza test_sameopenfile(self):
@@ -298,9 +298,9 @@ kundi GenericTest:
         self.addCleanup(support.unlink, filename)
         create_file(filename)
 
-        ukijumuisha open(filename, "rb", 0) kama fp1:
+        ukijumuisha open(filename, "rb", 0) as fp1:
             fd1 = fp1.fileno()
-            ukijumuisha open(filename, "rb", 0) kama fp2:
+            ukijumuisha open(filename, "rb", 0) as fp2:
                 fd2 = fp2.fileno()
                 self.assertKweli(self.pathmodule.sameopenfile(fd1, fd2))
 
@@ -313,7 +313,7 @@ kundi TestGenericTest(GenericTest, unittest.TestCase):
 
     eleza test_invalid_paths(self):
         kila attr kwenye GenericTest.common_attributes:
-            # os.path.commonprefix doesn't ashiria ValueError
+            # os.path.commonprefix doesn't  ashiria ValueError
             ikiwa attr == 'commonprefix':
                 endelea
             func = getattr(self.pathmodule, attr)
@@ -357,7 +357,7 @@ kundi CommonTest(GenericTest):
         self.assertEqual(normcase(''), '')
         self.assertEqual(normcase(b''), b'')
 
-        # check that normcase ashirias a TypeError kila invalid types
+        # check that normcase raises a TypeError kila invalid types
         kila path kwenye (Tupu, Kweli, 0, 2.5, [], bytearray(b''), {'o','o'}):
             self.assertRaises(TypeError, normcase, path)
 
@@ -374,7 +374,7 @@ kundi CommonTest(GenericTest):
 
     eleza test_expandvars(self):
         expandvars = self.pathmodule.expandvars
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env.clear()
             env["foo"] = "bar"
             env["{foo"] = "baz1"
@@ -408,7 +408,7 @@ kundi CommonTest(GenericTest):
         expandvars = self.pathmodule.expandvars
         eleza check(value, expected):
             self.assertEqual(expandvars(value), expected)
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env.clear()
             nonascii = support.FS_NONASCII
             env['spam'] = nonascii
@@ -438,7 +438,7 @@ kundi CommonTest(GenericTest):
         # avoid UnicodeDecodeError on Windows
         undecodable_path = b'' ikiwa sys.platform == 'win32' isipokua b'f\xf2\xf2'
 
-        # Abspath rudishas bytes when the arg ni bytes
+        # Abspath returns bytes when the arg ni bytes
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             kila path kwenye (b'', b'foo', undecodable_path, b'/foo', b'C:\\'):
@@ -456,7 +456,7 @@ kundi CommonTest(GenericTest):
             self.assertIsInstance(self.pathmodule.normpath(path), str)
 
     eleza test_abspath_issue3426(self):
-        # Check that abspath rudishas unicode when the arg ni unicode
+        # Check that abspath returns unicode when the arg ni unicode
         # ukijumuisha both ASCII na non-ASCII cwds.
         abspath = self.pathmodule.abspath
         kila path kwenye ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
@@ -465,9 +465,9 @@ kundi CommonTest(GenericTest):
         unicwd = '\xe7w\xf0'
         jaribu:
             os.fsencode(unicwd)
-        tatizo (AttributeError, UnicodeEncodeError):
+        except (AttributeError, UnicodeEncodeError):
             # FS encoding ni probably ASCII
-            pita
+            pass
         isipokua:
             ukijumuisha support.temp_cwd(unicwd):
                 kila path kwenye ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
@@ -479,9 +479,9 @@ kundi CommonTest(GenericTest):
         # UTF-8 name. Windows allows creating a directory ukijumuisha an
         # arbitrary bytes name, but fails to enter this directory
         # (when the bytes name ni used).
-        na sys.platform haiko kwenye ('win32', 'darwin')):
+        na sys.platform sio kwenye ('win32', 'darwin')):
             name = support.TESTFN_UNDECODABLE
-        lasivyo support.TESTFN_NONASCII:
+        elikiwa support.TESTFN_NONASCII:
             name = support.TESTFN_NONASCII
         isipokua:
             self.skipTest("need support.TESTFN_NONASCII")
@@ -492,7 +492,7 @@ kundi CommonTest(GenericTest):
                 self.test_abspath()
 
     eleza test_join_errors(self):
-        # Check join() ashirias friendly TypeErrors.
+        # Check join() raises friendly TypeErrors.
         ukijumuisha support.check_warnings(('', BytesWarning), quiet=Kweli):
             errmsg = "Can't mix strings na bytes kwenye path components"
             ukijumuisha self.assertRaisesRegex(TypeError, errmsg):
@@ -512,7 +512,7 @@ kundi CommonTest(GenericTest):
                 self.pathmodule.join(bytearray(b'foo'), bytearray(b'bar'))
 
     eleza test_relpath_errors(self):
-        # Check relpath() ashirias friendly TypeErrors.
+        # Check relpath() raises friendly TypeErrors.
         ukijumuisha support.check_warnings(('', (BytesWarning, DeprecationWarning)),
                                     quiet=Kweli):
             errmsg = "Can't mix strings na bytes kwenye path components"
@@ -527,7 +527,7 @@ kundi CommonTest(GenericTest):
             ukijumuisha self.assertRaisesRegex(TypeError, 'bytearray'):
                 self.pathmodule.relpath(bytearray(b'foo'), bytearray(b'bar'))
 
-    eleza test_agiza(self):
+    eleza test_import(self):
         assert_python_ok('-S', '-c', 'agiza ' + self.pathmodule.__name__)
 
 

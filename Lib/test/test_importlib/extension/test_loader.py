@@ -50,7 +50,7 @@ kundi LoaderTests(abc.LoaderTests):
             self.assertIsInstance(module.__loader__,
                                   self.machinery.ExtensionFileLoader)
 
-    # No extension module kama __init__ available kila testing.
+    # No extension module as __init__ available kila testing.
     test_package = Tupu
 
     # No extension module kwenye a package available kila testing.
@@ -62,12 +62,12 @@ kundi LoaderTests(abc.LoaderTests):
             module2 = self.load_module(util.EXTENSIONS.name)
             self.assertIs(module1, module2)
 
-    # No easy way to trigger a failure after a successful agiza.
+    # No easy way to trigger a failure after a successful import.
     test_state_after_failure = Tupu
 
     eleza test_unloadable(self):
         name = 'asdfjkl;'
-        ukijumuisha self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) as cm:
             self.load_module(name)
         self.assertEqual(cm.exception.name, name)
 
@@ -94,7 +94,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
         self.loader = self.machinery.ExtensionFileLoader(
             self.name, self.spec.origin)
 
-    # No extension module kama __init__ available kila testing.
+    # No extension module as __init__ available kila testing.
     test_package = Tupu
 
     # No extension module kwenye a package available kila testing.
@@ -133,7 +133,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
             self.assertIsInstance(module.Str(), str)
             self.assertEqual(module.Str(1) + '23', '123')
             ukijumuisha self.assertRaises(module.error):
-                ashiria module.error()
+                 ashiria module.error()
             self.assertEqual(module.int_const, 1969)
             self.assertEqual(module.str_const, 'something different')
 
@@ -194,19 +194,19 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
     eleza test_unloadable(self):
         '''Test nonexistent module'''
         name = 'asdfjkl;'
-        ukijumuisha self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) as cm:
             self.load_module_by_name(name)
         self.assertEqual(cm.exception.name, name)
 
     eleza test_unloadable_nonascii(self):
         '''Test behavior ukijumuisha nonexistent module ukijumuisha non-ASCII name'''
         name = 'fo\xf3'
-        ukijumuisha self.assertRaises(ImportError) kama cm:
+        ukijumuisha self.assertRaises(ImportError) as cm:
             self.load_module_by_name(name)
         self.assertEqual(cm.exception.name, name)
 
     eleza test_nonmodule(self):
-        '''Test rudishaing a non-module object kutoka create works'''
+        '''Test returning a non-module object kutoka create works'''
         name = self.name + '_nonmodule'
         mod = self.load_module_by_name(name)
         self.assertNotEqual(type(mod), type(unittest))
@@ -229,7 +229,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
         self.assertEqual(module.__name__, name)
 
     eleza test_bad_modules(self):
-        '''Test SystemError ni ashiriad kila misbehaving extensions'''
+        '''Test SystemError ni raised kila misbehaving extensions'''
         kila name_base kwenye [
                 'bad_slot_large',
                 'bad_slot_negative',
@@ -237,14 +237,14 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
                 'negative_size',
                 'export_null',
                 'export_uninitialized',
-                'export_ashiria',
+                'export_raise',
                 'export_unreported_exception',
                 'create_null',
-                'create_ashiria',
+                'create_raise',
                 'create_unreported_exception',
                 'nonmodule_with_exec_slots',
                 'exec_err',
-                'exec_ashiria',
+                'exec_raise',
                 'exec_unreported_exception',
                 ]:
             ukijumuisha self.subTest(name_base):
@@ -267,7 +267,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
                 self.assertEqual(module.__name__, name)
                 self.assertEqual(module.__doc__, "Module named kwenye %s" % lang)
 
-    @unittest.skipIf(sio hasattr(sys, 'gettotalrefcount'),
+    @unittest.skipIf(not hasattr(sys, 'gettotalrefcount'),
             '--with-pydebug has to be enabled kila this test')
     eleza test_bad_traverse(self):
         ''' Issue #32374: Test that traverse fails when accessing per-module
@@ -277,17 +277,17 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
         script = """ikiwa Kweli:
                 jaribu:
                     kutoka test agiza support
-                    agiza importlib.util kama util
+                    agiza importlib.util as util
                     spec = util.find_spec('_testmultiphase')
                     spec.name = '_testmultiphase_with_bad_traverse'
 
                     ukijumuisha support.SuppressCrashReport():
                         m = spec.loader.create_module(spec)
                 tatizo:
-                    # Prevent Python-level exceptions kutoka
+                    # Prevent Python-level exceptions from
                     # ending the process ukijumuisha non-zero status
                     # (We are testing kila a crash kwenye C-code)
-                    pita"""
+                    pass"""
         assert_python_failure("-c", script)
 
 

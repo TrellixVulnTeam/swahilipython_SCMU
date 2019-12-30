@@ -1,16 +1,16 @@
-"""Tests for distutils.filelist."""
-import os
-import re
-import unittest
-from distutils import debug
-from distutils.log import WARN
-from distutils.errors import DistutilsTemplateError
-from distutils.filelist import glob_to_re, translate_pattern, FileList
-from distutils import filelist
+"""Tests kila distutils.filelist."""
+agiza os
+agiza re
+agiza unittest
+kutoka distutils agiza debug
+kutoka distutils.log agiza WARN
+kutoka distutils.errors agiza DistutilsTemplateError
+kutoka distutils.filelist agiza glob_to_re, translate_pattern, FileList
+kutoka distutils agiza filelist
 
-import test.support
-from test.support import captured_stdout, run_unittest
-from distutils.tests import support
+agiza test.support
+kutoka test.support agiza captured_stdout, run_unittest
+kutoka distutils.tests agiza support
 
 MANIFEST_IN = """\
 include ok
@@ -28,28 +28,28 @@ prune dir3
 """
 
 
-def make_local_path(s):
-    """Converts '/' in a string to os.sep"""
-    return s.replace('/', os.sep)
+eleza make_local_path(s):
+    """Converts '/' kwenye a string to os.sep"""
+    rudisha s.replace('/', os.sep)
 
 
-class FileListTestCase(support.LoggingSilencer,
+kundi FileListTestCase(support.LoggingSilencer,
                        unittest.TestCase):
 
-    def assertNoWarnings(self):
+    eleza assertNoWarnings(self):
         self.assertEqual(self.get_logs(WARN), [])
         self.clear_logs()
 
-    def assertWarnings(self):
+    eleza assertWarnings(self):
         self.assertGreater(len(self.get_logs(WARN)), 0)
         self.clear_logs()
 
-    def test_glob_to_re(self):
+    eleza test_glob_to_re(self):
         sep = os.sep
-        if os.sep == '\\':
+        ikiwa os.sep == '\\':
             sep = re.escape(os.sep)
 
-        for glob, regex in (
+        kila glob, regex kwenye (
             # simple cases
             ('foo*', r'(?s:foo[^%(sep)s]*)\Z'),
             ('foo?', r'(?s:foo[^%(sep)s])\Z'),
@@ -62,7 +62,7 @@ class FileListTestCase(support.LoggingSilencer,
             regex = regex % {'sep': sep}
             self.assertEqual(glob_to_re(glob), regex)
 
-    def test_process_template_line(self):
+    eleza test_process_template_line(self):
         # testing  all MANIFEST.in template patterns
         file_list = FileList()
         l = make_local_path
@@ -84,8 +84,8 @@ class FileListTestCase(support.LoggingSilencer,
                               l('dir3/sub/ok.txt'),
                              ]
 
-        for line in MANIFEST_IN.split('\n'):
-            if line.strip() == '':
+        kila line kwenye MANIFEST_IN.split('\n'):
+            ikiwa line.strip() == '':
                 endelea
             file_list.process_template_line(line)
 
@@ -102,27 +102,27 @@ class FileListTestCase(support.LoggingSilencer,
 
         self.assertEqual(file_list.files, wanted)
 
-    def test_debug_print(self):
+    eleza test_debug_andika(self):
         file_list = FileList()
-        with captured_stdout() as stdout:
-            file_list.debug_print('xxx')
+        ukijumuisha captured_stdout() as stdout:
+            file_list.debug_andika('xxx')
         self.assertEqual(stdout.getvalue(), '')
 
-        debug.DEBUG = True
+        debug.DEBUG = Kweli
         jaribu:
-            with captured_stdout() as stdout:
-                file_list.debug_print('xxx')
+            ukijumuisha captured_stdout() as stdout:
+                file_list.debug_andika('xxx')
             self.assertEqual(stdout.getvalue(), 'xxx\n')
         mwishowe:
-            debug.DEBUG = False
+            debug.DEBUG = Uongo
 
-    def test_set_allfiles(self):
+    eleza test_set_allfiles(self):
         file_list = FileList()
         files = ['a', 'b', 'c']
         file_list.set_allfiles(files)
         self.assertEqual(file_list.allfiles, files)
 
-    def test_remove_duplicates(self):
+    eleza test_remove_duplicates(self):
         file_list = FileList()
         file_list.files = ['a', 'b', 'a', 'g', 'c', 'g']
         # files must be sorted beforehand (sdist does it)
@@ -130,36 +130,36 @@ class FileListTestCase(support.LoggingSilencer,
         file_list.remove_duplicates()
         self.assertEqual(file_list.files, ['a', 'b', 'c', 'g'])
 
-    def test_translate_pattern(self):
+    eleza test_translate_pattern(self):
         # sio regex
-        self.assertTrue(hasattr(
-            translate_pattern('a', anchor=True, is_regex=False),
+        self.assertKweli(hasattr(
+            translate_pattern('a', anchor=Kweli, is_regex=Uongo),
             'search'))
 
-        # is a regex
+        # ni a regex
         regex = re.compile('a')
         self.assertEqual(
-            translate_pattern(regex, anchor=True, is_regex=True),
+            translate_pattern(regex, anchor=Kweli, is_regex=Kweli),
             regex)
 
         # plain string flagged as regex
-        self.assertTrue(hasattr(
-            translate_pattern('a', anchor=True, is_regex=True),
+        self.assertKweli(hasattr(
+            translate_pattern('a', anchor=Kweli, is_regex=Kweli),
             'search'))
 
         # glob support
-        self.assertTrue(translate_pattern(
-            '*.py', anchor=True, is_regex=False).search('filelist.py'))
+        self.assertKweli(translate_pattern(
+            '*.py', anchor=Kweli, is_regex=Uongo).search('filelist.py'))
 
-    def test_exclude_pattern(self):
-        # return False if no match
+    eleza test_exclude_pattern(self):
+        # rudisha Uongo ikiwa no match
         file_list = FileList()
-        self.assertFalse(file_list.exclude_pattern('*.py'))
+        self.assertUongo(file_list.exclude_pattern('*.py'))
 
-        # return True if files match
+        # rudisha Kweli ikiwa files match
         file_list = FileList()
         file_list.files = ['a.py', 'b.py']
-        self.assertTrue(file_list.exclude_pattern('*.py'))
+        self.assertKweli(file_list.exclude_pattern('*.py'))
 
         # test excludes
         file_list = FileList()
@@ -167,29 +167,29 @@ class FileListTestCase(support.LoggingSilencer,
         file_list.exclude_pattern('*.py')
         self.assertEqual(file_list.files, ['a.txt'])
 
-    def test_include_pattern(self):
-        # return False if no match
+    eleza test_include_pattern(self):
+        # rudisha Uongo ikiwa no match
         file_list = FileList()
         file_list.set_allfiles([])
-        self.assertFalse(file_list.include_pattern('*.py'))
+        self.assertUongo(file_list.include_pattern('*.py'))
 
-        # return True if files match
+        # rudisha Kweli ikiwa files match
         file_list = FileList()
         file_list.set_allfiles(['a.py', 'b.txt'])
-        self.assertTrue(file_list.include_pattern('*.py'))
+        self.assertKweli(file_list.include_pattern('*.py'))
 
         # test * matches all files
         file_list = FileList()
-        self.assertIsNone(file_list.allfiles)
+        self.assertIsTupu(file_list.allfiles)
         file_list.set_allfiles(['a.py', 'b.txt'])
         file_list.include_pattern('*')
         self.assertEqual(file_list.allfiles, ['a.py', 'b.txt'])
 
-    def test_process_template(self):
+    eleza test_process_template(self):
         l = make_local_path
         # invalid lines
         file_list = FileList()
-        for action in ('include', 'exclude', 'global-include',
+        kila action kwenye ('include', 'exclude', 'global-include',
                        'global-exclude', 'recursive-include',
                        'recursive-exclude', 'graft', 'prune', 'blarg'):
             self.assertRaises(DistutilsTemplateError,
@@ -294,20 +294,20 @@ class FileListTestCase(support.LoggingSilencer,
         self.assertWarnings()
 
 
-class FindAllTestCase(unittest.TestCase):
+kundi FindAllTestCase(unittest.TestCase):
     @test.support.skip_unless_symlink
-    def test_missing_symlink(self):
-        with test.support.temp_cwd():
+    eleza test_missing_symlink(self):
+        ukijumuisha test.support.temp_cwd():
             os.symlink('foo', 'bar')
             self.assertEqual(filelist.findall(), [])
 
-    def test_basic_discovery(self):
+    eleza test_basic_discovery(self):
         """
-        When findall is called with no parameters or with
+        When findall ni called ukijumuisha no parameters ama with
         '.' as the parameter, the dot should be omitted from
         the results.
         """
-        with test.support.temp_cwd():
+        ukijumuisha test.support.temp_cwd():
             os.mkdir('foo')
             file1 = os.path.join('foo', 'file1.txt')
             test.support.create_empty_file(file1)
@@ -317,24 +317,24 @@ class FindAllTestCase(unittest.TestCase):
             expected = [file2, file1]
             self.assertEqual(sorted(filelist.findall()), expected)
 
-    def test_non_local_discovery(self):
+    eleza test_non_local_discovery(self):
         """
-        When findall is called with another path, the full
+        When findall ni called ukijumuisha another path, the full
         path name should be returned.
         """
-        with test.support.temp_dir() as temp_dir:
+        ukijumuisha test.support.temp_dir() as temp_dir:
             file1 = os.path.join(temp_dir, 'file1.txt')
             test.support.create_empty_file(file1)
             expected = [file1]
             self.assertEqual(filelist.findall(temp_dir), expected)
 
 
-def test_suite():
-    return unittest.TestSuite([
+eleza test_suite():
+    rudisha unittest.TestSuite([
         unittest.makeSuite(FileListTestCase),
         unittest.makeSuite(FindAllTestCase),
     ])
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

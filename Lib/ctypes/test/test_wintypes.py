@@ -1,41 +1,41 @@
-import sys
-import unittest
+agiza sys
+agiza unittest
 
-from ctypes import *
+kutoka ctypes agiza *
 
 @unittest.skipUnless(sys.platform.startswith('win'), 'Windows-only test')
-class WinTypesTest(unittest.TestCase):
-    def test_variant_bool(self):
-        from ctypes import wintypes
-        # reads 16-bits from memory, anything non-zero is True
-        for true_value in (1, 32767, 32768, 65535, 65537):
+kundi WinTypesTest(unittest.TestCase):
+    eleza test_variant_bool(self):
+        kutoka ctypes agiza wintypes
+        # reads 16-bits kutoka memory, anything non-zero ni Kweli
+        kila true_value kwenye (1, 32767, 32768, 65535, 65537):
             true = POINTER(c_int16)(c_int16(true_value))
             value = cast(true, POINTER(wintypes.VARIANT_BOOL))
-            self.assertEqual(repr(value.contents), 'VARIANT_BOOL(True)')
+            self.assertEqual(repr(value.contents), 'VARIANT_BOOL(Kweli)')
 
             vb = wintypes.VARIANT_BOOL()
-            self.assertIs(vb.value, False)
-            vb.value = True
-            self.assertIs(vb.value, True)
+            self.assertIs(vb.value, Uongo)
+            vb.value = Kweli
+            self.assertIs(vb.value, Kweli)
             vb.value = true_value
-            self.assertIs(vb.value, True)
+            self.assertIs(vb.value, Kweli)
 
-        for false_value in (0, 65536, 262144, 2**33):
+        kila false_value kwenye (0, 65536, 262144, 2**33):
             false = POINTER(c_int16)(c_int16(false_value))
             value = cast(false, POINTER(wintypes.VARIANT_BOOL))
-            self.assertEqual(repr(value.contents), 'VARIANT_BOOL(False)')
+            self.assertEqual(repr(value.contents), 'VARIANT_BOOL(Uongo)')
 
         # allow any bool conversion on assignment to value
-        for set_value in (65536, 262144, 2**33):
+        kila set_value kwenye (65536, 262144, 2**33):
             vb = wintypes.VARIANT_BOOL()
             vb.value = set_value
-            self.assertIs(vb.value, True)
+            self.assertIs(vb.value, Kweli)
 
         vb = wintypes.VARIANT_BOOL()
         vb.value = [2, 3]
-        self.assertIs(vb.value, True)
+        self.assertIs(vb.value, Kweli)
         vb.value = []
-        self.assertIs(vb.value, False)
+        self.assertIs(vb.value, Uongo)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -1,7 +1,7 @@
 kutoka test.support agiza verbose, TestFailed
 agiza locale
 agiza sys
-agiza test.support kama support
+agiza test.support as support
 agiza unittest
 
 maxsize = support.MAX_Py_ssize_t
@@ -9,7 +9,7 @@ maxsize = support.MAX_Py_ssize_t
 # test string formatting operator (I am sio sure ikiwa this ni being tested
 # elsewhere but, surely, some of the given cases are *not* tested because
 # they crash python)
-# test on bytes object kama well
+# test on bytes object as well
 
 eleza testformat(formatstr, args, output=Tupu, limit=Tupu, overflowok=Uongo):
     ikiwa verbose:
@@ -20,23 +20,23 @@ eleza testformat(formatstr, args, output=Tupu, limit=Tupu, overflowok=Uongo):
             andika("{!a} % {!a} works? ...".format(formatstr, args), end=' ')
     jaribu:
         result = formatstr % args
-    tatizo OverflowError:
+    except OverflowError:
         ikiwa sio overflowok:
-            ashiria
+            raise
         ikiwa verbose:
             andika('overflow (this ni fine)')
     isipokua:
         ikiwa output na limit ni Tupu na result != output:
             ikiwa verbose:
                 andika('no')
-            ashiria AssertionError("%r %% %r == %r != %r" %
+             ashiria AssertionError("%r %% %r == %r != %r" %
                                 (formatstr, args, result, output))
         # when 'limit' ni specified, it determines how many characters
         # must match exactly; lengths must always match.
         # ex: limit=5, '12345678' matches '12345___'
         # (mainly kila floating point format tests kila which an exact match
         # can't be guaranteed due to rounding na representation errors)
-        lasivyo output na limit ni sio Tupu na (
+        elikiwa output na limit ni sio Tupu na (
                 len(result)!=len(output) ama result[:limit]!=output[:limit]):
             ikiwa verbose:
                 andika('no')
@@ -73,7 +73,7 @@ eleza testcommon(formatstr, args, output=Tupu, limit=Tupu, overflowok=Uongo):
 eleza test_exc(formatstr, args, exception, excmsg):
     jaribu:
         testformat(formatstr, args)
-    tatizo exception kama exc:
+    except exception as exc:
         ikiwa str(exc) == excmsg:
             ikiwa verbose:
                 andika("yes")
@@ -83,9 +83,9 @@ eleza test_exc(formatstr, args, exception, excmsg):
     tatizo:
         ikiwa verbose: andika('no')
         andika('Unexpected exception')
-        ashiria
+        raise
     isipokua:
-        ashiria TestFailed('did sio get expected exception: %s' % excmsg)
+         ashiria TestFailed('did sio get expected exception: %s' % excmsg)
 
 eleza test_exc_common(formatstr, args, exception, excmsg):
     # test str na bytes
@@ -195,7 +195,7 @@ kundi FormatTest(unittest.TestCase):
         # 0 flag na the width
         testcommon("%#+027.23X", big, "+0X0001234567890ABCDEF12345")
         testcommon("%# 027.23X", big, " 0X0001234567890ABCDEF12345")
-        # same, tatizo no 0 flag
+        # same, except no 0 flag
         testcommon("%#+27.23X", big, " +0X001234567890ABCDEF12345")
         testcommon("%#-+27.23x", big, "+0x001234567890abcdef12345 ")
         testcommon("%#- 27.23x", big, " 0x001234567890abcdef12345 ")
@@ -298,10 +298,10 @@ kundi FormatTest(unittest.TestCase):
         test_exc('%g', '1', TypeError, "must be real number, sio str")
         test_exc('no format', '1', TypeError,
                  "not all arguments converted during string formatting")
-        test_exc('%c', -1, OverflowError, "%c arg haiko kwenye range(0x110000)")
+        test_exc('%c', -1, OverflowError, "%c arg sio kwenye range(0x110000)")
         test_exc('%c', sys.maxunicode+1, OverflowError,
-                 "%c arg haiko kwenye range(0x110000)")
-        #test_exc('%c', 2**128, OverflowError, "%c arg haiko kwenye range(0x110000)")
+                 "%c arg sio kwenye range(0x110000)")
+        #test_exc('%c', 2**128, OverflowError, "%c arg sio kwenye range(0x110000)")
         test_exc('%c', 3.14, TypeError, "%c requires int ama char")
         test_exc('%c', 'ab', TypeError, "%c requires int ama char")
         test_exc('%c', b'x', TypeError, "%c requires int ama char")
@@ -310,13 +310,13 @@ kundi FormatTest(unittest.TestCase):
             # crashes 2.2.1 na earlier:
             jaribu:
                 "%*d"%(maxsize, -127)
-            tatizo MemoryError:
-                pita
+            except MemoryError:
+                pass
             isipokua:
-                ashiria TestFailed('"%*d"%(maxsize, -127) should fail')
+                 ashiria TestFailed('"%*d"%(maxsize, -127) should fail')
 
     eleza test_bytes_and_bytearray_format(self):
-        # %c will insert a single byte, either kutoka an int kwenye range(256), ama
+        # %c will insert a single byte, either kutoka an int kwenye range(256), or
         # kutoka a bytes argument of length 1, sio kutoka a str.
         testcommon(b"%c", 7, b"\x07")
         testcommon(b"%c", b"Z", b"Z")
@@ -362,11 +362,11 @@ kundi FormatTest(unittest.TestCase):
         test_exc(b'no format', bytearray(b'1'), TypeError,
                  "not all arguments converted during bytes formatting")
         test_exc(b"%c", -1, OverflowError,
-                "%c arg haiko kwenye range(256)")
+                "%c arg sio kwenye range(256)")
         test_exc(b"%c", 256, OverflowError,
-                "%c arg haiko kwenye range(256)")
+                "%c arg sio kwenye range(256)")
         test_exc(b"%c", 2**128, OverflowError,
-                "%c arg haiko kwenye range(256)")
+                "%c arg sio kwenye range(256)")
         test_exc(b"%c", b"Za", TypeError,
                 "%c requires an integer kwenye range(256) ama a single byte")
         test_exc(b"%c", "Y", TypeError,
@@ -384,10 +384,10 @@ kundi FormatTest(unittest.TestCase):
             # crashes 2.2.1 na earlier:
             jaribu:
                 "%*d"%(maxsize, -127)
-            tatizo MemoryError:
-                pita
+            except MemoryError:
+                pass
             isipokua:
-                ashiria TestFailed('"%*d"%(maxsize, -127) should fail')
+                 ashiria TestFailed('"%*d"%(maxsize, -127) should fail')
 
     eleza test_nul(self):
         # test the null character
@@ -421,7 +421,7 @@ kundi FormatTest(unittest.TestCase):
         jaribu:
             oldloc = locale.setlocale(locale.LC_ALL)
             locale.setlocale(locale.LC_ALL, '')
-        tatizo locale.Error kama err:
+        except locale.Error as err:
             self.skipTest("Cannot set locale: {}".format(err))
         jaribu:
             localeconv = locale.localeconv()
@@ -463,13 +463,13 @@ kundi FormatTest(unittest.TestCase):
         f = 1.2
         self.assertEqual(format(f, ".0f"), "1")
         self.assertEqual(format(f, ".3f"), "1.200")
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             format(f, ".%sf" % (sys.maxsize + 1))
 
         c = complex(f)
         self.assertEqual(format(c, ".0f"), "1+0j")
         self.assertEqual(format(c, ".3f"), "1.200+0.000j")
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             format(c, ".%sf" % (sys.maxsize + 1))
 
     @support.cpython_only
@@ -477,11 +477,11 @@ kundi FormatTest(unittest.TestCase):
         kutoka _testcapi agiza INT_MAX
 
         f = 1.2
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             format(f, ".%sf" % (INT_MAX + 1))
 
         c = complex(f)
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             format(c, ".%sf" % (INT_MAX + 1))
 
 

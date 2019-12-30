@@ -1,14 +1,14 @@
-"""Tests for distutils.pypirc.pypirc."""
-import os
-import unittest
+"""Tests kila distutils.pypirc.pypirc."""
+agiza os
+agiza unittest
 
-from distutils.core import PyPIRCCommand
-from distutils.core import Distribution
-from distutils.log import set_threshold
-from distutils.log import WARN
+kutoka distutils.core agiza PyPIRCCommand
+kutoka distutils.core agiza Distribution
+kutoka distutils.log agiza set_threshold
+kutoka distutils.log agiza WARN
 
-from distutils.tests import support
-from test.support import run_unittest
+kutoka distutils.tests agiza support
+kutoka test.support agiza run_unittest
 
 PYPIRC = """\
 [distutils]
@@ -50,12 +50,12 @@ password:xxx
 """
 
 
-class BasePyPIRCCommandTestCase(support.TempdirManager,
+kundi BasePyPIRCCommandTestCase(support.TempdirManager,
                             support.LoggingSilencer,
                             support.EnvironGuard,
                             unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         """Patches the environment."""
         super(BasePyPIRCCommandTestCase, self).setUp()
         self.tmp_dir = self.mkdtemp()
@@ -64,27 +64,27 @@ class BasePyPIRCCommandTestCase(support.TempdirManager,
         self.rc = os.path.join(self.tmp_dir, '.pypirc')
         self.dist = Distribution()
 
-        class command(PyPIRCCommand):
-            def __init__(self, dist):
+        kundi command(PyPIRCCommand):
+            eleza __init__(self, dist):
                 PyPIRCCommand.__init__(self, dist)
-            def initialize_options(self):
+            eleza initialize_options(self):
                 pass
             finalize_options = initialize_options
 
         self._cmd = command
         self.old_threshold = set_threshold(WARN)
 
-    def tearDown(self):
+    eleza tearDown(self):
         """Removes the patch."""
         set_threshold(self.old_threshold)
         super(BasePyPIRCCommandTestCase, self).tearDown()
 
 
-class PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
+kundi PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
 
-    def test_server_registration(self):
+    eleza test_server_registration(self):
         # This test makes sure PyPIRCCommand knows how to:
-        # 1. handle several sections in .pypirc
+        # 1. handle several sections kwenye .pypirc
         # 2. handle the old format
 
         # new format
@@ -107,12 +107,12 @@ class PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
                   ('server', 'server-login'), ('username', 'tarek')]
         self.assertEqual(config, waited)
 
-    def test_server_empty_registration(self):
+    eleza test_server_empty_registration(self):
         cmd = self._cmd(self.dist)
         rc = cmd._get_rc_file()
-        self.assertFalse(os.path.exists(rc))
+        self.assertUongo(os.path.exists(rc))
         cmd._store_pypirc('tarek', 'xxx')
-        self.assertTrue(os.path.exists(rc))
+        self.assertKweli(os.path.exists(rc))
         f = open(rc)
         jaribu:
             content = f.read()
@@ -120,8 +120,8 @@ class PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
         mwishowe:
             f.close()
 
-    def test_config_interpolation(self):
-        # using the % character in .pypirc should sio ashiria an error (#20120)
+    eleza test_config_interpolation(self):
+        # using the % character kwenye .pypirc should sio  ashiria an error (#20120)
         self.write_file(self.rc, PYPIRC)
         cmd = self._cmd(self.dist)
         cmd.repository = 'server3'
@@ -134,8 +134,8 @@ class PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(config, waited)
 
 
-def test_suite():
-    return unittest.makeSuite(PyPIRCCommandTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(PyPIRCCommandTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

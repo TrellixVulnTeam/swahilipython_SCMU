@@ -21,7 +21,7 @@ kundi Integer(metaclass=ABC):
 
 
 kundi SubInt(Integer):
-    pita
+    pass
 
 
 kundi TypeChecksTest(unittest.TestCase):

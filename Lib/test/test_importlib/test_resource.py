@@ -25,7 +25,7 @@ kundi ResourceTests:
         # There may be cruft kwenye the directory listing of the data directory.
         # Under Python 3 we could have a __pycache__ directory, na under
         # Python 2 we could have .pyc files.  These are both artifacts of the
-        # test suite agizaing these modules na writing these caches.  They
+        # test suite importing these modules na writing these caches.  They
         # aren't germane to this test, so just filter them out.
         contents.discard('__pycache__')
         contents.discard('__init__.pyc')
@@ -45,7 +45,7 @@ kundi ResourceDiskTests(ResourceTests, unittest.TestCase):
 
 
 kundi ResourceZipTests(ResourceTests, util.ZipSetup, unittest.TestCase):
-    pita
+    pass
 
 
 kundi ResourceLoaderTests(unittest.TestCase):
@@ -78,9 +78,9 @@ kundi ResourceLoaderTests(unittest.TestCase):
 kundi ResourceCornerCaseTests(unittest.TestCase):
     eleza test_package_has_no_reader_fallback(self):
         # Test odd ball packages which:
-        # 1. Do sio have a ResourceReader kama a loader
+        # 1. Do sio have a ResourceReader as a loader
         # 2. Are sio on the file system
-        # 3. Are haiko kwenye a zip file
+        # 3. Are sio kwenye a zip file
         module = util.create_package(
             file=data01, path=data01.__file__, contents=['A', 'B', 'C'])
         # Give the module a dummy loader.
@@ -100,7 +100,7 @@ kundi ResourceFromZipsTest(util.ZipSetupBase, unittest.TestCase):
         # https://gitlab.com/python-devs/importlib_resources/issues/44
         #
         # Here we have a zip file ukijumuisha two unrelated subpackages.  The bug
-        # reports that getting the contents of a resource rudishas unrelated
+        # reports that getting the contents of a resource returns unrelated
         # files.
         self.assertEqual(
             set(resources.contents('ziptestdata.one')),

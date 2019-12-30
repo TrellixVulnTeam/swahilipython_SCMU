@@ -7,7 +7,7 @@ agiza unittest
 kutoka test agiza support
 agiza os, sys
 
-# Test that command-lines get down kama we expect.
+# Test that command-lines get down as we expect.
 # To do this we execute:
 #    python -c "agiza sys;andika(sys.argv)" {rest_of_commandline}
 # This results kwenye Python being spawned na printing the sys.argv list.
@@ -21,7 +21,7 @@ kundi PopenTest(unittest.TestCase):
     eleza _do_test_commandline(self, cmdline, expected):
         cmd = '%s -c "agiza sys; andika(sys.argv)" %s'
         cmd = cmd % (python, cmdline)
-        ukijumuisha os.popen(cmd) kama p:
+        ukijumuisha os.popen(cmd) as p:
             data = p.read()
         got = eval(data)[1:] # strip off argv[0]
         self.assertEqual(got, expected)
@@ -42,7 +42,7 @@ kundi PopenTest(unittest.TestCase):
         )
         support.reap_children()
 
-    eleza test_rudisha_code(self):
+    eleza test_return_code(self):
         self.assertEqual(os.popen("exit 0").close(), Tupu)
         ikiwa os.name == 'nt':
             self.assertEqual(os.popen("exit 42").close(), 42)
@@ -50,16 +50,16 @@ kundi PopenTest(unittest.TestCase):
             self.assertEqual(os.popen("exit 42").close(), 42 << 8)
 
     eleza test_contextmanager(self):
-        ukijumuisha os.popen("echo hello") kama f:
+        ukijumuisha os.popen("echo hello") as f:
             self.assertEqual(f.read(), "hello\n")
 
     eleza test_iterating(self):
-        ukijumuisha os.popen("echo hello") kama f:
+        ukijumuisha os.popen("echo hello") as f:
             self.assertEqual(list(f), ["hello\n"])
 
     eleza test_keywords(self):
         ukijumuisha os.popen(cmd="exit 0", mode="w", buffering=-1):
-            pita
+            pass
 
 ikiwa __name__ == "__main__":
     unittest.main()

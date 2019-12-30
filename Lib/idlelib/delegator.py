@@ -7,7 +7,7 @@ kundi Delegator:
         # when changing the delegate.
 
     eleza __getattr__(self, name):
-        attr = getattr(self.delegate, name) # May ashiria AttributeError
+        attr = getattr(self.delegate, name) # May  ashiria AttributeError
         setattr(self, name, attr)
         self.__cache.add(name)
         rudisha attr
@@ -19,8 +19,8 @@ kundi Delegator:
         kila key kwenye self.__cache:
             jaribu:
                 delattr(self, key)
-            tatizo AttributeError:
-                pita
+            except AttributeError:
+                pass
         self.__cache.clear()
 
     eleza setdelegate(self, delegate):

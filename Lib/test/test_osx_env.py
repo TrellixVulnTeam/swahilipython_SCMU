@@ -8,12 +8,12 @@ agiza sys
 agiza sysconfig
 agiza unittest
 
-@unittest.skipUnless(sys.platform == 'darwin' na
+@unittest.skipUnless(sys.platform == 'darwin' and
                      sysconfig.get_config_var('WITH_NEXT_FRAMEWORK'),
                      'unnecessary on this platform')
 kundi OSXEnvironmentVariableTestCase(unittest.TestCase):
     eleza _check_sys(self, ev, cond, sv, val = sys.executable + 'dummy'):
-        ukijumuisha EnvironmentVarGuard() kama evg:
+        ukijumuisha EnvironmentVarGuard() as evg:
             subpc = [str(sys.executable), '-c',
                 'agiza sys; sys.exit(2 ikiwa "%s" %s %s isipokua 3)' % (val, cond, sv)]
             # ensure environment variable does sio exist

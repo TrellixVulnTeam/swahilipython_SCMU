@@ -1,19 +1,19 @@
-"""Remove __future__ agizas
+"""Remove __future__ imports
 
 kutoka __future__ agiza foo ni replaced ukijumuisha an empty line.
 """
 # Author: Christian Heimes
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza BlankLine
 
 kundi FixFuture(fixer_base.BaseFix):
     BM_compatible = Kweli
 
-    PATTERN = """import_kutoka< 'kutoka' module_name="__future__" 'agiza' any >"""
+    PATTERN = """import_from< 'from' module_name="__future__" 'import' any >"""
 
-    # This should be run last -- some things check kila the agiza
+    # This should be run last -- some things check kila the import
     run_order = 10
 
     eleza transform(self, node, results):

@@ -22,7 +22,7 @@ eleza randfloats(n):
     fn = os.path.join(td, "rr%06d" % n)
     jaribu:
         fp = open(fn, "rb")
-    tatizo OSError:
+    except OSError:
         r = random.random
         result = [r() kila i kwenye range(n)]
         jaribu:
@@ -35,9 +35,9 @@ eleza randfloats(n):
                 ikiwa fp:
                     jaribu:
                         os.unlink(fn)
-                    tatizo OSError:
-                        pita
-        tatizo OSError kama msg:
+                    except OSError:
+                        pass
+        except OSError as msg:
             andika("can't write", fn, ":", msg)
     isipokua:
         result = marshal.load(fp)
@@ -129,18 +129,18 @@ eleza tabulate(r):
 
         # This one looks like [3, 2, 1, 0, 0, 1, 2, 3].  It was a bad case
         # kila an older implementation of quicksort, which used the median
-        # of the first, last na middle elements kama the pivot.
+        # of the first, last na middle elements as the pivot.
         half = n // 2
         L = list(range(half - 1, -1, -1))
         L.extend(range(half))
         # Force to float, so that the timings are comparable.  This is
-        # significantly faster ikiwa we leave tham kama ints.
+        # significantly faster ikiwa we leave tham as ints.
         L = list(map(float, L))
         doit(L) # !sort
         andika()
 
 eleza main():
-    """Main program when invoked kama a script.
+    """Main program when invoked as a script.
 
     One argument: tabulate a single row.
     Two arguments: tabulate a range (inclusive).

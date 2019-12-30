@@ -21,7 +21,7 @@ kundi TestableTestProgram(unittest.TestProgram):
     testRunner = testLoader = Tupu
 
     eleza __init__(self):
-        pita
+        pass
 
 
 kundi TestDiscovery(unittest.TestCase):
@@ -35,7 +35,7 @@ kundi TestDiscovery(unittest.TestCase):
 
         ikiwa sio __debug__:
             # asserts are off
-            rudisha
+            return
 
         ukijumuisha self.assertRaises(AssertionError):
             loader._get_name_from_path('/bar/baz.py')
@@ -152,7 +152,7 @@ kundi TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: Kweli
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: os.path.basename(path) haiko kwenye directories
+        os.path.isfile = lambda path: os.path.basename(path) sio kwenye directories
         self.addCleanup(restore_isfile)
 
         kundi Module(object):
@@ -226,7 +226,7 @@ kundi TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: Kweli
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: os.path.basename(path) haiko kwenye directories
+        os.path.isfile = lambda path: os.path.basename(path) sio kwenye directories
         self.addCleanup(restore_isfile)
 
         kundi Module(object):
@@ -277,7 +277,7 @@ kundi TestDiscovery(unittest.TestCase):
                          [(loader, [], 'test*.py')])
 
     eleza test_find_tests_customize_via_package_pattern(self):
-        # This test uses the example 'do-nothing' load_tests kutoka
+        # This test uses the example 'do-nothing' load_tests from
         # https://docs.python.org/3/library/unittest.html#load-tests-protocol
         # to make sure that that actually works.
         # Housekeeping
@@ -297,7 +297,7 @@ kundi TestDiscovery(unittest.TestCase):
 
         # Test data: we expect the following:
         # a listdir to find our package, na isfile na isdir checks on it.
-        # a module-kutoka-name call to turn that into a module
+        # a module-from-name call to turn that into a module
         # followed by load_tests.
         # then our load_tests will call discover() which ni messy
         # but that finally chains into find_tests again kila the child dir -
@@ -349,7 +349,7 @@ kundi TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests(abspath('/foo'), 'test*.py'))
 
-        # We should have loaded tests kutoka both my_package na
+        # We should have loaded tests kutoka both my_package and
         # my_package.test_module, na also run the load_tests hook kwenye both.
         # (normally this would be nested TestSuites.)
         self.assertEqual(suite,
@@ -416,8 +416,8 @@ kundi TestDiscovery(unittest.TestCase):
         # http://bugs.python.org/issue22457
 
         # Test data: we expect the following:
-        # an isfile to verify the package, then agizaing na scanning
-        # kama per _find_tests' normal behaviour.
+        # an isfile to verify the package, then importing na scanning
+        # as per _find_tests' normal behaviour.
         # We expect to see our load_tests hook called once.
         vfs = {abspath('/toplevel'): ['startdir'],
                abspath('/toplevel/startdir'): ['__init__.py']}
@@ -478,7 +478,7 @@ kundi TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: sio path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
 
-    eleza test_discover_with_modules_that_fail_to_agiza(self):
+    eleza test_discover_with_modules_that_fail_to_import(self):
         loader = unittest.TestLoader()
 
         self.setup_import_issue_tests('test_this_does_not_exist.py')
@@ -498,14 +498,14 @@ kundi TestDiscovery(unittest.TestCase):
         ukijumuisha self.assertRaises(ImportError):
             test.test_this_does_not_exist()
 
-    eleza test_discover_with_init_modules_that_fail_to_agiza(self):
+    eleza test_discover_with_init_modules_that_fail_to_import(self):
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
         self.setup_import_issue_package_tests(vfs)
         import_calls = []
         eleza _get_module_from_name(name):
             import_calls.append(name)
-            ashiria ImportError("Cannot agiza Name")
+             ashiria ImportError("Cannot agiza Name")
         loader = unittest.TestLoader()
         loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))
@@ -528,14 +528,14 @@ kundi TestDiscovery(unittest.TestCase):
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             pickle.loads(pickle.dumps(test, proto))
 
-    eleza test_discover_with_module_that_ashirias_SkipTest_on_agiza(self):
+    eleza test_discover_with_module_that_raises_SkipTest_on_import(self):
         ikiwa sio unittest.BaseTestSuite._cleanup:
-            ashiria unittest.SkipTest("Suite cleanup ni disabled")
+             ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         loader = unittest.TestLoader()
 
         eleza _get_module_from_name(name):
-            ashiria unittest.SkipTest('skipperoo')
+             ashiria unittest.SkipTest('skipperoo')
         loader._get_module_from_name = _get_module_from_name
 
         self.setup_import_issue_tests('test_skip_dummy.py')
@@ -551,9 +551,9 @@ kundi TestDiscovery(unittest.TestCase):
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             pickle.loads(pickle.dumps(suite, proto))
 
-    eleza test_discover_with_init_module_that_ashirias_SkipTest_on_agiza(self):
+    eleza test_discover_with_init_module_that_raises_SkipTest_on_import(self):
         ikiwa sio unittest.BaseTestSuite._cleanup:
-            ashiria unittest.SkipTest("Suite cleanup ni disabled")
+             ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
@@ -561,7 +561,7 @@ kundi TestDiscovery(unittest.TestCase):
         import_calls = []
         eleza _get_module_from_name(name):
             import_calls.append(name)
-            ashiria unittest.SkipTest('skipperoo')
+             ashiria unittest.SkipTest('skipperoo')
         loader = unittest.TestLoader()
         loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))
@@ -619,8 +619,8 @@ kundi TestDiscovery(unittest.TestCase):
         program = TestableTestProgram()
         program.testLoader = Tupu
 
-        ukijumuisha support.captured_stderr() kama stderr, \
-             self.assertRaises(SystemExit) kama cm:
+        ukijumuisha support.captured_stderr() as stderr, \
+             self.assertRaises(SystemExit) as cm:
             # too many args
             program._do_discovery(['one', 'two', 'three', 'four'])
         self.assertEqual(cm.exception.args, (2,))
@@ -818,7 +818,7 @@ kundi TestDiscovery(unittest.TestCase):
             sys.path[:] = orig_sys_path
         self.addCleanup(restore)
 
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             loader.discover('sys')
         self.assertEqual(str(cm.exception),
                          'Can sio use builtin modules '
@@ -834,7 +834,7 @@ kundi TestDiscovery(unittest.TestCase):
            submodule_search_locations=['/a', '/b']
         )
 
-        eleza _agiza(packagename, *args, **kwargs):
+        eleza _import(packagename, *args, **kwargs):
             sys.modules[packagename] = package
             rudisha package
 
@@ -846,7 +846,7 @@ kundi TestDiscovery(unittest.TestCase):
         loader._find_tests = _find_tests
         loader.suiteClass = list
 
-        ukijumuisha unittest.mock.patch('builtins.__import__', _agiza):
+        ukijumuisha unittest.mock.patch('builtins.__import__', _import):
             # Since loader.discover() can modify sys.path, restore it when done.
             ukijumuisha support.DirsOnSysPath():
                 # Make sure to remove 'package' kutoka sys.modules when done.
@@ -859,16 +859,16 @@ kundi TestDiscovery(unittest.TestCase):
         loader = unittest.TestLoader()
         package = types.ModuleType('package')
 
-        eleza _agiza(packagename, *args, **kwargs):
+        eleza _import(packagename, *args, **kwargs):
             sys.modules[packagename] = package
             rudisha package
 
-        ukijumuisha unittest.mock.patch('builtins.__import__', _agiza):
+        ukijumuisha unittest.mock.patch('builtins.__import__', _import):
             # Since loader.discover() can modify sys.path, restore it when done.
             ukijumuisha support.DirsOnSysPath():
                 # Make sure to remove 'package' kutoka sys.modules when done.
                 ukijumuisha test.test_importlib.util.uncache('package'):
-                    ukijumuisha self.assertRaises(TypeError) kama cm:
+                    ukijumuisha self.assertRaises(TypeError) as cm:
                         loader.discover('package')
                     self.assertEqual(str(cm.exception),
                                      'don\'t know how to discover kutoka {!r}'

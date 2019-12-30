@@ -16,7 +16,7 @@ kutoka test.support.script_helper agiza make_script, make_zip_script
 
 agiza runpy
 kutoka runpy agiza _run_code, _run_module_code, run_module, run_path
-# Note: This module can't safely test _run_module_as_main kama it
+# Note: This module can't safely test _run_module_as_main as it
 # runs its tests kwenye the current process, which would mess ukijumuisha the
 # real __main__ module (usually test.regrtest)
 # See test_cmd_line_script kila a test that executes that code path
@@ -34,7 +34,7 @@ toa f
 agiza sys
 run_argv0 = sys.argv[0]
 run_name_in_sys_modules = __name__ kwenye sys.modules
-module_in_sys_modules = (run_name_in_sys_modules na
+module_in_sys_modules = (run_name_in_sys_modules and
                          globals() ni sys.modules[__name__].__dict__)
 # Check nested operation
 agiza runpy
@@ -63,9 +63,9 @@ example_namespace.update(implicit_namespace)
 
 kundi CodeExecutionMixin:
     # Issue #15230 (run_path sio handling run_name correctly) highlighted a
-    # problem ukijumuisha the way arguments were being pitaed kutoka higher level APIs
+    # problem ukijumuisha the way arguments were being passed kutoka higher level APIs
     # down to lower level code. This mixin makes it easier to ensure full
-    # testing occurs at those upper layers kama well, sio just at the utility
+    # testing occurs at those upper layers as well, sio just at the utility
     # layer
 
     # Figuring out the loader details kwenye advance ni hard to do, so we skip
@@ -84,9 +84,9 @@ kundi CodeExecutionMixin:
         # Impls are permitted to add extra names, so filter them out
         kila k kwenye list(result_ns):
             ikiwa k.startswith("__") na k.endswith("__"):
-                ikiwa k haiko kwenye expected_ns:
+                ikiwa k sio kwenye expected_ns:
                     result_ns.pop(k)
-                ikiwa k haiko kwenye expected_ns["nested"]:
+                ikiwa k sio kwenye expected_ns["nested"]:
                     result_ns["nested"].pop(k)
         # Spec equality includes the loader, so we take the spec out of the
         # result namespace na check that separately
@@ -106,7 +106,7 @@ kundi CodeExecutionMixin:
                 expected = (k, getattr(expected_spec, attr))
                 self.assertEqual(actual, expected)
         # For the rest, we still don't use direct dict comparison on the
-        # namespace, kama the diffs are too hard to debug ikiwa anything komas
+        # namespace, as the diffs are too hard to debug ikiwa anything komas
         self.assertEqual(set(result_ns), set(expected_ns))
         kila k kwenye result_ns:
             actual = (k, result_ns[k])
@@ -116,7 +116,7 @@ kundi CodeExecutionMixin:
     eleza check_code_execution(self, create_namespace, expected_namespace):
         """Check that an interface runs the example code correctly
 
-           First argument ni a callable accepting the initial globals na
+           First argument ni a callable accepting the initial globals and
            using them to create the actual namespace
            Second argument ni the expected result
         """
@@ -156,7 +156,7 @@ kundi ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
         mod_name = "<Nonsense>"
         mod_fname = "Some other nonsense"
         mod_loader = "Now you're just being silly"
-        mod_package = '' # Treat kama a top level module
+        mod_package = '' # Treat as a top level module
         mod_spec = importlib.machinery.ModuleSpec(mod_name,
                                                   origin=mod_fname,
                                                   loader=mod_loader)
@@ -185,8 +185,8 @@ kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
     eleza expect_import_error(self, mod_name):
         jaribu:
             run_module(mod_name)
-        tatizo ImportError:
-            pita
+        except ImportError:
+            pass
         isipokua:
             self.fail("Expected agiza error kila " + mod_name)
 
@@ -220,7 +220,7 @@ kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                      *, namespace=Uongo, parent_namespaces=Uongo):
         # Enforce a couple of internal sanity checks on test cases
         ikiwa (namespace ama parent_namespaces) na sio depth:
-            ashiria RuntimeError("Can't mark top level module kama a "
+             ashiria RuntimeError("Can't mark top level module as a "
                                "namespace package")
         pkg_name = "__runpy_pkg__"
         test_fname = mod_base+os.extsep+"py"
@@ -237,7 +237,7 @@ kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                 ikiwa verbose > 1: andika("  Next level in:", sub_dir)
                 ikiwa verbose > 1: andika("  Created:", pkg_fname)
         mod_fname = os.path.join(sub_dir, test_fname)
-        ukijumuisha open(mod_fname, "w") kama mod_file:
+        ukijumuisha open(mod_fname, "w") as mod_file:
             mod_file.write(source)
         ikiwa verbose > 1: andika("  Created:", mod_fname)
         mod_name = (pkg_name+".")*depth + mod_base
@@ -256,18 +256,18 @@ kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             kila name kwenye files:
                 jaribu:
                     os.remove(os.path.join(root, name))
-                tatizo OSError kama ex:
+                except OSError as ex:
                     ikiwa verbose > 1: andika(ex) # Persist ukijumuisha cleaning up
             kila name kwenye dirs:
                 fullname = os.path.join(root, name)
                 jaribu:
                     os.rmdir(fullname)
-                tatizo OSError kama ex:
+                except OSError as ex:
                     ikiwa verbose > 1: andika(ex) # Persist ukijumuisha cleaning up
         jaribu:
             os.rmdir(top)
             ikiwa verbose > 1: andika("  Removed package tree")
-        tatizo OSError kama ex:
+        except OSError as ex:
             ikiwa verbose > 1: andika(ex) # Persist ukijumuisha cleaning up
 
     eleza _fix_ns_for_legacy_pyc(self, ns, alter_sys):
@@ -365,7 +365,7 @@ kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
 
     eleza _add_relative_modules(self, base_dir, source, depth):
         ikiwa depth <= 1:
-            ashiria ValueError("Relative module test needs depth > 1")
+             ashiria ValueError("Relative module test needs depth > 1")
         pkg_name = "__runpy_pkg__"
         module_dir = base_dir
         kila i kwenye range(depth):
@@ -386,9 +386,9 @@ kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         create_empty_file(nephew_fname)
         ikiwa verbose > 1: andika("  Added nephew module:", nephew_fname)
 
-    eleza _check_relative_agizas(self, depth, run_name=Tupu):
+    eleza _check_relative_imports(self, depth, run_name=Tupu):
         contents = r"""\
-kutoka __future__ agiza absolute_agiza
+kutoka __future__ agiza absolute_import
 kutoka . agiza sibling
 kutoka ..uncle.cousin agiza nephew
 """
@@ -453,21 +453,21 @@ kutoka ..uncle.cousin agiza nephew
         kila exception kwenye exceptions:
             name = exception.__name__
             ukijumuisha self.subTest(name):
-                source = "ashiria {0}('{0} kwenye __init__.py.')".format(name)
-                ukijumuisha open(init, "wt", encoding="ascii") kama mod_file:
+                source = " ashiria {0}('{0} kwenye __init__.py.')".format(name)
+                ukijumuisha open(init, "wt", encoding="ascii") as mod_file:
                     mod_file.write(source)
                 jaribu:
                     run_module(mod_name)
-                tatizo exception kama err:
+                except exception as err:
                     self.assertNotIn("finding spec", format(err))
                 isipokua:
-                    self.fail("Nothing ashiriad; expected {}".format(name))
+                    self.fail("Nothing raised; expected {}".format(name))
                 jaribu:
                     run_module(mod_name + ".submodule")
-                tatizo exception kama err:
+                except exception as err:
                     self.assertNotIn("finding spec", format(err))
                 isipokua:
-                    self.fail("Nothing ashiriad; expected {}".format(name))
+                    self.fail("Nothing raised; expected {}".format(name))
 
     eleza test_submodule_imported_warning(self):
         pkg_dir, _, mod_name, _ = self._make_pkg("", 1)
@@ -519,15 +519,15 @@ kutoka ..uncle.cousin agiza nephew
             ikiwa verbose > 1: andika("Testing package depth:", depth)
             self._check_package(depth, alter_sys=Kweli)
 
-    eleza test_explicit_relative_agiza(self):
+    eleza test_explicit_relative_import(self):
         kila depth kwenye range(2, 5):
-            ikiwa verbose > 1: andika("Testing relative agizas at depth:", depth)
-            self._check_relative_agizas(depth)
+            ikiwa verbose > 1: andika("Testing relative imports at depth:", depth)
+            self._check_relative_imports(depth)
 
-    eleza test_main_relative_agiza(self):
+    eleza test_main_relative_import(self):
         kila depth kwenye range(2, 5):
-            ikiwa verbose > 1: andika("Testing main relative agizas at depth:", depth)
-            self._check_relative_agizas(depth, "__main__")
+            ikiwa verbose > 1: andika("Testing main relative imports at depth:", depth)
+            self._check_relative_imports(depth, "__main__")
 
     eleza test_run_name(self):
         depth = 1
@@ -646,14 +646,14 @@ kundi RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
         self.assertRaisesRegex(ImportError, msg, run_path, script_name)
 
     eleza test_basic_script(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name)
             self._check_script(script_name, "<run_path>", script_name,
                                script_name, expect_spec=Uongo)
 
     eleza test_basic_script_no_suffix(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name,
                                                  omit_suffix=Kweli)
@@ -661,26 +661,26 @@ kundi RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                                script_name, expect_spec=Uongo)
 
     eleza test_script_compiled(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name)
-            compiled_name = py_compile.compile(script_name, doashiria=Kweli)
+            compiled_name = py_compile.compile(script_name, doraise=Kweli)
             os.remove(script_name)
             self._check_script(compiled_name, "<run_path>", compiled_name,
                                compiled_name, expect_spec=Uongo)
 
     eleza test_directory(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
             self._check_script(script_dir, "<run_path>", script_name,
                                script_dir, mod_name=mod_name)
 
     eleza test_directory_compiled(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
-            compiled_name = py_compile.compile(script_name, doashiria=Kweli)
+            compiled_name = py_compile.compile(script_name, doraise=Kweli)
             os.remove(script_name)
             ikiwa sio sys.dont_write_bytecode:
                 legacy_pyc = make_legacy_pyc(script_name)
@@ -688,14 +688,14 @@ kundi RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                                    script_dir, mod_name=mod_name)
 
     eleza test_directory_error(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             mod_name = 'not_main'
             script_name = self._make_test_script(script_dir, mod_name)
             msg = "can't find '__main__' module kwenye %r" % script_dir
             self._check_import_error(script_dir, msg)
 
     eleza test_zipfile(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
             zip_name, fname = make_zip_script(script_dir, 'test_zip', script_name)
@@ -703,17 +703,17 @@ kundi RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                                mod_name=mod_name, check_loader=Uongo)
 
     eleza test_zipfile_compiled(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
-            compiled_name = py_compile.compile(script_name, doashiria=Kweli)
+            compiled_name = py_compile.compile(script_name, doraise=Kweli)
             zip_name, fname = make_zip_script(script_dir, 'test_zip',
                                               compiled_name)
             self._check_script(zip_name, "<run_path>", fname, zip_name,
                                mod_name=mod_name, check_loader=Uongo)
 
     eleza test_zipfile_error(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             mod_name = 'not_main'
             script_name = self._make_test_script(script_dir, mod_name)
             zip_name, fname = make_zip_script(script_dir, 'test_zip', script_name)
@@ -722,7 +722,7 @@ kundi RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
 
     @no_tracing
     eleza test_main_recursion_error(self):
-        ukijumuisha temp_dir() kama script_dir, temp_dir() kama dummy_dir:
+        ukijumuisha temp_dir() as script_dir, temp_dir() as dummy_dir:
             mod_name = '__main__'
             source = ("agiza runpy\n"
                       "runpy.run_path(%r)\n") % dummy_dir
@@ -732,9 +732,9 @@ kundi RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
             self.assertRaisesRegex(RecursionError, msg, run_path, zip_name)
 
     eleza test_encoding(self):
-        ukijumuisha temp_dir() kama script_dir:
+        ukijumuisha temp_dir() as script_dir:
             filename = os.path.join(script_dir, 'script.py')
-            ukijumuisha open(filename, 'w', encoding='latin1') kama f:
+            ukijumuisha open(filename, 'w', encoding='latin1') as f:
                 f.write("""
 #coding:latin1
 s = "non-ASCII: h\xe9"

@@ -28,7 +28,7 @@ kundi MyFilter(Delegator):
         self.delegate.insert(index, chars)
 
     eleza dont_insert(self, index, chars, tags=Tupu):
-        pita
+        pass
 
 
 kundi PercolatorTest(unittest.TestCase):

@@ -2,7 +2,7 @@ agiza collections
 agiza warnings
 jaribu:
     agiza ssl
-tatizo ImportError:  # pragma: no cover
+except ImportError:  # pragma: no cover
     ssl = Tupu
 
 kutoka . agiza base_events
@@ -14,10 +14,10 @@ kutoka .log agiza logger
 
 eleza _create_transport_context(server_side, server_hostname):
     ikiwa server_side:
-        ashiria ValueError('Server side SSL needs a valid SSLContext')
+         ashiria ValueError('Server side SSL needs a valid SSLContext')
 
-    # Client side may pita ssl=Kweli to use a default
-    # context; kwenye that case the sslcontext pitaed ni Tupu.
+    # Client side may pass ssl=Kweli to use a default
+    # context; kwenye that case the sslcontext passed ni Tupu.
     # The default ni secure kila client connections.
     # Python 3.4+: use up-to-date strong settings.
     sslcontext = ssl.create_default_context()
@@ -42,7 +42,7 @@ kundi _SSLPipe(object):
     descriptor, ama kila some reason you don't want to use it.
 
     An SSL pipe can be kwenye "wrapped" na "unwrapped" mode. In unwrapped mode,
-    data ni pitaed through untransformed. In wrapped mode, application level
+    data ni passed through untransformed. In wrapped mode, application level
     data ni encrypted to SSL record level data na vice versa. The SSL record
     level ni the lowest level kwenye the SSL protocol suite na ni what travels
     as-is over the wire.
@@ -51,13 +51,13 @@ kundi _SSLPipe(object):
     do_handshake(). To shutdown SSL again, call unwrap().
     """
 
-    max_size = 256 * 1024   # Buffer size pitaed to read()
+    max_size = 256 * 1024   # Buffer size passed to read()
 
     eleza __init__(self, context, server_side, server_hostname=Tupu):
         """
         The *context* argument specifies the ssl.SSLContext to use.
 
-        The *server_side* argument indicates whether this ni a server side ama
+        The *server_side* argument indicates whether this ni a server side or
         client side transport.
 
         The optional *server_hostname* argument can be used to specify the
@@ -77,7 +77,7 @@ kundi _SSLPipe(object):
 
     @property
     eleza context(self):
-        """The SSL context pitaed to the constructor."""
+        """The SSL context passed to the constructor."""
         rudisha self._context
 
     @property
@@ -113,7 +113,7 @@ kundi _SSLPipe(object):
         called ukijumuisha Tupu ikiwa successful, isipokua an exception instance.
         """
         ikiwa self._state != _UNWRAPPED:
-            ashiria RuntimeError('handshake kwenye progress ama completed')
+             ashiria RuntimeError('handshake kwenye progress ama completed')
         self._sslobj = self._context.wrap_bio(
             self._incoming, self._outgoing,
             server_side=self._server_side,
@@ -134,9 +134,9 @@ kundi _SSLPipe(object):
         called without arguments.
         """
         ikiwa self._state == _UNWRAPPED:
-            ashiria RuntimeError('no security layer present')
+             ashiria RuntimeError('no security layer present')
         ikiwa self._state == _SHUTDOWN:
-            ashiria RuntimeError('shutdown kwenye progress')
+             ashiria RuntimeError('shutdown kwenye progress')
         assert self._state kwenye (_WRAPPED, _DO_HANDSHAKE)
         self._state = _SHUTDOWN
         self._shutdown_cb = callback
@@ -147,7 +147,7 @@ kundi _SSLPipe(object):
     eleza feed_eof(self):
         """Send a potentially "ragged" EOF.
 
-        This method will ashiria an SSL_ERROR_EOF exception ikiwa the EOF is
+        This method will  ashiria an SSL_ERROR_EOF exception ikiwa the EOF is
         unexpected.
         """
         self._incoming.write_eof()
@@ -170,7 +170,7 @@ kundi _SSLPipe(object):
         be acknowledged by calling shutdown().
         """
         ikiwa self._state == _UNWRAPPED:
-            # If unwrapped, pita plaintext data straight through.
+            # If unwrapped, pass plaintext data straight through.
             ikiwa data:
                 appdata = [data]
             isipokua:
@@ -185,7 +185,7 @@ kundi _SSLPipe(object):
         appdata = []
         jaribu:
             ikiwa self._state == _DO_HANDSHAKE:
-                # Call do_handshake() until it doesn't ashiria anymore.
+                # Call do_handshake() until it doesn't  ashiria anymore.
                 self._sslobj.do_handshake()
                 self._state = _WRAPPED
                 ikiwa self._handshake_cb:
@@ -202,25 +202,25 @@ kundi _SSLPipe(object):
                     ikiwa sio chunk:  # close_notify
                         koma
 
-            lasivyo self._state == _SHUTDOWN:
-                # Call shutdown() until it doesn't ashiria anymore.
+            elikiwa self._state == _SHUTDOWN:
+                # Call shutdown() until it doesn't  ashiria anymore.
                 self._sslobj.unwrap()
                 self._sslobj = Tupu
                 self._state = _UNWRAPPED
                 ikiwa self._shutdown_cb:
                     self._shutdown_cb()
 
-            lasivyo self._state == _UNWRAPPED:
+            elikiwa self._state == _UNWRAPPED:
                 # Drain possible plaintext data after close_notify.
                 appdata.append(self._incoming.read())
-        tatizo (ssl.SSLError, ssl.CertificateError) kama exc:
+        except (ssl.SSLError, ssl.CertificateError) as exc:
             exc_errno = getattr(exc, 'errno', Tupu)
-            ikiwa exc_errno haiko kwenye (
+            ikiwa exc_errno sio kwenye (
                     ssl.SSL_ERROR_WANT_READ, ssl.SSL_ERROR_WANT_WRITE,
                     ssl.SSL_ERROR_SYSCALL):
                 ikiwa self._state == _DO_HANDSHAKE na self._handshake_cb:
                     self._handshake_cb(exc)
-                ashiria
+                raise
             self._need_ssldata = (exc_errno == ssl.SSL_ERROR_WANT_READ)
 
         # Check kila record level data that needs to be sent back.
@@ -238,7 +238,7 @@ kundi _SSLPipe(object):
         were processed, which may be less than the length of data.
 
         NOTE: In case of short writes, this call MUST be retried ukijumuisha the SAME
-        buffer pitaed into the *data* argument (i.e. the id() must be the
+        buffer passed into the *data* argument (i.e. the id() must be the
         same). This ni an OpenSSL requirement. A further particularity ni that
         a short write will always have offset == 0, because the _ssl module
         does sio enable partial writes. And even though the offset ni zero,
@@ -246,7 +246,7 @@ kundi _SSLPipe(object):
         """
         assert 0 <= offset <= len(data)
         ikiwa self._state == _UNWRAPPED:
-            # pita through data kwenye unwrapped mode
+            # pass through data kwenye unwrapped mode
             ikiwa offset < len(data):
                 ssldata = [data[offset:]]
             isipokua:
@@ -260,17 +260,17 @@ kundi _SSLPipe(object):
             jaribu:
                 ikiwa offset < len(view):
                     offset += self._sslobj.write(view[offset:])
-            tatizo ssl.SSLError kama exc:
+            except ssl.SSLError as exc:
                 # It ni sio allowed to call write() after unwrap() until the
                 # close_notify ni acknowledged. We rudisha the condition to the
-                # caller kama a short write.
+                # caller as a short write.
                 exc_errno = getattr(exc, 'errno', Tupu)
                 ikiwa exc.reason == 'PROTOCOL_IS_SHUTDOWN':
                     exc_errno = exc.errno = ssl.SSL_ERROR_WANT_READ
-                ikiwa exc_errno haiko kwenye (ssl.SSL_ERROR_WANT_READ,
+                ikiwa exc_errno sio kwenye (ssl.SSL_ERROR_WANT_READ,
                                      ssl.SSL_ERROR_WANT_WRITE,
                                      ssl.SSL_ERROR_SYSCALL):
-                    ashiria
+                    raise
                 self._need_ssldata = (exc_errno == ssl.SSL_ERROR_WANT_READ)
 
             # See ikiwa there's any record level data back kila us.
@@ -311,7 +311,7 @@ kundi _SSLProtocolTransport(transports._FlowControlMixin,
         Buffered data will be flushed asynchronously.  No more data
         will be received.  After all buffered data ni flushed, the
         protocol's connection_lost() method will (eventually) called
-        ukijumuisha Tupu kama its argument.
+        ukijumuisha Tupu as its argument.
         """
         self._closed = Kweli
         self._ssl_protocol._start_shutdown()
@@ -324,13 +324,13 @@ kundi _SSLProtocolTransport(transports._FlowControlMixin,
     eleza is_reading(self):
         tr = self._ssl_protocol._transport
         ikiwa tr ni Tupu:
-            ashiria RuntimeError('SSL transport has sio been initialized yet')
+             ashiria RuntimeError('SSL transport has sio been initialized yet')
         rudisha tr.is_reading()
 
     eleza pause_reading(self):
         """Pause the receiving end.
 
-        No data will be pitaed to the protocol's data_received()
+        No data will be passed to the protocol's data_received()
         method until resume_reading() ni called.
         """
         self._ssl_protocol._transport.pause_reading()
@@ -338,7 +338,7 @@ kundi _SSLProtocolTransport(transports._FlowControlMixin,
     eleza resume_reading(self):
         """Resume the receiving end.
 
-        Data received will once again be pitaed to the protocol's
+        Data received will once again be passed to the protocol's
         data_received() method.
         """
         self._ssl_protocol._transport.resume_reading()
@@ -358,7 +358,7 @@ kundi _SSLProtocolTransport(transports._FlowControlMixin,
         well, na causes pause_writing() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_writing() to be called only once the buffer ni empty.
-        Use of zero kila either limit ni generally sub-optimal kama it
+        Use of zero kila either limit ni generally sub-optimal as it
         reduces opportunities kila doing I/O na computation
         concurrently.
         """
@@ -380,10 +380,10 @@ kundi _SSLProtocolTransport(transports._FlowControlMixin,
         to be sent out asynchronously.
         """
         ikiwa sio isinstance(data, (bytes, bytearray, memoryview)):
-            ashiria TypeError(f"data: expecting a bytes-like instance, "
+             ashiria TypeError(f"data: expecting a bytes-like instance, "
                             f"got {type(data).__name__}")
         ikiwa sio data:
-            rudisha
+            return
         self._ssl_protocol._write_appdata(data)
 
     eleza can_write_eof(self):
@@ -395,7 +395,7 @@ kundi _SSLProtocolTransport(transports._FlowControlMixin,
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called ukijumuisha Tupu kama its argument.
+        called ukijumuisha Tupu as its argument.
         """
         self._ssl_protocol._abort()
         self._closed = Kweli
@@ -413,12 +413,12 @@ kundi SSLProtocol(protocols.Protocol):
                  call_connection_made=Kweli,
                  ssl_handshake_timeout=Tupu):
         ikiwa ssl ni Tupu:
-            ashiria RuntimeError('stdlib ssl module sio available')
+             ashiria RuntimeError('stdlib ssl module sio available')
 
         ikiwa ssl_handshake_timeout ni Tupu:
             ssl_handshake_timeout = constants.SSL_HANDSHAKE_TIMEOUT
-        lasivyo ssl_handshake_timeout <= 0:
-            ashiria ValueError(
+        elikiwa ssl_handshake_timeout <= 0:
+             ashiria ValueError(
                 f"ssl_handshake_timeout should be a positive number, "
                 f"got {ssl_handshake_timeout}")
 
@@ -461,7 +461,7 @@ kundi SSLProtocol(protocols.Protocol):
 
     eleza _wakeup_waiter(self, exc=Tupu):
         ikiwa self._waiter ni Tupu:
-            rudisha
+            return
         ikiwa sio self._waiter.cancelled():
             ikiwa exc ni sio Tupu:
                 self._waiter.set_exception(exc)
@@ -492,7 +492,7 @@ kundi SSLProtocol(protocols.Protocol):
             self._loop.call_soon(self._app_protocol.connection_lost, exc)
         isipokua:
             # Most likely an exception occurred wakati kwenye SSL handshake.
-            # Just mark the app transport kama closed so that its __del__
+            # Just mark the app transport as closed so that its __del__
             # doesn't complain.
             ikiwa self._app_transport ni sio Tupu:
                 self._app_transport._closed = Kweli
@@ -523,15 +523,15 @@ kundi SSLProtocol(protocols.Protocol):
         """
         ikiwa self._sslpipe ni Tupu:
             # transport closing, sslpipe ni destroyed
-            rudisha
+            return
 
         jaribu:
             ssldata, appdata = self._sslpipe.feed_ssldata(data)
-        tatizo (SystemExit, KeyboardInterrupt):
-            ashiria
-        tatizo BaseException kama e:
+        except (SystemExit, KeyboardInterrupt):
+            raise
+        except BaseException as e:
             self._fatal_error(e, 'SSL error kwenye data received')
-            rudisha
+            return
 
         kila chunk kwenye ssldata:
             self._transport.write(chunk)
@@ -544,12 +544,12 @@ kundi SSLProtocol(protocols.Protocol):
                             self._app_protocol, chunk)
                     isipokua:
                         self._app_protocol.data_received(chunk)
-                tatizo (SystemExit, KeyboardInterrupt):
-                    ashiria
-                tatizo BaseException kama ex:
+                except (SystemExit, KeyboardInterrupt):
+                    raise
+                except BaseException as ex:
                     self._fatal_error(
                         ex, 'application protocol failed to receive SSL data')
-                    rudisha
+                    return
             isipokua:
                 self._start_shutdown()
                 koma
@@ -558,8 +558,8 @@ kundi SSLProtocol(protocols.Protocol):
         """Called when the other end of the low-level stream
         ni half-closed.
 
-        If this rudishas a false value (including Tupu), the transport
-        will close itself.  If it rudishas a true value, closing the
+        If this returns a false value (including Tupu), the transport
+        will close itself.  If it returns a true value, closing the
         transport ni up to the protocol.
         """
         jaribu:
@@ -571,7 +571,7 @@ kundi SSLProtocol(protocols.Protocol):
             ikiwa sio self._in_handshake:
                 keep_open = self._app_protocol.eof_received()
                 ikiwa keep_open:
-                    logger.warning('rudishaing true kutoka eof_received() '
+                    logger.warning('returning true kutoka eof_received() '
                                    'has no effect when using ssl')
         mwishowe:
             self._transport.close()
@@ -579,14 +579,14 @@ kundi SSLProtocol(protocols.Protocol):
     eleza _get_extra_info(self, name, default=Tupu):
         ikiwa name kwenye self._extra:
             rudisha self._extra[name]
-        lasivyo self._transport ni sio Tupu:
+        elikiwa self._transport ni sio Tupu:
             rudisha self._transport.get_extra_info(name, default)
         isipokua:
             rudisha default
 
     eleza _start_shutdown(self):
         ikiwa self._in_shutdown:
-            rudisha
+            return
         ikiwa self._in_handshake:
             self._abort()
         isipokua:
@@ -629,18 +629,18 @@ kundi SSLProtocol(protocols.Protocol):
         sslobj = self._sslpipe.ssl_object
         jaribu:
             ikiwa handshake_exc ni sio Tupu:
-                ashiria handshake_exc
+                 ashiria handshake_exc
 
             peercert = sslobj.getpeercert()
-        tatizo (SystemExit, KeyboardInterrupt):
-            ashiria
-        tatizo BaseException kama exc:
+        except (SystemExit, KeyboardInterrupt):
+            raise
+        except BaseException as exc:
             ikiwa isinstance(exc, ssl.CertificateError):
                 msg = 'SSL handshake failed on verifying the certificate'
             isipokua:
                 msg = 'SSL handshake failed'
             self._fatal_error(exc, msg)
-            rudisha
+            return
 
         ikiwa self._loop.get_debug():
             dt = self._loop.time() - self._handshake_start_time
@@ -658,7 +658,7 @@ kundi SSLProtocol(protocols.Protocol):
         self._session_established = Kweli
         # In case transport.write() was already called. Don't call
         # immediately _process_write_backlog(), but schedule it:
-        # _on_handshake_complete() can be called indirectly kutoka
+        # _on_handshake_complete() can be called indirectly from
         # _process_write_backlog(), na _process_write_backlog() ni not
         # reentrant.
         self._loop.call_soon(self._process_write_backlog)
@@ -666,14 +666,14 @@ kundi SSLProtocol(protocols.Protocol):
     eleza _process_write_backlog(self):
         # Try to make progress on the write backlog.
         ikiwa self._transport ni Tupu ama self._sslpipe ni Tupu:
-            rudisha
+            return
 
         jaribu:
             kila i kwenye range(len(self._write_backlog)):
                 data, offset = self._write_backlog[0]
                 ikiwa data:
                     ssldata, offset = self._sslpipe.feed_appdata(data, offset)
-                lasivyo offset:
+                elikiwa offset:
                     ssldata = self._sslpipe.do_handshake(
                         self._on_handshake_complete)
                     offset = 1
@@ -697,11 +697,11 @@ kundi SSLProtocol(protocols.Protocol):
                 # delete it na reduce the outstanding buffer size.
                 toa self._write_backlog[0]
                 self._write_buffer_size -= len(data)
-        tatizo (SystemExit, KeyboardInterrupt):
-            ashiria
-        tatizo BaseException kama exc:
+        except (SystemExit, KeyboardInterrupt):
+            raise
+        except BaseException as exc:
             ikiwa self._in_handshake:
-                # Exceptions will be re-ashiriad kwenye _on_handshake_complete.
+                # Exceptions will be re-raised kwenye _on_handshake_complete.
                 self._on_handshake_complete(exc)
             isipokua:
                 self._fatal_error(exc, 'Fatal error on SSL transport')

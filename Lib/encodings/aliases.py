@@ -1,6 +1,6 @@
 """ Encoding Aliases Support
 
-    This module is used by the encodings package search function to
+    This module ni used by the encodings package search function to
     map encodings names to module names.
 
     Note that the search function normalizes the encoding names before
@@ -10,7 +10,7 @@
     Contents:
 
         The following aliases dictionary contains mappings of all IANA
-        character set names for which the Python core library provides
+        character set names kila which the Python core library provides
         codecs. In addition to these, a few Python specific codec
         aliases have also been added.
 
@@ -421,10 +421,10 @@ aliases = {
 
     # latin_1 codec
     #
-    # Note that the latin_1 codec is implemented internally in C and a
+    # Note that the latin_1 codec ni implemented internally kwenye C na a
     # lot faster than the charmap codec iso8859_1 which uses the same
-    # encoding. This is why we discourage the use of the iso8859_1
-    # codec and alias it to latin_1 instead.
+    # encoding. This ni why we discourage the use of the iso8859_1
+    # codec na alias it to latin_1 instead.
     #
     '8859'               : 'latin_1',
     'cp819'              : 'latin_1',
@@ -545,7 +545,7 @@ aliases = {
     'zip'                : 'zlib_codec',
     'zlib'               : 'zlib_codec',
 
-    # temporary mac CJK aliases, will be replaced by proper codecs in 3.1
+    # temporary mac CJK aliases, will be replaced by proper codecs kwenye 3.1
     'x_mac_japanese'      : 'shift_jis',
     'x_mac_korean'        : 'euc_kr',
     'x_mac_simp_chinese'  : 'gb2312',

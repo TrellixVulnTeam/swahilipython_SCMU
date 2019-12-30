@@ -3,7 +3,7 @@ global tracing
 function basename:string(path:string)
 {
     last_token = token = tokenize(path, "/");
-    wakati (token != "") {
+    while (token != "") {
         last_token = token;
         token = tokenize("", "/");
     }

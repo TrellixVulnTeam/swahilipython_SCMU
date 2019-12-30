@@ -6,7 +6,7 @@
     1) GNU GPLv2
     2) PSF license kila Python 2.2
 
-    The robots.txt Exclusion Protocol ni implemented kama specified in
+    The robots.txt Exclusion Protocol ni implemented as specified in
     http://www.robotstxt.org/norobots-rfc.txt
 """
 
@@ -60,10 +60,10 @@ kundi RobotFileParser:
         """Reads the robots.txt URL na feeds it to the parser."""
         jaribu:
             f = urllib.request.urlopen(self.url)
-        tatizo urllib.error.HTTPError kama err:
+        except urllib.error.HTTPError as err:
             ikiwa err.code kwenye (401, 403):
                 self.disallow_all = Kweli
-            lasivyo err.code >= 400 na err.code < 500:
+            elikiwa err.code >= 400 na err.code < 500:
                 self.allow_all = Kweli
         isipokua:
             raw = f.read()
@@ -97,7 +97,7 @@ kundi RobotFileParser:
                 ikiwa state == 1:
                     entry = Entry()
                     state = 0
-                lasivyo state == 2:
+                elikiwa state == 2:
                     self._add_entry(entry)
                     entry = Entry()
                     state = 0
@@ -118,15 +118,15 @@ kundi RobotFileParser:
                         entry = Entry()
                     entry.useragents.append(line[1])
                     state = 1
-                lasivyo line[0] == "disallow":
+                elikiwa line[0] == "disallow":
                     ikiwa state != 0:
                         entry.rulelines.append(RuleLine(line[1], Uongo))
                         state = 2
-                lasivyo line[0] == "allow":
+                elikiwa line[0] == "allow":
                     ikiwa state != 0:
                         entry.rulelines.append(RuleLine(line[1], Kweli))
                         state = 2
-                lasivyo line[0] == "crawl-delay":
+                elikiwa line[0] == "crawl-delay":
                     ikiwa state != 0:
                         # before trying to convert to int we need to make
                         # sure that robots.txt has valid syntax otherwise
@@ -134,7 +134,7 @@ kundi RobotFileParser:
                         ikiwa line[1].strip().isdigit():
                             entry.delay = int(line[1])
                         state = 2
-                lasivyo line[0] == "request-rate":
+                elikiwa line[0] == "request-rate":
                     ikiwa state != 0:
                         numbers = line[1].split('/')
                         # check ikiwa all values are sane
@@ -142,7 +142,7 @@ kundi RobotFileParser:
                             na numbers[1].strip().isdigit()):
                             entry.req_rate = RequestRate(int(numbers[0]), int(numbers[1]))
                         state = 2
-                lasivyo line[0] == "sitemap":
+                elikiwa line[0] == "sitemap":
                     # According to http://www.sitemaps.org/protocol.html
                     # "This directive ni independent of the user-agent line,
                     #  so it doesn't matter where you place it kwenye your file."

@@ -1,12 +1,12 @@
-"""Policy framework for the email package.
+"""Policy framework kila the email package.
 
-Allows fine grained feature control of how the package parses and emits data.
+Allows fine grained feature control of how the package parses na emits data.
 """
 
-import abc
-from email import header
-from email import charset as _charset
-from email.utils agiza _has_surrogates
+agiza abc
+kutoka email agiza header
+kutoka email agiza charset as _charset
+kutoka email.utils agiza _has_surrogates
 
 __all__ = [
     'Policy',
@@ -15,123 +15,123 @@ __all__ = [
     ]
 
 
-class _PolicyBase:
+kundi _PolicyBase:
 
     """Policy Object basic framework.
 
-    This class is useless unless subclassed.  A subclass should define
-    class attributes with defaults for any values that are to be
+    This kundi ni useless unless subclassed.  A subkundi should define
+    kundi attributes ukijumuisha defaults kila any values that are to be
     managed by the Policy object.  The constructor will then allow
-    non-default values to be set for these attributes at instance
+    non-default values to be set kila these attributes at instance
     creation time.  The instance will be callable, taking these same
-    attributes keyword arguments, and returning a new instance
-    identical to the called instance tatizo for those values changed
+    attributes keyword arguments, na returning a new instance
+    identical to the called instance except kila those values changed
     by the keyword arguments.  Instances may be added, yielding new
-    instances with any non-default values from the right hand
-    operand overriding those in the left hand operand.  That is,
+    instances ukijumuisha any non-default values kutoka the right hand
+    operand overriding those kwenye the left hand operand.  That is,
 
         A + B == A(<non-default values of B>)
 
     The repr of an instance can be used to reconstruct the object
-    if and only if the repr of the values can be used to reconstruct
+    ikiwa na only ikiwa the repr of the values can be used to reconstruct
     those values.
 
     """
 
-    def __init__(self, **kw):
+    eleza __init__(self, **kw):
         """Create new Policy, possibly overriding some defaults.
 
-        See class docstring for a list of overridable attributes.
+        See kundi docstring kila a list of overridable attributes.
 
         """
-        for name, value in kw.items():
-            if hasattr(self, name):
+        kila name, value kwenye kw.items():
+            ikiwa hasattr(self, name):
                 super(_PolicyBase,self).__setattr__(name, value)
             isipokua:
-                ashiria TypeError(
-                    "{!r} is an invalid keyword argument for {}".format(
+                 ashiria TypeError(
+                    "{!r} ni an invalid keyword argument kila {}".format(
                         name, self.__class__.__name__))
 
-    def __repr__(self):
+    eleza __repr__(self):
         args = [ "{}={!r}".format(name, value)
-                 for name, value in self.__dict__.items() ]
-        return "{}({})".format(self.__class__.__name__, ', '.join(args))
+                 kila name, value kwenye self.__dict__.items() ]
+        rudisha "{}({})".format(self.__class__.__name__, ', '.join(args))
 
-    def clone(self, **kw):
-        """Return a new instance with specified attributes changed.
+    eleza clone(self, **kw):
+        """Return a new instance ukijumuisha specified attributes changed.
 
         The new instance has the same attribute values as the current object,
-        tatizo for the changes passed in as keyword arguments.
+        except kila the changes passed kwenye as keyword arguments.
 
         """
         newpolicy = self.__class__.__new__(self.__class__)
-        for attr, value in self.__dict__.items():
+        kila attr, value kwenye self.__dict__.items():
             object.__setattr__(newpolicy, attr, value)
-        for attr, value in kw.items():
-            if sio hasattr(self, attr):
-                ashiria TypeError(
-                    "{!r} is an invalid keyword argument for {}".format(
+        kila attr, value kwenye kw.items():
+            ikiwa sio hasattr(self, attr):
+                 ashiria TypeError(
+                    "{!r} ni an invalid keyword argument kila {}".format(
                         attr, self.__class__.__name__))
             object.__setattr__(newpolicy, attr, value)
-        return newpolicy
+        rudisha newpolicy
 
-    def __setattr__(self, name, value):
-        if hasattr(self, name):
-            msg = "{!r} object attribute {!r} is read-only"
+    eleza __setattr__(self, name, value):
+        ikiwa hasattr(self, name):
+            msg = "{!r} object attribute {!r} ni read-only"
         isipokua:
             msg = "{!r} object has no attribute {!r}"
-        ashiria AttributeError(msg.format(self.__class__.__name__, name))
+         ashiria AttributeError(msg.format(self.__class__.__name__, name))
 
-    def __add__(self, other):
-        """Non-default values from right operand override those from left.
+    eleza __add__(self, other):
+        """Non-default values kutoka right operand override those kutoka left.
 
-        The object returned is a new instance of the subclass.
+        The object returned ni a new instance of the subclass.
 
         """
-        return self.clone(**other.__dict__)
+        rudisha self.clone(**other.__dict__)
 
 
-def _append_doc(doc, added_doc):
+eleza _append_doc(doc, added_doc):
     doc = doc.rsplit('\n', 1)[0]
     added_doc = added_doc.split('\n', 1)[1]
-    return doc + '\n' + added_doc
+    rudisha doc + '\n' + added_doc
 
-def _extend_docstrings(cls):
-    if cls.__doc__ and cls.__doc__.startswith('+'):
+eleza _extend_docstrings(cls):
+    ikiwa cls.__doc__ na cls.__doc__.startswith('+'):
         cls.__doc__ = _append_doc(cls.__bases__[0].__doc__, cls.__doc__)
-    for name, attr in cls.__dict__.items():
-        if attr.__doc__ and attr.__doc__.startswith('+'):
-            for c in (c for base in cls.__bases__ for c in base.mro()):
+    kila name, attr kwenye cls.__dict__.items():
+        ikiwa attr.__doc__ na attr.__doc__.startswith('+'):
+            kila c kwenye (c kila base kwenye cls.__bases__ kila c kwenye base.mro()):
                 doc = getattr(getattr(c, name), '__doc__')
-                if doc:
+                ikiwa doc:
                     attr.__doc__ = _append_doc(doc, attr.__doc__)
                     koma
-    return cls
+    rudisha cls
 
 
-class Policy(_PolicyBase, metaclass=abc.ABCMeta):
+kundi Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
-    r"""Controls for how messages are interpreted and formatted.
+    r"""Controls kila how messages are interpreted na formatted.
 
-    Most of the classes and many of the methods in the email package accept
-    Policy objects as parameters.  A Policy object contains a set of values na
-    functions that control how input is interpreted and how output is rendered.
-    For example, the parameter 'raise_on_defect' controls whether or sio an RFC
-    violation results in an error being raised or not, wakati 'max_line_length'
-    controls the maximum length of output lines when a Message is serialized.
+    Most of the classes na many of the methods kwenye the email package accept
+    Policy objects as parameters.  A Policy object contains a set of values and
+    functions that control how input ni interpreted na how output ni rendered.
+    For example, the parameter 'raise_on_defect' controls whether ama sio an RFC
+    violation results kwenye an error being raised ama not, wakati 'max_line_length'
+    controls the maximum length of output lines when a Message ni serialized.
 
-    Any valid attribute may be overridden when a Policy is created by passing
+    Any valid attribute may be overridden when a Policy ni created by passing
     it as a keyword argument to the constructor.  Policy objects are immutable,
-    but a new Policy object can be created with only certain values changed by
-    calling the Policy instance with keyword arguments.  Policy objects can
-    also be added, producing a new Policy object in which the non-default
-    attributes set in the right hand operand overwrite those specified in the
+    but a new Policy object can be created ukijumuisha only certain values changed by
+    calling the Policy instance ukijumuisha keyword arguments.  Policy objects can
+    also be added, producing a new Policy object kwenye which the non-default
+    attributes set kwenye the right hand operand overwrite those specified kwenye the
     left operand.
 
     Settable attributes:
 
     raise_on_defect     -- If true, then defects should be raised as errors.
-                           Default: False.
+                           Default: Uongo.
 
     linesep             -- string containing the value to use as separation
                            between output lines.  Default '\n'.
@@ -139,236 +139,236 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
     cte_type            -- Type of allowed content transfer encodings
 
                            7bit  -- ASCII only
-                           8bit  -- Content-Transfer-Encoding: 8bit is allowed
+                           8bit  -- Content-Transfer-Encoding: 8bit ni allowed
 
                            Default: 8bit.  Also controls the disposition of
-                           (RFC invalid) binary data in headers; see the
+                           (RFC invalid) binary data kwenye headers; see the
                            documentation of the binary_fold method.
 
     max_line_length     -- maximum length of lines, excluding 'linesep',
-                           during serialization.  None or 0 means no line
-                           wrapping is done.  Default is 78.
+                           during serialization.  Tupu ama 0 means no line
+                           wrapping ni done.  Default ni 78.
 
-    mangle_from_        -- a flag that, when True escapes From_ lines in the
-                           body of the message by putting a `>' in front of
-                           them. This is used when the message is being
-                           serialized by a generator. Default: True.
+    mangle_from_        -- a flag that, when Kweli escapes From_ lines kwenye the
+                           body of the message by putting a `>' kwenye front of
+                           them. This ni used when the message ni being
+                           serialized by a generator. Default: Kweli.
 
-    message_factory     -- the class to use to create new message objects.
-                           If the value is None, the default is Message.
+    message_factory     -- the kundi to use to create new message objects.
+                           If the value ni Tupu, the default ni Message.
 
     """
 
-    raise_on_defect = False
+    raise_on_defect = Uongo
     linesep = '\n'
     cte_type = '8bit'
     max_line_length = 78
-    mangle_from_ = False
-    message_factory = None
+    mangle_from_ = Uongo
+    message_factory = Tupu
 
-    def handle_defect(self, obj, defect):
-        """Based on policy, either ashiria defect or call register_defect.
+    eleza handle_defect(self, obj, defect):
+        """Based on policy, either  ashiria defect ama call register_defect.
 
             handle_defect(obj, defect)
 
-        defect should be a Defect subclass, but in any case must be an
-        Exception subclass.  obj is the object on which the defect should be
-        registered if it ni sio raised.  If the raise_on_defect is True, the
-        defect is raised as an error, otherwise the object and the defect are
+        defect should be a Defect subclass, but kwenye any case must be an
+        Exception subclass.  obj ni the object on which the defect should be
+        registered ikiwa it ni sio raised.  If the raise_on_defect ni Kweli, the
+        defect ni raised as an error, otherwise the object na the defect are
         passed to register_defect.
 
-        This method is intended to be called by parsers that discover defects.
-        The email package parsers always call it with Defect instances.
+        This method ni intended to be called by parsers that discover defects.
+        The email package parsers always call it ukijumuisha Defect instances.
 
         """
-        if self.raise_on_defect:
-            ashiria defect
+        ikiwa self.raise_on_defect:
+             ashiria defect
         self.register_defect(obj, defect)
 
-    def register_defect(self, obj, defect):
+    eleza register_defect(self, obj, defect):
         """Record 'defect' on 'obj'.
 
-        Called by handle_defect if raise_on_defect is False.  This method is
+        Called by handle_defect ikiwa raise_on_defect ni Uongo.  This method is
         part of the Policy API so that Policy subclasses can implement custom
         defect handling.  The default implementation calls the append method of
         the defects attribute of obj.  The objects used by the email package by
         default that get passed to this method will always have a defects
-        attribute with an append method.
+        attribute ukijumuisha an append method.
 
         """
         obj.defects.append(defect)
 
-    def header_max_count(self, name):
+    eleza header_max_count(self, name):
         """Return the maximum allowed number of headers named 'name'.
 
-        Called when a header is added to a Message object.  If the returned
-        value ni sio 0 or None, and there are already a number of headers with
-        the name 'name' equal to the value returned, a ValueError is raised.
+        Called when a header ni added to a Message object.  If the returned
+        value ni sio 0 ama Tupu, na there are already a number of headers with
+        the name 'name' equal to the value returned, a ValueError ni raised.
 
-        Because the default behavior of Message's __setitem__ is to append the
-        value to the list of headers, it is easy to create duplicate headers
+        Because the default behavior of Message's __setitem__ ni to append the
+        value to the list of headers, it ni easy to create duplicate headers
         without realizing it.  This method allows certain headers to be limited
-        in the number of instances of that header that may be added to a
+        kwenye the number of instances of that header that may be added to a
         Message programmatically.  (The limit ni sio observed by the parser,
-        which will faithfully produce as many headers as exist in the message
+        which will faithfully produce as many headers as exist kwenye the message
         being parsed.)
 
-        The default implementation returns None for all header names.
+        The default implementation returns Tupu kila all header names.
         """
-        return None
+        rudisha Tupu
 
     @abc.abstractmethod
-    def header_source_parse(self, sourcelines):
+    eleza header_source_parse(self, sourcelines):
         """Given a list of linesep terminated strings constituting the lines of
-        a single header, return the (name, value) tuple that should be stored
-        in the model.  The input lines should retain their terminating linesep
-        characters.  The lines passed in by the email package may contain
+        a single header, rudisha the (name, value) tuple that should be stored
+        kwenye the model.  The input lines should retain their terminating linesep
+        characters.  The lines passed kwenye by the email package may contain
         surrogateescaped binary data.
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     @abc.abstractmethod
-    def header_store_parse(self, name, value):
-        """Given the header name and the value provided by the application
-        program, return the (name, value) that should be stored in the model.
+    eleza header_store_parse(self, name, value):
+        """Given the header name na the value provided by the application
+        program, rudisha the (name, value) that should be stored kwenye the model.
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     @abc.abstractmethod
-    def header_fetch_parse(self, name, value):
-        """Given the header name and the value from the model, return the value
-        to be returned to the application program that is requesting that
-        header.  The value passed in by the email package may contain
-        surrogateescaped binary data if the lines were parsed by a BytesParser.
+    eleza header_fetch_parse(self, name, value):
+        """Given the header name na the value kutoka the model, rudisha the value
+        to be returned to the application program that ni requesting that
+        header.  The value passed kwenye by the email package may contain
+        surrogateescaped binary data ikiwa the lines were parsed by a BytesParser.
         The returned value should sio contain any surrogateescaped data.
 
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     @abc.abstractmethod
-    def fold(self, name, value):
-        """Given the header name and the value from the model, return a string
+    eleza fold(self, name, value):
+        """Given the header name na the value kutoka the model, rudisha a string
         containing linesep characters that implement the folding of the header
-        according to the policy controls.  The value passed in by the email
-        package may contain surrogateescaped binary data if the lines were
+        according to the policy controls.  The value passed kwenye by the email
+        package may contain surrogateescaped binary data ikiwa the lines were
         parsed by a BytesParser.  The returned value should sio contain any
         surrogateescaped data.
 
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     @abc.abstractmethod
-    def fold_binary(self, name, value):
-        """Given the header name and the value from the model, return binary
+    eleza fold_binary(self, name, value):
+        """Given the header name na the value kutoka the model, rudisha binary
         data containing linesep characters that implement the folding of the
-        header according to the policy controls.  The value passed in by the
+        header according to the policy controls.  The value passed kwenye by the
         email package may contain surrogateescaped binary data.
 
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
 
 @_extend_docstrings
-class Compat32(Policy):
+kundi Compat32(Policy):
 
     """+
-    This particular policy is the backward compatibility Policy.  It
+    This particular policy ni the backward compatibility Policy.  It
     replicates the behavior of the email package version 5.1.
     """
 
-    mangle_from_ = True
+    mangle_from_ = Kweli
 
-    def _sanitize_header(self, name, value):
-        # If the header value contains surrogates, return a Header using
+    eleza _sanitize_header(self, name, value):
+        # If the header value contains surrogates, rudisha a Header using
         # the unknown-8bit charset to encode the bytes as encoded words.
-        if sio isinstance(value, str):
-            # Assume it is already a header object
-            return value
-        if _has_surrogates(value):
-            return header.Header(value, charset=_charset.UNKNOWN8BIT,
+        ikiwa sio isinstance(value, str):
+            # Assume it ni already a header object
+            rudisha value
+        ikiwa _has_surrogates(value):
+            rudisha header.Header(value, charset=_charset.UNKNOWN8BIT,
                                  header_name=name)
         isipokua:
-            return value
+            rudisha value
 
-    def header_source_parse(self, sourcelines):
+    eleza header_source_parse(self, sourcelines):
         """+
-        The name is parsed as everything up to the ':' and returned unmodified.
-        The value is determined by stripping leading whitespace off the
-        remainder of the first line, joining all subsequent lines together, na
-        stripping any trailing carriage return or linefeed characters.
+        The name ni parsed as everything up to the ':' na returned unmodified.
+        The value ni determined by stripping leading whitespace off the
+        remainder of the first line, joining all subsequent lines together, and
+        stripping any trailing carriage rudisha ama linefeed characters.
 
         """
         name, value = sourcelines[0].split(':', 1)
         value = value.lstrip(' \t') + ''.join(sourcelines[1:])
-        return (name, value.rstrip('\r\n'))
+        rudisha (name, value.rstrip('\r\n'))
 
-    def header_store_parse(self, name, value):
+    eleza header_store_parse(self, name, value):
         """+
-        The name and value are returned unmodified.
+        The name na value are returned unmodified.
         """
-        return (name, value)
+        rudisha (name, value)
 
-    def header_fetch_parse(self, name, value):
+    eleza header_fetch_parse(self, name, value):
         """+
-        If the value contains binary data, it is converted into a Header object
-        using the unknown-8bit charset.  Otherwise it is returned unmodified.
+        If the value contains binary data, it ni converted into a Header object
+        using the unknown-8bit charset.  Otherwise it ni returned unmodified.
         """
-        return self._sanitize_header(name, value)
+        rudisha self._sanitize_header(name, value)
 
-    def fold(self, name, value):
+    eleza fold(self, name, value):
         """+
         Headers are folded using the Header folding algorithm, which preserves
-        existing line komas in the value, and wraps each resulting line to the
+        existing line komas kwenye the value, na wraps each resulting line to the
         max_line_length.  Non-ASCII binary data are CTE encoded using the
         unknown-8bit charset.
 
         """
-        return self._fold(name, value, sanitize=True)
+        rudisha self._fold(name, value, sanitize=Kweli)
 
-    def fold_binary(self, name, value):
+    eleza fold_binary(self, name, value):
         """+
         Headers are folded using the Header folding algorithm, which preserves
-        existing line komas in the value, and wraps each resulting line to the
-        max_line_length.  If cte_type is 7bit, non-ascii binary data is CTE
+        existing line komas kwenye the value, na wraps each resulting line to the
+        max_line_length.  If cte_type ni 7bit, non-ascii binary data ni CTE
         encoded using the unknown-8bit charset.  Otherwise the original source
-        header is used, with its existing line komas and/or binary data.
+        header ni used, ukijumuisha its existing line komas and/or binary data.
 
         """
         folded = self._fold(name, value, sanitize=self.cte_type=='7bit')
-        return folded.encode('ascii', 'surrogateescape')
+        rudisha folded.encode('ascii', 'surrogateescape')
 
-    def _fold(self, name, value, sanitize):
+    eleza _fold(self, name, value, sanitize):
         parts = []
         parts.append('%s: ' % name)
-        if isinstance(value, str):
-            if _has_surrogates(value):
-                if sanitize:
+        ikiwa isinstance(value, str):
+            ikiwa _has_surrogates(value):
+                ikiwa sanitize:
                     h = header.Header(value,
                                       charset=_charset.UNKNOWN8BIT,
                                       header_name=name)
                 isipokua:
-                    # If we have raw 8bit data in a byte string, we have no idea
-                    # what the encoding is.  There is no safe way to split this
+                    # If we have raw 8bit data kwenye a byte string, we have no idea
+                    # what the encoding is.  There ni no safe way to split this
                     # string.  If it's ascii-subset, then we could do a normal
-                    # ascii split, but if it's multibyte then we could koma the
+                    # ascii split, but ikiwa it's multibyte then we could koma the
                     # string.  There's no way to know so the least harm seems to
-                    # be to sio split the string and risk it being too long.
+                    # be to sio split the string na risk it being too long.
                     parts.append(value)
-                    h = None
+                    h = Tupu
             isipokua:
                 h = header.Header(value, header_name=name)
         isipokua:
-            # Assume it is a Header-like object.
+            # Assume it ni a Header-like object.
             h = value
-        if h ni sio None:
-            # The Header class interprets a value of None for maxlinelen as the
+        ikiwa h ni sio Tupu:
+            # The Header kundi interprets a value of Tupu kila maxlinelen as the
             # default value of 78, as recommended by RFC 2822.
             maxlinelen = 0
-            if self.max_line_length ni sio None:
+            ikiwa self.max_line_length ni sio Tupu:
                 maxlinelen = self.max_line_length
             parts.append(h.encode(linesep=self.linesep, maxlinelen=maxlinelen))
         parts.append(self.linesep)
-        return ''.join(parts)
+        rudisha ''.join(parts)
 
 
 compat32 = Compat32()

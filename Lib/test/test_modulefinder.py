@@ -53,7 +53,7 @@ a/module.py
                                 kutoka b agiza something
                                 kutoka c agiza something
 b/__init__.py
-                                kutoka __future__ agiza absolute_agiza
+                                kutoka __future__ agiza absolute_import
                                 kutoka sys agiza *
 """]
 
@@ -69,12 +69,12 @@ a/__init__.py
                                 agiza c
 a/module.py
                                 agiza sys
-                                kutoka a agiza b kama x
+                                kutoka a agiza b as x
                                 kutoka a.c agiza sillyname
 a/b.py
 a/c.py
                                 kutoka a.module agiza x
-                                agiza mymodule kama sillyname
+                                agiza mymodule as sillyname
                                 kutoka sys agiza version_info
 """]
 
@@ -88,7 +88,7 @@ absolute_import_test = [
 mymodule.py
 a/__init__.py
 a/module.py
-                                kutoka __future__ agiza absolute_agiza
+                                kutoka __future__ agiza absolute_import
                                 agiza sys # sys
                                 agiza blahblah # fails
                                 agiza gc # gc
@@ -192,7 +192,7 @@ relative_import_test_3 = [
     [],
     """\
 a/__init__.py
-                                eleza foo(): pita
+                                eleza foo(): pass
 a/module.py
                                 kutoka . agiza foo
                                 kutoka . agiza bar
@@ -205,7 +205,7 @@ relative_import_test_4 = [
     [],
     """\
 a/__init__.py
-                                eleza foo(): pita
+                                eleza foo(): pass
 a/module.py
                                 kutoka . agiza *
 """]
@@ -250,9 +250,9 @@ eleza open_file(path):
     dirname = os.path.dirname(path)
     jaribu:
         os.makedirs(dirname)
-    tatizo OSError kama e:
+    except OSError as e:
         ikiwa e.errno != errno.EEXIST:
-            ashiria
+            raise
     rudisha open(path, "w")
 
 
@@ -289,7 +289,7 @@ kundi ModuleFinderTest(unittest.TestCase):
 ##                tatizo:
 ##                    agiza traceback; traceback.print_exc()
 ##                sys.path = opath
-##                rudisha
+##                return
             modules = sorted(set(modules))
             found = sorted(mf.modules)
             # check ikiwa we found what we expected, sio more, sio less
@@ -311,19 +311,19 @@ kundi ModuleFinderTest(unittest.TestCase):
     eleza test_maybe_new(self):
         self._do_test(maybe_test_new)
 
-    eleza test_absolute_agizas(self):
+    eleza test_absolute_imports(self):
         self._do_test(absolute_import_test)
 
-    eleza test_relative_agizas(self):
+    eleza test_relative_imports(self):
         self._do_test(relative_import_test)
 
-    eleza test_relative_agizas_2(self):
+    eleza test_relative_imports_2(self):
         self._do_test(relative_import_test_2)
 
-    eleza test_relative_agizas_3(self):
+    eleza test_relative_imports_3(self):
         self._do_test(relative_import_test_3)
 
-    eleza test_relative_agizas_4(self):
+    eleza test_relative_imports_4(self):
         self._do_test(relative_import_test_4)
 
     eleza test_syntax_error(self):
@@ -336,7 +336,7 @@ kundi ModuleFinderTest(unittest.TestCase):
         base_path = os.path.join(TEST_DIR, 'a')
         source_path = base_path + importlib.machinery.SOURCE_SUFFIXES[0]
         bytecode_path = base_path + importlib.machinery.BYTECODE_SUFFIXES[0]
-        ukijumuisha open_file(source_path) kama file:
+        ukijumuisha open_file(source_path) as file:
             file.write('testing_modulefinder = Kweli\n')
         py_compile.compile(source_path, cfile=bytecode_path)
         os.remove(source_path)
@@ -345,7 +345,7 @@ kundi ModuleFinderTest(unittest.TestCase):
     eleza test_replace_paths(self):
         old_path = os.path.join(TEST_DIR, 'a', 'module.py')
         new_path = os.path.join(TEST_DIR, 'a', 'spam.py')
-        ukijumuisha support.captured_stdout() kama output:
+        ukijumuisha support.captured_stdout() as output:
             self._do_test(maybe_test, debug=2,
                           replace_paths=[(old_path, new_path)])
         output = output.getvalue()

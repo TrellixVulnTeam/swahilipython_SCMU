@@ -20,7 +20,7 @@ kundi Test_TestSkipping(unittest.TestCase):
         kundi Foo(unittest.TestCase):
             eleza setUp(self):
                 self.skipTest("testing")
-            eleza test_nothing(self): pita
+            eleza test_nothing(self): pass
         events = []
         result = LoggingResult(events)
         test = Foo("test_nothing")
@@ -60,10 +60,10 @@ kundi Test_TestSkipping(unittest.TestCase):
         kila deco, do_skip, dont_skip kwenye op_table:
             kundi Foo(unittest.TestCase):
                 @deco(do_skip, "testing")
-                eleza test_skip(self): pita
+                eleza test_skip(self): pass
 
                 @deco(dont_skip, "testing")
-                eleza test_dont_skip(self): pita
+                eleza test_dont_skip(self): pass
             test_do_skip = Foo("test_skip")
             test_dont_skip = Foo("test_dont_skip")
             suite = unittest.TestSuite([test_do_skip, test_dont_skip])
@@ -97,7 +97,7 @@ kundi Test_TestSkipping(unittest.TestCase):
             eleza test_1(self):
                 record.append(1)
         kundi Foo(Mixin, unittest.TestCase):
-            pita
+            pass
         record = []
         result = unittest.TestResult()
         test = Foo("test_1")
@@ -142,7 +142,7 @@ kundi Test_TestSkipping(unittest.TestCase):
 
         @unittest.expectedFailure
         kundi Bar(Foo):
-            pita
+            pass
 
         events = []
         result = LoggingResult(events)
@@ -154,14 +154,14 @@ kundi Test_TestSkipping(unittest.TestCase):
         self.assertKweli(result.wasSuccessful())
 
     eleza test_expected_failure_subtests(self):
-        # A failure kwenye any subtest counts kama the expected failure of the
+        # A failure kwenye any subtest counts as the expected failure of the
         # whole test.
         kundi Foo(unittest.TestCase):
             @unittest.expectedFailure
             eleza test_die(self):
                 ukijumuisha self.subTest():
                     # This one succeeds
-                    pita
+                    pass
                 ukijumuisha self.subTest():
                     self.fail("help me!")
                 ukijumuisha self.subTest():
@@ -182,7 +182,7 @@ kundi Test_TestSkipping(unittest.TestCase):
         kundi Foo(unittest.TestCase):
             @unittest.expectedFailure
             eleza test_die(self):
-                pita
+                pass
         events = []
         result = LoggingResult(events)
         test = Foo("test_die")
@@ -194,17 +194,17 @@ kundi Test_TestSkipping(unittest.TestCase):
         self.assertUongo(result.wasSuccessful())
 
     eleza test_unexpected_success_subtests(self):
-        # Success kwenye all subtests counts kama the unexpected success of
+        # Success kwenye all subtests counts as the unexpected success of
         # the whole test.
         kundi Foo(unittest.TestCase):
             @unittest.expectedFailure
             eleza test_die(self):
                 ukijumuisha self.subTest():
                     # This one succeeds
-                    pita
+                    pass
                 ukijumuisha self.subTest():
                     # So does this one
-                    pita
+                    pass
         events = []
         result = LoggingResult(events)
         test = Foo("test_die")
@@ -227,7 +227,7 @@ kundi Test_TestSkipping(unittest.TestCase):
                 Foo.wasTornDown = Kweli
             @unittest.skip('testing')
             eleza test_1(self):
-                pita
+                pass
 
         result = unittest.TestResult()
         test = Foo("test_1")
@@ -247,7 +247,7 @@ kundi Test_TestSkipping(unittest.TestCase):
             @decorator
             @unittest.skip('testing')
             eleza test_1(self):
-                pita
+                pass
 
         result = unittest.TestResult()
         test = Foo("test_1")
@@ -259,7 +259,7 @@ kundi Test_TestSkipping(unittest.TestCase):
         kundi Foo(unittest.TestCase):
             @unittest.skip
             eleza test_1(self):
-                pita
+                pass
 
         result = unittest.TestResult()
         test = Foo("test_1")

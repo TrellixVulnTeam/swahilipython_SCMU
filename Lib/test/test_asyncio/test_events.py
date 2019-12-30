@@ -1,261 +1,261 @@
-"""Tests for events.py."""
+"""Tests kila events.py."""
 
-import collections.abc
-import concurrent.futures
-import functools
-import io
-import os
-import platform
-import re
-import signal
-import socket
+agiza collections.abc
+agiza concurrent.futures
+agiza functools
+agiza io
+agiza os
+agiza platform
+agiza re
+agiza signal
+agiza socket
 jaribu:
-    import ssl
-tatizo ImportError:
-    ssl = None
-import subprocess
-import sys
-import threading
-import time
-import errno
-import unittest
-from unittest import mock
-import weakref
+    agiza ssl
+except ImportError:
+    ssl = Tupu
+agiza subprocess
+agiza sys
+agiza threading
+agiza time
+agiza errno
+agiza unittest
+kutoka unittest agiza mock
+agiza weakref
 
-if sys.platform != 'win32':
-    import tty
+ikiwa sys.platform != 'win32':
+    agiza tty
 
-import asyncio
-from asyncio import coroutines
-from asyncio import events
-from asyncio import proactor_events
-from asyncio import selector_events
-from test.test_asyncio import utils as test_utils
-from test import support
-
-
-def tearDownModule():
-    asyncio.set_event_loop_policy(None)
+agiza asyncio
+kutoka asyncio agiza coroutines
+kutoka asyncio agiza events
+kutoka asyncio agiza proactor_events
+kutoka asyncio agiza selector_events
+kutoka test.test_asyncio agiza utils as test_utils
+kutoka test agiza support
 
 
-def broken_unix_getsockname():
-    """Return True if the platform is Mac OS 10.4 or older."""
-    if sys.platform.startswith("aix"):
-        return True
-    lasivyo sys.platform != 'darwin':
-        return False
+eleza tearDownModule():
+    asyncio.set_event_loop_policy(Tupu)
+
+
+eleza broken_unix_getsockname():
+    """Return Kweli ikiwa the platform ni Mac OS 10.4 ama older."""
+    ikiwa sys.platform.startswith("aix"):
+        rudisha Kweli
+    elikiwa sys.platform != 'darwin':
+        rudisha Uongo
     version = platform.mac_ver()[0]
     version = tuple(map(int, version.split('.')))
-    return version < (10, 5)
+    rudisha version < (10, 5)
 
 
-def _test_get_event_loop_new_process__sub_proc():
-    async def doit():
-        return 'hello'
+eleza _test_get_event_loop_new_process__sub_proc():
+    async eleza doit():
+        rudisha 'hello'
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    return loop.run_until_complete(doit())
+    rudisha loop.run_until_complete(doit())
 
 
-class CoroLike:
-    def send(self, v):
+kundi CoroLike:
+    eleza send(self, v):
         pass
 
-    def throw(self, *exc):
+    eleza throw(self, *exc):
         pass
 
-    def close(self):
+    eleza close(self):
         pass
 
-    def __await__(self):
+    eleza __await__(self):
         pass
 
 
-class MyBaseProto(asyncio.Protocol):
-    connected = None
-    done = None
+kundi MyBaseProto(asyncio.Protocol):
+    connected = Tupu
+    done = Tupu
 
-    def __init__(self, loop=None):
-        self.transport = None
+    eleza __init__(self, loop=Tupu):
+        self.transport = Tupu
         self.state = 'INITIAL'
         self.nbytes = 0
-        if loop ni sio None:
+        ikiwa loop ni sio Tupu:
             self.connected = loop.create_future()
             self.done = loop.create_future()
 
-    def connection_made(self, transport):
+    eleza connection_made(self, transport):
         self.transport = transport
         assert self.state == 'INITIAL', self.state
         self.state = 'CONNECTED'
-        if self.connected:
-            self.connected.set_result(None)
+        ikiwa self.connected:
+            self.connected.set_result(Tupu)
 
-    def data_received(self, data):
+    eleza data_received(self, data):
         assert self.state == 'CONNECTED', self.state
         self.nbytes += len(data)
 
-    def eof_received(self):
+    eleza eof_received(self):
         assert self.state == 'CONNECTED', self.state
         self.state = 'EOF'
 
-    def connection_lost(self, exc):
-        assert self.state in ('CONNECTED', 'EOF'), self.state
+    eleza connection_lost(self, exc):
+        assert self.state kwenye ('CONNECTED', 'EOF'), self.state
         self.state = 'CLOSED'
-        if self.done:
-            self.done.set_result(None)
+        ikiwa self.done:
+            self.done.set_result(Tupu)
 
 
-class MyProto(MyBaseProto):
-    def connection_made(self, transport):
+kundi MyProto(MyBaseProto):
+    eleza connection_made(self, transport):
         super().connection_made(transport)
         transport.write(b'GET / HTTP/1.0\r\nHost: example.com\r\n\r\n')
 
 
-class MyDatagramProto(asyncio.DatagramProtocol):
-    done = None
+kundi MyDatagramProto(asyncio.DatagramProtocol):
+    done = Tupu
 
-    def __init__(self, loop=None):
+    eleza __init__(self, loop=Tupu):
         self.state = 'INITIAL'
         self.nbytes = 0
-        if loop ni sio None:
+        ikiwa loop ni sio Tupu:
             self.done = loop.create_future()
 
-    def connection_made(self, transport):
+    eleza connection_made(self, transport):
         self.transport = transport
         assert self.state == 'INITIAL', self.state
         self.state = 'INITIALIZED'
 
-    def datagram_received(self, data, addr):
+    eleza datagram_received(self, data, addr):
         assert self.state == 'INITIALIZED', self.state
         self.nbytes += len(data)
 
-    def error_received(self, exc):
+    eleza error_received(self, exc):
         assert self.state == 'INITIALIZED', self.state
 
-    def connection_lost(self, exc):
+    eleza connection_lost(self, exc):
         assert self.state == 'INITIALIZED', self.state
         self.state = 'CLOSED'
-        if self.done:
-            self.done.set_result(None)
+        ikiwa self.done:
+            self.done.set_result(Tupu)
 
 
-class MyReadPipeProto(asyncio.Protocol):
-    done = None
+kundi MyReadPipeProto(asyncio.Protocol):
+    done = Tupu
 
-    def __init__(self, loop=None):
+    eleza __init__(self, loop=Tupu):
         self.state = ['INITIAL']
         self.nbytes = 0
-        self.transport = None
-        if loop ni sio None:
+        self.transport = Tupu
+        ikiwa loop ni sio Tupu:
             self.done = loop.create_future()
 
-    def connection_made(self, transport):
+    eleza connection_made(self, transport):
         self.transport = transport
         assert self.state == ['INITIAL'], self.state
         self.state.append('CONNECTED')
 
-    def data_received(self, data):
+    eleza data_received(self, data):
         assert self.state == ['INITIAL', 'CONNECTED'], self.state
         self.nbytes += len(data)
 
-    def eof_received(self):
+    eleza eof_received(self):
         assert self.state == ['INITIAL', 'CONNECTED'], self.state
         self.state.append('EOF')
 
-    def connection_lost(self, exc):
-        if 'EOF' haiko kwenye self.state:
-            self.state.append('EOF')  # It is okay if EOF is missed.
+    eleza connection_lost(self, exc):
+        ikiwa 'EOF' sio kwenye self.state:
+            self.state.append('EOF')  # It ni okay ikiwa EOF ni missed.
         assert self.state == ['INITIAL', 'CONNECTED', 'EOF'], self.state
         self.state.append('CLOSED')
-        if self.done:
-            self.done.set_result(None)
+        ikiwa self.done:
+            self.done.set_result(Tupu)
 
 
-class MyWritePipeProto(asyncio.BaseProtocol):
-    done = None
+kundi MyWritePipeProto(asyncio.BaseProtocol):
+    done = Tupu
 
-    def __init__(self, loop=None):
+    eleza __init__(self, loop=Tupu):
         self.state = 'INITIAL'
-        self.transport = None
-        if loop ni sio None:
+        self.transport = Tupu
+        ikiwa loop ni sio Tupu:
             self.done = loop.create_future()
 
-    def connection_made(self, transport):
+    eleza connection_made(self, transport):
         self.transport = transport
         assert self.state == 'INITIAL', self.state
         self.state = 'CONNECTED'
 
-    def connection_lost(self, exc):
+    eleza connection_lost(self, exc):
         assert self.state == 'CONNECTED', self.state
         self.state = 'CLOSED'
-        if self.done:
-            self.done.set_result(None)
+        ikiwa self.done:
+            self.done.set_result(Tupu)
 
 
-class MySubprocessProtocol(asyncio.SubprocessProtocol):
+kundi MySubprocessProtocol(asyncio.SubprocessProtocol):
 
-    def __init__(self, loop):
+    eleza __init__(self, loop):
         self.state = 'INITIAL'
-        self.transport = None
+        self.transport = Tupu
         self.connected = loop.create_future()
         self.completed = loop.create_future()
-        self.disconnects = {fd: loop.create_future() for fd in range(3)}
+        self.disconnects = {fd: loop.create_future() kila fd kwenye range(3)}
         self.data = {1: b'', 2: b''}
-        self.returncode = None
+        self.returncode = Tupu
         self.got_data = {1: asyncio.Event(loop=loop),
                          2: asyncio.Event(loop=loop)}
 
-    def connection_made(self, transport):
+    eleza connection_made(self, transport):
         self.transport = transport
         assert self.state == 'INITIAL', self.state
         self.state = 'CONNECTED'
-        self.connected.set_result(None)
+        self.connected.set_result(Tupu)
 
-    def connection_lost(self, exc):
+    eleza connection_lost(self, exc):
         assert self.state == 'CONNECTED', self.state
         self.state = 'CLOSED'
-        self.completed.set_result(None)
+        self.completed.set_result(Tupu)
 
-    def pipe_data_received(self, fd, data):
+    eleza pipe_data_received(self, fd, data):
         assert self.state == 'CONNECTED', self.state
         self.data[fd] += data
         self.got_data[fd].set()
 
-    def pipe_connection_lost(self, fd, exc):
+    eleza pipe_connection_lost(self, fd, exc):
         assert self.state == 'CONNECTED', self.state
-        if exc:
+        ikiwa exc:
             self.disconnects[fd].set_exception(exc)
         isipokua:
             self.disconnects[fd].set_result(exc)
 
-    def process_exited(self):
+    eleza process_exited(self):
         assert self.state == 'CONNECTED', self.state
         self.returncode = self.transport.get_returncode()
 
 
-class EventLoopTestsMixin:
+kundi EventLoopTestsMixin:
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.loop = self.create_event_loop()
         self.set_event_loop(self.loop)
 
-    def tearDown(self):
-        # just in case if we have transport close callbacks
-        if sio self.loop.is_closed():
+    eleza tearDown(self):
+        # just kwenye case ikiwa we have transport close callbacks
+        ikiwa sio self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
         support.gc_collect()
         super().tearDown()
 
-    def test_run_until_complete_nesting(self):
-        async def coro1():
+    eleza test_run_until_complete_nesting(self):
+        async eleza coro1():
             await asyncio.sleep(0)
 
-        async def coro2():
-            self.assertTrue(self.loop.is_running())
+        async eleza coro2():
+            self.assertKweli(self.loop.is_running())
             self.loop.run_until_complete(coro1())
 
         self.assertRaises(
@@ -264,25 +264,25 @@ class EventLoopTestsMixin:
     # Note: because of the default Windows timing granularity of
     # 15.6 msec, we use fairly long sleep times here (~100 msec).
 
-    def test_run_until_complete(self):
+    eleza test_run_until_complete(self):
         t0 = self.loop.time()
         self.loop.run_until_complete(asyncio.sleep(0.1))
         t1 = self.loop.time()
-        self.assertTrue(0.08 <= t1-t0 <= 0.8, t1-t0)
+        self.assertKweli(0.08 <= t1-t0 <= 0.8, t1-t0)
 
-    def test_run_until_complete_stopped(self):
+    eleza test_run_until_complete_stopped(self):
 
-        async def cb():
+        async eleza cb():
             self.loop.stop()
             await asyncio.sleep(0.1)
         task = cb()
         self.assertRaises(RuntimeError,
                           self.loop.run_until_complete, task)
 
-    def test_call_later(self):
+    eleza test_call_later(self):
         results = []
 
-        def callback(arg):
+        eleza callback(arg):
             results.append(arg)
             self.loop.stop()
 
@@ -291,12 +291,12 @@ class EventLoopTestsMixin:
         self.loop.run_forever()
         t1 = time.monotonic()
         self.assertEqual(results, ['hello world'])
-        self.assertTrue(0.08 <= t1-t0 <= 0.8, t1-t0)
+        self.assertKweli(0.08 <= t1-t0 <= 0.8, t1-t0)
 
-    def test_call_soon(self):
+    eleza test_call_soon(self):
         results = []
 
-        def callback(arg1, arg2):
+        eleza callback(arg1, arg2):
             results.append((arg1, arg2))
             self.loop.stop()
 
@@ -304,16 +304,16 @@ class EventLoopTestsMixin:
         self.loop.run_forever()
         self.assertEqual(results, [('hello', 'world')])
 
-    def test_call_soon_threadsafe(self):
+    eleza test_call_soon_threadsafe(self):
         results = []
         lock = threading.Lock()
 
-        def callback(arg):
+        eleza callback(arg):
             results.append(arg)
-            if len(results) >= 2:
+            ikiwa len(results) >= 2:
                 self.loop.stop()
 
-        def run_in_thread():
+        eleza run_in_thread():
             self.loop.call_soon_threadsafe(callback, 'hello')
             lock.release()
 
@@ -321,18 +321,18 @@ class EventLoopTestsMixin:
         t = threading.Thread(target=run_in_thread)
         t.start()
 
-        with lock:
+        ukijumuisha lock:
             self.loop.call_soon(callback, 'world')
             self.loop.run_forever()
         t.join()
         self.assertEqual(results, ['hello', 'world'])
 
-    def test_call_soon_threadsafe_same_thread(self):
+    eleza test_call_soon_threadsafe_same_thread(self):
         results = []
 
-        def callback(arg):
+        eleza callback(arg):
             results.append(arg)
-            if len(results) >= 2:
+            ikiwa len(results) >= 2:
                 self.loop.stop()
 
         self.loop.call_soon_threadsafe(callback, 'hello')
@@ -340,48 +340,48 @@ class EventLoopTestsMixin:
         self.loop.run_forever()
         self.assertEqual(results, ['hello', 'world'])
 
-    def test_run_in_executor(self):
-        def run(arg):
-            return (arg, threading.get_ident())
-        f2 = self.loop.run_in_executor(None, run, 'yo')
+    eleza test_run_in_executor(self):
+        eleza run(arg):
+            rudisha (arg, threading.get_ident())
+        f2 = self.loop.run_in_executor(Tupu, run, 'yo')
         res, thread_id = self.loop.run_until_complete(f2)
         self.assertEqual(res, 'yo')
         self.assertNotEqual(thread_id, threading.get_ident())
 
-    def test_run_in_executor_cancel(self):
-        called = False
+    eleza test_run_in_executor_cancel(self):
+        called = Uongo
 
-        def patched_call_soon(*args):
+        eleza patched_call_soon(*args):
             nonlocal called
-            called = True
+            called = Kweli
 
-        def run():
+        eleza run():
             time.sleep(0.05)
 
-        f2 = self.loop.run_in_executor(None, run)
+        f2 = self.loop.run_in_executor(Tupu, run)
         f2.cancel()
         self.loop.close()
         self.loop.call_soon = patched_call_soon
         self.loop.call_soon_threadsafe = patched_call_soon
         time.sleep(0.4)
-        self.assertFalse(called)
+        self.assertUongo(called)
 
-    def test_reader_callback(self):
+    eleza test_reader_callback(self):
         r, w = socket.socketpair()
-        r.setblocking(False)
+        r.setblocking(Uongo)
         bytes_read = bytearray()
 
-        def reader():
+        eleza reader():
             jaribu:
                 data = r.recv(1024)
-            tatizo BlockingIOError:
+            except BlockingIOError:
                 # Spurious readiness notifications are possible
                 # at least on Linux -- see man select.
                 return
-            if data:
+            ikiwa data:
                 bytes_read.extend(data)
             isipokua:
-                self.assertTrue(self.loop.remove_reader(r.fileno()))
+                self.assertKweli(self.loop.remove_reader(r.fileno()))
                 r.close()
 
         self.loop.add_reader(r.fileno(), reader)
@@ -394,11 +394,11 @@ class EventLoopTestsMixin:
         self.loop.run_forever()
         self.assertEqual(bytes_read, b'abcdef')
 
-    def test_writer_callback(self):
+    eleza test_writer_callback(self):
         r, w = socket.socketpair()
-        w.setblocking(False)
+        w.setblocking(Uongo)
 
-        def writer(data):
+        eleza writer(data):
             w.send(data)
             self.loop.stop()
 
@@ -406,8 +406,8 @@ class EventLoopTestsMixin:
         self.loop.add_writer(w.fileno(), writer, data)
         self.loop.run_forever()
 
-        self.assertTrue(self.loop.remove_writer(w.fileno()))
-        self.assertFalse(self.loop.remove_writer(w.fileno()))
+        self.assertKweli(self.loop.remove_writer(w.fileno()))
+        self.assertUongo(self.loop.remove_writer(w.fileno()))
 
         w.close()
         read = r.recv(len(data) * 2)
@@ -415,10 +415,10 @@ class EventLoopTestsMixin:
         self.assertEqual(read, data)
 
     @unittest.skipUnless(hasattr(signal, 'SIGKILL'), 'No SIGKILL')
-    def test_add_signal_handler(self):
+    eleza test_add_signal_handler(self):
         caught = 0
 
-        def my_handler():
+        eleza my_handler():
             nonlocal caught
             caught += 1
 
@@ -444,26 +444,26 @@ class EventLoopTestsMixin:
             RuntimeError, self.loop.add_signal_handler, signal.SIGKILL,
             my_handler)
         # Removing SIGKILL doesn't raise, since we don't call signal().
-        self.assertFalse(self.loop.remove_signal_handler(signal.SIGKILL))
-        # Now set a handler and handle it.
+        self.assertUongo(self.loop.remove_signal_handler(signal.SIGKILL))
+        # Now set a handler na handle it.
         self.loop.add_signal_handler(signal.SIGINT, my_handler)
 
         os.kill(os.getpid(), signal.SIGINT)
         test_utils.run_until(self.loop, lambda: caught)
 
         # Removing it should restore the default handler.
-        self.assertTrue(self.loop.remove_signal_handler(signal.SIGINT))
+        self.assertKweli(self.loop.remove_signal_handler(signal.SIGINT))
         self.assertEqual(signal.getsignal(signal.SIGINT),
                          signal.default_int_handler)
-        # Removing again returns False.
-        self.assertFalse(self.loop.remove_signal_handler(signal.SIGINT))
+        # Removing again returns Uongo.
+        self.assertUongo(self.loop.remove_signal_handler(signal.SIGINT))
 
     @unittest.skipUnless(hasattr(signal, 'SIGALRM'), 'No SIGALRM')
-    def test_signal_handling_while_selecting(self):
-        # Test with a signal actually arriving during a select() call.
+    eleza test_signal_handling_while_selecting(self):
+        # Test ukijumuisha a signal actually arriving during a select() call.
         caught = 0
 
-        def my_handler():
+        eleza my_handler():
             nonlocal caught
             caught += 1
             self.loop.stop()
@@ -476,11 +476,11 @@ class EventLoopTestsMixin:
         self.assertEqual(caught, 1)
 
     @unittest.skipUnless(hasattr(signal, 'SIGALRM'), 'No SIGALRM')
-    def test_signal_handling_args(self):
+    eleza test_signal_handling_args(self):
         some_args = (42,)
         caught = 0
 
-        def my_handler(*args):
+        eleza my_handler(*args):
             nonlocal caught
             caught += 1
             self.assertEqual(args, some_args)
@@ -493,43 +493,43 @@ class EventLoopTestsMixin:
         self.loop.run_forever()
         self.assertEqual(caught, 1)
 
-    def _basetest_create_connection(self, connection_fut, check_sockname=True):
+    eleza _basetest_create_connection(self, connection_fut, check_sockname=Kweli):
         tr, pr = self.loop.run_until_complete(connection_fut)
         self.assertIsInstance(tr, asyncio.Transport)
         self.assertIsInstance(pr, asyncio.Protocol)
         self.assertIs(pr.transport, tr)
-        if check_sockname:
-            self.assertIsNotNone(tr.get_extra_info('sockname'))
+        ikiwa check_sockname:
+            self.assertIsNotTupu(tr.get_extra_info('sockname'))
         self.loop.run_until_complete(pr.done)
         self.assertGreater(pr.nbytes, 0)
         tr.close()
 
-    def test_create_connection(self):
-        with test_utils.run_test_server() as httpd:
+    eleza test_create_connection(self):
+        ukijumuisha test_utils.run_test_server() as httpd:
             conn_fut = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop), *httpd.address)
             self._basetest_create_connection(conn_fut)
 
     @support.skip_unless_bind_unix_socket
-    def test_create_unix_connection(self):
+    eleza test_create_unix_connection(self):
         # Issue #20682: On Mac OS X Tiger, getsockname() returns a
-        # zero-length address for UNIX socket.
+        # zero-length address kila UNIX socket.
         check_sockname = sio broken_unix_getsockname()
 
-        with test_utils.run_test_unix_server() as httpd:
+        ukijumuisha test_utils.run_test_unix_server() as httpd:
             conn_fut = self.loop.create_unix_connection(
                 lambda: MyProto(loop=self.loop), httpd.address)
             self._basetest_create_connection(conn_fut, check_sockname)
 
-    def check_ssl_extra_info(self, client, check_sockname=True,
-                             peername=None, peercert={}):
-        if check_sockname:
-            self.assertIsNotNone(client.get_extra_info('sockname'))
-        if peername:
+    eleza check_ssl_extra_info(self, client, check_sockname=Kweli,
+                             peername=Tupu, peercert={}):
+        ikiwa check_sockname:
+            self.assertIsNotTupu(client.get_extra_info('sockname'))
+        ikiwa peername:
             self.assertEqual(peername,
                              client.get_extra_info('peername'))
         isipokua:
-            self.assertIsNotNone(client.get_extra_info('peername'))
+            self.assertIsNotTupu(client.get_extra_info('peername'))
         self.assertEqual(peercert,
                          client.get_extra_info('peercert'))
 
@@ -543,7 +543,7 @@ class EventLoopTestsMixin:
 
         # test SSL object
         sslobj = client.get_extra_info('ssl_object')
-        self.assertIsNotNone(sslobj)
+        self.assertIsNotTupu(sslobj)
         self.assertEqual(sslobj.compression(),
                          client.get_extra_info('compression'))
         self.assertEqual(sslobj.cipher(),
@@ -553,58 +553,58 @@ class EventLoopTestsMixin:
         self.assertEqual(sslobj.compression(),
                          client.get_extra_info('compression'))
 
-    def _basetest_create_ssl_connection(self, connection_fut,
-                                        check_sockname=True,
-                                        peername=None):
+    eleza _basetest_create_ssl_connection(self, connection_fut,
+                                        check_sockname=Kweli,
+                                        peername=Tupu):
         tr, pr = self.loop.run_until_complete(connection_fut)
         self.assertIsInstance(tr, asyncio.Transport)
         self.assertIsInstance(pr, asyncio.Protocol)
-        self.assertTrue('ssl' in tr.__class__.__name__.lower())
+        self.assertKweli('ssl' kwenye tr.__class__.__name__.lower())
         self.check_ssl_extra_info(tr, check_sockname, peername)
         self.loop.run_until_complete(pr.done)
         self.assertGreater(pr.nbytes, 0)
         tr.close()
 
-    def _test_create_ssl_connection(self, httpd, create_connection,
-                                    check_sockname=True, peername=None):
+    eleza _test_create_ssl_connection(self, httpd, create_connection,
+                                    check_sockname=Kweli, peername=Tupu):
         conn_fut = create_connection(ssl=test_utils.dummy_ssl_context())
         self._basetest_create_ssl_connection(conn_fut, check_sockname,
                                              peername)
 
-        # ssl.Purpose was introduced in Python 3.4
-        if hasattr(ssl, 'Purpose'):
-            def _dummy_ssl_create_context(purpose=ssl.Purpose.SERVER_AUTH, *,
-                                          cafile=None, capath=None,
-                                          cadata=None):
+        # ssl.Purpose was introduced kwenye Python 3.4
+        ikiwa hasattr(ssl, 'Purpose'):
+            eleza _dummy_ssl_create_context(purpose=ssl.Purpose.SERVER_AUTH, *,
+                                          cafile=Tupu, capath=Tupu,
+                                          cadata=Tupu):
                 """
                 A ssl.create_default_context() replacement that doesn't enable
                 cert validation.
                 """
                 self.assertEqual(purpose, ssl.Purpose.SERVER_AUTH)
-                return test_utils.dummy_ssl_context()
+                rudisha test_utils.dummy_ssl_context()
 
-            # With ssl=True, ssl.create_default_context() should be called
-            with mock.patch('ssl.create_default_context',
+            # With ssl=Kweli, ssl.create_default_context() should be called
+            ukijumuisha mock.patch('ssl.create_default_context',
                             side_effect=_dummy_ssl_create_context) as m:
-                conn_fut = create_connection(ssl=True)
+                conn_fut = create_connection(ssl=Kweli)
                 self._basetest_create_ssl_connection(conn_fut, check_sockname,
                                                      peername)
                 self.assertEqual(m.call_count, 1)
 
         # With the real ssl.create_default_context(), certificate
         # validation will fail
-        with self.assertRaises(ssl.SSLError) as cm:
-            conn_fut = create_connection(ssl=True)
-            # Ignore the "SSL handshake failed" log in debug mode
-            with test_utils.disable_logger():
+        ukijumuisha self.assertRaises(ssl.SSLError) as cm:
+            conn_fut = create_connection(ssl=Kweli)
+            # Ignore the "SSL handshake failed" log kwenye debug mode
+            ukijumuisha test_utils.disable_logger():
                 self._basetest_create_ssl_connection(conn_fut, check_sockname,
                                                      peername)
 
         self.assertEqual(cm.exception.reason, 'CERTIFICATE_VERIFY_FAILED')
 
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_create_ssl_connection(self):
-        with test_utils.run_test_server(use_ssl=True) as httpd:
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_create_ssl_connection(self):
+        ukijumuisha test_utils.run_test_server(use_ssl=Kweli) as httpd:
             create_connection = functools.partial(
                 self.loop.create_connection,
                 lambda: MyProto(loop=self.loop),
@@ -613,13 +613,13 @@ class EventLoopTestsMixin:
                                              peername=httpd.address)
 
     @support.skip_unless_bind_unix_socket
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_create_ssl_unix_connection(self):
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_create_ssl_unix_connection(self):
         # Issue #20682: On Mac OS X Tiger, getsockname() returns a
-        # zero-length address for UNIX socket.
+        # zero-length address kila UNIX socket.
         check_sockname = sio broken_unix_getsockname()
 
-        with test_utils.run_test_unix_server(use_ssl=True) as httpd:
+        ukijumuisha test_utils.run_test_unix_server(use_ssl=Kweli) as httpd:
             create_connection = functools.partial(
                 self.loop.create_unix_connection,
                 lambda: MyProto(loop=self.loop), httpd.address,
@@ -629,8 +629,8 @@ class EventLoopTestsMixin:
                                              check_sockname,
                                              peername=httpd.address)
 
-    def test_create_connection_local_addr(self):
-        with test_utils.run_test_server() as httpd:
+    eleza test_create_connection_local_addr(self):
+        ukijumuisha test_utils.run_test_server() as httpd:
             port = support.find_unused_port()
             f = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop),
@@ -640,26 +640,26 @@ class EventLoopTestsMixin:
             self.assertEqual(port, expected)
             tr.close()
 
-    def test_create_connection_local_addr_in_use(self):
-        with test_utils.run_test_server() as httpd:
+    eleza test_create_connection_local_addr_in_use(self):
+        ukijumuisha test_utils.run_test_server() as httpd:
             f = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop),
                 *httpd.address, local_addr=httpd.address)
-            with self.assertRaises(OSError) as cm:
+            ukijumuisha self.assertRaises(OSError) as cm:
                 self.loop.run_until_complete(f)
             self.assertEqual(cm.exception.errno, errno.EADDRINUSE)
             self.assertIn(str(httpd.address), cm.exception.strerror)
 
-    def test_connect_accepted_socket(self, server_ssl=None, client_ssl=None):
+    eleza test_connect_accepted_socket(self, server_ssl=Tupu, client_ssl=Tupu):
         loop = self.loop
 
-        class MyProto(MyBaseProto):
+        kundi MyProto(MyBaseProto):
 
-            def connection_lost(self, exc):
+            eleza connection_lost(self, exc):
                 super().connection_lost(exc)
                 loop.call_soon(loop.stop)
 
-            def data_received(self, data):
+            eleza data_received(self, data):
                 super().data_received(data)
                 self.transport.write(expected_response)
 
@@ -667,25 +667,25 @@ class EventLoopTestsMixin:
         addr = lsock.getsockname()
 
         message = b'test data'
-        response = None
+        response = Tupu
         expected_response = b'roger'
 
-        def client():
+        eleza client():
             nonlocal response
             jaribu:
                 csock = socket.socket()
-                if client_ssl ni sio None:
+                ikiwa client_ssl ni sio Tupu:
                     csock = client_ssl.wrap_socket(csock)
                 csock.connect(addr)
                 csock.sendall(message)
                 response = csock.recv(99)
                 csock.close()
-            tatizo Exception as exc:
-                print(
-                    "Failure in client thread in test_connect_accepted_socket",
+            except Exception as exc:
+                andika(
+                    "Failure kwenye client thread kwenye test_connect_accepted_socket",
                     exc)
 
-        thread = threading.Thread(target=client, daemon=True)
+        thread = threading.Thread(target=client, daemon=Kweli)
         thread.start()
 
         conn, _ = lsock.accept()
@@ -699,19 +699,19 @@ class EventLoopTestsMixin:
         lsock.close()
 
         support.join_thread(thread, timeout=1)
-        self.assertFalse(thread.is_alive())
+        self.assertUongo(thread.is_alive())
         self.assertEqual(proto.state, 'CLOSED')
         self.assertEqual(proto.nbytes, len(message))
         self.assertEqual(response, expected_response)
 
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_ssl_connect_accepted_socket(self):
-        if (sys.platform == 'win32' na
-            sys.version_info < (3, 5) na
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_ssl_connect_accepted_socket(self):
+        ikiwa (sys.platform == 'win32' and
+            sys.version_info < (3, 5) and
             isinstance(self.loop, proactor_events.BaseProactorEventLoop)
             ):
-            ashiria unittest.SkipTest(
-                'SSL sio supported with proactor event loops before Python 3.5'
+             ashiria unittest.SkipTest(
+                'SSL sio supported ukijumuisha proactor event loops before Python 3.5'
                 )
 
         server_context = test_utils.simple_server_sslcontext()
@@ -719,53 +719,53 @@ class EventLoopTestsMixin:
 
         self.test_connect_accepted_socket(server_context, client_context)
 
-    def test_connect_accepted_socket_ssl_timeout_for_plain_socket(self):
+    eleza test_connect_accepted_socket_ssl_timeout_for_plain_socket(self):
         sock = socket.socket()
         self.addCleanup(sock.close)
         coro = self.loop.connect_accepted_socket(
             MyProto, sock, ssl_handshake_timeout=1)
-        with self.assertRaisesRegex(
+        ukijumuisha self.assertRaisesRegex(
                 ValueError,
-                'ssl_handshake_timeout is only meaningful with ssl'):
+                'ssl_handshake_timeout ni only meaningful ukijumuisha ssl'):
             self.loop.run_until_complete(coro)
 
     @mock.patch('asyncio.base_events.socket')
-    def create_server_multiple_hosts(self, family, hosts, mock_sock):
-        async def getaddrinfo(host, port, *args, **kw):
-            if family == socket.AF_INET:
-                return [(family, socket.SOCK_STREAM, 6, '', (host, port))]
+    eleza create_server_multiple_hosts(self, family, hosts, mock_sock):
+        async eleza getaddrinfo(host, port, *args, **kw):
+            ikiwa family == socket.AF_INET:
+                rudisha [(family, socket.SOCK_STREAM, 6, '', (host, port))]
             isipokua:
-                return [(family, socket.SOCK_STREAM, 6, '', (host, port, 0, 0))]
+                rudisha [(family, socket.SOCK_STREAM, 6, '', (host, port, 0, 0))]
 
-        def getaddrinfo_task(*args, **kwds):
-            return self.loop.create_task(getaddrinfo(*args, **kwds))
+        eleza getaddrinfo_task(*args, **kwds):
+            rudisha self.loop.create_task(getaddrinfo(*args, **kwds))
 
         unique_hosts = set(hosts)
 
-        if family == socket.AF_INET:
+        ikiwa family == socket.AF_INET:
             mock_sock.socket().getsockbyname.side_effect = [
-                (host, 80) for host in unique_hosts]
+                (host, 80) kila host kwenye unique_hosts]
         isipokua:
             mock_sock.socket().getsockbyname.side_effect = [
-                (host, 80, 0, 0) for host in unique_hosts]
+                (host, 80, 0, 0) kila host kwenye unique_hosts]
         self.loop.getaddrinfo = getaddrinfo_task
         self.loop._start_serving = mock.Mock()
         self.loop._stop_serving = mock.Mock()
         f = self.loop.create_server(lambda: MyProto(self.loop), hosts, 80)
         server = self.loop.run_until_complete(f)
         self.addCleanup(server.close)
-        server_hosts = {sock.getsockbyname()[0] for sock in server.sockets}
+        server_hosts = {sock.getsockbyname()[0] kila sock kwenye server.sockets}
         self.assertEqual(server_hosts, unique_hosts)
 
-    def test_create_server_multiple_hosts_ipv4(self):
+    eleza test_create_server_multiple_hosts_ipv4(self):
         self.create_server_multiple_hosts(socket.AF_INET,
                                           ['1.2.3.4', '5.6.7.8', '1.2.3.4'])
 
-    def test_create_server_multiple_hosts_ipv6(self):
+    eleza test_create_server_multiple_hosts_ipv6(self):
         self.create_server_multiple_hosts(socket.AF_INET6,
                                           ['::1', '::2', '::1'])
 
-    def test_create_server(self):
+    eleza test_create_server(self):
         proto = MyProto(self.loop)
         f = self.loop.create_server(lambda: proto, '0.0.0.0', 0)
         server = self.loop.run_until_complete(f)
@@ -783,8 +783,8 @@ class EventLoopTestsMixin:
         test_utils.run_until(self.loop, lambda: proto.nbytes > 0)
         self.assertEqual(3, proto.nbytes)
 
-        # extra info is available
-        self.assertIsNotNone(proto.transport.get_extra_info('sockname'))
+        # extra info ni available
+        self.assertIsNotTupu(proto.transport.get_extra_info('sockname'))
         self.assertEqual('127.0.0.1',
                          proto.transport.get_extra_info('peername')[0])
 
@@ -802,14 +802,14 @@ class EventLoopTestsMixin:
         server.close()
 
     @unittest.skipUnless(hasattr(socket, 'SO_REUSEPORT'), 'No SO_REUSEPORT')
-    def test_create_server_reuse_port(self):
+    eleza test_create_server_reuse_port(self):
         proto = MyProto(self.loop)
         f = self.loop.create_server(
             lambda: proto, '0.0.0.0', 0)
         server = self.loop.run_until_complete(f)
         self.assertEqual(len(server.sockets), 1)
         sock = server.sockets[0]
-        self.assertFalse(
+        self.assertUongo(
             sock.getsockopt(
                 socket.SOL_SOCKET, socket.SO_REUSEPORT))
         server.close()
@@ -818,26 +818,26 @@ class EventLoopTestsMixin:
 
         proto = MyProto(self.loop)
         f = self.loop.create_server(
-            lambda: proto, '0.0.0.0', 0, reuse_port=True)
+            lambda: proto, '0.0.0.0', 0, reuse_port=Kweli)
         server = self.loop.run_until_complete(f)
         self.assertEqual(len(server.sockets), 1)
         sock = server.sockets[0]
-        self.assertTrue(
+        self.assertKweli(
             sock.getsockopt(
                 socket.SOL_SOCKET, socket.SO_REUSEPORT))
         server.close()
 
-    def _make_unix_server(self, factory, **kwargs):
+    eleza _make_unix_server(self, factory, **kwargs):
         path = test_utils.gen_unix_socket_path()
-        self.addCleanup(lambda: os.path.exists(path) and os.unlink(path))
+        self.addCleanup(lambda: os.path.exists(path) na os.unlink(path))
 
         f = self.loop.create_unix_server(factory, path, **kwargs)
         server = self.loop.run_until_complete(f)
 
-        return server, path
+        rudisha server, path
 
     @support.skip_unless_bind_unix_socket
-    def test_create_unix_server(self):
+    eleza test_create_unix_server(self):
         proto = MyProto(loop=self.loop)
         server, path = self._make_unix_server(lambda: proto)
         self.assertEqual(len(server.sockets), 1)
@@ -865,23 +865,23 @@ class EventLoopTestsMixin:
         server.close()
 
     @unittest.skipUnless(hasattr(socket, 'AF_UNIX'), 'No UNIX Sockets')
-    def test_create_unix_server_path_socket_error(self):
+    eleza test_create_unix_server_path_socket_error(self):
         proto = MyProto(loop=self.loop)
         sock = socket.socket()
-        with sock:
+        ukijumuisha sock:
             f = self.loop.create_unix_server(lambda: proto, '/test', sock=sock)
-            with self.assertRaisesRegex(ValueError,
-                                        'path and sock can sio be specified '
+            ukijumuisha self.assertRaisesRegex(ValueError,
+                                        'path na sock can sio be specified '
                                         'at the same time'):
                 self.loop.run_until_complete(f)
 
-    def _create_ssl_context(self, certfile, keyfile=None):
+    eleza _create_ssl_context(self, certfile, keyfile=Tupu):
         sslcontext = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         sslcontext.options |= ssl.OP_NO_SSLv2
         sslcontext.load_cert_chain(certfile, keyfile)
-        return sslcontext
+        rudisha sslcontext
 
-    def _make_ssl_server(self, factory, certfile, keyfile=None):
+    eleza _make_ssl_server(self, factory, certfile, keyfile=Tupu):
         sslcontext = self._create_ssl_context(certfile, keyfile)
 
         f = self.loop.create_server(factory, '127.0.0.1', 0, ssl=sslcontext)
@@ -890,14 +890,14 @@ class EventLoopTestsMixin:
         sock = server.sockets[0]
         host, port = sock.getsockname()
         self.assertEqual(host, '127.0.0.1')
-        return server, host, port
+        rudisha server, host, port
 
-    def _make_ssl_unix_server(self, factory, certfile, keyfile=None):
+    eleza _make_ssl_unix_server(self, factory, certfile, keyfile=Tupu):
         sslcontext = self._create_ssl_context(certfile, keyfile)
-        return self._make_unix_server(factory, ssl=sslcontext)
+        rudisha self._make_unix_server(factory, ssl=sslcontext)
 
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_create_server_ssl(self):
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_create_server_ssl(self):
         proto = MyProto(loop=self.loop)
         server, host, port = self._make_ssl_server(
             lambda: proto, test_utils.ONLYCERT, test_utils.ONLYKEY)
@@ -913,7 +913,7 @@ class EventLoopTestsMixin:
         test_utils.run_until(self.loop, lambda: proto.nbytes > 0)
         self.assertEqual(3, proto.nbytes)
 
-        # extra info is available
+        # extra info ni available
         self.check_ssl_extra_info(client, peername=(host, port))
 
         # close connection
@@ -929,8 +929,8 @@ class EventLoopTestsMixin:
         server.close()
 
     @support.skip_unless_bind_unix_socket
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_create_unix_server_ssl(self):
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_create_unix_server_ssl(self):
         proto = MyProto(loop=self.loop)
         server, path = self._make_ssl_unix_server(
             lambda: proto, test_utils.ONLYCERT, test_utils.ONLYKEY)
@@ -959,8 +959,8 @@ class EventLoopTestsMixin:
         # stop serving
         server.close()
 
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_create_server_ssl_verify_failed(self):
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_create_server_ssl_verify_failed(self):
         proto = MyProto(loop=self.loop)
         server, host, port = self._make_ssl_server(
             lambda: proto, test_utils.SIGNED_CERTFILE)
@@ -968,16 +968,16 @@ class EventLoopTestsMixin:
         sslcontext_client = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         sslcontext_client.options |= ssl.OP_NO_SSLv2
         sslcontext_client.verify_mode = ssl.CERT_REQUIRED
-        if hasattr(sslcontext_client, 'check_hostname'):
-            sslcontext_client.check_hostname = True
+        ikiwa hasattr(sslcontext_client, 'check_hostname'):
+            sslcontext_client.check_hostname = Kweli
 
 
         # no CA loaded
         f_c = self.loop.create_connection(MyProto, host, port,
                                           ssl=sslcontext_client)
-        with mock.patch.object(self.loop, 'call_exception_handler'):
-            with test_utils.disable_logger():
-                with self.assertRaisesRegex(ssl.SSLError,
+        ukijumuisha mock.patch.object(self.loop, 'call_exception_handler'):
+            ukijumuisha test_utils.disable_logger():
+                ukijumuisha self.assertRaisesRegex(ssl.SSLError,
                                             '(?i)certificate.verify.failed'):
                     self.loop.run_until_complete(f_c)
 
@@ -985,12 +985,12 @@ class EventLoopTestsMixin:
             test_utils.run_briefly(self.loop)
 
         # close connection
-        self.assertIsNone(proto.transport)
+        self.assertIsTupu(proto.transport)
         server.close()
 
     @support.skip_unless_bind_unix_socket
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_create_unix_server_ssl_verify_failed(self):
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_create_unix_server_ssl_verify_failed(self):
         proto = MyProto(loop=self.loop)
         server, path = self._make_ssl_unix_server(
             lambda: proto, test_utils.SIGNED_CERTFILE)
@@ -998,16 +998,16 @@ class EventLoopTestsMixin:
         sslcontext_client = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         sslcontext_client.options |= ssl.OP_NO_SSLv2
         sslcontext_client.verify_mode = ssl.CERT_REQUIRED
-        if hasattr(sslcontext_client, 'check_hostname'):
-            sslcontext_client.check_hostname = True
+        ikiwa hasattr(sslcontext_client, 'check_hostname'):
+            sslcontext_client.check_hostname = Kweli
 
         # no CA loaded
         f_c = self.loop.create_unix_connection(MyProto, path,
                                                ssl=sslcontext_client,
                                                server_hostname='invalid')
-        with mock.patch.object(self.loop, 'call_exception_handler'):
-            with test_utils.disable_logger():
-                with self.assertRaisesRegex(ssl.SSLError,
+        ukijumuisha mock.patch.object(self.loop, 'call_exception_handler'):
+            ukijumuisha test_utils.disable_logger():
+                ukijumuisha self.assertRaisesRegex(ssl.SSLError,
                                             '(?i)certificate.verify.failed'):
                     self.loop.run_until_complete(f_c)
 
@@ -1015,11 +1015,11 @@ class EventLoopTestsMixin:
             test_utils.run_briefly(self.loop)
 
         # close connection
-        self.assertIsNone(proto.transport)
+        self.assertIsTupu(proto.transport)
         server.close()
 
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_create_server_ssl_match_failed(self):
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_create_server_ssl_match_failed(self):
         proto = MyProto(loop=self.loop)
         server, host, port = self._make_ssl_server(
             lambda: proto, test_utils.SIGNED_CERTFILE)
@@ -1029,28 +1029,28 @@ class EventLoopTestsMixin:
         sslcontext_client.verify_mode = ssl.CERT_REQUIRED
         sslcontext_client.load_verify_locations(
             cafile=test_utils.SIGNING_CA)
-        if hasattr(sslcontext_client, 'check_hostname'):
-            sslcontext_client.check_hostname = True
+        ikiwa hasattr(sslcontext_client, 'check_hostname'):
+            sslcontext_client.check_hostname = Kweli
 
         # incorrect server_hostname
         f_c = self.loop.create_connection(MyProto, host, port,
                                           ssl=sslcontext_client)
-        with mock.patch.object(self.loop, 'call_exception_handler'):
-            with test_utils.disable_logger():
-                with self.assertRaisesRegex(
+        ukijumuisha mock.patch.object(self.loop, 'call_exception_handler'):
+            ukijumuisha test_utils.disable_logger():
+                ukijumuisha self.assertRaisesRegex(
                         ssl.CertificateError,
-                        "IP address mismatch, certificate ni sio valid for "
+                        "IP address mismatch, certificate ni sio valid kila "
                         "'127.0.0.1'"):
                     self.loop.run_until_complete(f_c)
 
         # close connection
-        # transport is None because TLS ALERT aborted the handshake
-        self.assertIsNone(proto.transport)
+        # transport ni Tupu because TLS ALERT aborted the handshake
+        self.assertIsTupu(proto.transport)
         server.close()
 
     @support.skip_unless_bind_unix_socket
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_create_unix_server_ssl_verified(self):
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_create_unix_server_ssl_verified(self):
         proto = MyProto(loop=self.loop)
         server, path = self._make_ssl_unix_server(
             lambda: proto, test_utils.SIGNED_CERTFILE)
@@ -1059,10 +1059,10 @@ class EventLoopTestsMixin:
         sslcontext_client.options |= ssl.OP_NO_SSLv2
         sslcontext_client.verify_mode = ssl.CERT_REQUIRED
         sslcontext_client.load_verify_locations(cafile=test_utils.SIGNING_CA)
-        if hasattr(sslcontext_client, 'check_hostname'):
-            sslcontext_client.check_hostname = True
+        ikiwa hasattr(sslcontext_client, 'check_hostname'):
+            sslcontext_client.check_hostname = Kweli
 
-        # Connection succeeds with correct CA and server hostname.
+        # Connection succeeds ukijumuisha correct CA na server hostname.
         f_c = self.loop.create_unix_connection(MyProto, path,
                                                ssl=sslcontext_client,
                                                server_hostname='localhost')
@@ -1074,8 +1074,8 @@ class EventLoopTestsMixin:
         server.close()
         self.loop.run_until_complete(proto.done)
 
-    @unittest.skipIf(ssl is None, 'No ssl module')
-    def test_create_server_ssl_verified(self):
+    @unittest.skipIf(ssl ni Tupu, 'No ssl module')
+    eleza test_create_server_ssl_verified(self):
         proto = MyProto(loop=self.loop)
         server, host, port = self._make_ssl_server(
             lambda: proto, test_utils.SIGNED_CERTFILE)
@@ -1084,16 +1084,16 @@ class EventLoopTestsMixin:
         sslcontext_client.options |= ssl.OP_NO_SSLv2
         sslcontext_client.verify_mode = ssl.CERT_REQUIRED
         sslcontext_client.load_verify_locations(cafile=test_utils.SIGNING_CA)
-        if hasattr(sslcontext_client, 'check_hostname'):
-            sslcontext_client.check_hostname = True
+        ikiwa hasattr(sslcontext_client, 'check_hostname'):
+            sslcontext_client.check_hostname = Kweli
 
-        # Connection succeeds with correct CA and server hostname.
+        # Connection succeeds ukijumuisha correct CA na server hostname.
         f_c = self.loop.create_connection(MyProto, host, port,
                                           ssl=sslcontext_client,
                                           server_hostname='localhost')
         client, pr = self.loop.run_until_complete(f_c)
 
-        # extra info is available
+        # extra info ni available
         self.check_ssl_extra_info(client, peername=(host, port),
                                   peercert=test_utils.PEERCERT)
 
@@ -1103,11 +1103,11 @@ class EventLoopTestsMixin:
         server.close()
         self.loop.run_until_complete(proto.done)
 
-    def test_create_server_sock(self):
+    eleza test_create_server_sock(self):
         proto = self.loop.create_future()
 
-        class TestMyProto(MyProto):
-            def connection_made(self, transport):
+        kundi TestMyProto(MyProto):
+            eleza connection_made(self, transport):
                 super().connection_made(transport)
                 proto.set_result(self)
 
@@ -1126,7 +1126,7 @@ class EventLoopTestsMixin:
         client.close()
         server.close()
 
-    def test_create_server_addr_in_use(self):
+    eleza test_create_server_addr_in_use(self):
         sock_ob = socket.create_server(('0.0.0.0', 0))
 
         f = self.loop.create_server(MyProto, sock=sock_ob)
@@ -1135,29 +1135,29 @@ class EventLoopTestsMixin:
         host, port = sock.getsockname()
 
         f = self.loop.create_server(MyProto, host=host, port=port)
-        with self.assertRaises(OSError) as cm:
+        ukijumuisha self.assertRaises(OSError) as cm:
             self.loop.run_until_complete(f)
         self.assertEqual(cm.exception.errno, errno.EADDRINUSE)
 
         server.close()
 
-    @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 sio supported or enabled')
-    def test_create_server_dual_stack(self):
+    @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 sio supported ama enabled')
+    eleza test_create_server_dual_stack(self):
         f_proto = self.loop.create_future()
 
-        class TestMyProto(MyProto):
-            def connection_made(self, transport):
+        kundi TestMyProto(MyProto):
+            eleza connection_made(self, transport):
                 super().connection_made(transport)
                 f_proto.set_result(self)
 
         try_count = 0
-        wakati True:
+        wakati Kweli:
             jaribu:
                 port = support.find_unused_port()
-                f = self.loop.create_server(TestMyProto, host=None, port=port)
+                f = self.loop.create_server(TestMyProto, host=Tupu, port=port)
                 server = self.loop.run_until_complete(f)
-            tatizo OSError as ex:
-                if ex.errno == errno.EADDRINUSE:
+            except OSError as ex:
+                ikiwa ex.errno == errno.EADDRINUSE:
                     try_count += 1
                     self.assertGreaterEqual(5, try_count)
                     endelea
@@ -1182,7 +1182,7 @@ class EventLoopTestsMixin:
 
         server.close()
 
-    def test_server_close(self):
+    eleza test_server_close(self):
         f = self.loop.create_server(MyProto, '0.0.0.0', 0)
         server = self.loop.run_until_complete(f)
         sock = server.sockets[0]
@@ -1200,12 +1200,12 @@ class EventLoopTestsMixin:
             ConnectionRefusedError, client.connect, ('127.0.0.1', port))
         client.close()
 
-    def test_create_datagram_endpoint(self):
-        class TestMyDatagramProto(MyDatagramProto):
-            def __init__(inner_self):
+    eleza test_create_datagram_endpoint(self):
+        kundi TestMyDatagramProto(MyDatagramProto):
+            eleza __init__(inner_self):
                 super().__init__(loop=self.loop)
 
-            def datagram_received(self, data, addr):
+            eleza datagram_received(self, data, addr):
                 super().datagram_received(data, addr)
                 self.transport.sendto(b'resp:'+data, addr)
 
@@ -1237,8 +1237,8 @@ class EventLoopTestsMixin:
         # received
         self.assertEqual(8, client.nbytes)
 
-        # extra info is available
-        self.assertIsNotNone(transport.get_extra_info('sockname'))
+        # extra info ni available
+        self.assertIsNotTupu(transport.get_extra_info('sockname'))
 
         # close connection
         transport.close()
@@ -1246,23 +1246,23 @@ class EventLoopTestsMixin:
         self.assertEqual('CLOSED', client.state)
         server.transport.close()
 
-    def test_create_datagram_endpoint_sock(self):
-        sock = None
+    eleza test_create_datagram_endpoint_sock(self):
+        sock = Tupu
         local_address = ('127.0.0.1', 0)
         infos = self.loop.run_until_complete(
             self.loop.getaddrinfo(
                 *local_address, type=socket.SOCK_DGRAM))
-        for family, type, proto, cname, address in infos:
+        kila family, type, proto, cname, address kwenye infos:
             jaribu:
                 sock = socket.socket(family=family, type=type, proto=proto)
-                sock.setblocking(False)
+                sock.setblocking(Uongo)
                 sock.bind(address)
             tatizo:
                 pass
             isipokua:
                 koma
         isipokua:
-            assert False, 'Can sio create socket.'
+            assert Uongo, 'Can sio create socket.'
 
         f = self.loop.create_datagram_endpoint(
             lambda: MyDatagramProto(loop=self.loop), sock=sock)
@@ -1272,27 +1272,27 @@ class EventLoopTestsMixin:
         tr.close()
         self.loop.run_until_complete(pr.done)
 
-    def test_internal_fds(self):
+    eleza test_internal_fds(self):
         loop = self.create_event_loop()
-        if sio isinstance(loop, selector_events.BaseSelectorEventLoop):
+        ikiwa sio isinstance(loop, selector_events.BaseSelectorEventLoop):
             loop.close()
             self.skipTest('loop ni sio a BaseSelectorEventLoop')
 
         self.assertEqual(1, loop._internal_fds)
         loop.close()
         self.assertEqual(0, loop._internal_fds)
-        self.assertIsNone(loop._csock)
-        self.assertIsNone(loop._ssock)
+        self.assertIsTupu(loop._csock)
+        self.assertIsTupu(loop._ssock)
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
-    def test_read_pipe(self):
+                         "Don't support pipes kila Windows")
+    eleza test_read_pipe(self):
         proto = MyReadPipeProto(loop=self.loop)
 
         rpipe, wpipe = os.pipe()
         pipeobj = io.open(rpipe, 'rb', 1024)
 
-        async def connect():
+        async eleza connect():
             t, p = await self.loop.connect_read_pipe(
                 lambda: proto, pipeobj)
             self.assertIs(p, proto)
@@ -1315,12 +1315,12 @@ class EventLoopTestsMixin:
         self.loop.run_until_complete(proto.done)
         self.assertEqual(
             ['INITIAL', 'CONNECTED', 'EOF', 'CLOSED'], proto.state)
-        # extra info is available
-        self.assertIsNotNone(proto.transport.get_extra_info('pipe'))
+        # extra info ni available
+        self.assertIsNotTupu(proto.transport.get_extra_info('pipe'))
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
-    def test_unclosed_pipe_transport(self):
+                         "Don't support pipes kila Windows")
+    eleza test_unclosed_pipe_transport(self):
         # This test reproduces the issue #314 on GitHub
         loop = self.create_event_loop()
         read_proto = MyReadPipeProto(loop=loop)
@@ -1330,18 +1330,18 @@ class EventLoopTestsMixin:
         rpipeobj = io.open(rpipe, 'rb', 1024)
         wpipeobj = io.open(wpipe, 'w', 1024)
 
-        async def connect():
+        async eleza connect():
             read_transport, _ = await loop.connect_read_pipe(
                 lambda: read_proto, rpipeobj)
             write_transport, _ = await loop.connect_write_pipe(
                 lambda: write_proto, wpipeobj)
-            return read_transport, write_transport
+            rudisha read_transport, write_transport
 
-        # Run and close the loop without closing the transports
+        # Run na close the loop without closing the transports
         read_transport, write_transport = loop.run_until_complete(connect())
         loop.close()
 
-        # These 'repr' calls used to ashiria an AttributeError
+        # These 'repr' calls used to  ashiria an AttributeError
         # See Issue #314 on GitHub
         self.assertIn('open', repr(read_transport))
         self.assertIn('open', repr(write_transport))
@@ -1349,18 +1349,18 @@ class EventLoopTestsMixin:
         # Clean up (avoid ResourceWarning)
         rpipeobj.close()
         wpipeobj.close()
-        read_transport._pipe = None
-        write_transport._pipe = None
+        read_transport._pipe = Tupu
+        write_transport._pipe = Tupu
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
-    def test_read_pty_output(self):
+                         "Don't support pipes kila Windows")
+    eleza test_read_pty_output(self):
         proto = MyReadPipeProto(loop=self.loop)
 
         master, slave = os.openpty()
         master_read_obj = io.open(master, 'rb', 0)
 
-        async def connect():
+        async eleza connect():
             t, p = await self.loop.connect_read_pipe(lambda: proto,
                                                      master_read_obj)
             self.assertIs(p, proto)
@@ -1384,12 +1384,12 @@ class EventLoopTestsMixin:
         self.loop.run_until_complete(proto.done)
         self.assertEqual(
             ['INITIAL', 'CONNECTED', 'EOF', 'CLOSED'], proto.state)
-        # extra info is available
-        self.assertIsNotNone(proto.transport.get_extra_info('pipe'))
+        # extra info ni available
+        self.assertIsNotTupu(proto.transport.get_extra_info('pipe'))
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
-    def test_write_pipe(self):
+                         "Don't support pipes kila Windows")
+    eleza test_write_pipe(self):
         rpipe, wpipe = os.pipe()
         pipeobj = io.open(wpipe, 'wb', 1024)
 
@@ -1403,10 +1403,10 @@ class EventLoopTestsMixin:
         transport.write(b'1')
 
         data = bytearray()
-        def reader(data):
+        eleza reader(data):
             chunk = os.read(rpipe, 1024)
             data += chunk
-            return len(data)
+            rudisha len(data)
 
         test_utils.run_until(self.loop, lambda: reader(data) >= 1)
         self.assertEqual(b'1', data)
@@ -1418,8 +1418,8 @@ class EventLoopTestsMixin:
 
         os.close(rpipe)
 
-        # extra info is available
-        self.assertIsNotNone(proto.transport.get_extra_info('pipe'))
+        # extra info ni available
+        self.assertIsNotTupu(proto.transport.get_extra_info('pipe'))
 
         # close connection
         proto.transport.close()
@@ -1427,10 +1427,10 @@ class EventLoopTestsMixin:
         self.assertEqual('CLOSED', proto.state)
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
-    def test_write_pipe_disconnect_on_close(self):
+                         "Don't support pipes kila Windows")
+    eleza test_write_pipe_disconnect_on_close(self):
         rsock, wsock = socket.socketpair()
-        rsock.setblocking(False)
+        rsock.setblocking(Uongo)
         pipeobj = io.open(wsock.detach(), 'wb', 1024)
 
         proto = MyWritePipeProto(loop=self.loop)
@@ -1450,11 +1450,11 @@ class EventLoopTestsMixin:
         self.assertEqual('CLOSED', proto.state)
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
-    # select, poll and kqueue don't support character devices (PTY) on Mac OS X
+                         "Don't support pipes kila Windows")
+    # select, poll na kqueue don't support character devices (PTY) on Mac OS X
     # older than 10.6 (Snow Leopard)
     @support.requires_mac_ver(10, 6)
-    def test_write_pty(self):
+    eleza test_write_pty(self):
         master, slave = os.openpty()
         slave_write_obj = io.open(slave, 'wb', 0)
 
@@ -1468,10 +1468,10 @@ class EventLoopTestsMixin:
         transport.write(b'1')
 
         data = bytearray()
-        def reader(data):
+        eleza reader(data):
             chunk = os.read(master, 1024)
             data += chunk
-            return len(data)
+            rudisha len(data)
 
         test_utils.run_until(self.loop, lambda: reader(data) >= 1,
                              timeout=10)
@@ -1485,8 +1485,8 @@ class EventLoopTestsMixin:
 
         os.close(master)
 
-        # extra info is available
-        self.assertIsNotNone(proto.transport.get_extra_info('pipe'))
+        # extra info ni available
+        self.assertIsNotTupu(proto.transport.get_extra_info('pipe'))
 
         # close connection
         proto.transport.close()
@@ -1494,11 +1494,11 @@ class EventLoopTestsMixin:
         self.assertEqual('CLOSED', proto.state)
 
     @unittest.skipUnless(sys.platform != 'win32',
-                         "Don't support pipes for Windows")
-    # select, poll and kqueue don't support character devices (PTY) on Mac OS X
+                         "Don't support pipes kila Windows")
+    # select, poll na kqueue don't support character devices (PTY) on Mac OS X
     # older than 10.6 (Snow Leopard)
     @support.requires_mac_ver(10, 6)
-    def test_bidirectional_pty(self):
+    eleza test_bidirectional_pty(self):
         master, read_slave = os.openpty()
         write_slave = os.dup(read_slave)
         tty.setraw(read_slave)
@@ -1524,10 +1524,10 @@ class EventLoopTestsMixin:
         self.assertEqual('CONNECTED', write_proto.state)
 
         data = bytearray()
-        def reader(data):
+        eleza reader(data):
             chunk = os.read(master, 1024)
             data += chunk
-            return len(data)
+            rudisha len(data)
 
         write_transport.write(b'1')
         test_utils.run_until(self.loop, lambda: reader(data) >= 1, timeout=10)
@@ -1566,25 +1566,25 @@ class EventLoopTestsMixin:
         self.loop.run_until_complete(write_proto.done)
         self.assertEqual('CLOSED', write_proto.state)
 
-    def test_prompt_cancellation(self):
+    eleza test_prompt_cancellation(self):
         r, w = socket.socketpair()
-        r.setblocking(False)
+        r.setblocking(Uongo)
         f = self.loop.create_task(self.loop.sock_recv(r, 1))
-        ov = getattr(f, 'ov', None)
-        if ov ni sio None:
-            self.assertTrue(ov.pending)
+        ov = getattr(f, 'ov', Tupu)
+        ikiwa ov ni sio Tupu:
+            self.assertKweli(ov.pending)
 
-        async def main():
+        async eleza main():
             jaribu:
                 self.loop.call_soon(f.cancel)
                 await f
-            tatizo asyncio.CancelledError:
+            except asyncio.CancelledError:
                 res = 'cancelled'
             isipokua:
-                res = None
+                res = Tupu
             mwishowe:
                 self.loop.stop()
-            return res
+            rudisha res
 
         start = time.monotonic()
         t = self.loop.create_task(main())
@@ -1594,15 +1594,15 @@ class EventLoopTestsMixin:
         self.assertLess(elapsed, 0.1)
         self.assertEqual(t.result(), 'cancelled')
         self.assertRaises(asyncio.CancelledError, f.result)
-        if ov ni sio None:
-            self.assertFalse(ov.pending)
+        ikiwa ov ni sio Tupu:
+            self.assertUongo(ov.pending)
         self.loop._stop_serving(r)
 
         r.close()
         w.close()
 
-    def test_timeout_rounding(self):
-        def _run_once():
+    eleza test_timeout_rounding(self):
+        eleza _run_once():
             self.loop._run_once_counter += 1
             orig_run_once()
 
@@ -1610,7 +1610,7 @@ class EventLoopTestsMixin:
         self.loop._run_once_counter = 0
         self.loop._run_once = _run_once
 
-        async def wait():
+        async eleza wait():
             loop = self.loop
             await asyncio.sleep(1e-2)
             await asyncio.sleep(1e-4)
@@ -1619,7 +1619,7 @@ class EventLoopTestsMixin:
             await asyncio.sleep(1e-10)
 
         self.loop.run_until_complete(wait())
-        # The ideal number of call is 12, but on some platforms, the selector
+        # The ideal number of call ni 12, but on some platforms, the selector
         # may sleep at little bit less than timeout depending on the resolution
         # of the clock used by the kernel. Tolerate a few useless calls on
         # these platforms.
@@ -1627,98 +1627,98 @@ class EventLoopTestsMixin:
             {'clock_resolution': self.loop._clock_resolution,
              'selector': self.loop._selector.__class__.__name__})
 
-    def test_remove_fds_after_closing(self):
+    eleza test_remove_fds_after_closing(self):
         loop = self.create_event_loop()
-        callback = lambda: None
+        callback = lambda: Tupu
         r, w = socket.socketpair()
         self.addCleanup(r.close)
         self.addCleanup(w.close)
         loop.add_reader(r, callback)
         loop.add_writer(w, callback)
         loop.close()
-        self.assertFalse(loop.remove_reader(r))
-        self.assertFalse(loop.remove_writer(w))
+        self.assertUongo(loop.remove_reader(r))
+        self.assertUongo(loop.remove_writer(w))
 
-    def test_add_fds_after_closing(self):
+    eleza test_add_fds_after_closing(self):
         loop = self.create_event_loop()
-        callback = lambda: None
+        callback = lambda: Tupu
         r, w = socket.socketpair()
         self.addCleanup(r.close)
         self.addCleanup(w.close)
         loop.close()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             loop.add_reader(r, callback)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             loop.add_writer(w, callback)
 
-    def test_close_running_event_loop(self):
-        async def close_loop(loop):
+    eleza test_close_running_event_loop(self):
+        async eleza close_loop(loop):
             self.loop.close()
 
         coro = close_loop(self.loop)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.loop.run_until_complete(coro)
 
-    def test_close(self):
+    eleza test_close(self):
         self.loop.close()
 
-        async def test():
+        async eleza test():
             pass
 
-        func = lambda: False
+        func = lambda: Uongo
         coro = test()
         self.addCleanup(coro.close)
 
-        # operation blocked when the loop is closed
-        with self.assertRaises(RuntimeError):
+        # operation blocked when the loop ni closed
+        ukijumuisha self.assertRaises(RuntimeError):
             self.loop.run_forever()
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             fut = self.loop.create_future()
             self.loop.run_until_complete(fut)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.loop.call_soon(func)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.loop.call_soon_threadsafe(func)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.loop.call_later(1.0, func)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.loop.call_at(self.loop.time() + .0, func)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.loop.create_task(coro)
-        with self.assertRaises(RuntimeError):
+        ukijumuisha self.assertRaises(RuntimeError):
             self.loop.add_signal_handler(signal.SIGTERM, func)
 
-        # run_in_executor test is tricky: the method is a coroutine,
+        # run_in_executor test ni tricky: the method ni a coroutine,
         # but run_until_complete cannot be called on closed loop.
         # Thus iterate once explicitly.
-        with self.assertRaises(RuntimeError):
-            it = self.loop.run_in_executor(None, func).__await__()
+        ukijumuisha self.assertRaises(RuntimeError):
+            it = self.loop.run_in_executor(Tupu, func).__await__()
             next(it)
 
 
-class SubprocessTestsMixin:
+kundi SubprocessTestsMixin:
 
-    def check_terminated(self, returncode):
-        if sys.platform == 'win32':
+    eleza check_terminated(self, returncode):
+        ikiwa sys.platform == 'win32':
             self.assertIsInstance(returncode, int)
             # expect 1 but sometimes get 0
         isipokua:
             self.assertEqual(-signal.SIGTERM, returncode)
 
-    def check_killed(self, returncode):
-        if sys.platform == 'win32':
+    eleza check_killed(self, returncode):
+        ikiwa sys.platform == 'win32':
             self.assertIsInstance(returncode, int)
             # expect 1 but sometimes get 0
         isipokua:
             self.assertEqual(-signal.SIGKILL, returncode)
 
-    def test_subprocess_exec(self):
+    eleza test_subprocess_exec(self):
         prog = os.path.join(os.path.dirname(__file__), 'echo.py')
 
         connect = self.loop.subprocess_exec(
                         functools.partial(MySubprocessProtocol, self.loop),
                         sys.executable, prog)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             transp, proto = self.loop.run_until_complete(connect)
             self.assertIsInstance(proto, MySubprocessProtocol)
             self.loop.run_until_complete(proto.connected)
@@ -1727,20 +1727,20 @@ class SubprocessTestsMixin:
             stdin = transp.get_pipe_transport(0)
             stdin.write(b'Python The Winner')
             self.loop.run_until_complete(proto.got_data[1].wait())
-            with test_utils.disable_logger():
+            ukijumuisha test_utils.disable_logger():
                 transp.close()
             self.loop.run_until_complete(proto.completed)
             self.check_killed(proto.returncode)
             self.assertEqual(b'Python The Winner', proto.data[1])
 
-    def test_subprocess_interactive(self):
+    eleza test_subprocess_interactive(self):
         prog = os.path.join(os.path.dirname(__file__), 'echo.py')
 
         connect = self.loop.subprocess_exec(
                         functools.partial(MySubprocessProtocol, self.loop),
                         sys.executable, prog)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             transp, proto = self.loop.run_until_complete(connect)
             self.assertIsInstance(proto, MySubprocessProtocol)
             self.loop.run_until_complete(proto.connected)
@@ -1756,13 +1756,13 @@ class SubprocessTestsMixin:
             self.loop.run_until_complete(proto.got_data[1].wait())
             self.assertEqual(b'Python The Winner', proto.data[1])
 
-            with test_utils.disable_logger():
+            ukijumuisha test_utils.disable_logger():
                 transp.close()
             self.loop.run_until_complete(proto.completed)
             self.check_killed(proto.returncode)
 
-    def test_subprocess_shell(self):
-        with self.assertWarns(DeprecationWarning):
+    eleza test_subprocess_shell(self):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             connect = self.loop.subprocess_shell(
                             functools.partial(MySubprocessProtocol, self.loop),
                             'echo Python')
@@ -1773,45 +1773,45 @@ class SubprocessTestsMixin:
             transp.get_pipe_transport(0).close()
             self.loop.run_until_complete(proto.completed)
             self.assertEqual(0, proto.returncode)
-            self.assertTrue(all(f.done() for f in proto.disconnects.values()))
+            self.assertKweli(all(f.done() kila f kwenye proto.disconnects.values()))
             self.assertEqual(proto.data[1].rstrip(b'\r\n'), b'Python')
             self.assertEqual(proto.data[2], b'')
             transp.close()
 
-    def test_subprocess_exitcode(self):
+    eleza test_subprocess_exitcode(self):
         connect = self.loop.subprocess_shell(
                         functools.partial(MySubprocessProtocol, self.loop),
-                        'exit 7', stdin=None, stdout=None, stderr=None)
+                        'exit 7', stdin=Tupu, stdout=Tupu, stderr=Tupu)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             transp, proto = self.loop.run_until_complete(connect)
         self.assertIsInstance(proto, MySubprocessProtocol)
         self.loop.run_until_complete(proto.completed)
         self.assertEqual(7, proto.returncode)
         transp.close()
 
-    def test_subprocess_close_after_finish(self):
+    eleza test_subprocess_close_after_finish(self):
         connect = self.loop.subprocess_shell(
                         functools.partial(MySubprocessProtocol, self.loop),
-                        'exit 7', stdin=None, stdout=None, stderr=None)
-        with self.assertWarns(DeprecationWarning):
+                        'exit 7', stdin=Tupu, stdout=Tupu, stderr=Tupu)
+        ukijumuisha self.assertWarns(DeprecationWarning):
             transp, proto = self.loop.run_until_complete(connect)
         self.assertIsInstance(proto, MySubprocessProtocol)
-        self.assertIsNone(transp.get_pipe_transport(0))
-        self.assertIsNone(transp.get_pipe_transport(1))
-        self.assertIsNone(transp.get_pipe_transport(2))
+        self.assertIsTupu(transp.get_pipe_transport(0))
+        self.assertIsTupu(transp.get_pipe_transport(1))
+        self.assertIsTupu(transp.get_pipe_transport(2))
         self.loop.run_until_complete(proto.completed)
         self.assertEqual(7, proto.returncode)
-        self.assertIsNone(transp.close())
+        self.assertIsTupu(transp.close())
 
-    def test_subprocess_kill(self):
+    eleza test_subprocess_kill(self):
         prog = os.path.join(os.path.dirname(__file__), 'echo.py')
 
         connect = self.loop.subprocess_exec(
                         functools.partial(MySubprocessProtocol, self.loop),
                         sys.executable, prog)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             transp, proto = self.loop.run_until_complete(connect)
             self.assertIsInstance(proto, MySubprocessProtocol)
             self.loop.run_until_complete(proto.connected)
@@ -1821,14 +1821,14 @@ class SubprocessTestsMixin:
             self.check_killed(proto.returncode)
             transp.close()
 
-    def test_subprocess_terminate(self):
+    eleza test_subprocess_terminate(self):
         prog = os.path.join(os.path.dirname(__file__), 'echo.py')
 
         connect = self.loop.subprocess_exec(
                         functools.partial(MySubprocessProtocol, self.loop),
                         sys.executable, prog)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             transp, proto = self.loop.run_until_complete(connect)
             self.assertIsInstance(proto, MySubprocessProtocol)
             self.loop.run_until_complete(proto.connected)
@@ -1839,10 +1839,10 @@ class SubprocessTestsMixin:
             transp.close()
 
     @unittest.skipIf(sys.platform == 'win32', "Don't have SIGHUP")
-    def test_subprocess_send_signal(self):
+    eleza test_subprocess_send_signal(self):
         # bpo-31034: Make sure that we get the default signal handler (killing
         # the process). The parent process may have decided to ignore SIGHUP,
-        # and signal handlers are inherited.
+        # na signal handlers are inherited.
         old_handler = signal.signal(signal.SIGHUP, signal.SIG_DFL)
         jaribu:
             prog = os.path.join(os.path.dirname(__file__), 'echo.py')
@@ -1851,7 +1851,7 @@ class SubprocessTestsMixin:
                             functools.partial(MySubprocessProtocol, self.loop),
                             sys.executable, prog)
 
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 transp, proto = self.loop.run_until_complete(connect)
                 self.assertIsInstance(proto, MySubprocessProtocol)
                 self.loop.run_until_complete(proto.connected)
@@ -1863,14 +1863,14 @@ class SubprocessTestsMixin:
         mwishowe:
             signal.signal(signal.SIGHUP, old_handler)
 
-    def test_subprocess_stderr(self):
+    eleza test_subprocess_stderr(self):
         prog = os.path.join(os.path.dirname(__file__), 'echo2.py')
 
         connect = self.loop.subprocess_exec(
                         functools.partial(MySubprocessProtocol, self.loop),
                         sys.executable, prog)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             transp, proto = self.loop.run_until_complete(connect)
             self.assertIsInstance(proto, MySubprocessProtocol)
             self.loop.run_until_complete(proto.connected)
@@ -1882,41 +1882,41 @@ class SubprocessTestsMixin:
 
             transp.close()
             self.assertEqual(b'OUT:test', proto.data[1])
-            self.assertTrue(proto.data[2].startswith(b'ERR:test'), proto.data[2])
+            self.assertKweli(proto.data[2].startswith(b'ERR:test'), proto.data[2])
             self.assertEqual(0, proto.returncode)
 
-    def test_subprocess_stderr_redirect_to_stdout(self):
+    eleza test_subprocess_stderr_redirect_to_stdout(self):
         prog = os.path.join(os.path.dirname(__file__), 'echo2.py')
 
         connect = self.loop.subprocess_exec(
                         functools.partial(MySubprocessProtocol, self.loop),
                         sys.executable, prog, stderr=subprocess.STDOUT)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             transp, proto = self.loop.run_until_complete(connect)
             self.assertIsInstance(proto, MySubprocessProtocol)
             self.loop.run_until_complete(proto.connected)
 
             stdin = transp.get_pipe_transport(0)
-            self.assertIsNotNone(transp.get_pipe_transport(1))
-            self.assertIsNone(transp.get_pipe_transport(2))
+            self.assertIsNotTupu(transp.get_pipe_transport(1))
+            self.assertIsTupu(transp.get_pipe_transport(2))
 
             stdin.write(b'test')
             self.loop.run_until_complete(proto.completed)
-            self.assertTrue(proto.data[1].startswith(b'OUT:testERR:test'),
+            self.assertKweli(proto.data[1].startswith(b'OUT:testERR:test'),
                             proto.data[1])
             self.assertEqual(b'', proto.data[2])
 
             transp.close()
             self.assertEqual(0, proto.returncode)
 
-    def test_subprocess_close_client_stream(self):
+    eleza test_subprocess_close_client_stream(self):
         prog = os.path.join(os.path.dirname(__file__), 'echo3.py')
 
         connect = self.loop.subprocess_exec(
                         functools.partial(MySubprocessProtocol, self.loop),
                         sys.executable, prog)
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             transp, proto = self.loop.run_until_complete(connect)
             self.assertIsInstance(proto, MySubprocessProtocol)
             self.loop.run_until_complete(proto.connected)
@@ -1931,113 +1931,113 @@ class SubprocessTestsMixin:
             self.loop.run_until_complete(proto.disconnects[1])
             stdin.write(b'xxx')
             self.loop.run_until_complete(proto.got_data[2].wait())
-            if sys.platform != 'win32':
+            ikiwa sys.platform != 'win32':
                 self.assertEqual(b'ERR:BrokenPipeError', proto.data[2])
             isipokua:
                 # After closing the read-end of a pipe, writing to the
-                # write-end using os.write() fails with errno==EINVAL na
+                # write-end using os.write() fails ukijumuisha errno==EINVAL and
                 # GetLastError()==ERROR_INVALID_NAME on Windows!?!  (Using
                 # WriteFile() we get ERROR_BROKEN_PIPE as expected.)
                 self.assertEqual(b'ERR:OSError', proto.data[2])
-            with test_utils.disable_logger():
+            ukijumuisha test_utils.disable_logger():
                 transp.close()
             self.loop.run_until_complete(proto.completed)
             self.check_killed(proto.returncode)
 
-    def test_subprocess_wait_no_same_group(self):
-        # start the new process in a new session
+    eleza test_subprocess_wait_no_same_group(self):
+        # start the new process kwenye a new session
         connect = self.loop.subprocess_shell(
                         functools.partial(MySubprocessProtocol, self.loop),
-                        'exit 7', stdin=None, stdout=None, stderr=None,
-                        start_new_session=True)
-        _, proto = yield self.loop.run_until_complete(connect)
+                        'exit 7', stdin=Tupu, stdout=Tupu, stderr=Tupu,
+                        start_new_session=Kweli)
+        _, proto = tuma self.loop.run_until_complete(connect)
         self.assertIsInstance(proto, MySubprocessProtocol)
         self.loop.run_until_complete(proto.completed)
         self.assertEqual(7, proto.returncode)
 
-    def test_subprocess_exec_invalid_args(self):
-        async def connect(**kwds):
+    eleza test_subprocess_exec_invalid_args(self):
+        async eleza connect(**kwds):
             await self.loop.subprocess_exec(
                 asyncio.SubprocessProtocol,
                 'pwd', **kwds)
 
-        with self.assertRaises(ValueError):
-            self.loop.run_until_complete(connect(universal_newlines=True))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
+            self.loop.run_until_complete(connect(universal_newlines=Kweli))
+        ukijumuisha self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(bufsize=4096))
-        with self.assertRaises(ValueError):
-            self.loop.run_until_complete(connect(shell=True))
+        ukijumuisha self.assertRaises(ValueError):
+            self.loop.run_until_complete(connect(shell=Kweli))
 
-    def test_subprocess_shell_invalid_args(self):
+    eleza test_subprocess_shell_invalid_args(self):
 
-        async def connect(cmd=None, **kwds):
-            if sio cmd:
+        async eleza connect(cmd=Tupu, **kwds):
+            ikiwa sio cmd:
                 cmd = 'pwd'
             await self.loop.subprocess_shell(
                 asyncio.SubprocessProtocol,
                 cmd, **kwds)
 
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(['ls', '-l']))
-        with self.assertRaises(ValueError):
-            self.loop.run_until_complete(connect(universal_newlines=True))
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
+            self.loop.run_until_complete(connect(universal_newlines=Kweli))
+        ukijumuisha self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(bufsize=4096))
-        with self.assertRaises(ValueError):
-            self.loop.run_until_complete(connect(shell=False))
+        ukijumuisha self.assertRaises(ValueError):
+            self.loop.run_until_complete(connect(shell=Uongo))
 
 
-if sys.platform == 'win32':
+ikiwa sys.platform == 'win32':
 
-    class SelectEventLoopTests(EventLoopTestsMixin,
+    kundi SelectEventLoopTests(EventLoopTestsMixin,
                                test_utils.TestCase):
 
-        def create_event_loop(self):
-            return asyncio.SelectorEventLoop()
+        eleza create_event_loop(self):
+            rudisha asyncio.SelectorEventLoop()
 
-    class ProactorEventLoopTests(EventLoopTestsMixin,
+    kundi ProactorEventLoopTests(EventLoopTestsMixin,
                                  SubprocessTestsMixin,
                                  test_utils.TestCase):
 
-        def create_event_loop(self):
-            return asyncio.ProactorEventLoop()
+        eleza create_event_loop(self):
+            rudisha asyncio.ProactorEventLoop()
 
-        def test_reader_callback(self):
-            ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+        eleza test_reader_callback(self):
+             ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 
-        def test_reader_callback_cancel(self):
-            ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+        eleza test_reader_callback_cancel(self):
+             ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 
-        def test_writer_callback(self):
-            ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
+        eleza test_writer_callback(self):
+             ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
 
-        def test_writer_callback_cancel(self):
-            ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
+        eleza test_writer_callback_cancel(self):
+             ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
 
-        def test_remove_fds_after_closing(self):
-            ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+        eleza test_remove_fds_after_closing(self):
+             ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 isipokua:
-    import selectors
+    agiza selectors
 
-    class UnixEventLoopTestsMixin(EventLoopTestsMixin):
-        def setUp(self):
+    kundi UnixEventLoopTestsMixin(EventLoopTestsMixin):
+        eleza setUp(self):
             super().setUp()
             watcher = asyncio.SafeChildWatcher()
             watcher.attach_loop(self.loop)
             asyncio.set_child_watcher(watcher)
 
-        def tearDown(self):
-            asyncio.set_child_watcher(None)
+        eleza tearDown(self):
+            asyncio.set_child_watcher(Tupu)
             super().tearDown()
 
 
-    if hasattr(selectors, 'KqueueSelector'):
-        class KqueueEventLoopTests(UnixEventLoopTestsMixin,
+    ikiwa hasattr(selectors, 'KqueueSelector'):
+        kundi KqueueEventLoopTests(UnixEventLoopTestsMixin,
                                    SubprocessTestsMixin,
                                    test_utils.TestCase):
 
-            def create_event_loop(self):
-                return asyncio.SelectorEventLoop(
+            eleza create_event_loop(self):
+                rudisha asyncio.SelectorEventLoop(
                     selectors.KqueueSelector())
 
             # kqueue doesn't support character devices (PTY) on Mac OS X older
@@ -2047,67 +2047,67 @@ isipokua:
             # hangs on OpenBSD 5.5
             @unittest.skipIf(sys.platform.startswith('openbsd'),
                              'test hangs on OpenBSD')
-            def test_read_pty_output(self):
+            eleza test_read_pty_output(self):
                 super().test_read_pty_output()
 
             # kqueue doesn't support character devices (PTY) on Mac OS X older
             # than 10.9 (Maverick)
             @support.requires_mac_ver(10, 9)
-            def test_write_pty(self):
+            eleza test_write_pty(self):
                 super().test_write_pty()
 
-    if hasattr(selectors, 'EpollSelector'):
-        class EPollEventLoopTests(UnixEventLoopTestsMixin,
+    ikiwa hasattr(selectors, 'EpollSelector'):
+        kundi EPollEventLoopTests(UnixEventLoopTestsMixin,
                                   SubprocessTestsMixin,
                                   test_utils.TestCase):
 
-            def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.EpollSelector())
+            eleza create_event_loop(self):
+                rudisha asyncio.SelectorEventLoop(selectors.EpollSelector())
 
-    if hasattr(selectors, 'PollSelector'):
-        class PollEventLoopTests(UnixEventLoopTestsMixin,
+    ikiwa hasattr(selectors, 'PollSelector'):
+        kundi PollEventLoopTests(UnixEventLoopTestsMixin,
                                  SubprocessTestsMixin,
                                  test_utils.TestCase):
 
-            def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.PollSelector())
+            eleza create_event_loop(self):
+                rudisha asyncio.SelectorEventLoop(selectors.PollSelector())
 
     # Should always exist.
-    class SelectEventLoopTests(UnixEventLoopTestsMixin,
+    kundi SelectEventLoopTests(UnixEventLoopTestsMixin,
                                SubprocessTestsMixin,
                                test_utils.TestCase):
 
-        def create_event_loop(self):
-            return asyncio.SelectorEventLoop(selectors.SelectSelector())
+        eleza create_event_loop(self):
+            rudisha asyncio.SelectorEventLoop(selectors.SelectSelector())
 
 
-def noop(*args, **kwargs):
+eleza noop(*args, **kwargs):
     pass
 
 
-class HandleTests(test_utils.TestCase):
+kundi HandleTests(test_utils.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.loop = mock.Mock()
-        self.loop.get_debug.return_value = True
+        self.loop.get_debug.return_value = Kweli
 
-    def test_handle(self):
-        def callback(*args):
-            return args
+    eleza test_handle(self):
+        eleza callback(*args):
+            rudisha args
 
         args = ()
         h = asyncio.Handle(callback, args, self.loop)
         self.assertIs(h._callback, callback)
         self.assertIs(h._args, args)
-        self.assertFalse(h.cancelled())
+        self.assertUongo(h.cancelled())
 
         h.cancel()
-        self.assertTrue(h.cancelled())
+        self.assertKweli(h.cancelled())
 
-    def test_callback_with_exception(self):
-        def callback():
-            ashiria ValueError()
+    eleza test_callback_with_exception(self):
+        eleza callback():
+             ashiria ValueError()
 
         self.loop = mock.Mock()
         self.loop.call_exception_handler = mock.Mock()
@@ -2116,19 +2116,19 @@ class HandleTests(test_utils.TestCase):
         h._run()
 
         self.loop.call_exception_handler.assert_called_with({
-            'message': test_utils.MockPattern('Exception in callback.*'),
+            'message': test_utils.MockPattern('Exception kwenye callback.*'),
             'exception': mock.ANY,
             'handle': h,
             'source_traceback': h._source_traceback,
         })
 
-    def test_handle_weakref(self):
+    eleza test_handle_weakref(self):
         wd = weakref.WeakValueDictionary()
-        h = asyncio.Handle(lambda: None, (), self.loop)
+        h = asyncio.Handle(lambda: Tupu, (), self.loop)
         wd['h'] = h  # Would fail without __weakref__ slot.
 
-    def test_handle_repr(self):
-        self.loop.get_debug.return_value = False
+    eleza test_handle_repr(self):
+        self.loop.get_debug.return_value = Uongo
 
         # simple function
         h = asyncio.Handle(noop, (1, 2), self.loop)
@@ -2143,7 +2143,7 @@ class HandleTests(test_utils.TestCase):
                         '<Handle cancelled>')
 
         # decorated function
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             cb = asyncio.coroutine(noop)
         h = asyncio.Handle(cb, (), self.loop)
         self.assertEqual(repr(h),
@@ -2157,7 +2157,7 @@ class HandleTests(test_utils.TestCase):
                  % (re.escape(filename), lineno))
         self.assertRegex(repr(h), regex)
 
-        # partial function with keyword args
+        # partial function ukijumuisha keyword args
         cb = functools.partial(noop, x=1)
         h = asyncio.Handle(cb, (2, 3), self.loop)
         regex = (r'^<Handle noop\(x=1\)\(2, 3\) at %s:%s>$'
@@ -2165,7 +2165,7 @@ class HandleTests(test_utils.TestCase):
         self.assertRegex(repr(h), regex)
 
         # partial method
-        if sys.version_info >= (3, 4):
+        ikiwa sys.version_info >= (3, 4):
             method = HandleTests.test_handle_repr
             cb = functools.partialmethod(method)
             filename, lineno = test_utils.get_function_source(method)
@@ -2177,8 +2177,8 @@ class HandleTests(test_utils.TestCase):
                      % (cb_regex, re.escape(filename), lineno))
             self.assertRegex(repr(h), regex)
 
-    def test_handle_repr_debug(self):
-        self.loop.get_debug.return_value = True
+    eleza test_handle_repr_debug(self):
+        self.loop.get_debug.return_value = Kweli
 
         # simple function
         create_filename = __file__
@@ -2203,12 +2203,12 @@ class HandleTests(test_utils.TestCase):
             '<Handle cancelled noop(1, 2) at %s:%s created at %s:%s>'
             % (filename, lineno, create_filename, create_lineno))
 
-    def test_handle_source_traceback(self):
+    eleza test_handle_source_traceback(self):
         loop = asyncio.get_event_loop_policy().new_event_loop()
-        loop.set_debug(True)
+        loop.set_debug(Kweli)
         self.set_event_loop(loop)
 
-        def check_source_traceback(h):
+        eleza check_source_traceback(h):
             lineno = sys._getframe(1).f_lineno - 1
             self.assertIsInstance(h._source_traceback, list)
             self.assertEqual(h._source_traceback[-1][:3],
@@ -2234,23 +2234,23 @@ class HandleTests(test_utils.TestCase):
 
     @unittest.skipUnless(hasattr(collections.abc, 'Coroutine'),
                          'No collections.abc.Coroutine')
-    def test_coroutine_like_object_debug_formatting(self):
+    eleza test_coroutine_like_object_debug_formatting(self):
         # Test that asyncio can format coroutines that are instances of
-        # collections.abc.Coroutine, but lack cr_core or gi_code attributes
-        # (such as ones compiled with Cython).
+        # collections.abc.Coroutine, but lack cr_core ama gi_code attributes
+        # (such as ones compiled ukijumuisha Cython).
 
         coro = CoroLike()
         coro.__name__ = 'AAA'
-        self.assertTrue(asyncio.iscoroutine(coro))
+        self.assertKweli(asyncio.iscoroutine(coro))
         self.assertEqual(coroutines._format_coroutine(coro), 'AAA()')
 
         coro.__qualname__ = 'BBB'
         self.assertEqual(coroutines._format_coroutine(coro), 'BBB()')
 
-        coro.cr_running = True
+        coro.cr_running = Kweli
         self.assertEqual(coroutines._format_coroutine(coro), 'BBB() running')
 
-        coro.__name__ = coro.__qualname__ = None
+        coro.__name__ = coro.__qualname__ = Tupu
         self.assertEqual(coroutines._format_coroutine(coro),
                          '<CoroLike without __name__>() running')
 
@@ -2262,52 +2262,52 @@ class HandleTests(test_utils.TestCase):
 
         coro = CoroLike()
         coro.__qualname__ = 'AAA'
-        coro.cr_code = None
+        coro.cr_code = Tupu
         self.assertEqual(coroutines._format_coroutine(coro), 'AAA()')
 
 
-class TimerTests(unittest.TestCase):
+kundi TimerTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.loop = mock.Mock()
 
-    def test_hash(self):
+    eleza test_hash(self):
         when = time.monotonic()
-        h = asyncio.TimerHandle(when, lambda: False, (),
+        h = asyncio.TimerHandle(when, lambda: Uongo, (),
                                 mock.Mock())
         self.assertEqual(hash(h), hash(when))
 
-    def test_when(self):
+    eleza test_when(self):
         when = time.monotonic()
-        h = asyncio.TimerHandle(when, lambda: False, (),
+        h = asyncio.TimerHandle(when, lambda: Uongo, (),
                                 mock.Mock())
         self.assertEqual(when, h.when())
 
-    def test_timer(self):
-        def callback(*args):
-            return args
+    eleza test_timer(self):
+        eleza callback(*args):
+            rudisha args
 
         args = (1, 2, 3)
         when = time.monotonic()
         h = asyncio.TimerHandle(when, callback, args, mock.Mock())
         self.assertIs(h._callback, callback)
         self.assertIs(h._args, args)
-        self.assertFalse(h.cancelled())
+        self.assertUongo(h.cancelled())
 
         # cancel
         h.cancel()
-        self.assertTrue(h.cancelled())
-        self.assertIsNone(h._callback)
-        self.assertIsNone(h._args)
+        self.assertKweli(h.cancelled())
+        self.assertIsTupu(h._callback)
+        self.assertIsTupu(h._args)
 
-        # when cannot be None
+        # when cannot be Tupu
         self.assertRaises(AssertionError,
-                          asyncio.TimerHandle, None, callback, args,
+                          asyncio.TimerHandle, Tupu, callback, args,
                           self.loop)
 
-    def test_timer_repr(self):
-        self.loop.get_debug.return_value = False
+    eleza test_timer_repr(self):
+        self.loop.get_debug.return_value = Uongo
 
         # simple function
         h = asyncio.TimerHandle(123, noop, (), self.loop)
@@ -2320,8 +2320,8 @@ class TimerTests(unittest.TestCase):
         self.assertEqual(repr(h),
                         '<TimerHandle cancelled when=123>')
 
-    def test_timer_repr_debug(self):
-        self.loop.get_debug.return_value = True
+    eleza test_timer_repr_debug(self):
+        self.loop.get_debug.return_value = Kweli
 
         # simple function
         create_filename = __file__
@@ -2341,56 +2341,56 @@ class TimerTests(unittest.TestCase):
                         % (filename, lineno, create_filename, create_lineno))
 
 
-    def test_timer_comparison(self):
-        def callback(*args):
-            return args
+    eleza test_timer_comparison(self):
+        eleza callback(*args):
+            rudisha args
 
         when = time.monotonic()
 
         h1 = asyncio.TimerHandle(when, callback, (), self.loop)
         h2 = asyncio.TimerHandle(when, callback, (), self.loop)
         # TODO: Use assertLess etc.
-        self.assertFalse(h1 < h2)
-        self.assertFalse(h2 < h1)
-        self.assertTrue(h1 <= h2)
-        self.assertTrue(h2 <= h1)
-        self.assertFalse(h1 > h2)
-        self.assertFalse(h2 > h1)
-        self.assertTrue(h1 >= h2)
-        self.assertTrue(h2 >= h1)
-        self.assertTrue(h1 == h2)
-        self.assertFalse(h1 != h2)
+        self.assertUongo(h1 < h2)
+        self.assertUongo(h2 < h1)
+        self.assertKweli(h1 <= h2)
+        self.assertKweli(h2 <= h1)
+        self.assertUongo(h1 > h2)
+        self.assertUongo(h2 > h1)
+        self.assertKweli(h1 >= h2)
+        self.assertKweli(h2 >= h1)
+        self.assertKweli(h1 == h2)
+        self.assertUongo(h1 != h2)
 
         h2.cancel()
-        self.assertFalse(h1 == h2)
+        self.assertUongo(h1 == h2)
 
         h1 = asyncio.TimerHandle(when, callback, (), self.loop)
         h2 = asyncio.TimerHandle(when + 10.0, callback, (), self.loop)
-        self.assertTrue(h1 < h2)
-        self.assertFalse(h2 < h1)
-        self.assertTrue(h1 <= h2)
-        self.assertFalse(h2 <= h1)
-        self.assertFalse(h1 > h2)
-        self.assertTrue(h2 > h1)
-        self.assertFalse(h1 >= h2)
-        self.assertTrue(h2 >= h1)
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertKweli(h1 < h2)
+        self.assertUongo(h2 < h1)
+        self.assertKweli(h1 <= h2)
+        self.assertUongo(h2 <= h1)
+        self.assertUongo(h1 > h2)
+        self.assertKweli(h2 > h1)
+        self.assertUongo(h1 >= h2)
+        self.assertKweli(h2 >= h1)
+        self.assertUongo(h1 == h2)
+        self.assertKweli(h1 != h2)
 
         h3 = asyncio.Handle(callback, (), self.loop)
         self.assertIs(NotImplemented, h1.__eq__(h3))
         self.assertIs(NotImplemented, h1.__ne__(h3))
 
 
-class AbstractEventLoopTests(unittest.TestCase):
+kundi AbstractEventLoopTests(unittest.TestCase):
 
-    def test_not_implemented(self):
+    eleza test_not_implemented(self):
         f = mock.Mock()
         loop = asyncio.AbstractEventLoop()
         self.assertRaises(
             NotImplementedError, loop.run_forever)
         self.assertRaises(
-            NotImplementedError, loop.run_until_complete, None)
+            NotImplementedError, loop.run_until_complete, Tupu)
         self.assertRaises(
             NotImplementedError, loop.stop)
         self.assertRaises(
@@ -2400,17 +2400,17 @@ class AbstractEventLoopTests(unittest.TestCase):
         self.assertRaises(
             NotImplementedError, loop.close)
         self.assertRaises(
-            NotImplementedError, loop.create_task, None)
+            NotImplementedError, loop.create_task, Tupu)
         self.assertRaises(
-            NotImplementedError, loop.call_later, None, None)
+            NotImplementedError, loop.call_later, Tupu, Tupu)
         self.assertRaises(
             NotImplementedError, loop.call_at, f, f)
         self.assertRaises(
-            NotImplementedError, loop.call_soon, None)
+            NotImplementedError, loop.call_soon, Tupu)
         self.assertRaises(
             NotImplementedError, loop.time)
         self.assertRaises(
-            NotImplementedError, loop.call_soon_threadsafe, None)
+            NotImplementedError, loop.call_soon_threadsafe, Tupu)
         self.assertRaises(
             NotImplementedError, loop.set_default_executor, f)
         self.assertRaises(
@@ -2438,45 +2438,45 @@ class AbstractEventLoopTests(unittest.TestCase):
         self.assertRaises(
             NotImplementedError, loop.set_debug, f)
 
-    def test_not_implemented_async(self):
+    eleza test_not_implemented_async(self):
 
-        async def inner():
+        async eleza inner():
             f = mock.Mock()
             loop = asyncio.AbstractEventLoop()
 
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.run_in_executor(f, f)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.getaddrinfo('localhost', 8080)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.getnameinfo(('localhost', 8080))
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.create_connection(f)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.create_server(f)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.create_datagram_endpoint(f)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.sock_recv(f, 10)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.sock_recv_into(f, 10)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.sock_sendall(f, 10)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.sock_connect(f, f)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.sock_accept(f)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.sock_sendfile(f, f)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.sendfile(f, f)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.connect_read_pipe(f, mock.sentinel.pipe)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.connect_write_pipe(f, mock.sentinel.pipe)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.subprocess_shell(f, mock.sentinel)
-            with self.assertRaises(NotImplementedError):
+            ukijumuisha self.assertRaises(NotImplementedError):
                 await loop.subprocess_exec(f)
 
         loop = asyncio.new_event_loop()
@@ -2484,9 +2484,9 @@ class AbstractEventLoopTests(unittest.TestCase):
         loop.close()
 
 
-class PolicyTests(unittest.TestCase):
+kundi PolicyTests(unittest.TestCase):
 
-    def test_event_loop_policy(self):
+    eleza test_event_loop_policy(self):
         policy = asyncio.AbstractEventLoopPolicy()
         self.assertRaises(NotImplementedError, policy.get_event_loop)
         self.assertRaises(NotImplementedError, policy.set_event_loop, object())
@@ -2495,9 +2495,9 @@ class PolicyTests(unittest.TestCase):
         self.assertRaises(NotImplementedError, policy.set_child_watcher,
                           object())
 
-    def test_get_event_loop(self):
+    eleza test_get_event_loop(self):
         policy = asyncio.DefaultEventLoopPolicy()
-        self.assertIsNone(policy._local._loop)
+        self.assertIsTupu(policy._local._loop)
 
         loop = policy.get_event_loop()
         self.assertIsInstance(loop, asyncio.AbstractEventLoop)
@@ -2506,10 +2506,10 @@ class PolicyTests(unittest.TestCase):
         self.assertIs(loop, policy.get_event_loop())
         loop.close()
 
-    def test_get_event_loop_calls_set_event_loop(self):
+    eleza test_get_event_loop_calls_set_event_loop(self):
         policy = asyncio.DefaultEventLoopPolicy()
 
-        with mock.patch.object(
+        ukijumuisha mock.patch.object(
                 policy, "set_event_loop",
                 wraps=policy.set_event_loop) as m_set_event_loop:
 
@@ -2522,15 +2522,15 @@ class PolicyTests(unittest.TestCase):
 
         loop.close()
 
-    def test_get_event_loop_after_set_none(self):
+    eleza test_get_event_loop_after_set_none(self):
         policy = asyncio.DefaultEventLoopPolicy()
-        policy.set_event_loop(None)
+        policy.set_event_loop(Tupu)
         self.assertRaises(RuntimeError, policy.get_event_loop)
 
     @mock.patch('asyncio.events.threading.current_thread')
-    def test_get_event_loop_thread(self, m_current_thread):
+    eleza test_get_event_loop_thread(self, m_current_thread):
 
-        def f():
+        eleza f():
             policy = asyncio.DefaultEventLoopPolicy()
             self.assertRaises(RuntimeError, policy.get_event_loop)
 
@@ -2538,14 +2538,14 @@ class PolicyTests(unittest.TestCase):
         th.start()
         th.join()
 
-    def test_new_event_loop(self):
+    eleza test_new_event_loop(self):
         policy = asyncio.DefaultEventLoopPolicy()
 
         loop = policy.new_event_loop()
         self.assertIsInstance(loop, asyncio.AbstractEventLoop)
         loop.close()
 
-    def test_set_event_loop(self):
+    eleza test_set_event_loop(self):
         policy = asyncio.DefaultEventLoopPolicy()
         old_loop = policy.get_event_loop()
 
@@ -2558,12 +2558,12 @@ class PolicyTests(unittest.TestCase):
         loop.close()
         old_loop.close()
 
-    def test_get_event_loop_policy(self):
+    eleza test_get_event_loop_policy(self):
         policy = asyncio.get_event_loop_policy()
         self.assertIsInstance(policy, asyncio.AbstractEventLoopPolicy)
         self.assertIs(policy, asyncio.get_event_loop_policy())
 
-    def test_set_event_loop_policy(self):
+    eleza test_set_event_loop_policy(self):
         self.assertRaises(
             AssertionError, asyncio.set_event_loop_policy, object())
 
@@ -2575,14 +2575,14 @@ class PolicyTests(unittest.TestCase):
         self.assertIsNot(policy, old_policy)
 
 
-class GetEventLoopTestsMixin:
+kundi GetEventLoopTestsMixin:
 
-    _get_running_loop_impl = None
-    _set_running_loop_impl = None
-    get_running_loop_impl = None
-    get_event_loop_impl = None
+    _get_running_loop_impl = Tupu
+    _set_running_loop_impl = Tupu
+    get_running_loop_impl = Tupu
+    get_event_loop_impl = Tupu
 
-    def setUp(self):
+    eleza setUp(self):
         self._get_running_loop_saved = events._get_running_loop
         self._set_running_loop_saved = events._set_running_loop
         self.get_running_loop_saved = events.get_running_loop
@@ -2603,20 +2603,20 @@ class GetEventLoopTestsMixin:
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
 
-        if sys.platform != 'win32':
+        ikiwa sys.platform != 'win32':
             watcher = asyncio.SafeChildWatcher()
             watcher.attach_loop(self.loop)
             asyncio.set_child_watcher(watcher)
 
-    def tearDown(self):
+    eleza tearDown(self):
         jaribu:
-            if sys.platform != 'win32':
-                asyncio.set_child_watcher(None)
+            ikiwa sys.platform != 'win32':
+                asyncio.set_child_watcher(Tupu)
 
             super().tearDown()
         mwishowe:
             self.loop.close()
-            asyncio.set_event_loop(None)
+            asyncio.set_event_loop(Tupu)
 
             events._get_running_loop = self._get_running_loop_saved
             events._set_running_loop = self._set_running_loop_saved
@@ -2628,49 +2628,49 @@ class GetEventLoopTestsMixin:
             asyncio.get_running_loop = self.get_running_loop_saved
             asyncio.get_event_loop = self.get_event_loop_saved
 
-    if sys.platform != 'win32':
+    ikiwa sys.platform != 'win32':
 
-        def test_get_event_loop_new_process(self):
+        eleza test_get_event_loop_new_process(self):
             # Issue bpo-32126: The multiprocessing module used by
             # ProcessPoolExecutor ni sio functional when the
             # multiprocessing.synchronize module cannot be imported.
             support.import_module('multiprocessing.synchronize')
 
-            async def main():
+            async eleza main():
                 pool = concurrent.futures.ProcessPoolExecutor()
                 result = await self.loop.run_in_executor(
                     pool, _test_get_event_loop_new_process__sub_proc)
                 pool.shutdown()
-                return result
+                rudisha result
 
             self.assertEqual(
                 self.loop.run_until_complete(main()),
                 'hello')
 
-    def test_get_event_loop_returns_running_loop(self):
-        class TestError(Exception):
+    eleza test_get_event_loop_returns_running_loop(self):
+        kundi TestError(Exception):
             pass
 
-        class Policy(asyncio.DefaultEventLoopPolicy):
-            def get_event_loop(self):
-                ashiria TestError
+        kundi Policy(asyncio.DefaultEventLoopPolicy):
+            eleza get_event_loop(self):
+                 ashiria TestError
 
         old_policy = asyncio.get_event_loop_policy()
         jaribu:
             asyncio.set_event_loop_policy(Policy())
             loop = asyncio.new_event_loop()
 
-            with self.assertRaises(TestError):
+            ukijumuisha self.assertRaises(TestError):
                 asyncio.get_event_loop()
-            asyncio.set_event_loop(None)
-            with self.assertRaises(TestError):
+            asyncio.set_event_loop(Tupu)
+            ukijumuisha self.assertRaises(TestError):
                 asyncio.get_event_loop()
 
-            with self.assertRaisesRegex(RuntimeError, 'no running'):
-                self.assertIs(asyncio.get_running_loop(), None)
-            self.assertIs(asyncio._get_running_loop(), None)
+            ukijumuisha self.assertRaisesRegex(RuntimeError, 'no running'):
+                self.assertIs(asyncio.get_running_loop(), Tupu)
+            self.assertIs(asyncio._get_running_loop(), Tupu)
 
-            async def func():
+            async eleza func():
                 self.assertIs(asyncio.get_event_loop(), loop)
                 self.assertIs(asyncio.get_running_loop(), loop)
                 self.assertIs(asyncio._get_running_loop(), loop)
@@ -2678,25 +2678,25 @@ class GetEventLoopTestsMixin:
             loop.run_until_complete(func())
 
             asyncio.set_event_loop(loop)
-            with self.assertRaises(TestError):
+            ukijumuisha self.assertRaises(TestError):
                 asyncio.get_event_loop()
 
-            asyncio.set_event_loop(None)
-            with self.assertRaises(TestError):
+            asyncio.set_event_loop(Tupu)
+            ukijumuisha self.assertRaises(TestError):
                 asyncio.get_event_loop()
 
         mwishowe:
             asyncio.set_event_loop_policy(old_policy)
-            if loop ni sio None:
+            ikiwa loop ni sio Tupu:
                 loop.close()
 
-        with self.assertRaisesRegex(RuntimeError, 'no running'):
-            self.assertIs(asyncio.get_running_loop(), None)
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'no running'):
+            self.assertIs(asyncio.get_running_loop(), Tupu)
 
-        self.assertIs(asyncio._get_running_loop(), None)
+        self.assertIs(asyncio._get_running_loop(), Tupu)
 
 
-class TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
+kundi TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
 
     _get_running_loop_impl = events._py__get_running_loop
     _set_running_loop_impl = events._py__set_running_loop
@@ -2706,11 +2706,11 @@ class TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
 
 jaribu:
     agiza _asyncio  # NoQA
-tatizo ImportError:
+except ImportError:
     pass
 isipokua:
 
-    class TestCGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
+    kundi TestCGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
 
         _get_running_loop_impl = events._c__get_running_loop
         _set_running_loop_impl = events._c__set_running_loop
@@ -2718,9 +2718,9 @@ isipokua:
         get_event_loop_impl = events._c_get_event_loop
 
 
-class TestServer(unittest.TestCase):
+kundi TestServer(unittest.TestCase):
 
-    def test_get_loop(self):
+    eleza test_get_loop(self):
         loop = asyncio.new_event_loop()
         self.addCleanup(loop.close)
         proto = MyProto(loop)
@@ -2730,23 +2730,23 @@ class TestServer(unittest.TestCase):
         loop.run_until_complete(server.wait_closed())
 
 
-class TestAbstractServer(unittest.TestCase):
+kundi TestAbstractServer(unittest.TestCase):
 
-    def test_close(self):
-        with self.assertRaises(NotImplementedError):
+    eleza test_close(self):
+        ukijumuisha self.assertRaises(NotImplementedError):
             events.AbstractServer().close()
 
-    def test_wait_closed(self):
+    eleza test_wait_closed(self):
         loop = asyncio.new_event_loop()
         self.addCleanup(loop.close)
 
-        with self.assertRaises(NotImplementedError):
+        ukijumuisha self.assertRaises(NotImplementedError):
             loop.run_until_complete(events.AbstractServer().wait_closed())
 
-    def test_get_loop(self):
-        with self.assertRaises(NotImplementedError):
+    eleza test_get_loop(self):
+        ukijumuisha self.assertRaises(NotImplementedError):
             events.AbstractServer().get_loop()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

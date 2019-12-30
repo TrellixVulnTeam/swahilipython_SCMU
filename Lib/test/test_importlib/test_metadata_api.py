@@ -133,7 +133,7 @@ kundi APITests(
             'dep4; extra == "extra1"',
             'dep5; (python_version < "3") na extra == "extra2"',
             ]
-        # It's agizaant that the environment marker expression be
+        # It's important that the environment marker expression be
         # wrapped kwenye parentheses to avoid the following 'and' binding more
         # tightly than some other part of the environment expression.
 

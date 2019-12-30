@@ -3,7 +3,7 @@
 
 """Fixer that changes buffer(...) into memoryview(...)."""
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 

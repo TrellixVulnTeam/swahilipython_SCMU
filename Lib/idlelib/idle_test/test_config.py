@@ -16,7 +16,7 @@ kutoka idlelib.idle_test.mock_idle agiza Func
 # Tests should sio depend on fortuitous user configurations.
 # They must sio affect actual user .cfg files.
 # Replace user parsers ukijumuisha empty parsers that cannot be saved
-# due to getting '' kama the filename when created.
+# due to getting '' as the filename when created.
 
 idleConf = config.idleConf
 usercfg = idleConf.userCfg
@@ -130,7 +130,7 @@ kundi IdleUserConfParserTest(unittest.TestCase):
         self.assertEqual(parser.sections(), [])
 
         # Should sio add duplicate section.
-        # Configparser ashirias DuplicateError, IdleParser not.
+        # Configparser raises DuplicateError, IdleParser not.
         parser.AddSection('Foo')
         parser.AddSection('Foo')
         parser.AddSection('Bar')
@@ -160,7 +160,7 @@ kundi IdleUserConfParserTest(unittest.TestCase):
         self.assertCountEqual(parser.sections(), ['Foo'])
 
     eleza test_save(self):
-        ukijumuisha tempfile.TemporaryDirectory() kama tdir:
+        ukijumuisha tempfile.TemporaryDirectory() as tdir:
             path = os.path.join(tdir, 'test.cfg')
             parser = self.new_parser(path)
             parser.AddSection('Foo')
@@ -191,7 +191,7 @@ kundi IdleConfTest(unittest.TestCase):
             idle_dir = os.path.abspath(sys.path[0])
         kila ctype kwenye conf.config_types:
             config_path = os.path.join(idle_dir, '../config-%s.def' % ctype)
-            ukijumuisha open(config_path, 'r') kama f:
+            ukijumuisha open(config_path, 'r') as f:
                 cls.config_string[ctype] = f.read()
 
         cls.orig_warn = config._warn
@@ -224,42 +224,42 @@ kundi IdleConfTest(unittest.TestCase):
         conf = self.new_config(_utest=Kweli)
 
         # Check normal way should success
-        ukijumuisha mock.patch('os.path.expanduser', rudisha_value='/home/foo'):
-            ukijumuisha mock.patch('os.path.exists', rudisha_value=Kweli):
+        ukijumuisha mock.patch('os.path.expanduser', return_value='/home/foo'):
+            ukijumuisha mock.patch('os.path.exists', return_value=Kweli):
                 self.assertEqual(conf.GetUserCfgDir(), '/home/foo/.idlerc')
 
         # Check os.getcwd should success
-        ukijumuisha mock.patch('os.path.expanduser', rudisha_value='~'):
-            ukijumuisha mock.patch('os.getcwd', rudisha_value='/home/foo/cpython'):
+        ukijumuisha mock.patch('os.path.expanduser', return_value='~'):
+            ukijumuisha mock.patch('os.getcwd', return_value='/home/foo/cpython'):
                 ukijumuisha mock.patch('os.mkdir'):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      '/home/foo/cpython/.idlerc')
 
-        # Check user dir sio exists na created failed should ashiria SystemExit
-        ukijumuisha mock.patch('os.path.join', rudisha_value='/path/not/exists'):
+        # Check user dir sio exists na created failed should  ashiria SystemExit
+        ukijumuisha mock.patch('os.path.join', return_value='/path/not/exists'):
             ukijumuisha self.assertRaises(SystemExit):
                 ukijumuisha self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
-    @unittest.skipIf(sio sys.platform.startswith('win'), 'this ni test kila Windows system')
+    @unittest.skipIf(not sys.platform.startswith('win'), 'this ni test kila Windows system')
     eleza test_get_user_cfg_dir_windows(self):
         # Test to get user config directory under Windows.
         conf = self.new_config(_utest=Kweli)
 
         # Check normal way should success
-        ukijumuisha mock.patch('os.path.expanduser', rudisha_value='C:\\foo'):
-            ukijumuisha mock.patch('os.path.exists', rudisha_value=Kweli):
+        ukijumuisha mock.patch('os.path.expanduser', return_value='C:\\foo'):
+            ukijumuisha mock.patch('os.path.exists', return_value=Kweli):
                 self.assertEqual(conf.GetUserCfgDir(), 'C:\\foo\\.idlerc')
 
         # Check os.getcwd should success
-        ukijumuisha mock.patch('os.path.expanduser', rudisha_value='~'):
-            ukijumuisha mock.patch('os.getcwd', rudisha_value='C:\\foo\\cpython'):
+        ukijumuisha mock.patch('os.path.expanduser', return_value='~'):
+            ukijumuisha mock.patch('os.getcwd', return_value='C:\\foo\\cpython'):
                 ukijumuisha mock.patch('os.mkdir'):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      'C:\\foo\\cpython\\.idlerc')
 
-        # Check user dir sio exists na created failed should ashiria SystemExit
-        ukijumuisha mock.patch('os.path.join', rudisha_value='/path/not/exists'):
+        # Check user dir sio exists na created failed should  ashiria SystemExit
+        ukijumuisha mock.patch('os.path.join', return_value='/path/not/exists'):
             ukijumuisha self.assertRaises(SystemExit):
                 ukijumuisha self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
@@ -270,7 +270,7 @@ kundi IdleConfTest(unittest.TestCase):
         # Mock out idle_dir
         idle_dir = '/home/foo'
         ukijumuisha mock.patch.dict({'__name__': '__foo__'}):
-            ukijumuisha mock.patch('os.path.dirname', rudisha_value=idle_dir):
+            ukijumuisha mock.patch('os.path.dirname', return_value=idle_dir):
                 conf.CreateConfigHandlers()
 
         # Check keys are equal
@@ -315,7 +315,7 @@ kundi IdleConfTest(unittest.TestCase):
     eleza test_save_user_cfg_files(self):
         conf = self.mock_config()
 
-        ukijumuisha mock.patch('idlelib.config.IdleUserConfParser.Save') kama m:
+        ukijumuisha mock.patch('idlelib.config.IdleUserConfParser.Save') as m:
             conf.SaveUserCfgFiles()
             self.assertEqual(m.call_count, len(conf.userCfg))
 
@@ -325,7 +325,7 @@ kundi IdleConfTest(unittest.TestCase):
         eq = self.assertEqual
         eq(conf.GetOption('main', 'EditorWindow', 'width'), '80')
         eq(conf.GetOption('main', 'EditorWindow', 'width', type='int'), 80)
-        ukijumuisha mock.patch('idlelib.config._warn') kama _warn:
+        ukijumuisha mock.patch('idlelib.config._warn') as _warn:
             eq(conf.GetOption('main', 'EditorWindow', 'font', type='int'), Tupu)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists'), Tupu)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists', default='NE'), 'NE')
@@ -761,7 +761,7 @@ kundi ChangesTest(unittest.TestCase):
     eleza test_save_default(self):  # Cover 2nd na 3rd false branches.
         changes = self.changes
         changes.add_option('main', 'Indent', 'use-spaces', '1')
-        # save_option rudishas Uongo; cfg_type_changed remains Uongo.
+        # save_option returns Uongo; cfg_type_changed remains Uongo.
 
     # TODO: test that save_all calls usercfg Saves.
 
@@ -788,14 +788,14 @@ kundi WarningTest(unittest.TestCase):
     eleza test_warn(self):
         Equal = self.assertEqual
         config._warned = set()
-        ukijumuisha captured_stderr() kama stderr:
+        ukijumuisha captured_stderr() as stderr:
             config._warn('warning', 'key')
         Equal(config._warned, {('warning','key')})
         Equal(stderr.getvalue(), 'warning'+'\n')
-        ukijumuisha captured_stderr() kama stderr:
+        ukijumuisha captured_stderr() as stderr:
             config._warn('warning', 'key')
         Equal(stderr.getvalue(), '')
-        ukijumuisha captured_stderr() kama stderr:
+        ukijumuisha captured_stderr() as stderr:
             config._warn('warn2', 'yek')
         Equal(config._warned, {('warning','key'), ('warn2','yek')})
         Equal(stderr.getvalue(), 'warn2'+'\n')

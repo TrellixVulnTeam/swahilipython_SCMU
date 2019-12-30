@@ -4,22 +4,22 @@ From http://bugs.python.org/issue6717
 A misbehaving trace hook can trigger a segfault by exceeding the recursion
 limit.
 """
-import sys
+agiza sys
 
 
-def x():
+eleza x():
     pass
 
-def g(*args):
-    if True: # change to True to crash interpreter
+eleza g(*args):
+    ikiwa Kweli: # change to Kweli to crash interpreter
         jaribu:
             x()
         tatizo:
             pass
-    return g
+    rudisha g
 
-def f():
-    print(sys.getrecursionlimit())
+eleza f():
+    andika(sys.getrecursionlimit())
     f()
 
 sys.settrace(g)

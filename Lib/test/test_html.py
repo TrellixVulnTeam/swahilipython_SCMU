@@ -17,7 +17,7 @@ kundi HtmlTests(unittest.TestCase):
 
     eleza test_unescape(self):
         numeric_formats = ['&#%d', '&#%d;', '&#x%x', '&#x%x;']
-        errmsg = 'unescape(%r) should have rudishaed %r'
+        errmsg = 'unescape(%r) should have returned %r'
         eleza check(text, expected):
             self.assertEqual(html.unescape(text), expected,
                              msg=errmsg % (text, expected))
@@ -76,7 +76,7 @@ kundi HtmlTests(unittest.TestCase):
             check(e, '&')
         kila e kwenye ['&Amp', '&Amp;']:
             check(e, e)
-        # check that non-existent named entities are rudishaed unchanged
+        # check that non-existent named entities are returned unchanged
         check('&svadilfari;', '&svadilfari;')
         # the following examples are kwenye the html5 specs
         check('&notit', '¬it')

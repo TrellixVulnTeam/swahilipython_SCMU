@@ -282,7 +282,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(HAMLET_SCENE, y1 + y2)
 
     eleza test_compressincremental(self):
-        # compress object kwenye steps, decompress object kama one-shot
+        # compress object kwenye steps, decompress object as one-shot
         data = HAMLET_SCENE * 128
         co = zlib.compressobj()
         bufs = []
@@ -458,7 +458,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                 tatizo:
                     andika("Error kila flush mode={}, level={}"
                           .format(sync, level))
-                    ashiria
+                    raise
                 self.assertEqual(zlib.decompress(b''.join([a,b,c,d])),
                                  data, ("Decompress failed: flush "
                                         "mode=%i, level=%i") % (sync, level))
@@ -480,11 +480,11 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         jaribu:
             # In 2.3 na later, WichmannHill ni the RNG of the bug report
             gen = random.WichmannHill()
-        tatizo AttributeError:
+        except AttributeError:
             jaribu:
                 # 2.2 called it Random
                 gen = random.Random()
-            tatizo AttributeError:
+            except AttributeError:
                 # others might simply have a single RNG
                 gen = random
         gen.seed(1)
@@ -605,7 +605,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         uncomp = dco.decompress(comp) + dco.flush()
         self.assertEqual(zdict, uncomp)
 
-    eleza test_flush_with_freed_input(self):
+    eleza test_flush_with_freed_uliza(self):
         # Issue #16411: decompressor accesses input to last decompress() call
         # kwenye flush(), even ikiwa this object has been freed kwenye the meanwhile.
         input1 = b'abcdefghijklmnopqrstuvwxyz'
@@ -769,12 +769,12 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     eleza test_wbits(self):
         # wbits=0 only supported since zlib v1.2.3.5
-        # Register "1.2.3" kama "1.2.3.0"
+        # Register "1.2.3" as "1.2.3.0"
         # ama "1.2.0-linux","1.2.0.f","1.2.0.f-linux"
         v = zlib.ZLIB_RUNTIME_VERSION.split('-', 1)[0].split('.')
         ikiwa len(v) < 4:
             v.append('0')
-        lasivyo sio v[-1].isnumeric():
+        elikiwa sio v[-1].isnumeric():
             v[-1] = '0'
 
         v = tuple(map(int, v))
@@ -876,7 +876,7 @@ LORD POLONIUS
        Bear't that the opposed may beware of thee.
        Give every man thy ear, but few thy voice;
        Take each man's censure, but reserve thy judgment.
-       Costly thy habit kama thy purse can buy,
+       Costly thy habit as thy purse can buy,
        But sio express'd kwenye fancy; rich, sio gaudy;
        For the apparel oft proclaims the man,
        And they kwenye France of the best rank na station
@@ -885,7 +885,7 @@ LORD POLONIUS
        For loan oft loses both itself na friend,
        And borrowing dulls the edge of husbandry.
        This above all: to thine ownself be true,
-       And it must follow, kama the night the day,
+       And it must follow, as the night the day,
        Thou canst sio then be false to any man.
        Farewell: my blessing season this kwenye thee!
 

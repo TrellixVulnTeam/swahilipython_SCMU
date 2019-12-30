@@ -18,7 +18,7 @@ kundi TestSpwdRoot(unittest.TestCase):
     eleza test_getspnam(self):
         entries = spwd.getspall()
         ikiwa sio entries:
-            self.skipTest('empty shadow pitaword database')
+            self.skipTest('empty shadow password database')
         random_name = entries[0].sp_namp
         entry = spwd.getspnam(random_name)
         self.assertIsInstance(entry, spwd.struct_spwd)
@@ -42,7 +42,7 @@ kundi TestSpwdRoot(unittest.TestCase):
         self.assertEqual(entry.sp_expire, entry[7])
         self.assertIsInstance(entry.sp_flag, int)
         self.assertEqual(entry.sp_flag, entry[8])
-        ukijumuisha self.assertRaises(KeyError) kama cx:
+        ukijumuisha self.assertRaises(KeyError) as cx:
             spwd.getspnam('invalid user name')
         self.assertEqual(str(cx.exception), "'getspnam(): name sio found'")
         self.assertRaises(TypeError, spwd.getspnam)
@@ -50,8 +50,8 @@ kundi TestSpwdRoot(unittest.TestCase):
         self.assertRaises(TypeError, spwd.getspnam, random_name, 0)
         jaribu:
             bytes_name = os.fsencode(random_name)
-        tatizo UnicodeEncodeError:
-            pita
+        except UnicodeEncodeError:
+            pass
         isipokua:
             self.assertRaises(TypeError, spwd.getspnam, bytes_name)
 
@@ -63,9 +63,9 @@ kundi TestSpwdNonRoot(unittest.TestCase):
     eleza test_getspnam_exception(self):
         name = 'bin'
         jaribu:
-            ukijumuisha self.assertRaises(PermissionError) kama cm:
+            ukijumuisha self.assertRaises(PermissionError) as cm:
                 spwd.getspnam(name)
-        tatizo KeyError kama exc:
+        except KeyError as exc:
             self.skipTest("spwd entry %r doesn't exist: %s" % (name, exc))
 
 

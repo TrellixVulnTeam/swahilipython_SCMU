@@ -5,7 +5,7 @@ agiza sys
 agiza types
 agiza unittest
 
-kutoka . agiza util kama test_util
+kutoka . agiza util as test_util
 
 
 kundi CollectInit:
@@ -89,7 +89,7 @@ kundi LazyLoaderTests(unittest.TestCase):
         self.assertEqual(module, importer.loaded)
 
     eleza test_attr_unchanged(self):
-        # An attribute only mutated kama a side-effect of agiza should sio be
+        # An attribute only mutated as a side-effect of agiza should sio be
         # changed needlessly.
         module = self.new_module()
         self.assertEqual(TestingImporter.mutated_name, module.__name__)
@@ -108,7 +108,7 @@ kundi LazyLoaderTests(unittest.TestCase):
         self.assertEqual('bogus', module.__name__)
 
     eleza test_mutated_attr(self):
-        # Changing an attribute that comes into existence after an agiza
+        # Changing an attribute that comes into existence after an import
         # should persist.
         module = self.new_module()
         module.attr = 6
@@ -137,7 +137,7 @@ kundi LazyLoaderTests(unittest.TestCase):
         ukijumuisha test_util.uncache(TestingImporter.module_name):
             module = self.new_module()
             sys.modules[TestingImporter.module_name] = module
-            # Force the load; just care that no exception ni ashiriad.
+            # Force the load; just care that no exception ni raised.
             module.__name__
 
 

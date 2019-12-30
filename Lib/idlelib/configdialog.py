@@ -2,7 +2,7 @@
 
 Customize font faces, sizes, na colorization attributes.  Set indentation
 defaults.  Customize keybindings.  Colorization na keybindings can be
-saved kama user defined sets.  Select startup options including shell/editor
+saved as user defined sets.  Select startup options including shell/editor
 and default window size.  Define additional help sources.
 
 Note that tab width kwenye IDLE ni currently fixed at eight due to Tk issues.
@@ -18,8 +18,8 @@ kutoka tkinter agiza (Toplevel, Listbox, Text, Scale, Canvas,
                      HORIZONTAL, VERTICAL, ANCHOR, ACTIVE, END)
 kutoka tkinter.ttk agiza (Frame, LabelFrame, Button, Checkbutton, Entry, Label,
                          OptionMenu, Notebook, Radiobutton, Scrollbar, Style)
-agiza tkinter.colorchooser kama tkColorChooser
-agiza tkinter.font kama tkFont
+agiza tkinter.colorchooser as tkColorChooser
+agiza tkinter.font as tkFont
 kutoka tkinter agiza messagebox
 
 kutoka idlelib.config agiza idleConf, ConfigChanges
@@ -106,7 +106,7 @@ kundi ConfigDialog(Toplevel):
 
         Methods:
             create_action_buttons
-            load_configs: Load pages tatizo kila extensions.
+            load_configs: Load pages except kila extensions.
             activate_config_changes: Tell editors to reload.
         """
         self.note = note = Notebook(self)
@@ -252,7 +252,7 @@ kundi ConfigDialog(Toplevel):
         Not all changes take effect immediately - some may require restarting IDLE.
         This depends on each extension's implementation.
 
-        All values are treated kama text, na it ni up to the user to supply
+        All values are treated as text, na it ni up to the user to supply
         reasonable values. The only exception to this are the 'enable*' options,
         which are boolean, na can be toggled ukijumuisha a Kweli/Uongo button.
 
@@ -324,18 +324,18 @@ kundi ConfigDialog(Toplevel):
                 jaribu:
                     def_obj = {'Kweli':Kweli, 'Uongo':Uongo}[def_str]
                     opt_type = 'bool'
-                tatizo KeyError:
+                except KeyError:
                     jaribu:
                         def_obj = int(def_str)
                         opt_type = 'int'
-                    tatizo ValueError:
+                    except ValueError:
                         def_obj = def_str
                         opt_type = Tupu
                 jaribu:
                     value = self.ext_userCfg.Get(
                             ext_name, opt_name, type=opt_type, raw=Kweli,
                             default=def_obj)
-                tatizo ValueError:  # Need this until .Get fixed.
+                except ValueError:  # Need this until .Get fixed.
                     value = def_obj  # Bad values overwritten by entry.
                 var = StringVar(self)
                 var.set(str(value))
@@ -377,7 +377,7 @@ kundi ConfigDialog(Toplevel):
                 Checkbutton(entry_area, variable=var,
                             onvalue='Kweli', offvalue='Uongo', width=8
                             ).grid(row=row, column=1, sticky=W, padx=7)
-            lasivyo opt['type'] == 'int':
+            elikiwa opt['type'] == 'int':
                 Entry(entry_area, textvariable=var, validate='key',
                       validatecommand=(self.is_int, '%P'), width=10
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
@@ -386,12 +386,12 @@ kundi ConfigDialog(Toplevel):
                 # Limit size to fit non-expanding space ukijumuisha larger font.
                 Entry(entry_area, textvariable=var, width=15
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
-        rudisha
+        return
 
     eleza set_extension_value(self, section, opt):
         """Return Kweli ikiwa the configuration was added ama changed.
 
-        If the value ni the same kama the default, then remove it
+        If the value ni the same as the default, then remove it
         kutoka user config file.
         """
         name = opt['name']
@@ -399,7 +399,7 @@ kundi ConfigDialog(Toplevel):
         value = opt['var'].get().strip() ama default
         opt['var'].set(value)
         # ikiwa self.defaultCfg.has_section(section):
-        # Currently, always true; ikiwa not, indent to rudisha.
+        # Currently, always true; ikiwa not, indent to return.
         ikiwa (value == default):
             rudisha self.ext_userCfg.RemoveOption(section, name)
         # Set the option.
@@ -482,13 +482,13 @@ kundi FontPage(Frame):
     eleza create_page_font_tab(self):
         """Return frame of widgets kila Font/Tabs tab.
 
-        Fonts: Enable users to provisionally change font face, size, ama
+        Fonts: Enable users to provisionally change font face, size, or
         boldness na to see the consequence of proposed choices.  Each
         action set 3 options kwenye changes structuree na changes the
-        corresponding aspect of the font sample on this page na
+        corresponding aspect of the font sample on this page and
         highlight sample on highlight page.
 
-        Function load_font_cfg initializes font vars na widgets kutoka
+        Function load_font_cfg initializes font vars na widgets from
         idleConf entries na tk.
 
         Fontlist: mouse button 1 click ama up ama down key invoke
@@ -567,7 +567,7 @@ kundi FontPage(Frame):
                 text='Python Standard: 4 Spaces!')
         self.indent_scale = Scale(
                 frame_indent, variable=self.space_num,
-                orient='horizontal', tickinterval=2, kutoka_=2, to=16)
+                orient='horizontal', tickinterval=2, from_=2, to=16)
 
         # Grid na pack widgets:
         self.columnconfigure(1, weight=1)
@@ -616,8 +616,8 @@ kundi FontPage(Frame):
             self.fontlist.select_set(current_font_index)
             self.fontlist.select_anchor(current_font_index)
             self.fontlist.activate(current_font_index)
-        tatizo ValueError:
-            pita
+        except ValueError:
+            pass
         # Set font size dropdown.
         self.sizelist.SetMenu(('7', '8', '9', '10', '11', '12', '13', '14',
                                '16', '18', '20', '22', '25', '29', '34', '40'),
@@ -629,7 +629,7 @@ kundi FontPage(Frame):
     eleza var_changed_font(self, *params):
         """Store changes to font attributes.
 
-        When one font attribute changes, save them all, kama they are
+        When one font attribute changes, save them all, as they are
         sio independent kutoka each other. In particular, when we are
         overriding the default font, we need to write out everything.
         """
@@ -696,13 +696,13 @@ kundi HighPage(Frame):
         Enable users to provisionally change foreground na background
         colors applied to textual tags.  Color mappings are stored in
         complete listings called themes.  Built-in themes in
-        idlelib/config-highlight.eleza are fixed kama far kama the dialog is
-        concerned. Any theme can be used kama the base kila a new custom
+        idlelib/config-highlight.eleza are fixed as far as the dialog is
+        concerned. Any theme can be used as the base kila a new custom
         theme, stored kwenye .idlerc/config-highlight.cfg.
 
         Function load_theme_cfg() initializes tk variables na theme
         lists na calls paint_theme_sample() na set_highlight_target()
-        kila the current theme.  Radiobuttons builtin_theme_on na
+        kila the current theme.  Radiobuttons builtin_theme_on and
         custom_theme_on toggle var theme_source, which controls ikiwa the
         current set of colors are kutoka a builtin ama custom theme.
         DynOptionMenus builtinlist na customlist contain lists of the
@@ -721,8 +721,8 @@ kundi HighPage(Frame):
 
         Note: set_color_sample() ni called kutoka many places na ni often
         called more than once when a change ni made.  It ni invoked when
-        foreground ama background ni selected (radiobuttons), kutoka
-        paint_theme_sample() (theme ni changed ama load_cfg ni called), na
+        foreground ama background ni selected (radiobuttons), from
+        paint_theme_sample() (theme ni changed ama load_cfg ni called), and
         kutoka set_highlight_target() (target tag ni changed ama load_cfg called).
 
         Button delete_custom invokes delete_custom() to delete
@@ -732,7 +732,7 @@ kundi HighPage(Frame):
         na its colors to idleConf.userCfg['highlight'].
 
         Radiobuttons fg_on na bg_on toggle var fg_bg_toggle to control
-        ikiwa the current selected color kila a tag ni kila the foreground ama
+        ikiwa the current selected color kila a tag ni kila the foreground or
         background.
 
         DynOptionMenu targetlist contains a readable description of the
@@ -749,14 +749,14 @@ kundi HighPage(Frame):
         Note: The font kwenye highlight_sample ni set through the config in
         the fonts tab.
 
-        In other words, a tag can be selected either kutoka targetlist ama
+        In other words, a tag can be selected either kutoka targetlist or
         by clicking on the sample text within highlight_sample.  The
         plane (foreground/background) ni selected via the radiobutton.
         Together, these two (tag na plane) control what color is
         shown kwenye set_color_sample() kila the current theme.  Button set_color
         invokes get_color() which displays a ColorChooser to change the
         color kila the selected tag/plane.  If a new color ni picked,
-        it will be saved to changes na the highlight_sample na
+        it will be saved to changes na the highlight_sample and
         frame background will be updated.
 
         Tk Variables:
@@ -902,7 +902,7 @@ kundi HighPage(Frame):
                 text='Background', command=self.set_color_sample_binding)
         self.fg_bg_toggle.set(1)
         self.button_save_custom = Button(
-                frame_custom, text='Save kama New Custom Theme',
+                frame_custom, text='Save as New Custom Theme',
                 command=self.save_as_new_theme)
         # frame_theme.
         theme_type_title = Label(frame_theme, text='Select : ')
@@ -1003,8 +1003,8 @@ kundi HighPage(Frame):
         """
         old_themes = ('IDLE Classic', 'IDLE New')
         value = self.builtin_name.get()
-        ikiwa value haiko kwenye old_themes:
-            ikiwa idleConf.GetOption('main', 'Theme', 'name') haiko kwenye old_themes:
+        ikiwa value sio kwenye old_themes:
+            ikiwa idleConf.GetOption('main', 'Theme', 'name') sio kwenye old_themes:
                 changes.add_option('main', 'Theme', 'name', old_themes[0])
             changes.add_option('main', 'Theme', 'name2', value)
             self.theme_message['text'] = 'New theme, see Help'
@@ -1058,7 +1058,7 @@ kundi HighPage(Frame):
             button_delete_custom
             custom_theme_on
 
-        Called kutoka:
+        Called from:
             handler kila builtin_theme_on na custom_theme_on
             delete_custom
             create_new
@@ -1101,11 +1101,11 @@ kundi HighPage(Frame):
         ikiwa color_string na (color_string != prev_color):
             # User didn't cancel na they chose a new color.
             ikiwa self.theme_source.get():  # Current theme ni a built-in.
-                message = ('Your changes will be saved kama a new Custom Theme. '
+                message = ('Your changes will be saved as a new Custom Theme. '
                            'Enter a name kila your new Custom Theme below.')
                 new_theme = self.get_new_theme_name(message)
                 ikiwa sio new_theme:  # User cancelled custom theme creation.
-                    rudisha
+                    return
                 isipokua:  # Create new custom theme based on previously active theme.
                     self.create_new(new_theme)
                     self.color.set(color_string)
@@ -1196,7 +1196,7 @@ kundi HighPage(Frame):
         Methods:
             set_color_sample
 
-        Called kutoka:
+        Called from:
             var_changed_highlight_target
             load_theme_cfg
         """
@@ -1251,7 +1251,7 @@ kundi HighPage(Frame):
         Methods:
             set_color_sample
 
-        Called kutoka:
+        Called from:
             var_changed_builtin_name
             var_changed_custom_name
             load_theme_cfg
@@ -1296,7 +1296,7 @@ kundi HighPage(Frame):
         """Handle event to delete custom theme.
 
         The current theme ni deactivated na the default theme is
-        activated.  The custom theme ni permanently removed kutoka
+        activated.  The custom theme ni permanently removed from
         the config file.
 
         Attributes accessed:
@@ -1318,7 +1318,7 @@ kundi HighPage(Frame):
         delmsg = 'Are you sure you wish to delete the theme %r ?'
         ikiwa sio self.askyesno(
                 'Delete Theme',  delmsg % theme_name, parent=self):
-            rudisha
+            return
         self.cd.deactivate_current_config()
         # Remove theme kutoka changes, config, na file.
         changes.delete_section('highlight', theme_name)
@@ -1355,7 +1355,7 @@ kundi KeysPage(Frame):
         keybindings (shortcut keys). Except kila features implemented as
         extensions, keybindings are stored kwenye complete sets called
         keysets. Built-in keysets kwenye idlelib/config-keys.eleza are fixed
-        kama far kama the dialog ni concerned. Any keyset can be used kama the
+        as far as the dialog ni concerned. Any keyset can be used as the
         base kila a new custom keyset, stored kwenye .idlerc/config-keys.cfg.
 
         Function load_key_cfg() initializes tk variables na keyset
@@ -1479,7 +1479,7 @@ kundi KeysPage(Frame):
                 frames[1], text='Delete Custom Key Set',
                 command=self.delete_custom_keys)
         self.button_save_custom_keys = Button(
-                frames[1], text='Save kama New Custom Key Set',
+                frames[1], text='Save as New Custom Key Set',
                 command=self.save_as_new_key_set)
         self.keys_message = Label(frames[0], borderwidth=2)
 
@@ -1548,8 +1548,8 @@ kundi KeysPage(Frame):
             'IDLE Classic OSX',
         )
         value = self.builtin_name.get()
-        ikiwa value haiko kwenye old_keys:
-            ikiwa idleConf.GetOption('main', 'Keys', 'name') haiko kwenye old_keys:
+        ikiwa value sio kwenye old_keys:
+            ikiwa idleConf.GetOption('main', 'Keys', 'name') sio kwenye old_keys:
                 changes.add_option('main', 'Keys', 'name', old_keys[0])
             changes.add_option('main', 'Keys', 'name2', value)
             self.keys_message['text'] = 'New key set, see Help'
@@ -1625,13 +1625,13 @@ kundi KeysPage(Frame):
                 current_key_sequences).result
         ikiwa new_keys:
             ikiwa self.keyset_source.get():  # Current key set ni a built-in.
-                message = ('Your changes will be saved kama a new Custom Key Set.'
+                message = ('Your changes will be saved as a new Custom Key Set.'
                            ' Enter a name kila your new Custom Key Set below.')
                 new_keyset = self.get_new_keys_name(message)
                 ikiwa sio new_keyset:  # User cancelled custom key set creation.
                     self.bindingslist.select_set(list_index)
                     self.bindingslist.select_anchor(list_index)
-                    rudisha
+                    return
                 isipokua:  # Create new custom key set based on previously active key set.
                     self.create_new_key_set(new_keyset)
             self.bindingslist.delete(list_index)
@@ -1741,7 +1741,7 @@ kundi KeysPage(Frame):
     eleza delete_custom_keys(self):
         """Handle event to delete a custom key set.
 
-        Applying the delete deactivates the current configuration na
+        Applying the delete deactivates the current configuration and
         reverts to the default.  The custom key set ni permanently
         deleted kutoka the config file.
         """
@@ -1749,7 +1749,7 @@ kundi KeysPage(Frame):
         delmsg = 'Are you sure you wish to delete the key set %r ?'
         ikiwa sio self.askyesno(
                 'Delete Key Set',  delmsg % keyset_name, parent=self):
-            rudisha
+            return
         self.cd.deactivate_current_config()
         # Remove key set kutoka changes, config, na file.
         changes.delete_section('keys', keyset_name)
@@ -1857,7 +1857,7 @@ kundi GenPage(Frame):
                     (*)helplist: ListBox
                     scroll_helplist: Scrollbar
         """
-        # Integer values need StringVar because int('') ashirias.
+        # Integer values need StringVar because int('') raises.
         self.startup_edit = tracers.add(
                 IntVar(self), ('main', 'General', 'editor-on-startup'))
         self.win_width = tracers.add(
@@ -2203,8 +2203,8 @@ kundi VarTrace:
 
         Args:
             var: Tk variable instance.
-            callback: Either function name to be used kama a callback
-                ama a tuple ukijumuisha IdleConf config-type, section, na
+            callback: Either function name to be used as a callback
+                ama a tuple ukijumuisha IdleConf config-type, section, and
                 option names used kwenye the default callback.
 
         Return:
@@ -2243,7 +2243,7 @@ tracers = VarTrace()
 help_common = '''\
 When you click either the Apply ama Ok buttons, settings kwenye this
 dialog that are different kutoka IDLE's default are saved in
-a .idlerc directory kwenye your home directory. Except kama noted,
+a .idlerc directory kwenye your home directory. Except as noted,
 these changes apply to all versions of IDLE installed on this
 machine. [Cancel] only cancels changes made since the last save.
 '''
@@ -2253,7 +2253,7 @@ Font sample: This shows what a selection of Basic Multilingual Plane
 unicode characters look like kila the current font selection.  If the
 selected font does sio define a character, Tk attempts to find another
 font that does.  Substitute glyphs depend on what ni available on a
-particular system na will sio necessarily have the same size kama the
+particular system na will sio necessarily have the same size as the
 font selected.  Line contains 20 characters up to Devanagari, 14 for
 Tamil, na 10 kila East Asia.
 
@@ -2268,13 +2268,13 @@ You can edit the font sample. Changes remain until IDLE ni closed.
     'Highlights': '''
 Highlighting:
 The IDLE Dark color theme ni new kwenye October 2015.  It can only
-be used ukijumuisha older IDLE releases ikiwa it ni saved kama a custom
+be used ukijumuisha older IDLE releases ikiwa it ni saved as a custom
 theme, ukijumuisha a different name.
 ''',
     'Keys': '''
 Keys:
 The IDLE Modern Unix key set ni new kwenye June 2016.  It can only
-be used ukijumuisha older IDLE releases ikiwa it ni saved kama a custom
+be used ukijumuisha older IDLE releases ikiwa it ni saved as a custom
 key set, ukijumuisha a different name.
 ''',
      'General': '''
@@ -2308,7 +2308,7 @@ eleza is_int(s):
     jaribu:
         int(s)
         rudisha Kweli
-    tatizo ValueError:
+    except ValueError:
         rudisha Uongo
 
 
@@ -2352,7 +2352,7 @@ kundi VerticalScrolledFrame(Frame):
                 canvas.itemconfigure(interior_id, width=canvas.winfo_width())
         canvas.bind('<Configure>', _configure_canvas)
 
-        rudisha
+        return
 
 
 ikiwa __name__ == '__main__':

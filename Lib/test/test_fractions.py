@@ -19,13 +19,13 @@ kundi DummyFloat(object):
 
     eleza __init__(self, value):
         ikiwa sio isinstance(value, float):
-            ashiria TypeError("DummyFloat can only be initialized kutoka float")
+             ashiria TypeError("DummyFloat can only be initialized kutoka float")
         self.value = value
 
     eleza _richcmp(self, other, op):
         ikiwa isinstance(other, numbers.Rational):
-            rudisha op(F.kutoka_float(self.value), other)
-        lasivyo isinstance(other, DummyFloat):
+            rudisha op(F.from_float(self.value), other)
+        elikiwa isinstance(other, DummyFloat):
             rudisha op(self.value, other.value)
         isipokua:
             rudisha NotImplemented
@@ -56,22 +56,22 @@ kundi DummyRational(object):
 
     eleza __eq__(self, other):
         ikiwa isinstance(other, fractions.Fraction):
-            rudisha (self.num == other._numerator na
+            rudisha (self.num == other._numerator and
                     self.den == other._denominator)
         isipokua:
             rudisha NotImplemented
 
     eleza __lt__(self, other):
-        rudisha(self.num * other._denominator < self.den * other._numerator)
+        return(self.num * other._denominator < self.den * other._numerator)
 
     eleza __gt__(self, other):
-        rudisha(self.num * other._denominator > self.den * other._numerator)
+        return(self.num * other._denominator > self.den * other._numerator)
 
     eleza __le__(self, other):
-        rudisha(self.num * other._denominator <= self.den * other._numerator)
+        return(self.num * other._denominator <= self.den * other._numerator)
 
     eleza __ge__(self, other):
-        rudisha(self.num * other._denominator >= self.den * other._numerator)
+        return(self.num * other._denominator >= self.den * other._numerator)
 
     # this kundi ni kila testing comparisons; conversion to float
     # should never be used kila a comparison, since it loses accuracy
@@ -124,13 +124,13 @@ kundi FractionTest(unittest.TestCase):
 
     eleza assertRaisesMessage(self, exc_type, message,
                             callable, *args, **kwargs):
-        """Asserts that callable(*args, **kwargs) ashirias exc_type(message)."""
+        """Asserts that callable(*args, **kwargs) raises exc_type(message)."""
         jaribu:
             callable(*args, **kwargs)
-        tatizo exc_type kama e:
+        except exc_type as e:
             self.assertEqual(message, str(e))
         isipokua:
-            self.fail("%s sio ashiriad" % exc_type.__name__)
+            self.fail("%s sio raised" % exc_type.__name__)
 
     eleza testInit(self):
         self.assertEqual((0, 1), _components(F()))
@@ -218,7 +218,7 @@ kundi FractionTest(unittest.TestCase):
             ValueError, "Invalid literal kila Fraction: '+ 3/2'",
             F, "+ 3/2")
         self.assertRaisesMessage(
-            # Avoid treating '.' kama a regex special character.
+            # Avoid treating '.' as a regex special character.
             ValueError, "Invalid literal kila Fraction: '3a2'",
             F, "3a2")
         self.assertRaisesMessage(
@@ -247,60 +247,60 @@ kundi FractionTest(unittest.TestCase):
         r._numerator = 4
         r._denominator = 2
         self.assertEqual((4, 2), _components(r))
-        # Which komas some agizaant operations:
+        # Which komas some important operations:
         self.assertNotEqual(F(4, 2), r)
 
     eleza testFromFloat(self):
-        self.assertRaises(TypeError, F.kutoka_float, 3+4j)
-        self.assertEqual((10, 1), _components(F.kutoka_float(10)))
+        self.assertRaises(TypeError, F.from_float, 3+4j)
+        self.assertEqual((10, 1), _components(F.from_float(10)))
         bigint = 1234567890123456789
-        self.assertEqual((bigint, 1), _components(F.kutoka_float(bigint)))
-        self.assertEqual((0, 1), _components(F.kutoka_float(-0.0)))
-        self.assertEqual((10, 1), _components(F.kutoka_float(10.0)))
-        self.assertEqual((-5, 2), _components(F.kutoka_float(-2.5)))
+        self.assertEqual((bigint, 1), _components(F.from_float(bigint)))
+        self.assertEqual((0, 1), _components(F.from_float(-0.0)))
+        self.assertEqual((10, 1), _components(F.from_float(10.0)))
+        self.assertEqual((-5, 2), _components(F.from_float(-2.5)))
         self.assertEqual((99999999999999991611392, 1),
-                         _components(F.kutoka_float(1e23)))
-        self.assertEqual(float(10**23), float(F.kutoka_float(1e23)))
+                         _components(F.from_float(1e23)))
+        self.assertEqual(float(10**23), float(F.from_float(1e23)))
         self.assertEqual((3602879701896397, 1125899906842624),
-                         _components(F.kutoka_float(3.2)))
-        self.assertEqual(3.2, float(F.kutoka_float(3.2)))
+                         _components(F.from_float(3.2)))
+        self.assertEqual(3.2, float(F.from_float(3.2)))
 
         inf = 1e1000
         nan = inf - inf
         # bug 16469: error types should be consistent ukijumuisha float -> int
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
-            F.kutoka_float, inf)
+            F.from_float, inf)
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
-            F.kutoka_float, -inf)
+            F.from_float, -inf)
         self.assertRaisesMessage(
             ValueError, "cannot convert NaN to integer ratio",
-            F.kutoka_float, nan)
+            F.from_float, nan)
 
     eleza testFromDecimal(self):
-        self.assertRaises(TypeError, F.kutoka_decimal, 3+4j)
-        self.assertEqual(F(10, 1), F.kutoka_decimal(10))
-        self.assertEqual(F(0), F.kutoka_decimal(Decimal("-0")))
-        self.assertEqual(F(5, 10), F.kutoka_decimal(Decimal("0.5")))
-        self.assertEqual(F(5, 1000), F.kutoka_decimal(Decimal("5e-3")))
-        self.assertEqual(F(5000), F.kutoka_decimal(Decimal("5e3")))
+        self.assertRaises(TypeError, F.from_decimal, 3+4j)
+        self.assertEqual(F(10, 1), F.from_decimal(10))
+        self.assertEqual(F(0), F.from_decimal(Decimal("-0")))
+        self.assertEqual(F(5, 10), F.from_decimal(Decimal("0.5")))
+        self.assertEqual(F(5, 1000), F.from_decimal(Decimal("5e-3")))
+        self.assertEqual(F(5000), F.from_decimal(Decimal("5e3")))
         self.assertEqual(1 - F(1, 10**30),
-                         F.kutoka_decimal(Decimal("0." + "9" * 30)))
+                         F.from_decimal(Decimal("0." + "9" * 30)))
 
         # bug 16469: error types should be consistent ukijumuisha decimal -> int
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
-            F.kutoka_decimal, Decimal("inf"))
+            F.from_decimal, Decimal("inf"))
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
-            F.kutoka_decimal, Decimal("-inf"))
+            F.from_decimal, Decimal("-inf"))
         self.assertRaisesMessage(
             ValueError, "cannot convert NaN to integer ratio",
-            F.kutoka_decimal, Decimal("nan"))
+            F.from_decimal, Decimal("nan"))
         self.assertRaisesMessage(
             ValueError, "cannot convert NaN to integer ratio",
-            F.kutoka_decimal, Decimal("snan"))
+            F.from_decimal, Decimal("snan"))
 
     eleza test_as_integer_ratio(self):
         self.assertEqual(F(4, 6).as_integer_ratio(), (2, 3))
@@ -586,9 +586,9 @@ kundi FractionTest(unittest.TestCase):
         self.assertUongo(F(144, -89) <= float('nan'))
 
     eleza testBigFloatComparisons(self):
-        # Because 10**23 can't be represented exactly kama a float:
+        # Because 10**23 can't be represented exactly as a float:
         self.assertUongo(F(10**23) == float(10**23))
-        # The first test demonstrates why these are agizaant.
+        # The first test demonstrates why these are important.
         self.assertUongo(1e23 < float(F(math.trunc(1e23) + 1)))
         self.assertKweli(1e23 < F(math.trunc(1e23) + 1))
         self.assertUongo(1e23 <= F(math.trunc(1e23) - 1))
@@ -643,12 +643,12 @@ kundi FractionTest(unittest.TestCase):
         self.assertEqual(hash(10**50), hash(F(10**50)))
         self.assertNotEqual(hash(float(10**23)), hash(F(10**23)))
         self.assertEqual(hinf, hash(F(1, hmod)))
-        # Check that __hash__ produces the same value kama hash(), for
+        # Check that __hash__ produces the same value as hash(), for
         # consistency ukijumuisha int na Decimal.  (See issue #10356.)
         self.assertEqual(hash(F(-1)), F(-1).__hash__())
 
     eleza testApproximatePi(self):
-        # Algorithm borrowed kutoka
+        # Algorithm borrowed from
         # http://docs.python.org/lib/decimal-recipes.html
         three = F(3)
         lasts, t, s, n, na, d, da = 0, three, 3, 1, 0, 0, 24
@@ -661,7 +661,7 @@ kundi FractionTest(unittest.TestCase):
         self.assertAlmostEqual(math.pi, s)
 
     eleza testApproximateCos1(self):
-        # Algorithm borrowed kutoka
+        # Algorithm borrowed from
         # http://docs.python.org/lib/decimal-recipes.html
         x = F(1)
         i, lasts, s, fact, num, sign = 0, 0, F(1), 1, 1, 1

@@ -146,23 +146,23 @@ kundi samplecmdclass(cmd.Cmd):
         andika("complete command")
 
     eleza do_shell(self, s):
-        pita
+        pass
 
     eleza do_add(self, s):
         l = s.split()
         ikiwa len(l) != 2:
             andika("*** invalid number of arguments")
-            rudisha
+            return
         jaribu:
             l = [int(i) kila i kwenye l]
-        tatizo ValueError:
+        except ValueError:
             andika("*** arguments should be numbers")
-            rudisha
+            return
         andika(l[0]+l[1])
 
     eleza help_add(self):
         andika("help text kila add")
-        rudisha
+        return
 
     eleza do_exit(self, arg):
         rudisha Kweli
@@ -236,7 +236,7 @@ eleza test_coverage(coverdir):
 ikiwa __name__ == "__main__":
     ikiwa "-c" kwenye sys.argv:
         test_coverage('/tmp/cmd.cover')
-    lasivyo "-i" kwenye sys.argv:
+    elikiwa "-i" kwenye sys.argv:
         samplecmdclass().cmdloop()
     isipokua:
         test_main()

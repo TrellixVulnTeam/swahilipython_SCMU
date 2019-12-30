@@ -1,4 +1,4 @@
-"""Constants and membership tests for ASCII characters"""
+"""Constants na membership tests kila ASCII characters"""
 
 NUL     = 0x00  # ^@
 SOH     = 0x01  # ^A
@@ -45,55 +45,55 @@ controlnames = [
 "SP"
 ]
 
-def _ctoi(c):
-    if type(c) == type(""):
-        return ord(c)
+eleza _ctoi(c):
+    ikiwa type(c) == type(""):
+        rudisha ord(c)
     isipokua:
-        return c
+        rudisha c
 
-def isalnum(c): return isalpha(c) ama isdigit(c)
-def isalpha(c): return isupper(c) ama islower(c)
-def isascii(c): return 0 <= _ctoi(c) <= 127          # ?
-def isblank(c): return _ctoi(c) in (9, 32)
-def iscntrl(c): return 0 <= _ctoi(c) <= 31 or _ctoi(c) == 127
-def isdigit(c): return 48 <= _ctoi(c) <= 57
-def isgraph(c): return 33 <= _ctoi(c) <= 126
-def islower(c): return 97 <= _ctoi(c) <= 122
-def isprint(c): return 32 <= _ctoi(c) <= 126
-def ispunct(c): return isgraph(c) and sio isalnum(c)
-def isspace(c): return _ctoi(c) in (9, 10, 11, 12, 13, 32)
-def isupper(c): return 65 <= _ctoi(c) <= 90
-def isxdigit(c): return isdigit(c) ama \
+eleza isalnum(c): rudisha isalpha(c) ama isdigit(c)
+eleza isalpha(c): rudisha isupper(c) ama islower(c)
+eleza isascii(c): rudisha 0 <= _ctoi(c) <= 127          # ?
+eleza isblank(c): rudisha _ctoi(c) kwenye (9, 32)
+eleza iscntrl(c): rudisha 0 <= _ctoi(c) <= 31 ama _ctoi(c) == 127
+eleza isdigit(c): rudisha 48 <= _ctoi(c) <= 57
+eleza isgraph(c): rudisha 33 <= _ctoi(c) <= 126
+eleza islower(c): rudisha 97 <= _ctoi(c) <= 122
+eleza isandika(c): rudisha 32 <= _ctoi(c) <= 126
+eleza ispunct(c): rudisha isgraph(c) na sio isalnum(c)
+eleza isspace(c): rudisha _ctoi(c) kwenye (9, 10, 11, 12, 13, 32)
+eleza isupper(c): rudisha 65 <= _ctoi(c) <= 90
+eleza isxdigit(c): rudisha isdigit(c) ama \
     (65 <= _ctoi(c) <= 70) ama (97 <= _ctoi(c) <= 102)
-def isctrl(c): return 0 <= _ctoi(c) < 32
-def ismeta(c): return _ctoi(c) > 127
+eleza isctrl(c): rudisha 0 <= _ctoi(c) < 32
+eleza ismeta(c): rudisha _ctoi(c) > 127
 
-def ascii(c):
-    if type(c) == type(""):
-        return chr(_ctoi(c) & 0x7f)
+eleza ascii(c):
+    ikiwa type(c) == type(""):
+        rudisha chr(_ctoi(c) & 0x7f)
     isipokua:
-        return _ctoi(c) & 0x7f
+        rudisha _ctoi(c) & 0x7f
 
-def ctrl(c):
-    if type(c) == type(""):
-        return chr(_ctoi(c) & 0x1f)
+eleza ctrl(c):
+    ikiwa type(c) == type(""):
+        rudisha chr(_ctoi(c) & 0x1f)
     isipokua:
-        return _ctoi(c) & 0x1f
+        rudisha _ctoi(c) & 0x1f
 
-def alt(c):
-    if type(c) == type(""):
-        return chr(_ctoi(c) | 0x80)
+eleza alt(c):
+    ikiwa type(c) == type(""):
+        rudisha chr(_ctoi(c) | 0x80)
     isipokua:
-        return _ctoi(c) | 0x80
+        rudisha _ctoi(c) | 0x80
 
-def unctrl(c):
+eleza unctrl(c):
     bits = _ctoi(c)
-    if bits == 0x7f:
+    ikiwa bits == 0x7f:
         rep = "^?"
-    lasivyo isprint(bits & 0x7f):
+    elikiwa isandika(bits & 0x7f):
         rep = chr(bits & 0x7f)
     isipokua:
         rep = "^" + chr(((bits & 0x7f) | 0x20) + 0x20)
-    if bits & 0x80:
-        return "!" + rep
-    return rep
+    ikiwa bits & 0x80:
+        rudisha "!" + rep
+    rudisha rep

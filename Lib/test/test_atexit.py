@@ -19,14 +19,14 @@ eleza h3():
 eleza h4(*args, **kwargs):
     andika("h4", args, kwargs)
 
-eleza ashiria1():
-    ashiria TypeError
+eleza raise1():
+     ashiria TypeError
 
-eleza ashiria2():
-    ashiria SystemError
+eleza raise2():
+     ashiria SystemError
 
 eleza exit():
-    ashiria SystemExit
+     ashiria SystemExit
 
 
 kundi GeneralTest(unittest.TestCase):
@@ -66,14 +66,14 @@ kundi GeneralTest(unittest.TestCase):
 
         self.assertEqual(self.stream.getvalue(), "h3\nh2\nh1\n")
 
-    eleza test_ashiria(self):
-        # be sure ashirias are handled properly
-        atexit.register(ashiria1)
-        atexit.register(ashiria2)
+    eleza test_raise(self):
+        # be sure raises are handled properly
+        atexit.register(raise1)
+        atexit.register(raise2)
 
         self.assertRaises(TypeError, atexit._run_exitfuncs)
 
-    eleza test_ashiria_unnormalized(self):
+    eleza test_raise_unnormalized(self):
         # Issue #10756: Make sure that an unnormalized exception is
         # handled properly
         atexit.register(lambda: 1 / 0)
@@ -181,7 +181,7 @@ kundi SubinterpreterTest(unittest.TestCase):
         code = r"""ikiwa 1:
             agiza atexit
             eleza f():
-                pita
+                pass
             atexit.register(f)
             toa atexit
             """
@@ -196,7 +196,7 @@ kundi SubinterpreterTest(unittest.TestCase):
         code = r"""ikiwa 1:
             agiza atexit
             eleza f():
-                pita
+                pass
             atexit.register(f)
             atexit.__atexit = atexit
             """
@@ -207,14 +207,14 @@ kundi SubinterpreterTest(unittest.TestCase):
     eleza test_callback_on_subinterpreter_teardown(self):
         # This tests ikiwa a callback ni called on
         # subinterpreter teardown.
-        expected = b"The test has pitaed!"
+        expected = b"The test has passed!"
         r, w = os.pipe()
 
         code = r"""ikiwa 1:
             agiza os
             agiza atexit
             eleza callback():
-                os.write({:d}, b"The test has pitaed!")
+                os.write({:d}, b"The test has passed!")
             atexit.register(callback)
         """.format(w)
         ret = support.run_in_subinterp(code)

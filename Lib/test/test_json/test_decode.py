@@ -44,7 +44,7 @@ kundi TestDecode:
 
     eleza test_decoder_optimizations(self):
         # Several optimizations were made that skip over calls to
-        # the whitespace regex, so this test ni designed to try na
+        # the whitespace regex, so this test ni designed to try and
         # exercise the uncommon cases. The array cases are already covered.
         rval = self.loads('{   "key"    :    "value"    ,  "k":"v"    }')
         self.assertEqual(rval, {"key":"value", "k":"v"})
@@ -80,10 +80,10 @@ kundi TestDecode:
     eleza test_string_with_utf8_bom(self):
         # see #18958
         bom_json = "[1,2,3]".encode('utf-8-sig').decode('utf-8')
-        ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
+        ukijumuisha self.assertRaises(self.JSONDecodeError) as cm:
             self.loads(bom_json)
         self.assertIn('BOM', str(cm.exception))
-        ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
+        ukijumuisha self.assertRaises(self.JSONDecodeError) as cm:
             self.json.load(StringIO(bom_json))
         self.assertIn('BOM', str(cm.exception))
         # make sure that the BOM ni sio detected kwenye the middle of a string
@@ -99,5 +99,5 @@ kundi TestDecode:
         ukijumuisha self.assertWarns(DeprecationWarning):
             self.loads('{}', encoding='fake')
 
-kundi TestPyDecode(TestDecode, PyTest): pita
-kundi TestCDecode(TestDecode, CTest): pita
+kundi TestPyDecode(TestDecode, PyTest): pass
+kundi TestCDecode(TestDecode, CTest): pass

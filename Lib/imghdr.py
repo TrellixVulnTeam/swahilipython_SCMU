@@ -139,7 +139,7 @@ eleza test():
             testall(sys.argv[1:], recursive, 1)
         isipokua:
             testall(['.'], recursive, 1)
-    tatizo KeyboardInterrupt:
+    except KeyboardInterrupt:
         sys.stderr.write('\n[Interrupted]\n')
         sys.exit(1)
 
@@ -161,7 +161,7 @@ eleza testall(list, recursive, toplevel):
             sys.stdout.flush()
             jaribu:
                 andika(what(filename))
-            tatizo OSError:
+            except OSError:
                 andika('*** sio found ***')
 
 ikiwa __name__ == '__main__':

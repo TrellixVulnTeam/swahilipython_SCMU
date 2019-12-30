@@ -1,32 +1,32 @@
-import unittest
-import tkinter
-from test import support
-from tkinter.test.support import AbstractTkTest, requires_tcl
+agiza unittest
+agiza tkinter
+kutoka test agiza support
+kutoka tkinter.test.support agiza AbstractTkTest, requires_tcl
 
 support.requires('gui')
 
 
-class MiscTest(AbstractTkTest, unittest.TestCase):
+kundi MiscTest(AbstractTkTest, unittest.TestCase):
 
-    def test_image_types(self):
+    eleza test_image_types(self):
         image_types = self.root.image_types()
         self.assertIsInstance(image_types, tuple)
         self.assertIn('photo', image_types)
         self.assertIn('bitmap', image_types)
 
-    def test_image_names(self):
+    eleza test_image_names(self):
         image_names = self.root.image_names()
         self.assertIsInstance(image_names, tuple)
 
 
-class BitmapImageTest(AbstractTkTest, unittest.TestCase):
+kundi BitmapImageTest(AbstractTkTest, unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         AbstractTkTest.setUpClass.__func__(cls)
         cls.testfile = support.findfile('python.xbm', subdir='imghdrdata')
 
-    def test_create_from_file(self):
+    eleza test_create_from_file(self):
         image = tkinter.BitmapImage('::img::test', master=self.root,
                                     foreground='yellow', background='blue',
                                     file=self.testfile)
@@ -38,8 +38,8 @@ class BitmapImageTest(AbstractTkTest, unittest.TestCase):
         toa image
         self.assertNotIn('::img::test', self.root.image_names())
 
-    def test_create_from_data(self):
-        with open(self.testfile, 'rb') as f:
+    eleza test_create_from_data(self):
+        ukijumuisha open(self.testfile, 'rb') as f:
             data = f.read()
         image = tkinter.BitmapImage('::img::test', master=self.root,
                                     foreground='yellow', background='blue',
@@ -52,14 +52,14 @@ class BitmapImageTest(AbstractTkTest, unittest.TestCase):
         toa image
         self.assertNotIn('::img::test', self.root.image_names())
 
-    def assertEqualStrList(self, actual, expected):
+    eleza assertEqualStrList(self, actual, expected):
         self.assertIsInstance(actual, str)
         self.assertEqual(self.root.splitlist(actual), expected)
 
-    def test_configure_data(self):
+    eleza test_configure_data(self):
         image = tkinter.BitmapImage('::img::test', master=self.root)
         self.assertEqual(image['data'], '-data {} {} {} {}')
-        with open(self.testfile, 'rb') as f:
+        ukijumuisha open(self.testfile, 'rb') as f:
             data = f.read()
         image.configure(data=data)
         self.assertEqualStrList(image['data'],
@@ -72,7 +72,7 @@ class BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqualStrList(image['maskdata'],
                                 ('-maskdata', '', '', '', data.decode('ascii')))
 
-    def test_configure_file(self):
+    eleza test_configure_file(self):
         image = tkinter.BitmapImage('::img::test', master=self.root)
         self.assertEqual(image['file'], '-file {} {} {} {}')
         image.configure(file=self.testfile)
@@ -86,13 +86,13 @@ class BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqualStrList(image['maskfile'],
                                 ('-maskfile', '', '', '', self.testfile))
 
-    def test_configure_background(self):
+    eleza test_configure_background(self):
         image = tkinter.BitmapImage('::img::test', master=self.root)
         self.assertEqual(image['background'], '-background {} {} {} {}')
         image.configure(background='blue')
         self.assertEqual(image['background'], '-background {} {} {} blue')
 
-    def test_configure_foreground(self):
+    eleza test_configure_foreground(self):
         image = tkinter.BitmapImage('::img::test', master=self.root)
         self.assertEqual(image['foreground'],
                          '-foreground {} {} #000000 #000000')
@@ -101,24 +101,24 @@ class BitmapImageTest(AbstractTkTest, unittest.TestCase):
                          '-foreground {} {} #000000 yellow')
 
 
-class PhotoImageTest(AbstractTkTest, unittest.TestCase):
+kundi PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         AbstractTkTest.setUpClass.__func__(cls)
         cls.testfile = support.findfile('python.gif', subdir='imghdrdata')
 
-    def create(self):
-        return tkinter.PhotoImage('::img::test', master=self.root,
+    eleza create(self):
+        rudisha tkinter.PhotoImage('::img::test', master=self.root,
                                   file=self.testfile)
 
-    def colorlist(self, *args):
-        if tkinter.TkVersion >= 8.6 and self.wantobjects:
-            return args
+    eleza colorlist(self, *args):
+        ikiwa tkinter.TkVersion >= 8.6 na self.wantobjects:
+            rudisha args
         isipokua:
-            return tkinter._join(args)
+            rudisha tkinter._join(args)
 
-    def check_create_from_file(self, ext):
+    eleza check_create_from_file(self, ext):
         testfile = support.findfile('python.' + ext, subdir='imghdrdata')
         image = tkinter.PhotoImage('::img::test', master=self.root,
                                    file=testfile)
@@ -132,9 +132,9 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         toa image
         self.assertNotIn('::img::test', self.root.image_names())
 
-    def check_create_from_data(self, ext):
+    eleza check_create_from_data(self, ext):
         testfile = support.findfile('python.' + ext, subdir='imghdrdata')
-        with open(testfile, 'rb') as f:
+        ukijumuisha open(testfile, 'rb') as f:
             data = f.read()
         image = tkinter.PhotoImage('::img::test', master=self.root,
                                    data=data)
@@ -142,60 +142,60 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.type(), 'photo')
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
-        self.assertEqual(image['data'], data if self.wantobjects
+        self.assertEqual(image['data'], data ikiwa self.wantobjects
                                         isipokua data.decode('latin1'))
         self.assertEqual(image['file'], '')
         self.assertIn('::img::test', self.root.image_names())
         toa image
         self.assertNotIn('::img::test', self.root.image_names())
 
-    def test_create_from_ppm_file(self):
+    eleza test_create_from_ppm_file(self):
         self.check_create_from_file('ppm')
 
-    def test_create_from_ppm_data(self):
+    eleza test_create_from_ppm_data(self):
         self.check_create_from_data('ppm')
 
-    def test_create_from_pgm_file(self):
+    eleza test_create_from_pgm_file(self):
         self.check_create_from_file('pgm')
 
-    def test_create_from_pgm_data(self):
+    eleza test_create_from_pgm_data(self):
         self.check_create_from_data('pgm')
 
-    def test_create_from_gif_file(self):
+    eleza test_create_from_gif_file(self):
         self.check_create_from_file('gif')
 
-    def test_create_from_gif_data(self):
+    eleza test_create_from_gif_data(self):
         self.check_create_from_data('gif')
 
     @requires_tcl(8, 6)
-    def test_create_from_png_file(self):
+    eleza test_create_from_png_file(self):
         self.check_create_from_file('png')
 
     @requires_tcl(8, 6)
-    def test_create_from_png_data(self):
+    eleza test_create_from_png_data(self):
         self.check_create_from_data('png')
 
-    def test_configure_data(self):
+    eleza test_configure_data(self):
         image = tkinter.PhotoImage('::img::test', master=self.root)
         self.assertEqual(image['data'], '')
-        with open(self.testfile, 'rb') as f:
+        ukijumuisha open(self.testfile, 'rb') as f:
             data = f.read()
         image.configure(data=data)
-        self.assertEqual(image['data'], data if self.wantobjects
+        self.assertEqual(image['data'], data ikiwa self.wantobjects
                                         isipokua data.decode('latin1'))
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
 
-    def test_configure_format(self):
+    eleza test_configure_format(self):
         image = tkinter.PhotoImage('::img::test', master=self.root)
         self.assertEqual(image['format'], '')
         image.configure(file=self.testfile, format='gif')
-        self.assertEqual(image['format'], ('gif',) if self.wantobjects
+        self.assertEqual(image['format'], ('gif',) ikiwa self.wantobjects
                                           isipokua 'gif')
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
 
-    def test_configure_file(self):
+    eleza test_configure_file(self):
         image = tkinter.PhotoImage('::img::test', master=self.root)
         self.assertEqual(image['file'], '')
         image.configure(file=self.testfile)
@@ -203,13 +203,13 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
 
-    def test_configure_gamma(self):
+    eleza test_configure_gamma(self):
         image = tkinter.PhotoImage('::img::test', master=self.root)
         self.assertEqual(image['gamma'], '1.0')
         image.configure(gamma=2.0)
         self.assertEqual(image['gamma'], '2.0')
 
-    def test_configure_width_height(self):
+    eleza test_configure_width_height(self):
         image = tkinter.PhotoImage('::img::test', master=self.root)
         self.assertEqual(image['width'], '0')
         self.assertEqual(image['height'], '0')
@@ -220,7 +220,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.width(), 20)
         self.assertEqual(image.height(), 10)
 
-    def test_configure_palette(self):
+    eleza test_configure_palette(self):
         image = tkinter.PhotoImage('::img::test', master=self.root)
         self.assertEqual(image['palette'], '')
         image.configure(palette=256)
@@ -228,21 +228,21 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         image.configure(palette='3/4/2')
         self.assertEqual(image['palette'], '3/4/2')
 
-    def test_blank(self):
+    eleza test_blank(self):
         image = self.create()
         image.blank()
         self.assertEqual(image.width(), 16)
         self.assertEqual(image.height(), 16)
         self.assertEqual(image.get(4, 6), self.colorlist(0, 0, 0))
 
-    def test_copy(self):
+    eleza test_copy(self):
         image = self.create()
         image2 = image.copy()
         self.assertEqual(image2.width(), 16)
         self.assertEqual(image2.height(), 16)
         self.assertEqual(image.get(4, 6), image.get(4, 6))
 
-    def test_subsample(self):
+    eleza test_subsample(self):
         image = self.create()
         image2 = image.subsample(2, 3)
         self.assertEqual(image2.width(), 8)
@@ -254,7 +254,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image2.height(), 8)
         self.assertEqual(image2.get(2, 3), image.get(4, 6))
 
-    def test_zoom(self):
+    eleza test_zoom(self):
         image = self.create()
         image2 = image.zoom(2, 3)
         self.assertEqual(image2.width(), 32)
@@ -268,12 +268,12 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image2.get(8, 12), image.get(4, 6))
         self.assertEqual(image2.get(9, 13), image.get(4, 6))
 
-    def test_put(self):
+    eleza test_put(self):
         image = self.create()
         image.put('{red green} {blue yellow}', to=(4, 6))
         self.assertEqual(image.get(4, 6), self.colorlist(255, 0, 0))
         self.assertEqual(image.get(5, 6),
-                         self.colorlist(0, 128 if tkinter.TkVersion >= 8.6
+                         self.colorlist(0, 128 ikiwa tkinter.TkVersion >= 8.6
                                            isipokua 255, 0))
         self.assertEqual(image.get(4, 7), self.colorlist(0, 0, 255))
         self.assertEqual(image.get(5, 7), self.colorlist(255, 255, 0))
@@ -284,7 +284,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image.get(0, 1), self.colorlist(0, 0, 255))
         self.assertEqual(image.get(1, 1), self.colorlist(255, 255, 0))
 
-    def test_get(self):
+    eleza test_get(self):
         image = self.create()
         self.assertEqual(image.get(4, 6), self.colorlist(62, 116, 162))
         self.assertEqual(image.get(0, 0), self.colorlist(0, 0, 0))
@@ -294,7 +294,7 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, image.get, 16, 15)
         self.assertRaises(tkinter.TclError, image.get, 15, 16)
 
-    def test_write(self):
+    eleza test_write(self):
         image = self.create()
         self.addCleanup(support.unlink, support.TESTFN)
 
@@ -320,17 +320,17 @@ class PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image3.get(0, 0), image.get(4, 6))
         self.assertEqual(image3.get(1, 2), image.get(5, 8))
 
-    def test_transparency(self):
+    eleza test_transparency(self):
         image = self.create()
-        self.assertEqual(image.transparency_get(0, 0), True)
-        self.assertEqual(image.transparency_get(4, 6), False)
-        image.transparency_set(4, 6, True)
-        self.assertEqual(image.transparency_get(4, 6), True)
-        image.transparency_set(4, 6, False)
-        self.assertEqual(image.transparency_get(4, 6), False)
+        self.assertEqual(image.transparency_get(0, 0), Kweli)
+        self.assertEqual(image.transparency_get(4, 6), Uongo)
+        image.transparency_set(4, 6, Kweli)
+        self.assertEqual(image.transparency_get(4, 6), Kweli)
+        image.transparency_set(4, 6, Uongo)
+        self.assertEqual(image.transparency_get(4, 6), Uongo)
 
 
 tests_gui = (MiscTest, BitmapImageTest, PhotoImageTest,)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     support.run_unittest(*tests_gui)

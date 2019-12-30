@@ -1,28 +1,28 @@
-import io
-import email
-import unittest
-from email.message import Message, EmailMessage
-from email.policy import default
-from test.test_email import TestEmailBase
+agiza io
+agiza email
+agiza unittest
+kutoka email.message agiza Message, EmailMessage
+kutoka email.policy agiza default
+kutoka test.test_email agiza TestEmailBase
 
 
-class TestCustomMessage(TestEmailBase):
+kundi TestCustomMessage(TestEmailBase):
 
-    class MyMessage(Message):
-        def __init__(self, policy):
+    kundi MyMessage(Message):
+        eleza __init__(self, policy):
             self.check_policy = policy
             super().__init__()
 
     MyPolicy = TestEmailBase.policy.clone(linesep='boo')
 
-    def test_custom_message_gets_policy_if_possible_from_string(self):
+    eleza test_custom_message_gets_policy_if_possible_from_string(self):
         msg = email.message_from_string("Subject: bogus\n\nmsg\n",
                                         self.MyMessage,
                                         policy=self.MyPolicy)
         self.assertIsInstance(msg, self.MyMessage)
         self.assertIs(msg.check_policy, self.MyPolicy)
 
-    def test_custom_message_gets_policy_if_possible_from_file(self):
+    eleza test_custom_message_gets_policy_if_possible_from_file(self):
         source_file = io.StringIO("Subject: bogus\n\nmsg\n")
         msg = email.message_from_file(source_file,
                                       self.MyMessage,
@@ -30,17 +30,17 @@ class TestCustomMessage(TestEmailBase):
         self.assertIsInstance(msg, self.MyMessage)
         self.assertIs(msg.check_policy, self.MyPolicy)
 
-    # XXX add tests for other functions that take Message arg.
+    # XXX add tests kila other functions that take Message arg.
 
 
-class TestParserBase:
+kundi TestParserBase:
 
-    def test_only_split_on_cr_lf(self):
+    eleza test_only_split_on_cr_lf(self):
         # The unicode line splitter splits on unicode linekomas, which are
         # more numerous than allowed by the email RFCs; make sure we are only
         # splitting on those two.
-        for parser in self.parsers:
-            with self.subTest(parser=parser.__name__):
+        kila parser kwenye self.parsers:
+            ukijumuisha self.subTest(parser=parser.__name__):
                 msg = parser(
                     "Next-Line: not\x85broken\r\n"
                     "Null: not\x00broken\r\n"
@@ -67,44 +67,44 @@ class TestParserBase:
                 ])
                 self.assertEqual(msg.get_payload(), "")
 
-    class MyMessage(EmailMessage):
+    kundi MyMessage(EmailMessage):
         pass
 
-    def test_custom_message_factory_on_policy(self):
-        for parser in self.parsers:
-            with self.subTest(parser=parser.__name__):
+    eleza test_custom_message_factory_on_policy(self):
+        kila parser kwenye self.parsers:
+            ukijumuisha self.subTest(parser=parser.__name__):
                 MyPolicy = default.clone(message_factory=self.MyMessage)
                 msg = parser("To: foo\n\ntest", policy=MyPolicy)
                 self.assertIsInstance(msg, self.MyMessage)
 
-    def test_factory_arg_overrides_policy(self):
-        for parser in self.parsers:
-            with self.subTest(parser=parser.__name__):
+    eleza test_factory_arg_overrides_policy(self):
+        kila parser kwenye self.parsers:
+            ukijumuisha self.subTest(parser=parser.__name__):
                 MyPolicy = default.clone(message_factory=self.MyMessage)
                 msg = parser("To: foo\n\ntest", Message, policy=MyPolicy)
                 self.assertNotIsInstance(msg, self.MyMessage)
                 self.assertIsInstance(msg, Message)
 
-# Play some games to get nice output in subTest.  This code could be clearer
-# if staticmethod supported __name__.
+# Play some games to get nice output kwenye subTest.  This code could be clearer
+# ikiwa staticmethod supported __name__.
 
-def message_from_file(s, *args, **kw):
+eleza message_from_file(s, *args, **kw):
     f = io.StringIO(s)
-    return email.message_from_file(f, *args, **kw)
+    rudisha email.message_from_file(f, *args, **kw)
 
-class TestParser(TestParserBase, TestEmailBase):
+kundi TestParser(TestParserBase, TestEmailBase):
     parsers = (email.message_from_string, message_from_file)
 
-def message_from_bytes(s, *args, **kw):
-    return email.message_from_bytes(s.encode(), *args, **kw)
+eleza message_from_bytes(s, *args, **kw):
+    rudisha email.message_from_bytes(s.encode(), *args, **kw)
 
-def message_from_binary_file(s, *args, **kw):
+eleza message_from_binary_file(s, *args, **kw):
     f = io.BytesIO(s.encode())
-    return email.message_from_binary_file(f, *args, **kw)
+    rudisha email.message_from_binary_file(f, *args, **kw)
 
-class TestBytesParser(TestParserBase, TestEmailBase):
+kundi TestBytesParser(TestParserBase, TestEmailBase):
     parsers = (message_from_bytes, message_from_binary_file)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

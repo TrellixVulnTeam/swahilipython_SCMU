@@ -1,402 +1,402 @@
 """distutils.cmd
 
-Provides the Command class, the base class for the command classes
+Provides the Command class, the base kundi kila the command classes
 in the distutils.command package.
 """
 
-import sys, os, re
-from distutils.errors import DistutilsOptionError
-from distutils import util, dir_util, file_util, archive_util, dep_util
-from distutils import log
+agiza sys, os, re
+kutoka distutils.errors agiza DistutilsOptionError
+kutoka distutils agiza util, dir_util, file_util, archive_util, dep_util
+kutoka distutils agiza log
 
-class Command:
-    """Abstract base class for defining command classes, the "worker bees"
-    of the Distutils.  A useful analogy for command classes is to think of
-    them as subroutines with local variables called "options".  The options
-    are "declared" in 'initialize_options()' and "defined" (given their
-    final values, aka "finalized") in 'finalize_options()', both of which
+kundi Command:
+    """Abstract base kundi kila defining command classes, the "worker bees"
+    of the Distutils.  A useful analogy kila command classes ni to think of
+    them as subroutines ukijumuisha local variables called "options".  The options
+    are "declared" kwenye 'initialize_options()' na "defined" (given their
+    final values, aka "finalized") kwenye 'finalize_options()', both of which
     must be defined by every command class.  The distinction between the
-    two is necessary because option values might come from the outside
-    world (command line, config file, ...), and any options dependent on
+    two ni necessary because option values might come kutoka the outside
+    world (command line, config file, ...), na any options dependent on
     other options must be computed *after* these outside influences have
     been processed -- hence 'finalize_options()'.  The "body" of the
     subroutine, where it does all its work based on the values of its
-    options, is the 'run()' method, which must also be implemented by every
+    options, ni the 'run()' method, which must also be implemented by every
     command class.
     """
 
     # 'sub_commands' formalizes the notion of a "family" of commands,
-    # eg. "install" as the parent with sub-commands "install_lib",
+    # eg. "install" as the parent ukijumuisha sub-commands "install_lib",
     # "install_headers", etc.  The parent of a family of commands
-    # defines 'sub_commands' as a class attribute; it's a list of
-    #    (command_name : string, predicate : unbound_method | string | None)
-    # tuples, where 'predicate' is a method of the parent command that
-    # determines whether the corresponding command is applicable in the
-    # current situation.  (Eg. we "install_headers" is only applicable if
-    # we have any C header files to install.)  If 'predicate' is None,
-    # that command is always applicable.
+    # defines 'sub_commands' as a kundi attribute; it's a list of
+    #    (command_name : string, predicate : unbound_method | string | Tupu)
+    # tuples, where 'predicate' ni a method of the parent command that
+    # determines whether the corresponding command ni applicable kwenye the
+    # current situation.  (Eg. we "install_headers" ni only applicable if
+    # we have any C header files to install.)  If 'predicate' ni Tupu,
+    # that command ni always applicable.
     #
-    # 'sub_commands' is usually defined at the *end* of a class, because
+    # 'sub_commands' ni usually defined at the *end* of a class, because
     # predicates can be unbound methods, so they must already have been
-    # defined.  The canonical example is the "install" command.
+    # defined.  The canonical example ni the "install" command.
     sub_commands = []
 
 
     # -- Creation/initialization methods -------------------------------
 
-    def __init__(self, dist):
-        """Create and initialize a new Command object.  Most importantly,
-        invokes the 'initialize_options()' method, which is the real
-        initializer and depends on the actual command being
+    eleza __init__(self, dist):
+        """Create na initialize a new Command object.  Most importantly,
+        invokes the 'initialize_options()' method, which ni the real
+        initializer na depends on the actual command being
         instantiated.
         """
-        # late import because of mutual dependence between these classes
-        from distutils.dist import Distribution
+        # late agiza because of mutual dependence between these classes
+        kutoka distutils.dist agiza Distribution
 
-        if sio isinstance(dist, Distribution):
-            ashiria TypeError("dist must be a Distribution instance")
-        if self.__class__ is Command:
-            ashiria RuntimeError("Command is an abstract class")
+        ikiwa sio isinstance(dist, Distribution):
+             ashiria TypeError("dist must be a Distribution instance")
+        ikiwa self.__class__ ni Command:
+             ashiria RuntimeError("Command ni an abstract class")
 
         self.distribution = dist
         self.initialize_options()
 
         # Per-command versions of the global flags, so that the user can
-        # customize Distutils' behaviour command-by-command and let some
-        # commands fall back on the Distribution's behaviour.  None means
-        # "not defined, check self.distribution's copy", wakati 0 or 1 mean
-        # false and true (duh).  Note that this means figuring out the real
-        # value of each flag is a touch complicated -- hence "self._dry_run"
+        # customize Distutils' behaviour command-by-command na let some
+        # commands fall back on the Distribution's behaviour.  Tupu means
+        # "not defined, check self.distribution's copy", wakati 0 ama 1 mean
+        # false na true (duh).  Note that this means figuring out the real
+        # value of each flag ni a touch complicated -- hence "self._dry_run"
         # will be handled by __getattr__, below.
         # XXX This needs to be fixed.
-        self._dry_run = None
+        self._dry_run = Tupu
 
-        # verbose is largely ignored, but needs to be set for
+        # verbose ni largely ignored, but needs to be set for
         # backwards compatibility (I think)?
         self.verbose = dist.verbose
 
         # Some commands define a 'self.force' option to ignore file
         # timestamps, but methods defined *here* assume that
-        # 'self.force' exists for all commands.  So define it here
+        # 'self.force' exists kila all commands.  So define it here
         # just to be safe.
-        self.force = None
+        self.force = Tupu
 
-        # The 'help' flag is just used for command-line parsing, so
-        # none of that complicated bureaucracy is needed.
+        # The 'help' flag ni just used kila command-line parsing, so
+        # none of that complicated bureaucracy ni needed.
         self.help = 0
 
-        # 'finalized' records whether or sio 'finalize_options()' has been
+        # 'finalized' records whether ama sio 'finalize_options()' has been
         # called.  'finalize_options()' itself should sio pay attention to
-        # this flag: it is the business of 'ensure_finalized()', which
+        # this flag: it ni the business of 'ensure_finalized()', which
         # always calls 'finalize_options()', to respect/update it.
         self.finalized = 0
 
     # XXX A more explicit way to customize dry_run would be better.
-    def __getattr__(self, attr):
-        if attr == 'dry_run':
+    eleza __getattr__(self, attr):
+        ikiwa attr == 'dry_run':
             myval = getattr(self, "_" + attr)
-            if myval is None:
-                return getattr(self.distribution, attr)
+            ikiwa myval ni Tupu:
+                rudisha getattr(self.distribution, attr)
             isipokua:
-                return myval
+                rudisha myval
         isipokua:
-            ashiria AttributeError(attr)
+             ashiria AttributeError(attr)
 
-    def ensure_finalized(self):
-        if sio self.finalized:
+    eleza ensure_finalized(self):
+        ikiwa sio self.finalized:
             self.finalize_options()
         self.finalized = 1
 
     # Subclasses must define:
     #   initialize_options()
-    #     provide default values for all options; may be customized by
-    #     setup script, by options from config file(s), or by command-line
+    #     provide default values kila all options; may be customized by
+    #     setup script, by options kutoka config file(s), ama by command-line
     #     options
     #   finalize_options()
-    #     decide on the final values for all options; this is called
-    #     after all possible intervention from the outside world
+    #     decide on the final values kila all options; this ni called
+    #     after all possible intervention kutoka the outside world
     #     (command-line, option file, etc.) has been processed
     #   run()
-    #     run the command: do whatever it is we're here to do,
+    #     run the command: do whatever it ni we're here to do,
     #     controlled by the command's various option values
 
-    def initialize_options(self):
-        """Set default values for all the options that this command
+    eleza initialize_options(self):
+        """Set default values kila all the options that this command
         supports.  Note that these defaults may be overridden by other
-        commands, by the setup script, by config files, or by the
+        commands, by the setup script, by config files, ama by the
         command-line.  Thus, this ni sio the place to code dependencies
         between options; generally, 'initialize_options()' implementations
-        are just a bunch of "self.foo = None" assignments.
+        are just a bunch of "self.foo = Tupu" assignments.
 
         This method must be implemented by all command classes.
         """
-        ashiria RuntimeError("abstract method -- subclass %s must override"
+         ashiria RuntimeError("abstract method -- subkundi %s must override"
                            % self.__class__)
 
-    def finalize_options(self):
-        """Set final values for all the options that this command supports.
-        This is always called as late as possible, ie.  after any option
-        assignments from the command-line or from other commands have been
-        done.  Thus, this is the place to code option dependencies: if
-        'foo' depends on 'bar', then it is safe to set 'foo' from 'bar' as
+    eleza finalize_options(self):
+        """Set final values kila all the options that this command supports.
+        This ni always called as late as possible, ie.  after any option
+        assignments kutoka the command-line ama kutoka other commands have been
+        done.  Thus, this ni the place to code option dependencies: if
+        'foo' depends on 'bar', then it ni safe to set 'foo' kutoka 'bar' as
         long as 'foo' still has the same value it was assigned in
         'initialize_options()'.
 
         This method must be implemented by all command classes.
         """
-        ashiria RuntimeError("abstract method -- subclass %s must override"
+         ashiria RuntimeError("abstract method -- subkundi %s must override"
                            % self.__class__)
 
 
-    def dump_options(self, header=None, indent=""):
-        from distutils.fancy_getopt import longopt_xlate
-        if header is None:
-            header = "command options for '%s':" % self.get_command_name()
+    eleza dump_options(self, header=Tupu, indent=""):
+        kutoka distutils.fancy_getopt agiza longopt_xlate
+        ikiwa header ni Tupu:
+            header = "command options kila '%s':" % self.get_command_name()
         self.announce(indent + header, level=log.INFO)
         indent = indent + "  "
-        for (option, _, _) in self.user_options:
+        kila (option, _, _) kwenye self.user_options:
             option = option.translate(longopt_xlate)
-            if option[-1] == "=":
+            ikiwa option[-1] == "=":
                 option = option[:-1]
             value = getattr(self, option)
             self.announce(indent + "%s = %s" % (option, value),
                           level=log.INFO)
 
-    def run(self):
+    eleza run(self):
         """A command's raison d'etre: carry out the action it exists to
         perform, controlled by the options initialized in
         'initialize_options()', customized by other commands, the setup
-        script, the command-line, and config files, and finalized in
-        'finalize_options()'.  All terminal output and filesystem
+        script, the command-line, na config files, na finalized in
+        'finalize_options()'.  All terminal output na filesystem
         interaction should be done by 'run()'.
 
         This method must be implemented by all command classes.
         """
-        ashiria RuntimeError("abstract method -- subclass %s must override"
+         ashiria RuntimeError("abstract method -- subkundi %s must override"
                            % self.__class__)
 
-    def announce(self, msg, level=1):
-        """If the current verbosity level is of greater than or equal to
+    eleza announce(self, msg, level=1):
+        """If the current verbosity level ni of greater than ama equal to
         'level' print 'msg' to stdout.
         """
         log.log(level, msg)
 
-    def debug_print(self, msg):
-        """Print 'msg' to stdout if the global DEBUG (taken from the
-        DISTUTILS_DEBUG environment variable) flag is true.
+    eleza debug_andika(self, msg):
+        """Print 'msg' to stdout ikiwa the global DEBUG (taken kutoka the
+        DISTUTILS_DEBUG environment variable) flag ni true.
         """
-        from distutils.debug import DEBUG
-        if DEBUG:
-            print(msg)
+        kutoka distutils.debug agiza DEBUG
+        ikiwa DEBUG:
+            andika(msg)
             sys.stdout.flush()
 
 
     # -- Option validation methods -------------------------------------
-    # (these are very handy in writing the 'finalize_options()' method)
+    # (these are very handy kwenye writing the 'finalize_options()' method)
     #
-    # NB. the general philosophy here is to ensure that a particular option
-    # value meets certain type and value constraints.  If not, we try to
-    # force it into conformance (eg. if we expect a list but have a string,
+    # NB. the general philosophy here ni to ensure that a particular option
+    # value meets certain type na value constraints.  If not, we try to
+    # force it into conformance (eg. ikiwa we expect a list but have a string,
     # split the string on comma and/or whitespace).  If we can't force the
-    # option into conformance, ashiria DistutilsOptionError.  Thus, command
+    # option into conformance,  ashiria DistutilsOptionError.  Thus, command
     # classes need do nothing more than (eg.)
     #   self.ensure_string_list('foo')
-    # and they can be guaranteed that thereafter, self.foo will be
+    # na they can be guaranteed that thereafter, self.foo will be
     # a list of strings.
 
-    def _ensure_stringlike(self, option, what, default=None):
+    eleza _ensure_stringlike(self, option, what, default=Tupu):
         val = getattr(self, option)
-        if val is None:
+        ikiwa val ni Tupu:
             setattr(self, option, default)
-            return default
-        lasivyo sio isinstance(val, str):
-            ashiria DistutilsOptionError("'%s' must be a %s (got `%s`)"
+            rudisha default
+        elikiwa sio isinstance(val, str):
+             ashiria DistutilsOptionError("'%s' must be a %s (got `%s`)"
                                        % (option, what, val))
-        return val
+        rudisha val
 
-    def ensure_string(self, option, default=None):
-        """Ensure that 'option' is a string; if sio defined, set it to
+    eleza ensure_string(self, option, default=Tupu):
+        """Ensure that 'option' ni a string; ikiwa sio defined, set it to
         'default'.
         """
         self._ensure_stringlike(option, "string", default)
 
-    def ensure_string_list(self, option):
-        r"""Ensure that 'option' is a list of strings.  If 'option' is
-        currently a string, we split it either on /,\s*/ or /\s+/, so
-        "foo bar baz", "foo,bar,baz", and "foo,   bar baz" all become
+    eleza ensure_string_list(self, option):
+        r"""Ensure that 'option' ni a list of strings.  If 'option' is
+        currently a string, we split it either on /,\s*/ ama /\s+/, so
+        "foo bar baz", "foo,bar,baz", na "foo,   bar baz" all become
         ["foo", "bar", "baz"].
         """
         val = getattr(self, option)
-        if val is None:
+        ikiwa val ni Tupu:
             return
-        lasivyo isinstance(val, str):
+        elikiwa isinstance(val, str):
             setattr(self, option, re.split(r',\s*|\s+', val))
         isipokua:
-            if isinstance(val, list):
-                ok = all(isinstance(v, str) for v in val)
+            ikiwa isinstance(val, list):
+                ok = all(isinstance(v, str) kila v kwenye val)
             isipokua:
-                ok = False
-            if sio ok:
-                ashiria DistutilsOptionError(
+                ok = Uongo
+            ikiwa sio ok:
+                 ashiria DistutilsOptionError(
                       "'%s' must be a list of strings (got %r)"
                       % (option, val))
 
-    def _ensure_tested_string(self, option, tester, what, error_fmt,
-                              default=None):
+    eleza _ensure_tested_string(self, option, tester, what, error_fmt,
+                              default=Tupu):
         val = self._ensure_stringlike(option, what, default)
-        if val ni sio None and sio tester(val):
-            ashiria DistutilsOptionError(("error in '%s' option: " + error_fmt)
+        ikiwa val ni sio Tupu na sio tester(val):
+             ashiria DistutilsOptionError(("error kwenye '%s' option: " + error_fmt)
                                        % (option, val))
 
-    def ensure_filename(self, option):
-        """Ensure that 'option' is the name of an existing file."""
+    eleza ensure_filename(self, option):
+        """Ensure that 'option' ni the name of an existing file."""
         self._ensure_tested_string(option, os.path.isfile,
                                    "filename",
-                                   "'%s' does sio exist or ni sio a file")
+                                   "'%s' does sio exist ama ni sio a file")
 
-    def ensure_dirname(self, option):
+    eleza ensure_dirname(self, option):
         self._ensure_tested_string(option, os.path.isdir,
                                    "directory name",
-                                   "'%s' does sio exist or ni sio a directory")
+                                   "'%s' does sio exist ama ni sio a directory")
 
 
-    # -- Convenience methods for commands ------------------------------
+    # -- Convenience methods kila commands ------------------------------
 
-    def get_command_name(self):
-        if hasattr(self, 'command_name'):
-            return self.command_name
+    eleza get_command_name(self):
+        ikiwa hasattr(self, 'command_name'):
+            rudisha self.command_name
         isipokua:
-            return self.__class__.__name__
+            rudisha self.__class__.__name__
 
-    def set_undefined_options(self, src_cmd, *option_pairs):
-        """Set the values of any "undefined" options from corresponding
-        option values in some other command object.  "Undefined" here means
-        "is None", which is the convention used to indicate that an option
-        has sio been changed between 'initialize_options()' na
-        'finalize_options()'.  Usually called from 'finalize_options()' for
+    eleza set_undefined_options(self, src_cmd, *option_pairs):
+        """Set the values of any "undefined" options kutoka corresponding
+        option values kwenye some other command object.  "Undefined" here means
+        "is Tupu", which ni the convention used to indicate that an option
+        has sio been changed between 'initialize_options()' and
+        'finalize_options()'.  Usually called kutoka 'finalize_options()' for
         options that depend on some other command rather than another
-        option of the same command.  'src_cmd' is the other command from
+        option of the same command.  'src_cmd' ni the other command from
         which option values will be taken (a command object will be created
-        for it if necessary); the remaining arguments are
+        kila it ikiwa necessary); the remaining arguments are
         '(src_option,dst_option)' tuples which mean "take the value of
-        'src_option' in the 'src_cmd' command object, and copy it to
-        'dst_option' in the current command object".
+        'src_option' kwenye the 'src_cmd' command object, na copy it to
+        'dst_option' kwenye the current command object".
         """
         # Option_pairs: list of (src_option, dst_option) tuples
         src_cmd_obj = self.distribution.get_command_obj(src_cmd)
         src_cmd_obj.ensure_finalized()
-        for (src_option, dst_option) in option_pairs:
-            if getattr(self, dst_option) is None:
+        kila (src_option, dst_option) kwenye option_pairs:
+            ikiwa getattr(self, dst_option) ni Tupu:
                 setattr(self, dst_option, getattr(src_cmd_obj, src_option))
 
-    def get_finalized_command(self, command, create=1):
+    eleza get_finalized_command(self, command, create=1):
         """Wrapper around Distribution's 'get_command_obj()' method: find
-        (create if necessary and 'create' is true) the command object for
-        'command', call its 'ensure_finalized()' method, and return the
+        (create ikiwa necessary na 'create' ni true) the command object for
+        'command', call its 'ensure_finalized()' method, na rudisha the
         finalized command object.
         """
         cmd_obj = self.distribution.get_command_obj(command, create)
         cmd_obj.ensure_finalized()
-        return cmd_obj
+        rudisha cmd_obj
 
     # XXX rename to 'get_reinitialized_command()'? (should do the
-    # same in dist.py, if so)
-    def reinitialize_command(self, command, reinit_subcommands=0):
-        return self.distribution.reinitialize_command(command,
+    # same kwenye dist.py, ikiwa so)
+    eleza reinitialize_command(self, command, reinit_subcommands=0):
+        rudisha self.distribution.reinitialize_command(command,
                                                       reinit_subcommands)
 
-    def run_command(self, command):
+    eleza run_command(self, command):
         """Run some other command: uses the 'run_command()' method of
-        Distribution, which creates and finalizes the command object if
-        necessary and then invokes its 'run()' method.
+        Distribution, which creates na finalizes the command object if
+        necessary na then invokes its 'run()' method.
         """
         self.distribution.run_command(command)
 
-    def get_sub_commands(self):
-        """Determine the sub-commands that are relevant in the current
-        distribution (ie., that need to be run).  This is based on the
-        'sub_commands' class attribute: each tuple in that list may include
-        a method that we call to determine if the subcommand needs to be
-        run for the current distribution.  Return a list of command names.
+    eleza get_sub_commands(self):
+        """Determine the sub-commands that are relevant kwenye the current
+        distribution (ie., that need to be run).  This ni based on the
+        'sub_commands' kundi attribute: each tuple kwenye that list may include
+        a method that we call to determine ikiwa the subcommand needs to be
+        run kila the current distribution.  Return a list of command names.
         """
         commands = []
-        for (cmd_name, method) in self.sub_commands:
-            if method is None or method(self):
+        kila (cmd_name, method) kwenye self.sub_commands:
+            ikiwa method ni Tupu ama method(self):
                 commands.append(cmd_name)
-        return commands
+        rudisha commands
 
 
     # -- External world manipulation -----------------------------------
 
-    def warn(self, msg):
+    eleza warn(self, msg):
         log.warn("warning: %s: %s\n", self.get_command_name(), msg)
 
-    def execute(self, func, args, msg=None, level=1):
+    eleza execute(self, func, args, msg=Tupu, level=1):
         util.execute(func, args, msg, dry_run=self.dry_run)
 
-    def mkpath(self, name, mode=0o777):
+    eleza mkpath(self, name, mode=0o777):
         dir_util.mkpath(name, mode, dry_run=self.dry_run)
 
-    def copy_file(self, infile, outfile, preserve_mode=1, preserve_times=1,
-                  link=None, level=1):
-        """Copy a file respecting verbose, dry-run and force flags.  (The
-        former two default to whatever is in the Distribution object, na
-        the latter defaults to false for commands that don't define it.)"""
-        return file_util.copy_file(infile, outfile, preserve_mode,
+    eleza copy_file(self, infile, outfile, preserve_mode=1, preserve_times=1,
+                  link=Tupu, level=1):
+        """Copy a file respecting verbose, dry-run na force flags.  (The
+        former two default to whatever ni kwenye the Distribution object, and
+        the latter defaults to false kila commands that don't define it.)"""
+        rudisha file_util.copy_file(infile, outfile, preserve_mode,
                                    preserve_times, sio self.force, link,
                                    dry_run=self.dry_run)
 
-    def copy_tree(self, infile, outfile, preserve_mode=1, preserve_times=1,
+    eleza copy_tree(self, infile, outfile, preserve_mode=1, preserve_times=1,
                    preserve_symlinks=0, level=1):
         """Copy an entire directory tree respecting verbose, dry-run,
-        and force flags.
+        na force flags.
         """
-        return dir_util.copy_tree(infile, outfile, preserve_mode,
+        rudisha dir_util.copy_tree(infile, outfile, preserve_mode,
                                   preserve_times, preserve_symlinks,
                                   sio self.force, dry_run=self.dry_run)
 
-    def move_file (self, src, dst, level=1):
+    eleza move_file (self, src, dst, level=1):
         """Move a file respecting dry-run flag."""
-        return file_util.move_file(src, dst, dry_run=self.dry_run)
+        rudisha file_util.move_file(src, dst, dry_run=self.dry_run)
 
-    def spawn(self, cmd, search_path=1, level=1):
+    eleza spawn(self, cmd, search_path=1, level=1):
         """Spawn an external command respecting dry-run flag."""
-        from distutils.spawn import spawn
+        kutoka distutils.spawn agiza spawn
         spawn(cmd, search_path, dry_run=self.dry_run)
 
-    def make_archive(self, base_name, format, root_dir=None, base_dir=None,
-                     owner=None, group=None):
-        return archive_util.make_archive(base_name, format, root_dir, base_dir,
+    eleza make_archive(self, base_name, format, root_dir=Tupu, base_dir=Tupu,
+                     owner=Tupu, group=Tupu):
+        rudisha archive_util.make_archive(base_name, format, root_dir, base_dir,
                                          dry_run=self.dry_run,
                                          owner=owner, group=group)
 
-    def make_file(self, infiles, outfile, func, args,
-                  exec_msg=None, skip_msg=None, level=1):
-        """Special case of 'execute()' for operations that process one ama
-        more input files and generate one output file.  Works just like
-        'execute()', tatizo the operation is skipped and a different
-        message printed if 'outfile' already exists and is newer than all
-        files listed in 'infiles'.  If the command defined 'self.force',
-        and it is true, then the command is unconditionally run -- does no
+    eleza make_file(self, infiles, outfile, func, args,
+                  exec_msg=Tupu, skip_msg=Tupu, level=1):
+        """Special case of 'execute()' kila operations that process one or
+        more input files na generate one output file.  Works just like
+        'execute()', except the operation ni skipped na a different
+        message printed ikiwa 'outfile' already exists na ni newer than all
+        files listed kwenye 'infiles'.  If the command defined 'self.force',
+        na it ni true, then the command ni unconditionally run -- does no
         timestamp checks.
         """
-        if skip_msg is None:
+        ikiwa skip_msg ni Tupu:
             skip_msg = "skipping %s (inputs unchanged)" % outfile
 
         # Allow 'infiles' to be a single string
-        if isinstance(infiles, str):
+        ikiwa isinstance(infiles, str):
             infiles = (infiles,)
-        lasivyo sio isinstance(infiles, (list, tuple)):
-            ashiria TypeError(
-                  "'infiles' must be a string, or a list or tuple of strings")
+        elikiwa sio isinstance(infiles, (list, tuple)):
+             ashiria TypeError(
+                  "'infiles' must be a string, ama a list ama tuple of strings")
 
-        if exec_msg is None:
-            exec_msg = "generating %s from %s" % (outfile, ', '.join(infiles))
+        ikiwa exec_msg ni Tupu:
+            exec_msg = "generating %s kutoka %s" % (outfile, ', '.join(infiles))
 
         # If 'outfile' must be regenerated (either because it doesn't
-        # exist, is out-of-date, or the 'force' flag is true) then
+        # exist, ni out-of-date, ama the 'force' flag ni true) then
         # perform the action that presumably regenerates it
-        if self.force or dep_util.newer_group(infiles, outfile):
+        ikiwa self.force ama dep_util.newer_group(infiles, outfile):
             self.execute(func, args, exec_msg, level)
         # Otherwise, print the "skip" message
         isipokua:

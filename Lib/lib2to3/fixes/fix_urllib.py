@@ -1,11 +1,11 @@
-"""Fix changes agizas of urllib which are now incompatible.
-   This ni rather similar to fix_agizas, but because of the more
+"""Fix changes imports of urllib which are now incompatible.
+   This ni rather similar to fix_imports, but because of the more
    complex nature of the fixing kila urllib, it has its own fixer.
 """
 # Author: Nick Edds
 
-# Local agizas
-kutoka lib2to3.fixes.fix_agizas agiza alternates, FixImports
+# Local imports
+kutoka lib2to3.fixes.fix_imports agiza alternates, FixImports
 kutoka lib2to3.fixer_util agiza (Name, Comma, FromImport, Newline,
                                 find_indentation, Node, syms)
 
@@ -17,7 +17,7 @@ MAPPING = {"urllib":  [
                 ("urllib.parse",
                     ["quote", "quote_plus", "unquote", "unquote_plus",
                      "urlencode", "splitattr", "splithost", "splitnport",
-                     "splitpitawd", "splitport", "splitquery", "splittag",
+                     "splitpasswd", "splitport", "splitquery", "splittag",
                      "splittype", "splituser", "splitvalue", ]),
                 ("urllib.error",
                     ["ContentTooShortError"])],
@@ -51,16 +51,16 @@ eleza build_pattern():
         kila change kwenye changes:
             new_module, members = change
             members = alternates(members)
-            tuma """import_name< 'agiza' (module=%r
+            tuma """import_name< 'import' (module=%r
                                   | dotted_as_names< any* module=%r any* >) >
                   """ % (old_module, old_module)
-            tuma """import_kutoka< 'kutoka' mod_member=%r 'agiza'
+            tuma """import_from< 'from' mod_member=%r 'import'
                        ( member=%s | import_as_name< member=%s 'as' any > |
                          import_as_names< members=any*  >) >
                   """ % (old_module, members, members)
-            tuma """import_kutoka< 'kutoka' module_star=%r 'agiza' star='*' >
+            tuma """import_from< 'from' module_star=%r 'import' star='*' >
                   """ % old_module
-            tuma """import_name< 'agiza'
+            tuma """import_name< 'import'
                                   dotted_as_name< module_as=%r 'as' any > >
                   """ % old_module
             # bare_with_attr has a special significance kila FixImports.match().
@@ -73,7 +73,7 @@ kundi FixUrllib(FixImports):
     eleza build_pattern(self):
         rudisha "|".join(build_pattern())
 
-    eleza transform_agiza(self, node, results):
+    eleza transform_import(self, node, results):
         """Transform kila the basic agiza case. Replaces the old
            agiza name ukijumuisha a comma separated list of its
            replacements.
@@ -90,7 +90,7 @@ kundi FixUrllib(FixImports):
         import_mod.replace(names)
 
     eleza transform_member(self, node, results):
-        """Transform kila agizas of specific module elements. Replaces
+        """Transform kila imports of specific module elements. Replaces
            the module to be imported kutoka ukijumuisha the appropriate new
            module.
         """
@@ -130,7 +130,7 @@ kundi FixUrllib(FixImports):
                 ikiwa member_name != ",":
                     kila change kwenye MAPPING[mod_member.value]:
                         ikiwa member_name kwenye change[1]:
-                            ikiwa change[0] haiko kwenye mod_dict:
+                            ikiwa change[0] sio kwenye mod_dict:
                                 modules.append(change[0])
                             mod_dict.setdefault(change[0], []).append(member)
 
@@ -184,13 +184,13 @@ kundi FixUrllib(FixImports):
 
     eleza transform(self, node, results):
         ikiwa results.get("module"):
-            self.transform_agiza(node, results)
-        lasivyo results.get("mod_member"):
+            self.transform_import(node, results)
+        elikiwa results.get("mod_member"):
             self.transform_member(node, results)
-        lasivyo results.get("bare_with_attr"):
+        elikiwa results.get("bare_with_attr"):
             self.transform_dot(node, results)
-        # Renaming na star agizas are sio supported kila these modules.
-        lasivyo results.get("module_star"):
-            self.cannot_convert(node, "Cannot handle star agizas.")
-        lasivyo results.get("module_as"):
+        # Renaming na star imports are sio supported kila these modules.
+        elikiwa results.get("module_star"):
+            self.cannot_convert(node, "Cannot handle star imports.")
+        elikiwa results.get("module_as"):
             self.cannot_convert(node, "This module ni now multiple modules")

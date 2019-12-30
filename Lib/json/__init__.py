@@ -1,5 +1,5 @@
 r"""JSON (JavaScript Object Notation) <http://json.org> ni a subset of
-JavaScript syntax (ECMA-262 3rd edition) used kama a lightweight data
+JavaScript syntax (ECMA-262 3rd edition) used as a lightweight data
 interchange format.
 
 :mod:`json` exposes an API familiar to users of the standard library
@@ -75,7 +75,7 @@ Specializing JSON object encoding::
     >>> eleza encode_complex(obj):
     ...     ikiwa isinstance(obj, complex):
     ...         rudisha [obj.real, obj.imag]
-    ...     ashiria TypeError(f'Object of type {obj.__class__.__name__} '
+    ...      ashiria TypeError(f'Object of type {obj.__class__.__name__} '
     ...                     f'is sio JSON serializable')
     ...
     >>> json.dumps(2 + 1j, default=encode_complex)
@@ -120,7 +120,7 @@ _default_encoder = JSONEncoder(
 eleza dump(obj, fp, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
         allow_nan=Kweli, cls=Tupu, indent=Tupu, separators=Tupu,
         default=Tupu, sort_keys=Uongo, **kw):
-    """Serialize ``obj`` kama a JSON formatted stream to ``fp`` (a
+    """Serialize ``obj`` as a JSON formatted stream to ``fp`` (a
     ``.write()``-supporting file-like object).
 
     If ``skipkeys`` ni true then ``dict`` keys that are sio basic types
@@ -140,18 +140,18 @@ eleza dump(obj, fp, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
     kwenye strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` ni a non-negative integer, then JSON array elements na
+    If ``indent`` ni a non-negative integer, then JSON array elements and
     object members will be pretty-printed ukijumuisha that indent level. An indent
     level of 0 will only insert newlines. ``Tupu`` ni the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` na
+    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` and
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
     ``default(obj)`` ni a function that should rudisha a serializable version
-    of obj ama ashiria TypeError. The default simply ashirias TypeError.
+    of obj ama  ashiria TypeError. The default simply raises TypeError.
 
     If *sort_keys* ni true (default: ``Uongo``), then the output of
     dictionaries will be sorted by key.
@@ -162,9 +162,9 @@ eleza dump(obj, fp, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
 
     """
     # cached encoder
-    ikiwa (sio skipkeys na ensure_ascii na
-        check_circular na allow_nan na
-        cls ni Tupu na indent ni Tupu na separators ni Tupu na
+    ikiwa (not skipkeys na ensure_ascii and
+        check_circular na allow_nan and
+        cls ni Tupu na indent ni Tupu na separators ni Tupu and
         default ni Tupu na sio sort_keys na sio kw):
         iterable = _default_encoder.iterencode(obj)
     isipokua:
@@ -202,18 +202,18 @@ eleza dumps(obj, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
     strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` ni a non-negative integer, then JSON array elements na
+    If ``indent`` ni a non-negative integer, then JSON array elements and
     object members will be pretty-printed ukijumuisha that indent level. An indent
     level of 0 will only insert newlines. ``Tupu`` ni the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` na
+    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` and
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
     ``default(obj)`` ni a function that should rudisha a serializable version
-    of obj ama ashiria TypeError. The default simply ashirias TypeError.
+    of obj ama  ashiria TypeError. The default simply raises TypeError.
 
     If *sort_keys* ni true (default: ``Uongo``), then the output of
     dictionaries will be sorted by key.
@@ -224,9 +224,9 @@ eleza dumps(obj, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
 
     """
     # cached encoder
-    ikiwa (sio skipkeys na ensure_ascii na
-        check_circular na allow_nan na
-        cls ni Tupu na indent ni Tupu na separators ni Tupu na
+    ikiwa (not skipkeys na ensure_ascii and
+        check_circular na allow_nan and
+        cls ni Tupu na indent ni Tupu na separators ni Tupu and
         default ni Tupu na sio sort_keys na sio kw):
         rudisha _default_encoder.encode(obj)
     ikiwa cls ni Tupu:
@@ -260,7 +260,7 @@ eleza detect_encoding(b):
             # XX 00 00 XX - utf-16-le
             # XX 00 XX -- - utf-16-le
             rudisha 'utf-16-le' ikiwa b[2] ama b[3] isipokua 'utf-32-le'
-    lasivyo len(b) == 2:
+    elikiwa len(b) == 2:
         ikiwa sio b[0]:
             # 00 XX - utf-16-be
             rudisha 'utf-16-be'
@@ -324,7 +324,7 @@ eleza loads(s, *, cls=Tupu, object_hook=Tupu, parse_float=Tupu,
 
     ``parse_constant``, ikiwa specified, will be called ukijumuisha one of the
     following strings: -Infinity, Infinity, NaN.
-    This can be used to ashiria an exception ikiwa invalid JSON numbers
+    This can be used to  ashiria an exception ikiwa invalid JSON numbers
     are encountered.
 
     To use a custom ``JSONDecoder`` subclass, specify it ukijumuisha the ``cls``
@@ -334,13 +334,13 @@ eleza loads(s, *, cls=Tupu, object_hook=Tupu, parse_float=Tupu,
     """
     ikiwa isinstance(s, str):
         ikiwa s.startswith('\ufeff'):
-            ashiria JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
+             ashiria JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
                                   s, 0)
     isipokua:
         ikiwa sio isinstance(s, (bytes, bytearray)):
-            ashiria TypeError(f'the JSON object must be str, bytes ama bytearray, '
+             ashiria TypeError(f'the JSON object must be str, bytes ama bytearray, '
                             f'not {s.__class__.__name__}')
-        s = s.decode(detect_encoding(s), 'surrogatepita')
+        s = s.decode(detect_encoding(s), 'surrogatepass')
 
     ikiwa "encoding" kwenye kw:
         agiza warnings
@@ -351,8 +351,8 @@ eleza loads(s, *, cls=Tupu, object_hook=Tupu, parse_float=Tupu,
         )
         toa kw['encoding']
 
-    ikiwa (cls ni Tupu na object_hook ni Tupu na
-            parse_int ni Tupu na parse_float ni Tupu na
+    ikiwa (cls ni Tupu na object_hook ni Tupu and
+            parse_int ni Tupu na parse_float ni Tupu and
             parse_constant ni Tupu na object_pairs_hook ni Tupu na sio kw):
         rudisha _default_decoder.decode(s)
     ikiwa cls ni Tupu:

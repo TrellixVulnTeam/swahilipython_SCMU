@@ -29,34 +29,34 @@ kundi Dialect:
 
     """
     _name = ""
-    _valid = False
+    _valid = Uongo
     # placeholders
-    delimiter = None
-    quotechar = None
-    escapechar = None
-    doublequote = None
-    skipinitialspace = None
-    lineterminator = None
-    quoting = None
+    delimiter = Tupu
+    quotechar = Tupu
+    escapechar = Tupu
+    doublequote = Tupu
+    skipinitialspace = Tupu
+    lineterminator = Tupu
+    quoting = Tupu
 
-    def __init__(self):
-        if self.__class__ != Dialect:
-            self._valid = True
+    eleza __init__(self):
+        ikiwa self.__class__ != Dialect:
+            self._valid = Kweli
         self._validate()
 
-    def _validate(self):
+    eleza _validate(self):
         jaribu:
             _Dialect(self)
-        tatizo TypeError as e:
-            # We do this for compatibility with py2.3
-            ashiria Error(str(e))
+        except TypeError as e:
+            # We do this kila compatibility ukijumuisha py2.3
+             ashiria Error(str(e))
 
 kundi excel(Dialect):
     """Describe the usual properties of Excel-generated CSV files."""
     delimiter = ','
     quotechar = '"'
-    doublequote = True
-    skipinitialspace = False
+    doublequote = Kweli
+    skipinitialspace = Uongo
     lineterminator = '\r\n'
     quoting = QUOTE_MINIMAL
 register_dialect("excel", excel)
@@ -70,96 +70,96 @@ kundi unix_dialect(Dialect):
     """Describe the usual properties of Unix-generated CSV files."""
     delimiter = ','
     quotechar = '"'
-    doublequote = True
-    skipinitialspace = False
+    doublequote = Kweli
+    skipinitialspace = Uongo
     lineterminator = '\n'
     quoting = QUOTE_ALL
 register_dialect("unix", unix_dialect)
 
 
 kundi DictReader:
-    def __init__(self, f, fieldnames=None, restkey=None, restval=None,
+    eleza __init__(self, f, fieldnames=Tupu, restkey=Tupu, restval=Tupu,
                  dialect="excel", *args, **kwds):
-        self._fieldnames = fieldnames   # list of keys for the dict
+        self._fieldnames = fieldnames   # list of keys kila the dict
         self.restkey = restkey          # key to catch long rows
-        self.restval = restval          # default value for short rows
+        self.restval = restval          # default value kila short rows
         self.reader = reader(f, dialect, *args, **kwds)
         self.dialect = dialect
         self.line_num = 0
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
     @property
-    def fieldnames(self):
-        if self._fieldnames is None:
+    eleza fieldnames(self):
+        ikiwa self._fieldnames ni Tupu:
             jaribu:
                 self._fieldnames = next(self.reader)
-            tatizo StopIteration:
+            except StopIteration:
                 pass
         self.line_num = self.reader.line_num
-        return self._fieldnames
+        rudisha self._fieldnames
 
     @fieldnames.setter
-    def fieldnames(self, value):
+    eleza fieldnames(self, value):
         self._fieldnames = value
 
-    def __next__(self):
-        if self.line_num == 0:
-            # Used only for its side effect.
+    eleza __next__(self):
+        ikiwa self.line_num == 0:
+            # Used only kila its side effect.
             self.fieldnames
         row = next(self.reader)
         self.line_num = self.reader.line_num
 
-        # unlike the basic reader, we prefer sio to return blanks,
-        # because we will typically wind up with a dict full of None
+        # unlike the basic reader, we prefer sio to rudisha blanks,
+        # because we will typically wind up ukijumuisha a dict full of Tupu
         # values
         wakati row == []:
             row = next(self.reader)
         d = dict(zip(self.fieldnames, row))
         lf = len(self.fieldnames)
         lr = len(row)
-        if lf < lr:
+        ikiwa lf < lr:
             d[self.restkey] = row[lf:]
-        lasivyo lf > lr:
-            for key in self.fieldnames[lr:]:
+        elikiwa lf > lr:
+            kila key kwenye self.fieldnames[lr:]:
                 d[key] = self.restval
-        return d
+        rudisha d
 
 
 kundi DictWriter:
-    def __init__(self, f, fieldnames, restval="", extrasaction="raise",
+    eleza __init__(self, f, fieldnames, restval="", extrasaction="raise",
                  dialect="excel", *args, **kwds):
-        self.fieldnames = fieldnames    # list of keys for the dict
-        self.restval = restval          # for writing short dicts
-        if extrasaction.lower() haiko kwenye ("raise", "ignore"):
-            ashiria ValueError("extrasaction (%s) must be 'raise' or 'ignore'"
+        self.fieldnames = fieldnames    # list of keys kila the dict
+        self.restval = restval          # kila writing short dicts
+        ikiwa extrasaction.lower() sio kwenye ("raise", "ignore"):
+             ashiria ValueError("extrasaction (%s) must be 'raise' ama 'ignore'"
                              % extrasaction)
         self.extrasaction = extrasaction
         self.writer = writer(f, dialect, *args, **kwds)
 
-    def writeheader(self):
+    eleza writeheader(self):
         header = dict(zip(self.fieldnames, self.fieldnames))
-        return self.writerow(header)
+        rudisha self.writerow(header)
 
-    def _dict_to_list(self, rowdict):
-        if self.extrasaction == "raise":
+    eleza _dict_to_list(self, rowdict):
+        ikiwa self.extrasaction == "raise":
             wrong_fields = rowdict.keys() - self.fieldnames
-            if wrong_fields:
-                ashiria ValueError("dict contains fields haiko kwenye fieldnames: "
-                                 + ", ".join([repr(x) for x in wrong_fields]))
-        return (rowdict.get(key, self.restval) for key in self.fieldnames)
+            ikiwa wrong_fields:
+                 ashiria ValueError("dict contains fields sio kwenye fieldnames: "
+                                 + ", ".join([repr(x) kila x kwenye wrong_fields]))
+        rudisha (rowdict.get(key, self.restval) kila key kwenye self.fieldnames)
 
-    def writerow(self, rowdict):
-        return self.writer.writerow(self._dict_to_list(rowdict))
+    eleza writerow(self, rowdict):
+        rudisha self.writer.writerow(self._dict_to_list(rowdict))
 
-    def writerows(self, rowdicts):
-        return self.writer.writerows(map(self._dict_to_list, rowdicts))
+    eleza writerows(self, rowdicts):
+        rudisha self.writer.writerows(map(self._dict_to_list, rowdicts))
 
 # Guard Sniffer's type checking against builds that exclude complex()
 jaribu:
     complex
-tatizo NameError:
+except NameError:
     complex = float
 
 kundi Sniffer:
@@ -167,24 +167,24 @@ kundi Sniffer:
     "Sniffs" the format of a CSV file (i.e. delimiter, quotechar)
     Returns a Dialect object.
     '''
-    def __init__(self):
-        # in case there is more than one possible delimiter
+    eleza __init__(self):
+        # kwenye case there ni more than one possible delimiter
         self.preferred = [',', '\t', ';', ' ', ':']
 
 
-    def sniff(self, sample, delimiters=None):
+    eleza sniff(self, sample, delimiters=Tupu):
         """
-        Returns a dialect (or None) corresponding to the sample
+        Returns a dialect (or Tupu) corresponding to the sample
         """
 
         quotechar, doublequote, delimiter, skipinitialspace = \
                    self._guess_quote_and_delimiter(sample, delimiters)
-        if sio delimiter:
+        ikiwa sio delimiter:
             delimiter, skipinitialspace = self._guess_delimiter(sample,
                                                                 delimiters)
 
-        if sio delimiter:
-            ashiria Error("Could sio determine delimiter")
+        ikiwa sio delimiter:
+             ashiria Error("Could sio determine delimiter")
 
         kundi dialect(Dialect):
             _name = "sniffed"
@@ -195,73 +195,73 @@ kundi Sniffer:
         dialect.doublequote = doublequote
         dialect.delimiter = delimiter
         # _csv.reader won't accept a quotechar of ''
-        dialect.quotechar = quotechar or '"'
+        dialect.quotechar = quotechar ama '"'
         dialect.skipinitialspace = skipinitialspace
 
-        return dialect
+        rudisha dialect
 
 
-    def _guess_quote_and_delimiter(self, data, delimiters):
+    eleza _guess_quote_and_delimiter(self, data, delimiters):
         """
-        Looks for text enclosed between two identical quotes
-        (the probable quotechar) which are preceded and followed
+        Looks kila text enclosed between two identical quotes
+        (the probable quotechar) which are preceded na followed
         by the same character (the probable delimiter).
         For example:
                          ,'some text',
-        The quote with the most wins, same with the delimiter.
-        If there is no quotechar the delimiter can't be determined
+        The quote ukijumuisha the most wins, same ukijumuisha the delimiter.
+        If there ni no quotechar the delimiter can't be determined
         this way.
         """
 
         matches = []
-        for restr in (r'(?P<delim>[^\w\n"\'])(?P<space> ?)(?P<quote>["\']).*?(?P=quote)(?P=delim)', # ,".*?",
+        kila restr kwenye (r'(?P<delim>[^\w\n"\'])(?P<space> ?)(?P<quote>["\']).*?(?P=quote)(?P=delim)', # ,".*?",
                       r'(?:^|\n)(?P<quote>["\']).*?(?P=quote)(?P<delim>[^\w\n"\'])(?P<space> ?)',   #  ".*?",
                       r'(?P<delim>[^\w\n"\'])(?P<space> ?)(?P<quote>["\']).*?(?P=quote)(?:$|\n)',   # ,".*?"
                       r'(?:^|\n)(?P<quote>["\']).*?(?P=quote)(?:$|\n)'):                            #  ".*?" (no delim, no space)
             regexp = re.compile(restr, re.DOTALL | re.MULTILINE)
             matches = regexp.findall(data)
-            if matches:
+            ikiwa matches:
                 koma
 
-        if sio matches:
+        ikiwa sio matches:
             # (quotechar, doublequote, delimiter, skipinitialspace)
-            return ('', False, None, 0)
+            rudisha ('', Uongo, Tupu, 0)
         quotes = {}
         delims = {}
         spaces = 0
         groupindex = regexp.groupindex
-        for m in matches:
+        kila m kwenye matches:
             n = groupindex['quote'] - 1
             key = m[n]
-            if key:
+            ikiwa key:
                 quotes[key] = quotes.get(key, 0) + 1
             jaribu:
                 n = groupindex['delim'] - 1
                 key = m[n]
-            tatizo KeyError:
+            except KeyError:
                 endelea
-            if key and (delimiters is None or key in delimiters):
+            ikiwa key na (delimiters ni Tupu ama key kwenye delimiters):
                 delims[key] = delims.get(key, 0) + 1
             jaribu:
                 n = groupindex['space'] - 1
-            tatizo KeyError:
+            except KeyError:
                 endelea
-            if m[n]:
+            ikiwa m[n]:
                 spaces += 1
 
         quotechar = max(quotes, key=quotes.get)
 
-        if delims:
+        ikiwa delims:
             delim = max(delims, key=delims.get)
             skipinitialspace = delims[delim] == spaces
-            if delim == '\n': # most likely a file with a single column
+            ikiwa delim == '\n': # most likely a file ukijumuisha a single column
                 delim = ''
         isipokua:
-            # there is *no* delimiter, it's a single column of quoted data
+            # there ni *no* delimiter, it's a single column of quoted data
             delim = ''
             skipinitialspace = 0
 
-        # if we see an extra quote between delimiters, we've got a
+        # ikiwa we see an extra quote between delimiters, we've got a
         # double quoted format
         dq_regexp = re.compile(
                                r"((%(delim)s)|^)\W*%(quote)s[^%(delim)s\n]*%(quote)s[^%(delim)s\n]*%(quote)s\W*((%(delim)s)|$)" % \
@@ -269,36 +269,36 @@ kundi Sniffer:
 
 
 
-        if dq_regexp.search(data):
-            doublequote = True
+        ikiwa dq_regexp.search(data):
+            doublequote = Kweli
         isipokua:
-            doublequote = False
+            doublequote = Uongo
 
-        return (quotechar, doublequote, delim, skipinitialspace)
+        rudisha (quotechar, doublequote, delim, skipinitialspace)
 
 
-    def _guess_delimiter(self, data, delimiters):
+    eleza _guess_delimiter(self, data, delimiters):
         """
         The delimiter /should/ occur the same number of times on
         each row. However, due to malformed data, it may not. We don't want
-        an all or nothing approach, so we allow for small variations in this
+        an all ama nothing approach, so we allow kila small variations kwenye this
         number.
           1) build a table of the frequency of each character on every line.
           2) build a table of frequencies of this frequency (meta-frequency?),
-             e.g.  'x occurred 5 times in 10 rows, 6 times in 1000 rows,
-             7 times in 2 rows'
+             e.g.  'x occurred 5 times kwenye 10 rows, 6 times kwenye 1000 rows,
+             7 times kwenye 2 rows'
           3) use the mode of the meta-frequency to determine the /expected/
-             frequency for that character
+             frequency kila that character
           4) find out how often the character actually meets that goal
-          5) the character that best meets its goal is the delimiter
-        For performance reasons, the data is evaluated in chunks, so it can
-        try and evaluate the smallest portion of the data possible, evaluating
+          5) the character that best meets its goal ni the delimiter
+        For performance reasons, the data ni evaluated kwenye chunks, so it can
+        try na evaluate the smallest portion of the data possible, evaluating
         additional chunks as necessary.
         """
 
-        data = list(filter(None, data.split('\n')))
+        data = list(filter(Tupu, data.split('\n')))
 
-        ascii = [chr(c) for c in range(127)] # 7-bit ASCII
+        ascii = [chr(c) kila c kwenye range(127)] # 7-bit ASCII
 
         # build frequency tables
         chunkLength = min(10, len(data))
@@ -309,27 +309,27 @@ kundi Sniffer:
         start, end = 0, chunkLength
         wakati start < len(data):
             iteration += 1
-            for line in data[start:end]:
-                for char in ascii:
+            kila line kwenye data[start:end]:
+                kila char kwenye ascii:
                     metaFrequency = charFrequency.get(char, {})
-                    # must count even if frequency is 0
+                    # must count even ikiwa frequency ni 0
                     freq = line.count(char)
-                    # value is the mode
+                    # value ni the mode
                     metaFrequency[freq] = metaFrequency.get(freq, 0) + 1
                     charFrequency[char] = metaFrequency
 
-            for char in charFrequency.keys():
+            kila char kwenye charFrequency.keys():
                 items = list(charFrequency[char].items())
-                if len(items) == 1 and items[0][0] == 0:
+                ikiwa len(items) == 1 na items[0][0] == 0:
                     endelea
                 # get the mode of the frequencies
-                if len(items) > 1:
+                ikiwa len(items) > 1:
                     modes[char] = max(items, key=lambda x: x[1])
                     # adjust the mode - subtract the sum of all
                     # other frequencies
                     items.remove(modes[char])
                     modes[char] = (modes[char][0], modes[char][1]
-                                   - sum(item[1] for item in items))
+                                   - sum(item[1] kila item kwenye items))
                 isipokua:
                     modes[char] = items[0]
 
@@ -340,109 +340,109 @@ kundi Sniffer:
             consistency = 1.0
             # minimum consistency threshold
             threshold = 0.9
-            wakati len(delims) == 0 and consistency >= threshold:
-                for k, v in modeList:
-                    if v[0] > 0 and v[1] > 0:
-                        if ((v[1]/total) >= consistency na
-                            (delimiters is None or k in delimiters)):
+            wakati len(delims) == 0 na consistency >= threshold:
+                kila k, v kwenye modeList:
+                    ikiwa v[0] > 0 na v[1] > 0:
+                        ikiwa ((v[1]/total) >= consistency and
+                            (delimiters ni Tupu ama k kwenye delimiters)):
                             delims[k] = v
                 consistency -= 0.01
 
-            if len(delims) == 1:
+            ikiwa len(delims) == 1:
                 delim = list(delims.keys())[0]
                 skipinitialspace = (data[0].count(delim) ==
                                     data[0].count("%c " % delim))
-                return (delim, skipinitialspace)
+                rudisha (delim, skipinitialspace)
 
             # analyze another chunkLength lines
             start = end
             end += chunkLength
 
-        if sio delims:
-            return ('', 0)
+        ikiwa sio delims:
+            rudisha ('', 0)
 
-        # if there's more than one, fall back to a 'preferred' list
-        if len(delims) > 1:
-            for d in self.preferred:
-                if d in delims.keys():
+        # ikiwa there's more than one, fall back to a 'preferred' list
+        ikiwa len(delims) > 1:
+            kila d kwenye self.preferred:
+                ikiwa d kwenye delims.keys():
                     skipinitialspace = (data[0].count(d) ==
                                         data[0].count("%c " % d))
-                    return (d, skipinitialspace)
+                    rudisha (d, skipinitialspace)
 
         # nothing isipokua indicates a preference, pick the character that
         # dominates(?)
-        items = [(v,k) for (k,v) in delims.items()]
+        items = [(v,k) kila (k,v) kwenye delims.items()]
         items.sort()
         delim = items[-1][1]
 
         skipinitialspace = (data[0].count(delim) ==
                             data[0].count("%c " % delim))
-        return (delim, skipinitialspace)
+        rudisha (delim, skipinitialspace)
 
 
-    def has_header(self, sample):
-        # Creates a dictionary of types of data in each column. If any
-        # column is of a single type (say, integers), *except* for the first
-        # row, then the first row is presumed to be labels. If the type
-        # can't be determined, it is assumed to be a string in which case
-        # the length of the string is the determining factor: if all of the
-        # rows tatizo for the first are the same length, it's a header.
-        # Finally, a 'vote' is taken at the end for each column, adding ama
+    eleza has_header(self, sample):
+        # Creates a dictionary of types of data kwenye each column. If any
+        # column ni of a single type (say, integers), *except* kila the first
+        # row, then the first row ni presumed to be labels. If the type
+        # can't be determined, it ni assumed to be a string kwenye which case
+        # the length of the string ni the determining factor: ikiwa all of the
+        # rows except kila the first are the same length, it's a header.
+        # Finally, a 'vote' ni taken at the end kila each column, adding or
         # subtracting kutoka the likelihood of the first row being a header.
 
         rdr = reader(StringIO(sample), self.sniff(sample))
 
-        header = next(rdr) # assume first row is header
+        header = next(rdr) # assume first row ni header
 
         columns = len(header)
         columnTypes = {}
-        for i in range(columns): columnTypes[i] = None
+        kila i kwenye range(columns): columnTypes[i] = Tupu
 
         checked = 0
-        for row in rdr:
+        kila row kwenye rdr:
             # arbitrary number of rows to check, to keep it sane
-            if checked > 20:
+            ikiwa checked > 20:
                 koma
             checked += 1
 
-            if len(row) != columns:
+            ikiwa len(row) != columns:
                 endelea # skip rows that have irregular number of columns
 
-            for col in list(columnTypes.keys()):
+            kila col kwenye list(columnTypes.keys()):
 
-                for thisType in [int, float, complex]:
+                kila thisType kwenye [int, float, complex]:
                     jaribu:
                         thisType(row[col])
                         koma
-                    tatizo (ValueError, OverflowError):
+                    except (ValueError, OverflowError):
                         pass
                 isipokua:
                     # fallback to length of string
                     thisType = len(row[col])
 
-                if thisType != columnTypes[col]:
-                    if columnTypes[col] is None: # add new column type
+                ikiwa thisType != columnTypes[col]:
+                    ikiwa columnTypes[col] ni Tupu: # add new column type
                         columnTypes[col] = thisType
                     isipokua:
-                        # type is inconsistent, remove column kutoka
+                        # type ni inconsistent, remove column from
                         # consideration
                         toa columnTypes[col]
 
-        # finally, compare results against first row and "vote"
+        # finally, compare results against first row na "vote"
         # on whether it's a header
         hasHeader = 0
-        for col, colType in columnTypes.items():
-            if type(colType) == type(0): # it's a length
-                if len(header[col]) != colType:
+        kila col, colType kwenye columnTypes.items():
+            ikiwa type(colType) == type(0): # it's a length
+                ikiwa len(header[col]) != colType:
                     hasHeader += 1
                 isipokua:
                     hasHeader -= 1
             isipokua: # attempt typecast
                 jaribu:
                     colType(header[col])
-                tatizo (ValueError, TypeError):
+                except (ValueError, TypeError):
                     hasHeader += 1
                 isipokua:
                     hasHeader -= 1
 
-        return hasHeader > 0
+        rudisha hasHeader > 0

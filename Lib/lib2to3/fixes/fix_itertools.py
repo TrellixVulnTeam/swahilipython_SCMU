@@ -1,13 +1,13 @@
-""" Fixer kila itertools.(imap|ifilter|izip) --> (map|filter|zip) na
+""" Fixer kila itertools.(imap|ifilter|izip) --> (map|filter|zip) and
     itertools.ifilterfalse --> itertools.filterfalse (bugs 2360-2363)
 
-    agizas kutoka itertools are fixed kwenye fix_itertools_agiza.py
+    imports kutoka itertools are fixed kwenye fix_itertools_import.py
 
-    If itertools ni imported kama something isipokua (ie: agiza itertools kama it;
+    If itertools ni imported as something isipokua (ie: agiza itertools as it;
     it.izip(spam, eggs)) method calls will sio get fixed.
     """
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 
@@ -28,8 +28,8 @@ kundi FixItertools(fixer_base.BaseFix):
     eleza transform(self, node, results):
         prefix = Tupu
         func = results['func'][0]
-        ikiwa ('it' kwenye results na
-            func.value haiko kwenye ('ifilterfalse', 'izip_longest')):
+        ikiwa ('it' kwenye results and
+            func.value sio kwenye ('ifilterfalse', 'izip_longest')):
             dot, it = (results['dot'], results['it'])
             # Remove the 'itertools'
             prefix = it.prefix

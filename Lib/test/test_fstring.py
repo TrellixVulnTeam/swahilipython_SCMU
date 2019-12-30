@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# There are tests here ukijumuisha unicode string literals na
+# There are tests here ukijumuisha unicode string literals and
 # identifiers. There's a code kwenye ast.c that was added because of a
 # failure ukijumuisha a non-ascii-only expression.  So, I have tests for
 # that.  There are workarounds that would let me run tests kila that
@@ -46,7 +46,7 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(format(x), format(y))
 
         # __format__ ni sio called this way, but still make sure it
-        #  rudishas what we expect (so we can make sure we're bypitaing
+        #  returns what we expect (so we can make sure we're bypassing
         #  it).
         self.assertEqual(x.__format__(''), 'class')
         self.assertEqual(y.__format__(''), 'instance')
@@ -286,7 +286,7 @@ f'''
   {a
      *
        x()}
-non-agizaant content
+non-important content
 '''
 """
         t = ast.parse(expr)
@@ -477,8 +477,8 @@ non-agizaant content
 
     eleza test_many_expressions(self):
         # Create a string ukijumuisha many expressions kwenye it. Note that
-        #  because we have a space kwenye here kama a literal, we're actually
-        #  going to use twice kama many ast nodes: one kila each literal
+        #  because we have a space kwenye here as a literal, we're actually
+        #  going to use twice as many ast nodes: one kila each literal
         #  plus one kila each expression.
         eleza build_fstr(n, extra=''):
             rudisha "f'" + ('{x} ' * n) + extra + "'"
@@ -582,7 +582,7 @@ non-agizaant content
                              "f'{:x'",
                              ])
 
-        # Different error message ni ashiriad kila other whitespace characters.
+        # Different error message ni raised kila other whitespace characters.
         self.assertAllRaise(SyntaxError, 'invalid character kwenye identifier',
                             ["f'''{\xa0}'''",
                              "\xa0",
@@ -717,7 +717,7 @@ non-agizaant content
                             ["f'{lambda x:x}'",
                              ])
 
-    eleza test_tuma(self):
+    eleza test_yield(self):
         # Not terribly useful, but make sure the tuma turns
         #  a function into a generator
         eleza fn(y):
@@ -726,7 +726,7 @@ non-agizaant content
         g = fn(4)
         self.assertEqual(next(g), 8)
 
-    eleza test_tuma_send(self):
+    eleza test_yield_send(self):
         eleza fn(x):
             tuma f'x:{tuma (lambda i: x * i)}'
 
@@ -814,7 +814,7 @@ non-agizaant content
         self.assertEqual(f'g:{a_global} l:{a_local!r}',
                          "g:global variable l:'local variable'")
 
-        self.assertIn("module 'unittest' kutoka", f'{unittest}')
+        self.assertIn("module 'unittest' from", f'{unittest}')
 
     eleza test_shadowed_global(self):
         a_global = 'really a local'
@@ -879,7 +879,7 @@ non-agizaant content
 
     eleza test_not_equal(self):
         # There's a special test kila this because there's a special
-        #  case kwenye the f-string parser to look kila != kama sio ending an
+        #  case kwenye the f-string parser to look kila != as sio ending an
         #  expression. Normally it would, wakati looking kila !s ama !r.
 
         self.assertEqual(f'{3!=4}', 'Kweli')
@@ -1060,7 +1060,7 @@ non-agizaant content
 
     eleza test_backslash_char(self):
         # Check eval of a backslash followed by a control char.
-        # See bpo-30682: this used to ashiria an assert kwenye pydebug mode.
+        # See bpo-30682: this used to  ashiria an assert kwenye pydebug mode.
         self.assertEqual(eval('f"\\\n"'), '')
         self.assertEqual(eval('f"\\\r"'), '')
 

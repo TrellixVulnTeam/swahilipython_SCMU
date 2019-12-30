@@ -23,7 +23,7 @@ kundi BadSpecFinderLoader:
     @staticmethod
     eleza exec_module(module):
         ikiwa module.__name__ == SUBMOD_NAME:
-            ashiria ImportError('I cannot be loaded!')
+             ashiria ImportError('I cannot be loaded!')
 
 
 kundi BadLoaderFinder:
@@ -35,42 +35,42 @@ kundi BadLoaderFinder:
     @classmethod
     eleza load_module(cls, fullname):
         ikiwa fullname == SUBMOD_NAME:
-            ashiria ImportError('I cannot be loaded!')
+             ashiria ImportError('I cannot be loaded!')
 
 
 kundi APITest:
 
     """Test API-specific details kila __import__ (e.g. raising the right
-    exception when pitaing kwenye an int kila the module name)."""
+    exception when passing kwenye an int kila the module name)."""
 
-    eleza test_ashirias_ModuleNotFoundError(self):
+    eleza test_raises_ModuleNotFoundError(self):
         ukijumuisha self.assertRaises(ModuleNotFoundError):
             util.import_importlib('some module that does sio exist')
 
     eleza test_name_requires_rparition(self):
-        # Raise TypeError ikiwa a non-string ni pitaed kwenye kila the module name.
+        # Raise TypeError ikiwa a non-string ni passed kwenye kila the module name.
         ukijumuisha self.assertRaises(TypeError):
             self.__import__(42)
 
     eleza test_negative_level(self):
         # Raise ValueError when a negative level ni specified.
         # PEP 328 did away ukijumuisha sys.module Tupu entries na the ambiguity of
-        # absolute/relative agizas.
+        # absolute/relative imports.
         ukijumuisha self.assertRaises(ValueError):
             self.__import__('os', globals(), level=-1)
 
-    eleza test_nonexistent_kutokalist_entry(self):
-        # If something kwenye kutokalist doesn't exist, that's okay.
+    eleza test_nonexistent_fromlist_entry(self):
+        # If something kwenye fromlist doesn't exist, that's okay.
         # issue15715
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = ['XXX']
         ukijumuisha util.import_state(meta_path=[self.bad_finder_loader]):
             ukijumuisha util.uncache(PKG_NAME):
                 sys.modules[PKG_NAME] = mod
-                self.__import__(PKG_NAME, kutokalist=['not here'])
+                self.__import__(PKG_NAME, fromlist=['not here'])
 
-    eleza test_kutokalist_load_error_propagates(self):
-        # If something kwenye kutokalist triggers an exception sio related to not
+    eleza test_fromlist_load_error_propagates(self):
+        # If something kwenye fromlist triggers an exception sio related to not
         # existing, let that exception propagate.
         # issue15316
         mod = types.ModuleType(PKG_NAME)
@@ -80,10 +80,10 @@ kundi APITest:
                 sys.modules[PKG_NAME] = mod
                 ukijumuisha self.assertRaises(ImportError):
                     self.__import__(PKG_NAME,
-                                    kutokalist=[SUBMOD_NAME.rpartition('.')[-1]])
+                                    fromlist=[SUBMOD_NAME.rpartition('.')[-1]])
 
-    eleza test_blocked_kutokalist(self):
-        # If kutokalist entry ni Tupu, let a ModuleNotFoundError propagate.
+    eleza test_blocked_fromlist(self):
+        # If fromlist entry ni Tupu, let a ModuleNotFoundError propagate.
         # issue31642
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = []
@@ -91,9 +91,9 @@ kundi APITest:
             ukijumuisha util.uncache(PKG_NAME, SUBMOD_NAME):
                 sys.modules[PKG_NAME] = mod
                 sys.modules[SUBMOD_NAME] = Tupu
-                ukijumuisha self.assertRaises(ModuleNotFoundError) kama cm:
+                ukijumuisha self.assertRaises(ModuleNotFoundError) as cm:
                     self.__import__(PKG_NAME,
-                                    kutokalist=[SUBMOD_NAME.rpartition('.')[-1]])
+                                    fromlist=[SUBMOD_NAME.rpartition('.')[-1]])
                 self.assertEqual(cm.exception.name, SUBMOD_NAME)
 
 

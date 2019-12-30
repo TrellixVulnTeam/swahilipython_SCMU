@@ -16,8 +16,8 @@
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
-# 2. Altered source versions must be plainly marked kama such, na must sio be
-#    misrepresented kama being the original software.
+# 2. Altered source versions must be plainly marked as such, na must sio be
+#    misrepresented as being the original software.
 # 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza datetime

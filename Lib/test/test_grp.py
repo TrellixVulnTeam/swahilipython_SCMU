@@ -8,13 +8,13 @@ grp = support.import_module('grp')
 kundi GroupDatabaseTestCase(unittest.TestCase):
 
     eleza check_value(self, value):
-        # check that a grp tuple has the entries na
+        # check that a grp tuple has the entries and
         # attributes promised by the docs
         self.assertEqual(len(value), 4)
         self.assertEqual(value[0], value.gr_name)
         self.assertIsInstance(value.gr_name, str)
-        self.assertEqual(value[1], value.gr_pitawd)
-        self.assertIsInstance(value.gr_pitawd, str)
+        self.assertEqual(value[1], value.gr_passwd)
+        self.assertIsInstance(value.gr_passwd, str)
         self.assertEqual(value[2], value.gr_gid)
         self.assertIsInstance(value.gr_gid, int)
         self.assertEqual(value[3], value.gr_mem)
@@ -41,8 +41,8 @@ kundi GroupDatabaseTestCase(unittest.TestCase):
                 endelea
             e2 = grp.getgrnam(name)
             self.check_value(e2)
-            # There are instances where getgrall() rudishas group names in
-            # lowercase wakati getgrgid() rudishas proper casing.
+            # There are instances where getgrall() returns group names in
+            # lowercase wakati getgrgid() returns proper casing.
             # Discovered on Ubuntu 5.04 (custom).
             self.assertEqual(e2.gr_name.lower(), name.lower())
 
@@ -71,7 +71,7 @@ kundi GroupDatabaseTestCase(unittest.TestCase):
                 ikiwa chars[i] == 'z':
                     chars[i] = 'A'
                     koma
-                lasivyo chars[i] == 'Z':
+                elikiwa chars[i] == 'Z':
                     endelea
                 isipokua:
                     chars[i] = chr(ord(chars[i]) + 1)
@@ -80,7 +80,7 @@ kundi GroupDatabaseTestCase(unittest.TestCase):
                 namei = namei + 1
                 jaribu:
                     fakename = allnames[namei]
-                tatizo IndexError:
+                except IndexError:
                     # should never happen... ikiwa so, just forget it
                     koma
             fakename = ''.join(chars)

@@ -17,13 +17,13 @@ kundi BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
     version_pattern = r'\d+\.\d+(\.\d)?'
 
     eleza test_retrieves_version_of_self(self):
-        dist = Distribution.kutoka_name('distinfo-pkg')
+        dist = Distribution.from_name('distinfo-pkg')
         assert isinstance(dist.version, str)
         assert re.match(self.version_pattern, dist.version)
 
     eleza test_for_name_does_not_exist(self):
         ukijumuisha self.assertRaises(PackageNotFoundError):
-            Distribution.kutoka_name('does-not-exist')
+            Distribution.from_name('does-not-exist')
 
     eleza test_new_style_classes(self):
         self.assertIsInstance(Distribution, type)
@@ -66,7 +66,7 @@ kundi NameNormalizationTests(
         metadata_dir = site_dir / 'my_pkg.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        ukijumuisha metadata.open('w') kama strm:
+        ukijumuisha metadata.open('w') as strm:
             strm.write('Version: 1.0\n')
         rudisha 'my-pkg'
 
@@ -87,7 +87,7 @@ kundi NameNormalizationTests(
         metadata_dir = site_dir / 'CherryPy.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        ukijumuisha metadata.open('w') kama strm:
+        ukijumuisha metadata.open('w') as strm:
             strm.write('Version: 1.0\n')
         rudisha 'CherryPy'
 
@@ -111,7 +111,7 @@ kundi NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
         metadata_dir = site_dir / 'portend.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        ukijumuisha metadata.open('w', encoding='utf-8') kama fp:
+        ukijumuisha metadata.open('w', encoding='utf-8') as fp:
             fp.write('Description: pôrˈtend\n')
         rudisha 'portend'
 
@@ -124,7 +124,7 @@ kundi NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
         metadata_dir = site_dir / 'portend.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        ukijumuisha metadata.open('w', encoding='utf-8') kama fp:
+        ukijumuisha metadata.open('w', encoding='utf-8') as fp:
             fp.write(textwrap.dedent("""
                 Name: portend
 

@@ -3,7 +3,7 @@
 
 """Fixer that turns <> into !=."""
 
-# Local agizas
+# Local imports
 kutoka .. agiza pytree
 kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base

@@ -1,3 +1,3 @@
 agiza unittest
 
-unittest.main('test.test_agiza')
+unittest.main('test.test_import')

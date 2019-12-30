@@ -32,8 +32,8 @@ eleza normalize_trace_output(output):
         result.sort(key=lambda row: int(row[0]))
         result = [row[1] kila row kwenye result]
         rudisha "\n".join(result)
-    tatizo (IndexError, ValueError):
-        ashiria AssertionError(
+    except (IndexError, ValueError):
+         ashiria AssertionError(
             "tracer produced unparseable output:\n{}".format(output)
         )
 
@@ -49,7 +49,7 @@ kundi TraceBackend:
             python_file=abspath(name + ".py"),
             optimize_python=optimize_python))
 
-        ukijumuisha open(abspath(name + self.EXTENSION + ".expected")) kama f:
+        ukijumuisha open(abspath(name + self.EXTENSION + ".expected")) as f:
             expected_output = f.read().rstrip()
 
         rudisha (expected_output, actual_output)
@@ -79,10 +79,10 @@ kundi TraceBackend:
         jaribu:
             output = self.trace(abspath("assert_usable" + self.EXTENSION))
             output = output.strip()
-        tatizo (FileNotFoundError, NotADirectoryError, PermissionError) kama fnfe:
+        except (FileNotFoundError, NotADirectoryError, PermissionError) as fnfe:
             output = str(fnfe)
         ikiwa output != "probe: success":
-            ashiria unittest.SkipTest(
+             ashiria unittest.SkipTest(
                 "{}(1) failed: {}".format(self.COMMAND[0], output)
             )
 
@@ -114,7 +114,7 @@ kundi TraceTests(unittest.TestCase):
             name, optimize_python=self.optimize_python)
         self.assertEqual(actual_output, expected_output)
 
-    eleza test_function_entry_rudisha(self):
+    eleza test_function_entry_return(self):
         self.run_case("call_stack")
 
     eleza test_verify_call_opcodes(self):
@@ -122,7 +122,7 @@ kundi TraceTests(unittest.TestCase):
 
         opcodes = set(["CALL_FUNCTION", "CALL_FUNCTION_EX", "CALL_FUNCTION_KW"])
 
-        ukijumuisha open(abspath("call_stack.py")) kama f:
+        ukijumuisha open(abspath("call_stack.py")) as f:
             code_string = f.read()
 
         eleza get_function_instructions(funcname):

@@ -41,27 +41,27 @@ kundi KeywordOnlyArgTestCase(unittest.TestCase):
         self.assertRaises(SyntaxError, shouldRaiseSyntaxError, codestr)
 
     eleza testSyntaxErrorForFunctionDefinition(self):
-        self.assertRaisesSyntaxError("eleza f(p, *):\n  pita\n")
-        self.assertRaisesSyntaxError("eleza f(p1, *, p1=100):\n  pita\n")
-        self.assertRaisesSyntaxError("eleza f(p1, *k1, k1=100):\n  pita\n")
-        self.assertRaisesSyntaxError("eleza f(p1, *, k1, k1=100):\n  pita\n")
-        self.assertRaisesSyntaxError("eleza f(p1, *, **k1):\n  pita\n")
-        self.assertRaisesSyntaxError("eleza f(p1, *, k1, **k1):\n  pita\n")
-        self.assertRaisesSyntaxError("eleza f(p1, *, Tupu, **k1):\n  pita\n")
-        self.assertRaisesSyntaxError("eleza f(p, *, (k1, k2), **kw):\n  pita\n")
+        self.assertRaisesSyntaxError("eleza f(p, *):\n  pass\n")
+        self.assertRaisesSyntaxError("eleza f(p1, *, p1=100):\n  pass\n")
+        self.assertRaisesSyntaxError("eleza f(p1, *k1, k1=100):\n  pass\n")
+        self.assertRaisesSyntaxError("eleza f(p1, *, k1, k1=100):\n  pass\n")
+        self.assertRaisesSyntaxError("eleza f(p1, *, **k1):\n  pass\n")
+        self.assertRaisesSyntaxError("eleza f(p1, *, k1, **k1):\n  pass\n")
+        self.assertRaisesSyntaxError("eleza f(p1, *, Tupu, **k1):\n  pass\n")
+        self.assertRaisesSyntaxError("eleza f(p, *, (k1, k2), **kw):\n  pass\n")
 
     eleza testSyntaxForManyArguments(self):
         # more than 255 positional arguments, should compile ok
-        funeleza = "eleza f(%s):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
+        funeleza = "eleza f(%s):\n  pass\n" % ', '.join('i%d' % i kila i kwenye range(300))
         compile(fundef, "<test>", "single")
         # more than 255 keyword-only arguments, should compile ok
-        funeleza = "eleza f(*, %s):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
+        funeleza = "eleza f(*, %s):\n  pass\n" % ', '.join('i%d' % i kila i kwenye range(300))
         compile(fundef, "<test>", "single")
 
     eleza testTooManyPositionalErrorMessage(self):
         eleza f(a, b=Tupu, *, c=Tupu):
-            pita
-        ukijumuisha self.assertRaises(TypeError) kama exc:
+            pass
+        ukijumuisha self.assertRaises(TypeError) as exc:
             f(1, 2, 3)
         expected = "f() takes kutoka 1 to 2 positional arguments but 3 were given"
         self.assertEqual(str(exc.exception), expected)
@@ -76,14 +76,14 @@ kundi KeywordOnlyArgTestCase(unittest.TestCase):
         self.assertRaises(TypeError, Foo, ())
         jaribu:
             keywordonly_sum(k2=100, non_existing_arg=200)
-            self.fail("should ashiria TypeError")
-        tatizo TypeError:
-            pita
+            self.fail("should  ashiria TypeError")
+        except TypeError:
+            pass
         jaribu:
             keywordonly_nodefaults_sum(k2=2)
-            self.fail("should ashiria TypeError")
-        tatizo TypeError:
-            pita
+            self.fail("should  ashiria TypeError")
+        except TypeError:
+            pass
 
     eleza testFunctionCall(self):
         self.assertEqual(1, posonly_sum(1))
@@ -135,8 +135,8 @@ kundi KeywordOnlyArgTestCase(unittest.TestCase):
         jaribu:
             foo(1,k1=10)
             self.fail("__kwdefaults__ ni sio properly changed")
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
 
     eleza test_kwonly_methods(self):
         kundi Example:
@@ -164,11 +164,11 @@ kundi KeywordOnlyArgTestCase(unittest.TestCase):
     eleza test_default_evaluation_order(self):
         # See issue 16967
         a = 42
-        ukijumuisha self.assertRaises(NameError) kama err:
+        ukijumuisha self.assertRaises(NameError) as err:
             eleza f(v=a, x=b, *, y=c, z=d):
-                pita
+                pass
         self.assertEqual(str(err.exception), "name 'b' ni sio defined")
-        ukijumuisha self.assertRaises(NameError) kama err:
+        ukijumuisha self.assertRaises(NameError) as err:
             f = lambda v=a, x=b, *, y=c, z=d: Tupu
         self.assertEqual(str(err.exception), "name 'b' ni sio defined")
 

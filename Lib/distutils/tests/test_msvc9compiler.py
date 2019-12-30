@@ -1,15 +1,15 @@
-"""Tests for distutils.msvc9compiler."""
-import sys
-import unittest
-import os
+"""Tests kila distutils.msvc9compiler."""
+agiza sys
+agiza unittest
+agiza os
 
-from distutils.errors import DistutilsPlatformError
-from distutils.tests import support
-from test.support import run_unittest
+kutoka distutils.errors agiza DistutilsPlatformError
+kutoka distutils.tests agiza support
+kutoka test.support agiza run_unittest
 
-# A manifest with the only assembly reference being the msvcrt assembly, so
+# A manifest ukijumuisha the only assembly reference being the msvcrt assembly, so
 # should have the assembly completely stripped.  Note that although the
-# assembly has a <security> reference the assembly is removed - that is
+# assembly has a <security> reference the assembly ni removed - that is
 # currently a "feature", sio a bug :)
 _MANIFEST_WITH_ONLY_MSVC_REFERENCE = """\
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -34,8 +34,8 @@ _MANIFEST_WITH_ONLY_MSVC_REFERENCE = """\
 </assembly>
 """
 
-# A manifest with references to assemblies other than msvcrt.  When processed,
-# this assembly should be returned with just the msvcrt part removed.
+# A manifest ukijumuisha references to assemblies other than msvcrt.  When processed,
+# this assembly should be returned ukijumuisha just the msvcrt part removed.
 _MANIFEST_WITH_MULTIPLE_REFERENCES = """\
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1"
@@ -90,28 +90,28 @@ _CLEANED_MANIFEST = """\
   </dependency>
 </assembly>"""
 
-if sys.platform=="win32":
-    from distutils.msvccompiler import get_build_version
-    if get_build_version()>=8.0:
-        SKIP_MESSAGE = None
+ikiwa sys.platform=="win32":
+    kutoka distutils.msvccompiler agiza get_build_version
+    ikiwa get_build_version()>=8.0:
+        SKIP_MESSAGE = Tupu
     isipokua:
-        SKIP_MESSAGE = "These tests are only for MSVC8.0 or above"
+        SKIP_MESSAGE = "These tests are only kila MSVC8.0 ama above"
 isipokua:
-    SKIP_MESSAGE = "These tests are only for win32"
+    SKIP_MESSAGE = "These tests are only kila win32"
 
-@unittest.skipUnless(SKIP_MESSAGE is None, SKIP_MESSAGE)
-class msvc9compilerTestCase(support.TempdirManager,
+@unittest.skipUnless(SKIP_MESSAGE ni Tupu, SKIP_MESSAGE)
+kundi msvc9compilerTestCase(support.TempdirManager,
                             unittest.TestCase):
 
-    def test_no_compiler(self):
+    eleza test_no_compiler(self):
         # makes sure query_vcvarsall raises
-        # a DistutilsPlatformError if the compiler
+        # a DistutilsPlatformError ikiwa the compiler
         # ni sio found
-        from distutils.msvc9compiler import query_vcvarsall
-        def _find_vcvarsall(version):
-            return None
+        kutoka distutils.msvc9compiler agiza query_vcvarsall
+        eleza _find_vcvarsall(version):
+            rudisha Tupu
 
-        from distutils import msvc9compiler
+        kutoka distutils agiza msvc9compiler
         old_find_vcvarsall = msvc9compiler.find_vcvarsall
         msvc9compiler.find_vcvarsall = _find_vcvarsall
         jaribu:
@@ -120,26 +120,26 @@ class msvc9compilerTestCase(support.TempdirManager,
         mwishowe:
             msvc9compiler.find_vcvarsall = old_find_vcvarsall
 
-    def test_reg_class(self):
-        from distutils.msvc9compiler import Reg
+    eleza test_reg_class(self):
+        kutoka distutils.msvc9compiler agiza Reg
         self.assertRaises(KeyError, Reg.get_value, 'xxx', 'xxx')
 
-        # looking for values that should exist on all
+        # looking kila values that should exist on all
         # windows registry versions.
         path = r'Control Panel\Desktop'
         v = Reg.get_value(path, 'dragfullwindows')
         self.assertIn(v, ('0', '1', '2'))
 
-        import winreg
+        agiza winreg
         HKCU = winreg.HKEY_CURRENT_USER
         keys = Reg.read_keys(HKCU, 'xxxx')
-        self.assertEqual(keys, None)
+        self.assertEqual(keys, Tupu)
 
         keys = Reg.read_keys(HKCU, r'Control Panel')
         self.assertIn('Desktop', keys)
 
-    def test_remove_visual_c_ref(self):
-        from distutils.msvc9compiler import MSVCCompiler
+    eleza test_remove_visual_c_ref(self):
+        kutoka distutils.msvc9compiler agiza MSVCCompiler
         tempdir = self.mkdtemp()
         manifest = os.path.join(tempdir, 'manifest')
         f = open(manifest, 'w')
@@ -155,15 +155,15 @@ class msvc9compilerTestCase(support.TempdirManager,
         f = open(manifest)
         jaribu:
             # removing trailing spaces
-            content = '\n'.join([line.rstrip() for line in f.readlines()])
+            content = '\n'.join([line.rstrip() kila line kwenye f.readlines()])
         mwishowe:
             f.close()
 
         # makes sure the manifest was properly cleaned
         self.assertEqual(content, _CLEANED_MANIFEST)
 
-    def test_remove_entire_manifest(self):
-        from distutils.msvc9compiler import MSVCCompiler
+    eleza test_remove_entire_manifest(self):
+        kutoka distutils.msvc9compiler agiza MSVCCompiler
         tempdir = self.mkdtemp()
         manifest = os.path.join(tempdir, 'manifest')
         f = open(manifest, 'w')
@@ -174,11 +174,11 @@ class msvc9compilerTestCase(support.TempdirManager,
 
         compiler = MSVCCompiler()
         got = compiler._remove_visual_c_ref(manifest)
-        self.assertIsNone(got)
+        self.assertIsTupu(got)
 
 
-def test_suite():
-    return unittest.makeSuite(msvc9compilerTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(msvc9compilerTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

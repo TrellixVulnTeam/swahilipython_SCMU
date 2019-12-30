@@ -1,6 +1,6 @@
-import unittest, sys
+agiza unittest, sys
 
-from ctypes import *
+kutoka ctypes agiza *
 agiza _ctypes_test
 
 ctype_types = [c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint,
@@ -8,21 +8,21 @@ ctype_types = [c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint,
 python_types = [int, int, int, int, int, int,
                 int, int, int, int, float, float]
 
-class PointersTestCase(unittest.TestCase):
+kundi PointersTestCase(unittest.TestCase):
 
-    def test_pointer_crash(self):
+    eleza test_pointer_crash(self):
 
-        class A(POINTER(c_ulong)):
+        kundi A(POINTER(c_ulong)):
             pass
 
         POINTER(c_ulong)(c_ulong(22))
         # Pointer can't set contents: has no _type_
         self.assertRaises(TypeError, A, c_ulong(33))
 
-    def test_pass_pointers(self):
+    eleza test_pass_pointers(self):
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_p_p
-        if sizeof(c_longlong) == sizeof(c_void_p):
+        ikiwa sizeof(c_longlong) == sizeof(c_void_p):
             func.restype = c_longlong
         isipokua:
             func.restype = c_long
@@ -37,7 +37,7 @@ class PointersTestCase(unittest.TestCase):
         self.assertEqual(res.contents.value, 12345678)
         self.assertEqual(res[0], 12345678)
 
-    def test_change_pointers(self):
+    eleza test_change_pointers(self):
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_p_p
 
@@ -63,23 +63,23 @@ class PointersTestCase(unittest.TestCase):
         x.value = -99
         self.assertEqual(res.contents.value, -99)
 
-    def test_callbacks_with_pointers(self):
+    eleza test_callbacks_with_pointers(self):
         # a function type receiving a pointer
         PROTOTYPE = CFUNCTYPE(c_int, POINTER(c_int))
 
         self.result = []
 
-        def func(arg):
-            for i in range(10):
+        eleza func(arg):
+            kila i kwenye range(10):
 ##                print arg[i],
                 self.result.append(arg[i])
 ##            print
-            return 0
+            rudisha 0
         callback = PROTOTYPE(func)
 
         dll = CDLL(_ctypes_test.__file__)
         # This function expects a function pointer,
-        # and calls this with an integer pointer as parameter.
+        # na calls this ukijumuisha an integer pointer as parameter.
         # The int pointer points to a table containing the numbers 1..10
         doit = dll._testfunc_callback_with_pointer
 
@@ -92,22 +92,22 @@ class PointersTestCase(unittest.TestCase):
         doit(callback)
 ##        print self.result
 
-    def test_basics(self):
-        from operator import delitem
-        for ct, pt in zip(ctype_types, python_types):
+    eleza test_basics(self):
+        kutoka operator agiza delitem
+        kila ct, pt kwenye zip(ctype_types, python_types):
             i = ct(42)
             p = pointer(i)
 ##            print type(p.contents), ct
             self.assertIs(type(p.contents), ct)
-            # p.contents is the same as p[0]
+            # p.contents ni the same as p[0]
 ##            print p.contents
 ##            self.assertEqual(p.contents, 42)
 ##            self.assertEqual(p[0], 42)
 
             self.assertRaises(TypeError, delitem, p, 0)
 
-    def test_from_address(self):
-        from array import array
+    eleza test_from_address(self):
+        kutoka array agiza array
         a = array('i', [100, 200, 300, 400, 500])
         addr = a.buffer_info()[0]
 
@@ -116,8 +116,8 @@ class PointersTestCase(unittest.TestCase):
 ##        print p.from_address
 ##        print p.from_address(addr)[0][0]
 
-    def test_other(self):
-        class Table(Structure):
+    eleza test_other(self):
+        kundi Table(Structure):
             _fields_ = [("a", c_int),
                         ("b", c_int),
                         ("c", c_int)]
@@ -130,10 +130,10 @@ class PointersTestCase(unittest.TestCase):
 
         pt.contents.c = 33
 
-        from ctypes agiza _pointer_type_cache
+        kutoka ctypes agiza _pointer_type_cache
         toa _pointer_type_cache[Table]
 
-    def test_basic(self):
+    eleza test_basic(self):
         p = pointer(c_int(42))
         # Although a pointer can be indexed, it has no length
         self.assertRaises(TypeError, len, p)
@@ -141,8 +141,8 @@ class PointersTestCase(unittest.TestCase):
         self.assertEqual(p[0:1], [42])
         self.assertEqual(p.contents.value, 42)
 
-    def test_charpp(self):
-        """Test that a character pointer-to-pointer is correctly passed"""
+    eleza test_charpp(self):
+        """Test that a character pointer-to-pointer ni correctly passed"""
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_c_p_p
         func.restype = c_char_p
@@ -153,11 +153,11 @@ class PointersTestCase(unittest.TestCase):
         result = func( byref(argc), argv )
         self.assertEqual(result, b'world')
 
-    def test_bug_1467852(self):
+    eleza test_bug_1467852(self):
         # http://sourceforge.net/tracker/?func=detail&atid=532154&aid=1467852&group_id=71702
         x = c_int(5)
         dummy = []
-        for i in range(32000):
+        kila i kwenye range(32000):
             dummy.append(c_int(i))
         y = c_int(6)
         p = pointer(x)
@@ -165,14 +165,14 @@ class PointersTestCase(unittest.TestCase):
         q = pointer(y)
         pp[0] = q         # <==
         self.assertEqual(p[0], 6)
-    def test_c_void_p(self):
+    eleza test_c_void_p(self):
         # http://sourceforge.net/tracker/?func=detail&aid=1518190&group_id=5470&atid=105470
-        if sizeof(c_void_p) == 4:
+        ikiwa sizeof(c_void_p) == 4:
             self.assertEqual(c_void_p(0xFFFFFFFF).value,
                                  c_void_p(-1).value)
             self.assertEqual(c_void_p(0xFFFFFFFFFFFFFFFF).value,
                                  c_void_p(-1).value)
-        lasivyo sizeof(c_void_p) == 8:
+        elikiwa sizeof(c_void_p) == 8:
             self.assertEqual(c_void_p(0xFFFFFFFF).value,
                                  0xFFFFFFFF)
             self.assertEqual(c_void_p(0xFFFFFFFFFFFFFFFF).value,
@@ -183,41 +183,41 @@ class PointersTestCase(unittest.TestCase):
         self.assertRaises(TypeError, c_void_p, 3.14) # make sure floats are NOT accepted
         self.assertRaises(TypeError, c_void_p, object()) # nor other objects
 
-    def test_pointers_bool(self):
-        # NULL pointers have a boolean False value, non-NULL pointers True.
-        self.assertEqual(bool(POINTER(c_int)()), False)
-        self.assertEqual(bool(pointer(c_int())), True)
+    eleza test_pointers_bool(self):
+        # NULL pointers have a boolean Uongo value, non-NULL pointers Kweli.
+        self.assertEqual(bool(POINTER(c_int)()), Uongo)
+        self.assertEqual(bool(pointer(c_int())), Kweli)
 
-        self.assertEqual(bool(CFUNCTYPE(None)(0)), False)
-        self.assertEqual(bool(CFUNCTYPE(None)(42)), True)
+        self.assertEqual(bool(CFUNCTYPE(Tupu)(0)), Uongo)
+        self.assertEqual(bool(CFUNCTYPE(Tupu)(42)), Kweli)
 
-        # COM methods are boolean True:
-        if sys.platform == "win32":
-            mth = WINFUNCTYPE(None)(42, "name", (), None)
-            self.assertEqual(bool(mth), True)
+        # COM methods are boolean Kweli:
+        ikiwa sys.platform == "win32":
+            mth = WINFUNCTYPE(Tupu)(42, "name", (), Tupu)
+            self.assertEqual(bool(mth), Kweli)
 
-    def test_pointer_type_name(self):
+    eleza test_pointer_type_name(self):
         LargeNamedType = type('T' * 2 ** 25, (Structure,), {})
-        self.assertTrue(POINTER(LargeNamedType))
+        self.assertKweli(POINTER(LargeNamedType))
 
         # to sio leak references, we must clean _pointer_type_cache
-        from ctypes agiza _pointer_type_cache
+        kutoka ctypes agiza _pointer_type_cache
         toa _pointer_type_cache[LargeNamedType]
 
-    def test_pointer_type_str_name(self):
+    eleza test_pointer_type_str_name(self):
         large_string = 'T' * 2 ** 25
         P = POINTER(large_string)
-        self.assertTrue(P)
+        self.assertKweli(P)
 
         # to sio leak references, we must clean _pointer_type_cache
-        from ctypes agiza _pointer_type_cache
+        kutoka ctypes agiza _pointer_type_cache
         toa _pointer_type_cache[id(P)]
 
-    def test_abstract(self):
-        from ctypes agiza _Pointer
+    eleza test_abstract(self):
+        kutoka ctypes agiza _Pointer
 
         self.assertRaises(TypeError, _Pointer.set_type, 42)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

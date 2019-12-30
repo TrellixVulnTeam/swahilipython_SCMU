@@ -15,7 +15,7 @@ some_var = 12
 kundi Mine:
     instance_var = 24
     eleza a_method(p1, p2):
-        pita
+        pass
 
 eleza spam(a, b, *var, **kw):
     global bar
@@ -32,10 +32,10 @@ eleza spam(a, b, *var, **kw):
     rudisha internal
 
 eleza foo():
-    pita
+    pass
 
-eleza namespace_test(): pita
-eleza namespace_test(): pita
+eleza namespace_test(): pass
+eleza namespace_test(): pass
 """
 
 
@@ -158,12 +158,12 @@ kundi SymtableTest(unittest.TestCase):
         self.assertUongo(st4.lookup('x').is_annotated())
 
         # Test that annotations kwenye the global scope are valid after the
-        # variable ni declared kama nonlocal.
+        # variable ni declared as nonlocal.
         st5 = symtable.symtable('global x\nx: int', 'test', 'exec')
         self.assertKweli(st5.lookup("x").is_global())
 
         # Test that annotations kila nonlocals are valid after the
-        # variable ni declared kama nonlocal.
+        # variable ni declared as nonlocal.
         st6 = symtable.symtable('eleza g():\n'
                                 '    x = 2\n'
                                 '    eleza f():\n'
@@ -184,12 +184,12 @@ kundi SymtableTest(unittest.TestCase):
         self.assertEqual(self.Mine.get_methods(), ('a_method',))
 
     eleza test_filename_correct(self):
-        ### Bug tickler: SyntaxError file name correct whether error ashiriad
+        ### Bug tickler: SyntaxError file name correct whether error raised
         ### wakati parsing ama building symbol table.
         eleza checkfilename(brokencode, offset):
             jaribu:
                 symtable.symtable(brokencode, "spam", "exec")
-            tatizo SyntaxError kama e:
+            except SyntaxError as e:
                 self.assertEqual(e.filename, "spam")
                 self.assertEqual(e.lineno, 1)
                 self.assertEqual(e.offset, offset)
@@ -197,14 +197,14 @@ kundi SymtableTest(unittest.TestCase):
                 self.fail("no SyntaxError kila %r" % (brokencode,))
         checkfilename("eleza f(x): foo)(", 14)  # parse-time
         checkfilename("eleza f(x): global x", 11)  # symtable-build-time
-        symtable.symtable("pita", b"spam", "exec")
+        symtable.symtable("pass", b"spam", "exec")
         ukijumuisha self.assertWarns(DeprecationWarning), \
              self.assertRaises(TypeError):
-            symtable.symtable("pita", bytearray(b"spam"), "exec")
+            symtable.symtable("pass", bytearray(b"spam"), "exec")
         ukijumuisha self.assertWarns(DeprecationWarning):
-            symtable.symtable("pita", memoryview(b"spam"), "exec")
+            symtable.symtable("pass", memoryview(b"spam"), "exec")
         ukijumuisha self.assertRaises(TypeError):
-            symtable.symtable("pita", list(b"spam"), "exec")
+            symtable.symtable("pass", list(b"spam"), "exec")
 
     eleza test_eval(self):
         symbols = symtable.symtable("42", "?", "eval")
@@ -219,7 +219,7 @@ kundi SymtableTest(unittest.TestCase):
         top = symtable.symtable(TEST_CODE.encode('utf8'), "?", "exec")
         self.assertIsNotTupu(find_block(top, "Mine"))
 
-        code = b'# -*- coding: iso8859-15 -*-\nkundi \xb4: pita\n'
+        code = b'# -*- coding: iso8859-15 -*-\nkundi \xb4: pass\n'
 
         top = symtable.symtable(code, "?", "exec")
         self.assertIsNotTupu(find_block(top, "\u017d"))

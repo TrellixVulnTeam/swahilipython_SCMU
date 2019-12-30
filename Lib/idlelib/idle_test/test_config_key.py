@@ -127,7 +127,7 @@ kundi ToggleLevelTest(unittest.TestCase):
             """Get the stack order of the children of the frame.
 
             winfo_children() stores the children kwenye stack order, so
-            this can be used to check whether a frame ni above ama
+            this can be used to check whether a frame ni above or
             below another one.
             """
             kila index, child kwenye enumerate(dialog.frame.winfo_children()):
@@ -214,16 +214,16 @@ kundi KeySelectionTest(unittest.TestCase):
         eq = self.assertEqual
 
         key.get.result = 'a'
-        mock_modifiers.rudisha_value = []
+        mock_modifiers.return_value = []
         dialog.build_key_string()
         eq(string(), '<Key-a>')
 
-        mock_modifiers.rudisha_value = ['mymod']
+        mock_modifiers.return_value = ['mymod']
         dialog.build_key_string()
         eq(string(), '<mymod-Key-a>')
 
         key.get.result = ''
-        mock_modifiers.rudisha_value = ['mymod', 'test']
+        mock_modifiers.return_value = ['mymod', 'test']
         dialog.build_key_string()
         eq(string(), '<mymod-test>')
 
@@ -234,7 +234,7 @@ kundi KeySelectionTest(unittest.TestCase):
         string = dialog.key_string.get
         eq = self.assertEqual
 
-        mock_modifiers.rudisha_value = ['Shift']
+        mock_modifiers.return_value = ['Shift']
         key.get.result = '{'
         dialog.final_key_selected()
         eq(string(), '<Shift-Key-braceleft>')

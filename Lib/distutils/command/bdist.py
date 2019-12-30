@@ -3,40 +3,40 @@
 Implements the Distutils 'bdist' command (create a built [binary]
 distribution)."""
 
-import os
-from distutils.core import Command
-from distutils.errors import *
-from distutils.util import get_platform
+agiza os
+kutoka distutils.core agiza Command
+kutoka distutils.errors agiza *
+kutoka distutils.util agiza get_platform
 
 
-def show_formats():
+eleza show_formats():
     """Print list of available formats (arguments to "--format" option).
     """
-    from distutils.fancy_getopt import FancyGetopt
+    kutoka distutils.fancy_getopt agiza FancyGetopt
     formats = []
-    for format in bdist.format_commands:
-        formats.append(("formats=" + format, None,
+    kila format kwenye bdist.format_commands:
+        formats.append(("formats=" + format, Tupu,
                         bdist.format_command[format][1]))
     pretty_printer = FancyGetopt(formats)
     pretty_printer.print_help("List of available distribution formats:")
 
 
-class bdist(Command):
+kundi bdist(Command):
 
     description = "create a built (binary) distribution"
 
     user_options = [('bdist-base=', 'b',
-                     "temporary directory for creating built distributions"),
+                     "temporary directory kila creating built distributions"),
                     ('plat-name=', 'p',
-                     "platform name to embed in generated filenames "
+                     "platform name to embed kwenye generated filenames "
                      "(default: %s)" % get_platform()),
-                    ('formats=', None,
-                     "formats for distribution (comma-separated list)"),
+                    ('formats=', Tupu,
+                     "formats kila distribution (comma-separated list)"),
                     ('dist-dir=', 'd',
-                     "directory to put final built distributions in "
+                     "directory to put final built distributions kwenye "
                      "[default: dist]"),
-                    ('skip-build', None,
-                     "skip rebuilding everything (for testing/debugging)"),
+                    ('skip-build', Tupu,
+                     "skip rebuilding everything (kila testing/debugging)"),
                     ('owner=', 'u',
                      "Owner name used when creating a tar file"
                      " [default: current user]"),
@@ -48,19 +48,19 @@ class bdist(Command):
     boolean_options = ['skip-build']
 
     help_options = [
-        ('help-formats', None,
+        ('help-formats', Tupu,
          "lists available distribution formats", show_formats),
         ]
 
-    # The following commands do sio take a format option from bdist
+    # The following commands do sio take a format option kutoka bdist
     no_format_option = ('bdist_rpm',)
 
-    # This won't do in reality: will need to distinguish RPM-ish Linux,
+    # This won't do kwenye reality: will need to distinguish RPM-ish Linux,
     # Debian-ish Linux, Solaris, FreeBSD, ..., Windows, Mac OS.
     default_format = {'posix': 'gztar',
                       'nt': 'zip'}
 
-    # Establish the preferred order (for the --help-formats option).
+    # Establish the preferred order (kila the --help-formats option).
     format_commands = ['rpm', 'gztar', 'bztar', 'xztar', 'ztar', 'tar',
                        'wininst', 'zip', 'msi']
 
@@ -78,19 +78,19 @@ class bdist(Command):
                       }
 
 
-    def initialize_options(self):
-        self.bdist_base = None
-        self.plat_name = None
-        self.formats = None
-        self.dist_dir = None
+    eleza initialize_options(self):
+        self.bdist_base = Tupu
+        self.plat_name = Tupu
+        self.formats = Tupu
+        self.dist_dir = Tupu
         self.skip_build = 0
-        self.group = None
-        self.owner = None
+        self.group = Tupu
+        self.owner = Tupu
 
-    def finalize_options(self):
+    eleza finalize_options(self):
         # have to finalize 'plat_name' before 'bdist_base'
-        if self.plat_name is None:
-            if self.skip_build:
+        ikiwa self.plat_name ni Tupu:
+            ikiwa self.skip_build:
                 self.plat_name = get_platform()
             isipokua:
                 self.plat_name = self.get_finalized_command('build').plat_name
@@ -98,46 +98,46 @@ class bdist(Command):
         # 'bdist_base' -- parent of per-built-distribution-format
         # temporary directories (eg. we'll probably have
         # "build/bdist.<plat>/dumb", "build/bdist.<plat>/rpm", etc.)
-        if self.bdist_base is None:
+        ikiwa self.bdist_base ni Tupu:
             build_base = self.get_finalized_command('build').build_base
             self.bdist_base = os.path.join(build_base,
                                            'bdist.' + self.plat_name)
 
         self.ensure_string_list('formats')
-        if self.formats is None:
+        ikiwa self.formats ni Tupu:
             jaribu:
                 self.formats = [self.default_format[os.name]]
-            tatizo KeyError:
-                ashiria DistutilsPlatformError(
+            except KeyError:
+                 ashiria DistutilsPlatformError(
                       "don't know how to create built distributions "
                       "on platform %s" % os.name)
 
-        if self.dist_dir is None:
+        ikiwa self.dist_dir ni Tupu:
             self.dist_dir = "dist"
 
-    def run(self):
+    eleza run(self):
         # Figure out which sub-commands we need to run.
         commands = []
-        for format in self.formats:
+        kila format kwenye self.formats:
             jaribu:
                 commands.append(self.format_command[format][0])
-            tatizo KeyError:
-                ashiria DistutilsOptionError("invalid format '%s'" % format)
+            except KeyError:
+                 ashiria DistutilsOptionError("invalid format '%s'" % format)
 
-        # Reinitialize and run each command.
-        for i in range(len(self.formats)):
+        # Reinitialize na run each command.
+        kila i kwenye range(len(self.formats)):
             cmd_name = commands[i]
             sub_cmd = self.reinitialize_command(cmd_name)
-            if cmd_name haiko kwenye self.no_format_option:
+            ikiwa cmd_name sio kwenye self.no_format_option:
                 sub_cmd.format = self.formats[i]
 
-            # passing the owner and group names for tar archiving
-            if cmd_name == 'bdist_dumb':
+            # passing the owner na group names kila tar archiving
+            ikiwa cmd_name == 'bdist_dumb':
                 sub_cmd.owner = self.owner
                 sub_cmd.group = self.group
 
             # If we're going to need to run this command again, tell it to
             # keep its temporary files around so subsequent runs go faster.
-            if cmd_name in commands[i+1:]:
+            ikiwa cmd_name kwenye commands[i+1:]:
                 sub_cmd.keep_temp = 1
             self.run_command(cmd_name)

@@ -1,11 +1,11 @@
-"""Codec for quoted-printable encoding.
+"""Codec kila quoted-printable encoding.
 
-This codec de/encodes from bytes to bytes.
+This codec de/encodes kutoka bytes to bytes.
 """
 
 agiza codecs
-import quopri
-from io import BytesIO
+agiza quopri
+kutoka io agiza BytesIO
 
 eleza quopri_encode(input, errors='strict'):
     assert errors == 'strict'

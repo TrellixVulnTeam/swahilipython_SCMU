@@ -5,11 +5,11 @@ running time.
 """
 # Author: Collin Winter
 
-# Python agizas
+# Python imports
 agiza unittest
 agiza test.support
 
-# Local agizas
+# Local imports
 kutoka . agiza support
 
 

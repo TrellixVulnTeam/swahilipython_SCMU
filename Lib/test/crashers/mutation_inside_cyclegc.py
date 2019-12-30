@@ -2,7 +2,7 @@
 # The cycle GC collector can be executed when any GC-tracked object is
 # allocated, e.g. during a call to PyList_New(), PyDict_New(), ...
 # Moreover, it can invoke arbitrary Python code via a weakref callback.
-# This means that there are many places in the source where an arbitrary
+# This means that there are many places kwenye the source where an arbitrary
 # mutation could unexpectedly occur.
 
 # The example below shows list_slice() sio expecting the call to
@@ -10,18 +10,18 @@
 # more examples like this one.)
 
 
-import weakref
+agiza weakref
 
-class A(object):
+kundi A(object):
     pass
 
-def callback(x):
+eleza callback(x):
     toa lst[:]
 
 
 keepalive = []
 
-for i in range(100):
+kila i kwenye range(100):
     lst = [str(i)]
     a = A()
     a.cycle = a

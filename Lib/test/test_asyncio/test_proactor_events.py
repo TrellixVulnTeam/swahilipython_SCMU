@@ -1,37 +1,37 @@
-"""Tests for proactor_events.py"""
+"""Tests kila proactor_events.py"""
 
-import io
-import socket
-import unittest
-import sys
-from unittest import mock
+agiza io
+agiza socket
+agiza unittest
+agiza sys
+kutoka unittest agiza mock
 
-import asyncio
-from asyncio.proactor_events import BaseProactorEventLoop
-from asyncio.proactor_events agiza _ProactorSocketTransport
-from asyncio.proactor_events agiza _ProactorWritePipeTransport
-from asyncio.proactor_events agiza _ProactorDuplexPipeTransport
-from asyncio.proactor_events agiza _ProactorDatagramTransport
-from test import support
-from test.test_asyncio import utils as test_utils
-
-
-def tearDownModule():
-    asyncio.set_event_loop_policy(None)
+agiza asyncio
+kutoka asyncio.proactor_events agiza BaseProactorEventLoop
+kutoka asyncio.proactor_events agiza _ProactorSocketTransport
+kutoka asyncio.proactor_events agiza _ProactorWritePipeTransport
+kutoka asyncio.proactor_events agiza _ProactorDuplexPipeTransport
+kutoka asyncio.proactor_events agiza _ProactorDatagramTransport
+kutoka test agiza support
+kutoka test.test_asyncio agiza utils as test_utils
 
 
-def close_transport(transport):
-    # Don't call transport.close() because the event loop and the IOCP proactor
+eleza tearDownModule():
+    asyncio.set_event_loop_policy(Tupu)
+
+
+eleza close_transport(transport):
+    # Don't call transport.close() because the event loop na the IOCP proactor
     # are mocked
-    if transport._sock is None:
+    ikiwa transport._sock ni Tupu:
         return
     transport._sock.close()
-    transport._sock = None
+    transport._sock = Tupu
 
 
-class ProactorSocketTransportTests(test_utils.TestCase):
+kundi ProactorSocketTransportTests(test_utils.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.loop = self.new_test_loop()
         self.addCleanup(self.loop.close)
@@ -40,28 +40,28 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         self.protocol = test_utils.make_test_protocol(asyncio.Protocol)
         self.sock = mock.Mock(socket.socket)
 
-    def socket_transport(self, waiter=None):
+    eleza socket_transport(self, waiter=Tupu):
         transport = _ProactorSocketTransport(self.loop, self.sock,
                                              self.protocol, waiter=waiter)
         self.addCleanup(close_transport, transport)
-        return transport
+        rudisha transport
 
-    def test_ctor(self):
+    eleza test_ctor(self):
         fut = self.loop.create_future()
         tr = self.socket_transport(waiter=fut)
         test_utils.run_briefly(self.loop)
-        self.assertIsNone(fut.result())
+        self.assertIsTupu(fut.result())
         self.protocol.connection_made(tr)
         self.proactor.recv.assert_called_with(self.sock, 32768)
 
-    def test_loop_reading(self):
+    eleza test_loop_reading(self):
         tr = self.socket_transport()
         tr._loop_reading()
         self.loop._proactor.recv.assert_called_with(self.sock, 32768)
-        self.assertFalse(self.protocol.data_received.called)
-        self.assertFalse(self.protocol.eof_received.called)
+        self.assertUongo(self.protocol.data_received.called)
+        self.assertUongo(self.protocol.eof_received.called)
 
-    def test_loop_reading_data(self):
+    eleza test_loop_reading_data(self):
         res = self.loop.create_future()
         res.set_result(b'data')
 
@@ -71,7 +71,7 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         self.loop._proactor.recv.assert_called_with(self.sock, 32768)
         self.protocol.data_received.assert_called_with(b'data')
 
-    def test_loop_reading_no_data(self):
+    eleza test_loop_reading_no_data(self):
         res = self.loop.create_future()
         res.set_result(b'')
 
@@ -81,11 +81,11 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         tr.close = mock.Mock()
         tr._read_fut = res
         tr._loop_reading(res)
-        self.assertFalse(self.loop._proactor.recv.called)
-        self.assertTrue(self.protocol.eof_received.called)
-        self.assertTrue(tr.close.called)
+        self.assertUongo(self.loop._proactor.recv.called)
+        self.assertKweli(self.protocol.eof_received.called)
+        self.assertKweli(tr.close.called)
 
-    def test_loop_reading_aborted(self):
+    eleza test_loop_reading_aborted(self):
         err = self.loop._proactor.recv.side_effect = ConnectionAbortedError()
 
         tr = self.socket_transport()
@@ -95,35 +95,35 @@ class ProactorSocketTransportTests(test_utils.TestCase):
                             err,
                             'Fatal read error on pipe transport')
 
-    def test_loop_reading_aborted_closing(self):
+    eleza test_loop_reading_aborted_closing(self):
         self.loop._proactor.recv.side_effect = ConnectionAbortedError()
 
         tr = self.socket_transport()
-        tr._closing = True
+        tr._closing = Kweli
         tr._fatal_error = mock.Mock()
         tr._loop_reading()
-        self.assertFalse(tr._fatal_error.called)
+        self.assertUongo(tr._fatal_error.called)
 
-    def test_loop_reading_aborted_is_fatal(self):
+    eleza test_loop_reading_aborted_is_fatal(self):
         self.loop._proactor.recv.side_effect = ConnectionAbortedError()
         tr = self.socket_transport()
-        tr._closing = False
+        tr._closing = Uongo
         tr._fatal_error = mock.Mock()
         tr._loop_reading()
-        self.assertTrue(tr._fatal_error.called)
+        self.assertKweli(tr._fatal_error.called)
 
-    def test_loop_reading_conn_reset_lost(self):
+    eleza test_loop_reading_conn_reset_lost(self):
         err = self.loop._proactor.recv.side_effect = ConnectionResetError()
 
         tr = self.socket_transport()
-        tr._closing = False
+        tr._closing = Uongo
         tr._fatal_error = mock.Mock()
         tr._force_close = mock.Mock()
         tr._loop_reading()
-        self.assertFalse(tr._fatal_error.called)
+        self.assertUongo(tr._fatal_error.called)
         tr._force_close.assert_called_with(err)
 
-    def test_loop_reading_exception(self):
+    eleza test_loop_reading_exception(self):
         err = self.loop._proactor.recv.side_effect = (OSError())
 
         tr = self.socket_transport()
@@ -133,27 +133,27 @@ class ProactorSocketTransportTests(test_utils.TestCase):
                             err,
                             'Fatal read error on pipe transport')
 
-    def test_write(self):
+    eleza test_write(self):
         tr = self.socket_transport()
         tr._loop_writing = mock.Mock()
         tr.write(b'data')
-        self.assertEqual(tr._buffer, None)
+        self.assertEqual(tr._buffer, Tupu)
         tr._loop_writing.assert_called_with(data=b'data')
 
-    def test_write_no_data(self):
+    eleza test_write_no_data(self):
         tr = self.socket_transport()
         tr.write(b'')
-        self.assertFalse(tr._buffer)
+        self.assertUongo(tr._buffer)
 
-    def test_write_more(self):
+    eleza test_write_more(self):
         tr = self.socket_transport()
         tr._write_fut = mock.Mock()
         tr._loop_writing = mock.Mock()
         tr.write(b'data')
         self.assertEqual(tr._buffer, b'data')
-        self.assertFalse(tr._loop_writing.called)
+        self.assertUongo(tr._loop_writing.called)
 
-    def test_loop_writing(self):
+    eleza test_loop_writing(self):
         tr = self.socket_transport()
         tr._buffer = bytearray(b'data')
         tr._loop_writing()
@@ -162,7 +162,7 @@ class ProactorSocketTransportTests(test_utils.TestCase):
             assert_called_with(tr._loop_writing)
 
     @mock.patch('asyncio.proactor_events.logger')
-    def test_loop_writing_err(self, m_log):
+    eleza test_loop_writing_err(self, m_log):
         err = self.loop._proactor.send.side_effect = OSError()
         tr = self.socket_transport()
         tr._fatal_error = mock.Mock()
@@ -178,19 +178,19 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         tr.write(b'data')
         tr.write(b'data')
         tr.write(b'data')
-        self.assertEqual(tr._buffer, None)
+        self.assertEqual(tr._buffer, Tupu)
         m_log.warning.assert_called_with('socket.send() raised exception.')
 
-    def test_loop_writing_stop(self):
+    eleza test_loop_writing_stop(self):
         fut = self.loop.create_future()
         fut.set_result(b'data')
 
         tr = self.socket_transport()
         tr._write_fut = fut
         tr._loop_writing(fut)
-        self.assertIsNone(tr._write_fut)
+        self.assertIsTupu(tr._write_fut)
 
-    def test_loop_writing_closing(self):
+    eleza test_loop_writing_closing(self):
         fut = self.loop.create_future()
         fut.set_result(1)
 
@@ -198,66 +198,66 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         tr._write_fut = fut
         tr.close()
         tr._loop_writing(fut)
-        self.assertIsNone(tr._write_fut)
+        self.assertIsTupu(tr._write_fut)
         test_utils.run_briefly(self.loop)
-        self.protocol.connection_lost.assert_called_with(None)
+        self.protocol.connection_lost.assert_called_with(Tupu)
 
-    def test_abort(self):
+    eleza test_abort(self):
         tr = self.socket_transport()
         tr._force_close = mock.Mock()
         tr.abort()
-        tr._force_close.assert_called_with(None)
+        tr._force_close.assert_called_with(Tupu)
 
-    def test_close(self):
+    eleza test_close(self):
         tr = self.socket_transport()
         tr.close()
         test_utils.run_briefly(self.loop)
-        self.protocol.connection_lost.assert_called_with(None)
-        self.assertTrue(tr.is_closing())
+        self.protocol.connection_lost.assert_called_with(Tupu)
+        self.assertKweli(tr.is_closing())
         self.assertEqual(tr._conn_lost, 1)
 
         self.protocol.connection_lost.reset_mock()
         tr.close()
         test_utils.run_briefly(self.loop)
-        self.assertFalse(self.protocol.connection_lost.called)
+        self.assertUongo(self.protocol.connection_lost.called)
 
-    def test_close_write_fut(self):
+    eleza test_close_write_fut(self):
         tr = self.socket_transport()
         tr._write_fut = mock.Mock()
         tr.close()
         test_utils.run_briefly(self.loop)
-        self.assertFalse(self.protocol.connection_lost.called)
+        self.assertUongo(self.protocol.connection_lost.called)
 
-    def test_close_buffer(self):
+    eleza test_close_buffer(self):
         tr = self.socket_transport()
         tr._buffer = [b'data']
         tr.close()
         test_utils.run_briefly(self.loop)
-        self.assertFalse(self.protocol.connection_lost.called)
+        self.assertUongo(self.protocol.connection_lost.called)
 
     @mock.patch('asyncio.base_events.logger')
-    def test_fatal_error(self, m_logging):
+    eleza test_fatal_error(self, m_logging):
         tr = self.socket_transport()
         tr._force_close = mock.Mock()
-        tr._fatal_error(None)
-        self.assertTrue(tr._force_close.called)
-        self.assertTrue(m_logging.error.called)
+        tr._fatal_error(Tupu)
+        self.assertKweli(tr._force_close.called)
+        self.assertKweli(m_logging.error.called)
 
-    def test_force_close(self):
+    eleza test_force_close(self):
         tr = self.socket_transport()
         tr._buffer = [b'data']
         read_fut = tr._read_fut = mock.Mock()
         write_fut = tr._write_fut = mock.Mock()
-        tr._force_close(None)
+        tr._force_close(Tupu)
 
         read_fut.cancel.assert_called_with()
         write_fut.cancel.assert_called_with()
         test_utils.run_briefly(self.loop)
-        self.protocol.connection_lost.assert_called_with(None)
-        self.assertEqual(None, tr._buffer)
+        self.protocol.connection_lost.assert_called_with(Tupu)
+        self.assertEqual(Tupu, tr._buffer)
         self.assertEqual(tr._conn_lost, 1)
 
-    def test_loop_writing_force_close(self):
+    eleza test_loop_writing_force_close(self):
         exc_handler = mock.Mock()
         self.loop.set_exception_handler(exc_handler)
         fut = self.loop.create_future()
@@ -266,100 +266,100 @@ class ProactorSocketTransportTests(test_utils.TestCase):
 
         tr = self.socket_transport()
         tr.write(b'data')
-        tr._force_close(None)
+        tr._force_close(Tupu)
         test_utils.run_briefly(self.loop)
         exc_handler.assert_not_called()
 
-    def test_force_close_idempotent(self):
+    eleza test_force_close_idempotent(self):
         tr = self.socket_transport()
-        tr._closing = True
-        tr._force_close(None)
+        tr._closing = Kweli
+        tr._force_close(Tupu)
         test_utils.run_briefly(self.loop)
-        self.assertFalse(self.protocol.connection_lost.called)
+        self.assertUongo(self.protocol.connection_lost.called)
 
-    def test_fatal_error_2(self):
+    eleza test_fatal_error_2(self):
         tr = self.socket_transport()
         tr._buffer = [b'data']
-        tr._force_close(None)
+        tr._force_close(Tupu)
 
         test_utils.run_briefly(self.loop)
-        self.protocol.connection_lost.assert_called_with(None)
-        self.assertEqual(None, tr._buffer)
+        self.protocol.connection_lost.assert_called_with(Tupu)
+        self.assertEqual(Tupu, tr._buffer)
 
-    def test_call_connection_lost(self):
+    eleza test_call_connection_lost(self):
         tr = self.socket_transport()
-        tr._call_connection_lost(None)
-        self.assertTrue(self.protocol.connection_lost.called)
-        self.assertTrue(self.sock.close.called)
+        tr._call_connection_lost(Tupu)
+        self.assertKweli(self.protocol.connection_lost.called)
+        self.assertKweli(self.sock.close.called)
 
-    def test_write_eof(self):
+    eleza test_write_eof(self):
         tr = self.socket_transport()
-        self.assertTrue(tr.can_write_eof())
+        self.assertKweli(tr.can_write_eof())
         tr.write_eof()
         self.sock.shutdown.assert_called_with(socket.SHUT_WR)
         tr.write_eof()
         self.assertEqual(self.sock.shutdown.call_count, 1)
         tr.close()
 
-    def test_write_eof_buffer(self):
+    eleza test_write_eof_buffer(self):
         tr = self.socket_transport()
         f = self.loop.create_future()
         tr._loop._proactor.send.return_value = f
         tr.write(b'data')
         tr.write_eof()
-        self.assertTrue(tr._eof_written)
-        self.assertFalse(self.sock.shutdown.called)
+        self.assertKweli(tr._eof_written)
+        self.assertUongo(self.sock.shutdown.called)
         tr._loop._proactor.send.assert_called_with(self.sock, b'data')
         f.set_result(4)
         self.loop._run_once()
         self.sock.shutdown.assert_called_with(socket.SHUT_WR)
         tr.close()
 
-    def test_write_eof_write_pipe(self):
+    eleza test_write_eof_write_pipe(self):
         tr = _ProactorWritePipeTransport(
             self.loop, self.sock, self.protocol)
-        self.assertTrue(tr.can_write_eof())
+        self.assertKweli(tr.can_write_eof())
         tr.write_eof()
-        self.assertTrue(tr.is_closing())
+        self.assertKweli(tr.is_closing())
         self.loop._run_once()
-        self.assertTrue(self.sock.close.called)
+        self.assertKweli(self.sock.close.called)
         tr.close()
 
-    def test_write_eof_buffer_write_pipe(self):
+    eleza test_write_eof_buffer_write_pipe(self):
         tr = _ProactorWritePipeTransport(self.loop, self.sock, self.protocol)
         f = self.loop.create_future()
         tr._loop._proactor.send.return_value = f
         tr.write(b'data')
         tr.write_eof()
-        self.assertTrue(tr.is_closing())
-        self.assertFalse(self.sock.shutdown.called)
+        self.assertKweli(tr.is_closing())
+        self.assertUongo(self.sock.shutdown.called)
         tr._loop._proactor.send.assert_called_with(self.sock, b'data')
         f.set_result(4)
         self.loop._run_once()
         self.loop._run_once()
-        self.assertTrue(self.sock.close.called)
+        self.assertKweli(self.sock.close.called)
         tr.close()
 
-    def test_write_eof_duplex_pipe(self):
+    eleza test_write_eof_duplex_pipe(self):
         tr = _ProactorDuplexPipeTransport(
             self.loop, self.sock, self.protocol)
-        self.assertFalse(tr.can_write_eof())
-        with self.assertRaises(NotImplementedError):
+        self.assertUongo(tr.can_write_eof())
+        ukijumuisha self.assertRaises(NotImplementedError):
             tr.write_eof()
         close_transport(tr)
 
-    def test_pause_resume_reading(self):
+    eleza test_pause_resume_reading(self):
         tr = self.socket_transport()
         futures = []
-        for msg in [b'data1', b'data2', b'data3', b'data4', b'data5', b'']:
+        kila msg kwenye [b'data1', b'data2', b'data3', b'data4', b'data5', b'']:
             f = self.loop.create_future()
             f.set_result(msg)
             futures.append(f)
 
         self.loop._proactor.recv.side_effect = futures
         self.loop._run_once()
-        self.assertFalse(tr._paused)
-        self.assertTrue(tr.is_reading())
+        self.assertUongo(tr._paused)
+        self.assertKweli(tr.is_reading())
         self.loop._run_once()
         self.protocol.data_received.assert_called_with(b'data1')
         self.loop._run_once()
@@ -367,16 +367,16 @@ class ProactorSocketTransportTests(test_utils.TestCase):
 
         tr.pause_reading()
         tr.pause_reading()
-        self.assertTrue(tr._paused)
-        self.assertFalse(tr.is_reading())
-        for i in range(10):
+        self.assertKweli(tr._paused)
+        self.assertUongo(tr.is_reading())
+        kila i kwenye range(10):
             self.loop._run_once()
         self.protocol.data_received.assert_called_with(b'data2')
 
         tr.resume_reading()
         tr.resume_reading()
-        self.assertFalse(tr._paused)
-        self.assertTrue(tr.is_reading())
+        self.assertUongo(tr._paused)
+        self.assertKweli(tr.is_reading())
         self.loop._run_once()
         self.protocol.data_received.assert_called_with(b'data3')
         self.loop._run_once()
@@ -390,19 +390,19 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         self.protocol.data_received.assert_called_with(b'data5')
         tr.close()
 
-        self.assertFalse(tr.is_reading())
+        self.assertUongo(tr.is_reading())
 
 
-    def pause_writing_transport(self, high):
+    eleza pause_writing_transport(self, high):
         tr = self.socket_transport()
         tr.set_write_buffer_limits(high=high)
 
         self.assertEqual(tr.get_write_buffer_size(), 0)
-        self.assertFalse(self.protocol.pause_writing.called)
-        self.assertFalse(self.protocol.resume_writing.called)
-        return tr
+        self.assertUongo(self.protocol.pause_writing.called)
+        self.assertUongo(self.protocol.resume_writing.called)
+        rudisha tr
 
-    def test_pause_resume_writing(self):
+    eleza test_pause_resume_writing(self):
         tr = self.pause_writing_transport(high=4)
 
         # write a large chunk, must pause writing
@@ -410,15 +410,15 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         self.loop._proactor.send.return_value = fut
         tr.write(b'large data')
         self.loop._run_once()
-        self.assertTrue(self.protocol.pause_writing.called)
+        self.assertKweli(self.protocol.pause_writing.called)
 
         # flush the buffer
-        fut.set_result(None)
+        fut.set_result(Tupu)
         self.loop._run_once()
         self.assertEqual(tr.get_write_buffer_size(), 0)
-        self.assertTrue(self.protocol.resume_writing.called)
+        self.assertKweli(self.protocol.resume_writing.called)
 
-    def test_pause_writing_2write(self):
+    eleza test_pause_writing_2write(self):
         tr = self.pause_writing_transport(high=4)
 
         # first short write, the buffer ni sio full (3 <= 4)
@@ -427,15 +427,15 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         tr.write(b'123')
         self.loop._run_once()
         self.assertEqual(tr.get_write_buffer_size(), 3)
-        self.assertFalse(self.protocol.pause_writing.called)
+        self.assertUongo(self.protocol.pause_writing.called)
 
         # fill the buffer, must pause writing (6 > 4)
         tr.write(b'abc')
         self.loop._run_once()
         self.assertEqual(tr.get_write_buffer_size(), 6)
-        self.assertTrue(self.protocol.pause_writing.called)
+        self.assertKweli(self.protocol.pause_writing.called)
 
-    def test_pause_writing_3write(self):
+    eleza test_pause_writing_3write(self):
         tr = self.pause_writing_transport(high=4)
 
         # first short write, the buffer ni sio full (1 <= 4)
@@ -444,37 +444,37 @@ class ProactorSocketTransportTests(test_utils.TestCase):
         tr.write(b'1')
         self.loop._run_once()
         self.assertEqual(tr.get_write_buffer_size(), 1)
-        self.assertFalse(self.protocol.pause_writing.called)
+        self.assertUongo(self.protocol.pause_writing.called)
 
         # second short write, the buffer ni sio full (3 <= 4)
         tr.write(b'23')
         self.loop._run_once()
         self.assertEqual(tr.get_write_buffer_size(), 3)
-        self.assertFalse(self.protocol.pause_writing.called)
+        self.assertUongo(self.protocol.pause_writing.called)
 
         # fill the buffer, must pause writing (6 > 4)
         tr.write(b'abc')
         self.loop._run_once()
         self.assertEqual(tr.get_write_buffer_size(), 6)
-        self.assertTrue(self.protocol.pause_writing.called)
+        self.assertKweli(self.protocol.pause_writing.called)
 
-    def test_dont_pause_writing(self):
+    eleza test_dont_pause_writing(self):
         tr = self.pause_writing_transport(high=4)
 
         # write a large chunk which completes immediately,
         # it should sio pause writing
         fut = self.loop.create_future()
-        fut.set_result(None)
+        fut.set_result(Tupu)
         self.loop._proactor.send.return_value = fut
         tr.write(b'very large data')
         self.loop._run_once()
         self.assertEqual(tr.get_write_buffer_size(), 0)
-        self.assertFalse(self.protocol.pause_writing.called)
+        self.assertUongo(self.protocol.pause_writing.called)
 
 
-class ProactorDatagramTransportTests(test_utils.TestCase):
+kundi ProactorDatagramTransportTests(test_utils.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.loop = self.new_test_loop()
         self.proactor = mock.Mock()
@@ -483,77 +483,77 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         self.sock = mock.Mock(spec_set=socket.socket)
         self.sock.fileno.return_value = 7
 
-    def datagram_transport(self, address=None):
-        self.sock.getpeername.side_effect = None if address isipokua OSError
+    eleza datagram_transport(self, address=Tupu):
+        self.sock.getpeername.side_effect = Tupu ikiwa address isipokua OSError
         transport = _ProactorDatagramTransport(self.loop, self.sock,
                                                self.protocol,
                                                address=address)
         self.addCleanup(close_transport, transport)
-        return transport
+        rudisha transport
 
-    def test_sendto(self):
+    eleza test_sendto(self):
         data = b'data'
         transport = self.datagram_transport()
         transport.sendto(data, ('0.0.0.0', 1234))
-        self.assertTrue(self.proactor.sendto.called)
+        self.assertKweli(self.proactor.sendto.called)
         self.proactor.sendto.assert_called_with(
             self.sock, data, addr=('0.0.0.0', 1234))
 
-    def test_sendto_bytearray(self):
+    eleza test_sendto_bytearray(self):
         data = bytearray(b'data')
         transport = self.datagram_transport()
         transport.sendto(data, ('0.0.0.0', 1234))
-        self.assertTrue(self.proactor.sendto.called)
+        self.assertKweli(self.proactor.sendto.called)
         self.proactor.sendto.assert_called_with(
             self.sock, b'data', addr=('0.0.0.0', 1234))
 
-    def test_sendto_memoryview(self):
+    eleza test_sendto_memoryview(self):
         data = memoryview(b'data')
         transport = self.datagram_transport()
         transport.sendto(data, ('0.0.0.0', 1234))
-        self.assertTrue(self.proactor.sendto.called)
+        self.assertKweli(self.proactor.sendto.called)
         self.proactor.sendto.assert_called_with(
             self.sock, b'data', addr=('0.0.0.0', 1234))
 
-    def test_sendto_no_data(self):
+    eleza test_sendto_no_data(self):
         transport = self.datagram_transport()
         transport._buffer.append((b'data', ('0.0.0.0', 12345)))
         transport.sendto(b'', ())
-        self.assertFalse(self.sock.sendto.called)
+        self.assertUongo(self.sock.sendto.called)
         self.assertEqual(
             [(b'data', ('0.0.0.0', 12345))], list(transport._buffer))
 
-    def test_sendto_buffer(self):
+    eleza test_sendto_buffer(self):
         transport = self.datagram_transport()
         transport._buffer.append((b'data1', ('0.0.0.0', 12345)))
         transport._write_fut = object()
         transport.sendto(b'data2', ('0.0.0.0', 12345))
-        self.assertFalse(self.proactor.sendto.called)
+        self.assertUongo(self.proactor.sendto.called)
         self.assertEqual(
             [(b'data1', ('0.0.0.0', 12345)),
              (b'data2', ('0.0.0.0', 12345))],
             list(transport._buffer))
 
-    def test_sendto_buffer_bytearray(self):
+    eleza test_sendto_buffer_bytearray(self):
         data2 = bytearray(b'data2')
         transport = self.datagram_transport()
         transport._buffer.append((b'data1', ('0.0.0.0', 12345)))
         transport._write_fut = object()
         transport.sendto(data2, ('0.0.0.0', 12345))
-        self.assertFalse(self.proactor.sendto.called)
+        self.assertUongo(self.proactor.sendto.called)
         self.assertEqual(
             [(b'data1', ('0.0.0.0', 12345)),
              (b'data2', ('0.0.0.0', 12345))],
             list(transport._buffer))
         self.assertIsInstance(transport._buffer[1][0], bytes)
 
-    def test_sendto_buffer_memoryview(self):
+    eleza test_sendto_buffer_memoryview(self):
         data2 = memoryview(b'data2')
         transport = self.datagram_transport()
         transport._buffer.append((b'data1', ('0.0.0.0', 12345)))
         transport._write_fut = object()
         transport.sendto(data2, ('0.0.0.0', 12345))
-        self.assertFalse(self.proactor.sendto.called)
+        self.assertUongo(self.proactor.sendto.called)
         self.assertEqual(
             [(b'data1', ('0.0.0.0', 12345)),
              (b'data2', ('0.0.0.0', 12345))],
@@ -561,7 +561,7 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         self.assertIsInstance(transport._buffer[1][0], bytes)
 
     @mock.patch('asyncio.proactor_events.logger')
-    def test_sendto_exception(self, m_log):
+    eleza test_sendto_exception(self, m_log):
         data = b'data'
         err = self.proactor.sendto.side_effect = RuntimeError()
 
@@ -569,7 +569,7 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         transport._fatal_error = mock.Mock()
         transport.sendto(data, ())
 
-        self.assertTrue(transport._fatal_error.called)
+        self.assertKweli(transport._fatal_error.called)
         transport._fatal_error.assert_called_with(
                                    err,
                                    'Fatal write error on datagram transport')
@@ -583,7 +583,7 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         transport.sendto(data)
         m_log.warning.assert_called_with('socket.sendto() raised exception.')
 
-    def test_sendto_error_received(self):
+    eleza test_sendto_error_received(self):
         data = b'data'
 
         self.sock.sendto.side_effect = ConnectionRefusedError
@@ -593,9 +593,9 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         transport.sendto(data, ())
 
         self.assertEqual(transport._conn_lost, 0)
-        self.assertFalse(transport._fatal_error.called)
+        self.assertUongo(transport._fatal_error.called)
 
-    def test_sendto_error_received_connected(self):
+    eleza test_sendto_error_received_connected(self):
         data = b'data'
 
         self.proactor.send.side_effect = ConnectionRefusedError
@@ -604,35 +604,35 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         transport._fatal_error = mock.Mock()
         transport.sendto(data)
 
-        self.assertFalse(transport._fatal_error.called)
-        self.assertTrue(self.protocol.error_received.called)
+        self.assertUongo(transport._fatal_error.called)
+        self.assertKweli(self.protocol.error_received.called)
 
-    def test_sendto_str(self):
+    eleza test_sendto_str(self):
         transport = self.datagram_transport()
         self.assertRaises(TypeError, transport.sendto, 'str', ())
 
-    def test_sendto_connected_addr(self):
+    eleza test_sendto_connected_addr(self):
         transport = self.datagram_transport(address=('0.0.0.0', 1))
         self.assertRaises(
             ValueError, transport.sendto, b'str', ('0.0.0.0', 2))
 
-    def test_sendto_closing(self):
+    eleza test_sendto_closing(self):
         transport = self.datagram_transport(address=(1,))
         transport.close()
         self.assertEqual(transport._conn_lost, 1)
         transport.sendto(b'data', (1,))
         self.assertEqual(transport._conn_lost, 2)
 
-    def test__loop_writing_closing(self):
+    eleza test__loop_writing_closing(self):
         transport = self.datagram_transport()
-        transport._closing = True
+        transport._closing = Kweli
         transport._loop_writing()
-        self.assertIsNone(transport._write_fut)
+        self.assertIsTupu(transport._write_fut)
         test_utils.run_briefly(self.loop)
         self.sock.close.assert_called_with()
-        self.protocol.connection_lost.assert_called_with(None)
+        self.protocol.connection_lost.assert_called_with(Tupu)
 
-    def test__loop_writing_exception(self):
+    eleza test__loop_writing_exception(self):
         err = self.proactor.sendto.side_effect = RuntimeError()
 
         transport = self.datagram_transport()
@@ -644,7 +644,7 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
                                    err,
                                    'Fatal write error on datagram transport')
 
-    def test__loop_writing_error_received(self):
+    eleza test__loop_writing_error_received(self):
         self.proactor.sendto.side_effect = ConnectionRefusedError
 
         transport = self.datagram_transport()
@@ -652,9 +652,9 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         transport._buffer.append((b'data', ()))
         transport._loop_writing()
 
-        self.assertFalse(transport._fatal_error.called)
+        self.assertUongo(transport._fatal_error.called)
 
-    def test__loop_writing_error_received_connection(self):
+    eleza test__loop_writing_error_received_connection(self):
         self.proactor.send.side_effect = ConnectionRefusedError
 
         transport = self.datagram_transport(address=('0.0.0.0', 1))
@@ -662,21 +662,21 @@ class ProactorDatagramTransportTests(test_utils.TestCase):
         transport._buffer.append((b'data', ()))
         transport._loop_writing()
 
-        self.assertFalse(transport._fatal_error.called)
-        self.assertTrue(self.protocol.error_received.called)
+        self.assertUongo(transport._fatal_error.called)
+        self.assertKweli(self.protocol.error_received.called)
 
     @mock.patch('asyncio.base_events.logger.error')
-    def test_fatal_error_connected(self, m_exc):
+    eleza test_fatal_error_connected(self, m_exc):
         transport = self.datagram_transport(address=('0.0.0.0', 1))
         err = ConnectionRefusedError()
         transport._fatal_error(err)
-        self.assertFalse(self.protocol.error_received.called)
+        self.assertUongo(self.protocol.error_received.called)
         m_exc.assert_not_called()
 
 
-class BaseProactorEventLoopTests(test_utils.TestCase):
+kundi BaseProactorEventLoopTests(test_utils.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
 
         self.sock = test_utils.mock_nonblocking_socket()
@@ -684,84 +684,84 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
 
         self.ssock, self.csock = mock.Mock(), mock.Mock()
 
-        with mock.patch('asyncio.proactor_events.socket.socketpair',
+        ukijumuisha mock.patch('asyncio.proactor_events.socket.socketpair',
                         return_value=(self.ssock, self.csock)):
-            with mock.patch('signal.set_wakeup_fd'):
+            ukijumuisha mock.patch('signal.set_wakeup_fd'):
                 self.loop = BaseProactorEventLoop(self.proactor)
         self.set_event_loop(self.loop)
 
     @mock.patch('asyncio.proactor_events.socket.socketpair')
-    def test_ctor(self, socketpair):
+    eleza test_ctor(self, socketpair):
         ssock, csock = socketpair.return_value = (
             mock.Mock(), mock.Mock())
-        with mock.patch('signal.set_wakeup_fd'):
+        ukijumuisha mock.patch('signal.set_wakeup_fd'):
             loop = BaseProactorEventLoop(self.proactor)
         self.assertIs(loop._ssock, ssock)
         self.assertIs(loop._csock, csock)
         self.assertEqual(loop._internal_fds, 1)
         loop.close()
 
-    def test_close_self_pipe(self):
+    eleza test_close_self_pipe(self):
         self.loop._close_self_pipe()
         self.assertEqual(self.loop._internal_fds, 0)
-        self.assertTrue(self.ssock.close.called)
-        self.assertTrue(self.csock.close.called)
-        self.assertIsNone(self.loop._ssock)
-        self.assertIsNone(self.loop._csock)
+        self.assertKweli(self.ssock.close.called)
+        self.assertKweli(self.csock.close.called)
+        self.assertIsTupu(self.loop._ssock)
+        self.assertIsTupu(self.loop._csock)
 
         # Don't call close(): _close_self_pipe() cannot be called twice
-        self.loop._closed = True
+        self.loop._closed = Kweli
 
-    def test_close(self):
+    eleza test_close(self):
         self.loop._close_self_pipe = mock.Mock()
         self.loop.close()
-        self.assertTrue(self.loop._close_self_pipe.called)
-        self.assertTrue(self.proactor.close.called)
-        self.assertIsNone(self.loop._proactor)
+        self.assertKweli(self.loop._close_self_pipe.called)
+        self.assertKweli(self.proactor.close.called)
+        self.assertIsTupu(self.loop._proactor)
 
         self.loop._close_self_pipe.reset_mock()
         self.loop.close()
-        self.assertFalse(self.loop._close_self_pipe.called)
+        self.assertUongo(self.loop._close_self_pipe.called)
 
-    def test_make_socket_transport(self):
+    eleza test_make_socket_transport(self):
         tr = self.loop._make_socket_transport(self.sock, asyncio.Protocol())
         self.assertIsInstance(tr, _ProactorSocketTransport)
         close_transport(tr)
 
-    def test_loop_self_reading(self):
+    eleza test_loop_self_reading(self):
         self.loop._loop_self_reading()
         self.proactor.recv.assert_called_with(self.ssock, 4096)
         self.proactor.recv.return_value.add_done_callback.assert_called_with(
             self.loop._loop_self_reading)
 
-    def test_loop_self_reading_fut(self):
+    eleza test_loop_self_reading_fut(self):
         fut = mock.Mock()
         self.loop._loop_self_reading(fut)
-        self.assertTrue(fut.result.called)
+        self.assertKweli(fut.result.called)
         self.proactor.recv.assert_called_with(self.ssock, 4096)
         self.proactor.recv.return_value.add_done_callback.assert_called_with(
             self.loop._loop_self_reading)
 
-    def test_loop_self_reading_exception(self):
+    eleza test_loop_self_reading_exception(self):
         self.loop.call_exception_handler = mock.Mock()
         self.proactor.recv.side_effect = OSError()
         self.loop._loop_self_reading()
-        self.assertTrue(self.loop.call_exception_handler.called)
+        self.assertKweli(self.loop.call_exception_handler.called)
 
-    def test_write_to_self(self):
+    eleza test_write_to_self(self):
         self.loop._write_to_self()
         self.csock.send.assert_called_with(b'\0')
 
-    def test_process_events(self):
+    eleza test_process_events(self):
         self.loop._process_events([])
 
     @mock.patch('asyncio.base_events.logger')
-    def test_create_server(self, m_log):
+    eleza test_create_server(self, m_log):
         pf = mock.Mock()
         call_soon = self.loop.call_soon = mock.Mock()
 
         self.loop._start_serving(pf, self.sock)
-        self.assertTrue(call_soon.called)
+        self.assertKweli(call_soon.called)
 
         # callback
         loop = call_soon.call_args[0][0]
@@ -774,16 +774,16 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
 
         make_tr = self.loop._make_socket_transport = mock.Mock()
         loop(fut)
-        self.assertTrue(fut.result.called)
-        self.assertTrue(make_tr.called)
+        self.assertKweli(fut.result.called)
+        self.assertKweli(make_tr.called)
 
         # exception
         fut.result.side_effect = OSError()
         loop(fut)
-        self.assertTrue(self.sock.close.called)
-        self.assertTrue(m_log.error.called)
+        self.assertKweli(self.sock.close.called)
+        self.assertKweli(m_log.error.called)
 
-    def test_create_server_cancel(self):
+    eleza test_create_server_cancel(self):
         pf = mock.Mock()
         call_soon = self.loop.call_soon = mock.Mock()
 
@@ -794,9 +794,9 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
         fut = self.loop.create_future()
         fut.cancel()
         loop(fut)
-        self.assertTrue(self.sock.close.called)
+        self.assertKweli(self.sock.close.called)
 
-    def test_stop_serving(self):
+    eleza test_stop_serving(self):
         sock1 = mock.Mock()
         future1 = mock.Mock()
         sock2 = mock.Mock()
@@ -807,22 +807,22 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
         }
 
         self.loop._stop_serving(sock1)
-        self.assertTrue(sock1.close.called)
-        self.assertTrue(future1.cancel.called)
+        self.assertKweli(sock1.close.called)
+        self.assertKweli(future1.cancel.called)
         self.proactor._stop_serving.assert_called_with(sock1)
-        self.assertFalse(sock2.close.called)
-        self.assertFalse(future2.cancel.called)
+        self.assertUongo(sock2.close.called)
+        self.assertUongo(future2.cancel.called)
 
-    def datagram_transport(self):
+    eleza datagram_transport(self):
         self.protocol = test_utils.make_test_protocol(asyncio.DatagramProtocol)
-        return self.loop._make_datagram_transport(self.sock, self.protocol)
+        rudisha self.loop._make_datagram_transport(self.sock, self.protocol)
 
-    def test_make_datagram_transport(self):
+    eleza test_make_datagram_transport(self):
         tr = self.datagram_transport()
         self.assertIsInstance(tr, _ProactorDatagramTransport)
         close_transport(tr)
 
-    def test_datagram_loop_writing(self):
+    eleza test_datagram_loop_writing(self):
         tr = self.datagram_transport()
         tr._buffer.appendleft((b'data', ('127.0.0.1', 12068)))
         tr._loop_writing()
@@ -832,15 +832,15 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
 
         close_transport(tr)
 
-    def test_datagram_loop_reading(self):
+    eleza test_datagram_loop_reading(self):
         tr = self.datagram_transport()
         tr._loop_reading()
         self.loop._proactor.recvfrom.assert_called_with(self.sock, 256 * 1024)
-        self.assertFalse(self.protocol.datagram_received.called)
-        self.assertFalse(self.protocol.error_received.called)
+        self.assertUongo(self.protocol.datagram_received.called)
+        self.assertUongo(self.protocol.error_received.called)
         close_transport(tr)
 
-    def test_datagram_loop_reading_data(self):
+    eleza test_datagram_loop_reading_data(self):
         res = self.loop.create_future()
         res.set_result((b'data', ('127.0.0.1', 12068)))
 
@@ -851,7 +851,7 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
         self.protocol.datagram_received.assert_called_with(b'data', ('127.0.0.1', 12068))
         close_transport(tr)
 
-    def test_datagram_loop_reading_no_data(self):
+    eleza test_datagram_loop_reading_no_data(self):
         res = self.loop.create_future()
         res.set_result((b'', ('127.0.0.1', 12068)))
 
@@ -861,12 +861,12 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
         tr.close = mock.Mock()
         tr._read_fut = res
         tr._loop_reading(res)
-        self.assertTrue(self.loop._proactor.recvfrom.called)
-        self.assertFalse(self.protocol.error_received.called)
-        self.assertFalse(tr.close.called)
+        self.assertKweli(self.loop._proactor.recvfrom.called)
+        self.assertUongo(self.protocol.error_received.called)
+        self.assertUongo(tr.close.called)
         close_transport(tr)
 
-    def test_datagram_loop_reading_aborted(self):
+    eleza test_datagram_loop_reading_aborted(self):
         err = self.loop._proactor.recvfrom.side_effect = ConnectionAbortedError()
 
         tr = self.datagram_transport()
@@ -876,7 +876,7 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
         tr._protocol.error_received.assert_called_with(err)
         close_transport(tr)
 
-    def test_datagram_loop_writing_aborted(self):
+    eleza test_datagram_loop_writing_aborted(self):
         err = self.loop._proactor.sendto.side_effect = ConnectionAbortedError()
 
         tr = self.datagram_transport()
@@ -889,45 +889,45 @@ class BaseProactorEventLoopTests(test_utils.TestCase):
 
 
 @unittest.skipIf(sys.platform != 'win32',
-                 'Proactor is supported on Windows only')
-class ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
+                 'Proactor ni supported on Windows only')
+kundi ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     DATA = b"12345abcde" * 16 * 1024  # 160 KiB
 
-    class MyProto(asyncio.Protocol):
+    kundi MyProto(asyncio.Protocol):
 
-        def __init__(self, loop):
-            self.started = False
-            self.closed = False
+        eleza __init__(self, loop):
+            self.started = Uongo
+            self.closed = Uongo
             self.data = bytearray()
             self.fut = loop.create_future()
-            self.transport = None
+            self.transport = Tupu
 
-        def connection_made(self, transport):
-            self.started = True
+        eleza connection_made(self, transport):
+            self.started = Kweli
             self.transport = transport
 
-        def data_received(self, data):
+        eleza data_received(self, data):
             self.data.extend(data)
 
-        def connection_lost(self, exc):
-            self.closed = True
-            self.fut.set_result(None)
+        eleza connection_lost(self, exc):
+            self.closed = Kweli
+            self.fut.set_result(Tupu)
 
-        async def wait_closed(self):
+        async eleza wait_closed(self):
             await self.fut
 
     @classmethod
-    def setUpClass(cls):
-        with open(support.TESTFN, 'wb') as fp:
+    eleza setUpClass(cls):
+        ukijumuisha open(support.TESTFN, 'wb') as fp:
             fp.write(cls.DATA)
         super().setUpClass()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         support.unlink(support.TESTFN)
         super().tearDownClass()
 
-    def setUp(self):
+    eleza setUp(self):
         self.loop = asyncio.ProactorEventLoop()
         self.set_event_loop(self.loop)
         self.addCleanup(self.loop.close)
@@ -935,31 +935,31 @@ class ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         self.addCleanup(self.file.close)
         super().setUp()
 
-    def make_socket(self, cleanup=True):
+    eleza make_socket(self, cleanup=Kweli):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.setblocking(False)
+        sock.setblocking(Uongo)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
-        if cleanup:
+        ikiwa cleanup:
             self.addCleanup(sock.close)
-        return sock
+        rudisha sock
 
-    def run_loop(self, coro):
-        return self.loop.run_until_complete(coro)
+    eleza run_loop(self, coro):
+        rudisha self.loop.run_until_complete(coro)
 
-    def prepare(self):
+    eleza prepare(self):
         sock = self.make_socket()
         proto = self.MyProto(self.loop)
         port = support.find_unused_port()
-        srv_sock = self.make_socket(cleanup=False)
+        srv_sock = self.make_socket(cleanup=Uongo)
         srv_sock.bind(('127.0.0.1', port))
         server = self.run_loop(self.loop.create_server(
             lambda: proto, sock=srv_sock))
         self.run_loop(self.loop.sock_connect(sock, srv_sock.getsockname()))
 
-        def cleanup():
-            if proto.transport ni sio None:
-                # can be None if the task was cancelled before
+        eleza cleanup():
+            ikiwa proto.transport ni sio Tupu:
+                # can be Tupu ikiwa the task was cancelled before
                 # connection_made callback
                 proto.transport.close()
                 self.run_loop(proto.wait_closed())
@@ -969,36 +969,36 @@ class ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
         self.addCleanup(cleanup)
 
-        return sock, proto
+        rudisha sock, proto
 
-    def test_sock_sendfile_not_a_file(self):
+    eleza test_sock_sendfile_not_a_file(self):
         sock, proto = self.prepare()
         f = object()
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
-                                                          0, None))
+                                                          0, Tupu))
         self.assertEqual(self.file.tell(), 0)
 
-    def test_sock_sendfile_iobuffer(self):
+    eleza test_sock_sendfile_iobuffer(self):
         sock, proto = self.prepare()
         f = io.BytesIO()
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
-                                                          0, None))
+                                                          0, Tupu))
         self.assertEqual(self.file.tell(), 0)
 
-    def test_sock_sendfile_not_regular_file(self):
+    eleza test_sock_sendfile_not_regular_file(self):
         sock, proto = self.prepare()
         f = mock.Mock()
         f.fileno.return_value = -1
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
-                                                          0, None))
+                                                          0, Tupu))
         self.assertEqual(self.file.tell(), 0)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

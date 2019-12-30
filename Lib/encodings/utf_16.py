@@ -21,9 +21,9 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
         self.encoder = Tupu
 
     eleza encode(self, input, final=Uongo):
-        if self.encoder is Tupu:
+        ikiwa self.encoder ni Tupu:
             result = codecs.utf_16_encode(input, self.errors)[0]
-            if sys.byteorder == 'little':
+            ikiwa sys.byteorder == 'little':
                 self.encoder = codecs.utf_16_le_encode
             isipokua:
                 self.encoder = codecs.utf_16_be_encode
@@ -36,16 +36,16 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
 
     eleza getstate(self):
         # state info we rudisha to the caller:
-        # 0: stream is in natural order for this platform
+        # 0: stream ni kwenye natural order kila this platform
         # 2: endianness hasn't been determined yet
-        # (we're never writing in unnatural order)
-        rudisha (2 if self.encoder is Tupu isipokua 0)
+        # (we're never writing kwenye unnatural order)
+        rudisha (2 ikiwa self.encoder ni Tupu isipokua 0)
 
     eleza setstate(self, state):
-        if state:
+        ikiwa state:
             self.encoder = Tupu
         isipokua:
-            if sys.byteorder == 'little':
+            ikiwa sys.byteorder == 'little':
                 self.encoder = codecs.utf_16_le_encode
             isipokua:
                 self.encoder = codecs.utf_16_be_encode
@@ -56,15 +56,15 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         self.decoder = Tupu
 
     eleza _buffer_decode(self, input, errors, final):
-        if self.decoder is Tupu:
+        ikiwa self.decoder ni Tupu:
             (output, consumed, byteorder) = \
                 codecs.utf_16_ex_decode(input, errors, 0, final)
-            if byteorder == -1:
+            ikiwa byteorder == -1:
                 self.decoder = codecs.utf_16_le_decode
-            lasivyo byteorder == 1:
+            elikiwa byteorder == 1:
                 self.decoder = codecs.utf_16_be_decode
-            lasivyo consumed >= 2:
-                ashiria UnicodeError("UTF-16 stream does sio start with BOM")
+            elikiwa consumed >= 2:
+                 ashiria UnicodeError("UTF-16 stream does sio start ukijumuisha BOM")
             rudisha (output, consumed)
         rudisha self.decoder(input, self.errors, final)
 
@@ -73,30 +73,30 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         self.decoder = Tupu
 
     eleza getstate(self):
-        # additional state info from the base kundi must be Tupu here,
-        # as it isn't pitaed along to the caller
+        # additional state info kutoka the base kundi must be Tupu here,
+        # as it isn't passed along to the caller
         state = codecs.BufferedIncrementalDecoder.getstate(self)[0]
-        # additional state info we pita to the caller:
-        # 0: stream is in natural order for this platform
-        # 1: stream is in unnatural order
+        # additional state info we pass to the caller:
+        # 0: stream ni kwenye natural order kila this platform
+        # 1: stream ni kwenye unnatural order
         # 2: endianness hasn't been determined yet
-        if self.decoder is Tupu:
+        ikiwa self.decoder ni Tupu:
             rudisha (state, 2)
         addstate = int((sys.byteorder == "big") !=
-                       (self.decoder is codecs.utf_16_be_decode))
+                       (self.decoder ni codecs.utf_16_be_decode))
         rudisha (state, addstate)
 
     eleza setstate(self, state):
         # state[1] will be ignored by BufferedIncrementalDecoder.setstate()
         codecs.BufferedIncrementalDecoder.setstate(self, state)
         state = state[1]
-        if state == 0:
+        ikiwa state == 0:
             self.decoder = (codecs.utf_16_be_decode
-                            if sys.byteorder == "big"
+                            ikiwa sys.byteorder == "big"
                             isipokua codecs.utf_16_le_decode)
-        lasivyo state == 1:
+        elikiwa state == 1:
             self.decoder = (codecs.utf_16_le_decode
-                            if sys.byteorder == "big"
+                            ikiwa sys.byteorder == "big"
                             isipokua codecs.utf_16_be_decode)
         isipokua:
             self.decoder = Tupu
@@ -111,9 +111,9 @@ kundi StreamWriter(codecs.StreamWriter):
         self.encoder = Tupu
 
     eleza encode(self, input, errors='strict'):
-        if self.encoder is Tupu:
+        ikiwa self.encoder ni Tupu:
             result = codecs.utf_16_encode(input, errors)
-            if sys.byteorder == 'little':
+            ikiwa sys.byteorder == 'little':
                 self.encoder = codecs.utf_16_le_encode
             isipokua:
                 self.encoder = codecs.utf_16_be_encode
@@ -127,18 +127,18 @@ kundi StreamReader(codecs.StreamReader):
         codecs.StreamReader.reset(self)
         jaribu:
             toa self.decode
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
 
     eleza decode(self, input, errors='strict'):
         (object, consumed, byteorder) = \
             codecs.utf_16_ex_decode(input, errors, 0, Uongo)
-        if byteorder == -1:
+        ikiwa byteorder == -1:
             self.decode = codecs.utf_16_le_decode
-        lasivyo byteorder == 1:
+        elikiwa byteorder == 1:
             self.decode = codecs.utf_16_be_decode
-        lasivyo consumed>=2:
-            ashiria UnicodeError("UTF-16 stream does sio start with BOM")
+        elikiwa consumed>=2:
+             ashiria UnicodeError("UTF-16 stream does sio start ukijumuisha BOM")
         rudisha (object, consumed)
 
 ### encodings module API

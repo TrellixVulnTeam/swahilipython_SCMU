@@ -10,12 +10,12 @@ kutoka . agiza locks
 
 kundi QueueEmpty(Exception):
     """Raised when Queue.get_nowait() ni called on an empty Queue."""
-    pita
+    pass
 
 
 kundi QueueFull(Exception):
     """Raised when the Queue.put_nowait() method ni called on a full Queue."""
-    pita
+    pass
 
 
 kundi Queue:
@@ -128,24 +128,24 @@ kundi Queue:
                 jaribu:
                     # Clean self._putters kutoka canceled putters.
                     self._putters.remove(putter)
-                tatizo ValueError:
+                except ValueError:
                     # The putter could be removed kutoka self._putters by a
                     # previous get_nowait call.
-                    pita
+                    pass
                 ikiwa sio self.full() na sio putter.cancelled():
                     # We were woken up by get_nowait(), but can't take
                     # the call.  Wake up the next kwenye line.
                     self._wakeup_next(self._putters)
-                ashiria
+                raise
         rudisha self.put_nowait(item)
 
     eleza put_nowait(self, item):
         """Put an item into the queue without blocking.
 
-        If no free slot ni immediately available, ashiria QueueFull.
+        If no free slot ni immediately available,  ashiria QueueFull.
         """
         ikiwa self.full():
-            ashiria QueueFull
+             ashiria QueueFull
         self._put(item)
         self._unfinished_tasks += 1
         self._finished.clear()
@@ -166,24 +166,24 @@ kundi Queue:
                 jaribu:
                     # Clean self._getters kutoka canceled getters.
                     self._getters.remove(getter)
-                tatizo ValueError:
+                except ValueError:
                     # The getter could be removed kutoka self._getters by a
                     # previous put_nowait call.
-                    pita
+                    pass
                 ikiwa sio self.empty() na sio getter.cancelled():
                     # We were woken up by put_nowait(), but can't take
                     # the call.  Wake up the next kwenye line.
                     self._wakeup_next(self._getters)
-                ashiria
+                raise
         rudisha self.get_nowait()
 
     eleza get_nowait(self):
         """Remove na rudisha an item kutoka the queue.
 
-        Return an item ikiwa one ni immediately available, isipokua ashiria QueueEmpty.
+        Return an item ikiwa one ni immediately available, isipokua  ashiria QueueEmpty.
         """
         ikiwa self.empty():
-            ashiria QueueEmpty
+             ashiria QueueEmpty
         item = self._get()
         self._wakeup_next(self._putters)
         rudisha item
@@ -203,7 +203,7 @@ kundi Queue:
         the queue.
         """
         ikiwa self._unfinished_tasks <= 0:
-            ashiria ValueError('task_done() called too many times')
+             ashiria ValueError('task_done() called too many times')
         self._unfinished_tasks -= 1
         ikiwa self._unfinished_tasks == 0:
             self._finished.set()

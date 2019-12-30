@@ -51,8 +51,8 @@ ikiwa sio os.path.supports_unicode_filenames:
     jaribu:
         kila name kwenye filenames:
             name.encode(fsencoding)
-    tatizo UnicodeEncodeError:
-        ashiria unittest.SkipTest("only NT+ na systems ukijumuisha "
+    except UnicodeEncodeError:
+         ashiria unittest.SkipTest("only NT+ na systems ukijumuisha "
                                 "Unicode-friendly filesystem encoding")
 
 
@@ -63,14 +63,14 @@ kundi UnicodeFileTests(unittest.TestCase):
     eleza setUp(self):
         jaribu:
             os.mkdir(support.TESTFN)
-        tatizo FileExistsError:
-            pita
+        except FileExistsError:
+            pass
         self.addCleanup(support.rmtree, support.TESTFN)
 
         files = set()
         kila name kwenye self.files:
             name = os.path.join(support.TESTFN, self.norm(name))
-            ukijumuisha open(name, 'wb') kama f:
+            ukijumuisha open(name, 'wb') as f:
                 f.write((name+'\n').encode("utf-8"))
             os.stat(name)
             files.add(name)
@@ -84,7 +84,7 @@ kundi UnicodeFileTests(unittest.TestCase):
     eleza _apply_failure(self, fn, filename,
                        expected_exception=FileNotFoundError,
                        check_filename=Kweli):
-        ukijumuisha self.assertRaises(expected_exception) kama c:
+        ukijumuisha self.assertRaises(expected_exception) as c:
             fn(filename)
         exc_filename = c.exception.filename
         ikiwa check_filename:
@@ -120,7 +120,7 @@ kundi UnicodeFileTests(unittest.TestCase):
     # Skip the test on darwin, because darwin does normalize the filename to
     # NFD (a variant of Unicode NFD form). Normalize the filename to NFC, NFKC,
     # NFKD kwenye Python ni useless, because darwin will normalize it later na so
-    # open(), os.stat(), etc. don't ashiria any exception.
+    # open(), os.stat(), etc. don't  ashiria any exception.
     @unittest.skipIf(sys.platform == 'darwin', 'irrelevant test on Mac OS X')
     eleza test_normalize(self):
         files = set(self.files)
@@ -159,7 +159,7 @@ kundi UnicodeFileTests(unittest.TestCase):
         dirname = os.path.join(support.TESTFN, 'Gr\xfc\xdf-\u66e8\u66e9\u66eb')
         filename = '\xdf-\u66e8\u66e9\u66eb'
         ukijumuisha support.temp_cwd(dirname):
-            ukijumuisha open(filename, 'wb') kama f:
+            ukijumuisha open(filename, 'wb') as f:
                 f.write((filename + '\n').encode("utf-8"))
             os.access(filename,os.R_OK)
             os.remove(filename)

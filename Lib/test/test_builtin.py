@@ -32,7 +32,7 @@ kutoka test.support.script_helper agiza assert_python_ok
 kutoka unittest.mock agiza MagicMock, patch
 jaribu:
     agiza pty, signal
-tatizo ImportError:
+except ImportError:
     pty = signal = Tupu
 
 
@@ -45,7 +45,7 @@ kundi Squares:
     eleza __len__(self): rudisha len(self.sofar)
 
     eleza __getitem__(self, i):
-        ikiwa sio 0 <= i < self.max: ashiria IndexError
+        ikiwa sio 0 <= i < self.max:  ashiria IndexError
         n = len(self.sofar)
         wakati n <= i:
             self.sofar.append(n*n)
@@ -63,7 +63,7 @@ kundi StrSquares:
 
     eleza __getitem__(self, i):
         ikiwa sio 0 <= i < self.max:
-            ashiria IndexError
+             ashiria IndexError
         n = len(self.sofar)
         wakati n <= i:
             self.sofar.append(str(n*n))
@@ -72,7 +72,7 @@ kundi StrSquares:
 
 kundi BitBucket:
     eleza write(self, line):
-        pita
+        pass
 
 test_conv_no_sign = [
         ('0', 0),
@@ -120,11 +120,11 @@ test_conv_sign = [
 
 kundi TestFailingBool:
     eleza __bool__(self):
-        ashiria RuntimeError
+         ashiria RuntimeError
 
 kundi TestFailingIter:
     eleza __iter__(self):
-        ashiria RuntimeError
+         ashiria RuntimeError
 
 eleza filter_char(arg):
     rudisha ord(arg) > ord("d")
@@ -145,13 +145,13 @@ kundi BuiltinTest(unittest.TestCase):
         it = pickle.loads(d)
         jaribu:
             next(it)
-        tatizo StopIteration:
-            rudisha
+        except StopIteration:
+            return
         d = pickle.dumps(it, proto)
         it = pickle.loads(d)
         self.assertEqual(list(it), seq[1:])
 
-    eleza test_agiza(self):
+    eleza test_import(self):
         __import__('sys')
         __import__('time')
         __import__('string')
@@ -165,7 +165,7 @@ kundi BuiltinTest(unittest.TestCase):
         ukijumuisha self.assertWarns(ImportWarning):
             self.assertRaises(ImportError, __import__, '',
                               {'__package__': Tupu, '__spec__': Tupu, '__name__': '__main__'},
-                              locals={}, kutokalist=('foo',), level=1)
+                              locals={}, fromlist=('foo',), level=1)
         # embedded null character
         self.assertRaises(ModuleNotFoundError, __import__, 'string\x00')
 
@@ -268,11 +268,11 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertKweli(callable(callable))
         self.assertKweli(callable(lambda x, y: x + y))
         self.assertUongo(callable(__builtins__))
-        eleza f(): pita
+        eleza f(): pass
         self.assertKweli(callable(f))
 
         kundi C1:
-            eleza meth(self): pita
+            eleza meth(self): pass
         self.assertKweli(callable(C1))
         c = C1()
         self.assertKweli(callable(c.meth))
@@ -287,12 +287,12 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertUongo(callable(c))
 
         kundi C2(object):
-            eleza __call__(self): pita
+            eleza __call__(self): pass
         c2 = C2()
         self.assertKweli(callable(c2))
         c2.__call__ = Tupu
         self.assertKweli(callable(c2))
-        kundi C3(C2): pita
+        kundi C3(C2): pass
         c3 = C3()
         self.assertKweli(callable(c3))
 
@@ -319,21 +319,21 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertRaises((OverflowError, ValueError), chr, 2**32)
 
     eleza test_cmp(self):
-        self.assertKweli(sio hasattr(builtins, "cmp"))
+        self.assertKweli(not hasattr(builtins, "cmp"))
 
     eleza test_compile(self):
         compile('andika(1)\n', '', 'exec')
         bom = b'\xef\xbb\xbf'
         compile(bom + b'andika(1)\n', '', 'exec')
-        compile(source='pita', filename='?', mode='exec')
+        compile(source='pass', filename='?', mode='exec')
         compile(dont_inherit=0, filename='tmp', source='0', mode='eval')
-        compile('pita', '?', dont_inherit=1, mode='exec')
+        compile('pass', '?', dont_inherit=1, mode='exec')
         compile(memoryview(b"text"), "name", "exec")
         self.assertRaises(TypeError, compile)
         self.assertRaises(ValueError, compile, 'andika(42)\n', '<string>', 'badmode')
         self.assertRaises(ValueError, compile, 'andika(42)\n', '<string>', 'single', 0xff)
         self.assertRaises(ValueError, compile, chr(0), 'f', 'exec')
-        self.assertRaises(TypeError, compile, 'pita', '?', 'exec',
+        self.assertRaises(TypeError, compile, 'pass', '?', 'exec',
                           mode='eval', source='0', filename='tmp')
         compile('andika("\xe5")\n', '', 'exec')
         self.assertRaises(ValueError, compile, chr(0), 'f', 'exec')
@@ -348,7 +348,7 @@ kundi BuiltinTest(unittest.TestCase):
             debug_enabled = Kweli
         jaribu:
             assert Uongo
-        tatizo AssertionError:
+        except AssertionError:
             rudisha (Kweli, f.__doc__, debug_enabled, __debug__)
         isipokua:
             rudisha (Uongo, f.__doc__, debug_enabled, __debug__)
@@ -389,7 +389,7 @@ kundi BuiltinTest(unittest.TestCase):
             '''a = await asyncio.sleep(0, result=1)''',
             '''async kila i kwenye arange(1):
                    a = 1''',
-            '''async ukijumuisha asyncio.Lock() kama l:
+            '''async ukijumuisha asyncio.Lock() as l:
                    a = 1'''
         ]
         policy = maybe_get_event_loop_policy()
@@ -512,7 +512,7 @@ kundi BuiltinTest(unittest.TestCase):
 
         # dir(traceback)
         jaribu:
-            ashiria IndexError
+             ashiria IndexError
         tatizo:
             self.assertEqual(len(dir(sys.exc_info()[2])), 4)
 
@@ -557,7 +557,7 @@ kundi BuiltinTest(unittest.TestCase):
 
         kundi X:
             eleza __getitem__(self, key):
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(ValueError, eval, "foo", {}, X())
 
     eleza test_general_eval(self):
@@ -568,7 +568,7 @@ kundi BuiltinTest(unittest.TestCase):
             eleza __getitem__(self, key):
                 ikiwa key == 'a':
                     rudisha 12
-                ashiria KeyError
+                 ashiria KeyError
             eleza keys(self):
                 rudisha list('xyz')
 
@@ -582,11 +582,11 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, eval, 'a', m)
         kundi A:
             "Non-mapping"
-            pita
+            pass
         m = A()
         self.assertRaises(TypeError, eval, 'a', g, m)
 
-        # Verify that dict subclasses work kama well
+        # Verify that dict subclasses work as well
         kundi D(dict):
             eleza __getitem__(self, key):
                 ikiwa key == 'a':
@@ -620,11 +620,11 @@ kundi BuiltinTest(unittest.TestCase):
         ss['a3'] = 'a2*7'
         self.assertEqual(ss['a3'], 210)
 
-        # Verify that dir() catches a non-list rudishaed by eval
+        # Verify that dir() catches a non-list returned by eval
         # SF bug #1004669
         kundi C:
             eleza __getitem__(self, item):
-                ashiria KeyError(item)
+                 ashiria KeyError(item)
             eleza keys(self):
                 rudisha 1 # used to be 'a' but that's no longer an error
         self.assertRaises(TypeError, eval, 'dir()', globals(), C())
@@ -663,16 +663,16 @@ kundi BuiltinTest(unittest.TestCase):
                           exec, code, {'__builtins__': 123})
 
         # no __build_class__ function
-        code = compile("kundi A: pita", "", "exec")
+        code = compile("kundi A: pass", "", "exec")
         self.assertRaisesRegex(NameError, "__build_class__ sio found",
                                exec, code, {'__builtins__': {}})
 
         kundi frozendict_error(Exception):
-            pita
+            pass
 
         kundi frozendict(dict):
             eleza __setitem__(self, key, value):
-                ashiria frozendict_error("frozendict ni readonly")
+                 ashiria frozendict_error("frozendict ni readonly")
 
         # read-only builtins
         ikiwa isinstance(__builtins__, types.ModuleType):
@@ -693,10 +693,10 @@ kundi BuiltinTest(unittest.TestCase):
         savestdout = sys.stdout
         sys.stdout = Tupu # Whatever that cannot flush()
         jaribu:
-            # Used to ashiria SystemError('error rudisha without exception set')
+            # Used to  ashiria SystemError('error rudisha without exception set')
             exec('a')
-        tatizo NameError:
-            pita
+        except NameError:
+            pass
         mwishowe:
             sys.stdout = savestdout
 
@@ -714,10 +714,10 @@ kundi BuiltinTest(unittest.TestCase):
             eleza __getitem__(self, index):
                 ikiwa index<4:
                     rudisha 42
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(ValueError, list, filter(lambda x: x, BadSeq()))
         eleza badfunc():
-            pita
+            pass
         self.assertRaises(TypeError, list, filter(badfunc, range(5)))
 
         # test bltinmodule.c::filtertuple()
@@ -750,11 +750,11 @@ kundi BuiltinTest(unittest.TestCase):
         # AttributeError.
         kundi A:
             eleza __getattr__(self, what):
-                ashiria SystemExit
+                 ashiria SystemExit
         self.assertRaises(SystemExit, hasattr, A(), "b")
         kundi B:
             eleza __getattr__(self, what):
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(ValueError, hasattr, B(), "b")
 
     eleza test_hash(self):
@@ -764,7 +764,7 @@ kundi BuiltinTest(unittest.TestCase):
         hash('spam')
         self.assertEqual(hash('spam'), hash(b'spam'))
         hash((0,1,2,3))
-        eleza f(): pita
+        eleza f(): pass
         self.assertRaises(TypeError, hash, [])
         self.assertRaises(TypeError, hash, {})
         # Bug 1536021: Allow hash to rudisha long objects
@@ -791,7 +791,7 @@ kundi BuiltinTest(unittest.TestCase):
         id([0,1,2,3])
         id({'spam': 1, 'eggs': 2, 'ham': 3})
 
-    # Test input() later, alphabetized kama ikiwa it were raw_input
+    # Test uliza() later, alphabetized as ikiwa it were raw_input
 
     eleza test_iter(self):
         self.assertRaises(TypeError, iter)
@@ -805,35 +805,35 @@ kundi BuiltinTest(unittest.TestCase):
 
     eleza test_isinstance(self):
         kundi C:
-            pita
+            pass
         kundi D(C):
-            pita
+            pass
         kundi E:
-            pita
+            pass
         c = C()
         d = D()
         e = E()
         self.assertKweli(isinstance(c, C))
         self.assertKweli(isinstance(d, C))
-        self.assertKweli(sio isinstance(e, C))
-        self.assertKweli(sio isinstance(c, D))
-        self.assertKweli(sio isinstance('foo', E))
+        self.assertKweli(not isinstance(e, C))
+        self.assertKweli(not isinstance(c, D))
+        self.assertKweli(not isinstance('foo', E))
         self.assertRaises(TypeError, isinstance, E, 'foo')
         self.assertRaises(TypeError, isinstance)
 
     eleza test_issubclass(self):
         kundi C:
-            pita
+            pass
         kundi D(C):
-            pita
+            pass
         kundi E:
-            pita
+            pass
         c = C()
         d = D()
         e = E()
         self.assertKweli(issubclass(D, C))
         self.assertKweli(issubclass(C, C))
-        self.assertKweli(sio issubclass(C, D))
+        self.assertKweli(not issubclass(C, D))
         self.assertRaises(TypeError, issubclass, 'foo', E)
         self.assertRaises(TypeError, issubclass, E, 'foo')
         self.assertRaises(TypeError, issubclass)
@@ -847,7 +847,7 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertEqual(len({'a':1, 'b': 2}), 2)
         kundi BadSeq:
             eleza __len__(self):
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(ValueError, len, BadSeq())
         kundi InvalidLen:
             eleza __len__(self):
@@ -869,7 +869,7 @@ kundi BuiltinTest(unittest.TestCase):
             eleza __len__(self):
                 rudisha -sys.maxsize-10
         self.assertRaises(ValueError, len, HugeNegativeLen())
-        kundi NoLenMethod(object): pita
+        kundi NoLenMethod(object): pass
         self.assertRaises(TypeError, len, NoLenMethod())
 
     eleza test_map(self):
@@ -879,7 +879,7 @@ kundi BuiltinTest(unittest.TestCase):
         )
         jaribu:
             kutoka math agiza sqrt
-        tatizo ImportError:
+        except ImportError:
             eleza sqrt(x):
                 rudisha pow(x, 0.5)
         self.assertEqual(
@@ -925,11 +925,11 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, map, lambda x: x, 42)
         kundi BadSeq:
             eleza __iter__(self):
-                ashiria ValueError
+                 ashiria ValueError
                 tuma Tupu
         self.assertRaises(ValueError, list, map(lambda x: x, BadSeq()))
         eleza badfunc(x):
-            ashiria RuntimeError
+             ashiria RuntimeError
         self.assertRaises(RuntimeError, list, map(badfunc, range(5)))
 
     eleza test_map_pickle(self):
@@ -953,7 +953,7 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertRaises(ValueError, max, ())
         kundi BadSeq:
             eleza __getitem__(self, index):
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(ValueError, max, BadSeq())
 
         kila stmt kwenye (
@@ -968,8 +968,8 @@ kundi BuiltinTest(unittest.TestCase):
             ):
             jaribu:
                 exec(stmt, globals())
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
             isipokua:
                 self.fail(stmt)
 
@@ -1007,7 +1007,7 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertRaises(ValueError, min, ())
         kundi BadSeq:
             eleza __getitem__(self, index):
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(ValueError, min, BadSeq())
 
         kila stmt kwenye (
@@ -1022,8 +1022,8 @@ kundi BuiltinTest(unittest.TestCase):
             ):
             jaribu:
                 exec(stmt, globals())
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
             isipokua:
                 self.fail(stmt)
 
@@ -1058,7 +1058,7 @@ kundi BuiltinTest(unittest.TestCase):
             eleza __iter__(self):
                 rudisha self
             eleza __next__(self):
-                ashiria StopIteration
+                 ashiria StopIteration
 
         it = iter(Iter())
         self.assertEqual(next(it, 42), 42)
@@ -1066,7 +1066,7 @@ kundi BuiltinTest(unittest.TestCase):
 
         eleza gen():
             tuma 1
-            rudisha
+            return
 
         it = gen()
         self.assertEqual(next(it), 1)
@@ -1207,7 +1207,7 @@ kundi BuiltinTest(unittest.TestCase):
 
         self.assertRaises(TypeError, pow)
 
-        # Test pitaing kwenye arguments kama keywords.
+        # Test passing kwenye arguments as keywords.
         self.assertEqual(pow(0, exp=0), 1)
         self.assertEqual(pow(base=2, exp=4), 16)
         self.assertEqual(pow(base=5, exp=2, mod=14), 11)
@@ -1219,7 +1219,7 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertEqual(mod10(2, 6), 4)
         self.assertEqual(mod10(exp=6, base=2), 4)
 
-    eleza test_input(self):
+    eleza test_uliza(self):
         self.write_testfile()
         fp = open(TESTFN, 'r')
         savestdin = sys.stdin
@@ -1227,9 +1227,9 @@ kundi BuiltinTest(unittest.TestCase):
         jaribu:
             sys.stdin = fp
             sys.stdout = BitBucket()
-            self.assertEqual(input(), "1+1")
-            self.assertEqual(input(), 'The quick brown fox jumps over the lazy dog.')
-            self.assertEqual(input('testing\n'), 'Dear John')
+            self.assertEqual(uliza(), "1+1")
+            self.assertEqual(uliza(), 'The quick brown fox jumps over the lazy dog.')
+            self.assertEqual(uliza('testing\n'), 'Dear John')
 
             # SF 1535165: don't segfault on closed stdin
             # sys.stdout must be a regular file kila triggering
@@ -1241,7 +1241,7 @@ kundi BuiltinTest(unittest.TestCase):
             sys.stdin = io.StringIO("NULL\0")
             self.assertRaises(TypeError, input, 42, 42)
             sys.stdin = io.StringIO("    'whitespace'")
-            self.assertEqual(input(), "    'whitespace'")
+            self.assertEqual(uliza(), "    'whitespace'")
             sys.stdin = io.StringIO()
             self.assertRaises(EOFError, input)
 
@@ -1331,7 +1331,7 @@ kundi BuiltinTest(unittest.TestCase):
                 rudisha 23
 
         kundi TestNoRound:
-            pita
+            pass
 
         self.assertEqual(round(TestRound()), 23)
 
@@ -1350,7 +1350,7 @@ kundi BuiltinTest(unittest.TestCase):
     #   http://sources.redhat.com/bugzilla/show_bug.cgi?id=5350
     #
     # We skip this test on Linux/alpha ikiwa it would fail.
-    linux_alpha = (platform.system().startswith('Linux') na
+    linux_alpha = (platform.system().startswith('Linux') and
                    platform.machine().startswith('alpha'))
     system_round_bug = round(5e15+1) != 5e15+1
     @unittest.skipIf(linux_alpha na system_round_bug,
@@ -1365,7 +1365,7 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertEqual(round(5e15+3), 5e15+3)
 
     eleza test_bug_27936(self):
-        # Verify that ndigits=Tupu means the same kama pitaing kwenye no argument
+        # Verify that ndigits=Tupu means the same as passing kwenye no argument
         kila x kwenye [1234,
                   1234.56,
                   decimal.Decimal('1234.56'),
@@ -1405,7 +1405,7 @@ kundi BuiltinTest(unittest.TestCase):
 
         kundi BadSeq:
             eleza __getitem__(self, index):
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(ValueError, sum, BadSeq())
 
         empty = []
@@ -1454,14 +1454,14 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertEqual(list(zip(a, b)), t)
         kundi I:
             eleza __getitem__(self, i):
-                ikiwa i < 0 ama i > 2: ashiria IndexError
+                ikiwa i < 0 ama i > 2:  ashiria IndexError
                 rudisha i + 4
         self.assertEqual(list(zip(a, I())), t)
         self.assertEqual(list(zip()), [])
         self.assertEqual(list(zip(*[])), [])
         self.assertRaises(TypeError, zip, Tupu)
         kundi G:
-            pita
+            pass
         self.assertRaises(TypeError, zip, a, G())
         self.assertRaises(RuntimeError, zip, a, TestFailingIter())
 
@@ -1471,7 +1471,7 @@ kundi BuiltinTest(unittest.TestCase):
         kundi SequenceWithoutALength:
             eleza __getitem__(self, i):
                 ikiwa i == 5:
-                    ashiria IndexError
+                     ashiria IndexError
                 isipokua:
                     rudisha i
         self.assertEqual(
@@ -1482,7 +1482,7 @@ kundi BuiltinTest(unittest.TestCase):
         kundi BadSeq:
             eleza __getitem__(self, i):
                 ikiwa i == 5:
-                    ashiria ValueError
+                     ashiria ValueError
                 isipokua:
                     rudisha i
         self.assertRaises(ValueError, list, zip(BadSeq(), BadSeq()))
@@ -1500,9 +1500,9 @@ kundi BuiltinTest(unittest.TestCase):
 
         kundi BadIterable:
             eleza __iter__(self):
-                ashiria exception
+                 ashiria exception
 
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             zip(BadIterable())
 
         self.assertIs(cm.exception, exception)
@@ -1521,15 +1521,15 @@ kundi BuiltinTest(unittest.TestCase):
                 eleza __format__(self, format_spec):
                     rudisha str(self.x) + format_spec
             kundi DerivedFromA(A):
-                pita
+                pass
 
-            kundi Simple(object): pita
+            kundi Simple(object): pass
             kundi DerivedFromSimple(Simple):
                 eleza __init__(self, x):
                     self.x = x
                 eleza __format__(self, format_spec):
                     rudisha str(self.x) + format_spec
-            kundi DerivedFromSimple2(DerivedFromSimple): pita
+            kundi DerivedFromSimple2(DerivedFromSimple): pass
             rudisha A, DerivedFromA, DerivedFromSimple, DerivedFromSimple2
 
         eleza class_test(A, DerivedFromA, DerivedFromSimple, DerivedFromSimple2):
@@ -1558,7 +1558,7 @@ kundi BuiltinTest(unittest.TestCase):
         empty_format_spec(object)
         empty_format_spec(Tupu)
 
-        # TypeError because self.__format__ rudishas the wrong type
+        # TypeError because self.__format__ returns the wrong type
         kundi BadFormatResult:
             eleza __format__(self, format_spec):
                 rudisha 1.0
@@ -1590,10 +1590,10 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertEqual(format(A(), 's'), '')
 
         kundi B:
-            pita
+            pass
 
         kundi C(object):
-            pita
+            pass
 
         kila cls kwenye [object, B, C]:
             obj = cls()
@@ -1604,8 +1604,8 @@ kundi BuiltinTest(unittest.TestCase):
                 format(obj, 's')
         # --------------------------------------------------------------------
 
-        # make sure we can take a subkundi of str kama a format spec
-        kundi DerivedFromStr(str): pita
+        # make sure we can take a subkundi of str as a format spec
+        kundi DerivedFromStr(str): pass
         self.assertEqual(format(0, DerivedFromStr('10')), '         0')
 
     eleza test_bin(self):
@@ -1651,7 +1651,7 @@ kundi TestBreakpoint(unittest.TestCase):
             swap_attr(sys, 'komapointhook', sys.__komapointhook__))
 
     eleza test_komapoint(self):
-        ukijumuisha patch('pdb.set_trace') kama mock:
+        ukijumuisha patch('pdb.set_trace') as mock:
             komapoint()
         mock.assert_called_once()
 
@@ -1668,7 +1668,7 @@ kundi TestBreakpoint(unittest.TestCase):
         my_komapointhook.assert_called_once_with()
         # Reset the hook na it will sio be called again.
         sys.komapointhook = sys.__komapointhook__
-        ukijumuisha patch('pdb.set_trace') kama mock:
+        ukijumuisha patch('pdb.set_trace') as mock:
             komapoint()
             mock.assert_called_once_with()
         my_komapointhook.assert_called_once_with()
@@ -1679,42 +1679,42 @@ kundi TestBreakpoint(unittest.TestCase):
         komapoint(1, 2, 3, four=4, five=5)
         my_komapointhook.assert_called_once_with(1, 2, 3, four=4, five=5)
 
-    eleza test_komapoint_with_pitathru_error(self):
+    eleza test_komapoint_with_passthru_error(self):
         eleza my_komapointhook():
-            pita
+            pass
         sys.komapointhook = my_komapointhook
         self.assertRaises(TypeError, komapoint, 1, 2, 3, four=4, five=5)
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
     eleza test_envar_good_path_builtin(self):
         self.env['PYTHONBREAKPOINT'] = 'int'
-        ukijumuisha patch('builtins.int') kama mock:
+        ukijumuisha patch('builtins.int') as mock:
             komapoint('7')
             mock.assert_called_once_with('7')
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
     eleza test_envar_good_path_other(self):
         self.env['PYTHONBREAKPOINT'] = 'sys.exit'
-        ukijumuisha patch('sys.exit') kama mock:
+        ukijumuisha patch('sys.exit') as mock:
             komapoint()
             mock.assert_called_once_with()
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
     eleza test_envar_good_path_noop_0(self):
         self.env['PYTHONBREAKPOINT'] = '0'
-        ukijumuisha patch('pdb.set_trace') kama mock:
+        ukijumuisha patch('pdb.set_trace') as mock:
             komapoint()
             mock.assert_not_called()
 
     eleza test_envar_good_path_empty_string(self):
-        # PYTHONBREAKPOINT='' ni the same kama it sio being set.
+        # PYTHONBREAKPOINT='' ni the same as it sio being set.
         self.env['PYTHONBREAKPOINT'] = ''
-        ukijumuisha patch('pdb.set_trace') kama mock:
+        ukijumuisha patch('pdb.set_trace') as mock:
             komapoint()
             mock.assert_called_once_with()
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
-    eleza test_envar_unagizaable(self):
+    eleza test_envar_unimportable(self):
         kila envar kwenye (
                 '.', '..', '.foo', 'foo.', '.int', 'int.',
                 '.foo.bar', '..foo.bar', '/./',
@@ -1728,13 +1728,13 @@ kundi TestBreakpoint(unittest.TestCase):
                 komapoint()
                 self.assertEqual(
                     str(w.message),
-                    f'Ignoring unagizaable $PYTHONBREAKPOINT: "{envar}"')
+                    f'Ignoring unimportable $PYTHONBREAKPOINT: "{envar}"')
                 self.assertEqual(w.category, RuntimeWarning)
                 mock.assert_not_called()
 
     eleza test_envar_ignored_when_hook_is_set(self):
         self.env['PYTHONBREAKPOINT'] = 'sys.exit'
-        ukijumuisha patch('sys.exit') kama mock:
+        ukijumuisha patch('sys.exit') as mock:
             sys.komapointhook = int
             komapoint()
             mock.assert_not_called()
@@ -1749,18 +1749,18 @@ kundi PtyTests(unittest.TestCase):
         r, w = os.pipe()  # Pipe test results kutoka child back to parent
         jaribu:
             pid, fd = pty.fork()
-        tatizo (OSError, AttributeError) kama e:
+        except (OSError, AttributeError) as e:
             os.close(r)
             os.close(w)
-            self.skipTest("pty.fork() ashiriad {}".format(e))
-            ashiria
+            self.skipTest("pty.fork() raised {}".format(e))
+            raise
         ikiwa pid == 0:
             # Child
             jaribu:
                 # Make sure we don't get stuck ikiwa there's a problem
                 signal.alarm(2)
                 os.close(r)
-                ukijumuisha open(w, "w") kama wpipe:
+                ukijumuisha open(w, "w") as wpipe:
                     child(wpipe)
             tatizo:
                 traceback.print_exc()
@@ -1771,7 +1771,7 @@ kundi PtyTests(unittest.TestCase):
         os.close(w)
         os.write(fd, terminal_input)
         # Get results kutoka the pipe
-        ukijumuisha open(r, "r") kama rpipe:
+        ukijumuisha open(r, "r") as rpipe:
             lines = []
             wakati Kweli:
                 line = rpipe.readline().strip()
@@ -1787,7 +1787,7 @@ kundi PtyTests(unittest.TestCase):
             wakati Kweli:
                 jaribu:
                     chunk = os.read(fd, 3000)
-                tatizo OSError:  # Assume EIO
+                except OSError:  # Assume EIO
                     koma
                 ikiwa sio chunk:
                     koma
@@ -1816,7 +1816,7 @@ kundi PtyTests(unittest.TestCase):
                                               encoding=stdio_encoding,
                                               errors='replace')
             andika("tty =", sys.stdin.isatty() na sys.stdout.isatty(), file=wpipe)
-            andika(ascii(input(prompt)), file=wpipe)
+            andika(ascii(uliza(prompt)), file=wpipe)
         lines = self.run_child(child, terminal_input + b"\r\n")
         # Check we did exercise the GNU readline path
         self.assertIn(lines[0], {'tty = Kweli', 'tty = Uongo'})
@@ -1830,7 +1830,7 @@ kundi PtyTests(unittest.TestCase):
         self.assertEqual(input_result, expected)
 
     eleza test_input_tty(self):
-        # Test input() functionality when wired to a tty (the code path
+        # Test uliza() functionality when wired to a tty (the code path
         # ni different na invokes GNU readline ikiwa available).
         self.check_input_tty("prompt", b"quux")
 
@@ -1848,7 +1848,7 @@ kundi PtyTests(unittest.TestCase):
         eleza child(wpipe):
             andika("stdin.isatty():", sys.stdin.isatty(), file=wpipe)
             sys.stdout = io.StringIO()  # Does sio support fileno()
-            input("prompt")
+            uliza("prompt")
             andika("captured:", ascii(sys.stdout.getvalue()), file=wpipe)
         lines = self.run_child(child, b"quux\r")
         expected = (
@@ -1891,7 +1891,7 @@ kundi TestSorted(unittest.TestCase):
             self.assertEqual(sorted(s), sorted(T(s)))
 
         s = ''.join(set(s))  # unique letters only
-        types = [str, set, frozenset, list, tuple, dict.kutokakeys]
+        types = [str, set, frozenset, list, tuple, dict.fromkeys]
         kila T kwenye types:
             self.assertEqual(sorted(s), sorted(T(s)))
 
@@ -1924,7 +1924,7 @@ kundi ShutdownTest(unittest.TestCase):
             here = sys.modules[__name__]
             """
         # Issue #20599: Force ASCII encoding to get a codec implemented kwenye C,
-        # otherwise the codec may be unloaded before C.__del__() ni called, na
+        # otherwise the codec may be unloaded before C.__del__() ni called, and
         # so andika("before") fails because the codec cannot be used to encode
         # "before" to sys.stdout.encoding. For example, on Windows,
         # sys.stdout.encoding ni the OEM code page na these code pages are
@@ -2072,7 +2072,7 @@ kundi TestType(unittest.TestCase):
             type('A', (), {'__slots__': ('__weakref__', '__weakref__')})
 
         kundi B:
-            pita
+            pass
         ukijumuisha self.assertRaises(TypeError):
             type('A', (B,), {'__slots__': '__dict__'})
         ukijumuisha self.assertRaises(TypeError):

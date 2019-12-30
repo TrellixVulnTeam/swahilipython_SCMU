@@ -1,18 +1,18 @@
-# This file must be used ukijumuisha ". bin/activate.fish" *kutoka fish* (http://fishshell.org)
+# This file must be used with ". bin/activate.fish" *from fish* (http://fishshell.org)
 # you cannot run it directly
 
-function deactivate  -d "Exit virtualenv na rudisha to normal shell environment"
+function deactivate  -d "Exit virtualenv and return to normal shell environment"
     # reset old environment variables
-    ikiwa test -n "$_OLD_VIRTUAL_PATH"
+    if test -n "$_OLD_VIRTUAL_PATH"
         set -gx PATH $_OLD_VIRTUAL_PATH
         set -e _OLD_VIRTUAL_PATH
     end
-    ikiwa test -n "$_OLD_VIRTUAL_PYTHONHOME"
+    if test -n "$_OLD_VIRTUAL_PYTHONHOME"
         set -gx PYTHONHOME $_OLD_VIRTUAL_PYTHONHOME
         set -e _OLD_VIRTUAL_PYTHONHOME
     end
 
-    ikiwa test -n "$_OLD_FISH_PROMPT_OVERRIDE"
+    if test -n "$_OLD_FISH_PROMPT_OVERRIDE"
         functions -e fish_prompt
         set -e _OLD_FISH_PROMPT_OVERRIDE
         functions -c _old_fish_prompt fish_prompt
@@ -20,7 +20,7 @@ function deactivate  -d "Exit virtualenv na rudisha to normal shell environment"
     end
 
     set -e VIRTUAL_ENV
-    ikiwa test "$argv[1]" != "nondestructive"
+    if test "$argv[1]" != "nondestructive"
         # Self destruct!
         functions -e deactivate
     end
@@ -34,39 +34,39 @@ set -gx VIRTUAL_ENV "__VENV_DIR__"
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/__VENV_BIN_NAME__" $PATH
 
-# unset PYTHONHOME ikiwa set
-ikiwa set -q PYTHONHOME
+# unset PYTHONHOME if set
+if set -q PYTHONHOME
     set -gx _OLD_VIRTUAL_PYTHONHOME $PYTHONHOME
     set -e PYTHONHOME
 end
 
-ikiwa test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
+if test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
     # fish uses a function instead of an env var to generate the prompt.
 
-    # save the current fish_prompt function kama the function _old_fish_prompt
+    # save the current fish_prompt function as the function _old_fish_prompt
     functions -c fish_prompt _old_fish_prompt
 
-    # ukijumuisha the original prompt function renamed, we can override ukijumuisha our own.
+    # with the original prompt function renamed, we can override with our own.
     function fish_prompt
-        # Save the rudisha status of the last command
+        # Save the return status of the last command
         set -l old_status $status
 
         # Prompt override?
-        ikiwa test -n "__VENV_PROMPT__"
+        if test -n "__VENV_PROMPT__"
             printf "%s%s" "__VENV_PROMPT__" (set_color normal)
-        ama
+        else
             # ...Otherwise, prepend env
             set -l _checkbase (basename "$VIRTUAL_ENV")
-            ikiwa test $_checkbase = "__"
-                # special case kila Aspen magic directories
+            if test $_checkbase = "__"
+                # special case for Aspen magic directories
                 # see http://www.zetadev.com/software/aspen/
                 printf "%s[%s]%s " (set_color -b blue white) (basename (dirname "$VIRTUAL_ENV")) (set_color normal)
-            ama
+            else
                 printf "%s(%s)%s" (set_color -b blue white) (basename "$VIRTUAL_ENV") (set_color normal)
             end
         end
 
-        # Restore the rudisha status of the previous command.
+        # Restore the return status of the previous command.
         echo "exit $old_status" | .
         _old_fish_prompt
     end

@@ -1,58 +1,58 @@
 # This tests the internal _objects attribute
-import unittest
-from ctypes import *
-from sys import getrefcount as grc
+agiza unittest
+kutoka ctypes agiza *
+kutoka sys agiza getrefcount as grc
 
-# XXX This test must be reviewed for correctness!!!
+# XXX This test must be reviewed kila correctness!!!
 
 # ctypes' types are container types.
 #
 # They have an internal memory block, which only consists of some bytes,
-# but it has to keep references to other objects as well. This is not
-# really needed for trivial C types like int or char, but it is important
-# for aggregate types like strings or pointers in particular.
+# but it has to keep references to other objects as well. This ni not
+# really needed kila trivial C types like int ama char, but it ni important
+# kila aggregate types like strings ama pointers kwenye particular.
 #
 # What about pointers?
 
-class ObjectsTestCase(unittest.TestCase):
-    def assertSame(self, a, b):
+kundi ObjectsTestCase(unittest.TestCase):
+    eleza assertSame(self, a, b):
         self.assertEqual(id(a), id(b))
 
-    def test_ints(self):
+    eleza test_ints(self):
         i = 42000123
         refcnt = grc(i)
         ci = c_int(i)
         self.assertEqual(refcnt, grc(i))
-        self.assertEqual(ci._objects, None)
+        self.assertEqual(ci._objects, Tupu)
 
-    def test_c_char_p(self):
+    eleza test_c_char_p(self):
         s = b"Hello, World"
         refcnt = grc(s)
         cs = c_char_p(s)
         self.assertEqual(refcnt + 1, grc(s))
         self.assertSame(cs._objects, s)
 
-    def test_simple_struct(self):
-        class X(Structure):
+    eleza test_simple_struct(self):
+        kundi X(Structure):
             _fields_ = [("a", c_int), ("b", c_int)]
 
         a = 421234
         b = 421235
         x = X()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
         x.a = a
         x.b = b
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Tupu)
 
-    def test_embedded_structs(self):
-        class X(Structure):
+    eleza test_embedded_structs(self):
+        kundi X(Structure):
             _fields_ = [("a", c_int), ("b", c_int)]
 
-        class Y(Structure):
+        kundi Y(Structure):
             _fields_ = [("x", X), ("y", X)]
 
         y = Y()
-        self.assertEqual(y._objects, None)
+        self.assertEqual(y._objects, Tupu)
 
         x1, x2 = X(), X()
         y.x, y.y = x1, x2
@@ -60,11 +60,11 @@ class ObjectsTestCase(unittest.TestCase):
         x1.a, x2.b = 42, 93
         self.assertEqual(y._objects, {"0": {}, "1": {}})
 
-    def test_xxx(self):
-        class X(Structure):
+    eleza test_xxx(self):
+        kundi X(Structure):
             _fields_ = [("a", c_char_p), ("b", c_char_p)]
 
-        class Y(Structure):
+        kundi Y(Structure):
             _fields_ = [("x", X), ("y", X)]
 
         s1 = b"Hello, World"
@@ -82,13 +82,13 @@ class ObjectsTestCase(unittest.TestCase):
 ##        toa y
 ##        print x._b_base_._objects
 
-    def test_ptr_struct(self):
-        class X(Structure):
+    eleza test_ptr_struct(self):
+        kundi X(Structure):
             _fields_ = [("data", POINTER(c_int))]
 
         A = c_int*4
         a = A(11, 22, 33, 44)
-        self.assertEqual(a._objects, None)
+        self.assertEqual(a._objects, Tupu)
 
         x = X()
         x.data = a
@@ -96,5 +96,5 @@ class ObjectsTestCase(unittest.TestCase):
 ##XXX        print x.data[0]
 ##XXX        print x.data._objects
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

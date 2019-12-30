@@ -1,69 +1,69 @@
-"""Tests for distutils.sysconfig."""
-import contextlib
-import os
-import shutil
-import subprocess
-import sys
-import textwrap
-import unittest
+"""Tests kila distutils.sysconfig."""
+agiza contextlib
+agiza os
+agiza shutil
+agiza subprocess
+agiza sys
+agiza textwrap
+agiza unittest
 
-from distutils import sysconfig
-from distutils.ccompiler import get_default_compiler
-from distutils.tests import support
-from test.support import TESTFN, run_unittest, check_warnings, swap_item
+kutoka distutils agiza sysconfig
+kutoka distutils.ccompiler agiza get_default_compiler
+kutoka distutils.tests agiza support
+kutoka test.support agiza TESTFN, run_unittest, check_warnings, swap_item
 
-class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
-    def setUp(self):
+kundi SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
+    eleza setUp(self):
         super(SysconfigTestCase, self).setUp()
-        self.makefile = None
+        self.makefile = Tupu
 
-    def tearDown(self):
-        if self.makefile ni sio None:
+    eleza tearDown(self):
+        ikiwa self.makefile ni sio Tupu:
             os.unlink(self.makefile)
         self.cleanup_testfn()
         super(SysconfigTestCase, self).tearDown()
 
-    def cleanup_testfn(self):
-        if os.path.isfile(TESTFN):
+    eleza cleanup_testfn(self):
+        ikiwa os.path.isfile(TESTFN):
             os.remove(TESTFN)
-        lasivyo os.path.isdir(TESTFN):
+        elikiwa os.path.isdir(TESTFN):
             shutil.rmtree(TESTFN)
 
-    def test_get_config_h_filename(self):
+    eleza test_get_config_h_filename(self):
         config_h = sysconfig.get_config_h_filename()
-        self.assertTrue(os.path.isfile(config_h), config_h)
+        self.assertKweli(os.path.isfile(config_h), config_h)
 
-    def test_get_python_lib(self):
+    eleza test_get_python_lib(self):
         # XXX doesn't work on Linux when Python was never installed before
-        #self.assertTrue(os.path.isdir(lib_dir), lib_dir)
-        # test for pythonxx.lib?
+        #self.assertKweli(os.path.isdir(lib_dir), lib_dir)
+        # test kila pythonxx.lib?
         self.assertNotEqual(sysconfig.get_python_lib(),
                             sysconfig.get_python_lib(prefix=TESTFN))
 
-    def test_get_config_vars(self):
+    eleza test_get_config_vars(self):
         cvars = sysconfig.get_config_vars()
         self.assertIsInstance(cvars, dict)
-        self.assertTrue(cvars)
+        self.assertKweli(cvars)
 
-    def test_srcdir(self):
+    eleza test_srcdir(self):
         # See Issues #15322, #15364.
         srcdir = sysconfig.get_config_var('srcdir')
 
-        self.assertTrue(os.path.isabs(srcdir), srcdir)
-        self.assertTrue(os.path.isdir(srcdir), srcdir)
+        self.assertKweli(os.path.isabs(srcdir), srcdir)
+        self.assertKweli(os.path.isdir(srcdir), srcdir)
 
-        if sysconfig.python_build:
+        ikiwa sysconfig.python_build:
             # The python executable has sio been installed so srcdir
             # should be a full source checkout.
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
-            self.assertTrue(os.path.exists(Python_h), Python_h)
-            self.assertTrue(sysconfig._is_python_source_dir(srcdir))
-        lasivyo os.name == 'posix':
+            self.assertKweli(os.path.exists(Python_h), Python_h)
+            self.assertKweli(sysconfig._is_python_source_dir(srcdir))
+        elikiwa os.name == 'posix':
             self.assertEqual(
                 os.path.dirname(sysconfig.get_makefile_filename()),
                 srcdir)
 
-    def test_srcdir_independent_of_cwd(self):
+    eleza test_srcdir_independent_of_cwd(self):
         # srcdir should be independent of the current working directory
         # See Issues #15322, #15364.
         srcdir = sysconfig.get_config_var('srcdir')
@@ -75,12 +75,12 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
             os.chdir(cwd)
         self.assertEqual(srcdir, srcdir2)
 
-    def customize_compiler(self):
+    eleza customize_compiler(self):
         # make sure AR gets caught
-        class compiler:
+        kundi compiler:
             compiler_type = 'unix'
 
-            def set_executables(self, **kw):
+            eleza set_executables(self, **kw):
                 self.exes = kw
 
         sysconfig_vars = {
@@ -94,21 +94,21 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
             'SHLIB_SUFFIX': 'sc_shutil_suffix',
 
             # On macOS, disable _osx_support.customize_compiler()
-            'CUSTOMIZED_OSX_COMPILER': 'True',
+            'CUSTOMIZED_OSX_COMPILER': 'Kweli',
         }
 
         comp = compiler()
-        with contextlib.ExitStack() as cm:
-            for key, value in sysconfig_vars.items():
+        ukijumuisha contextlib.ExitStack() as cm:
+            kila key, value kwenye sysconfig_vars.items():
                 cm.enter_context(swap_item(sysconfig._config_vars, key, value))
             sysconfig.customize_compiler(comp)
 
-        return comp
+        rudisha comp
 
     @unittest.skipUnless(get_default_compiler() == 'unix',
-                         'not testing if default compiler ni sio unix')
-    def test_customize_compiler(self):
-        # Make sure that sysconfig._config_vars is initialized
+                         'not testing ikiwa default compiler ni sio unix')
+    eleza test_customize_compiler(self):
+        # Make sure that sysconfig._config_vars ni initialized
         sysconfig.get_config_vars()
 
         os.environ['AR'] = 'env_ar'
@@ -167,7 +167,7 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
                          'sc_ldshared')
         self.assertEqual(comp.shared_lib_extension, 'sc_shutil_suffix')
 
-    def test_parse_makefile_base(self):
+    eleza test_parse_makefile_base(self):
         self.makefile = TESTFN
         fd = open(self.makefile, 'w')
         jaribu:
@@ -179,7 +179,7 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
         self.assertEqual(d, {'CONFIG_ARGS': "'--arg1=optarg1' 'ENV=LIB'",
                              'OTHER': 'foo'})
 
-    def test_parse_makefile_literal_dollar(self):
+    eleza test_parse_makefile_literal_dollar(self):
         self.makefile = TESTFN
         fd = open(self.makefile, 'w')
         jaribu:
@@ -192,8 +192,8 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
                              'OTHER': 'foo'})
 
 
-    def test_sysconfig_module(self):
-        import sysconfig as global_sysconfig
+    eleza test_sysconfig_module(self):
+        agiza sysconfig as global_sysconfig
         self.assertEqual(global_sysconfig.get_config_var('CFLAGS'),
                          sysconfig.get_config_var('CFLAGS'))
         self.assertEqual(global_sysconfig.get_config_var('LDFLAGS'),
@@ -201,74 +201,74 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
 
     @unittest.skipIf(sysconfig.get_config_var('CUSTOMIZED_OSX_COMPILER'),
                      'compiler flags customized')
-    def test_sysconfig_compiler_vars(self):
+    eleza test_sysconfig_compiler_vars(self):
         # On OS X, binary installers support extension module building on
-        # various levels of the operating system with differing Xcode
+        # various levels of the operating system ukijumuisha differing Xcode
         # configurations.  This requires customization of some of the
         # compiler configuration directives to suit the environment on
         # the installed machine.  Some of these customizations may require
         # running external programs and, so, are deferred until needed by
         # the first extension module build.  With Python 3.3, only
-        # the Distutils version of sysconfig is used for extension module
-        # builds, which happens earlier in the Distutils tests.  This may
+        # the Distutils version of sysconfig ni used kila extension module
+        # builds, which happens earlier kwenye the Distutils tests.  This may
         # cause the following tests to fail since no tests have caused
         # the global version of sysconfig to call the customization yet.
-        # The solution for now is to simply skip this test in this case.
-        # The longer-term solution is to only have one version of sysconfig.
+        # The solution kila now ni to simply skip this test kwenye this case.
+        # The longer-term solution ni to only have one version of sysconfig.
 
-        import sysconfig as global_sysconfig
-        if sysconfig.get_config_var('CUSTOMIZED_OSX_COMPILER'):
+        agiza sysconfig as global_sysconfig
+        ikiwa sysconfig.get_config_var('CUSTOMIZED_OSX_COMPILER'):
             self.skipTest('compiler flags customized')
         self.assertEqual(global_sysconfig.get_config_var('LDSHARED'),
                          sysconfig.get_config_var('LDSHARED'))
         self.assertEqual(global_sysconfig.get_config_var('CC'),
                          sysconfig.get_config_var('CC'))
 
-    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') is None,
-                     'EXT_SUFFIX required for this test')
-    def test_SO_deprecation(self):
+    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') ni Tupu,
+                     'EXT_SUFFIX required kila this test')
+    eleza test_SO_deprecation(self):
         self.assertWarns(DeprecationWarning,
                          sysconfig.get_config_var, 'SO')
 
-    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') is None,
-                     'EXT_SUFFIX required for this test')
-    def test_SO_value(self):
-        with check_warnings(('', DeprecationWarning)):
+    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') ni Tupu,
+                     'EXT_SUFFIX required kila this test')
+    eleza test_SO_value(self):
+        ukijumuisha check_warnings(('', DeprecationWarning)):
             self.assertEqual(sysconfig.get_config_var('SO'),
                              sysconfig.get_config_var('EXT_SUFFIX'))
 
-    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') is None,
-                     'EXT_SUFFIX required for this test')
-    def test_SO_in_vars(self):
+    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') ni Tupu,
+                     'EXT_SUFFIX required kila this test')
+    eleza test_SO_in_vars(self):
         vars = sysconfig.get_config_vars()
-        self.assertIsNotNone(vars['SO'])
+        self.assertIsNotTupu(vars['SO'])
         self.assertEqual(vars['SO'], vars['EXT_SUFFIX'])
 
-    def test_customize_compiler_before_get_config_vars(self):
+    eleza test_customize_compiler_before_get_config_vars(self):
         # Issue #21923: test that a Distribution compiler
         # instance can be called without an explicit call to
         # get_config_vars().
-        with open(TESTFN, 'w') as f:
+        ukijumuisha open(TESTFN, 'w') as f:
             f.writelines(textwrap.dedent('''\
-                from distutils.core import Distribution
+                kutoka distutils.core agiza Distribution
                 config = Distribution().get_command_obj('config')
-                # try_compile may pass or it may fail if no compiler
-                # is found but it should sio ashiria an exception.
+                # try_compile may pass ama it may fail ikiwa no compiler
+                # ni found but it should sio  ashiria an exception.
                 rc = config.try_compile('int x;')
                 '''))
         p = subprocess.Popen([str(sys.executable), TESTFN],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
-                universal_newlines=True)
+                universal_newlines=Kweli)
         outs, errs = p.communicate()
         self.assertEqual(0, p.returncode, "Subprocess failed: " + outs)
 
 
-def test_suite():
+eleza test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(SysconfigTestCase))
-    return suite
+    rudisha suite
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     run_unittest(test_suite())

@@ -30,29 +30,29 @@ test_object_converter_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_object_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     PyObject *a;
     PyObject *b;
     PyObject *c;
     PyUnicode_Object *d;
 
-    ikiwa (!_PyArg_CheckPositional("test_object_converter", nargs, 4, 4)) {
+    if (!_PyArg_CheckPositional("test_object_converter", nargs, 4, 4)) {
         goto exit;
     }
     a = args[0];
-    ikiwa (!PyUnicode_FSConverter(args[1], &b)) {
+    if (!PyUnicode_FSConverter(args[1], &b)) {
         goto exit;
     }
-    ikiwa (!PyUnicode_Check(args[2])) {
+    if (!PyUnicode_Check(args[2])) {
         _PyArg_BadArgument("test_object_converter", "argument 3", "str", args[2]);
         goto exit;
     }
     c = args[2];
     d = (PyUnicode_Object *)args[3];
-    rudisha_value = test_object_converter_impl(module, a, b, c, d);
+    return_value = test_object_converter_impl(module, a, b, c, d);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -105,23 +105,23 @@ test_objects_converter_impl(PyObject *module, PyObject *a, PyObject *b);
 static PyObject *
 test_objects_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     PyObject *a;
     PyObject *b = NULL;
 
-    ikiwa (!_PyArg_CheckPositional("test_objects_converter", nargs, 1, 2)) {
+    if (!_PyArg_CheckPositional("test_objects_converter", nargs, 1, 2)) {
         goto exit;
     }
     a = args[0];
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
     b = args[1];
 skip_optional:
-    rudisha_value = test_objects_converter_impl(module, a, b);
+    return_value = test_objects_converter_impl(module, a, b);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -164,7 +164,7 @@ test_object_converter_subclass_of_impl(PyObject *module, PyObject *a,
 static PyObject *
 test_object_converter_subclass_of(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     PyObject *a;
     PyObject *b;
     PyObject *c;
@@ -176,63 +176,63 @@ test_object_converter_subclass_of(PyObject *module, PyObject *const *args, Py_ss
     PyObject *i;
     PyObject *j;
 
-    ikiwa (!_PyArg_CheckPositional("test_object_converter_subclass_of", nargs, 10, 10)) {
+    if (!_PyArg_CheckPositional("test_object_converter_subclass_of", nargs, 10, 10)) {
         goto exit;
     }
-    ikiwa (!PyLong_Check(args[0])) {
+    if (!PyLong_Check(args[0])) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 1", "int", args[0]);
         goto exit;
     }
     a = args[0];
-    ikiwa (!PyTuple_Check(args[1])) {
+    if (!PyTuple_Check(args[1])) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 2", "tuple", args[1]);
         goto exit;
     }
     b = args[1];
-    ikiwa (!PyList_Check(args[2])) {
+    if (!PyList_Check(args[2])) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 3", "list", args[2]);
         goto exit;
     }
     c = args[2];
-    ikiwa (!PySet_Check(args[3])) {
+    if (!PySet_Check(args[3])) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 4", "set", args[3]);
         goto exit;
     }
     d = args[3];
-    ikiwa (!PyFrozenSet_Check(args[4])) {
+    if (!PyFrozenSet_Check(args[4])) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 5", "frozenset", args[4]);
         goto exit;
     }
     e = args[4];
-    ikiwa (!PyDict_Check(args[5])) {
+    if (!PyDict_Check(args[5])) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 6", "dict", args[5]);
         goto exit;
     }
     f = args[5];
-    ikiwa (!PyUnicode_Check(args[6])) {
+    if (!PyUnicode_Check(args[6])) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 7", "str", args[6]);
         goto exit;
     }
     g = args[6];
-    ikiwa (!PyBytes_Check(args[7])) {
+    if (!PyBytes_Check(args[7])) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 8", "bytes", args[7]);
         goto exit;
     }
     h = args[7];
-    ikiwa (!PyByteArray_Check(args[8])) {
+    if (!PyByteArray_Check(args[8])) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 9", "bytearray", args[8]);
         goto exit;
     }
     i = args[8];
-    ikiwa (!PyObject_TypeCheck(args[9], &MyType)) {
+    if (!PyObject_TypeCheck(args[9], &MyType)) {
         _PyArg_BadArgument("test_object_converter_subclass_of", "argument 10", (&MyType)->tp_name, args[9]);
         goto exit;
     }
     j = args[9];
-    rudisha_value = test_object_converter_subclass_of_impl(module, a, b, c, d, e, f, g, h, i, j);
+    return_value = test_object_converter_subclass_of_impl(module, a, b, c, d, e, f, g, h, i, j);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -265,18 +265,18 @@ test_PyBytesObject_converter_impl(PyObject *module, PyBytesObject *a);
 static PyObject *
 test_PyBytesObject_converter(PyObject *module, PyObject *arg)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     PyBytesObject *a;
 
-    ikiwa (!PyBytes_Check(arg)) {
+    if (!PyBytes_Check(arg)) {
         _PyArg_BadArgument("test_PyBytesObject_converter", "argument", "bytes", arg);
         goto exit;
     }
     a = (PyBytesObject *)arg;
-    rudisha_value = test_PyBytesObject_converter_impl(module, a);
+    return_value = test_PyBytesObject_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -306,18 +306,18 @@ test_PyByteArrayObject_converter_impl(PyObject *module, PyByteArrayObject *a);
 static PyObject *
 test_PyByteArrayObject_converter(PyObject *module, PyObject *arg)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     PyByteArrayObject *a;
 
-    ikiwa (!PyByteArray_Check(arg)) {
+    if (!PyByteArray_Check(arg)) {
         _PyArg_BadArgument("test_PyByteArrayObject_converter", "argument", "bytearray", arg);
         goto exit;
     }
     a = (PyByteArrayObject *)arg;
-    rudisha_value = test_PyByteArrayObject_converter_impl(module, a);
+    return_value = test_PyByteArrayObject_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -347,21 +347,21 @@ test_unicode_converter_impl(PyObject *module, PyObject *a);
 static PyObject *
 test_unicode_converter(PyObject *module, PyObject *arg)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     PyObject *a;
 
-    ikiwa (!PyUnicode_Check(arg)) {
+    if (!PyUnicode_Check(arg)) {
         _PyArg_BadArgument("test_unicode_converter", "argument", "str", arg);
         goto exit;
     }
-    ikiwa (PyUnicode_READY(arg) == -1) {
+    if (PyUnicode_READY(arg) == -1) {
         goto exit;
     }
     a = arg;
-    rudisha_value = test_unicode_converter_impl(module, a);
+    return_value = test_unicode_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -372,15 +372,15 @@ test_unicode_converter_impl(PyObject *module, PyObject *a)
 /*[clinic input]
 test_bool_converter
 
-    a: bool = Kweli
-    b: bool(accept={object}) = Kweli
-    c: bool(accept={int}) = Kweli
+    a: bool = True
+    b: bool(accept={object}) = True
+    c: bool(accept={int}) = True
     /
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_bool_converter__doc__,
-"test_bool_converter($module, a=Kweli, b=Kweli, c=Kweli, /)\n"
+"test_bool_converter($module, a=True, b=True, c=True, /)\n"
 "--\n"
 "\n");
 
@@ -393,45 +393,45 @@ test_bool_converter_impl(PyObject *module, int a, int b, int c);
 static PyObject *
 test_bool_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     int a = 1;
     int b = 1;
     int c = 1;
 
-    ikiwa (!_PyArg_CheckPositional("test_bool_converter", nargs, 0, 3)) {
+    if (!_PyArg_CheckPositional("test_bool_converter", nargs, 0, 3)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    a = PyObject_IsKweli(args[0]);
-    ikiwa (a < 0) {
+    a = PyObject_IsTrue(args[0]);
+    if (a < 0) {
         goto exit;
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    b = PyObject_IsKweli(args[1]);
-    ikiwa (b < 0) {
+    b = PyObject_IsTrue(args[1]);
+    if (b < 0) {
         goto exit;
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[2])) {
+    if (PyFloat_Check(args[2])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     c = _PyLong_AsInt(args[2]);
-    ikiwa (c == -1 && PyErr_Occurred()) {
+    if (c == -1 && PyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_bool_converter_impl(module, a, b, c);
+    return_value = test_bool_converter_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -478,7 +478,7 @@ test_char_converter_impl(PyObject *module, char a, char b, char c, char d,
 static PyObject *
 test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     char a = 'A';
     char b = '\x07';
     char c = '\x08';
@@ -494,196 +494,196 @@ test_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     char m = '\x00';
     char n = '\xff';
 
-    ikiwa (!_PyArg_CheckPositional("test_char_converter", nargs, 0, 14)) {
+    if (!_PyArg_CheckPositional("test_char_converter", nargs, 0, 14)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[0]) && PyBytes_GET_SIZE(args[0]) == 1) {
+    if (PyBytes_Check(args[0]) && PyBytes_GET_SIZE(args[0]) == 1) {
         a = PyBytes_AS_STRING(args[0])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[0]) && PyByteArray_GET_SIZE(args[0]) == 1) {
+    else if (PyByteArray_Check(args[0]) && PyByteArray_GET_SIZE(args[0]) == 1) {
         a = PyByteArray_AS_STRING(args[0])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 1", "a byte string of length 1", args[0]);
         goto exit;
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[1]) && PyBytes_GET_SIZE(args[1]) == 1) {
+    if (PyBytes_Check(args[1]) && PyBytes_GET_SIZE(args[1]) == 1) {
         b = PyBytes_AS_STRING(args[1])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[1]) && PyByteArray_GET_SIZE(args[1]) == 1) {
+    else if (PyByteArray_Check(args[1]) && PyByteArray_GET_SIZE(args[1]) == 1) {
         b = PyByteArray_AS_STRING(args[1])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 2", "a byte string of length 1", args[1]);
         goto exit;
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[2]) && PyBytes_GET_SIZE(args[2]) == 1) {
+    if (PyBytes_Check(args[2]) && PyBytes_GET_SIZE(args[2]) == 1) {
         c = PyBytes_AS_STRING(args[2])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[2]) && PyByteArray_GET_SIZE(args[2]) == 1) {
+    else if (PyByteArray_Check(args[2]) && PyByteArray_GET_SIZE(args[2]) == 1) {
         c = PyByteArray_AS_STRING(args[2])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 3", "a byte string of length 1", args[2]);
         goto exit;
     }
-    ikiwa (nargs < 4) {
+    if (nargs < 4) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[3]) && PyBytes_GET_SIZE(args[3]) == 1) {
+    if (PyBytes_Check(args[3]) && PyBytes_GET_SIZE(args[3]) == 1) {
         d = PyBytes_AS_STRING(args[3])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[3]) && PyByteArray_GET_SIZE(args[3]) == 1) {
+    else if (PyByteArray_Check(args[3]) && PyByteArray_GET_SIZE(args[3]) == 1) {
         d = PyByteArray_AS_STRING(args[3])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 4", "a byte string of length 1", args[3]);
         goto exit;
     }
-    ikiwa (nargs < 5) {
+    if (nargs < 5) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[4]) && PyBytes_GET_SIZE(args[4]) == 1) {
+    if (PyBytes_Check(args[4]) && PyBytes_GET_SIZE(args[4]) == 1) {
         e = PyBytes_AS_STRING(args[4])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[4]) && PyByteArray_GET_SIZE(args[4]) == 1) {
+    else if (PyByteArray_Check(args[4]) && PyByteArray_GET_SIZE(args[4]) == 1) {
         e = PyByteArray_AS_STRING(args[4])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 5", "a byte string of length 1", args[4]);
         goto exit;
     }
-    ikiwa (nargs < 6) {
+    if (nargs < 6) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[5]) && PyBytes_GET_SIZE(args[5]) == 1) {
+    if (PyBytes_Check(args[5]) && PyBytes_GET_SIZE(args[5]) == 1) {
         f = PyBytes_AS_STRING(args[5])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[5]) && PyByteArray_GET_SIZE(args[5]) == 1) {
+    else if (PyByteArray_Check(args[5]) && PyByteArray_GET_SIZE(args[5]) == 1) {
         f = PyByteArray_AS_STRING(args[5])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 6", "a byte string of length 1", args[5]);
         goto exit;
     }
-    ikiwa (nargs < 7) {
+    if (nargs < 7) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[6]) && PyBytes_GET_SIZE(args[6]) == 1) {
+    if (PyBytes_Check(args[6]) && PyBytes_GET_SIZE(args[6]) == 1) {
         g = PyBytes_AS_STRING(args[6])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[6]) && PyByteArray_GET_SIZE(args[6]) == 1) {
+    else if (PyByteArray_Check(args[6]) && PyByteArray_GET_SIZE(args[6]) == 1) {
         g = PyByteArray_AS_STRING(args[6])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 7", "a byte string of length 1", args[6]);
         goto exit;
     }
-    ikiwa (nargs < 8) {
+    if (nargs < 8) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[7]) && PyBytes_GET_SIZE(args[7]) == 1) {
+    if (PyBytes_Check(args[7]) && PyBytes_GET_SIZE(args[7]) == 1) {
         h = PyBytes_AS_STRING(args[7])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[7]) && PyByteArray_GET_SIZE(args[7]) == 1) {
+    else if (PyByteArray_Check(args[7]) && PyByteArray_GET_SIZE(args[7]) == 1) {
         h = PyByteArray_AS_STRING(args[7])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 8", "a byte string of length 1", args[7]);
         goto exit;
     }
-    ikiwa (nargs < 9) {
+    if (nargs < 9) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[8]) && PyBytes_GET_SIZE(args[8]) == 1) {
+    if (PyBytes_Check(args[8]) && PyBytes_GET_SIZE(args[8]) == 1) {
         i = PyBytes_AS_STRING(args[8])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[8]) && PyByteArray_GET_SIZE(args[8]) == 1) {
+    else if (PyByteArray_Check(args[8]) && PyByteArray_GET_SIZE(args[8]) == 1) {
         i = PyByteArray_AS_STRING(args[8])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 9", "a byte string of length 1", args[8]);
         goto exit;
     }
-    ikiwa (nargs < 10) {
+    if (nargs < 10) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[9]) && PyBytes_GET_SIZE(args[9]) == 1) {
+    if (PyBytes_Check(args[9]) && PyBytes_GET_SIZE(args[9]) == 1) {
         j = PyBytes_AS_STRING(args[9])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[9]) && PyByteArray_GET_SIZE(args[9]) == 1) {
+    else if (PyByteArray_Check(args[9]) && PyByteArray_GET_SIZE(args[9]) == 1) {
         j = PyByteArray_AS_STRING(args[9])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 10", "a byte string of length 1", args[9]);
         goto exit;
     }
-    ikiwa (nargs < 11) {
+    if (nargs < 11) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[10]) && PyBytes_GET_SIZE(args[10]) == 1) {
+    if (PyBytes_Check(args[10]) && PyBytes_GET_SIZE(args[10]) == 1) {
         k = PyBytes_AS_STRING(args[10])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[10]) && PyByteArray_GET_SIZE(args[10]) == 1) {
+    else if (PyByteArray_Check(args[10]) && PyByteArray_GET_SIZE(args[10]) == 1) {
         k = PyByteArray_AS_STRING(args[10])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 11", "a byte string of length 1", args[10]);
         goto exit;
     }
-    ikiwa (nargs < 12) {
+    if (nargs < 12) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[11]) && PyBytes_GET_SIZE(args[11]) == 1) {
+    if (PyBytes_Check(args[11]) && PyBytes_GET_SIZE(args[11]) == 1) {
         l = PyBytes_AS_STRING(args[11])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[11]) && PyByteArray_GET_SIZE(args[11]) == 1) {
+    else if (PyByteArray_Check(args[11]) && PyByteArray_GET_SIZE(args[11]) == 1) {
         l = PyByteArray_AS_STRING(args[11])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 12", "a byte string of length 1", args[11]);
         goto exit;
     }
-    ikiwa (nargs < 13) {
+    if (nargs < 13) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[12]) && PyBytes_GET_SIZE(args[12]) == 1) {
+    if (PyBytes_Check(args[12]) && PyBytes_GET_SIZE(args[12]) == 1) {
         m = PyBytes_AS_STRING(args[12])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[12]) && PyByteArray_GET_SIZE(args[12]) == 1) {
+    else if (PyByteArray_Check(args[12]) && PyByteArray_GET_SIZE(args[12]) == 1) {
         m = PyByteArray_AS_STRING(args[12])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 13", "a byte string of length 1", args[12]);
         goto exit;
     }
-    ikiwa (nargs < 14) {
+    if (nargs < 14) {
         goto skip_optional;
     }
-    ikiwa (PyBytes_Check(args[13]) && PyBytes_GET_SIZE(args[13]) == 1) {
+    if (PyBytes_Check(args[13]) && PyBytes_GET_SIZE(args[13]) == 1) {
         n = PyBytes_AS_STRING(args[13])[0];
     }
-    isipokua ikiwa (PyByteArray_Check(args[13]) && PyByteArray_GET_SIZE(args[13]) == 1) {
+    else if (PyByteArray_Check(args[13]) && PyByteArray_GET_SIZE(args[13]) == 1) {
         n = PyByteArray_AS_STRING(args[13])[0];
     }
-    isipokua {
+    else {
         _PyArg_BadArgument("test_char_converter", "argument 14", "a byte string of length 1", args[13]);
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_char_converter_impl(module, a, b, c, d, e, f, g, h, i, j, k, l, m, n);
+    return_value = test_char_converter_impl(module, a, b, c, d, e, f, g, h, i, j, k, l, m, n);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -697,8 +697,8 @@ test_char_converter_impl(PyObject *module, char a, char b, char c, char d,
 test_unsigned_char_converter
 
     a: unsigned_char = 12
-    b: unsigned_char(bitwise=Uongo) = 34
-    c: unsigned_char(bitwise=Kweli) = 56
+    b: unsigned_char(bitwise=False) = 34
+    c: unsigned_char(bitwise=True) = 56
     /
 
 [clinic start generated code]*/
@@ -718,90 +718,90 @@ test_unsigned_char_converter_impl(PyObject *module, unsigned char a,
 static PyObject *
 test_unsigned_char_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     unsigned char a = 12;
     unsigned char b = 34;
     unsigned char c = 56;
 
-    ikiwa (!_PyArg_CheckPositional("test_unsigned_char_converter", nargs, 0, 3)) {
+    if (!_PyArg_CheckPositional("test_unsigned_char_converter", nargs, 0, 3)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[0])) {
+    if (PyFloat_Check(args[0])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     {
         long ival = PyLong_AsLong(args[0]);
-        ikiwa (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
-        isipokua ikiwa (ival < 0) {
+        else if (ival < 0) {
             PyErr_SetString(PyExc_OverflowError,
-                            "unsigned byte integer ni less than minimum");
+                            "unsigned byte integer is less than minimum");
             goto exit;
         }
-        isipokua ikiwa (ival > UCHAR_MAX) {
+        else if (ival > UCHAR_MAX) {
             PyErr_SetString(PyExc_OverflowError,
-                            "unsigned byte integer ni greater than maximum");
+                            "unsigned byte integer is greater than maximum");
             goto exit;
         }
-        isipokua {
+        else {
             a = (unsigned char) ival;
         }
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[1])) {
+    if (PyFloat_Check(args[1])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     {
         long ival = PyLong_AsLong(args[1]);
-        ikiwa (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
-        isipokua ikiwa (ival < 0) {
+        else if (ival < 0) {
             PyErr_SetString(PyExc_OverflowError,
-                            "unsigned byte integer ni less than minimum");
+                            "unsigned byte integer is less than minimum");
             goto exit;
         }
-        isipokua ikiwa (ival > UCHAR_MAX) {
+        else if (ival > UCHAR_MAX) {
             PyErr_SetString(PyExc_OverflowError,
-                            "unsigned byte integer ni greater than maximum");
+                            "unsigned byte integer is greater than maximum");
             goto exit;
         }
-        isipokua {
+        else {
             b = (unsigned char) ival;
         }
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[2])) {
+    if (PyFloat_Check(args[2])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     {
         long ival = PyLong_AsUnsignedLongMask(args[2]);
-        ikiwa (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
-        isipokua {
+        else {
             c = (unsigned char) ival;
         }
     }
 skip_optional:
-    rudisha_value = test_unsigned_char_converter_impl(module, a, b, c);
+    return_value = test_unsigned_char_converter_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -832,44 +832,44 @@ test_short_converter_impl(PyObject *module, short a);
 static PyObject *
 test_short_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     short a = 12;
 
-    ikiwa (!_PyArg_CheckPositional("test_short_converter", nargs, 0, 1)) {
+    if (!_PyArg_CheckPositional("test_short_converter", nargs, 0, 1)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[0])) {
+    if (PyFloat_Check(args[0])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     {
         long ival = PyLong_AsLong(args[0]);
-        ikiwa (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
-        isipokua ikiwa (ival < SHRT_MIN) {
+        else if (ival < SHRT_MIN) {
             PyErr_SetString(PyExc_OverflowError,
-                            "signed short integer ni less than minimum");
+                            "signed short integer is less than minimum");
             goto exit;
         }
-        isipokua ikiwa (ival > SHRT_MAX) {
+        else if (ival > SHRT_MAX) {
             PyErr_SetString(PyExc_OverflowError,
-                            "signed short integer ni greater than maximum");
+                            "signed short integer is greater than maximum");
             goto exit;
         }
-        isipokua {
+        else {
             a = (short) ival;
         }
     }
 skip_optional:
-    rudisha_value = test_short_converter_impl(module, a);
+    return_value = test_short_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -881,8 +881,8 @@ test_short_converter_impl(PyObject *module, short a)
 test_unsigned_short_converter
 
     a: unsigned_short = 12
-    b: unsigned_short(bitwise=Uongo) = 34
-    c: unsigned_short(bitwise=Kweli) = 56
+    b: unsigned_short(bitwise=False) = 34
+    c: unsigned_short(bitwise=True) = 56
     /
 
 [clinic start generated code]*/
@@ -902,43 +902,43 @@ test_unsigned_short_converter_impl(PyObject *module, unsigned short a,
 static PyObject *
 test_unsigned_short_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     unsigned short a = 12;
     unsigned short b = 34;
     unsigned short c = 56;
 
-    ikiwa (!_PyArg_CheckPositional("test_unsigned_short_converter", nargs, 0, 3)) {
+    if (!_PyArg_CheckPositional("test_unsigned_short_converter", nargs, 0, 3)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (!_PyLong_UnsignedShort_Converter(args[0], &a)) {
+    if (!_PyLong_UnsignedShort_Converter(args[0], &a)) {
         goto exit;
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    ikiwa (!_PyLong_UnsignedShort_Converter(args[1], &b)) {
+    if (!_PyLong_UnsignedShort_Converter(args[1], &b)) {
         goto exit;
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[2])) {
+    if (PyFloat_Check(args[2])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     c = (unsigned short)PyLong_AsUnsignedLongMask(args[2]);
-    ikiwa (c == (unsigned short)-1 && PyErr_Occurred()) {
+    if (c == (unsigned short)-1 && PyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_unsigned_short_converter_impl(module, a, b, c);
+    return_value = test_unsigned_short_converter_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -972,71 +972,71 @@ test_int_converter_impl(PyObject *module, int a, int b, int c, myenum d);
 static PyObject *
 test_int_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     int a = 12;
     int b = 34;
     int c = 45;
     myenum d = 67;
 
-    ikiwa (!_PyArg_CheckPositional("test_int_converter", nargs, 0, 4)) {
+    if (!_PyArg_CheckPositional("test_int_converter", nargs, 0, 4)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[0])) {
+    if (PyFloat_Check(args[0])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     a = _PyLong_AsInt(args[0]);
-    ikiwa (a == -1 && PyErr_Occurred()) {
+    if (a == -1 && PyErr_Occurred()) {
         goto exit;
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[1])) {
+    if (PyFloat_Check(args[1])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     b = _PyLong_AsInt(args[1]);
-    ikiwa (b == -1 && PyErr_Occurred()) {
+    if (b == -1 && PyErr_Occurred()) {
         goto exit;
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (!PyUnicode_Check(args[2])) {
+    if (!PyUnicode_Check(args[2])) {
         _PyArg_BadArgument("test_int_converter", "argument 3", "a unicode character", args[2]);
         goto exit;
     }
-    ikiwa (PyUnicode_READY(args[2])) {
+    if (PyUnicode_READY(args[2])) {
         goto exit;
     }
-    ikiwa (PyUnicode_GET_LENGTH(args[2]) != 1) {
+    if (PyUnicode_GET_LENGTH(args[2]) != 1) {
         _PyArg_BadArgument("test_int_converter", "argument 3", "a unicode character", args[2]);
         goto exit;
     }
     c = PyUnicode_READ_CHAR(args[2], 0);
-    ikiwa (nargs < 4) {
+    if (nargs < 4) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[3])) {
+    if (PyFloat_Check(args[3])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     d = _PyLong_AsInt(args[3]);
-    ikiwa (d == -1 && PyErr_Occurred()) {
+    if (d == -1 && PyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_int_converter_impl(module, a, b, c, d);
+    return_value = test_int_converter_impl(module, a, b, c, d);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1048,8 +1048,8 @@ test_int_converter_impl(PyObject *module, int a, int b, int c, myenum d)
 test_unsigned_int_converter
 
     a: unsigned_int = 12
-    b: unsigned_int(bitwise=Uongo) = 34
-    c: unsigned_int(bitwise=Kweli) = 56
+    b: unsigned_int(bitwise=False) = 34
+    c: unsigned_int(bitwise=True) = 56
     /
 
 [clinic start generated code]*/
@@ -1069,43 +1069,43 @@ test_unsigned_int_converter_impl(PyObject *module, unsigned int a,
 static PyObject *
 test_unsigned_int_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     unsigned int a = 12;
     unsigned int b = 34;
     unsigned int c = 56;
 
-    ikiwa (!_PyArg_CheckPositional("test_unsigned_int_converter", nargs, 0, 3)) {
+    if (!_PyArg_CheckPositional("test_unsigned_int_converter", nargs, 0, 3)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (!_PyLong_UnsignedInt_Converter(args[0], &a)) {
+    if (!_PyLong_UnsignedInt_Converter(args[0], &a)) {
         goto exit;
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    ikiwa (!_PyLong_UnsignedInt_Converter(args[1], &b)) {
+    if (!_PyLong_UnsignedInt_Converter(args[1], &b)) {
         goto exit;
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[2])) {
+    if (PyFloat_Check(args[2])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     c = (unsigned int)PyLong_AsUnsignedLongMask(args[2]);
-    ikiwa (c == (unsigned int)-1 && PyErr_Occurred()) {
+    if (c == (unsigned int)-1 && PyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_unsigned_int_converter_impl(module, a, b, c);
+    return_value = test_unsigned_int_converter_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1136,29 +1136,29 @@ test_long_converter_impl(PyObject *module, long a);
 static PyObject *
 test_long_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     long a = 12;
 
-    ikiwa (!_PyArg_CheckPositional("test_long_converter", nargs, 0, 1)) {
+    if (!_PyArg_CheckPositional("test_long_converter", nargs, 0, 1)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[0])) {
+    if (PyFloat_Check(args[0])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     a = PyLong_AsLong(args[0]);
-    ikiwa (a == -1 && PyErr_Occurred()) {
+    if (a == -1 && PyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_long_converter_impl(module, a);
+    return_value = test_long_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1170,8 +1170,8 @@ test_long_converter_impl(PyObject *module, long a)
 test_unsigned_long_converter
 
     a: unsigned_long = 12
-    b: unsigned_long(bitwise=Uongo) = 34
-    c: unsigned_long(bitwise=Kweli) = 56
+    b: unsigned_long(bitwise=False) = 34
+    c: unsigned_long(bitwise=True) = 56
     /
 
 [clinic start generated code]*/
@@ -1191,39 +1191,39 @@ test_unsigned_long_converter_impl(PyObject *module, unsigned long a,
 static PyObject *
 test_unsigned_long_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     unsigned long a = 12;
     unsigned long b = 34;
     unsigned long c = 56;
 
-    ikiwa (!_PyArg_CheckPositional("test_unsigned_long_converter", nargs, 0, 3)) {
+    if (!_PyArg_CheckPositional("test_unsigned_long_converter", nargs, 0, 3)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (!_PyLong_UnsignedLong_Converter(args[0], &a)) {
+    if (!_PyLong_UnsignedLong_Converter(args[0], &a)) {
         goto exit;
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    ikiwa (!_PyLong_UnsignedLong_Converter(args[1], &b)) {
+    if (!_PyLong_UnsignedLong_Converter(args[1], &b)) {
         goto exit;
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (!PyLong_Check(args[2])) {
+    if (!PyLong_Check(args[2])) {
         _PyArg_BadArgument("test_unsigned_long_converter", "argument 3", "int", args[2]);
         goto exit;
     }
     c = PyLong_AsUnsignedLongMask(args[2]);
 skip_optional:
-    rudisha_value = test_unsigned_long_converter_impl(module, a, b, c);
+    return_value = test_unsigned_long_converter_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1254,29 +1254,29 @@ test_long_long_converter_impl(PyObject *module, long long a);
 static PyObject *
 test_long_long_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     long long a = 12;
 
-    ikiwa (!_PyArg_CheckPositional("test_long_long_converter", nargs, 0, 1)) {
+    if (!_PyArg_CheckPositional("test_long_long_converter", nargs, 0, 1)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[0])) {
+    if (PyFloat_Check(args[0])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
     }
     a = PyLong_AsLongLong(args[0]);
-    ikiwa (a == (PY_LONG_LONG)-1 && PyErr_Occurred()) {
+    if (a == (PY_LONG_LONG)-1 && PyErr_Occurred()) {
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_long_long_converter_impl(module, a);
+    return_value = test_long_long_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1288,8 +1288,8 @@ test_long_long_converter_impl(PyObject *module, long long a)
 test_unsigned_long_long_converter
 
     a: unsigned_long_long = 12
-    b: unsigned_long_long(bitwise=Uongo) = 34
-    c: unsigned_long_long(bitwise=Kweli) = 56
+    b: unsigned_long_long(bitwise=False) = 34
+    c: unsigned_long_long(bitwise=True) = 56
     /
 
 [clinic start generated code]*/
@@ -1311,39 +1311,39 @@ test_unsigned_long_long_converter_impl(PyObject *module,
 static PyObject *
 test_unsigned_long_long_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     unsigned long long a = 12;
     unsigned long long b = 34;
     unsigned long long c = 56;
 
-    ikiwa (!_PyArg_CheckPositional("test_unsigned_long_long_converter", nargs, 0, 3)) {
+    if (!_PyArg_CheckPositional("test_unsigned_long_long_converter", nargs, 0, 3)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (!_PyLong_UnsignedLongLong_Converter(args[0], &a)) {
+    if (!_PyLong_UnsignedLongLong_Converter(args[0], &a)) {
         goto exit;
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    ikiwa (!_PyLong_UnsignedLongLong_Converter(args[1], &b)) {
+    if (!_PyLong_UnsignedLongLong_Converter(args[1], &b)) {
         goto exit;
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (!PyLong_Check(args[2])) {
+    if (!PyLong_Check(args[2])) {
         _PyArg_BadArgument("test_unsigned_long_long_converter", "argument 3", "int", args[2]);
         goto exit;
     }
     c = PyLong_AsUnsignedLongLongMask(args[2]);
 skip_optional:
-    rudisha_value = test_unsigned_long_long_converter_impl(module, a, b, c);
+    return_value = test_unsigned_long_long_converter_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1359,7 +1359,7 @@ test_Py_ssize_t_converter
 
     a: Py_ssize_t = 12
     b: Py_ssize_t(accept={int}) = 34
-    c: Py_ssize_t(accept={int, TupuType}) = 56
+    c: Py_ssize_t(accept={int, NoneType}) = 56
     /
 
 [clinic start generated code]*/
@@ -1379,18 +1379,18 @@ test_Py_ssize_t_converter_impl(PyObject *module, Py_ssize_t a, Py_ssize_t b,
 static PyObject *
 test_Py_ssize_t_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     Py_ssize_t a = 12;
     Py_ssize_t b = 34;
     Py_ssize_t c = 56;
 
-    ikiwa (!_PyArg_CheckPositional("test_Py_ssize_t_converter", nargs, 0, 3)) {
+    if (!_PyArg_CheckPositional("test_Py_ssize_t_converter", nargs, 0, 3)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[0])) {
+    if (PyFloat_Check(args[0])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
@@ -1398,19 +1398,19 @@ test_Py_ssize_t_converter(PyObject *module, PyObject *const *args, Py_ssize_t na
     {
         Py_ssize_t ival = -1;
         PyObject *iobj = PyNumber_Index(args[0]);
-        ikiwa (iobj != NULL) {
+        if (iobj != NULL) {
             ival = PyLong_AsSsize_t(iobj);
             Py_DECREF(iobj);
         }
-        ikiwa (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
         a = ival;
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_Check(args[1])) {
+    if (PyFloat_Check(args[1])) {
         PyErr_SetString(PyExc_TypeError,
                         "integer argument expected, got float" );
         goto exit;
@@ -1418,26 +1418,26 @@ test_Py_ssize_t_converter(PyObject *module, PyObject *const *args, Py_ssize_t na
     {
         Py_ssize_t ival = -1;
         PyObject *iobj = PyNumber_Index(args[1]);
-        ikiwa (iobj != NULL) {
+        if (iobj != NULL) {
             ival = PyLong_AsSsize_t(iobj);
             Py_DECREF(iobj);
         }
-        ikiwa (ival == -1 && PyErr_Occurred()) {
+        if (ival == -1 && PyErr_Occurred()) {
             goto exit;
         }
         b = ival;
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (!_Py_convert_optional_to_ssize_t(args[2], &c)) {
+    if (!_Py_convert_optional_to_ssize_t(args[2], &c)) {
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_Py_ssize_t_converter_impl(module, a, b, c);
+    return_value = test_Py_ssize_t_converter_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1451,7 +1451,7 @@ test_slice_index_converter
 
     a: slice_index = 12
     b: slice_index(accept={int}) = 34
-    c: slice_index(accept={int, TupuType}) = 56
+    c: slice_index(accept={int, NoneType}) = 56
     /
 
 [clinic start generated code]*/
@@ -1471,37 +1471,37 @@ test_slice_index_converter_impl(PyObject *module, Py_ssize_t a, Py_ssize_t b,
 static PyObject *
 test_slice_index_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     Py_ssize_t a = 12;
     Py_ssize_t b = 34;
     Py_ssize_t c = 56;
 
-    ikiwa (!_PyArg_CheckPositional("test_slice_index_converter", nargs, 0, 3)) {
+    if (!_PyArg_CheckPositional("test_slice_index_converter", nargs, 0, 3)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (!_PyEval_SliceIndex(args[0], &a)) {
+    if (!_PyEval_SliceIndex(args[0], &a)) {
         goto exit;
     }
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional;
     }
-    ikiwa (!_PyEval_SliceIndexNotTupu(args[1], &b)) {
+    if (!_PyEval_SliceIndexNotNone(args[1], &b)) {
         goto exit;
     }
-    ikiwa (nargs < 3) {
+    if (nargs < 3) {
         goto skip_optional;
     }
-    ikiwa (!_PyEval_SliceIndex(args[2], &c)) {
+    if (!_PyEval_SliceIndex(args[2], &c)) {
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_slice_index_converter_impl(module, a, b, c);
+    return_value = test_slice_index_converter_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1532,23 +1532,23 @@ test_size_t_converter_impl(PyObject *module, size_t a);
 static PyObject *
 test_size_t_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     size_t a = 12;
 
-    ikiwa (!_PyArg_CheckPositional("test_size_t_converter", nargs, 0, 1)) {
+    if (!_PyArg_CheckPositional("test_size_t_converter", nargs, 0, 1)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (!_PyLong_Size_t_Converter(args[0], &a)) {
+    if (!_PyLong_Size_t_Converter(args[0], &a)) {
         goto exit;
     }
 skip_optional:
-    rudisha_value = test_size_t_converter_impl(module, a);
+    return_value = test_size_t_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1578,30 +1578,30 @@ test_float_converter_impl(PyObject *module, float a);
 static PyObject *
 test_float_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     float a = 12.5;
 
-    ikiwa (!_PyArg_CheckPositional("test_float_converter", nargs, 0, 1)) {
+    if (!_PyArg_CheckPositional("test_float_converter", nargs, 0, 1)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_CheckExact(args[0])) {
+    if (PyFloat_CheckExact(args[0])) {
         a = (float) (PyFloat_AS_DOUBLE(args[0]));
     }
-    ama
+    else
     {
         a = (float) PyFloat_AsDouble(args[0]);
-        ikiwa (a == -1.0 && PyErr_Occurred()) {
+        if (a == -1.0 && PyErr_Occurred()) {
             goto exit;
         }
     }
 skip_optional:
-    rudisha_value = test_float_converter_impl(module, a);
+    return_value = test_float_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1631,30 +1631,30 @@ test_double_converter_impl(PyObject *module, double a);
 static PyObject *
 test_double_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     double a = 12.5;
 
-    ikiwa (!_PyArg_CheckPositional("test_double_converter", nargs, 0, 1)) {
+    if (!_PyArg_CheckPositional("test_double_converter", nargs, 0, 1)) {
         goto exit;
     }
-    ikiwa (nargs < 1) {
+    if (nargs < 1) {
         goto skip_optional;
     }
-    ikiwa (PyFloat_CheckExact(args[0])) {
+    if (PyFloat_CheckExact(args[0])) {
         a = PyFloat_AS_DOUBLE(args[0]);
     }
-    ama
+    else
     {
         a = PyFloat_AsDouble(args[0]);
-        ikiwa (a == -1.0 && PyErr_Occurred()) {
+        if (a == -1.0 && PyErr_Occurred()) {
             goto exit;
         }
     }
 skip_optional:
-    rudisha_value = test_double_converter_impl(module, a);
+    return_value = test_double_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1684,17 +1684,17 @@ test_Py_complex_converter_impl(PyObject *module, Py_complex a);
 static PyObject *
 test_Py_complex_converter(PyObject *module, PyObject *arg)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     Py_complex a;
 
     a = PyComplex_AsCComplex(arg);
-    ikiwa (PyErr_Occurred()) {
+    if (PyErr_Occurred()) {
         goto exit;
     }
-    rudisha_value = test_Py_complex_converter_impl(module, a);
+    return_value = test_Py_complex_converter_impl(module, a);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1709,10 +1709,10 @@ test_str_converter
     b: str = "ab"
     c: str(accept={str}) = "cd"
     d: str(accept={robuffer}) = "cef"
-    e: str(accept={str, TupuType}) = "gh"
-    f: str(accept={robuffer}, zeroes=Kweli) = "ij"
-    g: str(accept={robuffer, str}, zeroes=Kweli) = "kl"
-    h: str(accept={robuffer, str, TupuType}, zeroes=Kweli) = "mn"
+    e: str(accept={str, NoneType}) = "gh"
+    f: str(accept={robuffer}, zeroes=True) = "ij"
+    g: str(accept={robuffer, str}, zeroes=True) = "kl"
+    h: str(accept={robuffer, str, NoneType}, zeroes=True) = "mn"
     /
 
 [clinic start generated code]*/
@@ -1736,7 +1736,7 @@ test_str_converter_impl(PyObject *module, const char *a, const char *b,
 static PyObject *
 test_str_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     const char *a = NULL;
     const char *b = "ab";
     const char *c = "cd";
@@ -1749,14 +1749,14 @@ test_str_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     const char *h = "mn";
     Py_ssize_clean_t h_length;
 
-    ikiwa (!_PyArg_ParseStack(args, nargs, "|sssyzy#s#z#:test_str_converter",
+    if (!_PyArg_ParseStack(args, nargs, "|sssyzy#s#z#:test_str_converter",
         &a, &b, &c, &d, &e, &f, &f_length, &g, &g_length, &h, &h_length)) {
         goto exit;
     }
-    rudisha_value = test_str_converter_impl(module, a, b, c, d, e, f, f_length, g, g_length, h, h_length);
+    return_value = test_str_converter_impl(module, a, b, c, d, e, f, f_length, g, g_length, h, h_length);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1774,8 +1774,8 @@ test_str_converter_encoding
     a: str(encoding="idna")
     b: str(encoding="idna", accept={str})
     c: str(encoding="idna", accept={bytes, bytearray, str})
-    d: str(encoding="idna", zeroes=Kweli)
-    e: str(encoding="idna", accept={bytes, bytearray, str}, zeroes=Kweli)
+    d: str(encoding="idna", zeroes=True)
+    e: str(encoding="idna", accept={bytes, bytearray, str}, zeroes=True)
     /
 
 [clinic start generated code]*/
@@ -1796,7 +1796,7 @@ test_str_converter_encoding_impl(PyObject *module, char *a, char *b, char *c,
 static PyObject *
 test_str_converter_encoding(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     char *a = NULL;
     char *b = NULL;
     char *c = NULL;
@@ -1805,35 +1805,35 @@ test_str_converter_encoding(PyObject *module, PyObject *const *args, Py_ssize_t 
     char *e = NULL;
     Py_ssize_clean_t e_length;
 
-    ikiwa (!_PyArg_ParseStack(args, nargs, "esesetes#et#:test_str_converter_encoding",
+    if (!_PyArg_ParseStack(args, nargs, "esesetes#et#:test_str_converter_encoding",
         "idna", &a, "idna", &b, "idna", &c, "idna", &d, &d_length, "idna", &e, &e_length)) {
         goto exit;
     }
-    rudisha_value = test_str_converter_encoding_impl(module, a, b, c, d, d_length, e, e_length);
+    return_value = test_str_converter_encoding_impl(module, a, b, c, d, d_length, e, e_length);
 
 exit:
-    /* Cleanup kila a */
-    ikiwa (a) {
+    /* Cleanup for a */
+    if (a) {
        PyMem_FREE(a);
     }
-    /* Cleanup kila b */
-    ikiwa (b) {
+    /* Cleanup for b */
+    if (b) {
        PyMem_FREE(b);
     }
-    /* Cleanup kila c */
-    ikiwa (c) {
+    /* Cleanup for c */
+    if (c) {
        PyMem_FREE(c);
     }
-    /* Cleanup kila d */
-    ikiwa (d) {
+    /* Cleanup for d */
+    if (d) {
        PyMem_FREE(d);
     }
-    /* Cleanup kila e */
-    ikiwa (e) {
+    /* Cleanup for e */
+    if (e) {
        PyMem_FREE(e);
     }
 
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1848,9 +1848,9 @@ test_Py_UNICODE_converter
 
     a: Py_UNICODE
     b: Py_UNICODE(accept={str})
-    c: Py_UNICODE(accept={str, TupuType})
-    d: Py_UNICODE(zeroes=Kweli)
-    e: Py_UNICODE(accept={str, TupuType}, zeroes=Kweli)
+    c: Py_UNICODE(accept={str, NoneType})
+    d: Py_UNICODE(zeroes=True)
+    e: Py_UNICODE(accept={str, NoneType}, zeroes=True)
     /
 
 [clinic start generated code]*/
@@ -1874,7 +1874,7 @@ test_Py_UNICODE_converter_impl(PyObject *module, const Py_UNICODE *a,
 static PyObject *
 test_Py_UNICODE_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     const Py_UNICODE *a;
     const Py_UNICODE *b;
     const Py_UNICODE *c;
@@ -1883,14 +1883,14 @@ test_Py_UNICODE_converter(PyObject *module, PyObject *const *args, Py_ssize_t na
     const Py_UNICODE *e;
     Py_ssize_clean_t e_length;
 
-    ikiwa (!_PyArg_ParseStack(args, nargs, "uuZu#Z#:test_Py_UNICODE_converter",
+    if (!_PyArg_ParseStack(args, nargs, "uuZu#Z#:test_Py_UNICODE_converter",
         &a, &b, &c, &d, &d_length, &e, &e_length)) {
         goto exit;
     }
-    rudisha_value = test_Py_UNICODE_converter_impl(module, a, b, c, d, d_length, e, e_length);
+    return_value = test_Py_UNICODE_converter_impl(module, a, b, c, d, d_length, e, e_length);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1909,7 +1909,7 @@ test_Py_buffer_converter
     a: Py_buffer
     b: Py_buffer(accept={buffer})
     c: Py_buffer(accept={str, buffer})
-    d: Py_buffer(accept={str, buffer, TupuType})
+    d: Py_buffer(accept={str, buffer, NoneType})
     e: Py_buffer(accept={rwbuffer})
     /
 
@@ -1930,42 +1930,42 @@ test_Py_buffer_converter_impl(PyObject *module, Py_buffer *a, Py_buffer *b,
 static PyObject *
 test_Py_buffer_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     Py_buffer a = {NULL, NULL};
     Py_buffer b = {NULL, NULL};
     Py_buffer c = {NULL, NULL};
     Py_buffer d = {NULL, NULL};
     Py_buffer e = {NULL, NULL};
 
-    ikiwa (!_PyArg_ParseStack(args, nargs, "y*y*s*z*w*:test_Py_buffer_converter",
+    if (!_PyArg_ParseStack(args, nargs, "y*y*s*z*w*:test_Py_buffer_converter",
         &a, &b, &c, &d, &e)) {
         goto exit;
     }
-    rudisha_value = test_Py_buffer_converter_impl(module, &a, &b, &c, &d, &e);
+    return_value = test_Py_buffer_converter_impl(module, &a, &b, &c, &d, &e);
 
 exit:
-    /* Cleanup kila a */
-    ikiwa (a.obj) {
+    /* Cleanup for a */
+    if (a.obj) {
        PyBuffer_Release(&a);
     }
-    /* Cleanup kila b */
-    ikiwa (b.obj) {
+    /* Cleanup for b */
+    if (b.obj) {
        PyBuffer_Release(&b);
     }
-    /* Cleanup kila c */
-    ikiwa (c.obj) {
+    /* Cleanup for c */
+    if (c.obj) {
        PyBuffer_Release(&c);
     }
-    /* Cleanup kila d */
-    ikiwa (d.obj) {
+    /* Cleanup for d */
+    if (d.obj) {
        PyBuffer_Release(&d);
     }
-    /* Cleanup kila e */
-    ikiwa (e.obj) {
+    /* Cleanup for e */
+    if (e.obj) {
        PyBuffer_Release(&e);
     }
 
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -1996,7 +1996,7 @@ test_keywords_impl(PyObject *module, PyObject *a, PyObject *b);
 static PyObject *
 test_keywords(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"a", "b", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_keywords", 0};
     PyObject *argsbuf[2];
@@ -2004,15 +2004,15 @@ test_keywords(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObjec
     PyObject *b;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 2, 2, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     b = args[1];
-    rudisha_value = test_keywords_impl(module, a, b);
+    return_value = test_keywords_impl(module, a, b);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2043,7 +2043,7 @@ test_keywords_kwonly_impl(PyObject *module, PyObject *a, PyObject *b);
 static PyObject *
 test_keywords_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"a", "b", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_keywords_kwonly", 0};
     PyObject *argsbuf[2];
@@ -2051,15 +2051,15 @@ test_keywords_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, 
     PyObject *b;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 1, 1, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     b = args[1];
-    rudisha_value = test_keywords_kwonly_impl(module, a, b);
+    return_value = test_keywords_kwonly_impl(module, a, b);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2071,13 +2071,13 @@ test_keywords_kwonly_impl(PyObject *module, PyObject *a, PyObject *b)
 test_keywords_opt
 
     a: object
-    b: object = Tupu
-    c: object = Tupu
+    b: object = None
+    c: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_keywords_opt__doc__,
-"test_keywords_opt($module, /, a, b=Tupu, c=Tupu)\n"
+"test_keywords_opt($module, /, a, b=None, c=None)\n"
 "--\n"
 "\n");
 
@@ -2091,35 +2091,35 @@ test_keywords_opt_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_keywords_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"a", "b", "c", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_keywords_opt", 0};
     PyObject *argsbuf[3];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
     PyObject *a;
-    PyObject *b = Py_Tupu;
-    PyObject *c = Py_Tupu;
+    PyObject *b = Py_None;
+    PyObject *c = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 3, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_pos;
     }
-    ikiwa (args[1]) {
+    if (args[1]) {
         b = args[1];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
     c = args[2];
 skip_optional_pos:
-    rudisha_value = test_keywords_opt_impl(module, a, b, c);
+    return_value = test_keywords_opt_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2132,15 +2132,15 @@ test_keywords_opt_impl(PyObject *module, PyObject *a, PyObject *b,
 test_keywords_opt_kwonly
 
     a: object
-    b: object = Tupu
+    b: object = None
     *
-    c: object = Tupu
-    d: object = Tupu
+    c: object = None
+    d: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_keywords_opt_kwonly__doc__,
-"test_keywords_opt_kwonly($module, /, a, b=Tupu, *, c=Tupu, d=Tupu)\n"
+"test_keywords_opt_kwonly($module, /, a, b=None, *, c=None, d=None)\n"
 "--\n"
 "\n");
 
@@ -2154,46 +2154,46 @@ test_keywords_opt_kwonly_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_keywords_opt_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"a", "b", "c", "d", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_keywords_opt_kwonly", 0};
     PyObject *argsbuf[4];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
     PyObject *a;
-    PyObject *b = Py_Tupu;
-    PyObject *c = Py_Tupu;
-    PyObject *d = Py_Tupu;
+    PyObject *b = Py_None;
+    PyObject *c = Py_None;
+    PyObject *d = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 2, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_pos;
     }
-    ikiwa (args[1]) {
+    if (args[1]) {
         b = args[1];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
 skip_optional_pos:
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[2]) {
+    if (args[2]) {
         c = args[2];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     d = args[3];
 skip_optional_kwonly:
-    rudisha_value = test_keywords_opt_kwonly_impl(module, a, b, c, d);
+    return_value = test_keywords_opt_kwonly_impl(module, a, b, c, d);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2207,13 +2207,13 @@ test_keywords_kwonly_opt
 
     a: object
     *
-    b: object = Tupu
-    c: object = Tupu
+    b: object = None
+    c: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_keywords_kwonly_opt__doc__,
-"test_keywords_kwonly_opt($module, /, a, *, b=Tupu, c=Tupu)\n"
+"test_keywords_kwonly_opt($module, /, a, *, b=None, c=None)\n"
 "--\n"
 "\n");
 
@@ -2227,35 +2227,35 @@ test_keywords_kwonly_opt_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_keywords_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"a", "b", "c", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_keywords_kwonly_opt", 0};
     PyObject *argsbuf[3];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
     PyObject *a;
-    PyObject *b = Py_Tupu;
-    PyObject *c = Py_Tupu;
+    PyObject *b = Py_None;
+    PyObject *c = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 1, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[1]) {
+    if (args[1]) {
         b = args[1];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     c = args[2];
 skip_optional_kwonly:
-    rudisha_value = test_keywords_kwonly_opt_impl(module, a, b, c);
+    return_value = test_keywords_kwonly_opt_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2287,7 +2287,7 @@ test_posonly_keywords_impl(PyObject *module, PyObject *a, PyObject *b);
 static PyObject *
 test_posonly_keywords(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_keywords", 0};
     PyObject *argsbuf[2];
@@ -2295,15 +2295,15 @@ test_posonly_keywords(PyObject *module, PyObject *const *args, Py_ssize_t nargs,
     PyObject *b;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 2, 2, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     b = args[1];
-    rudisha_value = test_posonly_keywords_impl(module, a, b);
+    return_value = test_posonly_keywords_impl(module, a, b);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2335,7 +2335,7 @@ test_posonly_kwonly_impl(PyObject *module, PyObject *a, PyObject *c);
 static PyObject *
 test_posonly_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "c", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_kwonly", 0};
     PyObject *argsbuf[2];
@@ -2343,15 +2343,15 @@ test_posonly_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, P
     PyObject *c;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 1, 1, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     c = args[1];
-    rudisha_value = test_posonly_kwonly_impl(module, a, c);
+    return_value = test_posonly_kwonly_impl(module, a, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2385,7 +2385,7 @@ test_posonly_keywords_kwonly_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_posonly_keywords_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", "c", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_keywords_kwonly", 0};
     PyObject *argsbuf[3];
@@ -2394,16 +2394,16 @@ test_posonly_keywords_kwonly(PyObject *module, PyObject *const *args, Py_ssize_t
     PyObject *c;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 2, 2, 1, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     b = args[1];
     c = args[2];
-    rudisha_value = test_posonly_keywords_kwonly_impl(module, a, b, c);
+    return_value = test_posonly_keywords_kwonly_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2418,13 +2418,13 @@ test_posonly_keywords_opt
     a: object
     /
     b: object
-    c: object = Tupu
-    d: object = Tupu
+    c: object = None
+    d: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_keywords_opt__doc__,
-"test_posonly_keywords_opt($module, a, /, b, c=Tupu, d=Tupu)\n"
+"test_posonly_keywords_opt($module, a, /, b, c=None, d=None)\n"
 "--\n"
 "\n");
 
@@ -2438,37 +2438,37 @@ test_posonly_keywords_opt_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_posonly_keywords_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", "c", "d", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_keywords_opt", 0};
     PyObject *argsbuf[4];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
     PyObject *a;
     PyObject *b;
-    PyObject *c = Py_Tupu;
-    PyObject *d = Py_Tupu;
+    PyObject *c = Py_None;
+    PyObject *d = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 2, 4, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     b = args[1];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_pos;
     }
-    ikiwa (args[2]) {
+    if (args[2]) {
         c = args[2];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
     d = args[3];
 skip_optional_pos:
-    rudisha_value = test_posonly_keywords_opt_impl(module, a, b, c, d);
+    return_value = test_posonly_keywords_opt_impl(module, a, b, c, d);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2482,13 +2482,13 @@ test_posonly_keywords_opt2
 
     a: object
     /
-    b: object = Tupu
-    c: object = Tupu
+    b: object = None
+    c: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_keywords_opt2__doc__,
-"test_posonly_keywords_opt2($module, a, /, b=Tupu, c=Tupu)\n"
+"test_posonly_keywords_opt2($module, a, /, b=None, c=None)\n"
 "--\n"
 "\n");
 
@@ -2502,35 +2502,35 @@ test_posonly_keywords_opt2_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_posonly_keywords_opt2(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", "c", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_keywords_opt2", 0};
     PyObject *argsbuf[3];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
     PyObject *a;
-    PyObject *b = Py_Tupu;
-    PyObject *c = Py_Tupu;
+    PyObject *b = Py_None;
+    PyObject *c = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 3, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_pos;
     }
-    ikiwa (args[1]) {
+    if (args[1]) {
         b = args[1];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
     c = args[2];
 skip_optional_pos:
-    rudisha_value = test_posonly_keywords_opt2_impl(module, a, b, c);
+    return_value = test_posonly_keywords_opt2_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2543,15 +2543,15 @@ test_posonly_keywords_opt2_impl(PyObject *module, PyObject *a, PyObject *b,
 test_posonly_opt_keywords_opt
 
     a: object
-    b: object = Tupu
+    b: object = None
     /
-    c: object = Tupu
-    d: object = Tupu
+    c: object = None
+    d: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_opt_keywords_opt__doc__,
-"test_posonly_opt_keywords_opt($module, a, b=Tupu, /, c=Tupu, d=Tupu)\n"
+"test_posonly_opt_keywords_opt($module, a, b=None, /, c=None, d=None)\n"
 "--\n"
 "\n");
 
@@ -2565,42 +2565,42 @@ test_posonly_opt_keywords_opt_impl(PyObject *module, PyObject *a,
 static PyObject *
 test_posonly_opt_keywords_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "", "c", "d", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_opt_keywords_opt", 0};
     PyObject *argsbuf[4];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
     PyObject *a;
-    PyObject *b = Py_Tupu;
-    PyObject *c = Py_Tupu;
-    PyObject *d = Py_Tupu;
+    PyObject *b = Py_None;
+    PyObject *c = Py_None;
+    PyObject *d = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 4, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional_posonly;
     }
     noptargs--;
     b = args[1];
 skip_optional_posonly:
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_pos;
     }
-    ikiwa (args[2]) {
+    if (args[2]) {
         c = args[2];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
     d = args[3];
 skip_optional_pos:
-    rudisha_value = test_posonly_opt_keywords_opt_impl(module, a, b, c, d);
+    return_value = test_posonly_opt_keywords_opt_impl(module, a, b, c, d);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2616,13 +2616,13 @@ test_posonly_kwonly_opt
     /
     *
     b: object
-    c: object = Tupu
-    d: object = Tupu
+    c: object = None
+    d: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_kwonly_opt__doc__,
-"test_posonly_kwonly_opt($module, a, /, *, b, c=Tupu, d=Tupu)\n"
+"test_posonly_kwonly_opt($module, a, /, *, b, c=None, d=None)\n"
 "--\n"
 "\n");
 
@@ -2636,37 +2636,37 @@ test_posonly_kwonly_opt_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_posonly_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", "c", "d", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_kwonly_opt", 0};
     PyObject *argsbuf[4];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
     PyObject *a;
     PyObject *b;
-    PyObject *c = Py_Tupu;
-    PyObject *d = Py_Tupu;
+    PyObject *c = Py_None;
+    PyObject *d = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 1, 1, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     b = args[1];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[2]) {
+    if (args[2]) {
         c = args[2];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     d = args[3];
 skip_optional_kwonly:
-    rudisha_value = test_posonly_kwonly_opt_impl(module, a, b, c, d);
+    return_value = test_posonly_kwonly_opt_impl(module, a, b, c, d);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2681,13 +2681,13 @@ test_posonly_kwonly_opt2
     a: object
     /
     *
-    b: object = Tupu
-    c: object = Tupu
+    b: object = None
+    c: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_kwonly_opt2__doc__,
-"test_posonly_kwonly_opt2($module, a, /, *, b=Tupu, c=Tupu)\n"
+"test_posonly_kwonly_opt2($module, a, /, *, b=None, c=None)\n"
 "--\n"
 "\n");
 
@@ -2701,35 +2701,35 @@ test_posonly_kwonly_opt2_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_posonly_kwonly_opt2(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", "c", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_kwonly_opt2", 0};
     PyObject *argsbuf[3];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
     PyObject *a;
-    PyObject *b = Py_Tupu;
-    PyObject *c = Py_Tupu;
+    PyObject *b = Py_None;
+    PyObject *c = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 1, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[1]) {
+    if (args[1]) {
         b = args[1];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     c = args[2];
 skip_optional_kwonly:
-    rudisha_value = test_posonly_kwonly_opt2_impl(module, a, b, c);
+    return_value = test_posonly_kwonly_opt2_impl(module, a, b, c);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2742,16 +2742,16 @@ test_posonly_kwonly_opt2_impl(PyObject *module, PyObject *a, PyObject *b,
 test_posonly_opt_kwonly_opt
 
     a: object
-    b: object = Tupu
+    b: object = None
     /
     *
-    c: object = Tupu
-    d: object = Tupu
+    c: object = None
+    d: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_opt_kwonly_opt__doc__,
-"test_posonly_opt_kwonly_opt($module, a, b=Tupu, /, *, c=Tupu, d=Tupu)\n"
+"test_posonly_opt_kwonly_opt($module, a, b=None, /, *, c=None, d=None)\n"
 "--\n"
 "\n");
 
@@ -2765,42 +2765,42 @@ test_posonly_opt_kwonly_opt_impl(PyObject *module, PyObject *a, PyObject *b,
 static PyObject *
 test_posonly_opt_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "", "c", "d", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_opt_kwonly_opt", 0};
     PyObject *argsbuf[4];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
     PyObject *a;
-    PyObject *b = Py_Tupu;
-    PyObject *c = Py_Tupu;
-    PyObject *d = Py_Tupu;
+    PyObject *b = Py_None;
+    PyObject *c = Py_None;
+    PyObject *d = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 2, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional_posonly;
     }
     noptargs--;
     b = args[1];
 skip_optional_posonly:
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[2]) {
+    if (args[2]) {
         c = args[2];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     d = args[3];
 skip_optional_kwonly:
-    rudisha_value = test_posonly_opt_kwonly_opt_impl(module, a, b, c, d);
+    return_value = test_posonly_opt_kwonly_opt_impl(module, a, b, c, d);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2817,13 +2817,13 @@ test_posonly_keywords_kwonly_opt
     b: object
     *
     c: object
-    d: object = Tupu
-    e: object = Tupu
+    d: object = None
+    e: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_keywords_kwonly_opt__doc__,
-"test_posonly_keywords_kwonly_opt($module, a, /, b, *, c, d=Tupu, e=Tupu)\n"
+"test_posonly_keywords_kwonly_opt($module, a, /, b, *, c, d=None, e=None)\n"
 "--\n"
 "\n");
 
@@ -2838,7 +2838,7 @@ test_posonly_keywords_kwonly_opt_impl(PyObject *module, PyObject *a,
 static PyObject *
 test_posonly_keywords_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", "c", "d", "e", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_keywords_kwonly_opt", 0};
     PyObject *argsbuf[5];
@@ -2846,31 +2846,31 @@ test_posonly_keywords_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssi
     PyObject *a;
     PyObject *b;
     PyObject *c;
-    PyObject *d = Py_Tupu;
-    PyObject *e = Py_Tupu;
+    PyObject *d = Py_None;
+    PyObject *e = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 2, 2, 1, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     b = args[1];
     c = args[2];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[3]) {
+    if (args[3]) {
         d = args[3];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     e = args[4];
 skip_optional_kwonly:
-    rudisha_value = test_posonly_keywords_kwonly_opt_impl(module, a, b, c, d, e);
+    return_value = test_posonly_keywords_kwonly_opt_impl(module, a, b, c, d, e);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2887,13 +2887,13 @@ test_posonly_keywords_kwonly_opt2
     /
     b: object
     *
-    c: object = Tupu
-    d: object = Tupu
+    c: object = None
+    d: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_keywords_kwonly_opt2__doc__,
-"test_posonly_keywords_kwonly_opt2($module, a, /, b, *, c=Tupu, d=Tupu)\n"
+"test_posonly_keywords_kwonly_opt2($module, a, /, b, *, c=None, d=None)\n"
 "--\n"
 "\n");
 
@@ -2907,37 +2907,37 @@ test_posonly_keywords_kwonly_opt2_impl(PyObject *module, PyObject *a,
 static PyObject *
 test_posonly_keywords_kwonly_opt2(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", "c", "d", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_keywords_kwonly_opt2", 0};
     PyObject *argsbuf[4];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
     PyObject *a;
     PyObject *b;
-    PyObject *c = Py_Tupu;
-    PyObject *d = Py_Tupu;
+    PyObject *c = Py_None;
+    PyObject *d = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 2, 2, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     b = args[1];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[2]) {
+    if (args[2]) {
         c = args[2];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     d = args[3];
 skip_optional_kwonly:
-    rudisha_value = test_posonly_keywords_kwonly_opt2_impl(module, a, b, c, d);
+    return_value = test_posonly_keywords_kwonly_opt2_impl(module, a, b, c, d);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -2952,16 +2952,16 @@ test_posonly_keywords_opt_kwonly_opt
     a: object
     /
     b: object
-    c: object = Tupu
+    c: object = None
     *
-    d: object = Tupu
-    e: object = Tupu
+    d: object = None
+    e: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_keywords_opt_kwonly_opt__doc__,
-"test_posonly_keywords_opt_kwonly_opt($module, a, /, b, c=Tupu, *,\n"
-"                                     d=Tupu, e=Tupu)\n"
+"test_posonly_keywords_opt_kwonly_opt($module, a, /, b, c=None, *,\n"
+"                                     d=None, e=None)\n"
 "--\n"
 "\n");
 
@@ -2976,48 +2976,48 @@ test_posonly_keywords_opt_kwonly_opt_impl(PyObject *module, PyObject *a,
 static PyObject *
 test_posonly_keywords_opt_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", "c", "d", "e", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_keywords_opt_kwonly_opt", 0};
     PyObject *argsbuf[5];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 2;
     PyObject *a;
     PyObject *b;
-    PyObject *c = Py_Tupu;
-    PyObject *d = Py_Tupu;
-    PyObject *e = Py_Tupu;
+    PyObject *c = Py_None;
+    PyObject *d = Py_None;
+    PyObject *e = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 2, 3, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
     b = args[1];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_pos;
     }
-    ikiwa (args[2]) {
+    if (args[2]) {
         c = args[2];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
 skip_optional_pos:
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[3]) {
+    if (args[3]) {
         d = args[3];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     e = args[4];
 skip_optional_kwonly:
-    rudisha_value = test_posonly_keywords_opt_kwonly_opt_impl(module, a, b, c, d, e);
+    return_value = test_posonly_keywords_opt_kwonly_opt_impl(module, a, b, c, d, e);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -3032,17 +3032,17 @@ test_posonly_keywords_opt2_kwonly_opt
 
     a: object
     /
-    b: object = Tupu
-    c: object = Tupu
+    b: object = None
+    c: object = None
     *
-    d: object = Tupu
-    e: object = Tupu
+    d: object = None
+    e: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_keywords_opt2_kwonly_opt__doc__,
-"test_posonly_keywords_opt2_kwonly_opt($module, a, /, b=Tupu, c=Tupu, *,\n"
-"                                      d=Tupu, e=Tupu)\n"
+"test_posonly_keywords_opt2_kwonly_opt($module, a, /, b=None, c=None, *,\n"
+"                                      d=None, e=None)\n"
 "--\n"
 "\n");
 
@@ -3057,53 +3057,53 @@ test_posonly_keywords_opt2_kwonly_opt_impl(PyObject *module, PyObject *a,
 static PyObject *
 test_posonly_keywords_opt2_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "b", "c", "d", "e", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_keywords_opt2_kwonly_opt", 0};
     PyObject *argsbuf[5];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
     PyObject *a;
-    PyObject *b = Py_Tupu;
-    PyObject *c = Py_Tupu;
-    PyObject *d = Py_Tupu;
-    PyObject *e = Py_Tupu;
+    PyObject *b = Py_None;
+    PyObject *c = Py_None;
+    PyObject *d = Py_None;
+    PyObject *e = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 3, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_pos;
     }
-    ikiwa (args[1]) {
+    if (args[1]) {
         b = args[1];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    ikiwa (args[2]) {
+    if (args[2]) {
         c = args[2];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
 skip_optional_pos:
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[3]) {
+    if (args[3]) {
         d = args[3];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     e = args[4];
 skip_optional_kwonly:
-    rudisha_value = test_posonly_keywords_opt2_kwonly_opt_impl(module, a, b, c, d, e);
+    return_value = test_posonly_keywords_opt2_kwonly_opt_impl(module, a, b, c, d, e);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -3117,19 +3117,19 @@ test_posonly_keywords_opt2_kwonly_opt_impl(PyObject *module, PyObject *a,
 test_posonly_opt_keywords_opt_kwonly_opt
 
     a: object
-    b: object = Tupu
+    b: object = None
     /
-    c: object = Tupu
-    d: object = Tupu
+    c: object = None
+    d: object = None
     *
-    e: object = Tupu
-    f: object = Tupu
+    e: object = None
+    f: object = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_posonly_opt_keywords_opt_kwonly_opt__doc__,
-"test_posonly_opt_keywords_opt_kwonly_opt($module, a, b=Tupu, /, c=Tupu,\n"
-"                                         d=Tupu, *, e=Tupu, f=Tupu)\n"
+"test_posonly_opt_keywords_opt_kwonly_opt($module, a, b=None, /, c=None,\n"
+"                                         d=None, *, e=None, f=None)\n"
 "--\n"
 "\n");
 
@@ -3145,60 +3145,60 @@ test_posonly_opt_keywords_opt_kwonly_opt_impl(PyObject *module, PyObject *a,
 static PyObject *
 test_posonly_opt_keywords_opt_kwonly_opt(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"", "", "c", "d", "e", "f", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_posonly_opt_keywords_opt_kwonly_opt", 0};
     PyObject *argsbuf[6];
     Py_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - 1;
     PyObject *a;
-    PyObject *b = Py_Tupu;
-    PyObject *c = Py_Tupu;
-    PyObject *d = Py_Tupu;
-    PyObject *e = Py_Tupu;
-    PyObject *f = Py_Tupu;
+    PyObject *b = Py_None;
+    PyObject *c = Py_None;
+    PyObject *d = Py_None;
+    PyObject *e = Py_None;
+    PyObject *f = Py_None;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 1, 4, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
     a = args[0];
-    ikiwa (nargs < 2) {
+    if (nargs < 2) {
         goto skip_optional_posonly;
     }
     noptargs--;
     b = args[1];
 skip_optional_posonly:
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_pos;
     }
-    ikiwa (args[2]) {
+    if (args[2]) {
         c = args[2];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
-    ikiwa (args[3]) {
+    if (args[3]) {
         d = args[3];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_pos;
         }
     }
 skip_optional_pos:
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (args[4]) {
+    if (args[4]) {
         e = args[4];
-        ikiwa (!--noptargs) {
+        if (!--noptargs) {
             goto skip_optional_kwonly;
         }
     }
     f = args[5];
 skip_optional_kwonly:
-    rudisha_value = test_posonly_opt_keywords_opt_kwonly_opt_impl(module, a, b, c, d, e, f);
+    return_value = test_posonly_opt_keywords_opt_kwonly_opt_impl(module, a, b, c, d, e, f);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *
@@ -3213,12 +3213,12 @@ test_keyword_only_parameter
 
 
     *
-    co_lnotab: PyBytesObject(c_default="(PyBytesObject *)self->co_lnotab") = Tupu
+    co_lnotab: PyBytesObject(c_default="(PyBytesObject *)self->co_lnotab") = None
 
 [clinic start generated code]*/
 
 PyDoc_STRVAR(test_keyword_only_parameter__doc__,
-"test_keyword_only_parameter($module, /, *, co_lnotab=Tupu)\n"
+"test_keyword_only_parameter($module, /, *, co_lnotab=None)\n"
 "--\n"
 "\n");
 
@@ -3231,7 +3231,7 @@ test_keyword_only_parameter_impl(PyObject *module, PyBytesObject *co_lnotab);
 static PyObject *
 test_keyword_only_parameter(PyObject *module, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
 {
-    PyObject *rudisha_value = NULL;
+    PyObject *return_value = NULL;
     static const char * const _keywords[] = {"co_lnotab", NULL};
     static _PyArg_Parser _parser = {NULL, _keywords, "test_keyword_only_parameter", 0};
     PyObject *argsbuf[1];
@@ -3239,22 +3239,22 @@ test_keyword_only_parameter(PyObject *module, PyObject *const *args, Py_ssize_t 
     PyBytesObject *co_lnotab = (PyBytesObject *)self->co_lnotab;
 
     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, 0, 0, 0, argsbuf);
-    ikiwa (!args) {
+    if (!args) {
         goto exit;
     }
-    ikiwa (!noptargs) {
+    if (!noptargs) {
         goto skip_optional_kwonly;
     }
-    ikiwa (!PyBytes_Check(args[0])) {
+    if (!PyBytes_Check(args[0])) {
         _PyArg_BadArgument("test_keyword_only_parameter", "argument 'co_lnotab'", "bytes", args[0]);
         goto exit;
     }
     co_lnotab = (PyBytesObject *)args[0];
 skip_optional_kwonly:
-    rudisha_value = test_keyword_only_parameter_impl(module, co_lnotab);
+    return_value = test_keyword_only_parameter_impl(module, co_lnotab);
 
 exit:
-    rudisha rudisha_value;
+    return return_value;
 }
 
 static PyObject *

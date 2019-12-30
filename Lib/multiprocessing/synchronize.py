@@ -22,12 +22,12 @@ kutoka . agiza process
 kutoka . agiza util
 
 # Try to agiza the mp.synchronize module cleanly, ikiwa it fails
-# ashiria ImportError kila platforms lacking a working sem_open implementation.
+#  ashiria ImportError kila platforms lacking a working sem_open implementation.
 # See issue 3770
 jaribu:
     kutoka _multiprocessing agiza SemLock, sem_unlink
-tatizo (ImportError):
-    ashiria ImportError("This platform lacks a functioning sem_open" +
+except (ImportError):
+     ashiria ImportError("This platform lacks a functioning sem_open" +
                       " implementation, therefore, the required" +
                       " synchronization primitives needed will not" +
                       " function, see issue 3770.")
@@ -57,12 +57,12 @@ kundi SemLock(object):
                 sl = self._semlock = _multiprocessing.SemLock(
                     kind, value, maxvalue, self._make_name(),
                     unlink_now)
-            tatizo FileExistsError:
-                pita
+            except FileExistsError:
+                pass
             isipokua:
                 koma
         isipokua:
-            ashiria FileExistsError('cannot find name kila semaphore')
+             ashiria FileExistsError('cannot find name kila semaphore')
 
         util.debug('created semlock ukijumuisha handle %s' % sl.handle)
         self._make_methods()
@@ -131,7 +131,7 @@ kundi Semaphore(SemLock):
     eleza __repr__(self):
         jaribu:
             value = self._semlock._get_value()
-        tatizo Exception:
+        except Exception:
             value = 'unknown'
         rudisha '<%s(value=%s)>' % (self.__class__.__name__, value)
 
@@ -147,7 +147,7 @@ kundi BoundedSemaphore(Semaphore):
     eleza __repr__(self):
         jaribu:
             value = self._semlock._get_value()
-        tatizo Exception:
+        except Exception:
             value = 'unknown'
         rudisha '<%s(value=%s, maxvalue=%s)>' % \
                (self.__class__.__name__, value, self._semlock.maxvalue)
@@ -167,13 +167,13 @@ kundi Lock(SemLock):
                 name = process.current_process().name
                 ikiwa threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
-            lasivyo self._semlock._get_value() == 1:
+            elikiwa self._semlock._get_value() == 1:
                 name = 'Tupu'
-            lasivyo self._semlock._count() > 0:
+            elikiwa self._semlock._count() > 0:
                 name = 'SomeOtherThread'
             isipokua:
                 name = 'SomeOtherProcess'
-        tatizo Exception:
+        except Exception:
             name = 'unknown'
         rudisha '<%s(owner=%s)>' % (self.__class__.__name__, name)
 
@@ -193,13 +193,13 @@ kundi RLock(SemLock):
                 ikiwa threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
                 count = self._semlock._count()
-            lasivyo self._semlock._get_value() == 1:
+            elikiwa self._semlock._get_value() == 1:
                 name, count = 'Tupu', 0
-            lasivyo self._semlock._count() > 0:
+            elikiwa self._semlock._count() > 0:
                 name, count = 'SomeOtherThread', 'nonzero'
             isipokua:
                 name, count = 'SomeOtherProcess', 'nonzero'
-        tatizo Exception:
+        except Exception:
             name, count = 'unknown', 'unknown'
         rudisha '<%s(%s, %s)>' % (self.__class__.__name__, name, count)
 
@@ -240,7 +240,7 @@ kundi Condition(object):
         jaribu:
             num_waiters = (self._sleeping_count._semlock._get_value() -
                            self._woken_count._semlock._get_value())
-        tatizo Exception:
+        except Exception:
             num_waiters = 'unknown'
         rudisha '<%s(%s, %s)>' % (self.__class__.__name__, self._lock, num_waiters)
 
@@ -291,7 +291,7 @@ kundi Condition(object):
 
             # rezero wait_semaphore kwenye case some timeouts just happened
             wakati self._wait_semaphore.acquire(Uongo):
-                pita
+                pass
 
     eleza notify_all(self):
         self.notify(n=sys.maxsize)

@@ -45,16 +45,16 @@ eleza traced_func_loop(x, y):
         c += y
     rudisha c
 
-eleza traced_func_agizaing(x, y):
+eleza traced_func_importing(x, y):
     rudisha x + y + testmod.func(1)
 
 eleza traced_func_simple_caller(x):
     c = traced_func_linear(x, x)
     rudisha c + x
 
-eleza traced_func_agizaing_caller(x):
+eleza traced_func_importing_caller(x):
     k = traced_func_simple_caller(x)
-    k += traced_func_agizaing(k, x)
+    k += traced_func_importing(k, x)
     rudisha k
 
 eleza traced_func_generator(num):
@@ -88,7 +88,7 @@ eleza traced_decorated_function():
     @decorator1
     @decorator_fabric()
     eleza func():
-        pita
+        pass
     func()
 
 
@@ -146,10 +146,10 @@ kundi TestLineCounts(unittest.TestCase):
         }
         self.assertEqual(self.tracer.results().counts, expected)
 
-    eleza test_traced_func_agizaing(self):
-        self.tracer.runfunc(traced_func_agizaing, 2, 5)
+    eleza test_traced_func_importing(self):
+        self.tracer.runfunc(traced_func_importing, 2, 5)
 
-        firstlineno = get_firstlineno(traced_func_agizaing)
+        firstlineno = get_firstlineno(traced_func_importing)
         expected = {
             (self.my_py_filename, firstlineno + 1): 1,
             (fix_ext_py(testmod.__file__), 2): 1,
@@ -282,14 +282,14 @@ kundi TestFuncs(unittest.TestCase):
         ukijumuisha self.assertRaises(TypeError):
             self.tracer.runfunc()
 
-    eleza test_loop_caller_agizaing(self):
-        self.tracer.runfunc(traced_func_agizaing_caller, 1)
+    eleza test_loop_caller_importing(self):
+        self.tracer.runfunc(traced_func_importing_caller, 1)
 
         expected = {
             self.filemod + ('traced_func_simple_caller',): 1,
             self.filemod + ('traced_func_linear',): 1,
-            self.filemod + ('traced_func_agizaing_caller',): 1,
-            self.filemod + ('traced_func_agizaing',): 1,
+            self.filemod + ('traced_func_importing_caller',): 1,
+            self.filemod + ('traced_func_importing',): 1,
             (fix_ext_py(testmod.__file__), 'testmod', 'func'): 1,
         }
         self.assertEqual(self.tracer.results().calledfuncs, expected)
@@ -329,19 +329,19 @@ kundi TestCallers(unittest.TestCase):
 
     @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
                      'pre-existing trace function throws off measurements')
-    eleza test_loop_caller_agizaing(self):
-        self.tracer.runfunc(traced_func_agizaing_caller, 1)
+    eleza test_loop_caller_importing(self):
+        self.tracer.runfunc(traced_func_importing_caller, 1)
 
         expected = {
             ((os.path.splitext(trace.__file__)[0] + '.py', 'trace', 'Trace.runfunc'),
-                (self.filemod + ('traced_func_agizaing_caller',))): 1,
+                (self.filemod + ('traced_func_importing_caller',))): 1,
             ((self.filemod + ('traced_func_simple_caller',)),
                 (self.filemod + ('traced_func_linear',))): 1,
-            ((self.filemod + ('traced_func_agizaing_caller',)),
+            ((self.filemod + ('traced_func_importing_caller',)),
                 (self.filemod + ('traced_func_simple_caller',))): 1,
-            ((self.filemod + ('traced_func_agizaing_caller',)),
-                (self.filemod + ('traced_func_agizaing',))): 1,
-            ((self.filemod + ('traced_func_agizaing',)),
+            ((self.filemod + ('traced_func_importing_caller',)),
+                (self.filemod + ('traced_func_importing',))): 1,
+            ((self.filemod + ('traced_func_importing',)),
                 (fix_ext_py(testmod.__file__), 'testmod', 'func')): 1,
         }
         self.assertEqual(self.tracer.results().callers, expected)
@@ -365,7 +365,7 @@ kundi TestCoverage(unittest.TestCase):
 
     eleza test_coverage(self):
         tracer = trace.Trace(trace=0, count=1)
-        ukijumuisha captured_stdout() kama stdout:
+        ukijumuisha captured_stdout() as stdout:
             self._coverage(tracer)
         stdout = stdout.getvalue()
         self.assertIn("pprint.py", stdout)
@@ -380,7 +380,7 @@ kundi TestCoverage(unittest.TestCase):
         # sys.prefix does sio work when running kutoka a checkout
         tracer = trace.Trace(ignoredirs=[sys.base_prefix, sys.base_exec_prefix,
                              libpath], trace=0, count=1)
-        ukijumuisha captured_stdout() kama stdout:
+        ukijumuisha captured_stdout() as stdout:
             self._coverage(tracer)
         ikiwa os.path.exists(TESTFN):
             files = os.listdir(TESTFN)
@@ -389,12 +389,12 @@ kundi TestCoverage(unittest.TestCase):
     eleza test_issue9936(self):
         tracer = trace.Trace(trace=0, count=1)
         modname = 'test.tracedmodules.testmod'
-        # Ensure that the module ni executed kwenye agiza
+        # Ensure that the module ni executed kwenye import
         ikiwa modname kwenye sys.modules:
             toa sys.modules[modname]
-        cmd = ("agiza test.tracedmodules.testmod kama t;"
+        cmd = ("agiza test.tracedmodules.testmod as t;"
                "t.func(0); t.func2();")
-        ukijumuisha captured_stdout() kama stdout:
+        ukijumuisha captured_stdout() as stdout:
             self._coverage(tracer, cmd)
         stdout.seek(0)
         stdout.readline()
@@ -402,7 +402,7 @@ kundi TestCoverage(unittest.TestCase):
         kila line kwenye stdout:
             lines, cov, module = line.split()[:3]
             coverage[module] = (int(lines), int(cov[:-1]))
-        # XXX This ni needed to run regrtest.py kama a script
+        # XXX This ni needed to run regrtest.py as a script
         modname = trace._fullmodname(sys.modules[modname].__file__)
         self.assertIn(modname, coverage)
         self.assertEqual(coverage[modname], (5, 100))
@@ -429,7 +429,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
     coverfile = 'tmp.cover'
 
     eleza setUp(self):
-        ukijumuisha open(self.codefile, 'w') kama f:
+        ukijumuisha open(self.codefile, 'w') as f:
             f.write(textwrap.dedent('''\
                 x = 42
                 ikiwa []:
@@ -452,7 +452,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
         self.assertEqual(stderr, b'')
         self.assertUongo(os.path.exists(tracecoverpath))
         self.assertKweli(os.path.exists(self.coverfile))
-        ukijumuisha open(self.coverfile) kama f:
+        ukijumuisha open(self.coverfile) as f:
             self.assertEqual(f.read(),
                 "    1: x = 42\n"
                 "    1: ikiwa []:\n"
@@ -463,7 +463,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
         argv = '-m trace --count --missing'.split() + [self.codefile]
         status, stdout, stderr = assert_python_ok(*argv)
         self.assertKweli(os.path.exists(self.coverfile))
-        ukijumuisha open(self.coverfile) kama f:
+        ukijumuisha open(self.coverfile) as f:
             self.assertEqual(f.read(), textwrap.dedent('''\
                     1: x = 42
                     1: ikiwa []:
@@ -486,14 +486,14 @@ kundi TestCommandLine(unittest.TestCase):
             self.assertIn(message, stderr)
 
     eleza test_listfuncs_flag_success(self):
-        ukijumuisha open(TESTFN, 'w') kama fd:
+        ukijumuisha open(TESTFN, 'w') as fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("a = 1\n")
             status, stdout, stderr = assert_python_ok('-m', 'trace', '-l', TESTFN)
             self.assertIn(b'functions called:', stdout)
 
     eleza test_sys_argv_list(self):
-        ukijumuisha open(TESTFN, 'w') kama fd:
+        ukijumuisha open(TESTFN, 'w') as fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("agiza sys\n")
             fd.write("andika(type(sys.argv))\n")
@@ -505,7 +505,7 @@ kundi TestCommandLine(unittest.TestCase):
     eleza test_count_and_summary(self):
         filename = f'{TESTFN}.py'
         coverfilename = f'{TESTFN}.cover'
-        ukijumuisha open(filename, 'w') kama fd:
+        ukijumuisha open(filename, 'w') as fd:
             self.addCleanup(unlink, filename)
             self.addCleanup(unlink, coverfilename)
             fd.write(textwrap.dedent("""\

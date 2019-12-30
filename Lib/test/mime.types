@@ -1,12 +1,12 @@
-# This ni a comment. I love comments.		    -*- indent-tabs-mode: t -*-
+# This is a comment. I love comments.		    -*- indent-tabs-mode: t -*-
 
 # This file controls what Internet media types are sent to the client for
 # given file extension(s).  Sending the correct media type to the client
-# ni agizaant so they know how to handle the content of the file.
-# Extra types can either be added here ama by using an AddType directive
-# kwenye your config files. For more information about Internet media types,
-# please read RFC 2045, 2046, 2047, 2048, na 2077.  The Internet media type
-# registry ni at <http://www.iana.org/assignments/media-types/>.
+# is important so they know how to handle the content of the file.
+# Extra types can either be added here or by using an AddType directive
+# in your config files. For more information about Internet media types,
+# please read RFC 2045, 2046, 2047, 2048, and 2077.  The Internet media type
+# registry is at <http://www.iana.org/assignments/media-types/>.
 
 # IANA types
 
@@ -135,7 +135,7 @@ application/news-transmission
 application/nss
 application/ocsp-request			orq
 application/ocsp-response			ors
-application/octet-stream		bin lha lzh exe kundi so dll img iso
+application/octet-stream		bin lha lzh exe class so dll img iso
 application/oda					oda
 application/oebps-package+xml			opf
 application/ogg					ogx
@@ -202,7 +202,7 @@ application/simpleSymbolContainer
 application/slate
 # obsoleted by application/smil+xml
 application/smil				smil smi sml
-# smil, smi: application/smil kila now
+# smil, smi: application/smil for now
 application/smil+xml
 application/soap+fastinfoset
 application/soap+xml
@@ -261,18 +261,18 @@ application/vnd.americandynamics.acc		acc
 application/vnd.amiga.ami			ami
 application/vnd.amundsen.maze+xml
 application/vnd.anser-web-certificate-issue-initiation	cii
-# Not kwenye IANA listing, but ni on FTP site?
+# Not in IANA listing, but is on FTP site?
 application/vnd.anser-web-funds-transfer-initiation	fti
 # atx: audio/ATRAC-X
 application/vnd.antix.game-component
 application/vnd.apple.installer+xml		dist distz pkg mpkg
-# m3u: application/x-mpegurl kila now
+# m3u: application/x-mpegurl for now
 application/vnd.apple.mpegurl			m3u8
 application/vnd.aristanetworks.swi		swi
 application/vnd.audiograph			aep
 application/vnd.autopackage			package
 application/vnd.avistar+xml
-application/vnd.blueice.multipita		mpm
+application/vnd.blueice.multipass		mpm
 application/vnd.bluetooth.ep.oob		ep
 application/vnd.bmi				bmi
 application/vnd.businessobjects			rep
@@ -906,7 +906,7 @@ application/vnd.webturbo			wtb
 application/vnd.wfa.wsc				wsc
 application/vnd.wmc				wmc
 application/vnd.wmf.bootstrap
-# nb: application/mathematica kila now
+# nb: application/mathematica for now
 application/vnd.wolfram.mathematica
 application/vnd.wolfram.mathematica.package	m
 application/vnd.wolfram.player			nbp
@@ -1108,7 +1108,7 @@ audio/vnd.nuera.ecelp4800			ecelp4800
 audio/vnd.nuera.ecelp7470			ecelp7470
 audio/vnd.nuera.ecelp9600			ecelp9600
 audio/vnd.octel.sbc
-# audio/vnd.qcelp deprecated kwenye favour of audio/qcelp
+# audio/vnd.qcelp deprecated in favour of audio/qcelp
 audio/vnd.rhetorex.32kadpcm
 audio/vnd.rip					rip
 audio/vnd.sealedmedia.softseal.mpeg		smp3 smp s1m
@@ -1127,7 +1127,7 @@ image/jpx					jpx jpf
 image/ktx					ktx
 image/naplps
 image/png					png
-image/prs.btif					btikiwa btf
+image/prs.btif					btif btf
 image/prs.pti					pti
 image/svg+xml					svg svgz
 image/t38					t38
@@ -1152,7 +1152,7 @@ image/vnd.ms-modi				mdi
 image/vnd.net-fpx
 image/vnd.radiance				hdr rgbe xyze
 image/vnd.sealed.png				spng spn s1n
-image/vnd.sealedmedia.softseal.gif		sgikiwa sgi s1g
+image/vnd.sealedmedia.softseal.gif		sgif sgi s1g
 image/vnd.sealedmedia.softseal.jpg		sjpg sjp s1j
 image/vnd.svf
 image/vnd.wap.wbmp				wbmp
@@ -1401,7 +1401,7 @@ application/x-xpinstall				xpi
 application/x-xspf+xml				xspf
 application/x-xz				xz
 audio/midi					mid midi kar
-audio/x-aiff					aikiwa aiff aifc
+audio/x-aiff					aif aiff aifc
 audio/x-annodex					axa
 audio/x-flac					flac
 audio/x-mod					mod ult uni m15 mtm 669 med

@@ -2,80 +2,80 @@
 
 Implements the Distutils 'sdist' command (create a source distribution)."""
 
-import os
-import sys
-from glob import glob
-from warnings import warn
+agiza os
+agiza sys
+kutoka glob agiza glob
+kutoka warnings agiza warn
 
-from distutils.core import Command
-from distutils import dir_util
-from distutils import file_util
-from distutils import archive_util
-from distutils.text_file import TextFile
-from distutils.filelist import FileList
-from distutils import log
-from distutils.util import convert_path
-from distutils.errors import DistutilsTemplateError, DistutilsOptionError
+kutoka distutils.core agiza Command
+kutoka distutils agiza dir_util
+kutoka distutils agiza file_util
+kutoka distutils agiza archive_util
+kutoka distutils.text_file agiza TextFile
+kutoka distutils.filelist agiza FileList
+kutoka distutils agiza log
+kutoka distutils.util agiza convert_path
+kutoka distutils.errors agiza DistutilsTemplateError, DistutilsOptionError
 
 
-def show_formats():
-    """Print all possible values for the 'formats' option (used by
+eleza show_formats():
+    """Print all possible values kila the 'formats' option (used by
     the "--help-formats" command-line option).
     """
-    from distutils.fancy_getopt import FancyGetopt
-    from distutils.archive_util import ARCHIVE_FORMATS
+    kutoka distutils.fancy_getopt agiza FancyGetopt
+    kutoka distutils.archive_util agiza ARCHIVE_FORMATS
     formats = []
-    for format in ARCHIVE_FORMATS.keys():
-        formats.append(("formats=" + format, None,
+    kila format kwenye ARCHIVE_FORMATS.keys():
+        formats.append(("formats=" + format, Tupu,
                         ARCHIVE_FORMATS[format][2]))
     formats.sort()
     FancyGetopt(formats).print_help(
         "List of available source distribution formats:")
 
 
-class sdist(Command):
+kundi sdist(Command):
 
     description = "create a source distribution (tarball, zip file, etc.)"
 
-    def checking_metadata(self):
-        """Callable used for the check sub-command.
+    eleza checking_metadata(self):
+        """Callable used kila the check sub-command.
 
         Placed here so user_options can view it"""
-        return self.metadata_check
+        rudisha self.metadata_check
 
     user_options = [
         ('template=', 't',
          "name of manifest template file [default: MANIFEST.in]"),
         ('manifest=', 'm',
          "name of manifest file [default: MANIFEST]"),
-        ('use-defaults', None,
-         "include the default file set in the manifest "
-         "[default; disable with --no-defaults]"),
-        ('no-defaults', None,
+        ('use-defaults', Tupu,
+         "include the default file set kwenye the manifest "
+         "[default; disable ukijumuisha --no-defaults]"),
+        ('no-defaults', Tupu,
          "don't include the default file set"),
-        ('prune', None,
+        ('prune', Tupu,
          "specifically exclude files/directories that should sio be "
          "distributed (build tree, RCS/CVS dirs, etc.) "
-         "[default; disable with --no-prune]"),
-        ('no-prune', None,
+         "[default; disable ukijumuisha --no-prune]"),
+        ('no-prune', Tupu,
          "don't automatically exclude anything"),
         ('manifest-only', 'o',
-         "just regenerate the manifest and then stop "
+         "just regenerate the manifest na then stop "
          "(implies --force-manifest)"),
         ('force-manifest', 'f',
-         "forcibly regenerate the manifest and carry on as usual. "
-         "Deprecated: now the manifest is always regenerated."),
-        ('formats=', None,
-         "formats for source distribution (comma-separated list)"),
+         "forcibly regenerate the manifest na carry on as usual. "
+         "Deprecated: now the manifest ni always regenerated."),
+        ('formats=', Tupu,
+         "formats kila source distribution (comma-separated list)"),
         ('keep-temp', 'k',
          "keep the distribution tree around after creating " +
          "archive file(s)"),
         ('dist-dir=', 'd',
-         "directory to put the source distribution archive(s) in "
+         "directory to put the source distribution archive(s) kwenye "
          "[default: dist]"),
-        ('metadata-check', None,
+        ('metadata-check', Tupu,
          "Ensure that all required elements of meta-data "
-         "are supplied. Warn if any missing. [default]"),
+         "are supplied. Warn ikiwa any missing. [default]"),
         ('owner=', 'u',
          "Owner name used when creating a tar file [default: current user]"),
         ('group=', 'g',
@@ -87,7 +87,7 @@ class sdist(Command):
                        'keep-temp', 'metadata-check']
 
     help_options = [
-        ('help-formats', None,
+        ('help-formats', Tupu,
          "list available distribution formats", show_formats),
         ]
 
@@ -98,14 +98,14 @@ class sdist(Command):
 
     READMES = ('README', 'README.txt', 'README.rst')
 
-    def initialize_options(self):
-        # 'template' and 'manifest' are, respectively, the names of
-        # the manifest template and manifest file.
-        self.template = None
-        self.manifest = None
+    eleza initialize_options(self):
+        # 'template' na 'manifest' are, respectively, the names of
+        # the manifest template na manifest file.
+        self.template = Tupu
+        self.manifest = Tupu
 
-        # 'use_defaults': if true, we will include the default file set
-        # in the manifest
+        # 'use_defaults': ikiwa true, we will include the default file set
+        # kwenye the manifest
         self.use_defaults = 1
         self.prune = 1
 
@@ -114,112 +114,112 @@ class sdist(Command):
 
         self.formats = ['gztar']
         self.keep_temp = 0
-        self.dist_dir = None
+        self.dist_dir = Tupu
 
-        self.archive_files = None
+        self.archive_files = Tupu
         self.metadata_check = 1
-        self.owner = None
-        self.group = None
+        self.owner = Tupu
+        self.group = Tupu
 
-    def finalize_options(self):
-        if self.manifest is None:
+    eleza finalize_options(self):
+        ikiwa self.manifest ni Tupu:
             self.manifest = "MANIFEST"
-        if self.template is None:
+        ikiwa self.template ni Tupu:
             self.template = "MANIFEST.in"
 
         self.ensure_string_list('formats')
 
         bad_format = archive_util.check_archive_formats(self.formats)
-        if bad_format:
-            ashiria DistutilsOptionError(
+        ikiwa bad_format:
+             ashiria DistutilsOptionError(
                   "unknown archive format '%s'" % bad_format)
 
-        if self.dist_dir is None:
+        ikiwa self.dist_dir ni Tupu:
             self.dist_dir = "dist"
 
-    def run(self):
+    eleza run(self):
         # 'filelist' contains the list of files that will make up the
         # manifest
         self.filelist = FileList()
 
         # Run sub commands
-        for cmd_name in self.get_sub_commands():
+        kila cmd_name kwenye self.get_sub_commands():
             self.run_command(cmd_name)
 
         # Do whatever it takes to get the list of files to process
         # (process the manifest template, read an existing manifest,
-        # whatever).  File list is accumulated in 'self.filelist'.
+        # whatever).  File list ni accumulated kwenye 'self.filelist'.
         self.get_file_list()
 
         # If user just wanted us to regenerate the manifest, stop now.
-        if self.manifest_only:
+        ikiwa self.manifest_only:
             return
 
-        # Otherwise, go ahead and create the source distribution tarball,
-        # or zipfile, or whatever.
+        # Otherwise, go ahead na create the source distribution tarball,
+        # ama zipfile, ama whatever.
         self.make_distribution()
 
-    def check_metadata(self):
+    eleza check_metadata(self):
         """Deprecated API."""
-        warn("distutils.command.sdist.check_metadata is deprecated, \
+        warn("distutils.command.sdist.check_metadata ni deprecated, \
               use the check command instead", PendingDeprecationWarning)
         check = self.distribution.get_command_obj('check')
         check.ensure_finalized()
         check.run()
 
-    def get_file_list(self):
-        """Figure out the list of files to include in the source
-        distribution, and put it in 'self.filelist'.  This might involve
-        reading the manifest template (and writing the manifest), or just
-        reading the manifest, or just using the default file set -- it all
+    eleza get_file_list(self):
+        """Figure out the list of files to include kwenye the source
+        distribution, na put it kwenye 'self.filelist'.  This might involve
+        reading the manifest template (and writing the manifest), ama just
+        reading the manifest, ama just using the default file set -- it all
         depends on the user's options.
         """
         # new behavior when using a template:
-        # the file list is recalculated every time because
-        # even if MANIFEST.in or setup.py are sio changed
-        # the user might have added some files in the tree that
+        # the file list ni recalculated every time because
+        # even ikiwa MANIFEST.in ama setup.py are sio changed
+        # the user might have added some files kwenye the tree that
         # need to be included.
         #
-        #  This makes --force the default and only behavior with templates.
+        #  This makes --force the default na only behavior ukijumuisha templates.
         template_exists = os.path.isfile(self.template)
-        if sio template_exists and self._manifest_is_not_generated():
+        ikiwa sio template_exists na self._manifest_is_not_generated():
             self.read_manifest()
             self.filelist.sort()
             self.filelist.remove_duplicates()
             return
 
-        if sio template_exists:
+        ikiwa sio template_exists:
             self.warn(("manifest template '%s' does sio exist " +
                         "(using default file list)") %
                         self.template)
         self.filelist.findall()
 
-        if self.use_defaults:
+        ikiwa self.use_defaults:
             self.add_defaults()
 
-        if template_exists:
+        ikiwa template_exists:
             self.read_template()
 
-        if self.prune:
+        ikiwa self.prune:
             self.prune_file_list()
 
         self.filelist.sort()
         self.filelist.remove_duplicates()
         self.write_manifest()
 
-    def add_defaults(self):
+    eleza add_defaults(self):
         """Add all the default files to self.filelist:
-          - README or README.txt
+          - README ama README.txt
           - setup.py
           - test/test*.py
-          - all pure Python modules mentioned in setup script
+          - all pure Python modules mentioned kwenye setup script
           - all files pointed by package_data (build_py)
-          - all files defined in data_files.
+          - all files defined kwenye data_files.
           - all files defined as scripts.
-          - all C sources listed as part of extensions or C libraries
-            in the setup script (doesn't catch C headers!)
-        Warns if (README or README.txt) ama setup.py are missing; everything
-        isipokua is optional.
+          - all C sources listed as part of extensions ama C libraries
+            kwenye the setup script (doesn't catch C headers!)
+        Warns ikiwa (README ama README.txt) ama setup.py are missing; everything
+        isipokua ni optional.
         """
         self._add_defaults_standards()
         self._add_defaults_optional()
@@ -230,101 +230,101 @@ class sdist(Command):
         self._add_defaults_scripts()
 
     @staticmethod
-    def _cs_path_exists(fspath):
+    eleza _cs_path_exists(fspath):
         """
         Case-sensitive path existence check
 
         >>> sdist._cs_path_exists(__file__)
-        True
+        Kweli
         >>> sdist._cs_path_exists(__file__.upper())
-        False
+        Uongo
         """
-        if sio os.path.exists(fspath):
-            return False
+        ikiwa sio os.path.exists(fspath):
+            rudisha Uongo
         # make absolute so we always have a directory
         abspath = os.path.abspath(fspath)
         directory, filename = os.path.split(abspath)
-        return filename in os.listdir(directory)
+        rudisha filename kwenye os.listdir(directory)
 
-    def _add_defaults_standards(self):
+    eleza _add_defaults_standards(self):
         standards = [self.READMES, self.distribution.script_name]
-        for fn in standards:
-            if isinstance(fn, tuple):
+        kila fn kwenye standards:
+            ikiwa isinstance(fn, tuple):
                 alts = fn
-                got_it = False
-                for fn in alts:
-                    if self._cs_path_exists(fn):
-                        got_it = True
+                got_it = Uongo
+                kila fn kwenye alts:
+                    ikiwa self._cs_path_exists(fn):
+                        got_it = Kweli
                         self.filelist.append(fn)
                         koma
 
-                if sio got_it:
+                ikiwa sio got_it:
                     self.warn("standard file sio found: should have one of " +
                               ', '.join(alts))
             isipokua:
-                if self._cs_path_exists(fn):
+                ikiwa self._cs_path_exists(fn):
                     self.filelist.append(fn)
                 isipokua:
                     self.warn("standard file '%s' sio found" % fn)
 
-    def _add_defaults_optional(self):
+    eleza _add_defaults_optional(self):
         optional = ['test/test*.py', 'setup.cfg']
-        for pattern in optional:
+        kila pattern kwenye optional:
             files = filter(os.path.isfile, glob(pattern))
             self.filelist.extend(files)
 
-    def _add_defaults_python(self):
-        # build_py is used to get:
+    eleza _add_defaults_python(self):
+        # build_py ni used to get:
         #  - python modules
-        #  - files defined in package_data
+        #  - files defined kwenye package_data
         build_py = self.get_finalized_command('build_py')
 
         # getting python files
-        if self.distribution.has_pure_modules():
+        ikiwa self.distribution.has_pure_modules():
             self.filelist.extend(build_py.get_source_files())
 
         # getting package_data files
-        # (computed in build_py.data_files by build_py.finalize_options)
-        for pkg, src_dir, build_dir, filenames in build_py.data_files:
-            for filename in filenames:
+        # (computed kwenye build_py.data_files by build_py.finalize_options)
+        kila pkg, src_dir, build_dir, filenames kwenye build_py.data_files:
+            kila filename kwenye filenames:
                 self.filelist.append(os.path.join(src_dir, filename))
 
-    def _add_defaults_data_files(self):
+    eleza _add_defaults_data_files(self):
         # getting distribution.data_files
-        if self.distribution.has_data_files():
-            for item in self.distribution.data_files:
-                if isinstance(item, str):
+        ikiwa self.distribution.has_data_files():
+            kila item kwenye self.distribution.data_files:
+                ikiwa isinstance(item, str):
                     # plain file
                     item = convert_path(item)
-                    if os.path.isfile(item):
+                    ikiwa os.path.isfile(item):
                         self.filelist.append(item)
                 isipokua:
                     # a (dirname, filenames) tuple
                     dirname, filenames = item
-                    for f in filenames:
+                    kila f kwenye filenames:
                         f = convert_path(f)
-                        if os.path.isfile(f):
+                        ikiwa os.path.isfile(f):
                             self.filelist.append(f)
 
-    def _add_defaults_ext(self):
-        if self.distribution.has_ext_modules():
+    eleza _add_defaults_ext(self):
+        ikiwa self.distribution.has_ext_modules():
             build_ext = self.get_finalized_command('build_ext')
             self.filelist.extend(build_ext.get_source_files())
 
-    def _add_defaults_c_libs(self):
-        if self.distribution.has_c_libraries():
+    eleza _add_defaults_c_libs(self):
+        ikiwa self.distribution.has_c_libraries():
             build_clib = self.get_finalized_command('build_clib')
             self.filelist.extend(build_clib.get_source_files())
 
-    def _add_defaults_scripts(self):
-        if self.distribution.has_scripts():
+    eleza _add_defaults_scripts(self):
+        ikiwa self.distribution.has_scripts():
             build_scripts = self.get_finalized_command('build_scripts')
             self.filelist.extend(build_scripts.get_source_files())
 
-    def read_template(self):
-        """Read and parse manifest template file named by self.template.
+    eleza read_template(self):
+        """Read na parse manifest template file named by self.template.
 
-        (usually "MANIFEST.in") The parsing and processing is done by
+        (usually "MANIFEST.in") The parsing na processing ni done by
         'self.filelist', which updates itself accordingly.
         """
         log.info("reading manifest template '%s'", self.template)
@@ -333,38 +333,38 @@ class sdist(Command):
                             collapse_join=1)
 
         jaribu:
-            wakati True:
+            wakati Kweli:
                 line = template.readline()
-                if line is None:            # end of file
+                ikiwa line ni Tupu:            # end of file
                     koma
 
                 jaribu:
                     self.filelist.process_template_line(line)
-                # the call above can ashiria a DistutilsTemplateError for
-                # malformed lines, or a ValueError from the lower-level
+                # the call above can  ashiria a DistutilsTemplateError for
+                # malformed lines, ama a ValueError kutoka the lower-level
                 # convert_path function
-                tatizo (DistutilsTemplateError, ValueError) as msg:
+                except (DistutilsTemplateError, ValueError) as msg:
                     self.warn("%s, line %d: %s" % (template.filename,
                                                    template.current_line,
                                                    msg))
         mwishowe:
             template.close()
 
-    def prune_file_list(self):
+    eleza prune_file_list(self):
         """Prune off branches that might slip into the file list as created
         by 'read_template()', but really don't belong there:
           * the build tree (typically "build")
-          * the release tree itself (only an issue if we ran "sdist"
-            previously with --keep-temp, or it aborted)
+          * the release tree itself (only an issue ikiwa we ran "sdist"
+            previously ukijumuisha --keep-temp, ama it aborted)
           * any RCS, CVS, .svn, .hg, .git, .bzr, _darcs directories
         """
         build = self.get_finalized_command('build')
         base_dir = self.distribution.get_fullname()
 
-        self.filelist.exclude_pattern(None, prefix=build.build_base)
-        self.filelist.exclude_pattern(None, prefix=base_dir)
+        self.filelist.exclude_pattern(Tupu, prefix=build.build_base)
+        self.filelist.exclude_pattern(Tupu, prefix=base_dir)
 
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             seps = r'/|\\'
         isipokua:
             seps = '/'
@@ -374,12 +374,12 @@ class sdist(Command):
         vcs_ptrn = r'(^|%s)(%s)(%s).*' % (seps, '|'.join(vcs_dirs), seps)
         self.filelist.exclude_pattern(vcs_ptrn, is_regex=1)
 
-    def write_manifest(self):
-        """Write the file list in 'self.filelist' (presumably as filled in
-        by 'add_defaults()' and 'read_template()') to the manifest file
+    eleza write_manifest(self):
+        """Write the file list kwenye 'self.filelist' (presumably as filled in
+        by 'add_defaults()' na 'read_template()') to the manifest file
         named by 'self.manifest'.
         """
-        if self._manifest_is_not_generated():
+        ikiwa self._manifest_is_not_generated():
             log.info("not writing to manually maintained "
                      "manifest file '%s'" % self.manifest)
             return
@@ -389,67 +389,67 @@ class sdist(Command):
         self.execute(file_util.write_file, (self.manifest, content),
                      "writing manifest file '%s'" % self.manifest)
 
-    def _manifest_is_not_generated(self):
-        # check for special comment used in 3.1.3 and higher
-        if sio os.path.isfile(self.manifest):
-            return False
+    eleza _manifest_is_not_generated(self):
+        # check kila special comment used kwenye 3.1.3 na higher
+        ikiwa sio os.path.isfile(self.manifest):
+            rudisha Uongo
 
         fp = open(self.manifest)
         jaribu:
             first_line = fp.readline()
         mwishowe:
             fp.close()
-        return first_line != '# file GENERATED by distutils, do NOT edit\n'
+        rudisha first_line != '# file GENERATED by distutils, do NOT edit\n'
 
-    def read_manifest(self):
-        """Read the manifest file (named by 'self.manifest') and use it to
-        fill in 'self.filelist', the list of files to include in the source
+    eleza read_manifest(self):
+        """Read the manifest file (named by 'self.manifest') na use it to
+        fill kwenye 'self.filelist', the list of files to include kwenye the source
         distribution.
         """
         log.info("reading manifest file '%s'", self.manifest)
-        with open(self.manifest) as manifest:
-            for line in manifest:
-                # ignore comments and blank lines
+        ukijumuisha open(self.manifest) as manifest:
+            kila line kwenye manifest:
+                # ignore comments na blank lines
                 line = line.strip()
-                if line.startswith('#') ama sio line:
+                ikiwa line.startswith('#') ama sio line:
                     endelea
                 self.filelist.append(line)
 
-    def make_release_tree(self, base_dir, files):
+    eleza make_release_tree(self, base_dir, files):
         """Create the directory tree that will become the source
         distribution archive.  All directories implied by the filenames in
-        'files' are created under 'base_dir', and then we hard link or copy
-        (if hard linking is unavailable) those files into place.
-        Essentially, this duplicates the developer's source tree, but in a
+        'files' are created under 'base_dir', na then we hard link ama copy
+        (ikiwa hard linking ni unavailable) those files into place.
+        Essentially, this duplicates the developer's source tree, but kwenye a
         directory named after the distribution, containing only the files
         to be distributed.
         """
         # Create all the directories under 'base_dir' necessary to
-        # put 'files' there; the 'mkpath()' is just so we don't die
-        # if the manifest happens to be empty.
+        # put 'files' there; the 'mkpath()' ni just so we don't die
+        # ikiwa the manifest happens to be empty.
         self.mkpath(base_dir)
         dir_util.create_tree(base_dir, files, dry_run=self.dry_run)
 
         # And walk over the list of files, either making a hard link (if
-        # os.link exists) to each one that doesn't already exist in its
-        # corresponding location under 'base_dir', or copying each file
-        # that's out-of-date in 'base_dir'.  (Usually, all files will be
+        # os.link exists) to each one that doesn't already exist kwenye its
+        # corresponding location under 'base_dir', ama copying each file
+        # that's out-of-date kwenye 'base_dir'.  (Usually, all files will be
         # out-of-date, because by default we blow away 'base_dir' when
         # we're done making the distribution archives.)
 
-        if hasattr(os, 'link'):        # can make hard links on this system
+        ikiwa hasattr(os, 'link'):        # can make hard links on this system
             link = 'hard'
-            msg = "making hard links in %s..." % base_dir
+            msg = "making hard links kwenye %s..." % base_dir
         isipokua:                           # nope, have to copy
-            link = None
+            link = Tupu
             msg = "copying files to %s..." % base_dir
 
-        if sio files:
+        ikiwa sio files:
             log.warn("no files to distribute -- empty manifest?")
         isipokua:
             log.info(msg)
-        for file in files:
-            if sio os.path.isfile(file):
+        kila file kwenye files:
+            ikiwa sio os.path.isfile(file):
                 log.warn("'%s' sio a regular file -- skipping", file)
             isipokua:
                 dest = os.path.join(base_dir, file)
@@ -457,12 +457,12 @@ class sdist(Command):
 
         self.distribution.metadata.write_pkg_info(base_dir)
 
-    def make_distribution(self):
+    eleza make_distribution(self):
         """Create the source distribution(s).  First, we create the release
-        tree with 'make_release_tree()'; then, we create all required
-        archive files (according to 'self.formats') from the release tree.
+        tree ukijumuisha 'make_release_tree()'; then, we create all required
+        archive files (according to 'self.formats') kutoka the release tree.
         Finally, we clean up by blowing away the release tree (unless
-        'self.keep_temp' is true).  The list of archive files created is
+        'self.keep_temp' ni true).  The list of archive files created is
         stored so it can be retrieved later by 'get_archive_files()'.
         """
         # Don't warn about missing meta-data here -- should be (and is!)
@@ -472,11 +472,11 @@ class sdist(Command):
 
         self.make_release_tree(base_dir, self.filelist.files)
         archive_files = []              # remember names of files we create
-        # tar archive must be created last to avoid overwrite and remove
-        if 'tar' in self.formats:
+        # tar archive must be created last to avoid overwrite na remove
+        ikiwa 'tar' kwenye self.formats:
             self.formats.append(self.formats.pop(self.formats.index('tar')))
 
-        for fmt in self.formats:
+        kila fmt kwenye self.formats:
             file = self.make_archive(base_name, fmt, base_dir=base_dir,
                                      owner=self.owner, group=self.group)
             archive_files.append(file)
@@ -484,11 +484,11 @@ class sdist(Command):
 
         self.archive_files = archive_files
 
-        if sio self.keep_temp:
+        ikiwa sio self.keep_temp:
             dir_util.remove_tree(base_dir, dry_run=self.dry_run)
 
-    def get_archive_files(self):
+    eleza get_archive_files(self):
         """Return the list of archive files created when the command
-        was run, or None if the command hasn't run yet.
+        was run, ama Tupu ikiwa the command hasn't run yet.
         """
-        return self.archive_files
+        rudisha self.archive_files

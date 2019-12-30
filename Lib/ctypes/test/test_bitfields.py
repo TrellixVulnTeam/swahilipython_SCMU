@@ -1,11 +1,11 @@
-from ctypes import *
-from ctypes.test import need_symbol
-import unittest
-import os
+kutoka ctypes agiza *
+kutoka ctypes.test agiza need_symbol
+agiza unittest
+agiza os
 
 agiza _ctypes_test
 
-class BITS(Structure):
+kundi BITS(Structure):
     _fields_ = [("A", c_int, 1),
                 ("B", c_int, 2),
                 ("C", c_int, 3),
@@ -27,25 +27,25 @@ class BITS(Structure):
 func = CDLL(_ctypes_test.__file__).unpack_bitfields
 func.argtypes = POINTER(BITS), c_char
 
-##for n in "ABCDEFGHIMNOPQRS":
+##kila n kwenye "ABCDEFGHIMNOPQRS":
 ##    print n, hex(getattr(BITS, n).size), getattr(BITS, n).offset
 
-class C_Test(unittest.TestCase):
+kundi C_Test(unittest.TestCase):
 
-    def test_ints(self):
-        for i in range(512):
-            for name in "ABCDEFGHI":
+    eleza test_ints(self):
+        kila i kwenye range(512):
+            kila name kwenye "ABCDEFGHI":
                 b = BITS()
                 setattr(b, name, i)
                 self.assertEqual(getattr(b, name), func(byref(b), name.encode('ascii')))
 
-    def test_shorts(self):
+    eleza test_shorts(self):
         b = BITS()
         name = "M"
-        if func(byref(b), name.encode('ascii')) == 999:
+        ikiwa func(byref(b), name.encode('ascii')) == 999:
             self.skipTest("Compiler does sio support signed short bitfields")
-        for i in range(256):
-            for name in "MNOPQRS":
+        kila i kwenye range(256):
+            kila name kwenye "MNOPQRS":
                 b = BITS()
                 setattr(b, name, i)
                 self.assertEqual(getattr(b, name), func(byref(b), name.encode('ascii')))
@@ -54,10 +54,10 @@ signed_int_types = (c_byte, c_short, c_int, c_long, c_longlong)
 unsigned_int_types = (c_ubyte, c_ushort, c_uint, c_ulong, c_ulonglong)
 int_types = unsigned_int_types + signed_int_types
 
-class BitFieldTest(unittest.TestCase):
+kundi BitFieldTest(unittest.TestCase):
 
-    def test_longlong(self):
-        class X(Structure):
+    eleza test_longlong(self):
+        kundi X(Structure):
             _fields_ = [("a", c_longlong, 1),
                         ("b", c_longlong, 62),
                         ("c", c_longlong, 1)]
@@ -67,8 +67,8 @@ class BitFieldTest(unittest.TestCase):
         x.a, x.b, x.c = -1, 7, -1
         self.assertEqual((x.a, x.b, x.c), (-1, 7, -1))
 
-    def test_ulonglong(self):
-        class X(Structure):
+    eleza test_ulonglong(self):
+        kundi X(Structure):
             _fields_ = [("a", c_ulonglong, 1),
                         ("b", c_ulonglong, 62),
                         ("c", c_ulonglong, 1)]
@@ -79,9 +79,9 @@ class BitFieldTest(unittest.TestCase):
         x.a, x.b, x.c = 7, 7, 7
         self.assertEqual((x.a, x.b, x.c), (1, 7, 1))
 
-    def test_signed(self):
-        for c_typ in signed_int_types:
-            class X(Structure):
+    eleza test_signed(self):
+        kila c_typ kwenye signed_int_types:
+            kundi X(Structure):
                 _fields_ = [("dummy", c_typ),
                             ("a", c_typ, 3),
                             ("b", c_typ, 3),
@@ -96,9 +96,9 @@ class BitFieldTest(unittest.TestCase):
             self.assertEqual((c_typ, x.a, x.b, x.c), (c_typ, 0, -1, 0))
 
 
-    def test_unsigned(self):
-        for c_typ in unsigned_int_types:
-            class X(Structure):
+    eleza test_unsigned(self):
+        kila c_typ kwenye unsigned_int_types:
+            kundi X(Structure):
                 _fields_ = [("a", c_typ, 3),
                             ("b", c_typ, 3),
                             ("c", c_typ, 1)]
@@ -112,64 +112,64 @@ class BitFieldTest(unittest.TestCase):
             self.assertEqual((c_typ, x.a, x.b, x.c), (c_typ, 0, 7, 0))
 
 
-    def fail_fields(self, *fields):
-        return self.get_except(type(Structure), "X", (),
+    eleza fail_fields(self, *fields):
+        rudisha self.get_except(type(Structure), "X", (),
                                {"_fields_": fields})
 
-    def test_nonint_types(self):
+    eleza test_nonint_types(self):
         # bit fields are sio allowed on non-integer types.
         result = self.fail_fields(("a", c_char_p, 1))
-        self.assertEqual(result, (TypeError, 'bit fields sio allowed for type c_char_p'))
+        self.assertEqual(result, (TypeError, 'bit fields sio allowed kila type c_char_p'))
 
         result = self.fail_fields(("a", c_void_p, 1))
-        self.assertEqual(result, (TypeError, 'bit fields sio allowed for type c_void_p'))
+        self.assertEqual(result, (TypeError, 'bit fields sio allowed kila type c_void_p'))
 
-        if c_int != c_long:
+        ikiwa c_int != c_long:
             result = self.fail_fields(("a", POINTER(c_int), 1))
-            self.assertEqual(result, (TypeError, 'bit fields sio allowed for type LP_c_int'))
+            self.assertEqual(result, (TypeError, 'bit fields sio allowed kila type LP_c_int'))
 
         result = self.fail_fields(("a", c_char, 1))
-        self.assertEqual(result, (TypeError, 'bit fields sio allowed for type c_char'))
+        self.assertEqual(result, (TypeError, 'bit fields sio allowed kila type c_char'))
 
-        class Dummy(Structure):
+        kundi Dummy(Structure):
             _fields_ = []
 
         result = self.fail_fields(("a", Dummy, 1))
-        self.assertEqual(result, (TypeError, 'bit fields sio allowed for type Dummy'))
+        self.assertEqual(result, (TypeError, 'bit fields sio allowed kila type Dummy'))
 
     @need_symbol('c_wchar')
-    def test_c_wchar(self):
+    eleza test_c_wchar(self):
         result = self.fail_fields(("a", c_wchar, 1))
         self.assertEqual(result,
-                (TypeError, 'bit fields sio allowed for type c_wchar'))
+                (TypeError, 'bit fields sio allowed kila type c_wchar'))
 
-    def test_single_bitfield_size(self):
-        for c_typ in int_types:
+    eleza test_single_bitfield_size(self):
+        kila c_typ kwenye int_types:
             result = self.fail_fields(("a", c_typ, -1))
-            self.assertEqual(result, (ValueError, 'number of bits invalid for bit field'))
+            self.assertEqual(result, (ValueError, 'number of bits invalid kila bit field'))
 
             result = self.fail_fields(("a", c_typ, 0))
-            self.assertEqual(result, (ValueError, 'number of bits invalid for bit field'))
+            self.assertEqual(result, (ValueError, 'number of bits invalid kila bit field'))
 
-            class X(Structure):
+            kundi X(Structure):
                 _fields_ = [("a", c_typ, 1)]
             self.assertEqual(sizeof(X), sizeof(c_typ))
 
-            class X(Structure):
+            kundi X(Structure):
                 _fields_ = [("a", c_typ, sizeof(c_typ)*8)]
             self.assertEqual(sizeof(X), sizeof(c_typ))
 
             result = self.fail_fields(("a", c_typ, sizeof(c_typ)*8 + 1))
-            self.assertEqual(result, (ValueError, 'number of bits invalid for bit field'))
+            self.assertEqual(result, (ValueError, 'number of bits invalid kila bit field'))
 
-    def test_multi_bitfields_size(self):
-        class X(Structure):
+    eleza test_multi_bitfields_size(self):
+        kundi X(Structure):
             _fields_ = [("a", c_short, 1),
                         ("b", c_short, 14),
                         ("c", c_short, 1)]
         self.assertEqual(sizeof(X), sizeof(c_short))
 
-        class X(Structure):
+        kundi X(Structure):
             _fields_ = [("a", c_short, 1),
                         ("a1", c_short),
                         ("b", c_short, 14),
@@ -180,7 +180,7 @@ class BitFieldTest(unittest.TestCase):
         self.assertEqual(X.b.offset, sizeof(c_short)*2)
         self.assertEqual(X.c.offset, sizeof(c_short)*2)
 
-        class X(Structure):
+        kundi X(Structure):
             _fields_ = [("a", c_short, 3),
                         ("b", c_short, 14),
                         ("c", c_short, 14)]
@@ -190,61 +190,61 @@ class BitFieldTest(unittest.TestCase):
         self.assertEqual(X.c.offset, sizeof(c_short)*2)
 
 
-    def get_except(self, func, *args, **kw):
+    eleza get_except(self, func, *args, **kw):
         jaribu:
             func(*args, **kw)
-        tatizo Exception as detail:
-            return detail.__class__, str(detail)
+        except Exception as detail:
+            rudisha detail.__class__, str(detail)
 
-    def test_mixed_1(self):
-        class X(Structure):
+    eleza test_mixed_1(self):
+        kundi X(Structure):
             _fields_ = [("a", c_byte, 4),
                         ("b", c_int, 4)]
-        if os.name == "nt":
+        ikiwa os.name == "nt":
             self.assertEqual(sizeof(X), sizeof(c_int)*2)
         isipokua:
             self.assertEqual(sizeof(X), sizeof(c_int))
 
-    def test_mixed_2(self):
-        class X(Structure):
+    eleza test_mixed_2(self):
+        kundi X(Structure):
             _fields_ = [("a", c_byte, 4),
                         ("b", c_int, 32)]
         self.assertEqual(sizeof(X), alignment(c_int)+sizeof(c_int))
 
-    def test_mixed_3(self):
-        class X(Structure):
+    eleza test_mixed_3(self):
+        kundi X(Structure):
             _fields_ = [("a", c_byte, 4),
                         ("b", c_ubyte, 4)]
         self.assertEqual(sizeof(X), sizeof(c_byte))
 
-    def test_mixed_4(self):
-        class X(Structure):
+    eleza test_mixed_4(self):
+        kundi X(Structure):
             _fields_ = [("a", c_short, 4),
                         ("b", c_short, 4),
                         ("c", c_int, 24),
                         ("d", c_short, 4),
                         ("e", c_short, 4),
                         ("f", c_int, 24)]
-        # MSVC does NOT combine c_short and c_int into one field, GCC
-        # does (unless GCC is run with '-mms-bitfields' which
-        # produces code compatible with MSVC).
-        if os.name == "nt":
+        # MSVC does NOT combine c_short na c_int into one field, GCC
+        # does (unless GCC ni run ukijumuisha '-mms-bitfields' which
+        # produces code compatible ukijumuisha MSVC).
+        ikiwa os.name == "nt":
             self.assertEqual(sizeof(X), sizeof(c_int) * 4)
         isipokua:
             self.assertEqual(sizeof(X), sizeof(c_int) * 2)
 
-    def test_anon_bitfields(self):
+    eleza test_anon_bitfields(self):
         # anonymous bit-fields gave a strange error message
-        class X(Structure):
+        kundi X(Structure):
             _fields_ = [("a", c_byte, 4),
                         ("b", c_ubyte, 4)]
-        class Y(Structure):
+        kundi Y(Structure):
             _anonymous_ = ["_"]
             _fields_ = [("_", X)]
 
     @need_symbol('c_uint32')
-    def test_uint32(self):
-        class X(Structure):
+    eleza test_uint32(self):
+        kundi X(Structure):
             _fields_ = [("a", c_uint32, 32)]
         x = X()
         x.a = 10
@@ -253,8 +253,8 @@ class BitFieldTest(unittest.TestCase):
         self.assertEqual(x.a, 0xFDCBA987)
 
     @need_symbol('c_uint64')
-    def test_uint64(self):
-        class X(Structure):
+    eleza test_uint64(self):
+        kundi X(Structure):
             _fields_ = [("a", c_uint64, 64)]
         x = X()
         x.a = 10
@@ -263,9 +263,9 @@ class BitFieldTest(unittest.TestCase):
         self.assertEqual(x.a, 0xFEDCBA9876543211)
 
     @need_symbol('c_uint32')
-    def test_uint32_swap_little_endian(self):
+    eleza test_uint32_swap_little_endian(self):
         # Issue #23319
-        class Little(LittleEndianStructure):
+        kundi Little(LittleEndianStructure):
             _fields_ = [("a", c_uint32, 24),
                         ("b", c_uint32, 4),
                         ("c", c_uint32, 4)]
@@ -277,9 +277,9 @@ class BitFieldTest(unittest.TestCase):
         self.assertEqual(b, b'\xef\xcd\xab\x21')
 
     @need_symbol('c_uint32')
-    def test_uint32_swap_big_endian(self):
+    eleza test_uint32_swap_big_endian(self):
         # Issue #23319
-        class Big(BigEndianStructure):
+        kundi Big(BigEndianStructure):
             _fields_ = [("a", c_uint32, 24),
                         ("b", c_uint32, 4),
                         ("c", c_uint32, 4)]
@@ -290,5 +290,5 @@ class BitFieldTest(unittest.TestCase):
         x.c = 2
         self.assertEqual(b, b'\xab\xcd\xef\x12')
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

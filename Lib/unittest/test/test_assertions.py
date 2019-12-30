@@ -57,52 +57,52 @@ kundi Test_Assertions(unittest.TestCase):
                                   delta=datetime.timedelta(seconds=5))
 
     eleza test_assertRaises(self):
-        eleza _ashiria(e):
-            ashiria e
-        self.assertRaises(KeyError, _ashiria, KeyError)
-        self.assertRaises(KeyError, _ashiria, KeyError("key"))
+        eleza _raise(e):
+             ashiria e
+        self.assertRaises(KeyError, _raise, KeyError)
+        self.assertRaises(KeyError, _raise, KeyError("key"))
         jaribu:
             self.assertRaises(KeyError, lambda: Tupu)
-        tatizo self.failureException kama e:
-            self.assertIn("KeyError sio ashiriad", str(e))
+        except self.failureException as e:
+            self.assertIn("KeyError sio raised", str(e))
         isipokua:
             self.fail("assertRaises() didn't fail")
         jaribu:
-            self.assertRaises(KeyError, _ashiria, ValueError)
-        tatizo ValueError:
-            pita
+            self.assertRaises(KeyError, _raise, ValueError)
+        except ValueError:
+            pass
         isipokua:
-            self.fail("assertRaises() didn't let exception pita through")
-        ukijumuisha self.assertRaises(KeyError) kama cm:
+            self.fail("assertRaises() didn't let exception pass through")
+        ukijumuisha self.assertRaises(KeyError) as cm:
             jaribu:
-                ashiria KeyError
-            tatizo Exception kama e:
+                 ashiria KeyError
+            except Exception as e:
                 exc = e
-                ashiria
+                raise
         self.assertIs(cm.exception, exc)
 
         ukijumuisha self.assertRaises(KeyError):
-            ashiria KeyError("key")
+             ashiria KeyError("key")
         jaribu:
             ukijumuisha self.assertRaises(KeyError):
-                pita
-        tatizo self.failureException kama e:
-            self.assertIn("KeyError sio ashiriad", str(e))
+                pass
+        except self.failureException as e:
+            self.assertIn("KeyError sio raised", str(e))
         isipokua:
             self.fail("assertRaises() didn't fail")
         jaribu:
             ukijumuisha self.assertRaises(KeyError):
-                ashiria ValueError
-        tatizo ValueError:
-            pita
+                 ashiria ValueError
+        except ValueError:
+            pass
         isipokua:
-            self.fail("assertRaises() didn't let exception pita through")
+            self.fail("assertRaises() didn't let exception pass through")
 
     eleza test_assertRaises_frames_survival(self):
         # Issue #9815: assertRaises should avoid keeping local variables
         # kwenye a traceback alive.
         kundi A:
-            pita
+            pass
         wr = Tupu
 
         kundi Foo(unittest.TestCase):
@@ -112,9 +112,9 @@ kundi Test_Assertions(unittest.TestCase):
                 a = A()
                 wr = weakref.ref(a)
                 jaribu:
-                    ashiria OSError
-                tatizo OSError:
-                    ashiria ValueError
+                     ashiria OSError
+                except OSError:
+                     ashiria ValueError
 
             eleza test_functional(self):
                 self.assertRaises(ValueError, self.foo)
@@ -132,7 +132,7 @@ kundi Test_Assertions(unittest.TestCase):
         self.assertNotRegex('Ala ma kota', r'r+')
         jaribu:
             self.assertNotRegex('Ala ma kota', r'k.t', 'Message')
-        tatizo self.failureException kama e:
+        except self.failureException as e:
             self.assertIn('Message', e.args[0])
         isipokua:
             self.fail('assertNotRegex should have failed.')
@@ -149,14 +149,14 @@ kundi TestLongMessage(unittest.TestCase):
             failureException = self.failureException
 
             eleza testTest(self):
-                pita
+                pass
 
         kundi TestableTestKweli(unittest.TestCase):
             longMessage = Kweli
             failureException = self.failureException
 
             eleza testTest(self):
-                pita
+                pass
 
         self.testableKweli = TestableTestKweli('testTest')
         self.testableUongo = TestableTestUongo('testTest')
@@ -181,12 +181,12 @@ kundi TestLongMessage(unittest.TestCase):
 
     eleza assertMessages(self, methodName, args, errors):
         """
-        Check that methodName(*args) ashirias the correct error messages.
+        Check that methodName(*args) raises the correct error messages.
         errors should be a list of 4 regex that match the error when:
-          1) longMessage = Uongo na no msg pitaed;
-          2) longMessage = Uongo na msg pitaed;
-          3) longMessage = Kweli na no msg pitaed;
-          4) longMessage = Kweli na msg pitaed;
+          1) longMessage = Uongo na no msg passed;
+          2) longMessage = Uongo na msg passed;
+          3) longMessage = Kweli na no msg passed;
+          4) longMessage = Kweli na msg passed;
         """
         eleza getMethod(i):
             useTestableUongo  = i < 2
@@ -347,41 +347,41 @@ kundi TestLongMessage(unittest.TestCase):
 
     eleza assertMessagesCM(self, methodName, args, func, errors):
         """
-        Check that the correct error messages are ashiriad wakati executing:
+        Check that the correct error messages are raised wakati executing:
           ukijumuisha method(*args):
               func()
         *errors* should be a list of 4 regex that match the error when:
-          1) longMessage = Uongo na no msg pitaed;
-          2) longMessage = Uongo na msg pitaed;
-          3) longMessage = Kweli na no msg pitaed;
-          4) longMessage = Kweli na msg pitaed;
+          1) longMessage = Uongo na no msg passed;
+          2) longMessage = Uongo na msg passed;
+          3) longMessage = Kweli na no msg passed;
+          4) longMessage = Kweli na msg passed;
         """
         p = product((self.testableUongo, self.testableKweli),
                     ({}, {"msg": "oops"}))
         kila (cls, kwargs), err kwenye zip(p, errors):
             method = getattr(cls, methodName)
             ukijumuisha self.assertRaisesRegex(cls.failureException, err):
-                ukijumuisha method(*args, **kwargs) kama cm:
+                ukijumuisha method(*args, **kwargs) as cm:
                     func()
 
     eleza testAssertRaises(self):
         self.assertMessagesCM('assertRaises', (TypeError,), lambda: Tupu,
-                              ['^TypeError sio ashiriad$', '^oops$',
-                               '^TypeError sio ashiriad$',
-                               '^TypeError sio ashiriad : oops$'])
+                              ['^TypeError sio raised$', '^oops$',
+                               '^TypeError sio raised$',
+                               '^TypeError sio raised : oops$'])
 
     eleza testAssertRaisesRegex(self):
-        # test error sio ashiriad
+        # test error sio raised
         self.assertMessagesCM('assertRaisesRegex', (TypeError, 'unused regex'),
                               lambda: Tupu,
-                              ['^TypeError sio ashiriad$', '^oops$',
-                               '^TypeError sio ashiriad$',
-                               '^TypeError sio ashiriad : oops$'])
-        # test error ashiriad but ukijumuisha wrong message
-        eleza ashiria_wrong_message():
-            ashiria TypeError('foo')
+                              ['^TypeError sio raised$', '^oops$',
+                               '^TypeError sio raised$',
+                               '^TypeError sio raised : oops$'])
+        # test error raised but ukijumuisha wrong message
+        eleza raise_wrong_message():
+             ashiria TypeError('foo')
         self.assertMessagesCM('assertRaisesRegex', (TypeError, 'regex'),
-                              ashiria_wrong_message,
+                              raise_wrong_message,
                               ['^"regex" does sio match "foo"$', '^oops$',
                                '^"regex" does sio match "foo"$',
                                '^"regex" does sio match "foo" : oops$'])
@@ -393,17 +393,17 @@ kundi TestLongMessage(unittest.TestCase):
                                '^UserWarning sio triggered : oops$'])
 
     eleza testAssertWarnsRegex(self):
-        # test error sio ashiriad
+        # test error sio raised
         self.assertMessagesCM('assertWarnsRegex', (UserWarning, 'unused regex'),
                               lambda: Tupu,
                               ['^UserWarning sio triggered$', '^oops$',
                                '^UserWarning sio triggered$',
                                '^UserWarning sio triggered : oops$'])
-        # test warning ashiriad but ukijumuisha wrong message
-        eleza ashiria_wrong_message():
+        # test warning raised but ukijumuisha wrong message
+        eleza raise_wrong_message():
             warnings.warn('foo')
         self.assertMessagesCM('assertWarnsRegex', (UserWarning, 'regex'),
-                              ashiria_wrong_message,
+                              raise_wrong_message,
                               ['^"regex" does sio match "foo"$', '^oops$',
                                '^"regex" does sio match "foo"$',
                                '^"regex" does sio match "foo" : oops$'])

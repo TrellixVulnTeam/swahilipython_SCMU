@@ -1,139 +1,139 @@
-import asyncio
-import unittest
+agiza asyncio
+agiza unittest
 
-from unittest import mock
-from . import utils as test_utils
+kutoka unittest agiza mock
+kutoka . agiza utils as test_utils
 
 
-class TestPolicy(asyncio.AbstractEventLoopPolicy):
+kundi TestPolicy(asyncio.AbstractEventLoopPolicy):
 
-    def __init__(self, loop_factory):
+    eleza __init__(self, loop_factory):
         self.loop_factory = loop_factory
-        self.loop = None
+        self.loop = Tupu
 
-    def get_event_loop(self):
+    eleza get_event_loop(self):
         # shouldn't ever be called by asyncio.run()
-        ashiria RuntimeError
+         ashiria RuntimeError
 
-    def new_event_loop(self):
-        return self.loop_factory()
+    eleza new_event_loop(self):
+        rudisha self.loop_factory()
 
-    def set_event_loop(self, loop):
-        if loop ni sio None:
-            # we want to check if the loop is closed
-            # in BaseTest.tearDown
+    eleza set_event_loop(self, loop):
+        ikiwa loop ni sio Tupu:
+            # we want to check ikiwa the loop ni closed
+            # kwenye BaseTest.tearDown
             self.loop = loop
 
 
-class BaseTest(unittest.TestCase):
+kundi BaseTest(unittest.TestCase):
 
-    def new_loop(self):
+    eleza new_loop(self):
         loop = asyncio.BaseEventLoop()
         loop._process_events = mock.Mock()
         loop._selector = mock.Mock()
         loop._selector.select.return_value = ()
-        loop.shutdown_ag_run = False
+        loop.shutdown_ag_run = Uongo
 
-        async def shutdown_asyncgens():
-            loop.shutdown_ag_run = True
+        async eleza shutdown_asyncgens():
+            loop.shutdown_ag_run = Kweli
         loop.shutdown_asyncgens = shutdown_asyncgens
 
-        return loop
+        rudisha loop
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
 
         policy = TestPolicy(self.new_loop)
         asyncio.set_event_loop_policy(policy)
 
-    def tearDown(self):
+    eleza tearDown(self):
         policy = asyncio.get_event_loop_policy()
-        if policy.loop ni sio None:
-            self.assertTrue(policy.loop.is_closed())
-            self.assertTrue(policy.loop.shutdown_ag_run)
+        ikiwa policy.loop ni sio Tupu:
+            self.assertKweli(policy.loop.is_closed())
+            self.assertKweli(policy.loop.shutdown_ag_run)
 
-        asyncio.set_event_loop_policy(None)
+        asyncio.set_event_loop_policy(Tupu)
         super().tearDown()
 
 
-class RunTests(BaseTest):
+kundi RunTests(BaseTest):
 
-    def test_asyncio_run_return(self):
-        async def main():
+    eleza test_asyncio_run_return(self):
+        async eleza main():
             await asyncio.sleep(0)
-            return 42
+            rudisha 42
 
         self.assertEqual(asyncio.run(main()), 42)
 
-    def test_asyncio_run_raises(self):
-        async def main():
+    eleza test_asyncio_run_raises(self):
+        async eleza main():
             await asyncio.sleep(0)
-            ashiria ValueError('spam')
+             ashiria ValueError('spam')
 
-        with self.assertRaisesRegex(ValueError, 'spam'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'spam'):
             asyncio.run(main())
 
-    def test_asyncio_run_only_coro(self):
-        for o in {1, lambda: None}:
-            with self.subTest(obj=o), \
+    eleza test_asyncio_run_only_coro(self):
+        kila o kwenye {1, lambda: Tupu}:
+            ukijumuisha self.subTest(obj=o), \
                     self.assertRaisesRegex(ValueError,
                                            'a coroutine was expected'):
                 asyncio.run(o)
 
-    def test_asyncio_run_debug(self):
-        async def main(expected):
+    eleza test_asyncio_run_debug(self):
+        async eleza main(expected):
             loop = asyncio.get_event_loop()
             self.assertIs(loop.get_debug(), expected)
 
-        asyncio.run(main(False))
-        asyncio.run(main(True), debug=True)
+        asyncio.run(main(Uongo))
+        asyncio.run(main(Kweli), debug=Kweli)
 
-    def test_asyncio_run_from_running_loop(self):
-        async def main():
+    eleza test_asyncio_run_from_running_loop(self):
+        async eleza main():
             coro = main()
             jaribu:
                 asyncio.run(coro)
             mwishowe:
                 coro.close()  # Suppress ResourceWarning
 
-        with self.assertRaisesRegex(RuntimeError,
-                                    'cannot be called from a running'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError,
+                                    'cannot be called kutoka a running'):
             asyncio.run(main())
 
-    def test_asyncio_run_cancels_hanging_tasks(self):
-        lo_task = None
+    eleza test_asyncio_run_cancels_hanging_tasks(self):
+        lo_task = Tupu
 
-        async def leftover():
+        async eleza leftover():
             await asyncio.sleep(0.1)
 
-        async def main():
+        async eleza main():
             nonlocal lo_task
             lo_task = asyncio.create_task(leftover())
-            return 123
+            rudisha 123
 
         self.assertEqual(asyncio.run(main()), 123)
-        self.assertTrue(lo_task.done())
+        self.assertKweli(lo_task.done())
 
-    def test_asyncio_run_reports_hanging_tasks_errors(self):
-        lo_task = None
+    eleza test_asyncio_run_reports_hanging_tasks_errors(self):
+        lo_task = Tupu
         call_exc_handler_mock = mock.Mock()
 
-        async def leftover():
+        async eleza leftover():
             jaribu:
                 await asyncio.sleep(0.1)
-            tatizo asyncio.CancelledError:
+            except asyncio.CancelledError:
                 1 / 0
 
-        async def main():
+        async eleza main():
             loop = asyncio.get_running_loop()
             loop.call_exception_handler = call_exc_handler_mock
 
             nonlocal lo_task
             lo_task = asyncio.create_task(leftover())
-            return 123
+            rudisha 123
 
         self.assertEqual(asyncio.run(main()), 123)
-        self.assertTrue(lo_task.done())
+        self.assertKweli(lo_task.done())
 
         call_exc_handler_mock.assert_called_with({
             'message': test_utils.MockPattern(r'asyncio.run.*shutdown'),
@@ -141,39 +141,39 @@ class RunTests(BaseTest):
             'exception': test_utils.MockInstanceOf(ZeroDivisionError)
         })
 
-    def test_asyncio_run_closes_gens_after_hanging_tasks_errors(self):
-        spinner = None
-        lazyboy = None
+    eleza test_asyncio_run_closes_gens_after_hanging_tasks_errors(self):
+        spinner = Tupu
+        lazyboy = Tupu
 
-        class FancyExit(Exception):
+        kundi FancyExit(Exception):
             pass
 
-        async def fidget():
-            wakati True:
-                yield 1
+        async eleza fidget():
+            wakati Kweli:
+                tuma 1
                 await asyncio.sleep(1)
 
-        async def spin():
+        async eleza spin():
             nonlocal spinner
             spinner = fidget()
             jaribu:
-                async for the_meaning_of_life in spinner:  # NoQA
+                async kila the_meaning_of_life kwenye spinner:  # NoQA
                     pass
-            tatizo asyncio.CancelledError:
+            except asyncio.CancelledError:
                 1 / 0
 
-        async def main():
+        async eleza main():
             loop = asyncio.get_running_loop()
             loop.call_exception_handler = mock.Mock()
 
             nonlocal lazyboy
             lazyboy = asyncio.create_task(spin())
-            ashiria FancyExit
+             ashiria FancyExit
 
-        with self.assertRaises(FancyExit):
+        ukijumuisha self.assertRaises(FancyExit):
             asyncio.run(main())
 
-        self.assertTrue(lazyboy.done())
+        self.assertKweli(lazyboy.done())
 
-        self.assertIsNone(spinner.ag_frame)
-        self.assertFalse(spinner.ag_running)
+        self.assertIsTupu(spinner.ag_frame)
+        self.assertUongo(spinner.ag_running)

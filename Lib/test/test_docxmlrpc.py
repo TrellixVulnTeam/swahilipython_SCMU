@@ -14,7 +14,7 @@ eleza make_request_and_skipIf(condition, reason):
         eleza make_request_and_skip(self):
             self.client.request("GET", "/")
             self.client.getresponse()
-            ashiria unittest.SkipTest(reason)
+             ashiria unittest.SkipTest(reason)
         rudisha make_request_and_skip
     rudisha decorator
 
@@ -62,7 +62,7 @@ eleza make_server():
         rudisha serv
     tatizo:
         serv.server_close()
-        ashiria
+        raise
 
 kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
     eleza setUp(self):
@@ -92,7 +92,7 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.assertEqual(response.status, 200)
         self.assertEqual(response.getheader("Content-type"), "text/html")
 
-        # Server ashirias an exception ikiwa we don't start to read the data
+        # Server raises an exception ikiwa we don't start to read the data
         response.read()
 
     eleza test_invalid_get_response(self):
@@ -167,7 +167,7 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
              b'describing&nbsp;the&nbsp;signature&nbsp;of&nbsp;the&nbsp;method.'
              b'&nbsp;In&nbsp;the<br>\nabove&nbsp;example,&nbsp;the&nbsp;add&nbsp;'
              b'method&nbsp;takes&nbsp;two&nbsp;integers&nbsp;as&nbsp;arguments'
-             b'<br>\nand&nbsp;rudishas&nbsp;a&nbsp;double&nbsp;result.<br>\n&nbsp;'
+             b'<br>\nand&nbsp;returns&nbsp;a&nbsp;double&nbsp;result.<br>\n&nbsp;'
              b'<br>\nThis&nbsp;server&nbsp;does&nbsp;NOT&nbsp;support&nbsp;system'
              b'.methodSignature.</tt></dd></dl>'), response)
 
@@ -181,10 +181,10 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
                       response.read())
 
     eleza test_annotations(self):
-        """ Test that annotations works kama expected """
+        """ Test that annotations works as expected """
         self.client.request("GET", "/")
         response = self.client.getresponse()
-        docstring = (b'' ikiwa sys.flags.optimize >= 2 ama
+        docstring = (b'' ikiwa sys.flags.optimize >= 2 else
                      b'<dd><tt>Use&nbsp;function&nbsp;annotations.</tt></dd>')
         self.assertIn(
             (b'<dl><dt><a name="-annotation"><strong>annotation</strong></a>'

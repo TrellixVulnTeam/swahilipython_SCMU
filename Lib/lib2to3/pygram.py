@@ -3,10 +3,10 @@
 
 """Export the Python grammar na symbols."""
 
-# Python agizas
+# Python imports
 agiza os
 
-# Local agizas
+# Local imports
 kutoka .pgen2 agiza token
 kutoka .pgen2 agiza driver
 kutoka . agiza pytree

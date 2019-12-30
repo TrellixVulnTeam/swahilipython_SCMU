@@ -9,10 +9,10 @@ agiza zipfile
 __all__ = ['ZipAppError', 'create_archive', 'get_interpreter']
 
 
-# The __main__.py used if the users specifies "-m module:fn".
-# Note that this will always be written as UTF-8 (module na
-# function names can be non-ASCII in Python 3).
-# We add a coding cookie even though UTF-8 is the default in Python 3
+# The __main__.py used ikiwa the users specifies "-m module:fn".
+# Note that this will always be written as UTF-8 (module and
+# function names can be non-ASCII kwenye Python 3).
+# We add a coding cookie even though UTF-8 ni the default kwenye Python 3
 # because the resulting archive may be intended to be run under Python 2.
 MAIN_TEMPLATE = """\
 # -*- coding: utf-8 -*-
@@ -21,10 +21,10 @@ agiza {module}
 """
 
 
-# The Windows launcher defaults to UTF-8 when parsing shebang lines if the
+# The Windows launcher defaults to UTF-8 when parsing shebang lines ikiwa the
 # file has no BOM. So use UTF-8 on Windows.
 # On Unix, use the filesystem encoding.
-if sys.platform.startswith('win'):
+ikiwa sys.platform.startswith('win'):
     shebang_encoding = 'utf-8'
 isipokua:
     shebang_encoding = sys.getfilesystemencoding()
@@ -35,33 +35,33 @@ kundi ZipAppError(ValueError):
 
 
 @contextlib.contextmanager
-def _maybe_open(archive, mode):
-    if isinstance(archive, (str, os.PathLike)):
-        with open(archive, mode) as f:
-            yield f
+eleza _maybe_open(archive, mode):
+    ikiwa isinstance(archive, (str, os.PathLike)):
+        ukijumuisha open(archive, mode) as f:
+            tuma f
     isipokua:
-        yield archive
+        tuma archive
 
 
-def _write_file_prefix(f, interpreter):
+eleza _write_file_prefix(f, interpreter):
     """Write a shebang line."""
-    if interpreter:
+    ikiwa interpreter:
         shebang = b'#!' + interpreter.encode(shebang_encoding) + b'\n'
         f.write(shebang)
 
 
-def _copy_archive(archive, new_archive, interpreter=None):
+eleza _copy_archive(archive, new_archive, interpreter=Tupu):
     """Copy an application archive, modifying the shebang line."""
-    with _maybe_open(archive, 'rb') as src:
+    ukijumuisha _maybe_open(archive, 'rb') as src:
         # Skip the shebang line kutoka the source.
-        # Read 2 bytes of the source and check if they are #!.
+        # Read 2 bytes of the source na check ikiwa they are #!.
         first_2 = src.read(2)
-        if first_2 == b'#!':
-            # Discard the initial 2 bytes and the rest of the shebang line.
+        ikiwa first_2 == b'#!':
+            # Discard the initial 2 bytes na the rest of the shebang line.
             first_2 = b''
             src.readline()
 
-        with _maybe_open(new_archive, 'wb') as dst:
+        ukijumuisha _maybe_open(new_archive, 'wb') as dst:
             _write_file_prefix(dst, interpreter)
             # If there was no shebang, "first_2" contains the first 2 bytes
             # of the source file, so write them before copying the rest
@@ -69,113 +69,113 @@ def _copy_archive(archive, new_archive, interpreter=None):
             dst.write(first_2)
             shutil.copyfileobj(src, dst)
 
-    if interpreter and isinstance(new_archive, str):
+    ikiwa interpreter na isinstance(new_archive, str):
         os.chmod(new_archive, os.stat(new_archive).st_mode | stat.S_IEXEC)
 
 
-def create_archive(source, target=None, interpreter=None, main=None,
-                   filter=None, compressed=False):
+eleza create_archive(source, target=Tupu, interpreter=Tupu, main=Tupu,
+                   filter=Tupu, compressed=Uongo):
     """Create an application archive kutoka SOURCE.
 
-    The SOURCE can be the name of a directory, or a filename or a file-like
+    The SOURCE can be the name of a directory, ama a filename ama a file-like
     object referring to an existing archive.
 
-    The content of SOURCE is packed into an application archive in TARGET,
-    which can be a filename or a file-like object.  If SOURCE is a directory,
-    TARGET can be omitted and will default to the name of SOURCE with .pyz
+    The content of SOURCE ni packed into an application archive kwenye TARGET,
+    which can be a filename ama a file-like object.  If SOURCE ni a directory,
+    TARGET can be omitted na will default to the name of SOURCE ukijumuisha .pyz
     appended.
 
     The created application archive will have a shebang line specifying
-    that it should run with INTERPRETER (there will be no shebang line if
-    INTERPRETER is None), and a __main__.py which runs MAIN (if MAIN is
-    sio specified, an existing __main__.py will be used).  It is an error
-    to specify MAIN for anything other than a directory source with no
-    __main__.py, and it is an error to omit MAIN if the directory has no
+    that it should run ukijumuisha INTERPRETER (there will be no shebang line if
+    INTERPRETER ni Tupu), na a __main__.py which runs MAIN (ikiwa MAIN is
+    sio specified, an existing __main__.py will be used).  It ni an error
+    to specify MAIN kila anything other than a directory source ukijumuisha no
+    __main__.py, na it ni an error to omit MAIN ikiwa the directory has no
     __main__.py.
     """
     # Are we copying an existing archive?
-    source_is_file = False
-    if hasattr(source, 'read') and hasattr(source, 'readline'):
-        source_is_file = True
+    source_is_file = Uongo
+    ikiwa hasattr(source, 'read') na hasattr(source, 'readline'):
+        source_is_file = Kweli
     isipokua:
         source = pathlib.Path(source)
-        if source.is_file():
-            source_is_file = True
+        ikiwa source.is_file():
+            source_is_file = Kweli
 
-    if source_is_file:
+    ikiwa source_is_file:
         _copy_archive(source, target, interpreter)
         return
 
     # We are creating a new archive kutoka a directory.
-    if sio source.exists():
-        ashiria ZipAppError("Source does sio exist")
+    ikiwa sio source.exists():
+         ashiria ZipAppError("Source does sio exist")
     has_main = (source / '__main__.py').is_file()
-    if main and has_main:
-        ashiria ZipAppError(
-            "Cannot specify entry point if the source has __main__.py")
-    if sio (main or has_main):
-        ashiria ZipAppError("Archive has no entry point")
+    ikiwa main na has_main:
+         ashiria ZipAppError(
+            "Cannot specify entry point ikiwa the source has __main__.py")
+    ikiwa sio (main ama has_main):
+         ashiria ZipAppError("Archive has no entry point")
 
-    main_py = None
-    if main:
+    main_py = Tupu
+    ikiwa main:
         # Check that main has the right format.
         mod, sep, fn = main.partition(':')
-        mod_ok = all(part.isidentifier() for part in mod.split('.'))
-        fn_ok = all(part.isidentifier() for part in fn.split('.'))
-        if sio (sep == ':' and mod_ok and fn_ok):
-            ashiria ZipAppError("Invalid entry point: " + main)
+        mod_ok = all(part.isidentifier() kila part kwenye mod.split('.'))
+        fn_ok = all(part.isidentifier() kila part kwenye fn.split('.'))
+        ikiwa sio (sep == ':' na mod_ok na fn_ok):
+             ashiria ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
 
-    if target is None:
+    ikiwa target ni Tupu:
         target = source.with_suffix('.pyz')
-    lasivyo sio hasattr(target, 'write'):
+    elikiwa sio hasattr(target, 'write'):
         target = pathlib.Path(target)
 
-    with _maybe_open(target, 'wb') as fd:
+    ukijumuisha _maybe_open(target, 'wb') as fd:
         _write_file_prefix(fd, interpreter)
-        compression = (zipfile.ZIP_DEFLATED if compressed ama
+        compression = (zipfile.ZIP_DEFLATED ikiwa compressed else
                        zipfile.ZIP_STORED)
-        with zipfile.ZipFile(fd, 'w', compression=compression) as z:
-            for child in source.rglob('*'):
+        ukijumuisha zipfile.ZipFile(fd, 'w', compression=compression) as z:
+            kila child kwenye source.rglob('*'):
                 arcname = child.relative_to(source)
-                if filter is None or filter(arcname):
+                ikiwa filter ni Tupu ama filter(arcname):
                     z.write(child, arcname.as_posix())
-            if main_py:
+            ikiwa main_py:
                 z.writestr('__main__.py', main_py.encode('utf-8'))
 
-    if interpreter and sio hasattr(target, 'write'):
+    ikiwa interpreter na sio hasattr(target, 'write'):
         target.chmod(target.stat().st_mode | stat.S_IEXEC)
 
 
-def get_interpreter(archive):
-    with _maybe_open(archive, 'rb') as f:
-        if f.read(2) == b'#!':
-            return f.readline().strip().decode(shebang_encoding)
+eleza get_interpreter(archive):
+    ukijumuisha _maybe_open(archive, 'rb') as f:
+        ikiwa f.read(2) == b'#!':
+            rudisha f.readline().strip().decode(shebang_encoding)
 
 
-def main(args=None):
+eleza main(args=Tupu):
     """Run the zipapp command line interface.
 
     The ARGS parameter lets you specify the argument list directly.
-    Omitting ARGS (or setting it to None) works as for argparse, using
+    Omitting ARGS (or setting it to Tupu) works as kila argparse, using
     sys.argv[1:] as the argument list.
     """
     agiza argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--output', '-o', default=None,
+    parser.add_argument('--output', '-o', default=Tupu,
             help="The name of the output archive. "
-                 "Required if SOURCE is an archive.")
-    parser.add_argument('--python', '-p', default=None,
+                 "Required ikiwa SOURCE ni an archive.")
+    parser.add_argument('--python', '-p', default=Tupu,
             help="The name of the Python interpreter to use "
                  "(default: no shebang line).")
-    parser.add_argument('--main', '-m', default=None,
+    parser.add_argument('--main', '-m', default=Tupu,
             help="The main function of the application "
                  "(default: use an existing __main__.py).")
     parser.add_argument('--compress', '-c', action='store_true',
-            help="Compress files with the deflate method. "
+            help="Compress files ukijumuisha the deflate method. "
                  "Files are stored uncompressed by default.")
-    parser.add_argument('--info', default=False, action='store_true',
+    parser.add_argument('--info', default=Uongo, action='store_true',
             help="Display the interpreter kutoka the archive.")
     parser.add_argument('source',
             help="Source directory (or existing archive).")
@@ -183,24 +183,24 @@ def main(args=None):
     args = parser.parse_args(args)
 
     # Handle `python -m zipapp archive.pyz --info`.
-    if args.info:
-        if sio os.path.isfile(args.source):
-            ashiria SystemExit("Can only get info for an archive file")
+    ikiwa args.info:
+        ikiwa sio os.path.isfile(args.source):
+             ashiria SystemExit("Can only get info kila an archive file")
         interpreter = get_interpreter(args.source)
-        print("Interpreter: {}".format(interpreter or "<none>"))
+        andika("Interpreter: {}".format(interpreter ama "<none>"))
         sys.exit(0)
 
-    if os.path.isfile(args.source):
-        if args.output is None or (os.path.exists(args.output) na
+    ikiwa os.path.isfile(args.source):
+        ikiwa args.output ni Tupu ama (os.path.exists(args.output) and
                                    os.path.samefile(args.source, args.output)):
-            ashiria SystemExit("In-place editing of archives ni sio supported")
-        if args.main:
-            ashiria SystemExit("Cannot change the main function when copying")
+             ashiria SystemExit("In-place editing of archives ni sio supported")
+        ikiwa args.main:
+             ashiria SystemExit("Cannot change the main function when copying")
 
     create_archive(args.source, args.output,
                    interpreter=args.python, main=args.main,
                    compressed=args.compress)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

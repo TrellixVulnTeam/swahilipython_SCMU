@@ -1,10 +1,10 @@
-""" Python 'oem' Codec for Windows
+""" Python 'oem' Codec kila Windows
 
 """
 # Import them explicitly to cause an ImportError
 # on non-Windows systems
-from codecs import oem_encode, oem_decode
-# for IncrementalDecoder, IncrementalEncoder, ...
+kutoka codecs agiza oem_encode, oem_decode
+# kila IncrementalDecoder, IncrementalEncoder, ...
 agiza codecs
 
 ### Codec APIs

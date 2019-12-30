@@ -48,36 +48,36 @@ kundi StupidGit:
     @property
     eleza contradiction(self):
         'The automatic gainsaying.'
-        pita
+        pass
 
 # line 53
 kundi MalodorousPervert(StupidGit):
     eleza abuse(self, a, b, c):
-        pita
+        pass
 
     @property
     eleza contradiction(self):
-        pita
+        pass
 
 Tit = MalodorousPervert
 
 kundi ParrotDroppings:
-    pita
+    pass
 
 kundi FesteringGob(MalodorousPervert, ParrotDroppings):
     eleza abuse(self, a, b, c):
-        pita
+        pass
 
     @property
     eleza contradiction(self):
-        pita
+        pass
 
 async eleza lobbest(grenade):
-    pita
+    pass
 
 currentframe = inspect.currentframe()
 jaribu:
-    ashiria Exception()
+     ashiria Exception()
 tatizo:
     tb = sys.exc_info()[2]
 

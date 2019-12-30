@@ -8,7 +8,7 @@ agiza os
 agiza sys
 kutoka test agiza support
 kutoka test.support agiza skip_if_buggy_ucrt_strfptime
-kutoka datetime agiza date kama datetime_date
+kutoka datetime agiza date as datetime_date
 
 agiza _strptime
 
@@ -33,7 +33,7 @@ kundi LocaleTime_Tests(unittest.TestCase):
     eleza compare_against_time(self, testing, directive, tuple_position,
                              error_msg):
         """Helper method that tests testing against directive based on the
-        tuple_position of time_tuple.  Uses error_msg kama error message.
+        tuple_position of time_tuple.  Uses error_msg as error message.
 
         """
         strftime_output = time.strftime(directive, self.time_tuple).lower()
@@ -64,7 +64,7 @@ kundi LocaleTime_Tests(unittest.TestCase):
         # Make sure AM/PM representation done properly
         strftime_output = time.strftime("%p", self.time_tuple).lower()
         self.assertIn(strftime_output, self.LT_ins.am_pm,
-                      "AM/PM representation haiko kwenye tuple")
+                      "AM/PM representation sio kwenye tuple")
         ikiwa self.time_tuple[3] < 12: position = 0
         isipokua: position = 1
         self.assertEqual(self.LT_ins.am_pm[position], strftime_output,
@@ -74,14 +74,14 @@ kundi LocaleTime_Tests(unittest.TestCase):
         # Make sure timezone ni correct
         timezone = time.strftime("%Z", self.time_tuple).lower()
         ikiwa timezone:
-            self.assertKweli(timezone kwenye self.LT_ins.timezone[0] ama
+            self.assertKweli(timezone kwenye self.LT_ins.timezone[0] or
                             timezone kwenye self.LT_ins.timezone[1],
                             "timezone %s sio found kwenye %s" %
                             (timezone, self.LT_ins.timezone))
 
     eleza test_date_time(self):
         # Check that LC_date_time, LC_date, na LC_time are correct
-        # the magic date ni used so kama to sio have issues ukijumuisha %c when day of
+        # the magic date ni used so as to sio have issues ukijumuisha %c when day of
         #  the month ni a single digit na has a leading space.  This ni sio an
         #  issue since strptime still parses it correctly.  The problem is
         #  testing these directives kila correctness by comparing strftime
@@ -102,7 +102,7 @@ kundi LocaleTime_Tests(unittest.TestCase):
                                     "empty strings")
 
     eleza test_lang(self):
-        # Make sure lang ni set to what _getlang() rudishas
+        # Make sure lang ni set to what _getlang() returns
         # Assuming locale has sio changed between now na when self.LT_ins was created
         self.assertEqual(self.LT_ins.lang, _strptime._getlang())
 
@@ -149,7 +149,7 @@ kundi TimeRETests(unittest.TestCase):
             "Match failed ukijumuisha '%s' regex na '%s' string" %
              (compiled.pattern, "%s %s" % (self.locale_time.a_weekday[4],
                                            self.locale_time.a_month[4])))
-        self.assertKweli(found.group('a') == self.locale_time.a_weekday[4] na
+        self.assertKweli(found.group('a') == self.locale_time.a_weekday[4] and
                          found.group('b') == self.locale_time.a_month[4],
                         "re object couldn't find the abbreviated weekday month kwenye "
                          "'%s' using '%s'; group 'a' = '%s', group 'b' = %s'" %
@@ -192,7 +192,7 @@ kundi TimeRETests(unittest.TestCase):
 
     eleza test_whitespace_substitution(self):
         # When pattern contains whitespace, make sure it ni taken into account
-        # so kama to sio allow subpatterns to end up next to each other na
+        # so as to sio allow subpatterns to end up next to each other and
         # "steal" characters kutoka each other.
         pattern = self.time_re.pattern('%j %H')
         self.assertUongo(re.match(pattern, "180"))
@@ -207,19 +207,19 @@ kundi StrptimeTests(unittest.TestCase):
         self.time_tuple = time.gmtime()
 
     eleza test_ValueError(self):
-        # Make sure ValueError ni ashiriad when match fails ama format ni bad
+        # Make sure ValueError ni raised when match fails ama format ni bad
         self.assertRaises(ValueError, _strptime._strptime_time, data_string="%d",
                           format="%A")
         kila bad_format kwenye ("%", "% ", "%e"):
             jaribu:
                 _strptime._strptime_time("2005", bad_format)
-            tatizo ValueError:
+            except ValueError:
                 endelea
-            tatizo Exception kama err:
-                self.fail("'%s' ashiriad %s, sio ValueError" %
+            except Exception as err:
+                self.fail("'%s' raised %s, sio ValueError" %
                             (bad_format, err.__class__.__name__))
             isipokua:
-                self.fail("'%s' did sio ashiria ValueError" % bad_format)
+                self.fail("'%s' did sio  ashiria ValueError" % bad_format)
 
         # Ambiguous ama incomplete cases using ISO year/week/weekday directives
         # 1. ISO week (%V) ni specified, but the year ni specified ukijumuisha %Y
@@ -243,16 +243,16 @@ kundi StrptimeTests(unittest.TestCase):
 
     eleza test_strptime_exception_context(self):
         # check that this doesn't chain exceptions needlessly (see #17572)
-        ukijumuisha self.assertRaises(ValueError) kama e:
+        ukijumuisha self.assertRaises(ValueError) as e:
             _strptime._strptime_time('', '%D')
         self.assertIs(e.exception.__suppress_context__, Kweli)
         # additional check kila IndexError branch (issue #19545)
-        ukijumuisha self.assertRaises(ValueError) kama e:
+        ukijumuisha self.assertRaises(ValueError) as e:
             _strptime._strptime_time('19', '%Y %')
         self.assertIs(e.exception.__suppress_context__, Kweli)
 
     eleza test_unconverteddata(self):
-        # Check ValueError ni ashiriad when there ni unconverted data
+        # Check ValueError ni raised when there ni unconverted data
         self.assertRaises(ValueError, _strptime._strptime_time, "10 12", "%m")
 
     eleza helper(self, directive, position):
@@ -274,8 +274,8 @@ kundi StrptimeTests(unittest.TestCase):
                 strp_output = _strptime._strptime_time(bound, '%y')
                 expected_result = century + int(bound)
                 self.assertKweli(strp_output[0] == expected_result,
-                                "'y' test failed; pitaed kwenye '%s' "
-                                "and rudishaed '%s'" % (bound, strp_output[0]))
+                                "'y' test failed; passed kwenye '%s' "
+                                "and returned '%s'" % (bound, strp_output[0]))
 
     eleza test_month(self):
         # Test kila month directives
@@ -363,7 +363,7 @@ kundi StrptimeTests(unittest.TestCase):
             _strptime._strptime("-01:30:30.1234567", "%z")
         ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("-01:30:30:123456", "%z")
-        ukijumuisha self.assertRaises(ValueError) kama err:
+        ukijumuisha self.assertRaises(ValueError) as err:
             _strptime._strptime("-01:3030", "%z")
         self.assertEqual("Inconsistent use of : kwenye -01:3030", str(err.exception))
 
@@ -405,7 +405,7 @@ kundi StrptimeTests(unittest.TestCase):
             tz_value = _strptime._strptime_time(tz_name, "%Z")[8]
             self.assertEqual(tz_value, -1,
                     "%s lead to a timezone value of %s instead of -1 when "
-                    "time.daylight set to %s na pitaing kwenye %s" %
+                    "time.daylight set to %s na passing kwenye %s" %
                     (time.tzname, tz_value, time.daylight, tz_name))
 
     eleza test_date_time(self):
@@ -427,7 +427,7 @@ kundi StrptimeTests(unittest.TestCase):
         # Make sure % signs are handled properly
         strf_output = time.strftime("%m %% %Y", self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%m %% %Y")
-        self.assertKweli(strp_output[0] == self.time_tuple[0] na
+        self.assertKweli(strp_output[0] == self.time_tuple[0] and
                          strp_output[1] == self.time_tuple[1],
                         "handling of percent sign failed")
 
@@ -508,8 +508,8 @@ kundi CalculationTests(unittest.TestCase):
         format_string = "%Y %H %M %S %w %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
                                     format_string)
-        self.assertKweli(result.tm_year == self.time_tuple.tm_year na
-                         result.tm_mon == self.time_tuple.tm_mon na
+        self.assertKweli(result.tm_year == self.time_tuple.tm_year and
+                         result.tm_mon == self.time_tuple.tm_mon and
                          result.tm_mday == self.time_tuple.tm_mday,
                         "Calculation of Gregorian date failed; "
                          "%s-%s-%s != %s-%s-%s" %
@@ -519,7 +519,7 @@ kundi CalculationTests(unittest.TestCase):
 
     @skip_if_buggy_ucrt_strfptime
     eleza test_day_of_week_calculation(self):
-        # Test that the day of the week ni calculated kama needed
+        # Test that the day of the week ni calculated as needed
         format_string = "%Y %m %d %H %S %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
                                     format_string)
@@ -544,9 +544,9 @@ kundi CalculationTests(unittest.TestCase):
         # na day of the week
         eleza test_helper(ymd_tuple, test_reason):
             kila year_week_format kwenye ('%Y %W', '%Y %U', '%G %V'):
-                ikiwa (year_week_format kwenye self._formats_excluded na
+                ikiwa (year_week_format kwenye self._formats_excluded and
                         ymd_tuple kwenye self._ymd_excluded):
-                    rudisha
+                    return
                 kila weekday_format kwenye ('%w', '%u', '%a', '%A'):
                     format_string = year_week_format + ' ' + weekday_format
                     ukijumuisha self.subTest(test_reason,
@@ -652,8 +652,8 @@ kundi CacheTests(unittest.TestCase):
         # Make sure cached regexes are discarded when cache becomes "full".
         jaribu:
             toa _strptime._regex_cache['%d']
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
         bogus_key = 0
         wakati len(_strptime._regex_cache) <= _strptime._CACHE_MAX_SIZE:
             _strptime._regex_cache[bogus_key] = Tupu
@@ -674,7 +674,7 @@ kundi CacheTests(unittest.TestCase):
         locale_info = locale.getlocale(locale.LC_TIME)
         jaribu:
             locale.setlocale(locale.LC_TIME, ('en_US', 'UTF8'))
-        tatizo locale.Error:
+        except locale.Error:
             self.skipTest('test needs en_US.UTF8 locale')
         jaribu:
             _strptime._strptime_time('10', '%d')
@@ -691,7 +691,7 @@ kundi CacheTests(unittest.TestCase):
             # Possible test locale ni sio supported wakati initial locale is.
             # If this ni the case just suppress the exception na fall-through
             # to the resetting to the original locale.
-            tatizo locale.Error:
+            except locale.Error:
                 self.skipTest('test needs de_DE.UTF8 locale')
         # Make sure we don't trample on the locale setting once we leave the
         # test.

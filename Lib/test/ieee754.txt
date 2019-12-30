@@ -2,25 +2,25 @@
 Python IEEE 754 floating point support
 ======================================
 
->>> kutoka sys agiza float_info kama FI
->>> kutoka math agiza *
+>>> from sys import float_info as FI
+>>> from math import *
 >>> PI = pi
 >>> E = e
 
-You must never compare two floats ukijumuisha == because you are sio going to get
-what you expect. We treat two floats kama equal ikiwa the difference between them
+You must never compare two floats with == because you are not going to get
+what you expect. We treat two floats as equal if the difference between them
 is small than epsilon.
 >>> EPS = 1E-15
->>> eleza equal(x, y):
-...     """Almost equal helper kila floats"""
-...     rudisha abs(x - y) < EPS
+>>> def equal(x, y):
+...     """Almost equal helper for floats"""
+...     return abs(x - y) < EPS
 
 
-NaNs na INFs
+NaNs and INFs
 =============
 
-In Python 2.6 na newer NaNs (sio a number) na infinity can be constructed
-kutoka the strings 'inf' na 'nan'.
+In Python 2.6 and newer NaNs (not a number) and infinity can be constructed
+from the strings 'inf' and 'nan'.
 
 >>> INF = float('inf')
 >>> NINF = float('-inf')
@@ -33,17 +33,17 @@ inf
 >>> NAN
 nan
 
-The math module's ``isnan`` na ``isinf`` functions can be used to detect INF
+The math module's ``isnan`` and ``isinf`` functions can be used to detect INF
 and NAN:
 >>> isinf(INF), isinf(NINF), isnan(NAN)
-(Kweli, Kweli, Kweli)
+(True, True, True)
 >>> INF == -NINF
-Kweli
+True
 
 Infinity
 --------
 
-Ambiguous operations like ``0 * inf`` ama ``inf - inf`` result kwenye NaN.
+Ambiguous operations like ``0 * inf`` or ``inf - inf`` result in NaN.
 >>> INF * 0
 nan
 >>> INF - INF
@@ -51,7 +51,7 @@ nan
 >>> INF / INF
 nan
 
-However unambigous operations ukijumuisha inf rudisha inf:
+However unambigous operations with inf return inf:
 >>> INF * INF
 inf
 >>> 1.5 * INF
@@ -66,13 +66,13 @@ Not a Number
 
 NaNs are never equal to another number, even itself
 >>> NAN == NAN
-Uongo
+False
 >>> NAN < 0
-Uongo
+False
 >>> NAN >= 0
-Uongo
+False
 
-All operations involving a NaN rudisha a NaN tatizo kila nan**0 na 1**nan.
+All operations involving a NaN return a NaN except for nan**0 and 1**nan.
 >>> 1 + NAN
 nan
 >>> 1 * NAN
@@ -91,8 +91,8 @@ nan
 Misc Functions
 ==============
 
-The power of 1 ashiriad to x ni always 1.0, even kila special values like 0,
-infinity na NaN.
+The power of 1 raised to x is always 1.0, even for special values like 0,
+infinity and NaN.
 
 >>> pow(1, 0)
 1.0
@@ -103,8 +103,8 @@ infinity na NaN.
 >>> pow(1, NAN)
 1.0
 
-The power of 0 ashiriad to x ni defined kama 0, ikiwa x ni positive. Negative
-values are a domain error ama zero division error na NaN result kwenye a
+The power of 0 raised to x is defined as 0, if x is positive. Negative
+values are a domain error or zero division error and NaN result in a
 silent NaN.
 
 >>> pow(0, 0)
@@ -118,7 +118,7 @@ ValueError: math domain error
 >>> 0 ** -1
 Traceback (most recent call last):
 ...
-ZeroDivisionError: 0.0 cannot be ashiriad to a negative power
+ZeroDivisionError: 0.0 cannot be raised to a negative power
 >>> pow(0, NAN)
 nan
 
@@ -157,14 +157,14 @@ ValueError: math domain error
 >>> tan(NAN)
 nan
 
-Neither pi nor tan are exact, but you can assume that tan(pi/2) ni a large value
-and tan(pi) ni a very small value:
+Neither pi nor tan are exact, but you can assume that tan(pi/2) is a large value
+and tan(pi) is a very small value:
 >>> tan(PI/2) > 1E10
-Kweli
+True
 >>> -tan(-PI/2) > 1E10
-Kweli
+True
 >>> tan(PI) < 1E-15
-Kweli
+True
 
 >>> asin(NAN), acos(NAN), atan(NAN)
 (nan, nan, nan)
@@ -177,7 +177,7 @@ Traceback (most recent call last):
 ...
 ValueError: math domain error
 >>> equal(atan(INF), PI/2), equal(atan(NINF), -PI/2)
-(Kweli, Kweli)
+(True, True)
 
 
 Hyberbolic Functions

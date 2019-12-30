@@ -1,6 +1,6 @@
-# Set of tests run by default if --pgo is specified.  The tests below were
+# Set of tests run by default ikiwa --pgo ni specified.  The tests below were
 # chosen based on the following criteria: either they exercise a commonly used
-# C extension module or type, or they run some relatively typical Python code.
+# C extension module ama type, ama they run some relatively typical Python code.
 # Long running tests should be avoided because the PGO instrumented executable
 # runs slowly.
 PGO_TESTS = [
@@ -49,7 +49,7 @@ PGO_TESTS = [
     'test_xml_etree_c',
 ]
 
-def setup_pgo_tests(ns):
-    if sio ns.args and sio ns.pgo_extended:
-        # run default set of tests for PGO training
+eleza setup_pgo_tests(ns):
+    ikiwa sio ns.args na sio ns.pgo_extended:
+        # run default set of tests kila PGO training
         ns.args = PGO_TESTS[:]

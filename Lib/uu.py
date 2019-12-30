@@ -37,7 +37,7 @@ agiza sys
 __all__ = ["Error", "encode", "decode"]
 
 kundi Error(Exception):
-    pita
+    pass
 
 eleza encode(in_file, out_file, name=Tupu, mode=Tupu, *, backtick=Uongo):
     """Uuencode file"""
@@ -48,14 +48,14 @@ eleza encode(in_file, out_file, name=Tupu, mode=Tupu, *, backtick=Uongo):
     jaribu:
         ikiwa in_file == '-':
             in_file = sys.stdin.buffer
-        lasivyo isinstance(in_file, str):
+        elikiwa isinstance(in_file, str):
             ikiwa name ni Tupu:
                 name = os.path.basename(in_file)
             ikiwa mode ni Tupu:
                 jaribu:
                     mode = os.stat(in_file).st_mode
-                tatizo AttributeError:
-                    pita
+                except AttributeError:
+                    pass
             in_file = open(in_file, 'rb')
             opened_files.append(in_file)
         #
@@ -63,7 +63,7 @@ eleza encode(in_file, out_file, name=Tupu, mode=Tupu, *, backtick=Uongo):
         #
         ikiwa out_file == '-':
             out_file = sys.stdout.buffer
-        lasivyo isinstance(out_file, str):
+        elikiwa isinstance(out_file, str):
             out_file = open(out_file, 'wb')
             opened_files.append(out_file)
         #
@@ -98,7 +98,7 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
     opened_files = []
     ikiwa in_file == '-':
         in_file = sys.stdin.buffer
-    lasivyo isinstance(in_file, str):
+    elikiwa isinstance(in_file, str):
         in_file = open(in_file, 'rb')
         opened_files.append(in_file)
 
@@ -109,7 +109,7 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
         wakati Kweli:
             hdr = in_file.readline()
             ikiwa sio hdr:
-                ashiria Error('No valid begin line found kwenye input file')
+                 ashiria Error('No valid begin line found kwenye input file')
             ikiwa sio hdr.startswith(b'begin'):
                 endelea
             hdrfields = hdr.split(b' ', 2)
@@ -117,13 +117,13 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
                 jaribu:
                     int(hdrfields[1], 8)
                     koma
-                tatizo ValueError:
-                    pita
+                except ValueError:
+                    pass
         ikiwa out_file ni Tupu:
             # If the filename isn't ASCII, what's up ukijumuisha that?!?
             out_file = hdrfields[2].rstrip(b' \t\r\n\f').decode("ascii")
             ikiwa os.path.exists(out_file):
-                ashiria Error('Cannot overwrite existing file: %s' % out_file)
+                 ashiria Error('Cannot overwrite existing file: %s' % out_file)
         ikiwa mode ni Tupu:
             mode = int(hdrfields[1], 8)
         #
@@ -131,7 +131,7 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
         #
         ikiwa out_file == '-':
             out_file = sys.stdout.buffer
-        lasivyo isinstance(out_file, str):
+        elikiwa isinstance(out_file, str):
             fp = open(out_file, 'wb')
             os.chmod(out_file, mode)
             out_file = fp
@@ -143,7 +143,7 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
         wakati s na s.strip(b' \t\r\n\f') != b'end':
             jaribu:
                 data = binascii.a2b_uu(s)
-            tatizo binascii.Error kama v:
+            except binascii.Error as v:
                 # Workaround kila broken uuencoders by /Fredrik Lundh
                 nbytes = (((s[0]-32) & 63) * 4 + 5) // 3
                 data = binascii.a2b_uu(s[:nbytes])
@@ -152,7 +152,7 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
             out_file.write(data)
             s = in_file.readline()
         ikiwa sio s:
-            ashiria Error('Truncated input file')
+             ashiria Error('Truncated input file')
     mwishowe:
         kila f kwenye opened_files:
             f.close()

@@ -1,7 +1,7 @@
 # test the invariant that
 #   iff a==b then hash(a)==hash(b)
 #
-# Also test that hash implementations are inherited kama expected
+# Also test that hash implementations are inherited as expected
 
 agiza datetime
 agiza os
@@ -90,7 +90,7 @@ kundi HashEqualityTestCase(unittest.TestCase):
 
 
 _default_hash = object.__hash__
-kundi DefaultHash(object): pita
+kundi DefaultHash(object): pass
 
 _FIXED_HASH_VALUE = 42
 kundi FixedHash(object):
@@ -105,8 +105,8 @@ kundi OnlyInequality(object):
     eleza __ne__(self, other):
         rudisha self ni sio other
 
-kundi InheritedHashWithEquality(FixedHash, OnlyEquality): pita
-kundi InheritedHashWithInequality(FixedHash, OnlyInequality): pita
+kundi InheritedHashWithEquality(FixedHash, OnlyEquality): pass
+kundi InheritedHashWithInequality(FixedHash, OnlyInequality): pass
 
 kundi NoHash(object):
     __hash__ = Tupu
@@ -270,7 +270,7 @@ kundi StringlikeHashRandomizationTests(HashRandomizationTests):
     @skip_unless_internalhash
     eleza test_long_fixed_hash(self):
         ikiwa self.repr_long ni Tupu:
-            rudisha
+            return
         h = self.get_expected_hash(2, 11)
         self.assertEqual(self.get_hash(self.repr_long, seed=42), h)
 

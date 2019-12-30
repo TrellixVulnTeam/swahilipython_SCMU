@@ -1,10 +1,10 @@
 kutoka test.test_json agiza PyTest, CTest
 
 
-# kutoka http://json.org/JSON_checker/test/pita1.json
+# kutoka http://json.org/JSON_checker/test/pass1.json
 JSON = r'''
 [
-    "JSON Test Pattern pita1",
+    "JSON Test Pattern pass1",
     {"object ukijumuisha 1 member":["array ukijumuisha 1 element"]},
     {},
     [],
@@ -71,5 +71,5 @@ kundi TestPass1:
         self.assertEqual(res, self.loads(out))
 
 
-kundi TestPyPass1(TestPass1, PyTest): pita
-kundi TestCPass1(TestPass1, CTest): pita
+kundi TestPyPass1(TestPass1, PyTest): pass
+kundi TestCPass1(TestPass1, CTest): pass

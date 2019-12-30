@@ -8,7 +8,7 @@ kutoka errno agiza EEXIST
 
 
 kundi SubOSError(OSError):
-    pita
+    pass
 
 kundi SubOSErrorWithInit(OSError):
     eleza __init__(self, message, bar):
@@ -22,14 +22,14 @@ kundi SubOSErrorWithNew(OSError):
         rudisha self
 
 kundi SubOSErrorCombinedInitFirst(SubOSErrorWithInit, SubOSErrorWithNew):
-    pita
+    pass
 
 kundi SubOSErrorCombinedNewFirst(SubOSErrorWithNew, SubOSErrorWithInit):
-    pita
+    pass
 
 kundi SubOSErrorWithStandaloneInit(OSError):
     eleza __init__(self):
-        pita
+        pass
 
 
 kundi HierarchyTest(unittest.TestCase):
@@ -96,25 +96,25 @@ kundi HierarchyTest(unittest.TestCase):
     eleza test_try_except(self):
         filename = "some_hopefully_non_existing_file"
 
-        # This checks that try .. tatizo checks the concrete exception
+        # This checks that try .. except checks the concrete exception
         # (FileNotFoundError) na sio the base type specified when
         # PyErr_SetFromErrnoWithFilenameObject was called.
         # (it ni therefore deliberate that it doesn't use assertRaises)
         jaribu:
             open(filename)
-        tatizo FileNotFoundError:
-            pita
+        except FileNotFoundError:
+            pass
         isipokua:
-            self.fail("should have ashiriad a FileNotFoundError")
+            self.fail("should have raised a FileNotFoundError")
 
         # Another test kila PyErr_SetExcFromWindowsErrWithFilenameObject()
         self.assertUongo(os.path.exists(filename))
         jaribu:
             os.unlink(filename)
-        tatizo FileNotFoundError:
-            pita
+        except FileNotFoundError:
+            pass
         isipokua:
-            self.fail("should have ashiriad a FileNotFoundError")
+            self.fail("should have raised a FileNotFoundError")
 
 
 kundi AttributesTest(unittest.TestCase):

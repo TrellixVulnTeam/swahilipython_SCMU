@@ -45,7 +45,7 @@ eleza getlines(filename, module_globals=Tupu):
 
     jaribu:
         rudisha updatecache(filename, module_globals)
-    tatizo MemoryError:
+    except MemoryError:
         clearcache()
         rudisha []
 
@@ -60,7 +60,7 @@ eleza checkcache(filename=Tupu):
         ikiwa filename kwenye cache:
             filenames = [filename]
         isipokua:
-            rudisha
+            return
 
     kila filename kwenye filenames:
         entry = cache[filename]
@@ -72,7 +72,7 @@ eleza checkcache(filename=Tupu):
             endelea   # no-op kila files loaded via a __loader__
         jaribu:
             stat = os.stat(fullname)
-        tatizo OSError:
+        except OSError:
             toa cache[filename]
             endelea
         ikiwa size != stat.st_size ama mtime != stat.st_mtime:
@@ -93,7 +93,7 @@ eleza updatecache(filename, module_globals=Tupu):
     fullname = filename
     jaribu:
         stat = os.stat(fullname)
-    tatizo OSError:
+    except OSError:
         basename = filename
 
         # Realise a lazy loader based lookup ikiwa there ni one
@@ -101,8 +101,8 @@ eleza updatecache(filename, module_globals=Tupu):
         ikiwa lazycache(filename, module_globals):
             jaribu:
                 data = cache[filename][0]()
-            tatizo (ImportError, OSError):
-                pita
+            except (ImportError, OSError):
+                pass
             isipokua:
                 ikiwa data ni Tupu:
                     # No luck, the PEP302 loader cannot find the source
@@ -122,20 +122,20 @@ eleza updatecache(filename, module_globals=Tupu):
         kila dirname kwenye sys.path:
             jaribu:
                 fullname = os.path.join(dirname, basename)
-            tatizo (TypeError, AttributeError):
+            except (TypeError, AttributeError):
                 # Not sufficiently string-like to do anything useful with.
                 endelea
             jaribu:
                 stat = os.stat(fullname)
                 koma
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
         isipokua:
             rudisha []
     jaribu:
-        ukijumuisha tokenize.open(fullname) kama fp:
+        ukijumuisha tokenize.open(fullname) as fp:
             lines = fp.readlines()
-    tatizo OSError:
+    except OSError:
         rudisha []
     ikiwa lines na sio lines[-1].endswith('\n'):
         lines[-1] += '\n'
@@ -152,7 +152,7 @@ eleza lazycache(filename, module_globals):
 
     If there ni an entry kwenye the cache already, it ni sio altered.
 
-    :rudisha: Kweli ikiwa a lazy load ni registered kwenye the cache,
+    :return: Kweli ikiwa a lazy load ni registered kwenye the cache,
         otherwise Uongo. To register such a load a module loader ukijumuisha a
         get_source method must be found, the filename must be a cachable
         filename, na the filename must sio be already cached.

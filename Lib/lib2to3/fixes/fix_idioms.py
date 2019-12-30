@@ -27,7 +27,7 @@ into
 """
 # Author: Jacques Frechet, Collin Winter
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Call, Comma, Name, Node, BlankLine, syms
 
@@ -48,7 +48,7 @@ kundi FixIdioms(fixer_base.BaseFix):
             any*
             simple_stmt<
               expr_stmt< id1=any '='
-                         power< list='list' trailer< '(' (sio arglist<any+>) any ')' > >
+                         power< list='list' trailer< '(' (not arglist<any+>) any ')' > >
               >
               '\n'
             >
@@ -90,12 +90,12 @@ kundi FixIdioms(fixer_base.BaseFix):
     eleza transform(self, node, results):
         ikiwa "isinstance" kwenye results:
             rudisha self.transform_isinstance(node, results)
-        lasivyo "while" kwenye results:
+        elikiwa "while" kwenye results:
             rudisha self.transform_while(node, results)
-        lasivyo "sorted" kwenye results:
+        elikiwa "sorted" kwenye results:
             rudisha self.transform_sort(node, results)
         isipokua:
-            ashiria RuntimeError("Invalid match")
+             ashiria RuntimeError("Invalid match")
 
     eleza transform_isinstance(self, node, results):
         x = results["x"].clone() # The thing inside of type()
@@ -121,17 +121,17 @@ kundi FixIdioms(fixer_base.BaseFix):
 
         ikiwa list_call:
             list_call.replace(Name("sorted", prefix=list_call.prefix))
-        lasivyo simple_expr:
+        elikiwa simple_expr:
             new = simple_expr.clone()
             new.prefix = ""
             simple_expr.replace(Call(Name("sorted"), [new],
                                      prefix=simple_expr.prefix))
         isipokua:
-            ashiria RuntimeError("should sio have reached here")
+             ashiria RuntimeError("should sio have reached here")
         sort_stmt.remove()
 
         btwn = sort_stmt.prefix
-        # Keep any prefix lines between the sort_stmt na the list_call na
+        # Keep any prefix lines between the sort_stmt na the list_call and
         # shove them right after the sorted() call.
         ikiwa "\n" kwenye btwn:
             ikiwa next_stmt:

@@ -90,7 +90,7 @@ kundi EmbeddingTestsMixin:
         tatizo:
             p.terminate()
             p.wait()
-            ashiria
+            raise
         ikiwa p.returncode != returncode na support.verbose:
             andika(f"--- {cmd} failed ---")
             andika(f"stdout:\n{out}")
@@ -146,7 +146,7 @@ kundi EmbeddingTestsMixin:
             self.assertKweli(interp.modules)
             current_run.append(interp)
 
-            # The last line kwenye the loop should be the same kama the first.
+            # The last line kwenye the loop should be the same as the first.
             ikiwa len(current_run) == 5:
                 main = current_run[0]
                 self.assertEqual(interp, main)
@@ -178,11 +178,11 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                 # ni going on ukijumuisha the pointers kwenye Programs/_testembed.c.
                 # interp.interp ni 0x0 na interp.modules ni the same
                 # between interpreters.
-                ashiria unittest.SkipTest('platform prints pointers kama 0x0')
+                 ashiria unittest.SkipTest('platform prints pointers as 0x0')
 
             kila sub kwenye subs:
                 # A new subinterpreter may have the same
-                # PyInterpreterState pointer kama a previous one if
+                # PyInterpreterState pointer as a previous one if
                 # the earlier one has already been destroyed.  So
                 # we compare ukijumuisha the main interpreter.  The same
                 # applies to tstate.
@@ -300,7 +300,7 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
 kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     maxDiff = 4096
-    UTF8_MODE_ERRORS = ('surrogatepita' ikiwa MS_WINDOWS isipokua 'surrogateescape')
+    UTF8_MODE_ERRORS = ('surrogatepass' ikiwa MS_WINDOWS isipokua 'surrogateescape')
 
     # Marker to read the default configuration: get_default_config()
     GET_DEFAULT_CONFIG = object()
@@ -382,7 +382,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         'base_exec_prefix': GET_DEFAULT_CONFIG,
         'module_search_paths': GET_DEFAULT_CONFIG,
 
-        'site_agiza': 1,
+        'site_import': 1,
         'bytes_warning': 0,
         'inspect': 0,
         'interactive': 0,
@@ -455,7 +455,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         ('Py_InspectFlag', 'inspect'),
         ('Py_InteractiveFlag', 'interactive'),
         ('Py_IsolatedFlag', 'isolated'),
-        ('Py_NoSiteFlag', 'site_agiza', Kweli),
+        ('Py_NoSiteFlag', 'site_import', Kweli),
         ('Py_NoUserSiteDirectory', 'user_site_directory', Kweli),
         ('Py_OptimizeFlag', 'optimization_level'),
         ('Py_QuietFlag', 'quiet'),
@@ -509,13 +509,13 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
         ikiwa proc.returncode:
-            ashiria Exception(f"failed to get the default config: "
+             ashiria Exception(f"failed to get the default config: "
                             f"stdout={proc.stdout!r} stderr={proc.stderr!r}")
         stdout = proc.stdout.decode('utf-8')
         # ignore stderr
         jaribu:
             rudisha json.loads(stdout)
-        tatizo json.JSONDecodeError:
+        except json.JSONDecodeError:
             self.fail(f"fail to decode stdout: {stdout!r}")
 
     eleza _get_expected_config(self):
@@ -569,7 +569,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         ikiwa sys.platform == 'win32':
             default_executable = self.test_exe
-        lasivyo expected['program_name'] ni sio self.GET_DEFAULT_CONFIG:
+        elikiwa expected['program_name'] ni sio self.GET_DEFAULT_CONFIG:
             default_executable = os.path.abspath(expected['program_name'])
         isipokua:
             default_executable = os.path.join(os.getcwd(), '_testembed')
@@ -594,7 +594,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             modify_path_cb(expected['module_search_paths'])
 
         kila key kwenye self.COPY_PRE_CONFIG:
-            ikiwa key haiko kwenye expected_preconfig:
+            ikiwa key sio kwenye expected_preconfig:
                 expected_preconfig[key] = expected[key]
 
     eleza check_pre_config(self, configs, expected):
@@ -648,7 +648,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             preconfig_api = api
         ikiwa preconfig_api == API_ISOLATED:
             default_preconfig = self.PRE_CONFIG_ISOLATED
-        lasivyo preconfig_api == API_PYTHON:
+        elikiwa preconfig_api == API_PYTHON:
             default_preconfig = self.PRE_CONFIG_PYTHON
         isipokua:
             default_preconfig = self.PRE_CONFIG_COMPAT
@@ -660,7 +660,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         ikiwa api == API_PYTHON:
             default_config = self.CONFIG_PYTHON
-        lasivyo api == API_ISOLATED:
+        elikiwa api == API_ISOLATED:
             default_config = self.CONFIG_ISOLATED
         isipokua:
             default_config = self.CONFIG_COMPAT
@@ -678,7 +678,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             self.assertEqual(err.rstrip(), stderr)
         jaribu:
             configs = json.loads(out)
-        tatizo json.JSONDecodeError:
+        except json.JSONDecodeError:
             self.fail(f"fail to decode stdout: {out!r}")
 
         self.check_pre_config(configs, expected_preconfig)
@@ -700,7 +700,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         config = {
             'program_name': './globalvar',
-            'site_agiza': 0,
+            'site_import': 0,
             'bytes_warning': 1,
             'warnoptions': ['default::BytesWarning'],
             'inspect': 1,
@@ -750,9 +750,9 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                 'default::BytesWarning',
                 'config_warnoption',
             ],
-            'run_command': 'pita\n',
+            'run_command': 'pass\n',
 
-            'site_agiza': 0,
+            'site_import': 0,
             'bytes_warning': 1,
             'inspect': 1,
             'interactive': 1,
@@ -988,7 +988,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'parse_argv': 1,
             'argv': ['-c', 'arg1', '-v', 'arg3'],
             'program_name': './argv0',
-            'run_command': 'pita\n',
+            'run_command': 'pass\n',
             'use_environment': 0,
         }
         self.check_all_configs("test_init_parse_argv", config, api=API_PYTHON)
@@ -999,7 +999,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         config = {
             'parse_argv': 0,
-            'argv': ['./argv0', '-E', '-c', 'pita', 'arg1', '-v', 'arg3'],
+            'argv': ['./argv0', '-E', '-c', 'pass', 'arg1', '-v', 'arg3'],
             'program_name': './argv0',
         }
         self.check_all_configs("test_init_dont_parse_argv", config, pre_config,
@@ -1082,7 +1082,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     @contextlib.contextmanager
     eleza tmpdir_with_python(self):
         # Temporary directory ukijumuisha a copy of the Python program
-        ukijumuisha tempfile.TemporaryDirectory() kama tmpdir:
+        ukijumuisha tempfile.TemporaryDirectory() as tmpdir:
             # bpo-38234: On macOS na FreeBSD, the temporary directory
             # can be symbolic link. For example, /tmp can be a symbolic link
             # to /var/tmp. Call realpath() to resolve all symbolic links.
@@ -1152,7 +1152,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     eleza test_init_pybuilddir(self):
         # Test path configuration ukijumuisha pybuilddir.txt configuration file
 
-        ukijumuisha self.tmpdir_with_python() kama tmpdir:
+        ukijumuisha self.tmpdir_with_python() as tmpdir:
             # pybuilddir.txt ni a sub-directory relative to the current
             # directory (tmpdir)
             subdir = 'libdir'
@@ -1160,7 +1160,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             os.mkdir(libdir)
 
             filename = os.path.join(tmpdir, 'pybuilddir.txt')
-            ukijumuisha open(filename, "w", encoding="utf8") kama fp:
+            ukijumuisha open(filename, "w", encoding="utf8") as fp:
                 fp.write(subdir)
 
             module_search_paths = self.module_search_paths()
@@ -1180,8 +1180,8 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     eleza test_init_pyvenv_cfg(self):
         # Test path configuration ukijumuisha pyvenv.cfg configuration file
 
-        ukijumuisha self.tmpdir_with_python() kama tmpdir, \
-             tempfile.TemporaryDirectory() kama pyvenv_home:
+        ukijumuisha self.tmpdir_with_python() as tmpdir, \
+             tempfile.TemporaryDirectory() as pyvenv_home:
             ver = sys.version_info
 
             ikiwa sio MS_WINDOWS:
@@ -1193,11 +1193,11 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             isipokua:
                 lib_dynload = os.path.join(pyvenv_home, 'lib')
                 os.makedirs(lib_dynload)
-                # getpathp.c uses Lib\os.py kama the LANDMARK
+                # getpathp.c uses Lib\os.py as the LANDMARK
                 shutil.copyfile(os.__file__, os.path.join(lib_dynload, 'os.py'))
 
             filename = os.path.join(tmpdir, 'pyvenv.cfg')
-            ukijumuisha open(filename, "w", encoding="utf8") kama fp:
+            ukijumuisha open(filename, "w", encoding="utf8") as fp:
                 andika("home = %s" % pyvenv_home, file=fp)
                 andika("include-system-site-packages = false", file=fp)
 
@@ -1310,7 +1310,7 @@ kundi AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_audit_run_interactivehook(self):
         startup = os.path.join(self.oldcwd, support.TESTFN) + ".py"
-        ukijumuisha open(startup, "w", encoding="utf-8") kama f:
+        ukijumuisha open(startup, "w", encoding="utf-8") as f:
             andika("agiza sys", file=f)
             andika("sys.__interactivehook__ = lambda: Tupu", file=f)
         jaribu:
@@ -1322,8 +1322,8 @@ kundi AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_audit_run_startup(self):
         startup = os.path.join(self.oldcwd, support.TESTFN) + ".py"
-        ukijumuisha open(startup, "w", encoding="utf-8") kama f:
-            andika("pita", file=f)
+        ukijumuisha open(startup, "w", encoding="utf-8") as f:
+            andika("pass", file=f)
         jaribu:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
             self.run_embedded_interpreter("test_audit_run_startup", timeout=5,

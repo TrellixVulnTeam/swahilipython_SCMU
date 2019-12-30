@@ -3,7 +3,7 @@ Fixer that changes os.getcwdu() to os.getcwd().
 """
 # Author: Victor Stinner
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 

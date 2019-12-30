@@ -1,25 +1,25 @@
 """distutils.command.bdist_dumb
 
 Implements the Distutils 'bdist_dumb' command (create a "dumb" built
-distribution -- i.e., just an archive to be unpacked under $prefix ama
+distribution -- i.e., just an archive to be unpacked under $prefix or
 $exec_prefix)."""
 
-import os
-from distutils.core import Command
-from distutils.util import get_platform
-from distutils.dir_util import remove_tree, ensure_relative
-from distutils.errors import *
-from distutils.sysconfig import get_python_version
-from distutils import log
+agiza os
+kutoka distutils.core agiza Command
+kutoka distutils.util agiza get_platform
+kutoka distutils.dir_util agiza remove_tree, ensure_relative
+kutoka distutils.errors agiza *
+kutoka distutils.sysconfig agiza get_python_version
+kutoka distutils agiza log
 
-class bdist_dumb(Command):
+kundi bdist_dumb(Command):
 
     description = "create a \"dumb\" built distribution"
 
     user_options = [('bdist-dir=', 'd',
-                     "temporary directory for creating the distribution"),
+                     "temporary directory kila creating the distribution"),
                     ('plat-name=', 'p',
-                     "platform name to embed in generated filenames "
+                     "platform name to embed kwenye generated filenames "
                      "(default: %s)" % get_platform()),
                     ('format=', 'f',
                      "archive format to create (tar, gztar, bztar, xztar, "
@@ -29,9 +29,9 @@ class bdist_dumb(Command):
                      "creating the distribution archive"),
                     ('dist-dir=', 'd',
                      "directory to put final built distributions in"),
-                    ('skip-build', None,
-                     "skip rebuilding everything (for testing/debugging)"),
-                    ('relative', None,
+                    ('skip-build', Tupu,
+                     "skip rebuilding everything (kila testing/debugging)"),
+                    ('relative', Tupu,
                      "build the archive using relative paths "
                      "(default: false)"),
                     ('owner=', 'u',
@@ -47,27 +47,27 @@ class bdist_dumb(Command):
     default_format = { 'posix': 'gztar',
                        'nt': 'zip' }
 
-    def initialize_options(self):
-        self.bdist_dir = None
-        self.plat_name = None
-        self.format = None
+    eleza initialize_options(self):
+        self.bdist_dir = Tupu
+        self.plat_name = Tupu
+        self.format = Tupu
         self.keep_temp = 0
-        self.dist_dir = None
-        self.skip_build = None
+        self.dist_dir = Tupu
+        self.skip_build = Tupu
         self.relative = 0
-        self.owner = None
-        self.group = None
+        self.owner = Tupu
+        self.group = Tupu
 
-    def finalize_options(self):
-        if self.bdist_dir is None:
+    eleza finalize_options(self):
+        ikiwa self.bdist_dir ni Tupu:
             bdist_base = self.get_finalized_command('bdist').bdist_base
             self.bdist_dir = os.path.join(bdist_base, 'dumb')
 
-        if self.format is None:
+        ikiwa self.format ni Tupu:
             jaribu:
                 self.format = self.default_format[os.name]
-            tatizo KeyError:
-                ashiria DistutilsPlatformError(
+            except KeyError:
+                 ashiria DistutilsPlatformError(
                        "don't know how to create dumb built distributions "
                        "on platform %s" % os.name)
 
@@ -76,8 +76,8 @@ class bdist_dumb(Command):
                                    ('plat_name', 'plat_name'),
                                    ('skip_build', 'skip_build'))
 
-    def run(self):
-        if sio self.skip_build:
+    eleza run(self):
+        ikiwa sio self.skip_build:
             self.run_command('build')
 
         install = self.reinitialize_command('install', reinit_subcommands=1)
@@ -94,14 +94,14 @@ class bdist_dumb(Command):
                                       self.plat_name)
 
         pseudoinstall_root = os.path.join(self.dist_dir, archive_basename)
-        if sio self.relative:
+        ikiwa sio self.relative:
             archive_root = self.bdist_dir
         isipokua:
-            if (self.distribution.has_ext_modules() na
+            ikiwa (self.distribution.has_ext_modules() and
                 (install.install_base != install.install_platbase)):
-                ashiria DistutilsPlatformError(
+                 ashiria DistutilsPlatformError(
                        "can't make a dumb built distribution where "
-                       "base and platbase are different (%s, %s)"
+                       "base na platbase are different (%s, %s)"
                        % (repr(install.install_base),
                           repr(install.install_platbase)))
             isipokua:
@@ -112,12 +112,12 @@ class bdist_dumb(Command):
         filename = self.make_archive(pseudoinstall_root,
                                      self.format, root_dir=archive_root,
                                      owner=self.owner, group=self.group)
-        if self.distribution.has_ext_modules():
+        ikiwa self.distribution.has_ext_modules():
             pyversion = get_python_version()
         isipokua:
             pyversion = 'any'
         self.distribution.dist_files.append(('bdist_dumb', pyversion,
                                              filename))
 
-        if sio self.keep_temp:
+        ikiwa sio self.keep_temp:
             remove_tree(self.bdist_dir, dry_run=self.dry_run)

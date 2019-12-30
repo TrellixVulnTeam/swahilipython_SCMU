@@ -16,7 +16,7 @@ kundi StackBrowserTest(unittest.TestCase):
         svs = stackviewer.sys
         jaribu:
             abc
-        tatizo NameError:
+        except NameError:
             svs.last_type, svs.last_value, svs.last_traceback = (
                 sys.exc_info())
 

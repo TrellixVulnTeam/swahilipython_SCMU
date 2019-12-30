@@ -25,16 +25,16 @@ eleza escape(m):
     ikiwa tail.startswith("x"):
         hexes = tail[1:]
         ikiwa len(hexes) < 2:
-            ashiria ValueError("invalid hex string escape ('\\%s')" % tail)
+             ashiria ValueError("invalid hex string escape ('\\%s')" % tail)
         jaribu:
             i = int(hexes, 16)
-        tatizo ValueError:
-            ashiria ValueError("invalid hex string escape ('\\%s')" % tail) kutoka Tupu
+        except ValueError:
+             ashiria ValueError("invalid hex string escape ('\\%s')" % tail) kutoka Tupu
     isipokua:
         jaribu:
             i = int(tail, 8)
-        tatizo ValueError:
-            ashiria ValueError("invalid octal string escape ('\\%s')" % tail) kutoka Tupu
+        except ValueError:
+             ashiria ValueError("invalid octal string escape ('\\%s')" % tail) kutoka Tupu
     rudisha chr(i)
 
 eleza evalString(s):

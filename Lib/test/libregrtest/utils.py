@@ -1,64 +1,64 @@
-import math
-import os.path
-import sys
-import textwrap
+agiza math
+agiza os.path
+agiza sys
+agiza textwrap
 
 
-def format_duration(seconds):
+eleza format_duration(seconds):
     ms = math.ceil(seconds * 1e3)
     seconds, ms = divmod(ms, 1000)
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
 
     parts = []
-    if hours:
+    ikiwa hours:
         parts.append('%s hour' % hours)
-    if minutes:
+    ikiwa minutes:
         parts.append('%s min' % minutes)
-    if seconds:
-        if parts:
+    ikiwa seconds:
+        ikiwa parts:
             # 2 min 1 sec
             parts.append('%s sec' % seconds)
         isipokua:
             # 1.0 sec
             parts.append('%.1f sec' % (seconds + ms / 1000))
-    if sio parts:
-        return '%s ms' % ms
+    ikiwa sio parts:
+        rudisha '%s ms' % ms
 
     parts = parts[:2]
-    return ' '.join(parts)
+    rudisha ' '.join(parts)
 
 
-def removepy(names):
-    if sio names:
+eleza removepy(names):
+    ikiwa sio names:
         return
-    for idx, name in enumerate(names):
+    kila idx, name kwenye enumerate(names):
         basename, ext = os.path.splitext(name)
-        if ext == '.py':
+        ikiwa ext == '.py':
             names[idx] = basename
 
 
-def count(n, word):
-    if n == 1:
-        return "%d %s" % (n, word)
+eleza count(n, word):
+    ikiwa n == 1:
+        rudisha "%d %s" % (n, word)
     isipokua:
-        return "%d %ss" % (n, word)
+        rudisha "%d %ss" % (n, word)
 
 
-def printlist(x, width=70, indent=4, file=None):
+eleza printlist(x, width=70, indent=4, file=Tupu):
     """Print the elements of iterable x to stdout.
 
-    Optional arg width (default 70) is the maximum line length.
-    Optional arg indent (default 4) is the number of blanks with which to
+    Optional arg width (default 70) ni the maximum line length.
+    Optional arg indent (default 4) ni the number of blanks ukijumuisha which to
     begin each line.
     """
 
     blanks = ' ' * indent
-    # Print the sorted list: 'x' may be a '--random' list or a set()
-    print(textwrap.fill(' '.join(str(elt) for elt in sorted(x)), width,
+    # Print the sorted list: 'x' may be a '--random' list ama a set()
+    andika(textwrap.fill(' '.join(str(elt) kila elt kwenye sorted(x)), width,
                         initial_indent=blanks, subsequent_indent=blanks),
           file=file)
 
 
-def print_warning(msg):
-    print(f"Warning -- {msg}", file=sys.stderr, flush=True)
+eleza print_warning(msg):
+    andika(f"Warning -- {msg}", file=sys.stderr, flush=Kweli)

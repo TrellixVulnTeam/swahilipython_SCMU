@@ -1,13 +1,13 @@
-"""Drop-in replacement for the thread module.
+"""Drop-in replacement kila the thread module.
 
 Meant to be used as a brain-dead substitute so that threaded code does
-not need to be rewritten for when the thread module ni sio present.
+not need to be rewritten kila when the thread module ni sio present.
 
 Suggested usage is::
 
     jaribu:
         agiza _thread
-    tatizo ImportError:
+    except ImportError:
         agiza _dummy_thread as _thread
 
 """
@@ -19,130 +19,130 @@ __all__ = ['error', 'start_new_thread', 'exit', 'get_ident', 'allocate_lock',
 # A dummy value
 TIMEOUT_MAX = 2**31
 
-# NOTE: this module can be imported early in the extension building process,
-# and so top level agizas of other modules should be avoided.  Instead, all
-# agizas are done when needed on a function-by-function basis.  Since threads
+# NOTE: this module can be imported early kwenye the extension building process,
+# na so top level imports of other modules should be avoided.  Instead, all
+# imports are done when needed on a function-by-function basis.  Since threads
 # are disabled, the agiza lock should sio be an issue anyway (??).
 
 error = RuntimeError
 
-def start_new_thread(function, args, kwargs={}):
+eleza start_new_thread(function, args, kwargs={}):
     """Dummy implementation of _thread.start_new_thread().
 
-    Compatibility is maintained by making sure that ``args`` is a
-    tuple and ``kwargs`` is a dictionary.  If an exception is raised
-    and it is SystemExit (which can be done by _thread.exit()) it is
-    caught and nothing is done; all other exceptions are printed out
+    Compatibility ni maintained by making sure that ``args`` ni a
+    tuple na ``kwargs`` ni a dictionary.  If an exception ni raised
+    na it ni SystemExit (which can be done by _thread.exit()) it is
+    caught na nothing ni done; all other exceptions are printed out
     by using traceback.print_exc().
 
     If the executed function calls interrupt_main the KeyboardInterrupt will be
     raised when the function returns.
 
     """
-    if type(args) != type(tuple()):
-        ashiria TypeError("2nd arg must be a tuple")
-    if type(kwargs) != type(dict()):
-        ashiria TypeError("3rd arg must be a dict")
+    ikiwa type(args) != type(tuple()):
+         ashiria TypeError("2nd arg must be a tuple")
+    ikiwa type(kwargs) != type(dict()):
+         ashiria TypeError("3rd arg must be a dict")
     global _main
-    _main = False
+    _main = Uongo
     jaribu:
         function(*args, **kwargs)
-    tatizo SystemExit:
+    except SystemExit:
         pass
     tatizo:
         agiza traceback
         traceback.print_exc()
-    _main = True
+    _main = Kweli
     global _interrupt
-    if _interrupt:
-        _interrupt = False
-        ashiria KeyboardInterrupt
+    ikiwa _interrupt:
+        _interrupt = Uongo
+         ashiria KeyboardInterrupt
 
-def exit():
+eleza exit():
     """Dummy implementation of _thread.exit()."""
-    ashiria SystemExit
+     ashiria SystemExit
 
-def get_ident():
+eleza get_ident():
     """Dummy implementation of _thread.get_ident().
 
-    Since this module should only be used when _threadmodule is not
-    available, it is safe to assume that the current process is the
+    Since this module should only be used when _threadmodule ni not
+    available, it ni safe to assume that the current process ni the
     only thread.  Thus a constant can be safely returned.
     """
-    return 1
+    rudisha 1
 
-def allocate_lock():
+eleza allocate_lock():
     """Dummy implementation of _thread.allocate_lock()."""
-    return LockType()
+    rudisha LockType()
 
-def stack_size(size=None):
+eleza stack_size(size=Tupu):
     """Dummy implementation of _thread.stack_size()."""
-    if size ni sio None:
-        ashiria error("setting thread stack size sio supported")
-    return 0
+    ikiwa size ni sio Tupu:
+         ashiria error("setting thread stack size sio supported")
+    rudisha 0
 
-def _set_sentinel():
+eleza _set_sentinel():
     """Dummy implementation of _thread._set_sentinel()."""
-    return LockType()
+    rudisha LockType()
 
 kundi LockType(object):
     """Class implementing dummy implementation of _thread.LockType.
 
-    Compatibility is maintained by maintaining self.locked_status
-    which is a boolean that stores the state of the lock.  Pickling of
-    the lock, though, should sio be done since if the _thread module is
-    then used with an unpickled ``lock()`` kutoka here problems could
+    Compatibility ni maintained by maintaining self.locked_status
+    which ni a boolean that stores the state of the lock.  Pickling of
+    the lock, though, should sio be done since ikiwa the _thread module is
+    then used ukijumuisha an unpickled ``lock()`` kutoka here problems could
     occur kutoka this kundi sio having atomic methods.
 
     """
 
-    def __init__(self):
-        self.locked_status = False
+    eleza __init__(self):
+        self.locked_status = Uongo
 
-    def acquire(self, waitflag=None, timeout=-1):
+    eleza acquire(self, waitflag=Tupu, timeout=-1):
         """Dummy implementation of acquire().
 
-        For blocking calls, self.locked_status is automatically set to
-        True and returned appropriately based on value of
-        ``waitflag``.  If it is non-blocking, then the value is
-        actually checked and sio set if it is already acquired.  This
-        is all done so that threading.Condition's assert statements
-        aren't triggered and throw a little fit.
+        For blocking calls, self.locked_status ni automatically set to
+        Kweli na returned appropriately based on value of
+        ``waitflag``.  If it ni non-blocking, then the value is
+        actually checked na sio set ikiwa it ni already acquired.  This
+        ni all done so that threading.Condition's assert statements
+        aren't triggered na throw a little fit.
 
         """
-        if waitflag is None or waitflag:
-            self.locked_status = True
-            return True
+        ikiwa waitflag ni Tupu ama waitflag:
+            self.locked_status = Kweli
+            rudisha Kweli
         isipokua:
-            if sio self.locked_status:
-                self.locked_status = True
-                return True
+            ikiwa sio self.locked_status:
+                self.locked_status = Kweli
+                rudisha Kweli
             isipokua:
-                if timeout > 0:
+                ikiwa timeout > 0:
                     agiza time
                     time.sleep(timeout)
-                return False
+                rudisha Uongo
 
     __enter__ = acquire
 
-    def __exit__(self, typ, val, tb):
+    eleza __exit__(self, typ, val, tb):
         self.release()
 
-    def release(self):
+    eleza release(self):
         """Release the dummy lock."""
         # XXX Perhaps shouldn't actually bother to test?  Could lead
-        #     to problems for complex, threaded code.
-        if sio self.locked_status:
-            ashiria error
-        self.locked_status = False
-        return True
+        #     to problems kila complex, threaded code.
+        ikiwa sio self.locked_status:
+             ashiria error
+        self.locked_status = Uongo
+        rudisha Kweli
 
-    def locked(self):
-        return self.locked_status
+    eleza locked(self):
+        rudisha self.locked_status
 
-    def __repr__(self):
-        return "<%s %s.%s object at %s>" % (
-            "locked" if self.locked_status isipokua "unlocked",
+    eleza __repr__(self):
+        rudisha "<%s %s.%s object at %s>" % (
+            "locked" ikiwa self.locked_status isipokua "unlocked",
             self.__class__.__module__,
             self.__class__.__qualname__,
             hex(id(self))
@@ -152,42 +152,42 @@ kundi LockType(object):
 kundi RLock(LockType):
     """Dummy implementation of threading._RLock.
 
-    Re-entrant lock can be aquired multiple times and needs to be released
+    Re-entrant lock can be aquired multiple times na needs to be released
     just as many times. This dummy implemention does sio check wheter the
     current thread actually owns the lock, but does accounting on the call
     counts.
     """
-    def __init__(self):
+    eleza __init__(self):
         super().__init__()
         self._levels = 0
 
-    def acquire(self, waitflag=None, timeout=-1):
-        """Aquire the lock, can be called multiple times in succession.
+    eleza acquire(self, waitflag=Tupu, timeout=-1):
+        """Aquire the lock, can be called multiple times kwenye succession.
         """
         locked = super().acquire(waitflag, timeout)
-        if locked:
+        ikiwa locked:
             self._levels += 1
-        return locked
+        rudisha locked
 
-    def release(self):
-        """Release needs to be called once for every call to acquire().
+    eleza release(self):
+        """Release needs to be called once kila every call to acquire().
         """
-        if self._levels == 0:
-            ashiria error
-        if self._levels == 1:
+        ikiwa self._levels == 0:
+             ashiria error
+        ikiwa self._levels == 1:
             super().release()
         self._levels -= 1
 
-# Used to signal that interrupt_main was called in a "thread"
-_interrupt = False
-# True when sio executing in a "thread"
-_main = True
+# Used to signal that interrupt_main was called kwenye a "thread"
+_interrupt = Uongo
+# Kweli when sio executing kwenye a "thread"
+_main = Kweli
 
-def interrupt_main():
-    """Set _interrupt flag to True to have start_new_thread raise
+eleza interrupt_main():
+    """Set _interrupt flag to Kweli to have start_new_thread raise
     KeyboardInterrupt upon exiting."""
-    if _main:
-        ashiria KeyboardInterrupt
+    ikiwa _main:
+         ashiria KeyboardInterrupt
     isipokua:
         global _interrupt
-        _interrupt = True
+        _interrupt = Kweli

@@ -2,7 +2,7 @@
 # IO implementations.  http://bugs.python.org/issue12268
 #
 # It was suggested that this code could be merged into test_io na the tests
-# made to work using the same method kama the existing signal tests kwenye test_io.
+# made to work using the same method as the existing signal tests kwenye test_io.
 # I was unable to get single process tests using alarm ama setitimer that way
 # to reproduce the EINTR problems.  This process based test suite reproduces
 # the problems prior to the issue12268 patch reliably on Linux na OSX.
@@ -30,15 +30,15 @@ kundi TestFileIOSignalInterrupt:
         ikiwa self._process na self._process.poll() ni Tupu:
             jaribu:
                 self._process.kill()
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
 
     eleza _generate_infile_setup_code(self):
         """Returns the infile = ... line of code kila the reader process.
 
         subclasseses should override this to test different IO objects.
         """
-        rudisha ('agiza %s kama io ;'
+        rudisha ('agiza %s as io ;'
                 'infile = io.FileIO(sys.stdin.fileno(), "rb")' %
                 self.modname)
 
@@ -60,8 +60,8 @@ kundi TestFileIOSignalInterrupt:
             time.sleep(0.1)  # give it time to finish printing the error.
             jaribu:
                 self._process.terminate()  # Ensure it dies.
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
         ikiwa communicate:
             stdout_end, stderr_end = self._process.communicate()
             stdout += stdout_end
@@ -80,7 +80,7 @@ kundi TestFileIOSignalInterrupt:
                 writing a final newline na closing the infile pipe.
             read_and_verify_code: Single "line" of code to read kutoka a file
                 object named 'infile' na validate the result.  This will be
-                executed kama part of a python subprocess fed data_to_write.
+                executed as part of a python subprocess fed data_to_write.
         """
         infile_setup_code = self._generate_infile_setup_code()
         # Total pipe IO kwenye this function ni smaller than the minimum posix OS
@@ -145,7 +145,7 @@ kundi TestFileIOSignalInterrupt:
             'got = infile.{read_method_name}() ;'
             'expected = {expected!r} ;'
             'assert got == expected, ('
-                    '"{read_method_name} rudishaed wrong data.\\n"'
+                    '"{read_method_name} returned wrong data.\\n"'
                     '"got data %r\\nexpected %r" % (got, expected))'
             )
 
@@ -172,7 +172,7 @@ kundi TestFileIOSignalInterrupt:
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
                         read_method_name='readall',
                         expected=b'hello\nworld!\n'))
-        # read() ni the same thing kama readall().
+        # read() ni the same thing as readall().
         self._test_reading(
                 data_to_write=b'hello\nworld!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
@@ -190,7 +190,7 @@ kundi PyTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase):
 kundi TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
     eleza _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a BufferedReader."""
-        rudisha ('agiza %s kama io ;infile = io.open(sys.stdin.fileno(), "rb") ;'
+        rudisha ('agiza %s as io ;infile = io.open(sys.stdin.fileno(), "rb") ;'
                 'assert isinstance(infile, io.BufferedReader)' %
                 self.modname)
 
@@ -212,7 +212,7 @@ kundi PyTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.Te
 kundi TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
     eleza _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a TextIOWrapper."""
-        rudisha ('agiza %s kama io ;'
+        rudisha ('agiza %s as io ;'
                 'infile = io.open(sys.stdin.fileno(), "rt", newline=Tupu) ;'
                 'assert isinstance(infile, io.TextIOWrapper)' %
                 self.modname)

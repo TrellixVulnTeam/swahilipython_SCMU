@@ -22,14 +22,14 @@ kundi ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
         rudisha finder.find_module(bad_name)
 
     eleza test_case_sensitive(self):
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env.unset('PYTHONCASEOK')
             self.caseok_env_changed(should_exist=Uongo)
             loader = self.find_module()
             self.assertIsTupu(loader)
 
     eleza test_case_insensitivity(self):
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env.set('PYTHONCASEOK', '1')
             self.caseok_env_changed(should_exist=Kweli)
             loader = self.find_module()

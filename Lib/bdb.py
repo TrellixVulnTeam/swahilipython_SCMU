@@ -32,15 +32,15 @@ kundi Bdb:
         self.skip = set(skip) ikiwa skip isipokua Tupu
         self.komas = {}
         self.fncache = {}
-        self.frame_rudishaing = Tupu
+        self.frame_returning = Tupu
 
     eleza canonic(self, filename):
         """Return canonical form of filename.
 
         For real filenames, the canonical form ni a case-normalized (on
         case insensitive filesystems) absolute path.  'Filenames' with
-        angle brackets, such kama "<stdin>", generated kwenye interactive
-        mode, are rudishaed unchanged.
+        angle brackets, such as "<stdin>", generated kwenye interactive
+        mode, are returned unchanged.
         """
         ikiwa filename == "<" + filename[1:-1] + ">":
             rudisha filename
@@ -52,7 +52,7 @@ kundi Bdb:
         rudisha canonic
 
     eleza reset(self):
-        """Set values of attributes kama ready to start debugging."""
+        """Set values of attributes as ready to start debugging."""
         agiza linecache
         linecache.checkcache()
         self.botframe = Tupu
@@ -61,21 +61,21 @@ kundi Bdb:
     eleza trace_dispatch(self, frame, event, arg):
         """Dispatch a trace function kila debugged frames based on the event.
 
-        This function ni installed kama the trace function kila debugged
+        This function ni installed as the trace function kila debugged
         frames. Its rudisha value ni the new trace function, which is
         usually itself. The default implementation decides how to
-        dispatch a frame, depending on the type of event (pitaed kwenye kama a
+        dispatch a frame, depending on the type of event (passed kwenye as a
         string) that ni about to be executed.
 
         The event can be one of the following:
             line: A new line of code ni going to be executed.
             call: A function ni about to be called ama another code block
                   ni entered.
-            rudisha: A function ama other code block ni about to rudisha.
+            return: A function ama other code block ni about to return.
             exception: An exception has occurred.
             c_call: A C function ni about to be called.
-            c_rudisha: A C function has rudishaed.
-            c_exception: A C function has ashiriad an exception.
+            c_return: A C function has returned.
+            c_exception: A C function has raised an exception.
 
         For the Python events, specialized functions (see the dispatch_*()
         methods) are called.  For the C events, no action ni taken.
@@ -88,15 +88,15 @@ kundi Bdb:
             rudisha self.dispatch_line(frame)
         ikiwa event == 'call':
             rudisha self.dispatch_call(frame, arg)
-        ikiwa event == 'rudisha':
-            rudisha self.dispatch_rudisha(frame, arg)
+        ikiwa event == 'return':
+            rudisha self.dispatch_return(frame, arg)
         ikiwa event == 'exception':
             rudisha self.dispatch_exception(frame, arg)
         ikiwa event == 'c_call':
             rudisha self.trace_dispatch
         ikiwa event == 'c_exception':
             rudisha self.trace_dispatch
-        ikiwa event == 'c_rudisha':
+        ikiwa event == 'c_return':
             rudisha self.trace_dispatch
         andika('bdb.Bdb.dispatch: unknown debugging event:', repr(event))
         rudisha self.trace_dispatch
@@ -110,7 +110,7 @@ kundi Bdb:
         """
         ikiwa self.stop_here(frame) ama self.koma_here(frame):
             self.user_line(frame)
-            ikiwa self.quitting: ashiria BdbQuit
+            ikiwa self.quitting:  ashiria BdbQuit
         rudisha self.trace_dispatch
 
     eleza dispatch_call(self, frame, arg):
@@ -128,30 +128,30 @@ kundi Bdb:
         ikiwa sio (self.stop_here(frame) ama self.koma_anywhere(frame)):
             # No need to trace this function
             rudisha # Tupu
-        # Ignore call events kwenye generator tatizo when stepping.
+        # Ignore call events kwenye generator except when stepping.
         ikiwa self.stopframe na frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS:
             rudisha self.trace_dispatch
         self.user_call(frame, arg)
-        ikiwa self.quitting: ashiria BdbQuit
+        ikiwa self.quitting:  ashiria BdbQuit
         rudisha self.trace_dispatch
 
-    eleza dispatch_rudisha(self, frame, arg):
+    eleza dispatch_return(self, frame, arg):
         """Invoke user function na rudisha trace function kila rudisha event.
 
-        If the debugger stops on this function rudisha, invoke
-        self.user_rudisha(). Raise BdbQuit ikiwa self.quitting ni set.
+        If the debugger stops on this function return, invoke
+        self.user_return(). Raise BdbQuit ikiwa self.quitting ni set.
         Return self.trace_dispatch to endelea tracing kwenye this scope.
         """
-        ikiwa self.stop_here(frame) ama frame == self.rudishaframe:
-            # Ignore rudisha events kwenye generator tatizo when stepping.
+        ikiwa self.stop_here(frame) ama frame == self.returnframe:
+            # Ignore rudisha events kwenye generator except when stepping.
             ikiwa self.stopframe na frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS:
                 rudisha self.trace_dispatch
             jaribu:
-                self.frame_rudishaing = frame
-                self.user_rudisha(frame, arg)
+                self.frame_returning = frame
+                self.user_return(frame, arg)
             mwishowe:
-                self.frame_rudishaing = Tupu
-            ikiwa self.quitting: ashiria BdbQuit
+                self.frame_returning = Tupu
+            ikiwa self.quitting:  ashiria BdbQuit
             # The user issued a 'next' ama 'until' command.
             ikiwa self.stopframe ni frame na self.stoplineno != -1:
                 self._set_stopinfo(Tupu, Tupu)
@@ -167,20 +167,20 @@ kundi Bdb:
         ikiwa self.stop_here(frame):
             # When stepping ukijumuisha next/until/rudisha kwenye a generator frame, skip
             # the internal StopIteration exception (ukijumuisha no traceback)
-            # triggered by a subiterator run ukijumuisha the 'tuma kutoka' statement.
+            # triggered by a subiterator run ukijumuisha the 'tuma from' statement.
             ikiwa sio (frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS
                     na arg[0] ni StopIteration na arg[2] ni Tupu):
                 self.user_exception(frame, arg)
-                ikiwa self.quitting: ashiria BdbQuit
+                ikiwa self.quitting:  ashiria BdbQuit
         # Stop at the StopIteration ama GeneratorExit exception when the user
         # has set stopframe kwenye a generator by issuing a rudisha command, ama a
         # next/until command at the last statement kwenye the generator before the
         # exception.
-        lasivyo (self.stopframe na frame ni sio self.stopframe
+        elikiwa (self.stopframe na frame ni sio self.stopframe
                 na self.stopframe.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS
                 na arg[0] kwenye (StopIteration, GeneratorExit)):
             self.user_exception(frame, arg)
-            ikiwa self.quitting: ashiria BdbQuit
+            ikiwa self.quitting:  ashiria BdbQuit
 
         rudisha self.trace_dispatch
 
@@ -219,14 +219,14 @@ kundi Bdb:
         Delete temporary komapoints ikiwa effective() says to.
         """
         filename = self.canonic(frame.f_code.co_filename)
-        ikiwa filename haiko kwenye self.komas:
+        ikiwa filename sio kwenye self.komas:
             rudisha Uongo
         lineno = frame.f_lineno
-        ikiwa lineno haiko kwenye self.komas[filename]:
+        ikiwa lineno sio kwenye self.komas[filename]:
             # The line itself has no komapoint, but maybe the line ni the
             # first line of a function ukijumuisha komapoint set by function name.
             lineno = frame.f_code.co_firstlineno
-            ikiwa lineno haiko kwenye self.komas[filename]:
+            ikiwa lineno sio kwenye self.komas[filename]:
                 rudisha Uongo
 
         # flag says ok to delete temp. bp
@@ -244,7 +244,7 @@ kundi Bdb:
 
         Must implement kwenye derived classes ama get NotImplementedError.
         """
-        ashiria NotImplementedError("subkundi of bdb must implement do_clear()")
+         ashiria NotImplementedError("subkundi of bdb must implement do_clear()")
 
     eleza koma_anywhere(self, frame):
         """Return Kweli ikiwa there ni any komapoint kila frame's filename.
@@ -256,21 +256,21 @@ kundi Bdb:
 
     eleza user_call(self, frame, argument_list):
         """Called ikiwa we might stop kwenye a function."""
-        pita
+        pass
 
     eleza user_line(self, frame):
         """Called when we stop ama koma at a line."""
-        pita
+        pass
 
-    eleza user_rudisha(self, frame, rudisha_value):
+    eleza user_return(self, frame, return_value):
         """Called when a rudisha trap ni set here."""
-        pita
+        pass
 
     eleza user_exception(self, frame, exc_info):
         """Called when we stop on an exception."""
-        pita
+        pass
 
-    eleza _set_stopinfo(self, stopframe, rudishaframe, stoplineno=0):
+    eleza _set_stopinfo(self, stopframe, returnframe, stoplineno=0):
         """Set the attributes kila stopping.
 
         If stoplineno ni greater than ama equal to 0, then stop at line
@@ -278,7 +278,7 @@ kundi Bdb:
         don't stop at all.
         """
         self.stopframe = stopframe
-        self.rudishaframe = rudishaframe
+        self.returnframe = returnframe
         self.quitting = Uongo
         # stoplineno >= 0 means: stop at line >= the stoplineno
         # stoplineno -1 means: don't stop at all
@@ -289,7 +289,7 @@ kundi Bdb:
 
     eleza set_until(self, frame, lineno=Tupu):
         """Stop when the line ukijumuisha the lineno greater than the current one is
-        reached ama when rudishaing kutoka current frame."""
+        reached ama when returning kutoka current frame."""
         # the name "until" ni borrowed kutoka gdb
         ikiwa lineno ni Tupu:
             lineno = frame.f_lineno + 1
@@ -300,9 +300,9 @@ kundi Bdb:
         # Issue #13183: pdb skips frames after hitting a komapoint na running
         # step commands.
         # Restore the trace function kwenye the caller (that may sio have been set
-        # kila performance reasons) when rudishaing kutoka the current frame.
-        ikiwa self.frame_rudishaing:
-            caller_frame = self.frame_rudishaing.f_back
+        # kila performance reasons) when returning kutoka the current frame.
+        ikiwa self.frame_returning:
+            caller_frame = self.frame_returning.f_back
             ikiwa caller_frame na sio caller_frame.f_trace:
                 caller_frame.f_trace = self.trace_dispatch
         self._set_stopinfo(Tupu, Tupu)
@@ -311,8 +311,8 @@ kundi Bdb:
         """Stop on the next line kwenye ama below the given frame."""
         self._set_stopinfo(frame, Tupu)
 
-    eleza set_rudisha(self, frame):
-        """Stop when rudishaing kutoka the given frame."""
+    eleza set_return(self, frame):
+        """Stop when returning kutoka the given frame."""
         ikiwa frame.f_code.co_flags & GENERATOR_AND_COROUTINE_FLAGS:
             self._set_stopinfo(frame, Tupu, -1)
         isipokua:
@@ -338,7 +338,7 @@ kundi Bdb:
 
         If there are no komapoints, set the system trace function to Tupu.
         """
-        # Don't stop tatizo at komapoints ama when finished
+        # Don't stop except at komapoints ama when finished
         self._set_stopinfo(self.botframe, Tupu, -1)
         ikiwa sio self.komas:
             # no komapoints; run without debugger overhead
@@ -354,7 +354,7 @@ kundi Bdb:
         Raises BdbQuit exception kwenye the next call to a dispatch_*() method.
         """
         self.stopframe = self.botframe
-        self.rudishaframe = Tupu
+        self.returnframe = Tupu
         self.quitting = Kweli
         sys.settrace(Tupu)
 
@@ -373,12 +373,12 @@ kundi Bdb:
         The filename should be kwenye canonical form.
         """
         filename = self.canonic(filename)
-        agiza linecache # Import kama late kama possible
+        agiza linecache # Import as late as possible
         line = linecache.getline(filename, lineno)
         ikiwa sio line:
             rudisha 'Line %s:%d does sio exist' % (filename, lineno)
         list = self.komas.setdefault(filename, [])
-        ikiwa lineno haiko kwenye list:
+        ikiwa lineno sio kwenye list:
             list.append(lineno)
         bp = Breakpoint(filename, lineno, temporary, cond, funcname)
         rudisha Tupu
@@ -391,7 +391,7 @@ kundi Bdb:
         longer exists kwenye the Breakpoint class, then it's removed kutoka the
         Bdb instance.
         """
-        ikiwa (filename, lineno) haiko kwenye Breakpoint.bplist:
+        ikiwa (filename, lineno) sio kwenye Breakpoint.bplist:
             self.komas[filename].remove(lineno)
         ikiwa sio self.komas[filename]:
             toa self.komas[filename]
@@ -402,9 +402,9 @@ kundi Bdb:
         If no komapoints were set, rudisha an error message.
         """
         filename = self.canonic(filename)
-        ikiwa filename haiko kwenye self.komas:
+        ikiwa filename sio kwenye self.komas:
             rudisha 'There are no komapoints kwenye %s' % filename
-        ikiwa lineno haiko kwenye self.komas[filename]:
+        ikiwa lineno sio kwenye self.komas[filename]:
             rudisha 'There ni no komapoint at %s:%d' % (filename, lineno)
         # If there's only one bp kwenye the list kila that file,line
         # pair, then remove the komas entry
@@ -420,7 +420,7 @@ kundi Bdb:
         """
         jaribu:
             bp = self.get_bpbynumber(arg)
-        tatizo ValueError kama err:
+        except ValueError as err:
             rudisha str(err)
         bp.deleteMe()
         self._prune_komas(bp.file, bp.line)
@@ -432,7 +432,7 @@ kundi Bdb:
         If none were set, rudisha an error message.
         """
         filename = self.canonic(filename)
-        ikiwa filename haiko kwenye self.komas:
+        ikiwa filename sio kwenye self.komas:
             rudisha 'There are no komapoints kwenye %s' % filename
         kila line kwenye self.komas[filename]:
             blist = Breakpoint.bplist[filename, line]
@@ -458,20 +458,20 @@ kundi Bdb:
         """Return a komapoint by its index kwenye Breakpoint.bybpnumber.
 
         For invalid arg values ama ikiwa the komapoint doesn't exist,
-        ashiria a ValueError.
+         ashiria a ValueError.
         """
         ikiwa sio arg:
-            ashiria ValueError('Breakpoint number expected')
+             ashiria ValueError('Breakpoint number expected')
         jaribu:
             number = int(arg)
-        tatizo ValueError:
-            ashiria ValueError('Non-numeric komapoint number %s' % arg) kutoka Tupu
+        except ValueError:
+             ashiria ValueError('Non-numeric komapoint number %s' % arg) kutoka Tupu
         jaribu:
             bp = Breakpoint.bpbynumber[number]
-        tatizo IndexError:
-            ashiria ValueError('Breakpoint number %d out of range' % number) kutoka Tupu
+        except IndexError:
+             ashiria ValueError('Breakpoint number %d out of range' % number) kutoka Tupu
         ikiwa bp ni Tupu:
-            ashiria ValueError('Breakpoint %d already deleted' % number)
+             ashiria ValueError('Breakpoint %d already deleted' % number)
         rudisha bp
 
     eleza get_koma(self, filename, lineno):
@@ -556,8 +556,8 @@ kundi Bdb:
             s += reprlib.repr(args)
         isipokua:
             s += '()'
-        ikiwa '__rudisha__' kwenye frame.f_locals:
-            rv = frame.f_locals['__rudisha__']
+        ikiwa '__return__' kwenye frame.f_locals:
+            rv = frame.f_locals['__return__']
             s += '->'
             s += reprlib.repr(rv)
         line = linecache.getline(filename, lineno, frame.f_globals)
@@ -567,7 +567,7 @@ kundi Bdb:
 
     # The following methods can be called by clients to use
     # a debugger to debug a statement ama an expression.
-    # Both can be given kama a string, ama a code object.
+    # Both can be given as a string, ama a code object.
 
     eleza run(self, cmd, globals=Tupu, locals=Tupu):
         """Debug a statement executed via the exec() function.
@@ -585,8 +585,8 @@ kundi Bdb:
         sys.settrace(self.trace_dispatch)
         jaribu:
             exec(cmd, globals, locals)
-        tatizo BdbQuit:
-            pita
+        except BdbQuit:
+            pass
         mwishowe:
             self.quitting = Kweli
             sys.settrace(Tupu)
@@ -605,8 +605,8 @@ kundi Bdb:
         sys.settrace(self.trace_dispatch)
         jaribu:
             rudisha eval(expr, globals, locals)
-        tatizo BdbQuit:
-            pita
+        except BdbQuit:
+            pass
         mwishowe:
             self.quitting = Kweli
             sys.settrace(Tupu)
@@ -625,17 +625,17 @@ kundi Bdb:
         """
         ikiwa len(args) >= 2:
             self, func, *args = args
-        lasivyo sio args:
-            ashiria TypeError("descriptor 'runcall' of 'Bdb' object "
+        elikiwa sio args:
+             ashiria TypeError("descriptor 'runcall' of 'Bdb' object "
                             "needs an argument")
-        lasivyo 'func' kwenye kwds:
+        elikiwa 'func' kwenye kwds:
             func = kwds.pop('func')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'func' kama keyword argument ni deprecated",
+            warnings.warn("Passing 'func' as keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-            ashiria TypeError('runcall expected at least 1 positional argument, '
+             ashiria TypeError('runcall expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         self.reset()
@@ -643,8 +643,8 @@ kundi Bdb:
         res = Tupu
         jaribu:
             res = func(*args, **kwds)
-        tatizo BdbQuit:
-            pita
+        except BdbQuit:
+            pass
         mwishowe:
             self.quitting = Kweli
             sys.settrace(Tupu)
@@ -660,7 +660,7 @@ eleza set_trace():
 kundi Breakpoint:
     """Breakpoint class.
 
-    Implements temporary komapoints, ignore counts, disabling na
+    Implements temporary komapoints, ignore counts, disabling and
     (re)-enabling, na conditionals.
 
     Breakpoints are indexed by number through bpbynumber na by
@@ -681,7 +681,7 @@ kundi Breakpoint:
     next = 1        # Next bp to be assigned
     bplist = {}     # indexed by (file, lineno) tuple
     bpbynumber = [Tupu] # Each entry ni Tupu ama an instance of Bpt
-                # index 0 ni unused, tatizo kila marking an
+                # index 0 ni unused, except kila marking an
                 # effective koma .... see effective()
 
     eleza __init__(self, file, line, temporary=Uongo, cond=Tupu, funcname=Tupu):
@@ -719,11 +719,11 @@ kundi Breakpoint:
             toa self.bplist[index]
 
     eleza enable(self):
-        """Mark the komapoint kama enabled."""
+        """Mark the komapoint as enabled."""
         self.enabled = Kweli
 
     eleza disable(self):
-        """Mark the komapoint kama disabled."""
+        """Mark the komapoint as disabled."""
         self.enabled = Uongo
 
     eleza bpandika(self, out=Tupu):
@@ -848,7 +848,7 @@ eleza effective(file, line, frame):
             tatizo:
                 # ikiwa eval fails, most conservative thing ni to stop on
                 # komapoint regardless of ignore count.  Don't delete
-                # temporary, kama another hint to user.
+                # temporary, as another hint to user.
                 rudisha (b, Uongo)
     rudisha (Tupu, Tupu)
 
@@ -867,8 +867,8 @@ kundi Tdb(Bdb):
         fn = self.canonic(frame.f_code.co_filename)
         line = linecache.getline(fn, frame.f_lineno, frame.f_globals)
         andika('+++', fn, frame.f_lineno, name, ':', line.strip())
-    eleza user_rudisha(self, frame, retval):
-        andika('+++ rudisha', retval)
+    eleza user_return(self, frame, retval):
+        andika('+++ return', retval)
     eleza user_exception(self, frame, exc_stuff):
         andika('+++ exception', exc_stuff)
         self.set_endelea()
@@ -876,7 +876,7 @@ kundi Tdb(Bdb):
 eleza foo(n):
     andika('foo(', n, ')')
     x = bar(n*10)
-    andika('bar rudishaed', x)
+    andika('bar returned', x)
 
 eleza bar(a):
     andika('bar(', a, ')')

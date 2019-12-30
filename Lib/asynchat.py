@@ -7,7 +7,7 @@
 #
 #                         All Rights Reserved
 #
-# Permission to use, copy, modify, na distribute this software na
+# Permission to use, copy, modify, na distribute this software and
 # its documentation kila any purpose na without fee ni hereby
 # granted, provided that the above copyright notice appear kwenye all
 # copies na that both that copyright notice na this permission
@@ -42,7 +42,7 @@ of the connection, you'll have self.terminator set to '\r\n', in
 order to process the single-line greeting.  Just before issuing a
 'LIST' command you'll set it to '\r\n.\r\n'.  The output of the LIST
 command will be accumulated (using your own 'collect_incoming_data'
-method) up to the terminator, na then control will be rudishaed to
+method) up to the terminator, na then control will be returned to
 you - by calling your self.found_terminator() method.
 """
 agiza asyncore
@@ -59,7 +59,7 @@ kundi async_chat(asyncore.dispatcher):
     ac_out_buffer_size = 65536
 
     # we don't want to enable the use of encoding by default, because that ni a
-    # sign of an application bug that we don't want to pita silently
+    # sign of an application bug that we don't want to pass silently
 
     use_encoding = 0
     encoding = 'latin-1'
@@ -79,7 +79,7 @@ kundi async_chat(asyncore.dispatcher):
         asyncore.dispatcher.__init__(self, sock, map)
 
     eleza collect_incoming_data(self, data):
-        ashiria NotImplementedError("must be implemented kwenye subclass")
+         ashiria NotImplementedError("must be implemented kwenye subclass")
 
     eleza _collect_incoming_data(self, data):
         self.incoming.append(data)
@@ -90,7 +90,7 @@ kundi async_chat(asyncore.dispatcher):
         rudisha d
 
     eleza found_terminator(self):
-        ashiria NotImplementedError("must be implemented kwenye subclass")
+         ashiria NotImplementedError("must be implemented kwenye subclass")
 
     eleza set_terminator(self, term):
         """Set the input delimiter.
@@ -99,8 +99,8 @@ kundi async_chat(asyncore.dispatcher):
         """
         ikiwa isinstance(term, str) na self.use_encoding:
             term = bytes(term, self.encoding)
-        lasivyo isinstance(term, int) na term < 0:
-            ashiria ValueError('the number of received bytes must be positive')
+        elikiwa isinstance(term, int) na term < 0:
+             ashiria ValueError('the number of received bytes must be positive')
         self.terminator = term
 
     eleza get_terminator(self):
@@ -115,11 +115,11 @@ kundi async_chat(asyncore.dispatcher):
 
         jaribu:
             data = self.recv(self.ac_in_buffer_size)
-        tatizo BlockingIOError:
-            rudisha
-        tatizo OSError kama why:
+        except BlockingIOError:
+            return
+        except OSError as why:
             self.handle_error()
-            rudisha
+            return
 
         ikiwa isinstance(data, str) na self.use_encoding:
             data = bytes(str, self.encoding)
@@ -137,7 +137,7 @@ kundi async_chat(asyncore.dispatcher):
                 # no terminator, collect it all
                 self.collect_incoming_data(self.ac_in_buffer)
                 self.ac_in_buffer = b''
-            lasivyo isinstance(terminator, int):
+            elikiwa isinstance(terminator, int):
                 # numeric terminator
                 n = terminator
                 ikiwa lb < n:
@@ -191,7 +191,7 @@ kundi async_chat(asyncore.dispatcher):
 
     eleza push(self, data):
         ikiwa sio isinstance(data, (bytes, bytearray, memoryview)):
-            ashiria TypeError('data argument must be byte-ish (%r)',
+             ashiria TypeError('data argument must be byte-ish (%r)',
                             type(data))
         sabs = self.ac_out_buffer_size
         ikiwa len(data) > sabs:
@@ -215,7 +215,7 @@ kundi async_chat(asyncore.dispatcher):
 
     eleza writable(self):
         "predicate kila inclusion kwenye the writable kila select()"
-        rudisha self.producer_fifo ama (sio self.connected)
+        rudisha self.producer_fifo ama (not self.connected)
 
     eleza close_when_done(self):
         "automatically close this channel once the outgoing queue ni empty"
@@ -229,13 +229,13 @@ kundi async_chat(asyncore.dispatcher):
                 toa self.producer_fifo[0]
                 ikiwa first ni Tupu:
                     self.handle_close()
-                    rudisha
+                    return
 
             # handle classic producer behavior
             obs = self.ac_out_buffer_size
             jaribu:
                 data = first[:obs]
-            tatizo TypeError:
+            except TypeError:
                 data = first.more()
                 ikiwa data:
                     self.producer_fifo.appendleft(data)
@@ -249,9 +249,9 @@ kundi async_chat(asyncore.dispatcher):
             # send the data
             jaribu:
                 num_sent = self.send(data)
-            tatizo OSError:
+            except OSError:
                 self.handle_error()
-                rudisha
+                return
 
             ikiwa num_sent:
                 ikiwa num_sent < len(data) ama obs < len(first):
@@ -259,7 +259,7 @@ kundi async_chat(asyncore.dispatcher):
                 isipokua:
                     toa self.producer_fifo[0]
             # we tried to send some actual data
-            rudisha
+            return
 
     eleza discard_buffers(self):
         # Emergencies only!

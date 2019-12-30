@@ -2,7 +2,7 @@
 agiza re
 
 kutoka tkinter agiza StringVar, BooleanVar, TclError
-agiza tkinter.messagebox kama tkMessageBox
+agiza tkinter.messagebox as tkMessageBox
 
 eleza get(root):
     '''Return the singleton SearchEngine instance kila the process.
@@ -84,7 +84,7 @@ kundi SearchEngine:
             flags = flags | re.IGNORECASE
         jaribu:
             prog = re.compile(pat, flags)
-        tatizo re.error kama what:
+        except re.error as what:
             args = what.args
             msg = args[0]
             col = args[1] ikiwa len(args) >= 2 isipokua -1
@@ -109,7 +109,7 @@ kundi SearchEngine:
         It directly rudisha the result of that call.
 
         Text ni a text widget. Prog ni a precompiled pattern.
-        The ok parameter ni a bit complicated kama it has two effects.
+        The ok parameter ni a bit complicated as it has two effects.
 
         If there ni a selection, the search begin at either end,
         depending on the direction setting na ok, ukijumuisha ok meaning that
@@ -193,7 +193,7 @@ eleza search_reverse(prog, chars, col):
     '''Search backwards na rudisha an re match object ama Tupu.
 
     This ni done by searching forwards until there ni no match.
-    Prog: compiled re object ukijumuisha a search method rudishaing a match.
+    Prog: compiled re object ukijumuisha a search method returning a match.
     Chars: line of text, without \\n.
     Col: stop index kila the search; the limit kila match.end().
     '''
@@ -218,7 +218,7 @@ eleza get_selection(text):
     jaribu:
         first = text.index("sel.first")
         last = text.index("sel.last")
-    tatizo TclError:
+    except TclError:
         first = last = Tupu
     ikiwa sio first:
         first = text.index("insert")

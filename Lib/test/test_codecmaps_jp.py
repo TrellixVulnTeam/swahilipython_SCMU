@@ -33,10 +33,10 @@ kundi TestSJISCOMPATMap(multibytecodec_support.TestBase_Mapping,
     encoding = 'shift_jis'
     mapfilename = 'SHIFTJIS.TXT'
     mapfileurl = 'http://www.pythontest.net/unicode/SHIFTJIS.TXT'
-    pita_enctest = [
+    pass_enctest = [
         (b'\x81_', '\\'),
     ]
-    pita_dectest = [
+    pass_dectest = [
         (b'\\', '\xa5'),
         (b'~', '\u203e'),
         (b'\x81_', '\\'),

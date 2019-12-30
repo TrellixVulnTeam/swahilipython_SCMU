@@ -18,25 +18,25 @@ __all__ = ['deque', 'defaultdict', 'namedtuple', 'UserDict', 'UserList',
             'UserString', 'Counter', 'OrderedDict', 'ChainMap']
 
 agiza _collections_abc
-kutoka operator agiza itemgetter kama _itemgetter, eq kama _eq
-kutoka keyword agiza iskeyword kama _iskeyword
-agiza sys kama _sys
-agiza heapq kama _heapq
-kutoka _weakref agiza proxy kama _proxy
-kutoka itertools agiza repeat kama _repeat, chain kama _chain, starmap kama _starmap
-kutoka reprlib agiza recursive_repr kama _recursive_repr
+kutoka operator agiza itemgetter as _itemgetter, eq as _eq
+kutoka keyword agiza iskeyword as _iskeyword
+agiza sys as _sys
+agiza heapq as _heapq
+kutoka _weakref agiza proxy as _proxy
+kutoka itertools agiza repeat as _repeat, chain as _chain, starmap as _starmap
+kutoka reprlib agiza recursive_repr as _recursive_repr
 
 jaribu:
     kutoka _collections agiza deque
-tatizo ImportError:
-    pita
+except ImportError:
+    pass
 isipokua:
     _collections_abc.MutableSequence.register(deque)
 
 jaribu:
     kutoka _collections agiza defaultdict
-tatizo ImportError:
-    pita
+except ImportError:
+    pass
 
 
 eleza __getattr__(name):
@@ -46,13 +46,13 @@ eleza __getattr__(name):
     ikiwa name kwenye _collections_abc.__all__:
         obj = getattr(_collections_abc, name)
         agiza warnings
-        warnings.warn("Using ama agizaing the ABCs kutoka 'collections' instead "
+        warnings.warn("Using ama importing the ABCs kutoka 'collections' instead "
                       "of kutoka 'collections.abc' ni deprecated since Python 3.3, "
                       "and kwenye 3.9 it will stop working",
                       DeprecationWarning, stacklevel=2)
         globals()[name] = obj
         rudisha obj
-    ashiria AttributeError(f'module {__name__!r} has no attribute {name!r}')
+     ashiria AttributeError(f'module {__name__!r} has no attribute {name!r}')
 
 ################################################################################
 ### OrderedDict
@@ -83,7 +83,7 @@ kundi OrderedDict(dict):
     # An inherited dict maps keys to values.
     # The inherited dict provides __getitem__, __len__, __contains__, na get.
     # The remaining methods are order-aware.
-    # Big-O running times kila all methods are the same kama regular dictionaries.
+    # Big-O running times kila all methods are the same as regular dictionaries.
 
     # The internal self.__map dict maps keys to links kwenye a doubly linked list.
     # The circular doubly linked list starts na ends ukijumuisha a sentinel element.
@@ -99,7 +99,7 @@ kundi OrderedDict(dict):
         '''
         jaribu:
             self.__root
-        tatizo AttributeError:
+        except AttributeError:
             self.__hardroot = _Link()
             self.__root = root = _proxy(self.__hardroot)
             root.prev = root.next = root
@@ -111,7 +111,7 @@ kundi OrderedDict(dict):
         'od.__setitem__(i, y) <==> od[i]=y'
         # Setting a new item creates a new link at the end of the linked list,
         # na the inherited dictionary ni updated ukijumuisha the new key/value pair.
-        ikiwa key haiko kwenye self:
+        ikiwa key sio kwenye self:
             self.__map[key] = link = Link()
             root = self.__root
             last = root.prev
@@ -161,10 +161,10 @@ kundi OrderedDict(dict):
     eleza popitem(self, last=Kweli):
         '''Remove na rudisha a (key, value) pair kutoka the dictionary.
 
-        Pairs are rudishaed kwenye LIFO order ikiwa last ni true ama FIFO order ikiwa false.
+        Pairs are returned kwenye LIFO order ikiwa last ni true ama FIFO order ikiwa false.
         '''
         ikiwa sio self:
-            ashiria KeyError('dictionary ni empty')
+             ashiria KeyError('dictionary ni empty')
         root = self.__root
         ikiwa last:
             link = root.prev
@@ -235,8 +235,8 @@ kundi OrderedDict(dict):
 
     eleza pop(self, key, default=__marker):
         '''od.pop(k[,d]) -> v, remove specified key na rudisha the corresponding
-        value.  If key ni sio found, d ni rudishaed ikiwa given, otherwise KeyError
-        ni ashiriad.
+        value.  If key ni sio found, d ni returned ikiwa given, otherwise KeyError
+        ni raised.
 
         '''
         ikiwa key kwenye self:
@@ -244,11 +244,11 @@ kundi OrderedDict(dict):
             toa self[key]
             rudisha result
         ikiwa default ni self.__marker:
-            ashiria KeyError(key)
+             ashiria KeyError(key)
         rudisha default
 
     eleza setdefault(self, key, default=Tupu):
-        '''Insert key ukijumuisha a value of default ikiwa key ni haiko kwenye the dictionary.
+        '''Insert key ukijumuisha a value of default ikiwa key ni sio kwenye the dictionary.
 
         Return the value kila key ikiwa key ni kwenye the dictionary, isipokua default.
         '''
@@ -276,7 +276,7 @@ kundi OrderedDict(dict):
         rudisha self.__class__(self)
 
     @classmethod
-    eleza kutokakeys(cls, iterable, value=Tupu):
+    eleza fromkeys(cls, iterable, value=Tupu):
         '''Create a new ordered dictionary ukijumuisha keys kutoka iterable na values set to value.
         '''
         self = cls()
@@ -296,9 +296,9 @@ kundi OrderedDict(dict):
 
 jaribu:
     kutoka _collections agiza OrderedDict
-tatizo ImportError:
+except ImportError:
     # Leave the pure Python version kwenye place.
-    pita
+    pass
 
 
 ################################################################################
@@ -307,7 +307,7 @@ tatizo ImportError:
 
 jaribu:
     kutoka _collections agiza _tuplegetter
-tatizo ImportError:
+except ImportError:
     _tuplegetter = lambda index, doc: property(_itemgetter(index), doc=doc)
 
 eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=Tupu):
@@ -344,7 +344,7 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
     ikiwa rename:
         seen = set()
         kila index, name kwenye enumerate(field_names):
-            ikiwa (sio name.isidentifier()
+            ikiwa (not name.isidentifier()
                 ama _iskeyword(name)
                 ama name.startswith('_')
                 ama name kwenye seen):
@@ -353,28 +353,28 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
 
     kila name kwenye [typename] + field_names:
         ikiwa type(name) ni sio str:
-            ashiria TypeError('Type names na field names must be strings')
+             ashiria TypeError('Type names na field names must be strings')
         ikiwa sio name.isidentifier():
-            ashiria ValueError('Type names na field names must be valid '
+             ashiria ValueError('Type names na field names must be valid '
                              f'identifiers: {name!r}')
         ikiwa _iskeyword(name):
-            ashiria ValueError('Type names na field names cannot be a '
+             ashiria ValueError('Type names na field names cannot be a '
                              f'keyword: {name!r}')
 
     seen = set()
     kila name kwenye field_names:
         ikiwa name.startswith('_') na sio rename:
-            ashiria ValueError('Field names cannot start ukijumuisha an underscore: '
+             ashiria ValueError('Field names cannot start ukijumuisha an underscore: '
                              f'{name!r}')
         ikiwa name kwenye seen:
-            ashiria ValueError(f'Encountered duplicate field name: {name!r}')
+             ashiria ValueError(f'Encountered duplicate field name: {name!r}')
         seen.add(name)
 
     field_defaults = {}
     ikiwa defaults ni sio Tupu:
         defaults = tuple(defaults)
         ikiwa len(defaults) > len(field_names):
-            ashiria TypeError('Got more default values than field names')
+             ashiria TypeError('Got more default values than field names')
         field_defaults = dict(reversed(list(zip(reversed(field_names),
                                                 reversed(defaults)))))
 
@@ -401,7 +401,7 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
     eleza _make(cls, iterable):
         result = tuple_new(cls, iterable)
         ikiwa _len(result) != num_fields:
-            ashiria TypeError(f'Expected {num_fields} arguments, got {len(result)}')
+             ashiria TypeError(f'Expected {num_fields} arguments, got {len(result)}')
         rudisha result
 
     _make.__func__.__doc__ = (f'Make a new {typename} object kutoka a sequence '
@@ -410,7 +410,7 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
     eleza _replace(self, /, **kwds):
         result = self._make(_map(kwds.pop, field_names, self))
         ikiwa kwds:
-            ashiria ValueError(f'Got unexpected field names: {list(kwds)!r}')
+             ashiria ValueError(f'Got unexpected field names: {list(kwds)!r}')
         rudisha result
 
     _replace.__doc__ = (f'Return a new {typename} object replacing specified '
@@ -425,7 +425,7 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
         rudisha _dict(_zip(self._fields, self))
 
     eleza __getnewargs__(self):
-        'Return self kama a plain tuple.  Used by copy na pickle.'
+        'Return self as a plain tuple.  Used by copy na pickle.'
         rudisha _tuple(self)
 
     # Modify function metadata to help ukijumuisha introspection na debugging
@@ -456,15 +456,15 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
     result = type(typename, (tuple,), class_namespace)
 
     # For pickling to work, the __module__ variable needs to be set to the frame
-    # where the named tuple ni created.  Bypita this step kwenye environments where
+    # where the named tuple ni created.  Bypass this step kwenye environments where
     # sys._getframe ni sio defined (Jython kila example) ama sys._getframe ni not
     # defined kila arguments greater than 0 (IronPython), ama where the user has
     # specified a particular module.
     ikiwa module ni Tupu:
         jaribu:
             module = _sys._getframe(1).f_globals.get('__name__', '__main__')
-        tatizo (AttributeError, ValueError):
-            pita
+        except (AttributeError, ValueError):
+            pass
     ikiwa module ni sio Tupu:
         result.__module__ = module
 
@@ -483,13 +483,13 @@ eleza _count_elements(mapping, iterable):
 
 jaribu:                                    # Load C helper function ikiwa available
     kutoka _collections agiza _count_elements
-tatizo ImportError:
-    pita
+except ImportError:
+    pass
 
 kundi Counter(dict):
     '''Dict subkundi kila counting hashable items.  Sometimes called a bag
-    ama multiset.  Elements are stored kama dictionary keys na their counts
-    are stored kama dictionary values.
+    ama multiset.  Elements are stored as dictionary keys na their counts
+    are stored as dictionary values.
 
     >>> c = Counter('abcdeabcdabcaba')  # count elements kutoka a string
 
@@ -552,8 +552,8 @@ kundi Counter(dict):
         self.update(iterable, **kwds)
 
     eleza __missing__(self, key):
-        'The count of elements haiko kwenye the Counter ni zero.'
-        # Needed so that self[missing_item] does sio ashiria KeyError
+        'The count of elements sio kwenye the Counter ni zero.'
+        # Needed so that self[missing_item] does sio  ashiria KeyError
         rudisha 0
 
     eleza most_common(self, n=Tupu):
@@ -570,7 +570,7 @@ kundi Counter(dict):
         rudisha _heapq.nlargest(n, self.items(), key=_itemgetter(1))
 
     eleza elements(self):
-        '''Iterator over elements repeating each kama many times kama its count.
+        '''Iterator over elements repeating each as many times as its count.
 
         >>> c = Counter('ABCABC')
         >>> sorted(c.elements())
@@ -589,21 +589,21 @@ kundi Counter(dict):
 
         '''
         # Emulate Bag.do kutoka Smalltalk na Multiset.begin kutoka C++.
-        rudisha _chain.kutoka_iterable(_starmap(_repeat, self.items()))
+        rudisha _chain.from_iterable(_starmap(_repeat, self.items()))
 
     # Override dict methods where necessary
 
     @classmethod
-    eleza kutokakeys(cls, iterable, v=Tupu):
+    eleza fromkeys(cls, iterable, v=Tupu):
         # There ni no equivalent method kila counters because the semantics
-        # would be ambiguous kwenye cases such kama Counter.kutokakeys('aaabbc', v=2).
+        # would be ambiguous kwenye cases such as Counter.fromkeys('aaabbc', v=2).
         # Initializing counters to zero values isn't necessary because zero
         # ni already the default value kila counter lookups.  Initializing
         # to one ni easily accomplished ukijumuisha Counter(set(iterable)).  For
         # more exotic cases, create a dictionary first using a dictionary
-        # comprehension ama dict.kutokakeys().
-        ashiria NotImplementedError(
-            'Counter.kutokakeys() ni undefined.  Use Counter(iterable) instead.')
+        # comprehension ama dict.fromkeys().
+         ashiria NotImplementedError(
+            'Counter.fromkeys() ni undefined.  Use Counter(iterable) instead.')
 
     eleza update(self, iterable=Tupu, /, **kwds):
         '''Like dict.update() but add counts instead of replacing them.
@@ -673,7 +673,7 @@ kundi Counter(dict):
         rudisha self.__class__, (dict(self),)
 
     eleza __delitem__(self, elem):
-        'Like dict.__delitem__() but does sio ashiria KeyError kila missing values.'
+        'Like dict.__delitem__() but does sio  ashiria KeyError kila missing values.'
         ikiwa elem kwenye self:
             super().__delitem__(elem)
 
@@ -683,7 +683,7 @@ kundi Counter(dict):
         jaribu:
             items = ', '.join(map('%r: %r'.__mod__, self.most_common()))
             rudisha '%s({%s})' % (self.__class__.__name__, items)
-        tatizo TypeError:
+        except TypeError:
             # handle case where values are sio orderable
             rudisha '{0}({1!r})'.format(self.__class__.__name__, dict(self))
 
@@ -711,7 +711,7 @@ kundi Counter(dict):
             ikiwa newcount > 0:
                 result[elem] = newcount
         kila elem, count kwenye other.items():
-            ikiwa elem haiko kwenye self na count > 0:
+            ikiwa elem sio kwenye self na count > 0:
                 result[elem] = count
         rudisha result
 
@@ -730,7 +730,7 @@ kundi Counter(dict):
             ikiwa newcount > 0:
                 result[elem] = newcount
         kila elem, count kwenye other.items():
-            ikiwa elem haiko kwenye self na count < 0:
+            ikiwa elem sio kwenye self na count < 0:
                 result[elem] = 0 - count
         rudisha result
 
@@ -750,7 +750,7 @@ kundi Counter(dict):
             ikiwa newcount > 0:
                 result[elem] = newcount
         kila elem, count kwenye other.items():
-            ikiwa elem haiko kwenye self na count > 0:
+            ikiwa elem sio kwenye self na count > 0:
                 result[elem] = count
         rudisha result
 
@@ -880,14 +880,14 @@ kundi ChainMap(_collections_abc.MutableMapping):
         self.maps = list(maps) ama [{}]          # always at least one map
 
     eleza __missing__(self, key):
-        ashiria KeyError(key)
+         ashiria KeyError(key)
 
     eleza __getitem__(self, key):
         kila mapping kwenye self.maps:
             jaribu:
                 rudisha mapping[key]             # can't use 'key kwenye mapping' ukijumuisha defaultdict
-            tatizo KeyError:
-                pita
+            except KeyError:
+                pass
         rudisha self.__missing__(key)            # support subclasses that define __missing__
 
     eleza get(self, key, default=Tupu):
@@ -913,9 +913,9 @@ kundi ChainMap(_collections_abc.MutableMapping):
         rudisha f'{self.__class__.__name__}({", ".join(map(repr, self.maps))})'
 
     @classmethod
-    eleza kutokakeys(cls, iterable, *args):
+    eleza fromkeys(cls, iterable, *args):
         'Create a ChainMap ukijumuisha a single dict created kutoka the iterable.'
-        rudisha cls(dict.kutokakeys(iterable, *args))
+        rudisha cls(dict.fromkeys(iterable, *args))
 
     eleza copy(self):
         'New ChainMap ama subkundi ukijumuisha a new copy of maps[0] na refs to maps[1:]'
@@ -942,22 +942,22 @@ kundi ChainMap(_collections_abc.MutableMapping):
     eleza __delitem__(self, key):
         jaribu:
             toa self.maps[0][key]
-        tatizo KeyError:
-            ashiria KeyError('Key sio found kwenye the first mapping: {!r}'.format(key))
+        except KeyError:
+             ashiria KeyError('Key sio found kwenye the first mapping: {!r}'.format(key))
 
     eleza popitem(self):
         'Remove na rudisha an item pair kutoka maps[0]. Raise KeyError ni maps[0] ni empty.'
         jaribu:
             rudisha self.maps[0].popitem()
-        tatizo KeyError:
-            ashiria KeyError('No keys found kwenye the first mapping.')
+        except KeyError:
+             ashiria KeyError('No keys found kwenye the first mapping.')
 
     eleza pop(self, key, *args):
-        'Remove *key* kutoka maps[0] na rudisha its value. Raise KeyError ikiwa *key* haiko kwenye maps[0].'
+        'Remove *key* kutoka maps[0] na rudisha its value. Raise KeyError ikiwa *key* sio kwenye maps[0].'
         jaribu:
             rudisha self.maps[0].pop(key, *args)
-        tatizo KeyError:
-            ashiria KeyError('Key sio found kwenye the first mapping: {!r}'.format(key))
+        except KeyError:
+             ashiria KeyError('Key sio found kwenye the first mapping: {!r}'.format(key))
 
     eleza clear(self):
         'Clear maps[0], leaving maps[1:] intact.'
@@ -973,17 +973,17 @@ kundi UserDict(_collections_abc.MutableMapping):
     # Start by filling-out the abstract methods
     eleza __init__(*args, **kwargs):
         ikiwa sio args:
-            ashiria TypeError("descriptor '__init__' of 'UserDict' object "
+             ashiria TypeError("descriptor '__init__' of 'UserDict' object "
                             "needs an argument")
         self, *args = args
         ikiwa len(args) > 1:
-            ashiria TypeError('expected at most 1 arguments, got %d' % len(args))
+             ashiria TypeError('expected at most 1 arguments, got %d' % len(args))
         ikiwa args:
             dict = args[0]
-        lasivyo 'dict' kwenye kwargs:
+        elikiwa 'dict' kwenye kwargs:
             dict = kwargs.pop('dict')
             agiza warnings
-            warnings.warn("Passing 'dict' kama keyword argument ni deprecated",
+            warnings.warn("Passing 'dict' as keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
             dict = Tupu
@@ -1000,7 +1000,7 @@ kundi UserDict(_collections_abc.MutableMapping):
             rudisha self.data[key]
         ikiwa hasattr(self.__class__, "__missing__"):
             rudisha self.__class__.__missing__(self, key)
-        ashiria KeyError(key)
+         ashiria KeyError(key)
     eleza __setitem__(self, key, item): self.data[key] = item
     eleza __delitem__(self, key): toa self.data[key]
     eleza __iter__(self):
@@ -1010,7 +1010,7 @@ kundi UserDict(_collections_abc.MutableMapping):
     eleza __contains__(self, key):
         rudisha key kwenye self.data
 
-    # Now, add the methods kwenye dicts but haiko kwenye MutableMapping
+    # Now, add the methods kwenye dicts but sio kwenye MutableMapping
     eleza __repr__(self): rudisha repr(self.data)
     eleza __copy__(self):
         inst = self.__class__.__new__(self.__class__)
@@ -1033,7 +1033,7 @@ kundi UserDict(_collections_abc.MutableMapping):
         rudisha c
 
     @classmethod
-    eleza kutokakeys(cls, iterable, value=Tupu):
+    eleza fromkeys(cls, iterable, value=Tupu):
         d = cls()
         kila key kwenye iterable:
             d[key] = value
@@ -1053,7 +1053,7 @@ kundi UserList(_collections_abc.MutableSequence):
             # XXX should this accept an arbitrary sequence?
             ikiwa type(initlist) == type(self.data):
                 self.data[:] = initlist
-            lasivyo isinstance(initlist, UserList):
+            elikiwa isinstance(initlist, UserList):
                 self.data[:] = initlist.data[:]
             isipokua:
                 self.data = list(initlist)
@@ -1077,19 +1077,19 @@ kundi UserList(_collections_abc.MutableSequence):
     eleza __add__(self, other):
         ikiwa isinstance(other, UserList):
             rudisha self.__class__(self.data + other.data)
-        lasivyo isinstance(other, type(self.data)):
+        elikiwa isinstance(other, type(self.data)):
             rudisha self.__class__(self.data + other)
         rudisha self.__class__(self.data + list(other))
     eleza __radd__(self, other):
         ikiwa isinstance(other, UserList):
             rudisha self.__class__(other.data + self.data)
-        lasivyo isinstance(other, type(self.data)):
+        elikiwa isinstance(other, type(self.data)):
             rudisha self.__class__(other + self.data)
         rudisha self.__class__(list(other) + self.data)
     eleza __iadd__(self, other):
         ikiwa isinstance(other, UserList):
             self.data += other.data
-        lasivyo isinstance(other, type(self.data)):
+        elikiwa isinstance(other, type(self.data)):
             self.data += other
         isipokua:
             self.data += list(other)
@@ -1132,7 +1132,7 @@ kundi UserString(_collections_abc.Sequence):
     eleza __init__(self, seq):
         ikiwa isinstance(seq, str):
             self.data = seq
-        lasivyo isinstance(seq, UserString):
+        elikiwa isinstance(seq, UserString):
             self.data = seq.data[:]
         isipokua:
             self.data = str(seq)
@@ -1176,7 +1176,7 @@ kundi UserString(_collections_abc.Sequence):
     eleza __add__(self, other):
         ikiwa isinstance(other, UserString):
             rudisha self.__class__(self.data + other.data)
-        lasivyo isinstance(other, str):
+        elikiwa isinstance(other, str):
             rudisha self.__class__(self.data + other)
         rudisha self.__class__(self.data + str(other))
     eleza __radd__(self, other):

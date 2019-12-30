@@ -22,7 +22,7 @@ kundi ScopeTests(unittest.TestCase):
     eleza testExtraNesting(self):
 
         eleza make_adder2(x):
-            eleza extra(): # check freevars pitaing through non-use scopes
+            eleza extra(): # check freevars passing through non-use scopes
                 eleza adder(y):
                     rudisha x + y
                 rudisha adder
@@ -187,7 +187,7 @@ kundi ScopeTests(unittest.TestCase):
             ikiwa x >= 0:
                 rudisha fact(x)
             isipokua:
-                ashiria ValueError("x must be >= 0")
+                 ashiria ValueError("x must be >= 0")
 
         self.assertEqual(f(6), 720)
 
@@ -296,8 +296,8 @@ kundi ScopeTests(unittest.TestCase):
                 global_x += 1
             jaribu:
                 f()
-            tatizo UnboundLocalError:
-                pita
+            except UnboundLocalError:
+                pass
             isipokua:
                 fail('scope of global_x sio correctly determined')
             """, {'fail': self.fail})
@@ -305,16 +305,16 @@ kundi ScopeTests(unittest.TestCase):
     eleza testComplexDefinitions(self):
 
         eleza makeReturner(*lst):
-            eleza rudishaer():
+            eleza returner():
                 rudisha lst
-            rudisha rudishaer
+            rudisha returner
 
         self.assertEqual(makeReturner(1,2,3)(), (1,2,3))
 
         eleza makeReturner2(**kwargs):
-            eleza rudishaer():
+            eleza returner():
                 rudisha kwargs
-            rudisha rudishaer
+            rudisha returner
 
         self.assertEqual(makeReturner2(a=11)()['a'], 11)
 
@@ -444,9 +444,9 @@ kundi ScopeTests(unittest.TestCase):
                 # Implicit globals inside classes are be looked up by LOAD_NAME, not
                 # LOAD_GLOBAL.
                 locals()['looked_up_by_load_name'] = Kweli
-                pitaed = looked_up_by_load_name
+                passed = looked_up_by_load_name
 
-            self.assertKweli(X.pitaed)
+            self.assertKweli(X.passed)
             """)
 
     eleza testLocalsFunction(self):
@@ -469,7 +469,7 @@ kundi ScopeTests(unittest.TestCase):
         # This test verifies that calling locals() does sio pollute
         # the local namespace of the kundi ukijumuisha free variables.  Old
         # versions of Python had a bug, where a free variable being
-        # pitaed through a kundi namespace would be inserted into
+        # passed through a kundi namespace would be inserted into
         # locals() by locals() ama exec ama a trace function.
         #
         # The real bug lies kwenye frame code that copies variables
@@ -500,7 +500,7 @@ kundi ScopeTests(unittest.TestCase):
 
     @cpython_only
     eleza testLocalsClass_WithTrace(self):
-        # Issue23728: after the trace function rudishas, the locals()
+        # Issue23728: after the trace function returns, the locals()
         # dictionary ni used to update all variables, this used to
         # include free variables. But kwenye kundi statements, free
         # variables are sio inserted...
@@ -513,7 +513,7 @@ kundi ScopeTests(unittest.TestCase):
             eleza f(self):
                 rudisha x
 
-        self.assertEqual(x, 12) # Used to ashiria UnboundLocalError
+        self.assertEqual(x, 12) # Used to  ashiria UnboundLocalError
 
     eleza testBoundAndFree(self):
         # var ni bound na free kwenye class
@@ -543,7 +543,7 @@ kundi ScopeTests(unittest.TestCase):
                 rudisha lambda obj: getattr(obj, des)
 
         kundi TestClass:
-            pita
+            pass
 
         self.addCleanup(sys.settrace, sys.gettrace())
         sys.settrace(tracer)
@@ -562,8 +562,8 @@ kundi ScopeTests(unittest.TestCase):
 
         jaribu:
             exec(g.__code__, {})
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("exec should have failed, because code contained free vars")
 
@@ -571,8 +571,8 @@ kundi ScopeTests(unittest.TestCase):
 
         jaribu:
             andika(bad)
-        tatizo NameError:
-            pita
+        except NameError:
+            pass
         isipokua:
             andika("bad should sio be defined")
 
@@ -582,8 +582,8 @@ kundi ScopeTests(unittest.TestCase):
         x()
         jaribu:
             andika(bad)
-        tatizo NameError:
-            pita
+        except NameError:
+            pass
 
     eleza testEvalFreeVars(self):
 
@@ -711,7 +711,7 @@ kundi ScopeTests(unittest.TestCase):
     eleza testTopIsNotSignificant(self):
         # See #9997.
         eleza top(a):
-            pita
+            pass
         eleza b():
             global a
 
@@ -747,7 +747,7 @@ kundi ScopeTests(unittest.TestCase):
                     lambda: self
                 jaribu:
                     1/0
-                tatizo Exception kama exc:
+                except Exception as exc:
                     self.exc = exc
                 self = Tupu  # Break the cycle
         tester = Tester()

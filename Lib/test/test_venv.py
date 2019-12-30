@@ -23,7 +23,7 @@ agiza venv
 
 jaribu:
     agiza ctypes
-tatizo ImportError:
+except ImportError:
     ctypes = Tupu
 
 # Platforms that set sys._base_executable can create venvs kutoka within
@@ -40,7 +40,7 @@ eleza check_output(cmd, encoding=Tupu):
         encoding=encoding)
     out, err = p.communicate()
     ikiwa p.returncode:
-        ashiria subprocess.CalledProcessError(
+         ashiria subprocess.CalledProcessError(
             p.returncode, cmd, out, err)
     rudisha out, err
 
@@ -71,8 +71,8 @@ kundi BaseTest(unittest.TestCase):
         rmtree(self.env_dir)
 
     eleza run_with_capture(self, func, *args, **kwargs):
-        ukijumuisha captured_stdout() kama output:
-            ukijumuisha captured_stderr() kama error:
+        ukijumuisha captured_stdout() as output:
+            ukijumuisha captured_stderr() as error:
                 func(*args, **kwargs)
         rudisha output.getvalue(), error.getvalue()
 
@@ -80,7 +80,7 @@ kundi BaseTest(unittest.TestCase):
         rudisha os.path.join(self.env_dir, *args)
 
     eleza get_text_file_contents(self, *args):
-        ukijumuisha open(self.get_env_file(*args), 'r') kama f:
+        ukijumuisha open(self.get_env_file(*args), 'r') as f:
             result = f.read()
         rudisha result
 
@@ -102,7 +102,7 @@ kundi BasicTest(BaseTest):
         self.isdir(*self.lib)
         # Issue 21197
         p = self.get_env_file('lib64')
-        conditions = ((struct.calcsize('P') == 8) na (os.name == 'posix') na
+        conditions = ((struct.calcsize('P') == 8) na (os.name == 'posix') and
                       (sys.platform != 'darwin'))
         ikiwa conditions:
             self.assertKweli(os.path.islink(p))
@@ -141,7 +141,7 @@ kundi BasicTest(BaseTest):
     @requireVenvCreate
     eleza test_prefixes(self):
         """
-        Test that the prefix values are kama expected.
+        Test that the prefix values are as expected.
         """
         # check a venv's prefixes
         rmtree(self.env_dir)
@@ -182,7 +182,7 @@ kundi BasicTest(BaseTest):
             d = os.path.join(self.env_dir, *subdirs)
             os.mkdir(d)
             fn = os.path.join(d, filename)
-            ukijumuisha open(fn, 'wb') kama f:
+            ukijumuisha open(fn, 'wb') as f:
                 f.write(b'Still here?')
 
     eleza test_overwrite_existing(self):
@@ -194,7 +194,7 @@ kundi BasicTest(BaseTest):
         kila subdirs kwenye self.ENV_SUBDIRS:
             fn = os.path.join(self.env_dir, *(subdirs + ('foo',)))
             self.assertKweli(os.path.exists(fn))
-            ukijumuisha open(fn, 'rb') kama f:
+            ukijumuisha open(fn, 'rb') as f:
                 self.assertEqual(f.read(), b'Still here?')
 
         builder = venv.EnvBuilder(clear=Kweli)
@@ -208,14 +208,14 @@ kundi BasicTest(BaseTest):
             fn = os.path.join(path, fn)
             ikiwa os.path.islink(fn) ama os.path.isfile(fn):
                 os.remove(fn)
-            lasivyo os.path.isdir(fn):
+            elikiwa os.path.isdir(fn):
                 rmtree(fn)
 
     eleza test_unoverwritable_fails(self):
         #create a file clashing ukijumuisha directories kwenye the env dir
         kila paths kwenye self.ENV_SUBDIRS[:3]:
             fn = os.path.join(self.env_dir, *paths)
-            ukijumuisha open(fn, 'wb') kama f:
+            ukijumuisha open(fn, 'wb') as f:
                 f.write(b'')
             self.assertRaises((ValueError, OSError), venv.create, self.env_dir)
             self.clear_directory(self.env_dir)
@@ -254,7 +254,7 @@ kundi BasicTest(BaseTest):
     @unittest.skipUnless(can_symlink(), 'Needs symlinks')
     eleza test_symlinking(self):
         """
-        Test symlinking works kama expected
+        Test symlinking works as expected
         """
         kila usl kwenye (Uongo, Kweli):
             builder = venv.EnvBuilder(clear=Kweli, symlinks=usl)
@@ -278,7 +278,7 @@ kundi BasicTest(BaseTest):
     @requireVenvCreate
     eleza test_executable(self):
         """
-        Test that the sys.executable value ni kama expected.
+        Test that the sys.executable value ni as expected.
         """
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
@@ -291,7 +291,7 @@ kundi BasicTest(BaseTest):
     @unittest.skipUnless(can_symlink(), 'Needs symlinks')
     eleza test_executable_symlinks(self):
         """
-        Test that the sys.executable value ni kama expected.
+        Test that the sys.executable value ni as expected.
         """
         rmtree(self.env_dir)
         builder = venv.EnvBuilder(clear=Kweli, symlinks=Kweli)
@@ -324,7 +324,7 @@ kundi BasicTest(BaseTest):
         """
         Test that the multiprocessing ni able to spawn.
         """
-        # Issue bpo-36342: Instanciation of a Pool object agizas the
+        # Issue bpo-36342: Instanciation of a Pool object imports the
         # multiprocessing.synchronize module. Skip the test ikiwa this module
         # cannot be imported.
         import_module('multiprocessing.synchronize')
@@ -349,7 +349,7 @@ kundi BasicTest(BaseTest):
         builder.create(self.env_dir)
         activate = os.path.join(self.env_dir, self.bindir, "activate")
         test_script = os.path.join(self.env_dir, "test_strict.sh")
-        ukijumuisha open(test_script, "w") kama f:
+        ukijumuisha open(test_script, "w") as f:
             f.write("set -euo pipefail\n"
                     f"source {activate}\n"
                     "deactivate\n")
@@ -365,7 +365,7 @@ kundi EnsurePipTest(BaseTest):
         envpy = os.path.join(os.path.realpath(self.env_dir),
                              self.bindir, self.exe)
         out, err = check_output([envpy, '-c',
-            'jaribu:\n agiza pip\ntatizo ImportError:\n andika("OK")'])
+            'jaribu:\n agiza pip\nexcept ImportError:\n andika("OK")'])
         # We force everything to text, so unittest gives the detailed diff
         # ikiwa we get unexpected results
         err = err.decode("latin-1") # Force to text, prevent decoding errors
@@ -389,14 +389,14 @@ kundi EnsurePipTest(BaseTest):
         # appear empty. However http://bugs.python.org/issue20541 means
         # that doesn't currently work properly on Windows. Once that is
         # fixed, the "win_location" part of test_with_pip should be restored
-        ukijumuisha open(os.devnull, "rb") kama f:
+        ukijumuisha open(os.devnull, "rb") as f:
             self.assertEqual(f.read(), b"")
 
         self.assertKweli(os.path.exists(os.devnull))
 
     eleza do_test_with_pip(self, system_site_packages):
         rmtree(self.env_dir)
-        ukijumuisha EnvironmentVarGuard() kama envvars:
+        ukijumuisha EnvironmentVarGuard() as envvars:
             # pip's cross-version compatibility may trigger deprecation
             # warnings kwenye current versions of Python. Ensure related
             # environment settings don't cause venv to fail.
@@ -409,7 +409,7 @@ kundi EnsurePipTest(BaseTest):
             envvars["PIP_NO_INSTALL"] = "1"
             # Also check that we ignore the pip configuration file
             # See http://bugs.python.org/issue20053
-            ukijumuisha tempfile.TemporaryDirectory() kama home_dir:
+            ukijumuisha tempfile.TemporaryDirectory() as home_dir:
                 envvars["HOME"] = home_dir
                 bad_config = "[global]\nno-install=1"
                 # Write to both config file names on all platforms to reduce
@@ -421,7 +421,7 @@ kundi EnsurePipTest(BaseTest):
                     dirpath = os.path.join(home_dir, dirname)
                     os.mkdir(dirpath)
                     fpath = os.path.join(dirpath, fname)
-                    ukijumuisha open(fpath, 'w') kama f:
+                    ukijumuisha open(fpath, 'w') as f:
                         f.write(bad_config)
 
                 # Actually run the create command ukijumuisha all that unhelpful
@@ -430,7 +430,7 @@ kundi EnsurePipTest(BaseTest):
                     self.run_with_capture(venv.create, self.env_dir,
                                           system_site_packages=system_site_packages,
                                           with_pip=Kweli)
-                tatizo subprocess.CalledProcessError kama exc:
+                except subprocess.CalledProcessError as exc:
                     # The output this produces can be a little hard to read,
                     # but at least it has all the details
                     details = exc.output.decode(errors="replace")
@@ -454,7 +454,7 @@ kundi EnsurePipTest(BaseTest):
         # http://bugs.python.org/issue19728
         # Check the private uninstall command provided kila the Windows
         # installers works (at least kwenye a virtual environment)
-        ukijumuisha EnvironmentVarGuard() kama envvars:
+        ukijumuisha EnvironmentVarGuard() as envvars:
             out, err = check_output([envpy,
                 '-W', 'ignore::DeprecationWarning', '-I',
                 '-m', 'ensurepip._uninstall'])

@@ -1,24 +1,24 @@
-"""Tests for distutils.cmd."""
-import unittest
-import os
-from test.support import captured_stdout, run_unittest
+"""Tests kila distutils.cmd."""
+agiza unittest
+agiza os
+kutoka test.support agiza captured_stdout, run_unittest
 
-from distutils.cmd import Command
-from distutils.dist import Distribution
-from distutils.errors import DistutilsOptionError
-from distutils import debug
+kutoka distutils.cmd agiza Command
+kutoka distutils.dist agiza Distribution
+kutoka distutils.errors agiza DistutilsOptionError
+kutoka distutils agiza debug
 
-class MyCmd(Command):
-    def initialize_options(self):
+kundi MyCmd(Command):
+    eleza initialize_options(self):
         pass
 
-class CommandTestCase(unittest.TestCase):
+kundi CommandTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         dist = Distribution()
         self.cmd = MyCmd(dist)
 
-    def test_ensure_string_list(self):
+    eleza test_ensure_string_list(self):
 
         cmd = self.cmd
         cmd.not_string_list = ['one', 2, 'three']
@@ -46,25 +46,25 @@ class CommandTestCase(unittest.TestCase):
                           'option3')
 
 
-    def test_make_file(self):
+    eleza test_make_file(self):
 
         cmd = self.cmd
 
-        # making sure it raises when infiles ni sio a string or a list/tuple
+        # making sure it raises when infiles ni sio a string ama a list/tuple
         self.assertRaises(TypeError, cmd.make_file,
                           infiles=1, outfile='', func='func', args=())
 
         # making sure execute gets called properly
-        def _execute(func, args, exec_msg, level):
-            self.assertEqual(exec_msg, 'generating out from in')
-        cmd.force = True
+        eleza _execute(func, args, exec_msg, level):
+            self.assertEqual(exec_msg, 'generating out kutoka in')
+        cmd.force = Kweli
         cmd.execute = _execute
         cmd.make_file(infiles='in', outfile='out', func='func', args=())
 
-    def test_dump_options(self):
+    eleza test_dump_options(self):
 
         msgs = []
-        def _announce(msg, level):
+        eleza _announce(msg, level):
             msgs.append(msg)
         cmd = self.cmd
         cmd.announce = _announce
@@ -73,54 +73,54 @@ class CommandTestCase(unittest.TestCase):
         cmd.user_options = [('option1', '', ''), ('option2', '', '')]
         cmd.dump_options()
 
-        wanted = ["command options for 'MyCmd':", '  option1 = 1',
+        wanted = ["command options kila 'MyCmd':", '  option1 = 1',
                   '  option2 = 1']
         self.assertEqual(msgs, wanted)
 
-    def test_ensure_string(self):
+    eleza test_ensure_string(self):
         cmd = self.cmd
         cmd.option1 = 'ok'
         cmd.ensure_string('option1')
 
-        cmd.option2 = None
+        cmd.option2 = Tupu
         cmd.ensure_string('option2', 'xxx')
-        self.assertTrue(hasattr(cmd, 'option2'))
+        self.assertKweli(hasattr(cmd, 'option2'))
 
         cmd.option3 = 1
         self.assertRaises(DistutilsOptionError, cmd.ensure_string, 'option3')
 
-    def test_ensure_filename(self):
+    eleza test_ensure_filename(self):
         cmd = self.cmd
         cmd.option1 = __file__
         cmd.ensure_filename('option1')
         cmd.option2 = 'xxx'
         self.assertRaises(DistutilsOptionError, cmd.ensure_filename, 'option2')
 
-    def test_ensure_dirname(self):
+    eleza test_ensure_dirname(self):
         cmd = self.cmd
         cmd.option1 = os.path.dirname(__file__) ama os.curdir
         cmd.ensure_dirname('option1')
         cmd.option2 = 'xxx'
         self.assertRaises(DistutilsOptionError, cmd.ensure_dirname, 'option2')
 
-    def test_debug_print(self):
+    eleza test_debug_andika(self):
         cmd = self.cmd
-        with captured_stdout() as stdout:
-            cmd.debug_print('xxx')
+        ukijumuisha captured_stdout() as stdout:
+            cmd.debug_andika('xxx')
         stdout.seek(0)
         self.assertEqual(stdout.read(), '')
 
-        debug.DEBUG = True
+        debug.DEBUG = Kweli
         jaribu:
-            with captured_stdout() as stdout:
-                cmd.debug_print('xxx')
+            ukijumuisha captured_stdout() as stdout:
+                cmd.debug_andika('xxx')
             stdout.seek(0)
             self.assertEqual(stdout.read(), 'xxx\n')
         mwishowe:
-            debug.DEBUG = False
+            debug.DEBUG = Uongo
 
-def test_suite():
-    return unittest.makeSuite(CommandTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(CommandTestCase)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     run_unittest(test_suite())

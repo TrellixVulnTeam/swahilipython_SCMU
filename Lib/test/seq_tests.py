@@ -29,7 +29,7 @@ kundi IterFunc:
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): ashiria StopIteration
+        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -49,7 +49,7 @@ kundi IterNextOnly:
         self.seqn = seqn
         self.i = 0
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): ashiria StopIteration
+        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -75,11 +75,11 @@ kundi IterGenExc:
 kundi IterFuncStop:
     'Test immediate stop'
     eleza __init__(self, seqn):
-        pita
+        pass
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ashiria StopIteration
+         ashiria StopIteration
 
 kutoka itertools agiza chain
 eleza itermulti(seqn):
@@ -234,12 +234,12 @@ kundi CommonTest(unittest.TestCase):
     eleza test_contains_order(self):
         # Sequences must test in-order.  If a rich comparison has side
         # effects, these will be visible to tests against later members.
-        # In this test, the "side effect" ni a short-circuiting ashiria.
+        # In this test, the "side effect" ni a short-circuiting raise.
         kundi DoNotTestEq(Exception):
-            pita
+            pass
         kundi StopCompares:
             eleza __eq__(self, other):
-                ashiria DoNotTestEq
+                 ashiria DoNotTestEq
 
         checkfirst = self.type2test([1, StopCompares()])
         self.assertIn(1, checkfirst)
@@ -280,7 +280,7 @@ kundi CommonTest(unittest.TestCase):
         self.assertEqual(u2+u2+u2, 3*u2)
 
         kundi subclass(self.type2test):
-            pita
+            pass
         u3 = subclass([0, 1])
         self.assertEqual(u3, u3*1)
         self.assertIsNot(u3, u3*1)
@@ -353,12 +353,12 @@ kundi CommonTest(unittest.TestCase):
         self.assertRaises(TypeError, a.count)
 
         kundi BadExc(Exception):
-            pita
+            pass
 
         kundi BadCmp:
             eleza __eq__(self, other):
                 ikiwa other == 2:
-                    ashiria BadExc()
+                     ashiria BadExc()
                 rudisha Uongo
 
         self.assertRaises(BadExc, a.count, BadCmp())
@@ -381,12 +381,12 @@ kundi CommonTest(unittest.TestCase):
         self.assertRaises(TypeError, u.index)
 
         kundi BadExc(Exception):
-            pita
+            pass
 
         kundi BadCmp:
             eleza __eq__(self, other):
                 ikiwa other == 2:
-                    ashiria BadExc()
+                     ashiria BadExc()
                 rudisha Uongo
 
         a = self.type2test([0, 1, 2, 3])

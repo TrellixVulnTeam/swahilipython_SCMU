@@ -37,21 +37,21 @@ General notes on the underlying Mersenne Twister core generator:
 
 """
 
-kutoka warnings agiza warn kama _warn
-kutoka math agiza log kama _log, exp kama _exp, pi kama _pi, e kama _e, ceil kama _ceil
-kutoka math agiza sqrt kama _sqrt, acos kama _acos, cos kama _cos, sin kama _sin
-kutoka os agiza urandom kama _urandom
-kutoka _collections_abc agiza Set kama _Set, Sequence kama _Sequence
-kutoka itertools agiza accumulate kama _accumulate, repeat kama _repeat
-kutoka bisect agiza bisect kama _bisect
-agiza os kama _os
+kutoka warnings agiza warn as _warn
+kutoka math agiza log as _log, exp as _exp, pi as _pi, e as _e, ceil as _ceil
+kutoka math agiza sqrt as _sqrt, acos as _acos, cos as _cos, sin as _sin
+kutoka os agiza urandom as _urandom
+kutoka _collections_abc agiza Set as _Set, Sequence as _Sequence
+kutoka itertools agiza accumulate as _accumulate, repeat as _repeat
+kutoka bisect agiza bisect as _bisect
+agiza os as _os
 
 jaribu:
     # hashlib ni pretty heavy to load, try lean internal module first
-    kutoka _sha512 agiza sha512 kama _sha512
-tatizo ImportError:
+    kutoka _sha512 agiza sha512 as _sha512
+except ImportError:
     # fallback to official implementation
-    kutoka hashlib agiza sha512 kama _sha512
+    kutoka hashlib agiza sha512 as _sha512
 
 
 __all__ = ["Random","seed","random","uniform","randint","choice","sample",
@@ -94,7 +94,7 @@ kundi Random(_random.Random):
     eleza __init__(self, x=Tupu):
         """Initialize an instance.
 
-        Optional argument x controls seeding, kama kila Random.seed().
+        Optional argument x controls seeding, as kila Random.seed().
         """
 
         self.seed(x)
@@ -130,7 +130,7 @@ kundi Random(_random.Random):
 
         For version 2 (the default), all of the bits are used ikiwa *a* ni a str,
         bytes, ama bytearray.  For version 1 (provided kila reproducing random
-        sequences kutoka older versions of Python), the algorithm kila str na
+        sequences kutoka older versions of Python), the algorithm kila str and
         bytes generates a narrower range of seeds.
 
         """
@@ -147,34 +147,34 @@ kundi Random(_random.Random):
             ikiwa isinstance(a, str):
                 a = a.encode()
             a += _sha512(a).digest()
-            a = int.kutoka_bytes(a, 'big')
+            a = int.from_bytes(a, 'big')
 
         super().seed(a)
         self.gauss_next = Tupu
 
     eleza getstate(self):
-        """Return internal state; can be pitaed to setstate() later."""
+        """Return internal state; can be passed to setstate() later."""
         rudisha self.VERSION, super().getstate(), self.gauss_next
 
     eleza setstate(self, state):
-        """Restore internal state kutoka object rudishaed by getstate()."""
+        """Restore internal state kutoka object returned by getstate()."""
         version = state[0]
         ikiwa version == 3:
             version, internalstate, self.gauss_next = state
             super().setstate(internalstate)
-        lasivyo version == 2:
+        elikiwa version == 2:
             version, internalstate, self.gauss_next = state
-            # In version 2, the state was saved kama signed ints, which causes
+            # In version 2, the state was saved as signed ints, which causes
             #   inconsistencies between 32/64-bit systems. The state is
-            #   really unsigned 32-bit ints, so we convert negative ints kutoka
+            #   really unsigned 32-bit ints, so we convert negative ints from
             #   version 2 to positive longs kila version 3.
             jaribu:
                 internalstate = tuple(x % (2**32) kila x kwenye internalstate)
-            tatizo ValueError kama e:
-                ashiria TypeError kutoka e
+            except ValueError as e:
+                 ashiria TypeError kutoka e
             super().setstate(internalstate)
         isipokua:
-            ashiria ValueError("state ukijumuisha version %s pitaed to "
+             ashiria ValueError("state ukijumuisha version %s passed to "
                              "Random.setstate() of version %s" %
                              (version, self.VERSION))
 
@@ -209,35 +209,35 @@ kundi Random(_random.Random):
         # common case wakati still doing adequate error checking.
         istart = _int(start)
         ikiwa istart != start:
-            ashiria ValueError("non-integer arg 1 kila randrange()")
+             ashiria ValueError("non-integer arg 1 kila randrange()")
         ikiwa stop ni Tupu:
             ikiwa istart > 0:
                 rudisha self._randbelow(istart)
-            ashiria ValueError("empty range kila randrange()")
+             ashiria ValueError("empty range kila randrange()")
 
         # stop argument supplied.
         istop = _int(stop)
         ikiwa istop != stop:
-            ashiria ValueError("non-integer stop kila randrange()")
+             ashiria ValueError("non-integer stop kila randrange()")
         width = istop - istart
         ikiwa step == 1 na width > 0:
             rudisha istart + self._randbelow(width)
         ikiwa step == 1:
-            ashiria ValueError("empty range kila randrange() (%d, %d, %d)" % (istart, istop, width))
+             ashiria ValueError("empty range kila randrange() (%d, %d, %d)" % (istart, istop, width))
 
         # Non-unit step argument supplied.
         istep = _int(step)
         ikiwa istep != step:
-            ashiria ValueError("non-integer step kila randrange()")
+             ashiria ValueError("non-integer step kila randrange()")
         ikiwa istep > 0:
             n = (width + istep - 1) // istep
-        lasivyo istep < 0:
+        elikiwa istep < 0:
             n = (width + istep + 1) // istep
         isipokua:
-            ashiria ValueError("zero step kila randrange()")
+             ashiria ValueError("zero step kila randrange()")
 
         ikiwa n <= 0:
-            ashiria ValueError("empty range kila randrange()")
+             ashiria ValueError("empty range kila randrange()")
 
         rudisha istart + istep*self._randbelow(n)
 
@@ -270,7 +270,7 @@ kundi Random(_random.Random):
                 "To remove the range limitation, add a getrandbits() method.")
             rudisha int(random() * n)
         ikiwa n == 0:
-            ashiria ValueError("Boundary cannot be zero")
+             ashiria ValueError("Boundary cannot be zero")
         rem = maxsize % n
         limit = (maxsize - rem) / maxsize   # int(limit * maxsize) % n == 0
         r = random()
@@ -286,14 +286,14 @@ kundi Random(_random.Random):
         """Choose a random element kutoka a non-empty sequence."""
         jaribu:
             i = self._randbelow(len(seq))
-        tatizo ValueError:
-            ashiria IndexError('Cannot choose kutoka an empty sequence') kutoka Tupu
+        except ValueError:
+             ashiria IndexError('Cannot choose kutoka an empty sequence') kutoka Tupu
         rudisha seq[i]
 
     eleza shuffle(self, x, random=Tupu):
         """Shuffle list x kwenye place, na rudisha Tupu.
 
-        Optional argument random ni a 0-argument function rudishaing a
+        Optional argument random ni a 0-argument function returning a
         random float kwenye [0.0, 1.0); ikiwa it ni the default Tupu, the
         standard random.random will be used.
 
@@ -325,7 +325,7 @@ kundi Random(_random.Random):
         population contains repeats, then each occurrence ni a possible
         selection kwenye the sample.
 
-        To choose a sample kwenye a range of integers, use range kama an argument.
+        To choose a sample kwenye a range of integers, use range as an argument.
         This ni especially fast na space efficient kila sampling kutoka a
         large population:   sample(range(10000000), 60)
         """
@@ -341,7 +341,7 @@ kundi Random(_random.Random):
         # set na it doesn't suffer kutoka frequent reselections.
 
         # The number of calls to _randbelow() ni kept at ama near k, the
-        # theoretical minimum.  This ni agizaant because running time
+        # theoretical minimum.  This ni important because running time
         # ni dominated by _randbelow() na because it extracts the
         # least entropy kutoka the underlying random number generators.
 
@@ -350,17 +350,17 @@ kundi Random(_random.Random):
 
         # There are other sampling algorithms that do sio require
         # auxiliary memory, but they were rejected because they made
-        # too many calls to _randbelow(), making them slower na
+        # too many calls to _randbelow(), making them slower and
         # causing them to eat more entropy than necessary.
 
         ikiwa isinstance(population, _Set):
             population = tuple(population)
         ikiwa sio isinstance(population, _Sequence):
-            ashiria TypeError("Population must be a sequence ama set.  For dicts, use list(d).")
+             ashiria TypeError("Population must be a sequence ama set.  For dicts, use list(d).")
         randbelow = self._randbelow
         n = len(population)
         ikiwa sio 0 <= k <= n:
-            ashiria ValueError("Sample larger than population ama ni negative")
+             ashiria ValueError("Sample larger than population ama ni negative")
         result = [Tupu] * k
         setsize = 21        # size of a small set minus size of an empty list
         ikiwa k > 5:
@@ -398,10 +398,10 @@ kundi Random(_random.Random):
                 n += 0.0    # convert to float kila a small speed improvement
                 rudisha [population[_int(random() * n)] kila i kwenye _repeat(Tupu, k)]
             cum_weights = list(_accumulate(weights))
-        lasivyo weights ni sio Tupu:
-            ashiria TypeError('Cannot specify both weights na cumulative weights')
+        elikiwa weights ni sio Tupu:
+             ashiria TypeError('Cannot specify both weights na cumulative weights')
         ikiwa len(cum_weights) != n:
-            ashiria ValueError('The number of weights does sio match the population')
+             ashiria ValueError('The number of weights does sio match the population')
         bisect = _bisect
         total = cum_weights[-1] + 0.0   # convert to float
         hi = n - 1
@@ -430,7 +430,7 @@ kundi Random(_random.Random):
         u = self.random()
         jaribu:
             c = 0.5 ikiwa mode ni Tupu isipokua (mode - low) / (high - low)
-        tatizo ZeroDivisionError:
+        except ZeroDivisionError:
             rudisha low
         ikiwa u > c:
             u = 1.0 - u
@@ -499,8 +499,8 @@ kundi Random(_random.Random):
     eleza vonmisesvariate(self, mu, kappa):
         """Circular data distribution.
 
-        mu ni the mean angle, expressed kwenye radians between 0 na 2*pi, na
-        kappa ni the concentration parameter, which must be greater than ama
+        mu ni the mean angle, expressed kwenye radians between 0 na 2*pi, and
+        kappa ni the concentration parameter, which must be greater than or
         equal to zero.  If kappa ni equal to zero, this distribution reduces
         to a uniform random angle over the range 0 to 2*pi.
 
@@ -562,7 +562,7 @@ kundi Random(_random.Random):
         # Warning: a few older sources define the gamma distribution kwenye terms
         # of alpha > -1.0
         ikiwa alpha <= 0.0 ama beta <= 0.0:
-            ashiria ValueError('gammavariate: alpha na beta must be > 0.0')
+             ashiria ValueError('gammavariate: alpha na beta must be > 0.0')
 
         random = self.random
         ikiwa alpha > 1.0:
@@ -587,7 +587,7 @@ kundi Random(_random.Random):
                 ikiwa r + SG_MAGICCONST - 4.5*z >= 0.0 ama r >= _log(z):
                     rudisha x * beta
 
-        lasivyo alpha == 1.0:
+        elikiwa alpha == 1.0:
             # expovariate(1/beta)
             rudisha -_log(1.0 - random()) * beta
 
@@ -607,7 +607,7 @@ kundi Random(_random.Random):
                 ikiwa p > 1.0:
                     ikiwa u1 <= x ** (alpha - 1.0):
                         koma
-                lasivyo u1 <= _exp(-x):
+                elikiwa u1 <= _exp(-x):
                     koma
             rudisha x * beta
 
@@ -708,7 +708,7 @@ kundi Random(_random.Random):
 
 kundi SystemRandom(Random):
     """Alternate random number generator using sources provided
-    by the operating system (such kama /dev/urandom on Unix ama
+    by the operating system (such as /dev/urandom on Unix or
     CryptGenRandom on Windows).
 
      Not available on all systems (see os.urandom() kila details).
@@ -716,14 +716,14 @@ kundi SystemRandom(Random):
 
     eleza random(self):
         """Get the next random number kwenye the range [0.0, 1.0)."""
-        rudisha (int.kutoka_bytes(_urandom(7), 'big') >> 3) * RECIP_BPF
+        rudisha (int.from_bytes(_urandom(7), 'big') >> 3) * RECIP_BPF
 
     eleza getrandbits(self, k):
         """getrandbits(k) -> x.  Generates an int ukijumuisha k random bits."""
         ikiwa k <= 0:
-            ashiria ValueError('number of bits must be greater than zero')
+             ashiria ValueError('number of bits must be greater than zero')
         numbytes = (k + 7) // 8                       # bits / 8 na rounded up
-        x = int.kutoka_bytes(_urandom(numbytes), 'big')
+        x = int.from_bytes(_urandom(numbytes), 'big')
         rudisha x >> (numbytes * 8 - k)                # trim excess bits
 
     eleza seed(self, *args, **kwds):
@@ -732,7 +732,7 @@ kundi SystemRandom(Random):
 
     eleza _notimplemented(self, *args, **kwds):
         "Method should sio be called kila a system random number generator."
-        ashiria NotImplementedError('System entropy source does sio have state.')
+         ashiria NotImplementedError('System entropy source does sio have state.')
     getstate = setstate = _notimplemented
 
 ## -------------------- test program --------------------
@@ -778,7 +778,7 @@ eleza _test(N=2000):
     _test_generator(N, triangular, (0.0, 1.0, 1.0/3.0))
 
 # Create one instance, seeded kutoka current time, na export its methods
-# kama module-level functions.  The functions share state across all uses
+# as module-level functions.  The functions share state across all uses
 #(both kwenye the user's code na kwenye the Python libraries), but that's fine
 # kila most programs na ni easier kila the casual user than making them
 # instantiate their own Random() instance.

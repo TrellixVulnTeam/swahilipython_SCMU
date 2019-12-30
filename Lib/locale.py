@@ -1,11 +1,11 @@
 """Locale support module.
 
 The module provides low-level access to the C lib's locale APIs na adds high
-level number formatting APIs kama well kama a locale aliasing engine to complement
+level number formatting APIs as well as a locale aliasing engine to complement
 these.
 
-The aliasing engine includes support kila many commonly used locale names na
-maps them to values suitable kila pitaing to the C lib's setlocale() function. It
+The aliasing engine includes support kila many commonly used locale names and
+maps them to values suitable kila passing to the C lib's setlocale() function. It
 also includes default encodings kila all supported locale names.
 
 """
@@ -15,15 +15,15 @@ agiza encodings
 agiza encodings.aliases
 agiza re
 agiza _collections_abc
-kutoka builtins agiza str kama _builtin_str
+kutoka builtins agiza str as _builtin_str
 agiza functools
 
-# Try agizaing the _locale module.
+# Try importing the _locale module.
 #
 # If this fails, fall back on a basic 'C' locale emulation.
 
 # Yuck:  LC_MESSAGES ni non-standard:  can't tell whether it exists before
-# trying the agiza.  So __all__ ni also fiddled at the end of the file.
+# trying the import.  So __all__ ni also fiddled at the end of the file.
 __all__ = ["getlocale", "getdefaultlocale", "getpreferredencoding", "Error",
            "setlocale", "resetlocale", "localeconv", "strcoll", "strxfrm",
            "str", "atof", "atoi", "format", "format_string", "currency",
@@ -46,7 +46,7 @@ jaribu:
 
     kutoka _locale agiza *
 
-tatizo ImportError:
+except ImportError:
 
     # Locale emulation
 
@@ -88,14 +88,14 @@ tatizo ImportError:
         """ setlocale(integer,string=Tupu) -> string.
             Activates/queries locale processing.
         """
-        ikiwa value haiko kwenye (Tupu, '', 'C'):
-            ashiria Error('_locale emulation only supports "C" locale')
+        ikiwa value sio kwenye (Tupu, '', 'C'):
+             ashiria Error('_locale emulation only supports "C" locale')
         rudisha 'C'
 
 # These may ama may sio exist kwenye _locale, so be sure to set them.
-ikiwa 'strxfrm' haiko kwenye globals():
+ikiwa 'strxfrm' sio kwenye globals():
     strxfrm = _strxfrm
-ikiwa 'strcoll' haiko kwenye globals():
+ikiwa 'strcoll' sio kwenye globals():
     strcoll = _strcoll
 
 
@@ -124,11 +124,11 @@ eleza _grouping_intervals(grouping):
     kila interval kwenye grouping:
         # ikiwa grouping ni -1, we are done
         ikiwa interval == CHAR_MAX:
-            rudisha
+            return
         # 0: re-use last group ad infinitum
         ikiwa interval == 0:
             ikiwa last_interval ni Tupu:
-                ashiria ValueError("invalid grouping")
+                 ashiria ValueError("invalid grouping")
             wakati Kweli:
                 tuma last_interval
         tuma interval
@@ -150,7 +150,7 @@ eleza _group(s, monetary=Uongo):
     left_spaces = ''
     groups = []
     kila interval kwenye _grouping_intervals(grouping):
-        ikiwa sio s ama s[-1] haiko kwenye "0123456789":
+        ikiwa sio s ama s[-1] sio kwenye "0123456789":
             # only non-digit characters remain (sign, spaces)
             left_spaces = s
             s = ''
@@ -196,7 +196,7 @@ eleza _format(percent, value, grouping=Uongo, monetary=Uongo, *additional):
         formatted = decimal_point.join(parts)
         ikiwa seps:
             formatted = _strip_padding(formatted, seps)
-    lasivyo percent[-1] kwenye 'diu':
+    elikiwa percent[-1] kwenye 'diu':
         seps = 0
         ikiwa grouping:
             formatted, seps = _group(formatted, monetary=monetary)
@@ -252,7 +252,7 @@ eleza format(percent, value, grouping=Uongo, monetary=Uongo, *additional):
 
     match = _percent_re.match(percent)
     ikiwa sio match ama len(match.group())!= len(percent):
-        ashiria ValueError(("format() must be given exactly one %%char "
+         ashiria ValueError(("format() must be given exactly one %%char "
                          "format specifier, %s sio valid") % repr(percent))
     rudisha _format(percent, value, grouping, monetary, *additional)
 
@@ -264,7 +264,7 @@ eleza currency(val, symbol=Kweli, grouping=Uongo, international=Uongo):
     # check kila illegal values
     digits = conv[international na 'int_frac_digits' ama 'frac_digits']
     ikiwa digits == 127:
-        ashiria ValueError("Currency formatting ni sio possible using "
+         ashiria ValueError("Currency formatting ni sio possible using "
                          "the 'C' locale.")
 
     s = _format('%%.%if' % digits, abs(val), grouping, monetary=Kweli)
@@ -286,13 +286,13 @@ eleza currency(val, symbol=Kweli, grouping=Uongo, international=Uongo):
 
     ikiwa sign_pos == 0:
         s = '(' + s + ')'
-    lasivyo sign_pos == 1:
+    elikiwa sign_pos == 1:
         s = sign + s
-    lasivyo sign_pos == 2:
+    elikiwa sign_pos == 2:
         s = s + sign
-    lasivyo sign_pos == 3:
+    elikiwa sign_pos == 3:
         s = s.replace('<', sign)
-    lasivyo sign_pos == 4:
+    elikiwa sign_pos == 4:
         s = s.replace('>', sign)
     isipokua:
         # the default ikiwa nothing specified;
@@ -306,7 +306,7 @@ eleza str(val):
     rudisha _format("%.12g", val)
 
 eleza delocalize(string):
-    "Parses a string kama a normalized number according to the locale settings."
+    "Parses a string as a normalized number according to the locale settings."
 
     conv = localeconv()
 
@@ -322,7 +322,7 @@ eleza delocalize(string):
     rudisha string
 
 eleza atof(string, func=float):
-    "Parses a string kama a float according to the locale settings."
+    "Parses a string as a float according to the locale settings."
     rudisha func(delocalize(string))
 
 eleza atoi(string):
@@ -372,7 +372,7 @@ eleza _replace_encoding(code, encoding):
 
 eleza _append_modifier(code, modifier):
     ikiwa modifier == 'euro':
-        ikiwa '.' haiko kwenye code:
+        ikiwa '.' sio kwenye code:
             rudisha code + '.ISO8859-15'
         _, _, encoding = code.partition('.')
         ikiwa encoding kwenye ('ISO8859-15', 'UTF-8'):
@@ -386,10 +386,10 @@ eleza normalize(localename):
     """ Returns a normalized locale code kila the given locale
         name.
 
-        The rudishaed locale code ni formatted kila use with
+        The returned locale code ni formatted kila use with
         setlocale().
 
-        If normalization fails, the original name ni rudishaed
+        If normalization fails, the original name ni returned
         unchanged.
 
         If the given encoding ni sio known, the function defaults to
@@ -400,7 +400,7 @@ eleza normalize(localename):
     # Normalize the locale name na extract the encoding na modifier
     code = localename.lower()
     ikiwa ':' kwenye code:
-        # ':' ni sometimes used kama encoding delimiter.
+        # ':' ni sometimes used as encoding delimiter.
         code = code.replace(':', '.')
     ikiwa '@' kwenye code:
         code, modifier = code.split('@', 1)
@@ -431,7 +431,7 @@ eleza normalize(localename):
         code = locale_alias.get(lang_enc, Tupu)
         ikiwa code ni sio Tupu:
             #andika('lookup without modifier succeeded')
-            ikiwa '@' haiko kwenye code:
+            ikiwa '@' sio kwenye code:
                 rudisha _append_modifier(code, modifier)
             ikiwa code.split('@', 1)[1].lower() == modifier:
                 rudisha code
@@ -445,7 +445,7 @@ eleza normalize(localename):
         code = locale_alias.get(lookup_name, Tupu)
         ikiwa code ni sio Tupu:
             #andika('lookup without encoding succeeded')
-            ikiwa '@' haiko kwenye code:
+            ikiwa '@' sio kwenye code:
                 rudisha _replace_encoding(code, encoding)
             code, modifier = code.split('@', 1)
             rudisha _replace_encoding(code, encoding) + '@' + modifier
@@ -455,7 +455,7 @@ eleza normalize(localename):
             code = locale_alias.get(langname, Tupu)
             ikiwa code ni sio Tupu:
                 #andika('lookup without modifier na encoding succeeded')
-                ikiwa '@' haiko kwenye code:
+                ikiwa '@' sio kwenye code:
                     code = _replace_encoding(code, encoding)
                     rudisha _append_modifier(code, modifier)
                 code, defmod = code.split('@', 1)
@@ -466,11 +466,11 @@ eleza normalize(localename):
 
 eleza _parse_localename(localename):
 
-    """ Parses the locale code kila localename na rudishas the
-        result kama tuple (language code, encoding).
+    """ Parses the locale code kila localename na returns the
+        result as tuple (language code, encoding).
 
-        The localename ni normalized na pitaed through the locale
-        alias engine. A ValueError ni ashiriad kwenye case the locale name
+        The localename ni normalized na passed through the locale
+        alias engine. A ValueError ni raised kwenye case the locale name
         cannot be parsed.
 
         The language code corresponds to RFC 1766.  code na encoding
@@ -482,7 +482,7 @@ eleza _parse_localename(localename):
     ikiwa '@' kwenye code:
         # Deal ukijumuisha locale modifiers
         code, modifier = code.split('@', 1)
-        ikiwa modifier == 'euro' na '.' haiko kwenye code:
+        ikiwa modifier == 'euro' na '.' sio kwenye code:
             # Assume Latin-9 kila @euro locales. This ni bogus,
             # since some systems may use other encodings kila these
             # locales. Also, we ignore other modifiers.
@@ -490,13 +490,13 @@ eleza _parse_localename(localename):
 
     ikiwa '.' kwenye code:
         rudisha tuple(code.split('.')[:2])
-    lasivyo code == 'C':
+    elikiwa code == 'C':
         rudisha Tupu, Tupu
-    lasivyo code == 'UTF-8':
+    elikiwa code == 'UTF-8':
         # On macOS "LC_CTYPE=UTF-8" ni a valid locale setting
         # kila getting UTF-8 handling kila text.
         rudisha Tupu, 'UTF-8'
-    ashiria ValueError('unknown locale: %s' % localename)
+     ashiria ValueError('unknown locale: %s' % localename)
 
 eleza _build_localename(localetuple):
 
@@ -515,14 +515,14 @@ eleza _build_localename(localetuple):
             rudisha language
         isipokua:
             rudisha language + '.' + encoding
-    tatizo (TypeError, ValueError):
-        ashiria TypeError('Locale must be Tupu, a string, ama an iterable of '
+    except (TypeError, ValueError):
+         ashiria TypeError('Locale must be Tupu, a string, ama an iterable of '
                         'two strings -- language code, encoding.') kutoka Tupu
 
 eleza getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
 
-    """ Tries to determine the default locale settings na rudishas
-        them kama tuple (language code, encoding).
+    """ Tries to determine the default locale settings na returns
+        them as tuple (language code, encoding).
 
         According to POSIX, a program which has sio called
         setlocale(LC_ALL, "") runs using the portable 'C' locale.
@@ -547,8 +547,8 @@ eleza getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
         # check ikiwa it's supported by the _locale module
         agiza _locale
         code, encoding = _locale._getdefaultlocale()
-    tatizo (ImportError, AttributeError):
-        pita
+    except (ImportError, AttributeError):
+        pass
     isipokua:
         # make sure the code/encoding values are valid
         ikiwa sys.platform == "win32" na code na code[:2] == "0x":
@@ -577,7 +577,7 @@ eleza getlocale(category=LC_CTYPE):
     """ Returns the current setting kila the given locale category as
         tuple (language code, encoding).
 
-        category may be one of the LC_* value tatizo LC_ALL. It
+        category may be one of the LC_* value except LC_ALL. It
         defaults to LC_CTYPE.
 
         Except kila the code 'C', the language code corresponds to RFC
@@ -587,7 +587,7 @@ eleza getlocale(category=LC_CTYPE):
     """
     localename = _setlocale(category)
     ikiwa category == LC_ALL na ';' kwenye localename:
-        ashiria TypeError('category LC_ALL ni sio supported')
+         ashiria TypeError('category LC_ALL ni sio supported')
     rudisha _parse_localename(localename)
 
 eleza setlocale(category, locale=Tupu):
@@ -597,9 +597,9 @@ eleza setlocale(category, locale=Tupu):
         ama Tupu.
 
         Iterables are converted to strings using the locale aliasing
-        engine.  Locale strings are pitaed directly to the C lib.
+        engine.  Locale strings are passed directly to the C lib.
 
-        category may be given kama one of the LC_* values.
+        category may be given as one of the LC_* values.
 
     """
     ikiwa locale na sio isinstance(locale, _builtin_str):
@@ -629,7 +629,7 @@ isipokua:
     # On Unix, ikiwa CODESET ni available, use that.
     jaribu:
         CODESET
-    tatizo NameError:
+    except NameError:
         ikiwa hasattr(sys, 'getandroidapilevel'):
             # On Android langinfo.h na CODESET are missing, na UTF-8 is
             # always used kwenye mbstowcs() na wcstombs().
@@ -658,8 +658,8 @@ isipokua:
                 oldloc = setlocale(LC_CTYPE)
                 jaribu:
                     setlocale(LC_CTYPE, "")
-                tatizo Error:
-                    pita
+                except Error:
+                    pass
             result = _bootlocale.getpreferredencoding(Uongo)
             ikiwa do_setlocale:
                 setlocale(LC_CTYPE, oldloc)
@@ -671,13 +671,13 @@ isipokua:
 # The following data was extracted kutoka the locale.alias file which
 # comes ukijumuisha X11 na then hand edited removing the explicit encoding
 # definitions na adding some more aliases. The file ni usually
-# available kama /usr/lib/X11/locale/locale.alias.
+# available as /usr/lib/X11/locale/locale.alias.
 #
 
 #
 # The local_encoding_alias table maps lowercase encoding alias names
 # to C locale encoding names (case-sensitive). Note that normalize()
-# first looks up the encoding kwenye the encodings.aliases dictionary na
+# first looks up the encoding kwenye the encodings.aliases dictionary and
 # then applies this mapping to find the correct C lib name kila the
 # encoding.
 #
@@ -1455,7 +1455,7 @@ locale_alias = {
 #
 # This maps Windows language identifiers to locale strings.
 #
-# This list has been updated kutoka
+# This list has been updated from
 # http://msdn.microsoft.com/library/default.asp?url=/library/en-us/intl/nls_238z.asp
 # to include every locale up to Windows Vista.
 #
@@ -1630,7 +1630,7 @@ windows_locale = {
     0x0c0a: "es_ES", # Spanish - Spain (Modern)
     0x100a: "es_GT", # Spanish - Guatemala
     0x140a: "es_CR", # Spanish - Costa Rica
-    0x180a: "es_PA", # Spanish - Pan ama
+    0x180a: "es_PA", # Spanish - Panama
     0x1c0a: "es_DO", # Spanish - Dominican Republic
     0x200a: "es_VE", # Spanish - Venezuela
     0x240a: "es_CO", # Spanish - Colombia
@@ -1690,7 +1690,7 @@ eleza _print_locale():
     _init_categories()
     toa categories['LC_ALL']
 
-    andika('Locale defaults kama determined by getdefaultlocale():')
+    andika('Locale defaults as determined by getdefaultlocale():')
     andika('-'*72)
     lang, enc = getdefaultlocale()
     andika('Language: ', lang ama '(undefined)')
@@ -1738,8 +1738,8 @@ eleza _print_locale():
 
 jaribu:
     LC_MESSAGES
-tatizo NameError:
-    pita
+except NameError:
+    pass
 isipokua:
     __all__.append("LC_MESSAGES")
 

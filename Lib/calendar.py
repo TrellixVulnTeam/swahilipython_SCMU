@@ -1,13 +1,13 @@
 """Calendar printing functions
 
 Note when comparing these calendars to the ones printed by cal(1): By
-default, these calendars have Monday kama the first day of the week, na
-Sunday kama the last (the European convention). Use setfirstweekday() to
+default, these calendars have Monday as the first day of the week, and
+Sunday as the last (the European convention). Use setfirstweekday() to
 set the first day of the week (0=Monday, 6=Sunday)."""
 
 agiza sys
 agiza datetime
-agiza locale kama _locale
+agiza locale as _locale
 kutoka itertools agiza repeat
 
 __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
@@ -17,10 +17,10 @@ __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
            "Calendar", "TextCalendar", "HTMLCalendar", "LocaleTextCalendar",
            "LocaleHTMLCalendar", "weekheader"]
 
-# Exception ashiriad kila bad input (ukijumuisha string parameter kila details)
+# Exception raised kila bad input (ukijumuisha string parameter kila details)
 error = ValueError
 
-# Exceptions ashiriad kila bad input
+# Exceptions raised kila bad input
 kundi IllegalMonthError(ValueError):
     eleza __init__(self, month):
         self.month = month
@@ -39,7 +39,7 @@ kundi IllegalWeekdayError(ValueError):
 January = 1
 February = 2
 
-# Number of days per month (tatizo kila February kwenye leap years)
+# Number of days per month (except kila February kwenye leap years)
 mdays = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 # This module used to have hard-coded lists of day na month names, as
@@ -121,7 +121,7 @@ eleza monthrange(year, month):
     """Return weekday (0-6 ~ Mon-Sun) na number of days (28-31) for
        year, month."""
     ikiwa sio 1 <= month <= 12:
-        ashiria IllegalMonthError(month)
+         ashiria IllegalMonthError(month)
     day1 = weekday(year, month, 1)
     ndays = mdays[month] + (month == February na isleap(year))
     rudisha day1, ndays
@@ -173,7 +173,7 @@ kundi Calendar(object):
     eleza itermonthdates(self, year, month):
         """
         Return an iterator kila one month. The iterator will tuma datetime.date
-        values na will always iterate through complete weeks, so it will tuma
+        values na will always iterate through complete weeks, so it will yield
         dates outside the specified month.
         """
         kila y, m, d kwenye self.itermonthdays3(year, month):
@@ -253,7 +253,7 @@ kundi Calendar(object):
 
     eleza yeardatescalendar(self, year, width=3):
         """
-        Return the data kila the specified year ready kila formatting. The rudisha
+        Return the data kila the specified year ready kila formatting. The return
         value ni a list of month rows. Each month row contains up to width months.
         Each month contains between 4 na 6 weeks na each week contains 1-7
         days. Days are datetime.date objects.
@@ -292,7 +292,7 @@ kundi Calendar(object):
 
 kundi TextCalendar(Calendar):
     """
-    Subkundi of Calendar that outputs a calendar kama a simple plain text
+    Subkundi of Calendar that outputs a calendar as a simple plain text
     similar to the UNIX program cal.
     """
 
@@ -367,7 +367,7 @@ kundi TextCalendar(Calendar):
 
     eleza formatyear(self, theyear, w=2, l=1, c=6, m=3):
         """
-        Returns a year's calendar kama a multi-line string.
+        Returns a year's calendar as a multi-line string.
         """
         w = max(2, w)
         l = max(1, l)
@@ -409,7 +409,7 @@ kundi TextCalendar(Calendar):
 
 kundi HTMLCalendar(Calendar):
     """
-    This calendar rudishas complete HTML pages.
+    This calendar returns complete HTML pages.
     """
 
     # CSS classes kila the day <td>s
@@ -435,7 +435,7 @@ kundi HTMLCalendar(Calendar):
 
     eleza formatday(self, day, weekday):
         """
-        Return a day kama a table cell.
+        Return a day as a table cell.
         """
         ikiwa day == 0:
             # day outside month
@@ -445,28 +445,28 @@ kundi HTMLCalendar(Calendar):
 
     eleza formatweek(self, theweek):
         """
-        Return a complete week kama a table row.
+        Return a complete week as a table row.
         """
         s = ''.join(self.formatday(d, wd) kila (d, wd) kwenye theweek)
         rudisha '<tr>%s</tr>' % s
 
     eleza formatweekday(self, day):
         """
-        Return a weekday name kama a table header.
+        Return a weekday name as a table header.
         """
         rudisha '<th class="%s">%s</th>' % (
             self.cssclasses_weekday_head[day], day_abbr[day])
 
     eleza formatweekheader(self):
         """
-        Return a header kila a week kama a table row.
+        Return a header kila a week as a table row.
         """
         s = ''.join(self.formatweekday(i) kila i kwenye self.iterweekdays())
         rudisha '<tr>%s</tr>' % s
 
     eleza formatmonthname(self, theyear, themonth, withyear=Kweli):
         """
-        Return a month name kama a table row.
+        Return a month name as a table row.
         """
         ikiwa withyear:
             s = '%s %s' % (month_name[themonth], theyear)
@@ -477,7 +477,7 @@ kundi HTMLCalendar(Calendar):
 
     eleza formatmonth(self, theyear, themonth, withyear=Kweli):
         """
-        Return a formatted month kama a table.
+        Return a formatted month as a table.
         """
         v = []
         a = v.append
@@ -497,7 +497,7 @@ kundi HTMLCalendar(Calendar):
 
     eleza formatyear(self, theyear, width=3):
         """
-        Return a formatted year kama a table of tables.
+        Return a formatted year as a table of tables.
         """
         v = []
         a = v.append
@@ -521,7 +521,7 @@ kundi HTMLCalendar(Calendar):
 
     eleza formatyearpage(self, theyear, width=3, css='calendar.css', encoding=Tupu):
         """
-        Return a formatted year kama a complete HTML page.
+        Return a formatted year as a complete HTML page.
         """
         ikiwa encoding ni Tupu:
             encoding = sys.getdefaultencoding()
@@ -557,10 +557,10 @@ kundi different_locale:
 
 kundi LocaleTextCalendar(TextCalendar):
     """
-    This kundi can be pitaed a locale name kwenye the constructor na will rudisha
+    This kundi can be passed a locale name kwenye the constructor na will return
     month na weekday names kwenye the specified locale. If this locale includes
-    an encoding all strings containing month na weekday names will be rudishaed
-    kama unicode.
+    an encoding all strings containing month na weekday names will be returned
+    as unicode.
     """
 
     eleza __init__(self, firstweekday=0, locale=Tupu):
@@ -588,10 +588,10 @@ kundi LocaleTextCalendar(TextCalendar):
 
 kundi LocaleHTMLCalendar(HTMLCalendar):
     """
-    This kundi can be pitaed a locale name kwenye the constructor na will rudisha
+    This kundi can be passed a locale name kwenye the constructor na will return
     month na weekday names kwenye the specified locale. If this locale includes
-    an encoding all strings containing month na weekday names will be rudishaed
-    kama unicode.
+    an encoding all strings containing month na weekday names will be returned
+    as unicode.
     """
     eleza __init__(self, firstweekday=0, locale=Tupu):
         HTMLCalendar.__init__(self, firstweekday)
@@ -619,7 +619,7 @@ firstweekday = c.getfirstweekday
 
 eleza setfirstweekday(firstweekday):
     ikiwa sio MONDAY <= firstweekday <= SUNDAY:
-        ashiria IllegalWeekdayError(firstweekday)
+         ashiria IllegalWeekdayError(firstweekday)
     c.firstweekday = firstweekday
 
 monthcalendar = c.monthdayscalendar
@@ -739,7 +739,7 @@ eleza main(args):
         write = sys.stdout.buffer.write
         ikiwa options.year ni Tupu:
             write(cal.formatyearpage(datetime.date.today().year, **optdict))
-        lasivyo options.month ni Tupu:
+        elikiwa options.month ni Tupu:
             write(cal.formatyearpage(options.year, **optdict))
         isipokua:
             parser.error("incorrect number of arguments")
@@ -755,7 +755,7 @@ eleza main(args):
             optdict["m"] = options.months
         ikiwa options.year ni Tupu:
             result = cal.formatyear(datetime.date.today().year, **optdict)
-        lasivyo options.month ni Tupu:
+        elikiwa options.month ni Tupu:
             result = cal.formatyear(options.year, **optdict)
         isipokua:
             result = cal.formatmonth(options.year, options.month, **optdict)

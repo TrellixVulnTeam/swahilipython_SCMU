@@ -38,7 +38,7 @@ kundi TestEncodeBasestringAscii:
         self.assertEqual(s, '{"five": 5, "four": 4, "one": 1, "three": 3, "two": 2}')
 
 
-kundi TestPyEncodeBasestringAscii(TestEncodeBasestringAscii, PyTest): pita
+kundi TestPyEncodeBasestringAscii(TestEncodeBasestringAscii, PyTest): pass
 kundi TestCEncodeBasestringAscii(TestEncodeBasestringAscii, CTest):
     @bigaddrspacetest
     eleza test_overflow(self):

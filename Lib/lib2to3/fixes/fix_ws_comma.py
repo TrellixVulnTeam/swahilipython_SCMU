@@ -27,7 +27,7 @@ kundi FixWsComma(fixer_base.BaseFix):
         kila child kwenye new.children:
             ikiwa child kwenye self.SEPS:
                 prefix = child.prefix
-                ikiwa prefix.isspace() na "\n" haiko kwenye prefix:
+                ikiwa prefix.isspace() na "\n" sio kwenye prefix:
                     child.prefix = ""
                 comma = Kweli
             isipokua:

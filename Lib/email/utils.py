@@ -22,22 +22,22 @@ __all__ = [
     'unquote',
     ]
 
-import os
-import re
-import time
-import random
-import socket
-import datetime
-import urllib.parse
+agiza os
+agiza re
+agiza time
+agiza random
+agiza socket
+agiza datetime
+agiza urllib.parse
 
-from email._parseaddr import quote
-from email._parseaddr import AddressList as _AddressList
-from email._parseaddr import mktime_tz
+kutoka email._parseaddr agiza quote
+kutoka email._parseaddr agiza AddressList as _AddressList
+kutoka email._parseaddr agiza mktime_tz
 
-from email._parseaddr import parsedate, parsedate_tz, _parsedate_tz
+kutoka email._parseaddr agiza parsedate, parsedate_tz, _parsedate_tz
 
 # Intrapackage imports
-from email.charset import Charset
+kutoka email.charset agiza Charset
 
 COMMASPACE = ', '
 EMPTYSTRING = ''
@@ -48,74 +48,74 @@ TICK = "'"
 specialsre = re.compile(r'[][\\()<>@,:;".]')
 escapesre = re.compile(r'[\\"]')
 
-def _has_surrogates(s):
-    """Return True if s contains surrogate-escaped binary data."""
-    # This check is based on the fact that unless there are surrogates, utf8
-    # (Python's default encoding) can encode any string.  This is the fastest
-    # way to check for surrogates, see issue 11454 for timings.
+eleza _has_surrogates(s):
+    """Return Kweli ikiwa s contains surrogate-escaped binary data."""
+    # This check ni based on the fact that unless there are surrogates, utf8
+    # (Python's default encoding) can encode any string.  This ni the fastest
+    # way to check kila surrogates, see issue 11454 kila timings.
     jaribu:
         s.encode()
-        return False
-    tatizo UnicodeEncodeError:
-        return True
+        rudisha Uongo
+    except UnicodeEncodeError:
+        rudisha Kweli
 
-# How to deal with a string containing bytes before handing it to the
+# How to deal ukijumuisha a string containing bytes before handing it to the
 # application through the 'normal' interface.
-def _sanitize(string):
+eleza _sanitize(string):
     # Turn any escaped bytes into unicode 'unknown' char.  If the escaped
-    # bytes happen to be utf-8 they will instead get decoded, even if they
-    # were invalid in the charset the source was supposed to be in.  This
+    # bytes happen to be utf-8 they will instead get decoded, even ikiwa they
+    # were invalid kwenye the charset the source was supposed to be in.  This
     # seems like it ni sio a bad thing; a defect was still registered.
     original_bytes = string.encode('utf-8', 'surrogateescape')
-    return original_bytes.decode('utf-8', 'replace')
+    rudisha original_bytes.decode('utf-8', 'replace')
 
 
 
 # Helpers
 
-def formataddr(pair, charset='utf-8'):
+eleza formataddr(pair, charset='utf-8'):
     """The inverse of parseaddr(), this takes a 2-tuple of the form
-    (realname, email_address) and returns the string value suitable
-    for an RFC 2822 From, To or Cc header.
+    (realname, email_address) na returns the string value suitable
+    kila an RFC 2822 From, To ama Cc header.
 
-    If the first element of pair is false, then the second element is
+    If the first element of pair ni false, then the second element is
     returned unmodified.
 
-    Optional charset if given is the character set that is used to encode
-    realname in case realname ni sio ASCII safe.  Can be an instance of str ama
+    Optional charset ikiwa given ni the character set that ni used to encode
+    realname kwenye case realname ni sio ASCII safe.  Can be an instance of str or
     a Charset-like object which has a header_encode method.  Default is
     'utf-8'.
     """
     name, address = pair
-    # The address MUST (per RFC) be ascii, so ashiria a UnicodeError if it isn't.
+    # The address MUST (per RFC) be ascii, so  ashiria a UnicodeError ikiwa it isn't.
     address.encode('ascii')
-    if name:
+    ikiwa name:
         jaribu:
             name.encode('ascii')
-        tatizo UnicodeEncodeError:
-            if isinstance(charset, str):
+        except UnicodeEncodeError:
+            ikiwa isinstance(charset, str):
                 charset = Charset(charset)
             encoded_name = charset.header_encode(name)
-            return "%s <%s>" % (encoded_name, address)
+            rudisha "%s <%s>" % (encoded_name, address)
         isipokua:
             quotes = ''
-            if specialsre.search(name):
+            ikiwa specialsre.search(name):
                 quotes = '"'
             name = escapesre.sub(r'\\\g<0>', name)
-            return '%s%s%s <%s>' % (quotes, name, quotes, address)
-    return address
+            rudisha '%s%s%s <%s>' % (quotes, name, quotes, address)
+    rudisha address
 
 
 
-def getaddresses(fieldvalues):
-    """Return a list of (REALNAME, EMAIL) for each fieldvalue."""
+eleza getaddresses(fieldvalues):
+    """Return a list of (REALNAME, EMAIL) kila each fieldvalue."""
     all = COMMASPACE.join(fieldvalues)
     a = _AddressList(all)
-    return a.addresslist
+    rudisha a.addresslist
 
 
-def _format_timetuple_and_zone(timetuple, zone):
-    return '%s, %02d %s %04d %02d:%02d:%02d %s' % (
+eleza _format_timetuple_and_zone(timetuple, zone):
+    rudisha '%s, %02d %s %04d %02d:%02d:%02d %s' % (
         ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][timetuple[6]],
         timetuple[2],
         ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -123,239 +123,239 @@ def _format_timetuple_and_zone(timetuple, zone):
         timetuple[0], timetuple[3], timetuple[4], timetuple[5],
         zone)
 
-def formatdate(timeval=None, localtime=False, usegmt=False):
+eleza formatdate(timeval=Tupu, localtime=Uongo, usegmt=Uongo):
     """Returns a date string as specified by RFC 2822, e.g.:
 
     Fri, 09 Nov 2001 01:08:47 -0000
 
-    Optional timeval if given is a floating point time value as accepted by
-    gmtime() and localtime(), otherwise the current time is used.
+    Optional timeval ikiwa given ni a floating point time value as accepted by
+    gmtime() na localtime(), otherwise the current time ni used.
 
-    Optional localtime is a flag that when True, interprets timeval, na
+    Optional localtime ni a flag that when Kweli, interprets timeval, and
     returns a date relative to the local timezone instead of UTC, properly
     taking daylight savings time into account.
 
-    Optional argument usegmt means that the timezone is written out as
+    Optional argument usegmt means that the timezone ni written out as
     an ascii string, sio numeric one (so "GMT" instead of "+0000"). This
-    is needed for HTTP, and is only used when localtime==False.
+    ni needed kila HTTP, na ni only used when localtime==Uongo.
     """
-    # Note: we cannot use strftime() because that honors the locale and RFC
-    # 2822 requires that day and month names be the English abbreviations.
-    if timeval is None:
+    # Note: we cannot use strftime() because that honors the locale na RFC
+    # 2822 requires that day na month names be the English abbreviations.
+    ikiwa timeval ni Tupu:
         timeval = time.time()
-    if localtime or usegmt:
+    ikiwa localtime ama usegmt:
         dt = datetime.datetime.fromtimestamp(timeval, datetime.timezone.utc)
     isipokua:
         dt = datetime.datetime.utcfromtimestamp(timeval)
-    if localtime:
+    ikiwa localtime:
         dt = dt.astimezone()
-        usegmt = False
-    return format_datetime(dt, usegmt)
+        usegmt = Uongo
+    rudisha format_datetime(dt, usegmt)
 
-def format_datetime(dt, usegmt=False):
-    """Turn a datetime into a date string as specified in RFC 2822.
+eleza format_datetime(dt, usegmt=Uongo):
+    """Turn a datetime into a date string as specified kwenye RFC 2822.
 
-    If usegmt is True, dt must be an aware datetime with an offset of zero.  In
+    If usegmt ni Kweli, dt must be an aware datetime ukijumuisha an offset of zero.  In
     this case 'GMT' will be rendered instead of the normal +0000 required by
-    RFC2822.  This is to support HTTP headers involving date stamps.
+    RFC2822.  This ni to support HTTP headers involving date stamps.
     """
     now = dt.timetuple()
-    if usegmt:
-        if dt.tzinfo is None or dt.tzinfo != datetime.timezone.utc:
-            ashiria ValueError("usegmt option requires a UTC datetime")
+    ikiwa usegmt:
+        ikiwa dt.tzinfo ni Tupu ama dt.tzinfo != datetime.timezone.utc:
+             ashiria ValueError("usegmt option requires a UTC datetime")
         zone = 'GMT'
-    lasivyo dt.tzinfo is None:
+    elikiwa dt.tzinfo ni Tupu:
         zone = '-0000'
     isipokua:
         zone = dt.strftime("%z")
-    return _format_timetuple_and_zone(now, zone)
+    rudisha _format_timetuple_and_zone(now, zone)
 
 
-def make_msgid(idstring=None, domain=None):
-    """Returns a string suitable for RFC 2822 compliant Message-ID, e.g:
+eleza make_msgid(idstring=Tupu, domain=Tupu):
+    """Returns a string suitable kila RFC 2822 compliant Message-ID, e.g:
 
     <142480216486.20800.16526388040877946887@nightshade.la.mastaler.com>
 
-    Optional idstring if given is a string used to strengthen the
-    uniqueness of the message id.  Optional domain if given provides the
+    Optional idstring ikiwa given ni a string used to strengthen the
+    uniqueness of the message id.  Optional domain ikiwa given provides the
     portion of the message id after the '@'.  It defaults to the locally
     defined hostname.
     """
     timeval = int(time.time()*100)
     pid = os.getpid()
     randint = random.getrandbits(64)
-    if idstring is None:
+    ikiwa idstring ni Tupu:
         idstring = ''
     isipokua:
         idstring = '.' + idstring
-    if domain is None:
+    ikiwa domain ni Tupu:
         domain = socket.getfqdn()
     msgid = '<%d.%d.%d%s@%s>' % (timeval, pid, randint, idstring, domain)
-    return msgid
+    rudisha msgid
 
 
-def parsedate_to_datetime(data):
+eleza parsedate_to_datetime(data):
     *dtuple, tz = _parsedate_tz(data)
-    if tz is None:
-        return datetime.datetime(*dtuple[:6])
-    return datetime.datetime(*dtuple[:6],
+    ikiwa tz ni Tupu:
+        rudisha datetime.datetime(*dtuple[:6])
+    rudisha datetime.datetime(*dtuple[:6],
             tzinfo=datetime.timezone(datetime.timedelta(seconds=tz)))
 
 
-def parseaddr(addr):
+eleza parseaddr(addr):
     """
-    Parse addr into its constituent realname and email address parts.
+    Parse addr into its constituent realname na email address parts.
 
-    Return a tuple of realname and email address, unless the parse fails, in
-    which case return a 2-tuple of ('', '').
+    Return a tuple of realname na email address, unless the parse fails, in
+    which case rudisha a 2-tuple of ('', '').
     """
     addrs = _AddressList(addr).addresslist
-    if sio addrs:
-        return '', ''
-    return addrs[0]
+    ikiwa sio addrs:
+        rudisha '', ''
+    rudisha addrs[0]
 
 
-# rfc822.unquote() doesn't properly de-backslash-ify in Python pre-2.3.
-def unquote(str):
-    """Remove quotes from a string."""
-    if len(str) > 1:
-        if str.startswith('"') and str.endswith('"'):
-            return str[1:-1].replace('\\\\', '\\').replace('\\"', '"')
-        if str.startswith('<') and str.endswith('>'):
-            return str[1:-1]
-    return str
+# rfc822.unquote() doesn't properly de-backslash-ify kwenye Python pre-2.3.
+eleza unquote(str):
+    """Remove quotes kutoka a string."""
+    ikiwa len(str) > 1:
+        ikiwa str.startswith('"') na str.endswith('"'):
+            rudisha str[1:-1].replace('\\\\', '\\').replace('\\"', '"')
+        ikiwa str.startswith('<') na str.endswith('>'):
+            rudisha str[1:-1]
+    rudisha str
 
 
 
-# RFC2231-related functions - parameter encoding and decoding
-def decode_rfc2231(s):
+# RFC2231-related functions - parameter encoding na decoding
+eleza decode_rfc2231(s):
     """Decode string according to RFC 2231"""
     parts = s.split(TICK, 2)
-    if len(parts) <= 2:
-        return None, None, s
-    return parts
+    ikiwa len(parts) <= 2:
+        rudisha Tupu, Tupu, s
+    rudisha parts
 
 
-def encode_rfc2231(s, charset=None, language=None):
+eleza encode_rfc2231(s, charset=Tupu, language=Tupu):
     """Encode string according to RFC 2231.
 
-    If neither charset nor language is given, then s is returned as-is.  If
-    charset is given but sio language, the string is encoded using the empty
-    string for language.
+    If neither charset nor language ni given, then s ni returned as-is.  If
+    charset ni given but sio language, the string ni encoded using the empty
+    string kila language.
     """
-    s = urllib.parse.quote(s, safe='', encoding=charset or 'ascii')
-    if charset is None and language is None:
-        return s
-    if language is None:
+    s = urllib.parse.quote(s, safe='', encoding=charset ama 'ascii')
+    ikiwa charset ni Tupu na language ni Tupu:
+        rudisha s
+    ikiwa language ni Tupu:
         language = ''
-    return "%s'%s'%s" % (charset, language, s)
+    rudisha "%s'%s'%s" % (charset, language, s)
 
 
 rfc2231_continuation = re.compile(r'^(?P<name>\w+)\*((?P<num>[0-9]+)\*?)?$',
     re.ASCII)
 
-def decode_params(params):
+eleza decode_params(params):
     """Decode parameters list according to RFC 2231.
 
-    params is a sequence of 2-tuples containing (param name, string value).
+    params ni a sequence of 2-tuples containing (param name, string value).
     """
-    # Copy params so we don't mess with the original
+    # Copy params so we don't mess ukijumuisha the original
     params = params[:]
     new_params = []
     # Map parameter's name to a list of continuations.  The values are a
-    # 3-tuple of the continuation number, the string value, and a flag
-    # specifying whether a particular segment is %-encoded.
+    # 3-tuple of the continuation number, the string value, na a flag
+    # specifying whether a particular segment ni %-encoded.
     rfc2231_params = {}
     name, value = params.pop(0)
     new_params.append((name, value))
     wakati params:
         name, value = params.pop(0)
-        if name.endswith('*'):
-            encoded = True
+        ikiwa name.endswith('*'):
+            encoded = Kweli
         isipokua:
-            encoded = False
+            encoded = Uongo
         value = unquote(value)
         mo = rfc2231_continuation.match(name)
-        if mo:
+        ikiwa mo:
             name, num = mo.group('name', 'num')
-            if num ni sio None:
+            ikiwa num ni sio Tupu:
                 num = int(num)
             rfc2231_params.setdefault(name, []).append((num, value, encoded))
         isipokua:
             new_params.append((name, '"%s"' % quote(value)))
-    if rfc2231_params:
-        for name, continuations in rfc2231_params.items():
+    ikiwa rfc2231_params:
+        kila name, continuations kwenye rfc2231_params.items():
             value = []
-            extended = False
+            extended = Uongo
             # Sort by number
             continuations.sort()
-            # And now append all values in numerical order, converting
-            # %-encodings for the encoded segments.  If any of the
-            # continuation names ends in a *, then the entire string, after
-            # decoding segments and concatenating, must have the charset na
+            # And now append all values kwenye numerical order, converting
+            # %-encodings kila the encoded segments.  If any of the
+            # continuation names ends kwenye a *, then the entire string, after
+            # decoding segments na concatenating, must have the charset and
             # language specifiers at the beginning of the string.
-            for num, s, encoded in continuations:
-                if encoded:
-                    # Decode as "latin-1", so the characters in s directly
+            kila num, s, encoded kwenye continuations:
+                ikiwa encoded:
+                    # Decode as "latin-1", so the characters kwenye s directly
                     # represent the percent-encoded octet values.
                     # collapse_rfc2231_value treats this as an octet sequence.
                     s = urllib.parse.unquote(s, encoding="latin-1")
-                    extended = True
+                    extended = Kweli
                 value.append(s)
             value = quote(EMPTYSTRING.join(value))
-            if extended:
+            ikiwa extended:
                 charset, language, value = decode_rfc2231(value)
                 new_params.append((name, (charset, language, '"%s"' % value)))
             isipokua:
                 new_params.append((name, '"%s"' % value))
-    return new_params
+    rudisha new_params
 
-def collapse_rfc2231_value(value, errors='replace',
+eleza collapse_rfc2231_value(value, errors='replace',
                            fallback_charset='us-ascii'):
-    if sio isinstance(value, tuple) ama len(value) != 3:
-        return unquote(value)
+    ikiwa sio isinstance(value, tuple) ama len(value) != 3:
+        rudisha unquote(value)
     # While value comes to us as a unicode string, we need it to be a bytes
     # object.  We do sio want bytes() normal utf-8 decoder, we want a straight
     # interpretation of the string as character bytes.
     charset, language, text = value
-    if charset is None:
-        # Issue 17369: if charset/lang is None, decode_rfc2231 couldn't parse
+    ikiwa charset ni Tupu:
+        # Issue 17369: ikiwa charset/lang ni Tupu, decode_rfc2231 couldn't parse
         # the value, so use the fallback_charset.
         charset = fallback_charset
     rawbytes = bytes(text, 'raw-unicode-escape')
     jaribu:
-        return str(rawbytes, charset, errors)
-    tatizo LookupError:
+        rudisha str(rawbytes, charset, errors)
+    except LookupError:
         # charset ni sio a known codec.
-        return unquote(text)
+        rudisha unquote(text)
 
 
 #
 # datetime doesn't provide a localtime function yet, so provide one.  Code
-# adapted from the patch in issue 9527.  This may sio be perfect, but it is
+# adapted kutoka the patch kwenye issue 9527.  This may sio be perfect, but it is
 # better than sio having it.
 #
 
-def localtime(dt=None, isdst=-1):
+eleza localtime(dt=Tupu, isdst=-1):
     """Return local time as an aware datetime object.
 
-    If called without arguments, return current time.  Otherwise *dt*
-    argument should be a datetime instance, and it is converted to the
+    If called without arguments, rudisha current time.  Otherwise *dt*
+    argument should be a datetime instance, na it ni converted to the
     local time zone according to the system time zone database.  If *dt* is
-    naive (that is, dt.tzinfo is None), it is assumed to be in local time.
-    In this case, a positive or zero value for *isdst* causes localtime to
-    presume initially that summer time (for example, Daylight Saving Time)
-    is or ni sio (respectively) in effect for the specified time.  A
-    negative value for *isdst* causes the localtime() function to attempt
-    to divine whether summer time is in effect for the specified time.
+    naive (that is, dt.tzinfo ni Tupu), it ni assumed to be kwenye local time.
+    In this case, a positive ama zero value kila *isdst* causes localtime to
+    presume initially that summer time (kila example, Daylight Saving Time)
+    ni ama ni sio (respectively) kwenye effect kila the specified time.  A
+    negative value kila *isdst* causes the localtime() function to attempt
+    to divine whether summer time ni kwenye effect kila the specified time.
 
     """
-    if dt is None:
-        return datetime.datetime.now(datetime.timezone.utc).astimezone()
-    if dt.tzinfo ni sio None:
-        return dt.astimezone()
-    # We have a naive datetime.  Convert to a (localtime) timetuple and pass to
-    # system mktime together with the isdst hint.  System mktime will return
+    ikiwa dt ni Tupu:
+        rudisha datetime.datetime.now(datetime.timezone.utc).astimezone()
+    ikiwa dt.tzinfo ni sio Tupu:
+        rudisha dt.astimezone()
+    # We have a naive datetime.  Convert to a (localtime) timetuple na pass to
+    # system mktime together ukijumuisha the isdst hint.  System mktime will return
     # seconds since epoch.
     tm = dt.timetuple()[:-1] + (isdst,)
     seconds = time.mktime(tm)
@@ -363,14 +363,14 @@ def localtime(dt=None, isdst=-1):
     jaribu:
         delta = datetime.timedelta(seconds=localtm.tm_gmtoff)
         tz = datetime.timezone(delta, localtm.tm_zone)
-    tatizo AttributeError:
-        # Compute UTC offset and compare with the value implied by tm_isdst.
+    except AttributeError:
+        # Compute UTC offset na compare ukijumuisha the value implied by tm_isdst.
         # If the values match, use the zone name implied by tm_isdst.
         delta = dt - datetime.datetime(*time.gmtime(seconds)[:6])
-        dst = time.daylight and localtm.tm_isdst > 0
-        gmtoff = -(time.altzone if dst isipokua time.timezone)
-        if delta == datetime.timedelta(seconds=gmtoff):
+        dst = time.daylight na localtm.tm_isdst > 0
+        gmtoff = -(time.altzone ikiwa dst isipokua time.timezone)
+        ikiwa delta == datetime.timedelta(seconds=gmtoff):
             tz = datetime.timezone(delta, time.tzname[dst])
         isipokua:
             tz = datetime.timezone(delta)
-    return dt.replace(tzinfo=tz)
+    rudisha dt.replace(tzinfo=tz)

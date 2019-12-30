@@ -21,7 +21,7 @@ kundi SunauPCM8Test(SunauTest, unittest.TestCase):
     nframes = 48
     comptype = 'NONE'
     compname = 'not compressed'
-    frames = bytes.kutokahex("""\
+    frames = bytes.fromhex("""\
       02FF 4B00 3104 8008 CB06 4803 BF01 03FE B8FA B4F3 29EB 1AE6 \
       EDE4 C6E2 0EE0 EFE0 57E2 FBE8 13EF D8F7 97FB F5FC 08FB DFFB \
       11FA 3EFB BCFC 66FF CF04 4309 C10E 5112 EE17 8216 7F14 8012 \
@@ -38,7 +38,7 @@ kundi SunauPCM16Test(SunauTest, unittest.TestCase):
     nframes = 48
     comptype = 'NONE'
     compname = 'not compressed'
-    frames = bytes.kutokahex("""\
+    frames = bytes.fromhex("""\
       022EFFEA 4B5C00F9 311404EF 80DB0844 CBE006B0 48AB03F3 BFE601B5 0367FE80 \
       B853FA42 B4AFF351 2997EBCD 1A5AE6DC EDF9E492 C627E277 0E06E0B7 EF29E029 \
       5759E271 FB34E83F 1377EF85 D82CF727 978EFB79 F5F7FC12 0864FB9E DF30FB40 \
@@ -57,7 +57,7 @@ kundi SunauPCM24Test(SunauTest, unittest.TestCase):
     nframes = 48
     comptype = 'NONE'
     compname = 'not compressed'
-    frames = bytes.kutokahex("""\
+    frames = bytes.fromhex("""\
       022D65FFEB9D 4B5A0F00FA54 3113C304EE2B 80DCD6084303 \
       CBDEC006B261 48A99803F2F8 BFE82401B07D 036BFBFE7B5D \
       B85756FA3EC9 B4B055F3502B 299830EBCB62 1A5CA7E6D99A \
@@ -82,7 +82,7 @@ kundi SunauPCM32Test(SunauTest, unittest.TestCase):
     nframes = 48
     comptype = 'NONE'
     compname = 'not compressed'
-    frames = bytes.kutokahex("""\
+    frames = bytes.fromhex("""\
       022D65BCFFEB9D92 4B5A0F8000FA549C 3113C34004EE2BC0 80DCD680084303E0 \
       CBDEC0C006B26140 48A9980003F2F8FC BFE8248001B07D92 036BFB60FE7B5D34 \
       B8575600FA3EC920 B4B05500F3502BC0 29983000EBCB6240 1A5CA7A0E6D99A60 \
@@ -107,7 +107,7 @@ kundi SunauULAWTest(SunauTest, unittest.TestCase):
     nframes = 48
     comptype = 'ULAW'
     compname = 'CCITT G.711 u-law'
-    frames = bytes.kutokahex("""\
+    frames = bytes.fromhex("""\
       022CFFE8 497C00F4 307C04DC 8284083C CB84069C 497C03DC BE8401AC 036CFE74 \
       B684FA24 B684F344 2A7CEC04 19FCE704 EE04E504 C584E204 0E3CE104 EF04DF84 \
       557CE204 FB24E804 12FCEF04 D784F744 9684FB64 F5C4FC24 083CFBA4 DF84FB24 \

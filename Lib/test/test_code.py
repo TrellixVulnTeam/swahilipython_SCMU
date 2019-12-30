@@ -133,7 +133,7 @@ agiza weakref
 agiza opcode
 jaribu:
     agiza ctypes
-tatizo ImportError:
+except ImportError:
     ctypes = Tupu
 kutoka test.support agiza (run_doctest, run_unittest, cpython_only,
                           check_impl_detail)
@@ -191,7 +191,7 @@ kundi CodeTest(unittest.TestCase):
             setattr(cls, name, FunctionType(code, globals(), name, defaults, closure))
 
         kundi List(list):
-            pita
+            pass
 
         add_foreign_method(List, "__getitem__", external_getitem)
 
@@ -209,7 +209,7 @@ kundi CodeTest(unittest.TestCase):
         self.assertEqual(obj[0], "Foreign getitem: 1")
 
     eleza test_constructor(self):
-        eleza func(): pita
+        eleza func(): pass
         co = func.__code__
         CodeType = type(co)
 
@@ -275,7 +275,7 @@ kundi CodeConstsTest(unittest.TestCase):
         kila v kwenye consts:
             ikiwa v == value:
                 rudisha v
-        self.assertIn(value, consts)  # ashirias an exception
+        self.assertIn(value, consts)  # raises an exception
         self.fail('Should never be reached')
 
     eleza assertIsInterned(self, s):
@@ -323,7 +323,7 @@ kundi CodeWeakRefTest(unittest.TestCase):
         # Create a code object kwenye a clean environment so that we know we have
         # the only reference to it left.
         namespace = {}
-        exec("eleza f(): pita", globals(), namespace)
+        exec("eleza f(): pass", globals(), namespace)
         f = namespace["f"]
         toa namespace
 
@@ -332,8 +332,8 @@ kundi CodeWeakRefTest(unittest.TestCase):
             self.called = Kweli
 
         # f ni now the last reference to the function, na through it, the code
-        # object.  While we hold it, check that we can create a weakref na
-        # deref it.  Then delete it, na check that the callback gets called na
+        # object.  While we hold it, check that we can create a weakref and
+        # deref it.  Then delete it, na check that the callback gets called and
         # the reference dies.
         coderef = weakref.ref(f.__code__, callback)
         self.assertKweli(bool(coderef()))
@@ -435,7 +435,7 @@ ikiwa check_impl_detail(cpython=Kweli) na ctypes ni sio Tupu:
             self.assertEqual(LAST_FREED, 500)
 
         @cpython_only
-        eleza test_clean_stack_on_rudisha(self):
+        eleza test_clean_stack_on_return(self):
 
             eleza f(x):
                 rudisha x
@@ -460,7 +460,7 @@ ikiwa check_impl_detail(cpython=Kweli) na ctypes ni sio Tupu:
             new_function = type(f)(c, f.__globals__, 'nf', f.__defaults__, f.__closure__)
 
             kundi Var:
-                pita
+                pass
             the_object = Var()
             var = weakref.ref(the_object)
 

@@ -110,7 +110,7 @@ kundi TestResult(object):
     @failfast
     eleza addError(self, test, err):
         """Called when an error has occurred. 'err' ni a tuple of values as
-        rudishaed by sys.exc_info().
+        returned by sys.exc_info().
         """
         self.errors.append((test, self._exc_info_to_string(err, test)))
         self._mirrorOutput = Kweli
@@ -118,14 +118,14 @@ kundi TestResult(object):
     @failfast
     eleza addFailure(self, test, err):
         """Called when an error has occurred. 'err' ni a tuple of values as
-        rudishaed by sys.exc_info()."""
+        returned by sys.exc_info()."""
         self.failures.append((test, self._exc_info_to_string(err, test)))
         self._mirrorOutput = Kweli
 
     eleza addSubTest(self, test, subtest, err):
         """Called at the end of a subtest.
         'err' ni Tupu ikiwa the subtest ended successfully, otherwise it's a
-        tuple of values kama rudishaed by sys.exc_info().
+        tuple of values as returned by sys.exc_info().
         """
         # By default, we don't do anything ukijumuisha successful subtests, but
         # more sophisticated test results might want to record them.
@@ -141,7 +141,7 @@ kundi TestResult(object):
 
     eleza addSuccess(self, test):
         "Called when a test has completed successfully"
-        pita
+        pass
 
     eleza addSkip(self, test, reason):
         """Called when a test ni skipped."""
@@ -161,9 +161,9 @@ kundi TestResult(object):
         """Tells whether ama sio this result was a success."""
         # The hasattr check ni kila test_result's OldResult test.  That
         # way this method works on objects that lack the attribute.
-        # (where would such result intances come kutoka? old stored pickles?)
-        rudisha ((len(self.failures) == len(self.errors) == 0) na
-                (sio hasattr(self, 'unexpectedSuccesses') ama
+        # (where would such result intances come from? old stored pickles?)
+        rudisha ((len(self.failures) == len(self.errors) == 0) and
+                (not hasattr(self, 'unexpectedSuccesses') or
                  len(self.unexpectedSuccesses) == 0))
 
     eleza stop(self):

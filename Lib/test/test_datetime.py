@@ -29,7 +29,7 @@ kila module, suffix kwenye zip(test_modules, test_suffixes):
             endelea
         ikiwa issubclass(cls, unittest.TestCase):
             test_classes.append(cls)
-        lasivyo issubclass(cls, unittest.TestSuite):
+        elikiwa issubclass(cls, unittest.TestSuite):
             suit = cls()
             test_classes.extend(type(test) kila test kwenye suit)
     test_classes = sorted(set(test_classes), key=lambda cls: cls.__qualname__)

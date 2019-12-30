@@ -1,23 +1,23 @@
 """HMAC (Keyed-Hashing kila Message Authentication) Python module.
 
-Implements the HMAC algorithm kama described by RFC 2104.
+Implements the HMAC algorithm as described by RFC 2104.
 """
 
-agiza warnings kama _warnings
-kutoka _operator agiza _compare_digest kama compare_digest
+agiza warnings as _warnings
+kutoka _operator agiza _compare_digest as compare_digest
 jaribu:
-    agiza _hashlib kama _hashopenssl
-tatizo ImportError:
+    agiza _hashlib as _hashopenssl
+except ImportError:
     _hashopenssl = Tupu
     _openssl_md_meths = Tupu
 isipokua:
     _openssl_md_meths = frozenset(_hashopenssl.openssl_md_meth_names)
-agiza hashlib kama _hashlib
+agiza hashlib as _hashlib
 
 trans_5C = bytes((x ^ 0x5C) kila x kwenye range(256))
 trans_36 = bytes((x ^ 0x36) kila x kwenye range(256))
 
-# The size of the digests rudishaed by HMAC depends on the underlying
+# The size of the digests returned by HMAC depends on the underlying
 # hashing module used.  Use digest_size kutoka the instance of HMAC instead.
 digest_size = Tupu
 
@@ -36,21 +36,21 @@ kundi HMAC:
         key:       key kila the keyed hash object.
         msg:       Initial input kila the hash, ikiwa provided.
         digestmod: Required.  A module supporting PEP 247.  *OR*
-                   A hashlib constructor rudishaing a new hash object.  *OR*
+                   A hashlib constructor returning a new hash object.  *OR*
                    A hash name suitable kila hashlib.new().
 
         Note: key na msg must be a bytes ama bytearray objects.
         """
 
         ikiwa sio isinstance(key, (bytes, bytearray)):
-            ashiria TypeError("key: expected bytes ama bytearray, but got %r" % type(key).__name__)
+             ashiria TypeError("key: expected bytes ama bytearray, but got %r" % type(key).__name__)
 
         ikiwa digestmod ni Tupu:
-            ashiria ValueError('`digestmod` ni required.')
+             ashiria ValueError('`digestmod` ni required.')
 
         ikiwa callable(digestmod):
             self.digest_cons = digestmod
-        lasivyo isinstance(digestmod, str):
+        elikiwa isinstance(digestmod, str):
             self.digest_cons = lambda d=b'': _hashlib.new(digestmod, d)
         isipokua:
             self.digest_cons = lambda d=b'': digestmod.new(d)
@@ -73,7 +73,7 @@ kundi HMAC:
             blocksize = self.blocksize
 
         # self.blocksize ni the default blocksize. self.block_size is
-        # effective block size kama well kama the public API attribute.
+        # effective block size as well as the public API attribute.
         self.block_size = blocksize
 
         ikiwa len(key) > blocksize:
@@ -119,7 +119,7 @@ kundi HMAC:
     eleza digest(self):
         """Return the hash value of this hashing object.
 
-        This rudishas a string containing 8-bit data.  The object is
+        This returns a string containing 8-bit data.  The object is
         sio altered kwenye any way by this function; you can endelea
         updating the object after calling this function.
         """
@@ -127,7 +127,7 @@ kundi HMAC:
         rudisha h.digest()
 
     eleza hexdigest(self):
-        """Like digest(), but rudishas a string of hexadecimal digits instead.
+        """Like digest(), but returns a string of hexadecimal digits instead.
         """
         h = self._current()
         rudisha h.hexdigest()
@@ -152,18 +152,18 @@ eleza digest(key, msg, digest):
     key:    key kila the keyed hash object.
     msg:    input message
     digest: A hash name suitable kila hashlib.new() kila best performance. *OR*
-            A hashlib constructor rudishaing a new hash object. *OR*
+            A hashlib constructor returning a new hash object. *OR*
             A module supporting PEP 247.
 
     Note: key na msg must be a bytes ama bytearray objects.
     """
-    ikiwa (_hashopenssl ni sio Tupu na
+    ikiwa (_hashopenssl ni sio Tupu and
             isinstance(digest, str) na digest kwenye _openssl_md_meths):
         rudisha _hashopenssl.hmac_digest(key, msg, digest)
 
     ikiwa callable(digest):
         digest_cons = digest
-    lasivyo isinstance(digest, str):
+    elikiwa isinstance(digest, str):
         digest_cons = lambda d=b'': _hashlib.new(digest, d)
     isipokua:
         digest_cons = lambda d=b'': digest.new(d)

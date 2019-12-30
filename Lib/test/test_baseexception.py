@@ -1,7 +1,7 @@
 agiza unittest
 agiza builtins
 agiza os
-kutoka platform agiza system kama platform_system
+kutoka platform agiza system as platform_system
 
 
 kundi ExceptionClassTests(unittest.TestCase):
@@ -25,8 +25,8 @@ kundi ExceptionClassTests(unittest.TestCase):
             jaribu:
                 ikiwa issubclass(object_, BaseException):
                     exc_set.add(object_.__name__)
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
 
         inheritance_tree = open(os.path.join(os.path.split(__file__)[0],
                                                 'exception_hierarchy.txt'))
@@ -34,7 +34,7 @@ kundi ExceptionClassTests(unittest.TestCase):
             superclass_name = inheritance_tree.readline().rstrip()
             jaribu:
                 last_exc = getattr(builtins, superclass_name)
-            tatizo AttributeError:
+            except AttributeError:
                 self.fail("base kundi %s sio a built-in" % superclass_name)
             self.assertIn(superclass_name, exc_set,
                           '%s sio found' % superclass_name)
@@ -57,11 +57,11 @@ kundi ExceptionClassTests(unittest.TestCase):
                     exc_name = exc_name[:left_bracket-1]  # cover space
                 jaribu:
                     exc = getattr(builtins, exc_name)
-                tatizo AttributeError:
+                except AttributeError:
                     self.fail("%s sio a built-in exception" % exc_name)
                 ikiwa last_depth < depth:
                     superclasses.append((last_depth, last_exc))
-                lasivyo last_depth > depth:
+                elikiwa last_depth > depth:
                     wakati superclasses[-1][0] >= depth:
                         superclasses.pop()
                 self.assertKweli(issubclass(exc, superclasses[-1][1]),
@@ -69,8 +69,8 @@ kundi ExceptionClassTests(unittest.TestCase):
                     superclasses[-1][1].__name__))
                 jaribu:  # Some exceptions require arguments; just skip them
                     self.verify_instance_interface(exc())
-                tatizo TypeError:
-                    pita
+                except TypeError:
+                    pass
                 self.assertIn(exc_name, exc_set)
                 exc_set.discard(exc_name)
                 last_exc = exc
@@ -117,56 +117,56 @@ kundi UsageTests(unittest.TestCase):
 
     """Test usage of exceptions"""
 
-    eleza ashiria_fails(self, object_):
+    eleza raise_fails(self, object_):
         """Make sure that raising 'object_' triggers a TypeError."""
         jaribu:
-            ashiria object_
-        tatizo TypeError:
+             ashiria object_
+        except TypeError:
             rudisha  # What ni expected.
         self.fail("TypeError expected kila raising %s" % type(object_))
 
     eleza catch_fails(self, object_):
-        """Catching 'object_' should ashiria a TypeError."""
+        """Catching 'object_' should  ashiria a TypeError."""
         jaribu:
             jaribu:
-                ashiria Exception
-            tatizo object_:
-                pita
-        tatizo TypeError:
-            pita
-        tatizo Exception:
+                 ashiria Exception
+            except object_:
+                pass
+        except TypeError:
+            pass
+        except Exception:
             self.fail("TypeError expected when catching %s" % type(object_))
 
         jaribu:
             jaribu:
-                ashiria Exception
-            tatizo (object_,):
-                pita
-        tatizo TypeError:
-            rudisha
-        tatizo Exception:
-            self.fail("TypeError expected when catching %s kama specified kwenye a "
+                 ashiria Exception
+            except (object_,):
+                pass
+        except TypeError:
+            return
+        except Exception:
+            self.fail("TypeError expected when catching %s as specified kwenye a "
                         "tuple" % type(object_))
 
-    eleza test_ashiria_new_style_non_exception(self):
-        # You cannot ashiria a new-style kundi that does sio inherit kutoka
+    eleza test_raise_new_style_non_exception(self):
+        # You cannot  ashiria a new-style kundi that does sio inherit from
         # BaseException; the ability was sio possible until BaseException's
         # introduction so no need to support new-style objects that do not
         # inherit kutoka it.
         kundi NewStyleClass(object):
-            pita
-        self.ashiria_fails(NewStyleClass)
-        self.ashiria_fails(NewStyleClass())
+            pass
+        self.raise_fails(NewStyleClass)
+        self.raise_fails(NewStyleClass())
 
-    eleza test_ashiria_string(self):
-        # Raising a string ashirias TypeError.
-        self.ashiria_fails("spam")
+    eleza test_raise_string(self):
+        # Raising a string raises TypeError.
+        self.raise_fails("spam")
 
     eleza test_catch_non_BaseException(self):
         # Trying to catch an object that does sio inherit kutoka BaseException
         # ni sio allowed.
         kundi NonBaseException(object):
-            pita
+            pass
         self.catch_fails(NonBaseException)
         self.catch_fails(NonBaseException())
 

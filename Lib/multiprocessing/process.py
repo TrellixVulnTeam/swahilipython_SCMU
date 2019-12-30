@@ -27,7 +27,7 @@ kutoka _weakrefset agiza WeakSet
 
 jaribu:
     ORIGINAL_DIR = os.path.abspath(os.getcwd())
-tatizo OSError:
+except OSError:
     ORIGINAL_DIR = Tupu
 
 #
@@ -75,7 +75,7 @@ kundi BaseProcess(object):
     The kundi ni analogous to `threading.Thread`
     '''
     eleza _Popen(self):
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza __init__(self, group=Tupu, target=Tupu, name=Tupu, args=(), kwargs={},
                  *, daemon=Tupu):
@@ -98,7 +98,7 @@ kundi BaseProcess(object):
 
     eleza _check_closed(self):
         ikiwa self._closed:
-            ashiria ValueError("process object ni closed")
+             ashiria ValueError("process object ni closed")
 
     eleza run(self):
         '''
@@ -178,7 +178,7 @@ kundi BaseProcess(object):
         '''
         ikiwa self._popen ni sio Tupu:
             ikiwa self._popen.poll() ni Tupu:
-                ashiria ValueError("Cannot close a process wakati it ni still running. "
+                 ashiria ValueError("Cannot close a process wakati it ni still running. "
                                  "You should first call join() ama terminate().")
             self._popen.close()
             self._popen = Tupu
@@ -253,18 +253,18 @@ kundi BaseProcess(object):
         self._check_closed()
         jaribu:
             rudisha self._sentinel
-        tatizo AttributeError:
-            ashiria ValueError("process sio started") kutoka Tupu
+        except AttributeError:
+             ashiria ValueError("process sio started") kutoka Tupu
 
     eleza __repr__(self):
         exitcode = Tupu
         ikiwa self ni _current_process:
             status = 'started'
-        lasivyo self._closed:
+        elikiwa self._closed:
             status = 'closed'
-        lasivyo self._parent_pid != os.getpid():
+        elikiwa self._parent_pid != os.getpid():
             status = 'unknown'
-        lasivyo self._popen ni Tupu:
+        elikiwa self._popen ni Tupu:
             status = 'initial'
         isipokua:
             exitcode = self._popen.poll()
@@ -314,10 +314,10 @@ kundi BaseProcess(object):
                 exitcode = 0
             mwishowe:
                 util._exit_function()
-        tatizo SystemExit kama e:
+        except SystemExit as e:
             ikiwa sio e.args:
                 exitcode = 1
-            lasivyo isinstance(e.args[0], int):
+            elikiwa isinstance(e.args[0], int):
                 exitcode = e.args[0]
             isipokua:
                 sys.stderr.write(str(e.args[0]) + '\n')
@@ -342,7 +342,7 @@ kundi AuthenticationString(bytes):
     eleza __reduce__(self):
         kutoka .context agiza get_spawning_popen
         ikiwa get_spawning_popen() ni Tupu:
-            ashiria TypeError(
+             ashiria TypeError(
                 'Pickling an AuthenticationString object ni '
                 'disallowed kila security reasons'
                 )
@@ -407,7 +407,7 @@ kundi _MainProcess(BaseProcess):
         # processes.
 
     eleza close(self):
-        pita
+        pass
 
 
 _parent_process = Tupu
@@ -423,7 +423,7 @@ toa _MainProcess
 _exitcode_to_name = {}
 
 kila name, signum kwenye list(signal.__dict__.items()):
-    ikiwa name[:3]=='SIG' na '_' haiko kwenye name:
+    ikiwa name[:3]=='SIG' na '_' sio kwenye name:
         _exitcode_to_name[-signum] = f'-{name}'
 
 # For debug na leak testing

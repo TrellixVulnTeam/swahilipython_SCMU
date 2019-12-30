@@ -42,7 +42,7 @@ kundi Test_OSXSupport(unittest.TestCase):
         test.support.unlink(self.prog_name)
         self.assertIsTupu(_osx_support._find_executable(self.prog_name))
         self.addCleanup(test.support.unlink, self.prog_name)
-        ukijumuisha open(self.prog_name, 'w') kama f:
+        ukijumuisha open(self.prog_name, 'w') as f:
             f.write("#!/bin/sh\n/bin/echo OK\n")
         os.chmod(self.prog_name, stat.S_IRWXU)
         self.assertEqual(self.prog_name,
@@ -54,7 +54,7 @@ kundi Test_OSXSupport(unittest.TestCase):
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         test.support.unlink(self.prog_name)
         self.addCleanup(test.support.unlink, self.prog_name)
-        ukijumuisha open(self.prog_name, 'w') kama f:
+        ukijumuisha open(self.prog_name, 'w') as f:
             f.write("#!/bin/sh\n/bin/echo ExpectedOutput\n")
         os.chmod(self.prog_name, stat.S_IRWXU)
         self.assertEqual('ExpectedOutput',
@@ -145,7 +145,7 @@ kundi Test_OSXSupport(unittest.TestCase):
         kila c_name, c_output kwenye compilers:
             test.support.unlink(c_name)
             self.addCleanup(test.support.unlink, c_name)
-            ukijumuisha open(c_name, 'w') kama f:
+            ukijumuisha open(c_name, 'w') as f:
                 f.write("#!/bin/sh\n/bin/echo " + c_output)
             os.chmod(c_name, stat.S_IRWXU)
         self.assertEqual(expected_vars,
@@ -201,7 +201,7 @@ kundi Test_OSXSupport(unittest.TestCase):
         test.support.unlink(c_name)
         self.addCleanup(test.support.unlink, c_name)
         # exit status 255 means no PPC support kwenye this compiler chain
-        ukijumuisha open(c_name, 'w') kama f:
+        ukijumuisha open(c_name, 'w') as f:
             f.write("#!/bin/sh\nexit 255")
         os.chmod(c_name, stat.S_IRWXU)
         self.assertEqual(expected_vars,

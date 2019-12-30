@@ -1,20 +1,20 @@
-import gc
+agiza gc
 
 thingy = object()
-class A(object):
-    def f(self):
-        return 1
+kundi A(object):
+    eleza f(self):
+        rudisha 1
     x = thingy
 
 r = gc.get_referrers(thingy)
-if "__module__" in r[0]:
+ikiwa "__module__" kwenye r[0]:
     dct = r[0]
 isipokua:
     dct = r[1]
 
 a = A()
-for i in range(10):
+kila i kwenye range(10):
     a.f()
 dct["f"] = lambda self: 2
 
-print(a.f()) # should print 1
+andika(a.f()) # should print 1

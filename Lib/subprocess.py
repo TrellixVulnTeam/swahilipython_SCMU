@@ -16,7 +16,7 @@ For a complete description of this module see the Python documentation.
 
 Main API
 ========
-run(...): Runs a command, waits kila it to complete, then rudishas a
+run(...): Runs a command, waits kila it to complete, then returns a
           CompletedProcess instance.
 Popen(...): A kundi kila flexibly executing a command kwenye a new process
 
@@ -29,16 +29,16 @@ STDOUT:  Special value that indicates that stderr should go to stdout
 
 Older API
 =========
-call(...): Runs a command, waits kila it to complete, then rudishas
+call(...): Runs a command, waits kila it to complete, then returns
     the rudisha code.
-check_call(...): Same kama call() but ashirias CalledProcessError()
+check_call(...): Same as call() but raises CalledProcessError()
     ikiwa rudisha code ni sio 0
-check_output(...): Same kama check_call() but rudishas the contents of
+check_output(...): Same as check_call() but returns the contents of
     stdout instead of a rudisha code
 getoutput(...): Runs a command kwenye the shell, waits kila it to complete,
-    then rudishas the output
+    then returns the output
 getstatusoutput(...): Runs a command kwenye the shell, waits kila it to complete,
-    then rudishas a (exitcode, output) tuple
+    then returns a (exitcode, output) tuple
 """
 
 agiza builtins
@@ -51,20 +51,20 @@ agiza sys
 agiza threading
 agiza warnings
 agiza contextlib
-kutoka time agiza monotonic kama _time
+kutoka time agiza monotonic as _time
 
 
 __all__ = ["Popen", "PIPE", "STDOUT", "call", "check_call", "getstatusoutput",
            "getoutput", "check_output", "run", "CalledProcessError", "DEVNULL",
            "SubprocessError", "TimeoutExpired", "CompletedProcess"]
-           # NOTE: We intentionally exclude list2cmdline kama it is
+           # NOTE: We intentionally exclude list2cmdline as it is
            # considered an internal implementation detail.  issue10838.
 
 jaribu:
     agiza msvcrt
     agiza _winapi
     _mswindows = Kweli
-tatizo ModuleNotFoundError:
+except ModuleNotFoundError:
     _mswindows = Uongo
     agiza _posixsubprocess
     agiza select
@@ -93,12 +93,12 @@ isipokua:
 
 
 # Exception classes used by this module.
-kundi SubprocessError(Exception): pita
+kundi SubprocessError(Exception): pass
 
 
 kundi CalledProcessError(SubprocessError):
     """Raised when run() ni called ukijumuisha check=Kweli na the process
-    rudishas a non-zero exit status.
+    returns a non-zero exit status.
 
     Attributes:
       cmd, returncode, stdout, stderr, output
@@ -114,11 +114,11 @@ kundi CalledProcessError(SubprocessError):
             jaribu:
                 rudisha "Command '%s' died ukijumuisha %r." % (
                         self.cmd, signal.Signals(-self.returncode))
-            tatizo ValueError:
+            except ValueError:
                 rudisha "Command '%s' died ukijumuisha unknown signal %d." % (
                         self.cmd, -self.returncode)
         isipokua:
-            rudisha "Command '%s' rudishaed non-zero exit status %d." % (
+            rudisha "Command '%s' returned non-zero exit status %d." % (
                     self.cmd, self.returncode)
 
     @property
@@ -134,7 +134,7 @@ kundi CalledProcessError(SubprocessError):
 
 
 kundi TimeoutExpired(SubprocessError):
-    """This exception ni ashiriad when the timeout expires wakati waiting kila a
+    """This exception ni raised when the timeout expires wakati waiting kila a
     child process.
 
     Attributes:
@@ -197,7 +197,7 @@ ikiwa _mswindows:
             ikiwa sio self.closed:
                 self.closed = Kweli
                 rudisha int(self)
-            ashiria ValueError("already closed")
+             ashiria ValueError("already closed")
 
         eleza __repr__(self):
             rudisha "%s(%d)" % (self.__class__.__name__, int(self))
@@ -206,7 +206,7 @@ ikiwa _mswindows:
 isipokua:
     # When select ama poll has indicated that the file ni writable,
     # we can write up to _PIPE_BUF bytes without risk of blocking.
-    # POSIX defines PIPE_BUF kama >= 512.
+    # POSIX defines PIPE_BUF as >= 512.
     _PIPE_BUF = getattr(select, 'PIPE_BUF', 512)
 
     # poll/select have the advantage of sio requiring any extra file
@@ -222,7 +222,7 @@ ikiwa _mswindows:
     # On Windows we just need to close `Popen._handle` when we no longer need
     # it, so that the kernel can free it. `Popen._handle` gets closed
     # implicitly when the `Popen` instance ni finalized (see `Handle.__del__`,
-    # which ni calling `CloseHandle` kama requested kwenye [1]), so there ni nothing
+    # which ni calling `CloseHandle` as requested kwenye [1]), so there ni nothing
     # kila `_cleanup` to do.
     #
     # [1] https://docs.microsoft.com/en-us/windows/desktop/ProcThread/
@@ -230,7 +230,7 @@ ikiwa _mswindows:
     _active = Tupu
 
     eleza _cleanup():
-        pita
+        pass
 isipokua:
     # This lists holds Popen instances kila which the underlying process had not
     # exited at the time its __del__ method got called: those processes are
@@ -240,16 +240,16 @@ isipokua:
 
     eleza _cleanup():
         ikiwa _active ni Tupu:
-            rudisha
+            return
         kila inst kwenye _active[:]:
             res = inst._internal_poll(_deadstate=sys.maxsize)
             ikiwa res ni sio Tupu:
                 jaribu:
                     _active.remove(inst)
-                tatizo ValueError:
+                except ValueError:
                     # This can happen ikiwa two threads create a new Popen instance.
                     # It's harmless that it was already removed, so ignore.
-                    pita
+                    pass
 
 PIPE = -1
 STDOUT = -2
@@ -306,7 +306,7 @@ eleza _args_from_interpreter_flags():
 
     ikiwa bytes_warning > 1:
         warnopts.remove("error::BytesWarning")
-    lasivyo bytes_warning:
+    elikiwa bytes_warning:
         warnopts.remove("default::BytesWarning")
     ikiwa dev_mode:
         warnopts.remove('default')
@@ -316,7 +316,7 @@ eleza _args_from_interpreter_flags():
     # -X options
     ikiwa dev_mode:
         args.extend(('-X', 'dev'))
-    kila opt kwenye ('faulthandler', 'tracemalloc', 'agizatime',
+    kila opt kwenye ('faulthandler', 'tracemalloc', 'importtime',
                 'showalloccount', 'showrefcount', 'utf8'):
         ikiwa opt kwenye xoptions:
             value = xoptions[opt]
@@ -330,29 +330,29 @@ eleza _args_from_interpreter_flags():
 
 
 eleza call(*popenargs, timeout=Tupu, **kwargs):
-    """Run command ukijumuisha arguments.  Wait kila command to complete ama
+    """Run command ukijumuisha arguments.  Wait kila command to complete or
     timeout, then rudisha the returncode attribute.
 
-    The arguments are the same kama kila the Popen constructor.  Example:
+    The arguments are the same as kila the Popen constructor.  Example:
 
     retcode = call(["ls", "-l"])
     """
-    ukijumuisha Popen(*popenargs, **kwargs) kama p:
+    ukijumuisha Popen(*popenargs, **kwargs) as p:
         jaribu:
             rudisha p.wait(timeout=timeout)
         tatizo:  # Including KeyboardInterrupt, wait handled that.
             p.kill()
-            # We don't call p.wait() again kama p.__exit__ does that kila us.
-            ashiria
+            # We don't call p.wait() again as p.__exit__ does that kila us.
+            raise
 
 
 eleza check_call(*popenargs, **kwargs):
     """Run command ukijumuisha arguments.  Wait kila command to complete.  If
-    the exit code was zero then rudisha, otherwise ashiria
+    the exit code was zero then return, otherwise raise
     CalledProcessError.  The CalledProcessError object will have the
     rudisha code kwenye the returncode attribute.
 
-    The arguments are the same kama kila the call function.  Example:
+    The arguments are the same as kila the call function.  Example:
 
     check_call(["ls", "-l"])
     """
@@ -361,23 +361,23 @@ eleza check_call(*popenargs, **kwargs):
         cmd = kwargs.get("args")
         ikiwa cmd ni Tupu:
             cmd = popenargs[0]
-        ashiria CalledProcessError(retcode, cmd)
+         ashiria CalledProcessError(retcode, cmd)
     rudisha 0
 
 
 eleza check_output(*popenargs, timeout=Tupu, **kwargs):
     r"""Run command ukijumuisha arguments na rudisha its output.
 
-    If the exit code was non-zero it ashirias a CalledProcessError.  The
+    If the exit code was non-zero it raises a CalledProcessError.  The
     CalledProcessError object will have the rudisha code kwenye the returncode
     attribute na output kwenye the output attribute.
 
-    The arguments are the same kama kila the Popen constructor.  Example:
+    The arguments are the same as kila the Popen constructor.  Example:
 
     >>> check_output(["ls", "-l", "/dev/null"])
     b'crw-rw-rw- 1 root root 1, 3 Oct 18  2007 /dev/null\n'
 
-    The stdout argument ni sio allowed kama it ni used internally.
+    The stdout argument ni sio allowed as it ni used internally.
     To capture standard error kwenye the result, use stderr=STDOUT.
 
     >>> check_output(["/bin/sh", "-c",
@@ -386,7 +386,7 @@ eleza check_output(*popenargs, timeout=Tupu, **kwargs):
     b'ls: non_existent_file: No such file ama directory\n'
 
     There ni an additional optional argument, "input", allowing you to
-    pita a string to the subprocess's stdin.  If you use this argument
+    pass a string to the subprocess's stdin.  If you use this argument
     you may sio also use the Popen constructor's "stdin" argument, as
     it too will be used internally.  Example:
 
@@ -401,10 +401,10 @@ eleza check_output(*popenargs, timeout=Tupu, **kwargs):
     ni triggered by setting any of text, encoding, errors ama universal_newlines.
     """
     ikiwa 'stdout' kwenye kwargs:
-        ashiria ValueError('stdout argument sio allowed, it will be overridden.')
+         ashiria ValueError('stdout argument sio allowed, it will be overridden.')
 
     ikiwa 'input' kwenye kwargs na kwargs['input'] ni Tupu:
-        # Explicitly pitaing input=Tupu was previously equivalent to pitaing an
+        # Explicitly passing input=Tupu was previously equivalent to passing an
         # empty string. That ni maintained here kila backwards compatibility.
         kwargs['input'] = '' ikiwa kwargs.get('universal_newlines', Uongo) isipokua b''
 
@@ -415,10 +415,10 @@ eleza check_output(*popenargs, timeout=Tupu, **kwargs):
 kundi CompletedProcess(object):
     """A process that has finished running.
 
-    This ni rudishaed by run().
+    This ni returned by run().
 
     Attributes:
-      args: The list ama str args pitaed to run().
+      args: The list ama str args passed to run().
       returncode: The exit code of the process, negative kila signals.
       stdout: The standard output (Tupu ikiwa sio captured).
       stderr: The standard error (Tupu ikiwa sio captured).
@@ -441,7 +441,7 @@ kundi CompletedProcess(object):
     eleza check_returncode(self):
         """Raise CalledProcessError ikiwa the exit code ni non-zero."""
         ikiwa self.returncode:
-            ashiria CalledProcessError(self.returncode, self.args, self.stdout,
+             ashiria CalledProcessError(self.returncode, self.args, self.stdout,
                                      self.stderr)
 
 
@@ -449,20 +449,20 @@ eleza run(*popenargs,
         input=Tupu, capture_output=Uongo, timeout=Tupu, check=Uongo, **kwargs):
     """Run command ukijumuisha arguments na rudisha a CompletedProcess instance.
 
-    The rudishaed instance will have attributes args, returncode, stdout na
+    The returned instance will have attributes args, returncode, stdout and
     stderr. By default, stdout na stderr are sio captured, na those attributes
     will be Tupu. Pass stdout=PIPE and/or stderr=PIPE kwenye order to capture them.
 
-    If check ni Kweli na the exit code was non-zero, it ashirias a
+    If check ni Kweli na the exit code was non-zero, it raises a
     CalledProcessError. The CalledProcessError object will have the rudisha code
     kwenye the returncode attribute, na output & stderr attributes ikiwa those streams
     were captured.
 
     If timeout ni given, na the process takes too long, a TimeoutExpired
-    exception will be ashiriad.
+    exception will be raised.
 
     There ni an optional argument "input", allowing you to
-    pita bytes ama a string to the subprocess's stdin.  If you use this argument
+    pass bytes ama a string to the subprocess's stdin.  If you use this argument
     you may sio also use the Popen constructor's "stdin" argument, as
     it will be used internally.
 
@@ -472,24 +472,24 @@ eleza run(*popenargs,
     according to locale encoding, ama by "encoding" ikiwa set. Text mode is
     triggered by setting any of text, encoding, errors ama universal_newlines.
 
-    The other arguments are the same kama kila the Popen constructor.
+    The other arguments are the same as kila the Popen constructor.
     """
     ikiwa input ni sio Tupu:
         ikiwa kwargs.get('stdin') ni sio Tupu:
-            ashiria ValueError('stdin na input arguments may sio both be used.')
+             ashiria ValueError('stdin na input arguments may sio both be used.')
         kwargs['stdin'] = PIPE
 
     ikiwa capture_output:
         ikiwa kwargs.get('stdout') ni sio Tupu ama kwargs.get('stderr') ni sio Tupu:
-            ashiria ValueError('stdout na stderr arguments may sio be used '
+             ashiria ValueError('stdout na stderr arguments may sio be used '
                              'ukijumuisha capture_output.')
         kwargs['stdout'] = PIPE
         kwargs['stderr'] = PIPE
 
-    ukijumuisha Popen(*popenargs, **kwargs) kama process:
+    ukijumuisha Popen(*popenargs, **kwargs) as process:
         jaribu:
             stdout, stderr = process.communicate(input, timeout=timeout)
-        tatizo TimeoutExpired kama exc:
+        except TimeoutExpired as exc:
             process.kill()
             ikiwa _mswindows:
                 # Windows accumulates the output kwenye a single blocking
@@ -502,14 +502,14 @@ eleza run(*popenargs,
                 # POSIX _communicate already populated the output so
                 # far into the TimeoutExpired exception.
                 process.wait()
-            ashiria
+            raise
         tatizo:  # Including KeyboardInterrupt, communicate handled that.
             process.kill()
-            # We don't call process.wait() kama .__exit__ does that kila us.
-            ashiria
+            # We don't call process.wait() as .__exit__ does that kila us.
+            raise
         retcode = process.poll()
         ikiwa check na retcode:
-            ashiria CalledProcessError(retcode, process.args,
+             ashiria CalledProcessError(retcode, process.args,
                                      output=stdout, stderr=stderr)
     rudisha CompletedProcess(process.args, retcode, stdout, stderr)
 
@@ -517,24 +517,24 @@ eleza run(*popenargs,
 eleza list2cmdline(seq):
     """
     Translate a sequence of arguments into a command line
-    string, using the same rules kama the MS C runtime:
+    string, using the same rules as the MS C runtime:
 
     1) Arguments are delimited by white space, which ni either a
        space ama a tab.
 
     2) A string surrounded by double quotation marks is
-       interpreted kama a single argument, regardless of white space
+       interpreted as a single argument, regardless of white space
        contained within.  A quoted string can be embedded kwenye an
        argument.
 
     3) A double quotation mark preceded by a backslash is
-       interpreted kama a literal double quotation mark.
+       interpreted as a literal double quotation mark.
 
     4) Backslashes are interpreted literally, unless they
        immediately precede a double quotation mark.
 
     5) If backslashes immediately precede a double quotation mark,
-       every pair of backslashes ni interpreted kama a literal
+       every pair of backslashes ni interpreted as a literal
        backslash.  If the number of backslashes ni odd, the last
        backslash escapes the next double quotation mark as
        described kwenye rule 3.
@@ -561,7 +561,7 @@ eleza list2cmdline(seq):
             ikiwa c == '\\':
                 # Don't know ikiwa we need to double yet.
                 bs_buf.append(c)
-            lasivyo c == '"':
+            elikiwa c == '"':
                 # Double backslashes.
                 result.append('\\' * len(bs_buf)*2)
                 bs_buf = []
@@ -590,7 +590,7 @@ eleza list2cmdline(seq):
 eleza getstatusoutput(cmd):
     """Return (exitcode, output) of executing cmd kwenye a shell.
 
-    Execute the string 'cmd' kwenye a shell ukijumuisha 'check_output' na
+    Execute the string 'cmd' kwenye a shell ukijumuisha 'check_output' and
     rudisha a 2-tuple (status, output). The locale encoding ni used
     to decode the output na process newlines.
 
@@ -611,7 +611,7 @@ eleza getstatusoutput(cmd):
     jaribu:
         data = check_output(cmd, shell=Kweli, text=Kweli, stderr=STDOUT)
         exitcode = 0
-    tatizo CalledProcessError kama ex:
+    except CalledProcessError as ex:
         data = ex.output
         exitcode = ex.returncode
     ikiwa data[-1:] == '\n':
@@ -621,7 +621,7 @@ eleza getstatusoutput(cmd):
 eleza getoutput(cmd):
     """Return output (stdout ama stderr) of executing cmd kwenye a shell.
 
-    Like getstatusoutput(), tatizo the exit status ni ignored na the rudisha
+    Like getstatusoutput(), except the exit status ni ignored na the return
     value ni a string containing the command's output.  Example:
 
     >>> agiza subprocess
@@ -655,11 +655,11 @@ eleza _use_posix_spawn():
     # Check libc name na runtime libc version
     jaribu:
         ver = os.confstr('CS_GNU_LIBC_VERSION')
-        # parse 'glibc 2.28' kama ('glibc', (2, 28))
+        # parse 'glibc 2.28' as ('glibc', (2, 28))
         parts = ver.split(maxsplit=1)
         ikiwa len(parts) != 2:
             # reject unknown format
-            ashiria ValueError
+             ashiria ValueError
         libc = parts[0]
         version = tuple(map(int, parts[1].split('.')))
 
@@ -670,9 +670,9 @@ eleza _use_posix_spawn():
         # Note: Don't use the implementation kwenye earlier glibc because it doesn't
         # use vfork (even ikiwa glibc 2.26 added a pipe to properly report errors
         # to the parent process).
-    tatizo (AttributeError, ValueError, OSError):
+    except (AttributeError, ValueError, OSError):
         # os.confstr() ama CS_GNU_LIBC_VERSION value sio available
-        pita
+        pass
 
     # By default, assume that posix_spawn() does sio properly report errors.
     rudisha Uongo
@@ -689,7 +689,7 @@ kundi Popen(object):
     Arguments:
       args: A string, ama a sequence of program arguments.
 
-      bufsize: supplied kama the buffering argument to the open() function when
+      bufsize: supplied as the buffering argument to the open() function when
           creating the stdin/stdout/stderr pipe file objects
 
       executable: A replacement program to execute.
@@ -719,7 +719,7 @@ kundi Popen(object):
 
       start_new_session (POSIX only)
 
-      pita_fds (POSIX only)
+      pass_fds (POSIX only)
 
       encoding na errors: Text mode encoding na error handling to use for
           file objects stdin, stdout na stderr.
@@ -735,7 +735,7 @@ kundi Popen(object):
                  shell=Uongo, cwd=Tupu, env=Tupu, universal_newlines=Tupu,
                  startupinfo=Tupu, creationflags=0,
                  restore_signals=Kweli, start_new_session=Uongo,
-                 pita_fds=(), *, encoding=Tupu, errors=Tupu, text=Tupu):
+                 pass_fds=(), *, encoding=Tupu, errors=Tupu, text=Tupu):
         """Create new Popen instance."""
         _cleanup()
         # Held wakati anything ni calling waitpid before returncode has been
@@ -750,22 +750,22 @@ kundi Popen(object):
         ikiwa bufsize ni Tupu:
             bufsize = -1  # Restore default
         ikiwa sio isinstance(bufsize, int):
-            ashiria TypeError("bufsize must be an integer")
+             ashiria TypeError("bufsize must be an integer")
 
         ikiwa _mswindows:
             ikiwa preexec_fn ni sio Tupu:
-                ashiria ValueError("preexec_fn ni sio supported on Windows "
+                 ashiria ValueError("preexec_fn ni sio supported on Windows "
                                  "platforms")
         isipokua:
             # POSIX
-            ikiwa pita_fds na sio close_fds:
-                warnings.warn("pita_fds overriding close_fds.", RuntimeWarning)
+            ikiwa pass_fds na sio close_fds:
+                warnings.warn("pass_fds overriding close_fds.", RuntimeWarning)
                 close_fds = Kweli
             ikiwa startupinfo ni sio Tupu:
-                ashiria ValueError("startupinfo ni only supported on Windows "
+                 ashiria ValueError("startupinfo ni only supported on Windows "
                                  "platforms")
             ikiwa creationflags != 0:
-                ashiria ValueError("creationflags ni only supported on Windows "
+                 ashiria ValueError("creationflags ni only supported on Windows "
                                  "platforms")
 
         self.args = args
@@ -780,7 +780,7 @@ kundi Popen(object):
         # Validate the combinations of text na universal_newlines
         ikiwa (text ni sio Tupu na universal_newlines ni sio Tupu
             na bool(universal_newlines) != bool(text)):
-            ashiria SubprocessError('Cannot disambiguate when both text '
+             ashiria SubprocessError('Cannot disambiguate when both text '
                                   'and universal_newlines are supplied but '
                                   'different. Pass one ama the other.')
 
@@ -852,7 +852,7 @@ kundi Popen(object):
                             encoding=encoding, errors=errors)
 
             self._execute_child(args, executable, preexec_fn, close_fds,
-                                pita_fds, cwd, env,
+                                pass_fds, cwd, env,
                                 startupinfo, creationflags, shell,
                                 p2cread, p2cwrite,
                                 c2pread, c2pwrite,
@@ -863,8 +863,8 @@ kundi Popen(object):
             kila f kwenye filter(Tupu, (self.stdin, self.stdout, self.stderr)):
                 jaribu:
                     f.close()
-                tatizo OSError:
-                    pita  # Ignore EBADF ama other errors.
+                except OSError:
+                    pass  # Ignore EBADF ama other errors.
 
             ikiwa sio self._closed_child_pipe_fds:
                 to_close = []
@@ -882,14 +882,14 @@ kundi Popen(object):
                             fd.Close()
                         isipokua:
                             os.close(fd)
-                    tatizo OSError:
-                        pita
+                    except OSError:
+                        pass
 
-            ashiria
+            raise
 
     @property
     eleza universal_newlines(self):
-        # universal_newlines kama retained kama an alias of text_mode kila API
+        # universal_newlines as retained as an alias of text_mode kila API
         # compatibility. bpo-31756
         rudisha self.text_mode
 
@@ -909,7 +909,7 @@ kundi Popen(object):
             self.stdout.close()
         ikiwa self.stderr:
             self.stderr.close()
-        jaribu:  # Flushing a BufferedWriter may ashiria an error
+        jaribu:  # Flushing a BufferedWriter may  ashiria an error
             ikiwa self.stdin:
                 self.stdin.close()
         mwishowe:
@@ -917,15 +917,15 @@ kundi Popen(object):
                 # https://bugs.python.org/issue25942
                 # In the case of a KeyboardInterrupt we assume the SIGINT
                 # was also already sent to our child processes.  We can't
-                # block indefinitely kama that ni sio user friendly.
+                # block indefinitely as that ni sio user friendly.
                 # If we have sio already waited a brief amount of time in
                 # an interrupted .wait() ama .communicate() call, do so here
                 # kila consistency.
                 ikiwa self._sigint_wait_secs > 0:
                     jaribu:
                         self._wait(timeout=self._sigint_wait_secs)
-                    tatizo TimeoutExpired:
-                        pita
+                    except TimeoutExpired:
+                        pass
                 self._sigint_wait_secs = 0  # Note that this has been done.
                 rudisha  # resume the KeyboardInterrupt
 
@@ -935,7 +935,7 @@ kundi Popen(object):
     eleza __del__(self, _maxsize=sys.maxsize, _warn=warnings.warn):
         ikiwa sio self._child_created:
             # We didn't get to successfully create a child process.
-            rudisha
+            return
         ikiwa self.returncode ni Tupu:
             # Not reading subprocess exit status creates a zombie process which
             # ni only destroyed at the parent python process exit
@@ -956,26 +956,26 @@ kundi Popen(object):
         ikiwa input:
             jaribu:
                 self.stdin.write(input)
-            tatizo BrokenPipeError:
-                pita  # communicate() must ignore broken pipe errors.
-            tatizo OSError kama exc:
+            except BrokenPipeError:
+                pass  # communicate() must ignore broken pipe errors.
+            except OSError as exc:
                 ikiwa exc.errno == errno.EINVAL:
                     # bpo-19612, bpo-30418: On Windows, stdin.write() fails
                     # ukijumuisha EINVAL ikiwa the child process exited ama ikiwa the child
                     # process ni still running but closed the pipe.
-                    pita
+                    pass
                 isipokua:
-                    ashiria
+                    raise
 
         jaribu:
             self.stdin.close()
-        tatizo BrokenPipeError:
-            pita  # communicate() must ignore broken pipe errors.
-        tatizo OSError kama exc:
+        except BrokenPipeError:
+            pass  # communicate() must ignore broken pipe errors.
+        except OSError as exc:
             ikiwa exc.errno == errno.EINVAL:
-                pita
+                pass
             isipokua:
-                ashiria
+                raise
 
     eleza communicate(self, input=Tupu, timeout=Tupu):
         """Interact ukijumuisha process: Send data to stdin na close it.
@@ -984,33 +984,33 @@ kundi Popen(object):
 
         The optional "input" argument should be data to be sent to the
         child process, ama Tupu, ikiwa no data should be sent to the child.
-        communicate() rudishas a tuple (stdout, stderr).
+        communicate() returns a tuple (stdout, stderr).
 
         By default, all communication ni kwenye bytes, na therefore any
         "input" should be bytes, na the (stdout, stderr) will be bytes.
         If kwenye text mode (indicated by self.text_mode), any "input" should
         be a string, na (stdout, stderr) will be strings decoded
         according to locale encoding, ama by "encoding" ikiwa set. Text mode
-        ni triggered by setting any of text, encoding, errors ama
+        ni triggered by setting any of text, encoding, errors or
         universal_newlines.
         """
 
         ikiwa self._communication_started na input:
-            ashiria ValueError("Cannot send input after starting communication")
+             ashiria ValueError("Cannot send input after starting communication")
 
         # Optimization: If we are sio worried about timeouts, we haven't
         # started communicating, na we have one ama zero pipes, using select()
         # ama threads ni unnecessary.
-        ikiwa (timeout ni Tupu na sio self._communication_started na
+        ikiwa (timeout ni Tupu na sio self._communication_started and
             [self.stdin, self.stdout, self.stderr].count(Tupu) >= 2):
             stdout = Tupu
             stderr = Tupu
             ikiwa self.stdin:
                 self._stdin_write(input)
-            lasivyo self.stdout:
+            elikiwa self.stdout:
                 stdout = self.stdout.read()
                 self.stdout.close()
-            lasivyo self.stderr:
+            elikiwa self.stderr:
                 stderr = self.stderr.read()
                 self.stderr.close()
             self.wait()
@@ -1022,7 +1022,7 @@ kundi Popen(object):
 
             jaribu:
                 stdout, stderr = self._communicate(input, endtime, timeout)
-            tatizo KeyboardInterrupt:
+            except KeyboardInterrupt:
                 # https://bugs.python.org/issue25942
                 # See the detailed comment kwenye .wait().
                 ikiwa timeout ni sio Tupu:
@@ -1033,9 +1033,9 @@ kundi Popen(object):
                 self._sigint_wait_secs = 0  # nothing isipokua should wait.
                 jaribu:
                     self._wait(timeout=sigint_timeout)
-                tatizo TimeoutExpired:
-                    pita
-                ashiria  # resume the KeyboardInterrupt
+                except TimeoutExpired:
+                    pass
+                 ashiria  # resume the KeyboardInterrupt
 
             mwishowe:
                 self._communication_started = Kweli
@@ -1060,24 +1060,24 @@ kundi Popen(object):
 
 
     eleza _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,
-                       skip_check_and_ashiria=Uongo):
+                       skip_check_and_raise=Uongo):
         """Convenience kila checking ikiwa a timeout has expired."""
         ikiwa endtime ni Tupu:
-            rudisha
-        ikiwa skip_check_and_ashiria ama _time() > endtime:
-            ashiria TimeoutExpired(
+            return
+        ikiwa skip_check_and_ ashiria ama _time() > endtime:
+             ashiria TimeoutExpired(
                     self.args, orig_timeout,
                     output=b''.join(stdout_seq) ikiwa stdout_seq isipokua Tupu,
                     stderr=b''.join(stderr_seq) ikiwa stderr_seq isipokua Tupu)
 
 
     eleza wait(self, timeout=Tupu):
-        """Wait kila child process to terminate; rudishas self.returncode."""
+        """Wait kila child process to terminate; returns self.returncode."""
         ikiwa timeout ni sio Tupu:
             endtime = _time() + timeout
         jaribu:
             rudisha self._wait(timeout=timeout)
-        tatizo KeyboardInterrupt:
+        except KeyboardInterrupt:
             # https://bugs.python.org/issue25942
             # The first keyboard interrupt waits briefly kila the child to
             # exit under the common assumption that it also received the ^C
@@ -1090,9 +1090,9 @@ kundi Popen(object):
             self._sigint_wait_secs = 0  # nothing isipokua should wait.
             jaribu:
                 self._wait(timeout=sigint_timeout)
-            tatizo TimeoutExpired:
-                pita
-            ashiria  # resume the KeyboardInterrupt
+            except TimeoutExpired:
+                pass
+             ashiria  # resume the KeyboardInterrupt
 
     eleza _close_pipe_fds(self,
                         p2cread, p2cwrite,
@@ -1101,7 +1101,7 @@ kundi Popen(object):
         # self._devnull ni sio always defined.
         devnull_fd = getattr(self, '_devnull', Tupu)
 
-        ukijumuisha contextlib.ExitStack() kama stack:
+        ukijumuisha contextlib.ExitStack() as stack:
             ikiwa _mswindows:
                 ikiwa p2cread != -1:
                     stack.callback(p2cread.Close)
@@ -1144,12 +1144,12 @@ kundi Popen(object):
                     p2cread, _ = _winapi.CreatePipe(Tupu, 0)
                     p2cread = Handle(p2cread)
                     _winapi.CloseHandle(_)
-            lasivyo stdin == PIPE:
+            elikiwa stdin == PIPE:
                 p2cread, p2cwrite = _winapi.CreatePipe(Tupu, 0)
                 p2cread, p2cwrite = Handle(p2cread), Handle(p2cwrite)
-            lasivyo stdin == DEVNULL:
+            elikiwa stdin == DEVNULL:
                 p2cread = msvcrt.get_osfhandle(self._get_devnull())
-            lasivyo isinstance(stdin, int):
+            elikiwa isinstance(stdin, int):
                 p2cread = msvcrt.get_osfhandle(stdin)
             isipokua:
                 # Assuming file-like object
@@ -1162,12 +1162,12 @@ kundi Popen(object):
                     _, c2pwrite = _winapi.CreatePipe(Tupu, 0)
                     c2pwrite = Handle(c2pwrite)
                     _winapi.CloseHandle(_)
-            lasivyo stdout == PIPE:
+            elikiwa stdout == PIPE:
                 c2pread, c2pwrite = _winapi.CreatePipe(Tupu, 0)
                 c2pread, c2pwrite = Handle(c2pread), Handle(c2pwrite)
-            lasivyo stdout == DEVNULL:
+            elikiwa stdout == DEVNULL:
                 c2pwrite = msvcrt.get_osfhandle(self._get_devnull())
-            lasivyo isinstance(stdout, int):
+            elikiwa isinstance(stdout, int):
                 c2pwrite = msvcrt.get_osfhandle(stdout)
             isipokua:
                 # Assuming file-like object
@@ -1180,14 +1180,14 @@ kundi Popen(object):
                     _, errwrite = _winapi.CreatePipe(Tupu, 0)
                     errwrite = Handle(errwrite)
                     _winapi.CloseHandle(_)
-            lasivyo stderr == PIPE:
+            elikiwa stderr == PIPE:
                 errread, errwrite = _winapi.CreatePipe(Tupu, 0)
                 errread, errwrite = Handle(errread), Handle(errwrite)
-            lasivyo stderr == STDOUT:
+            elikiwa stderr == STDOUT:
                 errwrite = c2pwrite
-            lasivyo stderr == DEVNULL:
+            elikiwa stderr == DEVNULL:
                 errwrite = msvcrt.get_osfhandle(self._get_devnull())
-            lasivyo isinstance(stderr, int):
+            elikiwa isinstance(stderr, int):
                 errwrite = msvcrt.get_osfhandle(stderr)
             isipokua:
                 # Assuming file-like object
@@ -1213,7 +1213,7 @@ kundi Popen(object):
             kwenye lpAttributeList["handle_list"] na make sure the list
             isn't empty. This also removes duplicate handles."""
             # An handle ukijumuisha it's lowest two bits set might be a special console
-            # handle that ikiwa pitaed kwenye lpAttributeList["handle_list"], will
+            # handle that ikiwa passed kwenye lpAttributeList["handle_list"], will
             # cause it to fail.
             rudisha list({handle kila handle kwenye handle_list
                          ikiwa handle & 0x3 != 0x3
@@ -1222,7 +1222,7 @@ kundi Popen(object):
 
 
         eleza _execute_child(self, args, executable, preexec_fn, close_fds,
-                           pita_fds, cwd, env,
+                           pass_fds, cwd, env,
                            startupinfo, creationflags, shell,
                            p2cread, p2cwrite,
                            c2pread, c2pwrite,
@@ -1230,17 +1230,17 @@ kundi Popen(object):
                            unused_restore_signals, unused_start_new_session):
             """Execute program (MS Windows version)"""
 
-            assert sio pita_fds, "pita_fds sio supported on Windows."
+            assert sio pass_fds, "pass_fds sio supported on Windows."
 
             ikiwa isinstance(args, str):
-                pita
-            lasivyo isinstance(args, bytes):
+                pass
+            elikiwa isinstance(args, bytes):
                 ikiwa shell:
-                    ashiria TypeError('bytes args ni sio allowed on Windows')
+                     ashiria TypeError('bytes args ni sio allowed on Windows')
                 args = list2cmdline([args])
-            lasivyo isinstance(args, os.PathLike):
+            elikiwa isinstance(args, os.PathLike):
                 ikiwa shell:
-                    ashiria TypeError('path-like args ni sio allowed when '
+                     ashiria TypeError('path-like args ni sio allowed when '
                                     'shell ni true')
                 args = list2cmdline([args])
             isipokua:
@@ -1257,7 +1257,7 @@ kundi Popen(object):
                 # so the caller can reuse it multiple times.
                 startupinfo = startupinfo.copy()
 
-            use_std_handles = -1 haiko kwenye (p2cread, c2pwrite, errwrite)
+            use_std_handles = -1 sio kwenye (p2cread, c2pwrite, errwrite)
             ikiwa use_std_handles:
                 startupinfo.dwFlags |= _winapi.STARTF_USESTDHANDLES
                 startupinfo.hStdInput = p2cread
@@ -1265,8 +1265,8 @@ kundi Popen(object):
                 startupinfo.hStdError = errwrite
 
             attribute_list = startupinfo.lpAttributeList
-            have_handle_list = bool(attribute_list na
-                                    "handle_list" kwenye attribute_list na
+            have_handle_list = bool(attribute_list and
+                                    "handle_list" kwenye attribute_list and
                                     attribute_list["handle_list"])
 
             # If we were given an handle_list ama need to create one
@@ -1307,7 +1307,7 @@ kundi Popen(object):
                 hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
                                          # no special security
                                          Tupu, Tupu,
-                                         int(sio close_fds),
+                                         int(not close_fds),
                                          creationflags,
                                          env,
                                          cwd,
@@ -1357,7 +1357,7 @@ kundi Popen(object):
                 result = _winapi.WaitForSingleObject(self._handle,
                                                      timeout_millis)
                 ikiwa result == _winapi.WAIT_TIMEOUT:
-                    ashiria TimeoutExpired(self.args, timeout)
+                     ashiria TimeoutExpired(self.args, timeout)
                 self.returncode = _winapi.GetExitCodeProcess(self._handle)
             rudisha self.returncode
 
@@ -1394,11 +1394,11 @@ kundi Popen(object):
             ikiwa self.stdout ni sio Tupu:
                 self.stdout_thread.join(self._remaining_time(endtime))
                 ikiwa self.stdout_thread.is_alive():
-                    ashiria TimeoutExpired(self.args, orig_timeout)
+                     ashiria TimeoutExpired(self.args, orig_timeout)
             ikiwa self.stderr ni sio Tupu:
                 self.stderr_thread.join(self._remaining_time(endtime))
                 ikiwa self.stderr_thread.is_alive():
-                    ashiria TimeoutExpired(self.args, orig_timeout)
+                     ashiria TimeoutExpired(self.args, orig_timeout)
 
             # Collect the output kutoka na close both pipes, now that we know
             # both have been read successfully.
@@ -1423,29 +1423,29 @@ kundi Popen(object):
             """Send a signal to the process."""
             # Don't signal a process that we know has already died.
             ikiwa self.returncode ni sio Tupu:
-                rudisha
+                return
             ikiwa sig == signal.SIGTERM:
                 self.terminate()
-            lasivyo sig == signal.CTRL_C_EVENT:
+            elikiwa sig == signal.CTRL_C_EVENT:
                 os.kill(self.pid, signal.CTRL_C_EVENT)
-            lasivyo sig == signal.CTRL_BREAK_EVENT:
+            elikiwa sig == signal.CTRL_BREAK_EVENT:
                 os.kill(self.pid, signal.CTRL_BREAK_EVENT)
             isipokua:
-                ashiria ValueError("Unsupported signal: {}".format(sig))
+                 ashiria ValueError("Unsupported signal: {}".format(sig))
 
         eleza terminate(self):
             """Terminates the process."""
             # Don't terminate a process that we know has already died.
             ikiwa self.returncode ni sio Tupu:
-                rudisha
+                return
             jaribu:
                 _winapi.TerminateProcess(self._handle, 1)
-            tatizo PermissionError:
+            except PermissionError:
                 # ERROR_ACCESS_DENIED (winerror 5) ni received when the
                 # process already died.
                 rc = _winapi.GetExitCodeProcess(self._handle)
                 ikiwa rc == _winapi.STILL_ACTIVE:
-                    ashiria
+                    raise
                 self.returncode = rc
 
         kill = terminate
@@ -1463,41 +1463,41 @@ kundi Popen(object):
             errread, errwrite = -1, -1
 
             ikiwa stdin ni Tupu:
-                pita
-            lasivyo stdin == PIPE:
+                pass
+            elikiwa stdin == PIPE:
                 p2cread, p2cwrite = os.pipe()
-            lasivyo stdin == DEVNULL:
+            elikiwa stdin == DEVNULL:
                 p2cread = self._get_devnull()
-            lasivyo isinstance(stdin, int):
+            elikiwa isinstance(stdin, int):
                 p2cread = stdin
             isipokua:
                 # Assuming file-like object
                 p2cread = stdin.fileno()
 
             ikiwa stdout ni Tupu:
-                pita
-            lasivyo stdout == PIPE:
+                pass
+            elikiwa stdout == PIPE:
                 c2pread, c2pwrite = os.pipe()
-            lasivyo stdout == DEVNULL:
+            elikiwa stdout == DEVNULL:
                 c2pwrite = self._get_devnull()
-            lasivyo isinstance(stdout, int):
+            elikiwa isinstance(stdout, int):
                 c2pwrite = stdout
             isipokua:
                 # Assuming file-like object
                 c2pwrite = stdout.fileno()
 
             ikiwa stderr ni Tupu:
-                pita
-            lasivyo stderr == PIPE:
+                pass
+            elikiwa stderr == PIPE:
                 errread, errwrite = os.pipe()
-            lasivyo stderr == STDOUT:
+            elikiwa stderr == STDOUT:
                 ikiwa c2pwrite != -1:
                     errwrite = c2pwrite
                 isipokua: # child's stdout ni sio set, use parent's stdout
                     errwrite = sys.__stdout__.fileno()
-            lasivyo stderr == DEVNULL:
+            elikiwa stderr == DEVNULL:
                 errwrite = self._get_devnull()
-            lasivyo isinstance(stderr, int):
+            elikiwa isinstance(stderr, int):
                 errwrite = stderr
             isipokua:
                 # Assuming file-like object
@@ -1548,7 +1548,7 @@ kundi Popen(object):
                                  errread, errwrite)
 
         eleza _execute_child(self, args, executable, preexec_fn, close_fds,
-                           pita_fds, cwd, env,
+                           pass_fds, cwd, env,
                            startupinfo, creationflags, shell,
                            p2cread, p2cwrite,
                            c2pread, c2pwrite,
@@ -1558,9 +1558,9 @@ kundi Popen(object):
 
             ikiwa isinstance(args, (str, bytes)):
                 args = [args]
-            lasivyo isinstance(args, os.PathLike):
+            elikiwa isinstance(args, os.PathLike):
                 ikiwa shell:
-                    ashiria TypeError('path-like args ni sio allowed when '
+                     ashiria TypeError('path-like args ni sio allowed when '
                                     'shell ni true')
                 args = [args]
             isipokua:
@@ -1583,7 +1583,7 @@ kundi Popen(object):
                     na os.path.dirname(executable)
                     na preexec_fn ni Tupu
                     na sio close_fds
-                    na sio pita_fds
+                    na sio pass_fds
                     na cwd ni Tupu
                     na (p2cread == -1 ama p2cread > 2)
                     na (c2pwrite == -1 ama c2pwrite > 2)
@@ -1593,7 +1593,7 @@ kundi Popen(object):
                                   p2cread, p2cwrite,
                                   c2pread, c2pwrite,
                                   errread, errwrite)
-                rudisha
+                return
 
             orig_executable = executable
 
@@ -1613,14 +1613,14 @@ kundi Popen(object):
                     # We must avoid complex work that could involve
                     # malloc ama free kwenye the child process to avoid
                     # potential deadlocks, thus we do all this here.
-                    # na pita it to fork_exec()
+                    # na pass it to fork_exec()
 
                     ikiwa env ni sio Tupu:
                         env_list = []
                         kila k, v kwenye env.items():
                             k = os.fsencode(k)
                             ikiwa b'=' kwenye k:
-                                ashiria ValueError("illegal environment variable name")
+                                 ashiria ValueError("illegal environment variable name")
                             env_list.append(k + b'=' + os.fsencode(v))
                     isipokua:
                         env_list = Tupu  # Use execv instead of execve.
@@ -1632,7 +1632,7 @@ kundi Popen(object):
                         executable_list = tuple(
                             os.path.join(os.fsencode(dir), executable)
                             kila dir kwenye os.get_exec_path(env))
-                    fds_to_keep = set(pita_fds)
+                    fds_to_keep = set(pass_fds)
                     fds_to_keep.add(errpipe_write)
                     self.pid = _posixsubprocess.fork_exec(
                             args, executable_list,
@@ -1670,8 +1670,8 @@ kundi Popen(object):
                         self._handle_exitstatus(sts)
                     isipokua:
                         self.returncode = sys.maxsize
-                tatizo ChildProcessError:
-                    pita
+                except ChildProcessError:
+                    pass
 
                 jaribu:
                     exception_name, hex_errno, err_msg = (
@@ -1680,7 +1680,7 @@ kundi Popen(object):
                     # written kwenye by the subprocess implementations
                     # like _posixsubprocess
                     err_msg = err_msg.decode()
-                tatizo ValueError:
+                except ValueError:
                     exception_name = b'SubprocessError'
                     hex_errno = b'0'
                     err_msg = 'Bad exception data kutoka child: {!r}'.format(
@@ -1699,8 +1699,8 @@ kundi Popen(object):
                         err_filename = orig_executable
                     ikiwa errno_num != 0:
                         err_msg = os.strerror(errno_num)
-                    ashiria child_exception_type(errno_num, err_msg, err_filename)
-                ashiria child_exception_type(err_msg)
+                     ashiria child_exception_type(errno_num, err_msg, err_filename)
+                 ashiria child_exception_type(err_msg)
 
 
         eleza _handle_exitstatus(self, sts, _WIFSIGNALED=os.WIFSIGNALED,
@@ -1712,13 +1712,13 @@ kundi Popen(object):
             # refer to anything outside of its local scope.
             ikiwa _WIFSIGNALED(sts):
                 self.returncode = -_WTERMSIG(sts)
-            lasivyo _WIFEXITED(sts):
+            elikiwa _WIFEXITED(sts):
                 self.returncode = _WEXITSTATUS(sts)
-            lasivyo _WIFSTOPPED(sts):
+            elikiwa _WIFSTOPPED(sts):
                 self.returncode = -_WSTOPSIG(sts)
             isipokua:
                 # Should never happen
-                ashiria SubprocessError("Unknown child exit status!")
+                 ashiria SubprocessError("Unknown child exit status!")
 
 
         eleza _internal_poll(self, _deadstate=Tupu, _waitpid=os.waitpid,
@@ -1741,11 +1741,11 @@ kundi Popen(object):
                     pid, sts = _waitpid(self.pid, _WNOHANG)
                     ikiwa pid == self.pid:
                         self._handle_exitstatus(sts)
-                tatizo OSError kama e:
+                except OSError as e:
                     ikiwa _deadstate ni sio Tupu:
                         self.returncode = _deadstate
-                    lasivyo e.errno == _ECHILD:
-                        # This happens ikiwa SIGCLD ni set to be ignored ama
+                    elikiwa e.errno == _ECHILD:
+                        # This happens ikiwa SIGCLD ni set to be ignored or
                         # waiting kila child processes has otherwise been
                         # disabled kila our process.  This child ni dead, we
                         # can't get the status.
@@ -1760,7 +1760,7 @@ kundi Popen(object):
             """All callers to this function MUST hold self._waitpid_lock."""
             jaribu:
                 (pid, sts) = os.waitpid(self.pid, wait_flags)
-            tatizo ChildProcessError:
+            except ChildProcessError:
                 # This happens ikiwa SIGCLD ni set to be ignored ama waiting
                 # kila child processes has otherwise been disabled kila our
                 # process.  This child ni dead, we can't get the status.
@@ -1793,7 +1793,7 @@ kundi Popen(object):
                             self._waitpid_lock.release()
                     remaining = self._remaining_time(endtime)
                     ikiwa remaining <= 0:
-                        ashiria TimeoutExpired(self.args, timeout)
+                         ashiria TimeoutExpired(self.args, timeout)
                     delay = min(delay * 2, remaining, .05)
                     time.sleep(delay)
             isipokua:
@@ -1802,7 +1802,7 @@ kundi Popen(object):
                         ikiwa self.returncode ni sio Tupu:
                             koma  # Another thread waited.
                         (pid, sts) = self._try_wait(0)
-                        # Check the pid na loop kama waitpid has been known to
+                        # Check the pid na loop as waitpid has been known to
                         # rudisha 0 even without WNOHANG kwenye odd situations.
                         # http://bugs.python.org/issue14396.
                         ikiwa pid == self.pid:
@@ -1816,13 +1816,13 @@ kundi Popen(object):
                 # been writing to .stdin kwenye an uncontrolled fashion.
                 jaribu:
                     self.stdin.flush()
-                tatizo BrokenPipeError:
-                    pita  # communicate() must ignore BrokenPipeError.
+                except BrokenPipeError:
+                    pass  # communicate() must ignore BrokenPipeError.
                 ikiwa sio input:
                     jaribu:
                         self.stdin.close()
-                    tatizo BrokenPipeError:
-                        pita  # communicate() must ignore BrokenPipeError.
+                    except BrokenPipeError:
+                        pass  # communicate() must ignore BrokenPipeError.
 
             stdout = Tupu
             stderr = Tupu
@@ -1840,12 +1840,12 @@ kundi Popen(object):
             ikiwa self.stderr:
                 stderr = self._fileobj2output[self.stderr]
 
-            self._save_input(input)
+            self._save_uliza(input)
 
             ikiwa self._input:
                 input_view = memoryview(self._input)
 
-            ukijumuisha _PopenSelector() kama selector:
+            ukijumuisha _PopenSelector() as selector:
                 ikiwa self.stdin na input:
                     selector.register(self.stdin, selectors.EVENT_WRITE)
                 ikiwa self.stdout:
@@ -1858,10 +1858,10 @@ kundi Popen(object):
                     ikiwa timeout ni sio Tupu na timeout < 0:
                         self._check_timeout(endtime, orig_timeout,
                                             stdout, stderr,
-                                            skip_check_and_ashiria=Kweli)
-                        ashiria RuntimeError(  # Impossible :)
-                            '_check_timeout(..., skip_check_and_ashiria=Kweli) '
-                            'failed to ashiria TimeoutExpired.')
+                                            skip_check_and_raise=Kweli)
+                         ashiria RuntimeError(  # Impossible :)
+                            '_check_timeout(..., skip_check_and_raise=Kweli) '
+                            'failed to  ashiria TimeoutExpired.')
 
                     ready = selector.select(timeout)
                     self._check_timeout(endtime, orig_timeout, stdout, stderr)
@@ -1875,14 +1875,14 @@ kundi Popen(object):
                                                self._input_offset + _PIPE_BUF]
                             jaribu:
                                 self._input_offset += os.write(key.fd, chunk)
-                            tatizo BrokenPipeError:
+                            except BrokenPipeError:
                                 selector.unregister(key.fileobj)
                                 key.fileobj.close()
                             isipokua:
                                 ikiwa self._input_offset >= len(self._input):
                                     selector.unregister(key.fileobj)
                                     key.fileobj.close()
-                        lasivyo key.fileobj kwenye (self.stdout, self.stderr):
+                        elikiwa key.fileobj kwenye (self.stdout, self.stderr):
                             data = os.read(key.fd, 32768)
                             ikiwa sio data:
                                 selector.unregister(key.fileobj)
@@ -1912,7 +1912,7 @@ kundi Popen(object):
             rudisha (stdout, stderr)
 
 
-        eleza _save_input(self, input):
+        eleza _save_uliza(self, input):
             # This method ni called kutoka the _communicate_with_*() methods
             # so that ikiwa we time out wakati communicating, we can endelea
             # sending input ikiwa we retry.

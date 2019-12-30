@@ -1,4 +1,4 @@
-"""Utilities for with-statement contexts.  See PEP 343."""
+"""Utilities kila with-statement contexts.  See PEP 343."""
 agiza abc
 agiza sys
 agiza _collections_abc
@@ -14,7 +14,7 @@ __all__ = ["asynccontextmanager", "contextmanager", "closing", "nullcontext",
 
 kundi AbstractContextManager(abc.ABC):
 
-    """An abstract base kundi for context managers."""
+    """An abstract base kundi kila context managers."""
 
     eleza __enter__(self):
         """Return `self` upon entering the runtime context."""
@@ -34,7 +34,7 @@ kundi AbstractContextManager(abc.ABC):
 
 kundi AbstractAsyncContextManager(abc.ABC):
 
-    """An abstract base kundi for asynchronous context managers."""
+    """An abstract base kundi kila asynchronous context managers."""
 
     async eleza __aenter__(self):
         """Return `self` upon entering the runtime context."""
@@ -54,7 +54,7 @@ kundi AbstractAsyncContextManager(abc.ABC):
 
 
 kundi ContextDecorator(object):
-    "A base kundi ama mixin that enables context managers to work kama decorators."
+    "A base kundi ama mixin that enables context managers to work as decorators."
 
     eleza _recreate_cm(self):
         """Return a recreated instance of self.
@@ -63,8 +63,8 @@ kundi ContextDecorator(object):
         _GeneratorContextManager to support use as
         a decorator via implicit recreation.
 
-        This ni a private interface just for _GeneratorContextManager.
-        See issue #11647 for details.
+        This ni a private interface just kila _GeneratorContextManager.
+        See issue #11647 kila details.
         """
         rudisha self
 
@@ -77,7 +77,7 @@ kundi ContextDecorator(object):
 
 
 kundi _GeneratorContextManagerBase:
-    """Shared functionality for @contextmanager na @asynccontextmanager."""
+    """Shared functionality kila @contextmanager na @asynccontextmanager."""
 
     eleza __init__(self, func, args, kwds):
         self.gen = func(*args, **kwds)
@@ -90,14 +90,14 @@ kundi _GeneratorContextManagerBase:
         # Unfortunately, this still doesn't provide good help output when
         # inspecting the created context manager instances, since pydoc
         # currently bypasses the instance docstring na shows the docstring
-        # for the kundi instead.
-        # See http://bugs.python.org/issue19404 for more details.
+        # kila the kundi instead.
+        # See http://bugs.python.org/issue19404 kila more details.
 
 
 kundi _GeneratorContextManager(_GeneratorContextManagerBase,
                                AbstractContextManager,
                                ContextDecorator):
-    """Helper for @contextmanager decorator."""
+    """Helper kila @contextmanager decorator."""
 
     eleza _recreate_cm(self):
         # _GCM instances are one-shot context managers, so the
@@ -107,21 +107,21 @@ kundi _GeneratorContextManager(_GeneratorContextManagerBase,
 
     eleza __enter__(self):
         # do sio keep args na kwds alive unnecessarily
-        # they are only needed for recreation, which ni sio possible anymore
+        # they are only needed kila recreation, which ni sio possible anymore
         toa self.args, self.kwds, self.func
         jaribu:
             rudisha next(self.gen)
-        tatizo StopIteration:
-            ashiria RuntimeError("generator didn't yield") kutoka Tupu
+        except StopIteration:
+             ashiria RuntimeError("generator didn't yield") kutoka Tupu
 
     eleza __exit__(self, type, value, traceback):
         ikiwa type ni Tupu:
             jaribu:
                 next(self.gen)
-            tatizo StopIteration:
+            except StopIteration:
                 rudisha Uongo
             isipokua:
-                ashiria RuntimeError("generator didn't stop")
+                 ashiria RuntimeError("generator didn't stop")
         isipokua:
             ikiwa value ni Tupu:
                 # Need to force instantiation so we can reliably
@@ -129,13 +129,13 @@ kundi _GeneratorContextManager(_GeneratorContextManagerBase,
                 value = type()
             jaribu:
                 self.gen.throw(type, value, traceback)
-            tatizo StopIteration kama exc:
+            except StopIteration as exc:
                 # Suppress StopIteration *unless* it's the same exception that
                 # was passed to throw().  This prevents a StopIteration
-                # ashiriad inside the "with" statement kutoka being suppressed.
+                # raised inside the "with" statement kutoka being suppressed.
                 rudisha exc ni sio value
-            tatizo RuntimeError kama exc:
-                # Don't re-ashiria the passed kwenye exception. (issue27122)
+            except RuntimeError as exc:
+                # Don't re- ashiria the passed kwenye exception. (issue27122)
                 ikiwa exc ni value:
                     rudisha Uongo
                 # Likewise, avoid suppressing ikiwa a StopIteration exception
@@ -143,69 +143,69 @@ kundi _GeneratorContextManager(_GeneratorContextManagerBase,
                 # (see PEP 479).
                 ikiwa type ni StopIteration na exc.__cause__ ni value:
                     rudisha Uongo
-                ashiria
+                raise
             tatizo:
-                # only re-ashiria ikiwa it's *not* the exception that was
-                # passed to throw(), because __exit__() must sio ashiria
+                # only re- ashiria ikiwa it's *not* the exception that was
+                # passed to throw(), because __exit__() must sio raise
                 # an exception unless __exit__() itself failed.  But throw()
-                # has to ashiria the exception to signal propagation, so this
+                # has to  ashiria the exception to signal propagation, so this
                 # fixes the impedance mismatch between the throw() protocol
                 # na the __exit__() protocol.
                 #
-                # This cannot use 'tatizo BaseException kama exc' (as kwenye the
+                # This cannot use 'except BaseException as exc' (as kwenye the
                 # async implementation) to maintain compatibility with
                 # Python 2, where old-style kundi exceptions are sio caught
-                # by 'tatizo BaseException'.
+                # by 'except BaseException'.
                 ikiwa sys.exc_info()[1] ni value:
                     rudisha Uongo
-                ashiria
-            ashiria RuntimeError("generator didn't stop after throw()")
+                raise
+             ashiria RuntimeError("generator didn't stop after throw()")
 
 
 kundi _AsyncGeneratorContextManager(_GeneratorContextManagerBase,
                                     AbstractAsyncContextManager):
-    """Helper for @asynccontextmanager."""
+    """Helper kila @asynccontextmanager."""
 
     async eleza __aenter__(self):
         jaribu:
             rudisha await self.gen.__anext__()
-        tatizo StopAsyncIteration:
-            ashiria RuntimeError("generator didn't yield") kutoka Tupu
+        except StopAsyncIteration:
+             ashiria RuntimeError("generator didn't yield") kutoka Tupu
 
     async eleza __aexit__(self, typ, value, traceback):
         ikiwa typ ni Tupu:
             jaribu:
                 await self.gen.__anext__()
-            tatizo StopAsyncIteration:
+            except StopAsyncIteration:
                 return
             isipokua:
-                ashiria RuntimeError("generator didn't stop")
+                 ashiria RuntimeError("generator didn't stop")
         isipokua:
             ikiwa value ni Tupu:
                 value = typ()
-            # See _GeneratorContextManager.__exit__ for comments on subtleties
+            # See _GeneratorContextManager.__exit__ kila comments on subtleties
             # kwenye this implementation
             jaribu:
                 await self.gen.athrow(typ, value, traceback)
-                ashiria RuntimeError("generator didn't stop after athrow()")
-            tatizo StopAsyncIteration kama exc:
+                 ashiria RuntimeError("generator didn't stop after athrow()")
+            except StopAsyncIteration as exc:
                 rudisha exc ni sio value
-            tatizo RuntimeError kama exc:
+            except RuntimeError as exc:
                 ikiwa exc ni value:
                     rudisha Uongo
                 # Avoid suppressing ikiwa a StopIteration exception
                 # was passed to throw() na later wrapped into a RuntimeError
-                # (see PEP 479 for sync generators; async generators also
+                # (see PEP 479 kila sync generators; async generators also
                 # have this behavior). But do this only ikiwa the exception wrapped
                 # by the RuntimeError ni actully Stop(Async)Iteration (see
                 # issue29692).
                 ikiwa isinstance(value, (StopIteration, StopAsyncIteration)):
                     ikiwa exc.__cause__ ni value:
                         rudisha Uongo
-                ashiria
-            tatizo BaseException kama exc:
+                raise
+            except BaseException as exc:
                 ikiwa exc ni sio value:
-                    ashiria
+                    raise
 
 
 eleza contextmanager(func):
@@ -217,13 +217,13 @@ eleza contextmanager(func):
         eleza some_generator(<arguments>):
             <setup>
             jaribu:
-                yield <value>
+                tuma <value>
             mwishowe:
                 <cleanup>
 
     This makes this:
 
-        ukijumuisha some_generator(<arguments>) kama <variable>:
+        ukijumuisha some_generator(<arguments>) as <variable>:
             <body>
 
     equivalent to this:
@@ -250,13 +250,13 @@ eleza asynccontextmanager(func):
         async eleza some_async_generator(<arguments>):
             <setup>
             jaribu:
-                yield <value>
+                tuma <value>
             mwishowe:
                 <cleanup>
 
     This makes this:
 
-        async ukijumuisha some_async_generator(<arguments>) kama <variable>:
+        async ukijumuisha some_async_generator(<arguments>) as <variable>:
             <body>
 
     equivalent to this:
@@ -279,7 +279,7 @@ kundi closing(AbstractContextManager):
 
     Code like this:
 
-        ukijumuisha closing(<module>.open(<arguments>)) kama f:
+        ukijumuisha closing(<module>.open(<arguments>)) as f:
             <block>
 
     ni equivalent to this:
@@ -318,14 +318,14 @@ kundi _RedirectStream(AbstractContextManager):
 
 
 kundi redirect_stdout(_RedirectStream):
-    """Context manager for temporarily redirecting stdout to another file.
+    """Context manager kila temporarily redirecting stdout to another file.
 
         # How to send help() to stderr
         ukijumuisha redirect_stdout(sys.stderr):
             help(dir)
 
         # How to write help() to a file
-        ukijumuisha open('help.txt', 'w') kama f:
+        ukijumuisha open('help.txt', 'w') as f:
             ukijumuisha redirect_stdout(f):
                 help(pow)
     """
@@ -334,7 +334,7 @@ kundi redirect_stdout(_RedirectStream):
 
 
 kundi redirect_stderr(_RedirectStream):
-    """Context manager for temporarily redirecting stderr to another file."""
+    """Context manager kila temporarily redirecting stderr to another file."""
 
     _stream = "stderr"
 
@@ -365,12 +365,12 @@ kundi suppress(AbstractContextManager):
         # the simpler issubkundi based semantics, rather than trying to
         # exactly reproduce the limitations of the CPython interpreter.
         #
-        # See http://bugs.python.org/issue12029 for more details
+        # See http://bugs.python.org/issue12029 kila more details
         rudisha exctype ni sio Tupu na issubclass(exctype, self._exceptions)
 
 
 kundi _BaseExitStack:
-    """A base kundi for ExitStack na AsyncExitStack."""
+    """A base kundi kila ExitStack na AsyncExitStack."""
 
     @staticmethod
     eleza _create_exit_wrapper(cm, cm_exit):
@@ -400,22 +400,22 @@ kundi _BaseExitStack:
         to the method instead of the object itself).
         """
         # We use an unbound method rather than a bound method to follow
-        # the standard lookup behaviour for special methods.
+        # the standard lookup behaviour kila special methods.
         _cb_type = type(exit)
 
         jaribu:
             exit_method = _cb_type.__exit__
-        tatizo AttributeError:
+        except AttributeError:
             # Not a context manager, so assume it's a callable.
             self._push_exit_callback(exit)
         isipokua:
             self._push_cm_exit(exit, exit_method)
-        rudisha exit  # Allow use kama a decorator.
+        rudisha exit  # Allow use as a decorator.
 
     eleza enter_context(self, cm):
         """Enters the supplied context manager.
 
-        If successful, also pushes its __exit__ method kama a callback na
+        If successful, also pushes its __exit__ method as a callback and
         returns the result of the __enter__ method.
         """
         # We look up the special methods on the type to match the with
@@ -433,17 +433,17 @@ kundi _BaseExitStack:
         """
         ikiwa len(args) >= 2:
             self, callback, *args = args
-        lasivyo sio args:
-            ashiria TypeError("descriptor 'callback' of '_BaseExitStack' object "
+        elikiwa sio args:
+             ashiria TypeError("descriptor 'callback' of '_BaseExitStack' object "
                             "needs an argument")
-        lasivyo 'callback' kwenye kwds:
+        elikiwa 'callback' kwenye kwds:
             callback = kwds.pop('callback')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'callback' kama keyword argument ni deprecated",
+            warnings.warn("Passing 'callback' as keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-            ashiria TypeError('callback expected at least 1 positional argument, '
+             ashiria TypeError('callback expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         _exit_wrapper = self._create_cb_wrapper(callback, *args, **kwds)
@@ -452,7 +452,7 @@ kundi _BaseExitStack:
         # setting __wrapped__ may still help ukijumuisha introspection.
         _exit_wrapper.__wrapped__ = callback
         self._push_exit_callback(_exit_wrapper)
-        rudisha callback  # Allow use kama a decorator
+        rudisha callback  # Allow use as a decorator
     callback.__text_signature__ = '($self, callback, /, *args, **kwds)'
 
     eleza _push_cm_exit(self, cm, cm_exit):
@@ -466,14 +466,14 @@ kundi _BaseExitStack:
 
 # Inspired by discussions on http://bugs.python.org/issue13585
 kundi ExitStack(_BaseExitStack, AbstractContextManager):
-    """Context manager for dynamic management of a stack of exit callbacks.
+    """Context manager kila dynamic management of a stack of exit callbacks.
 
     For example:
-        ukijumuisha ExitStack() kama stack:
-            files = [stack.enter_context(open(fname)) for fname kwenye filenames]
+        ukijumuisha ExitStack() as stack:
+            files = [stack.enter_context(open(fname)) kila fname kwenye filenames]
             # All opened files will automatically be closed at the end of
             # the ukijumuisha statement, even ikiwa attempts to open files later
-            # kwenye the list ashiria an exception.
+            # kwenye the list  ashiria an exception.
     """
 
     eleza __enter__(self):
@@ -482,7 +482,7 @@ kundi ExitStack(_BaseExitStack, AbstractContextManager):
     eleza __exit__(self, *exc_details):
         received_exc = exc_details[0] ni sio Tupu
 
-        # We manipulate the exception state so it behaves kama though
+        # We manipulate the exception state so it behaves as though
         # we were actually nesting multiple ukijumuisha statements
         frame_exc = sys.exc_info()[1]
         eleza _fix_exception_context(new_exc, old_exc):
@@ -502,30 +502,30 @@ kundi ExitStack(_BaseExitStack, AbstractContextManager):
         # Callbacks are invoked kwenye LIFO order to match the behaviour of
         # nested context managers
         suppressed_exc = Uongo
-        pending_raise = Uongo
+        pending_ ashiria = Uongo
         wakati self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
             assert is_sync
             jaribu:
                 ikiwa cb(*exc_details):
                     suppressed_exc = Kweli
-                    pending_raise = Uongo
+                    pending_ ashiria = Uongo
                     exc_details = (Tupu, Tupu, Tupu)
             tatizo:
                 new_exc_details = sys.exc_info()
                 # simulate the stack of exceptions by setting the context
                 _fix_exception_context(new_exc_details[1], exc_details[1])
-                pending_raise = Kweli
+                pending_ ashiria = Kweli
                 exc_details = new_exc_details
         ikiwa pending_raise:
             jaribu:
-                # bare "ashiria exc_details[1]" replaces our carefully
+                # bare " ashiria exc_details[1]" replaces our carefully
                 # set-up context
                 fixed_ctx = exc_details[1].__context__
-                ashiria exc_details[1]
-            tatizo BaseException:
+                 ashiria exc_details[1]
+            except BaseException:
                 exc_details[1].__context__ = fixed_ctx
-                ashiria
+                raise
         rudisha received_exc na suppressed_exc
 
     eleza close(self):
@@ -535,16 +535,16 @@ kundi ExitStack(_BaseExitStack, AbstractContextManager):
 
 # Inspired by discussions on https://bugs.python.org/issue29302
 kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
-    """Async context manager for dynamic management of a stack of exit
+    """Async context manager kila dynamic management of a stack of exit
     callbacks.
 
     For example:
-        async ukijumuisha AsyncExitStack() kama stack:
+        async ukijumuisha AsyncExitStack() as stack:
             connections = [await stack.enter_async_context(get_connection())
-                for i kwenye range(5)]
+                kila i kwenye range(5)]
             # All opened connections will automatically be released at the
             # end of the async ukijumuisha statement, even ikiwa attempts to open a
-            # connection later kwenye the list ashiria an exception.
+            # connection later kwenye the list  ashiria an exception.
     """
 
     @staticmethod
@@ -560,7 +560,7 @@ kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
     async eleza enter_async_context(self, cm):
         """Enters the supplied async context manager.
 
-        If successful, also pushes its __aexit__ method kama a callback na
+        If successful, also pushes its __aexit__ method as a callback and
         returns the result of the __aenter__ method.
         """
         _cm_type = type(cm)
@@ -580,12 +580,12 @@ kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         _cb_type = type(exit)
         jaribu:
             exit_method = _cb_type.__aexit__
-        tatizo AttributeError:
+        except AttributeError:
             # Not an async context manager, so assume it's a coroutine function
             self._push_exit_callback(exit, Uongo)
         isipokua:
             self._push_async_cm_exit(exit, exit_method)
-        rudisha exit  # Allow use kama a decorator
+        rudisha exit  # Allow use as a decorator
 
     eleza push_async_callback(*args, **kwds):
         """Registers an arbitrary coroutine function na arguments.
@@ -594,17 +594,17 @@ kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         """
         ikiwa len(args) >= 2:
             self, callback, *args = args
-        lasivyo sio args:
-            ashiria TypeError("descriptor 'push_async_callback' of "
+        elikiwa sio args:
+             ashiria TypeError("descriptor 'push_async_callback' of "
                             "'AsyncExitStack' object needs an argument")
-        lasivyo 'callback' kwenye kwds:
+        elikiwa 'callback' kwenye kwds:
             callback = kwds.pop('callback')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'callback' kama keyword argument ni deprecated",
+            warnings.warn("Passing 'callback' as keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-            ashiria TypeError('push_async_callback expected at least 1 '
+             ashiria TypeError('push_async_callback expected at least 1 '
                             'positional argument, got %d' % (len(args)-1))
 
         _exit_wrapper = self._create_async_cb_wrapper(callback, *args, **kwds)
@@ -613,7 +613,7 @@ kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         # setting __wrapped__ may still help ukijumuisha introspection.
         _exit_wrapper.__wrapped__ = callback
         self._push_exit_callback(_exit_wrapper, Uongo)
-        rudisha callback  # Allow use kama a decorator
+        rudisha callback  # Allow use as a decorator
     push_async_callback.__text_signature__ = '($self, callback, /, *args, **kwds)'
 
     async eleza aclose(self):
@@ -632,7 +632,7 @@ kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
     async eleza __aexit__(self, *exc_details):
         received_exc = exc_details[0] ni sio Tupu
 
-        # We manipulate the exception state so it behaves kama though
+        # We manipulate the exception state so it behaves as though
         # we were actually nesting multiple ukijumuisha statements
         frame_exc = sys.exc_info()[1]
         eleza _fix_exception_context(new_exc, old_exc):
@@ -652,7 +652,7 @@ kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         # Callbacks are invoked kwenye LIFO order to match the behaviour of
         # nested context managers
         suppressed_exc = Uongo
-        pending_raise = Uongo
+        pending_ ashiria = Uongo
         wakati self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
             jaribu:
@@ -663,30 +663,30 @@ kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
 
                 ikiwa cb_suppress:
                     suppressed_exc = Kweli
-                    pending_raise = Uongo
+                    pending_ ashiria = Uongo
                     exc_details = (Tupu, Tupu, Tupu)
             tatizo:
                 new_exc_details = sys.exc_info()
                 # simulate the stack of exceptions by setting the context
                 _fix_exception_context(new_exc_details[1], exc_details[1])
-                pending_raise = Kweli
+                pending_ ashiria = Kweli
                 exc_details = new_exc_details
         ikiwa pending_raise:
             jaribu:
-                # bare "ashiria exc_details[1]" replaces our carefully
+                # bare " ashiria exc_details[1]" replaces our carefully
                 # set-up context
                 fixed_ctx = exc_details[1].__context__
-                ashiria exc_details[1]
-            tatizo BaseException:
+                 ashiria exc_details[1]
+            except BaseException:
                 exc_details[1].__context__ = fixed_ctx
-                ashiria
+                raise
         rudisha received_exc na suppressed_exc
 
 
 kundi nullcontext(AbstractContextManager):
     """Context manager that does no additional processing.
 
-    Used kama a stand-in for a normal context manager, when a particular
+    Used as a stand-in kila a normal context manager, when a particular
     block of code ni only sometimes used ukijumuisha a normal context manager:
 
     cm = optional_cm ikiwa condition isipokua nullcontext()

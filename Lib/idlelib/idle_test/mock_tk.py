@@ -7,15 +7,15 @@ typically required kwenye spite of what the doc strings say.
 kundi Event:
     '''Minimal mock ukijumuisha attributes kila testing event handlers.
 
-    This ni sio a gui object, but ni used kama an argument kila callbacks
-    that access attributes of the event pitaed. If a callback ignores
-    the event, other than the fact that ni happened, pita 'event'.
+    This ni sio a gui object, but ni used as an argument kila callbacks
+    that access attributes of the event passed. If a callback ignores
+    the event, other than the fact that ni happened, pass 'event'.
 
     Keyboard, mouse, window, na other sources generate Event instances.
     Event instances have the following attributes: serial (number of
-    event), time (of event), type (of event kama number), widget (in which
+    event), time (of event), type (of event as number), widget (in which
     event occurred), na x,y (position of mouse). There are other
-    attributes kila specific events, such kama keycode kila key events.
+    attributes kila specific events, such as keycode kila key events.
     tkinter.Event.__doc__ has more but ni still sio complete.
     '''
     eleza __init__(self, **kwds):
@@ -37,8 +37,8 @@ kundi Mbox_func:
     """Generic mock kila messagebox functions, which all have the same signature.
 
     Instead of displaying a message box, the mock's call method saves the
-    arguments kama instance attributes, which test functions can then examine.
-    The test can set the result rudishaed to ask function
+    arguments as instance attributes, which test functions can then examine.
+    The test can set the result returned to ask function
     """
     eleza __init__(self, result=Tupu):
         self.result = result  # Return Tupu kila all show funcs
@@ -92,7 +92,7 @@ kundi Text:
 
     The mock's data motoa ni that a text ni a list of \n-terminated lines.
     The mock adds an empty string at  the beginning of the list so that the
-    index of actual lines start at 1, kama ukijumuisha Tk. The methods never see this.
+    index of actual lines start at 1, as ukijumuisha Tk. The methods never see this.
     Tk initializes files ukijumuisha a terminal \n that cannot be deleted. It is
     invisible kwenye the sense that one cannot move the cursor beyond it.
 
@@ -123,22 +123,22 @@ kundi Text:
         * line.char float: converted to 'line.char' string;
         * 'line.char' string, where line na char are decimal integers;
         * 'line.char lineend', where lineend='lineend' (and char ni ignored);
-        * 'line.end', where end='end' (same kama above);
+        * 'line.end', where end='end' (same as above);
         * 'insert', the positions before terminal \n;
-        * 'end', whose meaning depends on the endflag pitaed to ._endex.
+        * 'end', whose meaning depends on the endflag passed to ._endex.
         * 'sel.first' ama 'sel.last', where sel ni a tag -- sio implemented.
         """
         ikiwa isinstance(index, (float, bytes)):
             index = str(index)
         jaribu:
             index=index.lower()
-        tatizo AttributeError:
-            ashiria TclError('bad text index "%s"' % index) kutoka Tupu
+        except AttributeError:
+             ashiria TclError('bad text index "%s"' % index) kutoka Tupu
 
-        lastline =  len(self.data) - 1  # same kama number of text lines
+        lastline =  len(self.data) - 1  # same as number of text lines
         ikiwa index == 'insert':
             rudisha lastline, len(self.data[lastline]) - 1
-        lasivyo index == 'end':
+        elikiwa index == 'end':
             rudisha self._endex(endflag)
 
         line, char = index.split('.')
@@ -147,7 +147,7 @@ kundi Text:
         # Out of bounds line becomes first ama last ('end') index
         ikiwa line < 1:
             rudisha 1, 0
-        lasivyo line > lastline:
+        elikiwa line > lastline:
             rudisha self._endex(endflag)
 
         linelength = len(self.data[line])  -1  # position before/at \n
@@ -159,7 +159,7 @@ kundi Text:
         char = int(char)
         ikiwa char < 0:
             char = 0
-        lasivyo char > linelength:
+        elikiwa char > linelength:
             char = linelength
         rudisha line, char
 
@@ -168,7 +168,7 @@ kundi Text:
 
        -1: position before terminal \n; kila .insert(), .delete
        0: position after terminal \n; kila .get, .delete index 1
-       1: same viewed kama beginning of non-existent next line (kila .index)
+       1: same viewed as beginning of non-existent next line (kila .index)
        '''
         n = len(self.data)
         ikiwa endflag == 1:
@@ -182,7 +182,7 @@ kundi Text:
         "Insert chars before the character at index."
 
         ikiwa sio chars:  # ''.splitlines() ni [], sio ['']
-            rudisha
+            return
         chars = chars.splitlines(Kweli)
         ikiwa chars[-1][-1] == '\n':
             chars.append('')
@@ -224,12 +224,12 @@ kundi Text:
             ikiwa startchar < len(self.data[startline])-1:
                 # sio deleting \n
                 endline, endchar = startline, startchar+1
-            lasivyo startline < len(self.data) - 1:
+            elikiwa startline < len(self.data) - 1:
                 # deleting non-terminal \n, convert 'index1+1 to start of next line
                 endline, endchar = startline+1, 0
             isipokua:
                 # do sio delete terminal \n ikiwa index1 == 'insert'
-                rudisha
+                return
         isipokua:
             endline, endchar = self._decode(index2, -1)
             # restricting end position to insert position excludes terminal \n
@@ -237,7 +237,7 @@ kundi Text:
         ikiwa startline == endline na startchar < endchar:
             self.data[startline] = self.data[startline][:startchar] + \
                                              self.data[startline][endchar:]
-        lasivyo startline < endline:
+        elikiwa startline < endline:
             self.data[startline] = self.data[startline][:startchar] + \
                                    self.data[endline][endchar:]
             startline += 1
@@ -249,18 +249,18 @@ kundi Text:
         line2, char2 = self._decode(index2)
         ikiwa op == '<':
             rudisha line1 < line2 ama line1 == line2 na char1 < char2
-        lasivyo op == '<=':
+        elikiwa op == '<=':
             rudisha line1 < line2 ama line1 == line2 na char1 <= char2
-        lasivyo op == '>':
+        elikiwa op == '>':
             rudisha line1 > line2 ama line1 == line2 na char1 > char2
-        lasivyo op == '>=':
+        elikiwa op == '>=':
             rudisha line1 > line2 ama line1 == line2 na char1 >= char2
-        lasivyo op == '==':
+        elikiwa op == '==':
             rudisha line1 == line2 na char1 == char2
-        lasivyo op == '!=':
+        elikiwa op == '!=':
             rudisha line1 != line2 ama  char1 != char2
         isipokua:
-            ashiria TclError('''bad comparison operator "%s": '''
+             ashiria TclError('''bad comparison operator "%s": '''
                                   '''must be <, <=, ==, >=, >, ama !=''' % op)
 
     # The following Text methods normally do something na rudisha Tupu.
@@ -268,14 +268,14 @@ kundi Text:
 
     eleza mark_set(self, name, index):
         "Set mark *name* before the character at index."
-        pita
+        pass
 
     eleza mark_unset(self, *markNames):
         "Delete all marks kwenye markNames."
 
     eleza tag_remove(self, tagName, index1, index2=Tupu):
         "Remove tag tagName kutoka all characters between index1 na index2."
-        pita
+        pass
 
     # The following Text methods affect the graphics screen na rudisha Tupu.
     # Doing nothing should always be sufficient kila tests.
@@ -288,16 +288,16 @@ kundi Text:
 
     eleza see(self, index):
         "Scroll screen to make the character at INDEX ni visible."
-        pita
+        pass
 
     #  The following ni a Misc method inherited by Text.
     # It should properly go kwenye a Misc mock, but ni included here kila now.
 
     eleza bind(sequence=Tupu, func=Tupu, add=Tupu):
         "Bind to this widget at event sequence a call to function func."
-        pita
+        pass
 
 kundi Enjaribu:
     "Mock kila tkinter.Entry."
     eleza focus_set(self):
-        pita
+        pass

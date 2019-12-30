@@ -10,16 +10,16 @@ kutoka test agiza support
 
 jaribu:
     agiza _testcapi
-tatizo ImportError:
+except ImportError:
     _testcapi = Tupu
 
 
 # This tests to make sure that ikiwa a SIGINT arrives just before we send into a
-# tuma kutoka chain, the KeyboardInterrupt ni ashiriad kwenye the innermost
+# tuma kutoka chain, the KeyboardInterrupt ni raised kwenye the innermost
 # generator (see bpo-30039).
-@unittest.skipUnless(_testcapi ni sio Tupu na
-                     hasattr(_testcapi, "ashiria_SIGINT_then_send_Tupu"),
-                     "needs _testcapi.ashiria_SIGINT_then_send_Tupu")
+@unittest.skipUnless(_testcapi ni sio Tupu and
+                     hasattr(_testcapi, "raise_SIGINT_then_send_Tupu"),
+                     "needs _testcapi.raise_SIGINT_then_send_Tupu")
 kundi SignalAndYieldFromTest(unittest.TestCase):
 
     eleza generator1(self):
@@ -27,18 +27,18 @@ kundi SignalAndYieldFromTest(unittest.TestCase):
 
     eleza generator2(self):
         jaribu:
-            tuma
-        tatizo KeyboardInterrupt:
+            yield
+        except KeyboardInterrupt:
             rudisha "PASSED"
         isipokua:
             rudisha "FAILED"
 
-    eleza test_ashiria_and_tuma_kutoka(self):
+    eleza test_raise_and_yield_from(self):
         gen = self.generator1()
         gen.send(Tupu)
         jaribu:
-            _testcapi.ashiria_SIGINT_then_send_Tupu(gen)
-        tatizo BaseException kama _exc:
+            _testcapi.raise_SIGINT_then_send_Tupu(gen)
+        except BaseException as _exc:
             exc = _exc
         self.assertIs(type(exc), StopIteration)
         self.assertEqual(exc.value, "PASSED")
@@ -51,7 +51,7 @@ kundi FinalizationTest(unittest.TestCase):
         eleza gen():
             nonlocal frame
             jaribu:
-                tuma
+                yield
             mwishowe:
                 frame = sys._getframe()
 
@@ -72,7 +72,7 @@ kundi FinalizationTest(unittest.TestCase):
         eleza gen():
             nonlocal finalized
             jaribu:
-                g = tuma
+                g = yield
                 tuma 1
             mwishowe:
                 finalized = Kweli
@@ -88,12 +88,12 @@ kundi FinalizationTest(unittest.TestCase):
         self.assertEqual(gc.garbage, old_garbage)
 
     eleza test_lambda_generator(self):
-        # Issue #23192: Test that a lambda rudishaing a generator behaves
+        # Issue #23192: Test that a lambda returning a generator behaves
         # like the equivalent function
         f = lambda: (tuma 1)
         eleza g(): rudisha (tuma 1)
 
-        # test 'tuma kutoka'
+        # test 'tuma from'
         f2 = lambda: (tuma kutoka g())
         eleza g2(): rudisha (tuma kutoka g())
 
@@ -103,7 +103,7 @@ kundi FinalizationTest(unittest.TestCase):
         kila gen_fun kwenye (f, g, f2, g2, f3, g3):
             gen = gen_fun()
             self.assertEqual(next(gen), 1)
-            ukijumuisha self.assertRaises(StopIteration) kama cm:
+            ukijumuisha self.assertRaises(StopIteration) as cm:
                 gen.send(2)
             self.assertEqual(cm.exception.value, 2)
 
@@ -167,36 +167,36 @@ kundi ExceptionTest(unittest.TestCase):
     # ni correctly saved/restored kwenye PyEval_EvalFrameEx().
 
     eleza test_except_throw(self):
-        eleza store_ashiria_exc_generator():
+        eleza store_raise_exc_generator():
             jaribu:
                 self.assertEqual(sys.exc_info()[0], Tupu)
-                tuma
-            tatizo Exception kama exc:
-                # exception ashiriad by gen.throw(exc)
+                yield
+            except Exception as exc:
+                # exception raised by gen.throw(exc)
                 self.assertEqual(sys.exc_info()[0], ValueError)
                 self.assertIsTupu(exc.__context__)
-                tuma
+                yield
 
                 # ensure that the exception ni sio lost
                 self.assertEqual(sys.exc_info()[0], ValueError)
-                tuma
+                yield
 
-                # we should be able to ashiria back the ValueError
-                ashiria
+                # we should be able to  ashiria back the ValueError
+                raise
 
-        make = store_ashiria_exc_generator()
+        make = store_raise_exc_generator()
         next(make)
 
         jaribu:
-            ashiria ValueError()
-        tatizo Exception kama exc:
+             ashiria ValueError()
+        except Exception as exc:
             jaribu:
                 make.throw(exc)
-            tatizo Exception:
-                pita
+            except Exception:
+                pass
 
         next(make)
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             next(make)
         self.assertIsTupu(cm.exception.__context__)
 
@@ -209,8 +209,8 @@ kundi ExceptionTest(unittest.TestCase):
 
         g = gen()
         jaribu:
-            ashiria ValueError
-        tatizo Exception:
+             ashiria ValueError
+        except Exception:
             self.assertEqual(next(g), "done")
         self.assertEqual(sys.exc_info(), (Tupu, Tupu, Tupu))
 
@@ -218,24 +218,24 @@ kundi ExceptionTest(unittest.TestCase):
         eleza gen():
             jaribu:
                 self.assertEqual(sys.exc_info()[0], Tupu)
-                tuma
-                # we are called kutoka "tatizo ValueError:", TypeError must
+                yield
+                # we are called kutoka "except ValueError:", TypeError must
                 # inherit ValueError kwenye its context
-                ashiria TypeError()
-            tatizo TypeError kama exc:
+                 ashiria TypeError()
+            except TypeError as exc:
                 self.assertEqual(sys.exc_info()[0], TypeError)
                 self.assertEqual(type(exc.__context__), ValueError)
-            # here we are still called kutoka the "tatizo ValueError:"
+            # here we are still called kutoka the "except ValueError:"
             self.assertEqual(sys.exc_info()[0], ValueError)
-            tuma
+            yield
             self.assertIsTupu(sys.exc_info()[0])
             tuma "done"
 
         g = gen()
         next(g)
         jaribu:
-            ashiria ValueError
-        tatizo Exception:
+             ashiria ValueError
+        except Exception:
             next(g)
 
         self.assertEqual(next(g), "done")
@@ -246,25 +246,25 @@ kundi ExceptionTest(unittest.TestCase):
             jaribu:
                 jaribu:
                     self.assertEqual(sys.exc_info()[0], Tupu)
-                    tuma
-                tatizo ValueError:
-                    # we are called kutoka "tatizo ValueError:"
+                    yield
+                except ValueError:
+                    # we are called kutoka "except ValueError:"
                     self.assertEqual(sys.exc_info()[0], ValueError)
-                    ashiria TypeError()
-            tatizo Exception kama exc:
+                     ashiria TypeError()
+            except Exception as exc:
                 self.assertEqual(sys.exc_info()[0], TypeError)
                 self.assertEqual(type(exc.__context__), ValueError)
-            # we are still called kutoka "tatizo ValueError:"
+            # we are still called kutoka "except ValueError:"
             self.assertEqual(sys.exc_info()[0], ValueError)
-            tuma
+            yield
             self.assertIsTupu(sys.exc_info()[0])
             tuma "done"
 
         g = gen()
         next(g)
         jaribu:
-            ashiria ValueError
-        tatizo Exception kama exc:
+             ashiria ValueError
+        except Exception as exc:
             g.throw(exc)
 
         self.assertEqual(next(g), "done")
@@ -274,10 +274,10 @@ kundi ExceptionTest(unittest.TestCase):
         # See also PEP 479.
 
         eleza gen():
-            ashiria StopIteration
-            tuma
+             ashiria StopIteration
+            yield
 
-        ukijumuisha self.assertRaisesRegex(RuntimeError, 'ashiriad StopIteration'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
             next(gen())
 
     eleza test_tutorial_stopiteration(self):
@@ -285,68 +285,68 @@ kundi ExceptionTest(unittest.TestCase):
 
         eleza f():
             tuma 1
-            ashiria StopIteration
+             ashiria StopIteration
             tuma 2 # never reached
 
         g = f()
         self.assertEqual(next(g), 1)
 
-        ukijumuisha self.assertRaisesRegex(RuntimeError, 'ashiriad StopIteration'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
             next(g)
 
-    eleza test_rudisha_tuple(self):
+    eleza test_return_tuple(self):
         eleza g():
             rudisha (tuma 1)
 
         gen = g()
         self.assertEqual(next(gen), 1)
-        ukijumuisha self.assertRaises(StopIteration) kama cm:
+        ukijumuisha self.assertRaises(StopIteration) as cm:
             gen.send((2,))
         self.assertEqual(cm.exception.value, (2,))
 
-    eleza test_rudisha_stopiteration(self):
+    eleza test_return_stopiteration(self):
         eleza g():
             rudisha (tuma 1)
 
         gen = g()
         self.assertEqual(next(gen), 1)
-        ukijumuisha self.assertRaises(StopIteration) kama cm:
+        ukijumuisha self.assertRaises(StopIteration) as cm:
             gen.send(StopIteration(2))
         self.assertIsInstance(cm.exception.value, StopIteration)
         self.assertEqual(cm.exception.value.value, 2)
 
 
 kundi YieldFromTests(unittest.TestCase):
-    eleza test_generator_gi_tumakutoka(self):
+    eleza test_generator_gi_yieldfrom(self):
         eleza a():
             self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_RUNNING)
-            self.assertIsTupu(gen_b.gi_tumakutoka)
-            tuma
+            self.assertIsTupu(gen_b.gi_yieldfrom)
+            yield
             self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_RUNNING)
-            self.assertIsTupu(gen_b.gi_tumakutoka)
+            self.assertIsTupu(gen_b.gi_yieldfrom)
 
         eleza b():
-            self.assertIsTupu(gen_b.gi_tumakutoka)
+            self.assertIsTupu(gen_b.gi_yieldfrom)
             tuma kutoka a()
-            self.assertIsTupu(gen_b.gi_tumakutoka)
-            tuma
-            self.assertIsTupu(gen_b.gi_tumakutoka)
+            self.assertIsTupu(gen_b.gi_yieldfrom)
+            yield
+            self.assertIsTupu(gen_b.gi_yieldfrom)
 
         gen_b = b()
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_CREATED)
-        self.assertIsTupu(gen_b.gi_tumakutoka)
+        self.assertIsTupu(gen_b.gi_yieldfrom)
 
         gen_b.send(Tupu)
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_SUSPENDED)
-        self.assertEqual(gen_b.gi_tumakutoka.gi_code.co_name, 'a')
+        self.assertEqual(gen_b.gi_yieldfrom.gi_code.co_name, 'a')
 
         gen_b.send(Tupu)
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_SUSPENDED)
-        self.assertIsTupu(gen_b.gi_tumakutoka)
+        self.assertIsTupu(gen_b.gi_yieldfrom)
 
         [] = gen_b  # Exhaust generator
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_CLOSED)
-        self.assertIsTupu(gen_b.gi_tumakutoka)
+        self.assertIsTupu(gen_b.gi_yieldfrom)
 
 
 tutorial_tests = """
@@ -374,11 +374,11 @@ Let's try a simple generator:
       File "<stdin>", line 2, kwenye g
     StopIteration
 
-"rudisha" also stops the generator:
+"return" also stops the generator:
 
     >>> eleza f():
     ...     tuma 1
-    ...     rudisha
+    ...     return
     ...     tuma 2 # never reached
     ...
     >>> g = f()
@@ -394,11 +394,11 @@ Let's try a simple generator:
       File "<stdin>", line 1, kwenye ?
     StopIteration
 
-However, "rudisha" na StopIteration are sio exactly equivalent:
+However, "return" na StopIteration are sio exactly equivalent:
 
     >>> eleza g1():
     ...     jaribu:
-    ...         rudisha
+    ...         return
     ...     tatizo:
     ...         tuma 1
     ...
@@ -407,7 +407,7 @@ However, "rudisha" na StopIteration are sio exactly equivalent:
 
     >>> eleza g2():
     ...     jaribu:
-    ...         ashiria StopIteration
+    ...          ashiria StopIteration
     ...     tatizo:
     ...         tuma 42
     >>> andika(list(g2()))
@@ -417,14 +417,14 @@ This may be surprising at first:
 
     >>> eleza g3():
     ...     jaribu:
-    ...         rudisha
+    ...         return
     ...     mwishowe:
     ...         tuma 1
     ...
     >>> list(g3())
     [1]
 
-Let's create an alternate range() function implemented kama a generator:
+Let's create an alternate range() function implemented as a generator:
 
     >>> eleza yrange(n):
     ...     kila i kwenye range(n):
@@ -485,28 +485,28 @@ Specification:  Yield
 Specification: Return
 
     Note that rudisha isn't always equivalent to raising StopIteration:  the
-    difference lies kwenye how enclosing try/tatizo constructs are treated.
+    difference lies kwenye how enclosing try/except constructs are treated.
     For example,
 
         >>> eleza f1():
         ...     jaribu:
-        ...         rudisha
+        ...         return
         ...     tatizo:
         ...        tuma 1
         >>> andika(list(f1()))
         []
 
-    because, kama kwenye any function, rudisha simply exits, but
+    because, as kwenye any function, rudisha simply exits, but
 
         >>> eleza f2():
         ...     jaribu:
-        ...         ashiria StopIteration
+        ...          ashiria StopIteration
         ...     tatizo:
         ...         tuma 42
         >>> andika(list(f2()))
         [42]
 
-    because StopIteration ni captured by a bare "except", kama ni any
+    because StopIteration ni captured by a bare "except", as ni any
     exception.
 
 Specification: Generators na Exception Propagation
@@ -538,13 +538,13 @@ Specification: Try/Except/Finally
     ...             tuma 2
     ...             1//0
     ...             tuma 3  # never get here
-    ...         tatizo ZeroDivisionError:
+    ...         except ZeroDivisionError:
     ...             tuma 4
     ...             tuma 5
-    ...             ashiria
+    ...             raise
     ...         tatizo:
     ...             tuma 6
-    ...         tuma 7     # the "ashiria" above stops this
+    ...         tuma 7     # the "raise" above stops this
     ...     tatizo:
     ...         tuma 8
     ...     tuma 9
@@ -616,8 +616,8 @@ Guido's binary tree example.
     ...         wakati sio node.right:
     ...             jaribu:
     ...                 node = stack.pop()
-    ...             tatizo IndexError:
-    ...                 rudisha
+    ...             except IndexError:
+    ...                 return
     ...             tuma node.label
     ...         node = node.right
 
@@ -632,23 +632,23 @@ Guido's binary tree example.
 
 email_tests = """
 
-The difference between tumaing Tupu na rudishaing it.
+The difference between yielding Tupu na returning it.
 
 >>> eleza g():
 ...     kila i kwenye range(3):
 ...         tuma Tupu
 ...     tuma Tupu
-...     rudisha
+...     return
 >>> list(g())
 [Tupu, Tupu, Tupu, Tupu]
 
 Ensure that explicitly raising StopIteration acts like any other exception
-in try/except, sio like a rudisha.
+in try/except, sio like a return.
 
 >>> eleza g():
 ...     tuma 1
 ...     jaribu:
-...         ashiria StopIteration
+...          ashiria StopIteration
 ...     tatizo:
 ...         tuma 2
 ...     tuma 3
@@ -661,7 +661,7 @@ Next one was posted to c.l.py.
 ...     "Generate all combinations of k elements kutoka list x."
 ...
 ...     ikiwa k > len(x):
-...         rudisha
+...         return
 ...     ikiwa k == 0:
 ...         tuma []
 ...     isipokua:
@@ -714,7 +714,7 @@ From the Iterators list, about the types of these things.
 >>> type(i)
 <kundi 'generator'>
 >>> [s kila s kwenye dir(i) ikiwa sio s.startswith('_')]
-['close', 'gi_code', 'gi_frame', 'gi_running', 'gi_tumakutoka', 'send', 'throw']
+['close', 'gi_code', 'gi_frame', 'gi_running', 'gi_yieldfrom', 'send', 'throw']
 >>> kutoka test.support agiza HAVE_DOCSTRINGS
 >>> andika(i.__next__.__doc__ ikiwa HAVE_DOCSTRINGS isipokua 'Implement next(self).')
 Implement next(self).
@@ -766,7 +766,7 @@ Subject: Re: PEP 255: Simple Generators
 ...
 ...     eleza union(self, parent):
 ...         ikiwa self.parent:
-...             ashiria ValueError("Sorry, I'm sio a root!")
+...              ashiria ValueError("Sorry, I'm sio a root!")
 ...         self.parent = parent
 ...
 ...     eleza __str__(self):
@@ -828,12 +828,12 @@ Build up to a recursive Sieve of Eratosthenes generator.
 >>> eleza firstn(g, n):
 ...     rudisha [next(g) kila i kwenye range(n)]
 
->>> eleza intskutoka(i):
+>>> eleza intsfrom(i):
 ...     wakati 1:
 ...         tuma i
 ...         i += 1
 
->>> firstn(intskutoka(5), 7)
+>>> firstn(intsfrom(5), 7)
 [5, 6, 7, 8, 9, 10, 11]
 
 >>> eleza exclude_multiples(n, ints):
@@ -841,7 +841,7 @@ Build up to a recursive Sieve of Eratosthenes generator.
 ...         ikiwa i % n:
 ...             tuma i
 
->>> firstn(exclude_multiples(3, intskutoka(1)), 6)
+>>> firstn(exclude_multiples(3, intsfrom(1)), 6)
 [1, 2, 4, 5, 7, 8]
 
 >>> eleza sieve(ints):
@@ -851,7 +851,7 @@ Build up to a recursive Sieve of Eratosthenes generator.
 ...     kila p kwenye sieve(not_divisible_by_prime):
 ...         tuma p
 
->>> primes = sieve(intskutoka(2))
+>>> primes = sieve(intsfrom(2))
 >>> firstn(primes, 20)
 [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71]
 
@@ -865,7 +865,7 @@ Try writing it without generators, na correctly, na without generating
 >>> eleza times(n, g):
 ...     kila i kwenye g:
 ...         tuma n * i
->>> firstn(times(10, intskutoka(1)), 10)
+>>> firstn(times(10, intsfrom(1)), 10)
 [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
 >>> eleza merge(g, h):
@@ -875,7 +875,7 @@ Try writing it without generators, na correctly, na without generating
 ...         ikiwa ng < nh:
 ...             tuma ng
 ...             ng = next(g)
-...         lasivyo ng > nh:
+...         elikiwa ng > nh:
 ...             tuma nh
 ...             nh = next(h)
 ...         isipokua:
@@ -917,7 +917,7 @@ address space, na it *looked* like a very slow leak.
 Heh.  Here's one way to get a shared list, complete ukijumuisha an excruciating
 namespace renaming trick.  The *pretty* part ni that the times() na merge()
 functions can be reused as-is, because they only assume their stream
-arguments are iterable -- a LazyList ni the same kama a generator to times().
+arguments are iterable -- a LazyList ni the same as a generator to times().
 
 >>> kundi LazyList:
 ...     eleza __init__(self, g):
@@ -941,7 +941,7 @@ arguments are iterable -- a LazyList ni the same kama a generator to times().
 ...                    me_times5):
 ...         tuma i
 
-Print kama many of these kama you like -- *this* implementation ni memory-
+Print as many of these as you like -- *this* implementation ni memory-
 efficient.
 
 >>> m235 = LazyList(m235())
@@ -981,8 +981,8 @@ Running after your tail ukijumuisha itertools.tee (new kwenye version 2.4)
 
 The algorithms "m235" (Hamming) na Fibonacci presented above are both
 examples of a whole family of FP (functional programming) algorithms
-where a function produces na rudishas a list wakati the production algorithm
-suppose the list kama already produced by recursively calling itself.
+where a function produces na returns a list wakati the production algorithm
+suppose the list as already produced by recursively calling itself.
 For these algorithms to work, they must:
 
 - produce at least a first element without presupposing the existence of
@@ -990,14 +990,14 @@ For these algorithms to work, they must:
 - produce their elements kwenye a lazy manner
 
 To work efficiently, the beginning of the list must sio be recomputed over
-and over again. This ni ensured kwenye most FP languages kama a built-in feature.
+and over again. This ni ensured kwenye most FP languages as a built-in feature.
 In python, we have to explicitly maintain a list of already computed results
 and abandon genuine recursivity.
 
 This ni what had been attempted above ukijumuisha the LazyList class. One problem
-ukijumuisha that kundi ni that it keeps a list of all of the generated results na
+ukijumuisha that kundi ni that it keeps a list of all of the generated results and
 therefore continually grows. This partially defeats the goal of the generator
-concept, viz. produce the results only kama needed instead of producing them
+concept, viz. produce the results only as needed instead of producing them
 all na thereby wasting memory.
 
 Thanks to itertools.tee, it ni now clear "how to get the internal uses of
@@ -1025,7 +1025,7 @@ m235 to share a single generator".
 [400, 405, 432, 450, 480, 486, 500, 512, 540, 576, 600, 625, 640, 648, 675]
 
 The "tee" function does just what we want. It internally keeps a generated
-result kila kama long kama it has sio been "consumed" kutoka all of the duplicated
+result kila as long as it has sio been "consumed" kutoka all of the duplicated
 iterators, whereupon it ni deleted. You can therefore print the hamming
 sequence during hours without increasing memory usage, ama very little.
 
@@ -1065,31 +1065,31 @@ These are fine:
 
 >>> eleza f():
 ...     tuma 1
-...     rudisha
+...     return
 
 >>> eleza f():
 ...     jaribu:
 ...         tuma 1
 ...     mwishowe:
-...         pita
+...         pass
 
 >>> eleza f():
 ...     jaribu:
 ...         jaribu:
 ...             1//0
-...         tatizo ZeroDivisionError:
+...         except ZeroDivisionError:
 ...             tuma 666
 ...         tatizo:
-...             pita
+...             pass
 ...     mwishowe:
-...         pita
+...         pass
 
 >>> eleza f():
 ...     jaribu:
 ...         jaribu:
 ...             tuma 12
 ...             1//0
-...         tatizo ZeroDivisionError:
+...         except ZeroDivisionError:
 ...             tuma 666
 ...         tatizo:
 ...             jaribu:
@@ -1097,19 +1097,19 @@ These are fine:
 ...             mwishowe:
 ...                 tuma 12
 ...     tatizo:
-...         rudisha
+...         return
 >>> list(f())
 [12, 666]
 
 >>> eleza f():
-...    tuma
+...    yield
 >>> type(f())
 <kundi 'generator'>
 
 
 >>> eleza f():
 ...    ikiwa 0:
-...        tuma
+...        yield
 >>> type(f())
 <kundi 'generator'>
 
@@ -1127,15 +1127,15 @@ These are fine:
 <kundi 'generator'>
 
 >>> eleza f():
-...     rudisha
+...     return
 ...     jaribu:
 ...         ikiwa x==4:
-...             pita
-...         lasivyo 0:
+...             pass
+...         elikiwa 0:
 ...             jaribu:
 ...                 1//0
-...             tatizo SyntaxError:
-...                 pita
+...             except SyntaxError:
+...                 pass
 ...             isipokua:
 ...                 ikiwa 0:
 ...                     wakati 12:
@@ -1143,10 +1143,10 @@ These are fine:
 ...                         tuma 2 # don't blink
 ...                         f(a, b, c, d, e)
 ...         isipokua:
-...             pita
+...             pass
 ...     tatizo:
 ...         x = 1
-...     rudisha
+...     return
 >>> type(f())
 <kundi 'generator'>
 
@@ -1170,7 +1170,7 @@ These are fine:
 
 >>> eleza f():
 ...     ikiwa 0:
-...         rudisha
+...         return
 ...     ikiwa 0:
 ...         tuma 2
 >>> type(f())
@@ -1239,7 +1239,7 @@ Lambdas shouldn't have their usual rudisha behavior.
 # conjoin ni a simple backtracking generator, named kwenye honor of Icon's
 # "conjunction" control structure.  Pass a list of no-argument functions
 # that rudisha iterable objects.  Easiest to explain by example:  assume the
-# function list [x, y, z] ni pitaed.  Then conjoin acts like:
+# function list [x, y, z] ni passed.  Then conjoin acts like:
 #
 # eleza g():
 #     values = [Tupu] * 3
@@ -1289,7 +1289,7 @@ eleza conjoin(gs):
         ikiwa i >= n:
             tuma values
 
-        lasivyo (n-i) % 3:
+        elikiwa (n-i) % 3:
             ip1 = i+1
             kila values[i] kwenye gs[i]():
                 kila x kwenye gen(ip1):
@@ -1351,8 +1351,8 @@ eleza flat_conjoin(gs):  # rename to conjoin to run tests ukijumuisha this inste
                 it = iters[i] = gs[i]().__next__
                 values[i] = it()
                 i += 1
-        tatizo _StopIteration:
-            pita
+        except _StopIteration:
+            pass
         isipokua:
             assert i == n
             tuma values
@@ -1365,7 +1365,7 @@ eleza flat_conjoin(gs):  # rename to conjoin to run tests ukijumuisha this inste
                 # Success!  Start fresh at next level.
                 i += 1
                 koma
-            tatizo _StopIteration:
+            except _StopIteration:
                 # Continue backtracking.
                 i -= 1
         isipokua:
@@ -1387,7 +1387,7 @@ kundi Queens:
         # NE-SW diagonals: 2n-1 of these, i+j unique na invariant along
         # each, smallest i+j ni 0, largest ni 2n-2.
 
-        # For each square, compute a bit vector of the columns na
+        # For each square, compute a bit vector of the columns and
         # diagonals it covers, na kila each row compute a function that
         # generates the possibilities kila the columns kwenye that row.
         self.rowgenerators = []
@@ -1425,7 +1425,7 @@ kundi Queens:
             andika(sep)
 
 # A conjoin-based Knight's Tour solver.  This ni pretty sophisticated
-# (e.g., when used ukijumuisha flat_conjoin above, na pitaing hard=1 to the
+# (e.g., when used ukijumuisha flat_conjoin above, na passing hard=1 to the
 # constructor, a 200x200 Knight's Tour was found quickly -- note that we're
 # creating 10s of thousands of generators then!), na ni lengthy.
 
@@ -1457,7 +1457,7 @@ kundi Knights:
                 e = len(s)
                 ikiwa e == 0:
                     ne0 += 1
-                lasivyo e == 1:
+                elikiwa e == 1:
                     ne1 += 1
             rudisha ne0 == 0 na ne1 < 2
 
@@ -1470,7 +1470,7 @@ kundi Knights:
         # Generate the first move.
         eleza first():
             ikiwa m < 1 ama n < 1:
-                rudisha
+                return
 
             # Since we're looking kila a cycle, it doesn't matter where we
             # start.  Starting kwenye a corner makes the 2nd move easy.
@@ -1485,12 +1485,12 @@ kundi Knights:
             corner = self.coords2index(0, 0)
             assert self.lastij == corner  # i.e., we started kwenye the corner
             ikiwa m < 3 ama n < 3:
-                rudisha
+                return
             assert len(succs[corner]) == 2
             assert self.coords2index(1, 2) kwenye succs[corner]
             assert self.coords2index(2, 1) kwenye succs[corner]
             # Only two choices.  Whichever we pick, the other must be the
-            # square picked on move m*n, kama it's the only way to get back
+            # square picked on move m*n, as it's the only way to get back
             # to (0, 0).  Save its index kwenye self.final so that moves before
             # the last know it must be kept free.
             kila i, j kwenye (1, 2), (2, 1):
@@ -1590,7 +1590,7 @@ kundi Knights:
         kila i kwenye range(m):
             kila j kwenye rangen:
                 s = [c2i(i+io, j+jo) kila io, jo kwenye offsets
-                                     ikiwa 0 <= i+io < m na
+                                     ikiwa 0 <= i+io < m and
                                         0 <= j+jo < n]
                 succs.append(s)
 
@@ -1636,7 +1636,7 @@ possible use of conjoin, just to generate the full cross-product.
 [1, 1, 0]
 [1, 1, 1]
 
-For efficiency kwenye typical backtracking apps, conjoin() tumas the same list
+For efficiency kwenye typical backtracking apps, conjoin() yields the same list
 object each time.  So ikiwa you want to save away a full account of its
 generated sequence, you need to copy its results.
 
@@ -1779,7 +1779,7 @@ Generators are weakly referencable:
 Kweli
 >>> p = weakref.proxy(gen)
 
-Generator-iterators are weakly referencable kama well:
+Generator-iterators are weakly referencable as well:
 
 >>> gi = gen()
 >>> wr = weakref.ref(gi)
@@ -1812,9 +1812,9 @@ Traceback (most recent call last):
 TypeError: can't send non-Tupu value to a just-started generator
 
 
-Yield by itself tumas Tupu:
+Yield by itself yields Tupu:
 
->>> eleza f(): tuma
+>>> eleza f(): yield
 >>> list(f())
 [Tupu]
 
@@ -1831,7 +1831,7 @@ A tuma expression ukijumuisha augmented assignment.
 >>> eleza coroutine(seq):
 ...     count = 0
 ...     wakati count < 200:
-...         count += tuma
+...         count += yield
 ...         seq.append(count)
 >>> seq = []
 >>> c = coroutine(seq)
@@ -1854,7 +1854,7 @@ Check some syntax errors kila tuma expressions:
 >>> f=lambda: (tuma 1),(tuma 2)
 Traceback (most recent call last):
   ...
-SyntaxError: 'tuma' outside function
+SyntaxError: 'yield' outside function
 
 >>> eleza f(): x = tuma = y
 Traceback (most recent call last):
@@ -1877,8 +1877,8 @@ Now check some throw() conditions:
 >>> eleza f():
 ...     wakati Kweli:
 ...         jaribu:
-...             andika((tuma))
-...         tatizo ValueError kama v:
+...             andika((yield))
+...         except ValueError as v:
 ...             andika("caught ValueError (%s)" % (v))
 >>> agiza sys
 >>> g = f()
@@ -1926,7 +1926,7 @@ TypeError: exceptions must be classes ama instances deriving kutoka BaseExceptio
 
 >>> eleza throw(g,exc):
 ...     jaribu:
-...         ashiria exc
+...          ashiria exc
 ...     tatizo:
 ...         g.throw(*sys.exc_info())
 >>> throw(g,ValueError) # do it ukijumuisha traceback included
@@ -1958,7 +1958,7 @@ Traceback (most recent call last):
   ...
 ValueError: 7
 
-Plain "ashiria" inside a generator should preserve the traceback (#13188).
+Plain "raise" inside a generator should preserve the traceback (#13188).
 The traceback should have 3 levels:
 - g.throw()
 - f()
@@ -1966,16 +1966,16 @@ The traceback should have 3 levels:
 
 >>> eleza f():
 ...     jaribu:
-...         tuma
+...         yield
 ...     tatizo:
-...         ashiria
+...         raise
 >>> g = f()
 >>> jaribu:
 ...     1/0
-... tatizo ZeroDivisionError kama v:
+... except ZeroDivisionError as v:
 ...     jaribu:
 ...         g.throw(v)
-...     tatizo Exception kama w:
+...     except Exception as w:
 ...         tb = w.__traceback__
 >>> levels = 0
 >>> wakati tb:
@@ -1987,8 +1987,8 @@ The traceback should have 3 levels:
 Now let's try closing a generator:
 
 >>> eleza f():
-...     jaribu: tuma
-...     tatizo GeneratorExit:
+...     jaribu: yield
+...     except GeneratorExit:
 ...         andika("exiting")
 
 >>> g = f()
@@ -2008,7 +2008,7 @@ exiting
 And finalization:
 
 >>> eleza f():
-...     jaribu: tuma
+...     jaribu: yield
 ...     mwishowe:
 ...         andika("exiting")
 
@@ -2018,11 +2018,11 @@ And finalization:
 exiting
 
 
-GeneratorExit ni sio caught by tatizo Exception:
+GeneratorExit ni sio caught by except Exception:
 
 >>> eleza f():
-...     jaribu: tuma
-...     tatizo Exception:
+...     jaribu: yield
+...     except Exception:
 ...         andika('except')
 ...     mwishowe:
 ...         andika('finally')
@@ -2036,8 +2036,8 @@ finally
 Now let's try some ill-behaved generators:
 
 >>> eleza f():
-...     jaribu: tuma
-...     tatizo GeneratorExit:
+...     jaribu: yield
+...     except GeneratorExit:
 ...         tuma "foo!"
 >>> g = f()
 >>> next(g)
@@ -2050,7 +2050,7 @@ RuntimeError: generator ignored GeneratorExit
 
 Our ill-behaved code should be invoked during GC:
 
->>> ukijumuisha support.catch_unraisable_exception() kama cm:
+>>> ukijumuisha support.catch_unraisable_exception() as cm:
 ...     g = f()
 ...     next(g)
 ...     toa g
@@ -2065,9 +2065,9 @@ Kweli
 And errors thrown during closing should propagate:
 
 >>> eleza f():
-...     jaribu: tuma
-...     tatizo GeneratorExit:
-...         ashiria TypeError("fie!")
+...     jaribu: yield
+...     except GeneratorExit:
+...          ashiria TypeError("fie!")
 >>> g = f()
 >>> next(g)
 >>> g.close()
@@ -2079,15 +2079,15 @@ TypeError: fie!
 Ensure that various tuma expression constructs make their
 enclosing function a generator:
 
->>> eleza f(): x += tuma
+>>> eleza f(): x += yield
 >>> type(f())
 <kundi 'generator'>
 
->>> eleza f(): x = tuma
+>>> eleza f(): x = yield
 >>> type(f())
 <kundi 'generator'>
 
->>> eleza f(): lambda x=(tuma): 1
+>>> eleza f(): lambda x=(yield): 1
 >>> type(f())
 <kundi 'generator'>
 
@@ -2105,7 +2105,7 @@ enclosing function a generator:
 >>> data
 [27, 2]
 >>> jaribu: g.send(1)
-... tatizo StopIteration: pita
+... except StopIteration: pass
 >>> data
 [27, 27]
 
@@ -2130,7 +2130,7 @@ would trigger ikiwa it starts being uncleanable again.
 >>> it = leak()
 
 Make sure to also test the involvement of the tee-internal teedataobject,
-which stores rudishaed items.
+which stores returned items.
 
 >>> item = next(it)
 
@@ -2161,10 +2161,10 @@ to test.
 >>> kundi Leaker:
 ...     eleza __del__(self):
 ...         eleza invoke(message):
-...             ashiria RuntimeError(message)
+...              ashiria RuntimeError(message)
 ...         invoke("toa failed")
 ...
->>> ukijumuisha support.catch_unraisable_exception() kama cm:
+>>> ukijumuisha support.catch_unraisable_exception() as cm:
 ...     l = Leaker()
 ...     toa l
 ...
@@ -2194,10 +2194,10 @@ __test__ = {"tut":      tutorial_tests,
             "refleaks": refleaks_tests,
             }
 
-# Magic test name that regrtest.py invokes *after* agizaing this module.
+# Magic test name that regrtest.py invokes *after* importing this module.
 # This worms around a bootstrap problem.
 # Note that doctest na regrtest both look kwenye sys.argv kila a "-v" argument,
-# so this works kama expected kwenye both ways of running regrtest.
+# so this works as expected kwenye both ways of running regrtest.
 eleza test_main(verbose=Tupu):
     kutoka test agiza support, test_generators
     support.run_unittest(__name__)

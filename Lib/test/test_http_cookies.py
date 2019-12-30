@@ -35,8 +35,8 @@ kundi CookieTests(unittest.TestCase):
              'repr': "<SimpleCookie: key:term='value:term'>",
              'output': 'Set-Cookie: key:term=value:term'},
 
-            # issue22931 - Adding '[' na ']' kama valid characters kwenye cookie
-            # values kama defined kwenye RFC 6265
+            # issue22931 - Adding '[' na ']' as valid characters kwenye cookie
+            # values as defined kwenye RFC 6265
             {
                 'data': 'a=b; c=[; d=r; f=h',
                 'dict': {'a':'b', 'c':'[', 'd':'r', 'f':'h'},
@@ -247,14 +247,14 @@ kundi MorselTests(unittest.TestCase):
         M = cookies.Morsel()
         # tests valid na invalid reserved keys kila Morsels
         kila i kwenye M._reserved:
-            # Test that all valid keys are reported kama reserved na set them
+            # Test that all valid keys are reported as reserved na set them
             self.assertKweli(M.isReservedKey(i))
             M[i] = '%s_value' % i
         kila i kwenye M._reserved:
             # Test that valid key values come out fine
             self.assertEqual(M[i], '%s_value' % i)
         kila i kwenye "the holy hand grenade".split():
-            # Test that invalid keys ashiria CookieError
+            # Test that invalid keys  ashiria CookieError
             self.assertRaises(cookies.CookieError,
                               M.__setitem__, i, '%s_value' % i)
 
@@ -268,7 +268,7 @@ kundi MorselTests(unittest.TestCase):
         kila i kwenye "thou cast _the- !holy! ^hand| +*grenade~".split():
             # Try typical use case. Setting decent values.
             # Check output na js_output.
-            M['path'] = '/foo' # Try a reserved key kama well
+            M['path'] = '/foo' # Try a reserved key as well
             M.set(i, "%s_val" % i, "%s_coded_val" % i)
             self.assertEqual(M.key, i)
             self.assertEqual(M.value, "%s_val" % i)

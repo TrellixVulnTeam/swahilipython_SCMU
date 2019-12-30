@@ -34,7 +34,7 @@ kutoka test agiza pydoc_mod
 
 kundi nonascii:
     'Це не латиниця'
-    pita
+    pass
 
 ikiwa test.support.HAVE_DOCSTRINGS:
     expected_data_docstrings = (
@@ -263,7 +263,7 @@ No Python documentation found kila %r.
 Use help() to get the interactive help utility.
 Use help(str) kila help on the str class.'''.replace('\n', os.linesep)
 
-# output pattern kila module ukijumuisha bad agizas
+# output pattern kila module ukijumuisha bad imports
 badimport_pattern = "problem kwenye %s - ModuleNotFoundError: No module named %r"
 
 expected_dynamicattribute_pattern = """
@@ -346,7 +346,7 @@ eleza run_pydoc(module_name, *args, **env):
     rudisha out.strip()
 
 eleza get_pydoc_html(module):
-    "Returns pydoc generated output kama html"
+    "Returns pydoc generated output as html"
     doc = pydoc.HTMLDoc()
     output = doc.docmodule(module)
     loc = doc.getdocloc(pydoc_mod) ama ""
@@ -364,7 +364,7 @@ eleza get_pydoc_link(module):
     rudisha loc
 
 eleza get_pydoc_text(module):
-    "Returns pydoc generated output kama text"
+    "Returns pydoc generated output as text"
     doc = pydoc.TextDoc()
     loc = doc.getdocloc(pydoc_mod) ama ""
     ikiwa loc:
@@ -403,14 +403,14 @@ kundi PydocBaseTest(unittest.TestCase):
         pkgutil.walk_packages = self._restricted_walk_packages(walk_packages,
                                                                path)
         jaribu:
-            tuma
+            yield
         mwishowe:
             pkgutil.walk_packages = walk_packages
 
     eleza call_url_handler(self, url, expected_title):
         text = pydoc._url_handler(url, "text/html")
         result = get_html_title(text)
-        # Check the title to ensure an unexpected error page was sio rudishaed
+        # Check the title to ensure an unexpected error page was sio returned
         self.assertEqual(result, expected_title, text)
         rudisha text
 
@@ -479,7 +479,7 @@ kundi PydocDocTest(unittest.TestCase):
         kundi A:
             __name__ = 42
         kundi B:
-            pita
+            pass
         adoc = pydoc.render_doc(A())
         bdoc = pydoc.render_doc(B())
         self.assertEqual(adoc.replace("A", "B"), bdoc)
@@ -638,7 +638,7 @@ kundi PydocDocTest(unittest.TestCase):
     eleza test_builtin_on_metaclasses(self):
         """Tests help on metaclasses.
 
-        When running help() on a metaclasses such kama type, it
+        When running help() on a metaclasses such as type, it
         should sio contain any "Built-in subclasses" section.
         """
         doc = pydoc.TextDoc()
@@ -652,7 +652,7 @@ kundi PydocDocTest(unittest.TestCase):
                      'trace function introduces __locals__ unexpectedly')
     @requires_docstrings
     eleza test_help_output_redirect(self):
-        # issue 940286, ikiwa output ni set kwenye Helper, then all output kutoka
+        # issue 940286, ikiwa output ni set kwenye Helper, then all output from
         # Helper.help should be redirected
         old_pattern = expected_text_pattern
         getpager_old = pydoc.getpager
@@ -672,8 +672,8 @@ kundi PydocDocTest(unittest.TestCase):
 
         pydoc.getpager = getpager_new
         jaribu:
-            ukijumuisha captured_output('stdout') kama output, \
-                 captured_output('stderr') kama err:
+            ukijumuisha captured_output('stdout') as output, \
+                 captured_output('stderr') as err:
                 helper.help(module)
                 result = buf.getvalue().strip()
                 expected_text = expected_help_pattern % (
@@ -688,7 +688,7 @@ kundi PydocDocTest(unittest.TestCase):
 
     eleza test_namedtuple_fields(self):
         Person = namedtuple('Person', ['nickname', 'firstname'])
-        ukijumuisha captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() as help_io:
             pydoc.help(Person)
         helptext = help_io.getvalue()
         self.assertIn("nickname", helptext)
@@ -698,7 +698,7 @@ kundi PydocDocTest(unittest.TestCase):
 
     eleza test_namedtuple_public_underscore(self):
         NT = namedtuple('NT', ['abc', 'def'], rename=Kweli)
-        ukijumuisha captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() as help_io:
             pydoc.help(NT)
         helptext = help_io.getvalue()
         self.assertIn('_1', helptext)
@@ -708,7 +708,7 @@ kundi PydocDocTest(unittest.TestCase):
     eleza test_synopsis(self):
         self.addCleanup(unlink, TESTFN)
         kila encoding kwenye ('ISO-8859-1', 'UTF-8'):
-            ukijumuisha open(TESTFN, 'w', encoding=encoding) kama script:
+            ukijumuisha open(TESTFN, 'w', encoding=encoding) as script:
                 ikiwa encoding != 'UTF-8':
                     andika('#coding: {}'.format(encoding), file=script)
                 andika('"""line 1: h\xe9', file=script)
@@ -726,10 +726,10 @@ kundi PydocDocTest(unittest.TestCase):
         self.assertEqual(synopsis, expected)
 
     eleza test_synopsis_sourceless_empty_doc(self):
-        ukijumuisha test.support.temp_cwd() kama test_dir:
+        ukijumuisha test.support.temp_cwd() as test_dir:
             init_path = os.path.join(test_dir, 'foomod42.py')
             cached_path = importlib.util.cache_from_source(init_path)
-            ukijumuisha open(init_path, 'w') kama fobj:
+            ukijumuisha open(init_path, 'w') as fobj:
                 fobj.write("foo = 1")
             py_compile.compile(init_path)
             synopsis = pydoc.synopsis(init_path, {})
@@ -743,30 +743,30 @@ kundi PydocDocTest(unittest.TestCase):
                          ('I Am A Doc', '\nHere ni my description'))
 
     eleza test_is_package_when_not_package(self):
-        ukijumuisha test.support.temp_cwd() kama test_dir:
+        ukijumuisha test.support.temp_cwd() as test_dir:
             self.assertUongo(pydoc.ispackage(test_dir))
 
     eleza test_is_package_when_is_package(self):
-        ukijumuisha test.support.temp_cwd() kama test_dir:
+        ukijumuisha test.support.temp_cwd() as test_dir:
             init_path = os.path.join(test_dir, '__init__.py')
             open(init_path, 'w').close()
             self.assertKweli(pydoc.ispackage(test_dir))
             os.remove(init_path)
 
     eleza test_allmethods(self):
-        # issue 17476: allmethods was no longer rudishaing unbound methods.
+        # issue 17476: allmethods was no longer returning unbound methods.
         # This test ni a bit fragile kwenye the face of changes to object na type,
         # but I can't think of a better way to do it without duplicating the
         # logic of the function under test.
 
         kundi TestClass(object):
-            eleza method_rudishaing_true(self):
+            eleza method_returning_true(self):
                 rudisha Kweli
 
         # What we expect to get back: everything on object...
         expected = dict(vars(object))
         # ...plus our unbound method...
-        expected['method_rudishaing_true'] = TestClass.method_rudishaing_true
+        expected['method_returning_true'] = TestClass.method_returning_true
         # ...but sio the non-methods on object.
         toa expected['__doc__']
         toa expected['__class__']
@@ -780,9 +780,9 @@ kundi PydocDocTest(unittest.TestCase):
 
     eleza test_method_aliases(self):
         kundi A:
-            eleza tkashiria(self, aboveThis=Tupu):
+            eleza tkraise(self, aboveThis=Tupu):
                 """Raise this widget kwenye the stacking order."""
-            lift = tkashiria
+            lift = tkraise
             eleza a_size(self):
                 """Return size"""
         kundi B(A):
@@ -818,9 +818,9 @@ kundi B(A)
  |  a_size(self)
  |      Return size
  |\x20\x20
- |  lift = tkashiria(self, aboveThis=Tupu)
+ |  lift = tkraise(self, aboveThis=Tupu)
  |\x20\x20
- |  tkashiria(self, aboveThis=Tupu)
+ |  tkraise(self, aboveThis=Tupu)
  |      Raise this widget kwenye the stacking order.
  |\x20\x20
  |  ----------------------------------------------------------------------
@@ -861,9 +861,9 @@ Methods defined here:<br>
 Methods inherited kutoka A:<br>
 <dl><dt><a name="B-a_size"><strong>a_size</strong></a>(self)</dt><dd><tt>Return&nbsp;size</tt></dd></dl>
 
-<dl><dt><a name="B-lift"><strong>lift</strong></a> = <a href="#B-tkashiria">tkashiria</a>(self, aboveThis=Tupu)</dt></dl>
+<dl><dt><a name="B-lift"><strong>lift</strong></a> = <a href="#B-tkraise">tkraise</a>(self, aboveThis=Tupu)</dt></dl>
 
-<dl><dt><a name="B-tkashiria"><strong>tkashiria</strong></a>(self, aboveThis=Tupu)</dt><dd><tt>Raise&nbsp;this&nbsp;widget&nbsp;in&nbsp;the&nbsp;stacking&nbsp;order.</tt></dd></dl>
+<dl><dt><a name="B-tkraise"><strong>tkraise</strong></a>(self, aboveThis=Tupu)</dt><dd><tt>Raise&nbsp;this&nbsp;widget&nbsp;in&nbsp;the&nbsp;stacking&nbsp;order.</tt></dd></dl>
 
 <hr>
 Data descriptors inherited kutoka A:<br>
@@ -884,7 +884,7 @@ kundi PydocImportTest(PydocBaseTest):
         self.addCleanup(rmtree, TESTFN)
         importlib.invalidate_caches()
 
-    eleza test_badagiza(self):
+    eleza test_badimport(self):
         # This tests the fix kila issue 5230, where ikiwa pydoc found the module
         # but the module had an internal agiza error pydoc would report no doc
         # found.
@@ -898,9 +898,9 @@ kundi PydocImportTest(PydocBaseTest):
             )
 
         sourcefn = os.path.join(TESTFN, modname) + os.extsep + "py"
-        kila agizastring, expectedinmsg kwenye testpairs:
-            ukijumuisha open(sourcefn, 'w') kama f:
-                f.write("agiza {}\n".format(agizastring))
+        kila importstring, expectedinmsg kwenye testpairs:
+            ukijumuisha open(sourcefn, 'w') as f:
+                f.write("agiza {}\n".format(importstring))
             result = run_pydoc(modname, PYTHONPATH=TESTFN).decode("ascii")
             expected = badimport_pattern % (modname, expectedinmsg)
             self.assertEqual(expected, result)
@@ -910,18 +910,18 @@ kundi PydocImportTest(PydocBaseTest):
         pkgdir = os.path.join(TESTFN, "syntaxerr")
         os.mkdir(pkgdir)
         badsyntax = os.path.join(pkgdir, "__init__") + os.extsep + "py"
-        ukijumuisha open(badsyntax, 'w') kama f:
+        ukijumuisha open(badsyntax, 'w') as f:
             f.write("invalid python syntax = $1\n")
         ukijumuisha self.restrict_walk_packages(path=[TESTFN]):
-            ukijumuisha captured_stdout() kama out:
-                ukijumuisha captured_stderr() kama err:
+            ukijumuisha captured_stdout() as out:
+                ukijumuisha captured_stderr() as err:
                     pydoc.apropos('xyzzy')
             # No result, no error
             self.assertEqual(out.getvalue(), '')
             self.assertEqual(err.getvalue(), '')
             # The package name ni still matched
-            ukijumuisha captured_stdout() kama out:
-                ukijumuisha captured_stderr() kama err:
+            ukijumuisha captured_stdout() as out:
+                ukijumuisha captured_stderr() as err:
                     pydoc.apropos('syntaxerr')
             self.assertEqual(out.getvalue().strip(), 'syntaxerr')
             self.assertEqual(err.getvalue(), '')
@@ -934,8 +934,8 @@ kundi PydocImportTest(PydocBaseTest):
         # Note, on Windows the directory appears to be still
         #   readable so this ni sio really testing the issue there
         ukijumuisha self.restrict_walk_packages(path=[TESTFN]):
-            ukijumuisha captured_stdout() kama out:
-                ukijumuisha captured_stderr() kama err:
+            ukijumuisha captured_stdout() as out:
+                ukijumuisha captured_stderr() as err:
                     pydoc.apropos('SOMEKEY')
         # No result, no error
         self.assertEqual(out.getvalue(), '')
@@ -946,26 +946,26 @@ kundi PydocImportTest(PydocBaseTest):
         os.mkdir(pkgdir)
         self.addCleanup(rmtree, pkgdir)
         init_path = os.path.join(pkgdir, '__init__.py')
-        ukijumuisha open(init_path, 'w') kama fobj:
+        ukijumuisha open(init_path, 'w') as fobj:
             fobj.write("foo = 1")
         current_mode = stat.S_IMODE(os.stat(pkgdir).st_mode)
         jaribu:
             os.chmod(pkgdir, current_mode & ~stat.S_IEXEC)
-            ukijumuisha self.restrict_walk_packages(path=[TESTFN]), captured_stdout() kama stdout:
+            ukijumuisha self.restrict_walk_packages(path=[TESTFN]), captured_stdout() as stdout:
                 pydoc.apropos('')
             self.assertIn('walkpkg', stdout.getvalue())
         mwishowe:
             os.chmod(pkgdir, current_mode)
 
     eleza test_url_search_package_error(self):
-        # URL handler search should cope ukijumuisha packages that ashiria exceptions
+        # URL handler search should cope ukijumuisha packages that  ashiria exceptions
         pkgdir = os.path.join(TESTFN, "test_error_package")
         os.mkdir(pkgdir)
         init = os.path.join(pkgdir, "__init__.py")
-        ukijumuisha open(init, "wt", encoding="ascii") kama f:
-            f.write("""ashiria ValueError("ouch")\n""")
+        ukijumuisha open(init, "wt", encoding="ascii") as f:
+            f.write(""" ashiria ValueError("ouch")\n""")
         ukijumuisha self.restrict_walk_packages(path=[TESTFN]):
-            # Package has to be agizaable kila the error to have any effect
+            # Package has to be importable kila the error to have any effect
             saved_paths = tuple(sys.path)
             sys.path.insert(0, TESTFN)
             jaribu:
@@ -1003,7 +1003,7 @@ kundi PydocImportTest(PydocBaseTest):
 
         output = StringIO()
         helper = pydoc.Helper(output=output)
-        ukijumuisha captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() as help_io:
             helper('modules pydoc')
         result = help_io.getvalue()
 
@@ -1015,14 +1015,14 @@ kundi PydocImportTest(PydocBaseTest):
 
         output = StringIO()
         helper = pydoc.Helper(output=output)
-        ukijumuisha captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() as help_io:
             helper('modules garbage')
         result = help_io.getvalue()
 
         self.assertKweli(result.startswith(expected))
 
-    eleza test_agizafile(self):
-        loaded_pydoc = pydoc.agizafile(pydoc.__file__)
+    eleza test_importfile(self):
+        loaded_pydoc = pydoc.importfile(pydoc.__file__)
 
         self.assertIsNot(loaded_pydoc, pydoc)
         self.assertEqual(loaded_pydoc.__name__, 'pydoc')
@@ -1067,7 +1067,7 @@ kundi TestDescriptions(unittest.TestCase):
             # test high-level function
             jaribu:
                 pydoc.render_doc(name)
-            tatizo ImportError:
+            except ImportError:
                 self.fail('finding the doc of {!r} failed'.format(name))
 
         kila name kwenye ('notbuiltins', 'strrr', 'strr.translate',
@@ -1175,7 +1175,7 @@ cm(x) method of builtins.type instance
 
     @requires_docstrings
     eleza test_getset_descriptor(self):
-        # Currently these attributes are implemented kama getset descriptors
+        # Currently these attributes are implemented as getset descriptors
         # kwenye CPython.
         self.assertEqual(self._get_summary_line(int.numerator), "numerator")
         self.assertEqual(self._get_summary_line(float.real), "real")
@@ -1184,7 +1184,7 @@ cm(x) method of builtins.type instance
 
     @requires_docstrings
     eleza test_member_descriptor(self):
-        # Currently these attributes are implemented kama member descriptors
+        # Currently these attributes are implemented as member descriptors
         # kwenye CPython.
         self.assertEqual(self._get_summary_line(complex.real), "real")
         self.assertEqual(self._get_summary_line(range.start), "start")
@@ -1201,7 +1201,7 @@ cm(x) method of builtins.type instance
     @requires_docstrings
     eleza test_dict_attr_descriptor(self):
         kundi NS:
-            pita
+            pass
         self.assertEqual(self._get_summary_line(NS.__dict__['__dict__']),
                          "__dict__")
 
@@ -1345,7 +1345,7 @@ kundi PydocUrlHandlerTest(PydocBaseTest):
         self.assertRaises(TypeError, f, 'B', 'foobar')
 
     eleza test_url_requests(self):
-        # Test kila the correct title kwenye the html pages rudishaed.
+        # Test kila the correct title kwenye the html pages returned.
         # This tests the different parts of the URL handler without
         # getting too picky about the exact html.
         requests = [
@@ -1416,7 +1416,7 @@ kundi PydocWithMetaClasses(unittest.TestCase):
                     rudisha 42
                 rudisha super().__getattr(name)
         kundi Class(metaclass=Meta):
-            pita
+            pass
         output = StringIO()
         helper = pydoc.Helper(output=output)
         helper(Class)
@@ -1453,9 +1453,9 @@ kundi PydocWithMetaClasses(unittest.TestCase):
                     rudisha 3
                 rudisha super().__getattr__(name)
         kundi Class1(metaclass=Meta1):
-            pita
+            pass
         kundi Class2(Class1, metaclass=Meta3):
-            pita
+            pass
         fail1 = fail2 = Uongo
         output = StringIO()
         helper = pydoc.Helper(output=output)
@@ -1490,7 +1490,7 @@ kundi PydocWithMetaClasses(unittest.TestCase):
     eleza test_resolve_false(self):
         # Issue #23008: pydoc enum.{,Int}Enum failed
         # because bool(enum.Enum) ni Uongo.
-        ukijumuisha captured_stdout() kama help_io:
+        ukijumuisha captured_stdout() as help_io:
             pydoc.help('enum.Enum')
         helptext = help_io.getvalue()
         self.assertIn('kundi Enum', helptext)

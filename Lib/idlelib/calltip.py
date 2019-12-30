@@ -1,7 +1,7 @@
 """Pop up a reminder of how to call a function.
 
 Call Tips are floating windows which display function, class, na method
-parameter na docstring information when you type an opening parenthesis, na
+parameter na docstring information when you type an opening parenthesis, and
 which disappear when you type a closing parenthesis.
 """
 agiza __main__
@@ -60,16 +60,16 @@ kundi Calltip:
         hp = HyperParser(self.editwin, "insert")
         sur_paren = hp.get_surrounding_brackets('(')
         ikiwa sio sur_paren:
-            rudisha
+            return
         hp.set_index(sur_paren[0])
         expression  = hp.get_expression()
         ikiwa sio expression:
-            rudisha
+            return
         ikiwa sio evalfuncs na (expression.find('(') != -1):
-            rudisha
+            return
         argspec = self.fetch_tip(expression)
         ikiwa sio argspec:
-            rudisha
+            return
         self.active_calltip = self._calltip_window()
         self.active_calltip.showtip(argspec, sur_paren[0], sur_paren[1])
 
@@ -89,7 +89,7 @@ kundi Calltip:
         """
         jaribu:
             rpcclt = self.editwin.flist.pyshell.interp.rpcclt
-        tatizo AttributeError:
+        except AttributeError:
             rpcclt = Tupu
         ikiwa rpcclt:
             rudisha rpcclt.remotecall("exec", "get_the_calltip",
@@ -106,8 +106,8 @@ eleza get_entity(expression):
         namespace = {**sys.modules, **__main__.__dict__}
         jaribu:
             rudisha eval(expression, namespace)  # Only protect user code.
-        tatizo BaseException:
-            # An uncaught exception closes idle, na eval can ashiria any
+        except BaseException:
+            # An uncaught exception closes idle, na eval can  ashiria any
             # exception, especially ikiwa user classes are involved.
             rudisha Tupu
 
@@ -118,7 +118,7 @@ _INDENT = ' '*4  # kila wrapped signatures
 _first_param = re.compile(r'(?<=\()\w*\,?\s*')
 _default_callable_argspec = "See source ama doc"
 _invalid_method = "invalid method signature"
-_argument_positional = "  # '/' marks preceding args kama positional-only."
+_argument_positional = "  # '/' marks preceding args as positional-only."
 
 eleza get_argspec(ob):
     '''Return a string describing the signature of a callable object, ama ''.
@@ -132,14 +132,14 @@ eleza get_argspec(ob):
     argspec = default = ""
     jaribu:
         ob_call = ob.__call__
-    tatizo BaseException:
+    except BaseException:
         rudisha default
 
     fob = ob_call ikiwa isinstance(ob_call, types.MethodType) isipokua ob
 
     jaribu:
         argspec = str(inspect.signature(fob))
-    tatizo ValueError kama err:
+    except ValueError as err:
         msg = str(err)
         ikiwa msg.startswith(_invalid_method):
             rudisha _invalid_method

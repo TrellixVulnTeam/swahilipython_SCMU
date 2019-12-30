@@ -1,16 +1,16 @@
-import unittest
-from ctypes import *
+agiza unittest
+kutoka ctypes agiza *
 
 ################################################################
 #
-# The incomplete pointer example from the tutorial
+# The incomplete pointer example kutoka the tutorial
 #
 
-class MyTestCase(unittest.TestCase):
+kundi MyTestCase(unittest.TestCase):
 
-    def test_incomplete_example(self):
+    eleza test_incomplete_example(self):
         lpcell = POINTER("cell")
-        class cell(Structure):
+        kundi cell(Structure):
             _fields_ = [("name", c_char_p),
                         ("next", lpcell)]
 
@@ -27,16 +27,16 @@ class MyTestCase(unittest.TestCase):
         p = c1
 
         result = []
-        for i in range(8):
+        kila i kwenye range(8):
             result.append(p.name)
             p = p.next[0]
         self.assertEqual(result, [b"foo", b"bar"] * 4)
 
         # to sio leak references, we must clean _pointer_type_cache
-        from ctypes agiza _pointer_type_cache
+        kutoka ctypes agiza _pointer_type_cache
         toa _pointer_type_cache[cell]
 
 ################################################################
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

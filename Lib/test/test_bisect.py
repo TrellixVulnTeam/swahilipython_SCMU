@@ -21,7 +21,7 @@ kundi Range(object):
         ikiwa idx < 0:
             idx += n
         ikiwa idx >= n:
-            ashiria IndexError(idx)
+             ashiria IndexError(idx)
         rudisha self.start + idx
 
     eleza insert(self, idx, item):
@@ -136,7 +136,7 @@ kundi TestBisect:
         self.assertEqual(mod.bisect_right(data, n-3, n-10, n), n-2)
 
     eleza test_large_pyrange(self):
-        # Same kama above, but without C-imposed limits on range() parameters
+        # Same as above, but without C-imposed limits on range() parameters
         mod = self.module
         n = sys.maxsize
         data = Range(0, n-1)
@@ -253,9 +253,9 @@ kundi GetOnly:
         rudisha 10
 
 kundi CmpErr:
-    "Dummy element that always ashirias an error during comparison"
+    "Dummy element that always raises an error during comparison"
     eleza __lt__(self, other):
-        ashiria ZeroDivisionError
+         ashiria ZeroDivisionError
     __gt__ = __lt__
     __le__ = __lt__
     __ge__ = __lt__

@@ -51,7 +51,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
         mock1 = Mock()
         mock2 = Mock()
 
-        mock1.__iter__ = Mock(rudisha_value=iter([]))
+        mock1.__iter__ = Mock(return_value=iter([]))
         self.assertEqual(list(mock1), [])
         self.assertRaises(TypeError, lambda: list(mock2))
 
@@ -219,11 +219,11 @@ kundi TestMockingMagicMethods(unittest.TestCase):
             self.assertUongo(mock != 4)
 
         mock = MagicMock()
-        mock.__eq__.rudisha_value = Kweli
+        mock.__eq__.return_value = Kweli
         self.assertIsInstance(mock == 3, bool)
         self.assertEqual(mock == 3, Kweli)
 
-        mock.__ne__.rudisha_value = Uongo
+        mock.__ne__.return_value = Uongo
         self.assertIsInstance(mock != 3, bool)
         self.assertEqual(mock != 3, Uongo)
 
@@ -249,10 +249,10 @@ kundi TestMockingMagicMethods(unittest.TestCase):
     eleza test_magicmock(self):
         mock = MagicMock()
 
-        mock.__iter__.rudisha_value = iter([1, 2, 3])
+        mock.__iter__.return_value = iter([1, 2, 3])
         self.assertEqual(list(mock), [1, 2, 3])
 
-        getattr(mock, '__bool__').rudisha_value = Uongo
+        getattr(mock, '__bool__').return_value = Uongo
         self.assertUongo(hasattr(mock, '__nonzero__'))
         self.assertUongo(bool(mock))
 
@@ -335,21 +335,21 @@ kundi TestMockingMagicMethods(unittest.TestCase):
 
     eleza test_magic_methods_and_spec(self):
         kundi Iterable(object):
-            eleza __iter__(self): pita
+            eleza __iter__(self): pass
 
         mock = Mock(spec=Iterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
 
-        mock.__iter__ = Mock(rudisha_value=iter([]))
+        mock.__iter__ = Mock(return_value=iter([]))
         self.assertEqual(list(mock), [])
 
         kundi NonIterable(object):
-            pita
+            pass
         mock = Mock(spec=NonIterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
 
         eleza set_int():
-            mock.__int__ = Mock(rudisha_value=iter([]))
+            mock.__int__ = Mock(return_value=iter([]))
         self.assertRaises(AttributeError, set_int)
 
         mock = MagicMock(spec=Iterable)
@@ -359,21 +359,21 @@ kundi TestMockingMagicMethods(unittest.TestCase):
 
     eleza test_magic_methods_and_spec_set(self):
         kundi Iterable(object):
-            eleza __iter__(self): pita
+            eleza __iter__(self): pass
 
         mock = Mock(spec_set=Iterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
 
-        mock.__iter__ = Mock(rudisha_value=iter([]))
+        mock.__iter__ = Mock(return_value=iter([]))
         self.assertEqual(list(mock), [])
 
         kundi NonIterable(object):
-            pita
+            pass
         mock = Mock(spec_set=NonIterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
 
         eleza set_int():
-            mock.__int__ = Mock(rudisha_value=iter([]))
+            mock.__int__ = Mock(return_value=iter([]))
         self.assertRaises(AttributeError, set_int)
 
         mock = MagicMock(spec_set=Iterable)
@@ -391,7 +391,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
         )
 
 
-    eleza test_attributes_and_rudisha_value(self):
+    eleza test_attributes_and_return_value(self):
         mock = MagicMock()
         attr = mock.foo
         eleza _get_type(obj):
@@ -400,15 +400,15 @@ kundi TestMockingMagicMethods(unittest.TestCase):
             rudisha type(obj).__mro__[1]
         self.assertEqual(_get_type(attr), MagicMock)
 
-        rudishaed = mock()
-        self.assertEqual(_get_type(rudishaed), MagicMock)
+        returned = mock()
+        self.assertEqual(_get_type(returned), MagicMock)
 
 
     eleza test_magic_methods_are_magic_mocks(self):
         mock = MagicMock()
         self.assertIsInstance(mock.__getitem__, MagicMock)
 
-        mock[1][2].__getitem__.rudisha_value = 3
+        mock[1][2].__getitem__.return_value = 3
         self.assertEqual(mock[1][2][3], 3)
 
 
@@ -443,7 +443,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
 
     eleza test_magic_method_type(self):
         kundi Foo(MagicMock):
-            pita
+            pass
 
         foo = Foo()
         self.assertIsInstance(foo.__int__, Foo)
@@ -451,17 +451,17 @@ kundi TestMockingMagicMethods(unittest.TestCase):
 
     eleza test_descriptor_from_class(self):
         m = MagicMock()
-        type(m).__str__.rudisha_value = 'foo'
+        type(m).__str__.return_value = 'foo'
         self.assertEqual(str(m), 'foo')
 
 
-    eleza test_iterable_as_iter_rudisha_value(self):
+    eleza test_iterable_as_iter_return_value(self):
         m = MagicMock()
-        m.__iter__.rudisha_value = [1, 2, 3]
+        m.__iter__.return_value = [1, 2, 3]
         self.assertEqual(list(m), [1, 2, 3])
         self.assertEqual(list(m), [1, 2, 3])
 
-        m.__iter__.rudisha_value = iter([4, 5, 6])
+        m.__iter__.return_value = iter([4, 5, 6])
         self.assertEqual(list(m), [4, 5, 6])
         self.assertEqual(list(m), [])
 
@@ -469,9 +469,9 @@ kundi TestMockingMagicMethods(unittest.TestCase):
     eleza test_matmul(self):
         m = MagicMock()
         self.assertIsInstance(m @ 1, MagicMock)
-        m.__matmul__.rudisha_value = 42
-        m.__rmatmul__.rudisha_value = 666
-        m.__imatmul__.rudisha_value = 24
+        m.__matmul__.return_value = 42
+        m.__rmatmul__.return_value = 666
+        m.__imatmul__.return_value = 24
         self.assertEqual(m @ 1, 42)
         self.assertEqual(1 @ m, 666)
         m @= 24
@@ -480,7 +480,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
     eleza test_divmod_and_rdivmod(self):
         m = MagicMock()
         self.assertIsInstance(divmod(5, m), MagicMock)
-        m.__divmod__.rudisha_value = (2, 1)
+        m.__divmod__.return_value = (2, 1)
         self.assertEqual(divmod(m, 2), (2, 1))
         m = MagicMock()
         foo = divmod(2, m)
@@ -495,15 +495,15 @@ kundi TestMockingMagicMethods(unittest.TestCase):
     # http://bugs.python.org/issue23310
     # Check ikiwa you can change behaviour of magic methods kwenye MagicMock init
     eleza test_magic_in_initialization(self):
-        m = MagicMock(**{'__str__.rudisha_value': "12"})
+        m = MagicMock(**{'__str__.return_value': "12"})
         self.assertEqual(str(m), "12")
 
     eleza test_changing_magic_set_in_initialization(self):
-        m = MagicMock(**{'__str__.rudisha_value': "12"})
-        m.__str__.rudisha_value = "13"
+        m = MagicMock(**{'__str__.return_value': "12"})
+        m.__str__.return_value = "13"
         self.assertEqual(str(m), "13")
-        m = MagicMock(**{'__str__.rudisha_value': "12"})
-        m.configure_mock(**{'__str__.rudisha_value': "14"})
+        m = MagicMock(**{'__str__.return_value': "12"})
+        m.configure_mock(**{'__str__.return_value': "14"})
         self.assertEqual(str(m), "14")
 
 

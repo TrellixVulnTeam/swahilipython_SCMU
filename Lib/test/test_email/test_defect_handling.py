@@ -1,21 +1,21 @@
-import textwrap
-import unittest
-import contextlib
-from email import policy
-from email import errors
-from test.test_email import TestEmailBase
+agiza textwrap
+agiza unittest
+agiza contextlib
+kutoka email agiza policy
+kutoka email agiza errors
+kutoka test.test_email agiza TestEmailBase
 
 
-class TestDefectsBase:
+kundi TestDefectsBase:
 
     policy = policy.default
-    raise_expected = False
+    raise_expected = Uongo
 
     @contextlib.contextmanager
-    def _raise_point(self, defect):
+    eleza _raise_point(self, defect):
         yield
 
-    def test_same_boundary_inner_outer(self):
+    eleza test_same_boundary_inner_outer(self):
         source = textwrap.dedent("""\
             Subject: XX
             From: xx@xx.dk
@@ -53,16 +53,16 @@ class TestDefectsBase:
 
             """)
         # XXX better would be to actually detect the duplicate.
-        with self._raise_point(errors.StartBoundaryNotFoundDefect):
+        ukijumuisha self._raise_point(errors.StartBoundaryNotFoundDefect):
             msg = self._str_msg(source)
-        if self.raise_expected: return
+        ikiwa self.raise_expected: return
         inner = msg.get_payload(0)
-        self.assertTrue(hasattr(inner, 'defects'))
+        self.assertKweli(hasattr(inner, 'defects'))
         self.assertEqual(len(self.get_defects(inner)), 1)
         self.assertIsInstance(self.get_defects(inner)[0],
                               errors.StartBoundaryNotFoundDefect)
 
-    def test_multipart_no_boundary(self):
+    eleza test_multipart_no_boundary(self):
         source = textwrap.dedent("""\
             Date: Fri, 6 Apr 2001 09:23:06 -0800 (GMT-0800)
             From: foobar
@@ -81,9 +81,9 @@ class TestDefectsBase:
 
             --JAB03225.986577786/zinfandel.lacita.com--
             """)
-        with self._raise_point(errors.NoBoundaryInMultipartDefect):
+        ukijumuisha self._raise_point(errors.NoBoundaryInMultipartDefect):
             msg = self._str_msg(source)
-        if self.raise_expected: return
+        ikiwa self.raise_expected: return
         self.assertIsInstance(msg.get_payload(), str)
         self.assertEqual(len(self.get_defects(msg)), 2)
         self.assertIsInstance(self.get_defects(msg)[0],
@@ -95,7 +95,7 @@ class TestDefectsBase:
         Date: Wed, 14 Nov 2007 12:56:23 GMT
         From: foo@bar.invalid
         To: foo@bar.invalid
-        Subject: Content-Transfer-Encoding: base64 and multipart
+        Subject: Content-Transfer-Encoding: base64 na multipart
         MIME-Version: 1.0
         Content-Type: multipart/mixed;
             boundary="===============3344438784458119861=="{}
@@ -114,30 +114,30 @@ class TestDefectsBase:
         --===============3344438784458119861==--
         """)
 
-    def test_multipart_invalid_cte(self):
-        with self._raise_point(
+    eleza test_multipart_invalid_cte(self):
+        ukijumuisha self._raise_point(
                 errors.InvalidMultipartContentTransferEncodingDefect):
             msg = self._str_msg(
                     self.multipart_msg.format(
                         "\nContent-Transfer-Encoding: base64"))
-        if self.raise_expected: return
+        ikiwa self.raise_expected: return
         self.assertEqual(len(self.get_defects(msg)), 1)
         self.assertIsInstance(self.get_defects(msg)[0],
             errors.InvalidMultipartContentTransferEncodingDefect)
 
-    def test_multipart_no_cte_no_defect(self):
-        if self.raise_expected: return
+    eleza test_multipart_no_cte_no_defect(self):
+        ikiwa self.raise_expected: return
         msg = self._str_msg(self.multipart_msg.format(''))
         self.assertEqual(len(self.get_defects(msg)), 0)
 
-    def test_multipart_valid_cte_no_defect(self):
-        if self.raise_expected: return
-        for cte in ('7bit', '8bit', 'BINary'):
+    eleza test_multipart_valid_cte_no_defect(self):
+        ikiwa self.raise_expected: return
+        kila cte kwenye ('7bit', '8bit', 'BINary'):
             msg = self._str_msg(
                 self.multipart_msg.format("\nContent-Transfer-Encoding: "+cte))
             self.assertEqual(len(self.get_defects(msg)), 0, "cte="+cte)
 
-    def test_lying_multipart(self):
+    eleza test_lying_multipart(self):
         source = textwrap.dedent("""\
             From: "Allison Dunlap" <xxx@example.com>
             To: yyy@example.com
@@ -148,17 +148,17 @@ class TestDefectsBase:
 
             Blah blah blah
             """)
-        with self._raise_point(errors.NoBoundaryInMultipartDefect):
+        ukijumuisha self._raise_point(errors.NoBoundaryInMultipartDefect):
             msg = self._str_msg(source)
-        if self.raise_expected: return
-        self.assertTrue(hasattr(msg, 'defects'))
+        ikiwa self.raise_expected: return
+        self.assertKweli(hasattr(msg, 'defects'))
         self.assertEqual(len(self.get_defects(msg)), 2)
         self.assertIsInstance(self.get_defects(msg)[0],
                               errors.NoBoundaryInMultipartDefect)
         self.assertIsInstance(self.get_defects(msg)[1],
                               errors.MultipartInvariantViolationDefect)
 
-    def test_missing_start_boundary(self):
+    eleza test_missing_start_boundary(self):
         source = textwrap.dedent("""\
             Content-Type: multipart/mixed; boundary="AAA"
             From: Mail Delivery Subsystem <xxx@example.com>
@@ -187,19 +187,19 @@ class TestDefectsBase:
         #    message/rfc822
         #        multipart/mixed [*]
         #
-        # [*] This message is missing its start boundary
-        with self._raise_point(errors.StartBoundaryNotFoundDefect):
+        # [*] This message ni missing its start boundary
+        ukijumuisha self._raise_point(errors.StartBoundaryNotFoundDefect):
             outer = self._str_msg(source)
-        if self.raise_expected: return
+        ikiwa self.raise_expected: return
         bad = outer.get_payload(1).get_payload(0)
         self.assertEqual(len(self.get_defects(bad)), 1)
         self.assertIsInstance(self.get_defects(bad)[0],
                               errors.StartBoundaryNotFoundDefect)
 
-    def test_first_line_is_continuation_header(self):
-        with self._raise_point(errors.FirstHeaderLineIsContinuationDefect):
+    eleza test_first_line_is_continuation_header(self):
+        ukijumuisha self._raise_point(errors.FirstHeaderLineIsContinuationDefect):
             msg = self._str_msg(' Line 1\nSubject: test\n\nbody')
-        if self.raise_expected: return
+        ikiwa self.raise_expected: return
         self.assertEqual(msg.keys(), ['Subject'])
         self.assertEqual(msg.get_payload(), 'body')
         self.assertEqual(len(self.get_defects(msg)), 1)
@@ -207,20 +207,20 @@ class TestDefectsBase:
                                  [errors.FirstHeaderLineIsContinuationDefect])
         self.assertEqual(self.get_defects(msg)[0].line, ' Line 1\n')
 
-    def test_missing_header_body_separator(self):
-        # Our heuristic if we see a line that doesn't look like a header (no
-        # leading whitespace but no ':') is to assume that the blank line that
-        # separates the header from the body is missing, and to stop parsing
-        # headers and start parsing the body.
-        with self._raise_point(errors.MissingHeaderBodySeparatorDefect):
+    eleza test_missing_header_body_separator(self):
+        # Our heuristic ikiwa we see a line that doesn't look like a header (no
+        # leading whitespace but no ':') ni to assume that the blank line that
+        # separates the header kutoka the body ni missing, na to stop parsing
+        # headers na start parsing the body.
+        ukijumuisha self._raise_point(errors.MissingHeaderBodySeparatorDefect):
             msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')
-        if self.raise_expected: return
+        ikiwa self.raise_expected: return
         self.assertEqual(msg.keys(), ['Subject'])
         self.assertEqual(msg.get_payload(), 'not a header\nTo: abc\n\nb\n')
         self.assertDefectsEqual(self.get_defects(msg),
                                 [errors.MissingHeaderBodySeparatorDefect])
 
-    def test_bad_padding_in_base64_payload(self):
+    eleza test_bad_padding_in_base64_payload(self):
         source = textwrap.dedent("""\
             Subject: test
             MIME-Version: 1.0
@@ -230,14 +230,14 @@ class TestDefectsBase:
             dmk
             """)
         msg = self._str_msg(source)
-        with self._raise_point(errors.InvalidBase64PaddingDefect):
-            payload = msg.get_payload(decode=True)
-        if self.raise_expected: return
+        ukijumuisha self._raise_point(errors.InvalidBase64PaddingDefect):
+            payload = msg.get_payload(decode=Kweli)
+        ikiwa self.raise_expected: return
         self.assertEqual(payload, b'vi')
         self.assertDefectsEqual(self.get_defects(msg),
                                 [errors.InvalidBase64PaddingDefect])
 
-    def test_invalid_chars_in_base64_payload(self):
+    eleza test_invalid_chars_in_base64_payload(self):
         source = textwrap.dedent("""\
             Subject: test
             MIME-Version: 1.0
@@ -247,14 +247,14 @@ class TestDefectsBase:
             dm\x01k===
             """)
         msg = self._str_msg(source)
-        with self._raise_point(errors.InvalidBase64CharactersDefect):
-            payload = msg.get_payload(decode=True)
-        if self.raise_expected: return
+        ukijumuisha self._raise_point(errors.InvalidBase64CharactersDefect):
+            payload = msg.get_payload(decode=Kweli)
+        ikiwa self.raise_expected: return
         self.assertEqual(payload, b'vi')
         self.assertDefectsEqual(self.get_defects(msg),
                                 [errors.InvalidBase64CharactersDefect])
 
-    def test_invalid_length_of_base64_payload(self):
+    eleza test_invalid_length_of_base64_payload(self):
         source = textwrap.dedent("""\
             Subject: test
             MIME-Version: 1.0
@@ -264,14 +264,14 @@ class TestDefectsBase:
             abcde
             """)
         msg = self._str_msg(source)
-        with self._raise_point(errors.InvalidBase64LengthDefect):
-            payload = msg.get_payload(decode=True)
-        if self.raise_expected: return
+        ukijumuisha self._raise_point(errors.InvalidBase64LengthDefect):
+            payload = msg.get_payload(decode=Kweli)
+        ikiwa self.raise_expected: return
         self.assertEqual(payload, b'abcde')
         self.assertDefectsEqual(self.get_defects(msg),
                                 [errors.InvalidBase64LengthDefect])
 
-    def test_missing_ending_boundary(self):
+    eleza test_missing_ending_boundary(self):
         source = textwrap.dedent("""\
             To: 1@harrydomain4.com
             Subject: Fwd: 1
@@ -292,46 +292,46 @@ class TestDefectsBase:
             Alternative 2
 
             """)
-        with self._raise_point(errors.CloseBoundaryNotFoundDefect):
+        ukijumuisha self._raise_point(errors.CloseBoundaryNotFoundDefect):
             msg = self._str_msg(source)
-        if self.raise_expected: return
+        ikiwa self.raise_expected: return
         self.assertEqual(len(msg.get_payload()), 2)
         self.assertEqual(msg.get_payload(1).get_payload(), 'Alternative 2\n')
         self.assertDefectsEqual(self.get_defects(msg),
                                 [errors.CloseBoundaryNotFoundDefect])
 
 
-class TestDefectDetection(TestDefectsBase, TestEmailBase):
+kundi TestDefectDetection(TestDefectsBase, TestEmailBase):
 
-    def get_defects(self, obj):
-        return obj.defects
+    eleza get_defects(self, obj):
+        rudisha obj.defects
 
 
-class TestDefectCapture(TestDefectsBase, TestEmailBase):
+kundi TestDefectCapture(TestDefectsBase, TestEmailBase):
 
-    class CapturePolicy(policy.EmailPolicy):
-        captured = None
-        def register_defect(self, obj, defect):
+    kundi CapturePolicy(policy.EmailPolicy):
+        captured = Tupu
+        eleza register_defect(self, obj, defect):
             self.captured.append(defect)
 
-    def setUp(self):
+    eleza setUp(self):
         self.policy = self.CapturePolicy(captured=list())
 
-    def get_defects(self, obj):
-        return self.policy.captured
+    eleza get_defects(self, obj):
+        rudisha self.policy.captured
 
 
-class TestDefectRaising(TestDefectsBase, TestEmailBase):
+kundi TestDefectRaising(TestDefectsBase, TestEmailBase):
 
     policy = TestDefectsBase.policy
-    policy = policy.clone(raise_on_defect=True)
-    raise_expected = True
+    policy = policy.clone(raise_on_defect=Kweli)
+    raise_expected = Kweli
 
     @contextlib.contextmanager
-    def _raise_point(self, defect):
-        with self.assertRaises(defect):
+    eleza _raise_point(self, defect):
+        ukijumuisha self.assertRaises(defect):
             yield
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,5 @@
 #-*- coding: iso-8859-1 -*-
-# pysqlite2/test/userfunctions.py: tests kila user-defined functions na
+# pysqlite2/test/userfunctions.py: tests kila user-defined functions and
 #                                  aggregates.
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
@@ -18,29 +18,29 @@
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
-# 2. Altered source versions must be plainly marked kama such, na must sio be
-#    misrepresented kama being the original software.
+# 2. Altered source versions must be plainly marked as such, na must sio be
+#    misrepresented as being the original software.
 # 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza unittest
 agiza unittest.mock
-agiza sqlite3 kama sqlite
+agiza sqlite3 as sqlite
 
-eleza func_rudishatext():
+eleza func_returntext():
     rudisha "foo"
-eleza func_rudishaunicode():
+eleza func_returnunicode():
     rudisha "bar"
-eleza func_rudishaint():
+eleza func_returnint():
     rudisha 42
-eleza func_rudishafloat():
+eleza func_returnfloat():
     rudisha 3.14
-eleza func_rudishanull():
+eleza func_returnnull():
     rudisha Tupu
-eleza func_rudishablob():
+eleza func_returnblob():
     rudisha b"blob"
-eleza func_rudishalonglong():
+eleza func_returnlonglong():
     rudisha 1<<31
-eleza func_ashiriaexception():
+eleza func_raiseexception():
     5/0
 
 eleza func_isstring(v):
@@ -61,31 +61,31 @@ eleza func(*args):
 
 kundi AggrNoStep:
     eleza __init__(self):
-        pita
+        pass
 
     eleza finalize(self):
         rudisha 1
 
 kundi AggrNoFinalize:
     eleza __init__(self):
-        pita
+        pass
 
     eleza step(self, x):
-        pita
+        pass
 
 kundi AggrExceptionInInit:
     eleza __init__(self):
         5/0
 
     eleza step(self, x):
-        pita
+        pass
 
     eleza finalize(self):
-        pita
+        pass
 
 kundi AggrExceptionInStep:
     eleza __init__(self):
-        pita
+        pass
 
     eleza step(self, x):
         5/0
@@ -95,10 +95,10 @@ kundi AggrExceptionInStep:
 
 kundi AggrExceptionInFinalize:
     eleza __init__(self):
-        pita
+        pass
 
     eleza step(self, x):
-        pita
+        pass
 
     eleza finalize(self):
         5/0
@@ -142,14 +142,14 @@ kundi FunctionTests(unittest.TestCase):
     eleza setUp(self):
         self.con = sqlite.connect(":memory:")
 
-        self.con.create_function("rudishatext", 0, func_rudishatext)
-        self.con.create_function("rudishaunicode", 0, func_rudishaunicode)
-        self.con.create_function("rudishaint", 0, func_rudishaint)
-        self.con.create_function("rudishafloat", 0, func_rudishafloat)
-        self.con.create_function("rudishanull", 0, func_rudishanull)
-        self.con.create_function("rudishablob", 0, func_rudishablob)
-        self.con.create_function("rudishalonglong", 0, func_rudishalonglong)
-        self.con.create_function("ashiriaexception", 0, func_ashiriaexception)
+        self.con.create_function("returntext", 0, func_returntext)
+        self.con.create_function("returnunicode", 0, func_returnunicode)
+        self.con.create_function("returnint", 0, func_returnint)
+        self.con.create_function("returnfloat", 0, func_returnfloat)
+        self.con.create_function("returnnull", 0, func_returnnull)
+        self.con.create_function("returnblob", 0, func_returnblob)
+        self.con.create_function("returnlonglong", 0, func_returnlonglong)
+        self.con.create_function("raiseexception", 0, func_raiseexception)
 
         self.con.create_function("isstring", 1, func_isstring)
         self.con.create_function("isint", 1, func_isint)
@@ -180,28 +180,28 @@ kundi FunctionTests(unittest.TestCase):
 
     eleza CheckFuncReturnText(self):
         cur = self.con.cursor()
-        cur.execute("select rudishatext()")
+        cur.execute("select returntext()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), str)
         self.assertEqual(val, "foo")
 
     eleza CheckFuncReturnUnicode(self):
         cur = self.con.cursor()
-        cur.execute("select rudishaunicode()")
+        cur.execute("select returnunicode()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), str)
         self.assertEqual(val, "bar")
 
     eleza CheckFuncReturnInt(self):
         cur = self.con.cursor()
-        cur.execute("select rudishaint()")
+        cur.execute("select returnint()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), int)
         self.assertEqual(val, 42)
 
     eleza CheckFuncReturnFloat(self):
         cur = self.con.cursor()
-        cur.execute("select rudishafloat()")
+        cur.execute("select returnfloat()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), float)
         ikiwa val < 3.139 ama val > 3.141:
@@ -209,30 +209,30 @@ kundi FunctionTests(unittest.TestCase):
 
     eleza CheckFuncReturnNull(self):
         cur = self.con.cursor()
-        cur.execute("select rudishanull()")
+        cur.execute("select returnnull()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), type(Tupu))
         self.assertEqual(val, Tupu)
 
     eleza CheckFuncReturnBlob(self):
         cur = self.con.cursor()
-        cur.execute("select rudishablob()")
+        cur.execute("select returnblob()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), bytes)
         self.assertEqual(val, b"blob")
 
     eleza CheckFuncReturnLongLong(self):
         cur = self.con.cursor()
-        cur.execute("select rudishalonglong()")
+        cur.execute("select returnlonglong()")
         val = cur.fetchone()[0]
         self.assertEqual(val, 1<<31)
 
     eleza CheckFuncException(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
-            cur.execute("select ashiriaexception()")
+        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
+            cur.execute("select raiseexception()")
             cur.fetchone()
-        self.assertEqual(str(cm.exception), 'user-defined function ashiriad exception')
+        self.assertEqual(str(cm.exception), 'user-defined function raised exception')
 
     eleza CheckParamString(self):
         cur = self.con.cursor()
@@ -277,14 +277,14 @@ kundi FunctionTests(unittest.TestCase):
         self.assertEqual(val, 2)
 
     eleza CheckFuncNonDeterministic(self):
-        mock = unittest.mock.Mock(rudisha_value=Tupu)
+        mock = unittest.mock.Mock(return_value=Tupu)
         self.con.create_function("deterministic", 0, mock, deterministic=Uongo)
         self.con.execute("select deterministic() = deterministic()")
         self.assertEqual(mock.call_count, 2)
 
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 8, 3), "deterministic parameter sio supported")
     eleza CheckFuncDeterministic(self):
-        mock = unittest.mock.Mock(rudisha_value=Tupu)
+        mock = unittest.mock.Mock(return_value=Tupu)
         self.con.create_function("deterministic", 0, mock, deterministic=Kweli)
         self.con.execute("select deterministic() = deterministic()")
         self.assertEqual(mock.call_count, 1)
@@ -327,7 +327,7 @@ kundi AggregateTests(unittest.TestCase):
     eleza tearDown(self):
         #self.cur.close()
         #self.con.close()
-        pita
+        pass
 
     eleza CheckAggrErrorOnCreate(self):
         ukijumuisha self.assertRaises(sqlite.OperationalError):
@@ -335,37 +335,37 @@ kundi AggregateTests(unittest.TestCase):
 
     eleza CheckAggrNoStep(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(AttributeError) kama cm:
+        ukijumuisha self.assertRaises(AttributeError) as cm:
             cur.execute("select nostep(t) kutoka test")
         self.assertEqual(str(cm.exception), "'AggrNoStep' object has no attribute 'step'")
 
     eleza CheckAggrNoFinalize(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
             cur.execute("select nofinalize(t) kutoka test")
             val = cur.fetchone()[0]
-        self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method ashiriad error")
+        self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method raised error")
 
     eleza CheckAggrExceptionInInit(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
             cur.execute("select excInit(t) kutoka test")
             val = cur.fetchone()[0]
-        self.assertEqual(str(cm.exception), "user-defined aggregate's '__init__' method ashiriad error")
+        self.assertEqual(str(cm.exception), "user-defined aggregate's '__init__' method raised error")
 
     eleza CheckAggrExceptionInStep(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
             cur.execute("select excStep(t) kutoka test")
             val = cur.fetchone()[0]
-        self.assertEqual(str(cm.exception), "user-defined aggregate's 'step' method ashiriad error")
+        self.assertEqual(str(cm.exception), "user-defined aggregate's 'step' method raised error")
 
     eleza CheckAggrExceptionInFinalize(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
             cur.execute("select excFinalize(t) kutoka test")
             val = cur.fetchone()[0]
-        self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method ashiriad error")
+        self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method raised error")
 
     eleza CheckAggrCheckParamStr(self):
         cur = self.con.cursor()
@@ -435,15 +435,15 @@ kundi AuthorizerTests(unittest.TestCase):
         self.con.set_authorizer(self.authorizer_cb)
 
     eleza tearDown(self):
-        pita
+        pass
 
     eleza test_table_access(self):
-        ukijumuisha self.assertRaises(sqlite.DatabaseError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.DatabaseError) as cm:
             self.con.execute("select * kutoka t2")
         self.assertIn('prohibited', str(cm.exception))
 
     eleza test_column_access(self):
-        ukijumuisha self.assertRaises(sqlite.DatabaseError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.DatabaseError) as cm:
             self.con.execute("select c2 kutoka t1")
         self.assertIn('prohibited', str(cm.exception))
 
@@ -451,9 +451,9 @@ kundi AuthorizerRaiseExceptionTests(AuthorizerTests):
     @staticmethod
     eleza authorizer_cb(action, arg1, arg2, dbname, source):
         ikiwa action != sqlite.SQLITE_SELECT:
-            ashiria ValueError
+             ashiria ValueError
         ikiwa arg2 == 'c2' ama arg1 == 't2':
-            ashiria ValueError
+             ashiria ValueError
         rudisha sqlite.SQLITE_OK
 
 kundi AuthorizerIllegalTypeTests(AuthorizerTests):

@@ -71,7 +71,7 @@ kundi BaseTestCase(unittest.TestCase):
         self.assertIs(type(direct_index), int)
         #self.assertIs(type(operator_index), int)
 
-    eleza test_index_rudishas_int_subclass(self):
+    eleza test_index_returns_int_subclass(self):
         kundi BadInt:
             eleza __index__(self):
                 rudisha Kweli

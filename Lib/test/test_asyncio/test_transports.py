@@ -1,31 +1,31 @@
-"""Tests for transports.py."""
+"""Tests kila transports.py."""
 
-import unittest
-from unittest import mock
+agiza unittest
+kutoka unittest agiza mock
 
-import asyncio
-from asyncio import transports
+agiza asyncio
+kutoka asyncio agiza transports
 
 
-class TransportTests(unittest.TestCase):
+kundi TransportTests(unittest.TestCase):
 
-    def test_ctor_extra_is_none(self):
+    eleza test_ctor_extra_is_none(self):
         transport = asyncio.Transport()
         self.assertEqual(transport._extra, {})
 
-    def test_get_extra_info(self):
+    eleza test_get_extra_info(self):
         transport = asyncio.Transport({'extra': 'info'})
         self.assertEqual('info', transport.get_extra_info('extra'))
-        self.assertIsNone(transport.get_extra_info('unknown'))
+        self.assertIsTupu(transport.get_extra_info('unknown'))
 
         default = object()
         self.assertIs(default, transport.get_extra_info('unknown', default))
 
-    def test_writelines(self):
+    eleza test_writelines(self):
         writer = mock.Mock()
 
-        class MyTransport(asyncio.Transport):
-            def write(self, data):
+        kundi MyTransport(asyncio.Transport):
+            eleza write(self, data):
                 writer(data)
 
         transport = MyTransport()
@@ -36,7 +36,7 @@ class TransportTests(unittest.TestCase):
         self.assertEqual(1, writer.call_count)
         writer.assert_called_with(b'line1line2line3')
 
-    def test_not_implemented(self):
+    eleza test_not_implemented(self):
         transport = asyncio.Transport()
 
         self.assertRaises(NotImplementedError,
@@ -51,13 +51,13 @@ class TransportTests(unittest.TestCase):
         self.assertRaises(NotImplementedError, transport.close)
         self.assertRaises(NotImplementedError, transport.abort)
 
-    def test_dgram_not_implemented(self):
+    eleza test_dgram_not_implemented(self):
         transport = asyncio.DatagramTransport()
 
         self.assertRaises(NotImplementedError, transport.sendto, 'data')
         self.assertRaises(NotImplementedError, transport.abort)
 
-    def test_subprocess_transport_not_implemented(self):
+    eleza test_subprocess_transport_not_implemented(self):
         transport = asyncio.SubprocessTransport()
 
         self.assertRaises(NotImplementedError, transport.get_pid)
@@ -67,31 +67,31 @@ class TransportTests(unittest.TestCase):
         self.assertRaises(NotImplementedError, transport.terminate)
         self.assertRaises(NotImplementedError, transport.kill)
 
-    def test_flowcontrol_mixin_set_write_limits(self):
+    eleza test_flowcontrol_mixin_set_write_limits(self):
 
-        class MyTransport(transports._FlowControlMixin,
+        kundi MyTransport(transports._FlowControlMixin,
                           transports.Transport):
 
-            def get_write_buffer_size(self):
-                return 512
+            eleza get_write_buffer_size(self):
+                rudisha 512
 
         loop = mock.Mock()
         transport = MyTransport(loop=loop)
         transport._protocol = mock.Mock()
 
-        self.assertFalse(transport._protocol_paused)
+        self.assertUongo(transport._protocol_paused)
 
-        with self.assertRaisesRegex(ValueError, 'high.*must be >= low'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'high.*must be >= low'):
             transport.set_write_buffer_limits(high=0, low=1)
 
         transport.set_write_buffer_limits(high=1024, low=128)
-        self.assertFalse(transport._protocol_paused)
+        self.assertUongo(transport._protocol_paused)
         self.assertEqual(transport.get_write_buffer_limits(), (128, 1024))
 
         transport.set_write_buffer_limits(high=256, low=128)
-        self.assertTrue(transport._protocol_paused)
+        self.assertKweli(transport._protocol_paused)
         self.assertEqual(transport.get_write_buffer_limits(), (128, 256))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

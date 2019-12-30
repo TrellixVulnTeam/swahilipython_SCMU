@@ -1,6 +1,6 @@
-"""Fix incompatible agizas na module references that must be fixed after
-fix_agizas."""
-kutoka . agiza fix_agizas
+"""Fix incompatible imports na module references that must be fixed after
+fix_imports."""
+kutoka . agiza fix_imports
 
 
 MAPPING = {
@@ -9,7 +9,7 @@ MAPPING = {
           }
 
 
-kundi FixImports2(fix_agizas.FixImports):
+kundi FixImports2(fix_imports.FixImports):
 
     run_order = 7
 

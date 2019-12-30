@@ -20,7 +20,7 @@ kundi I:
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): ashiria StopIteration
+        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -40,7 +40,7 @@ kundi X:
         self.seqn = seqn
         self.i = 0
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): ashiria StopIteration
+        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -75,7 +75,7 @@ kundi PickleTest:
             it = pickle.loads(d)
             jaribu:
                 next(it)
-            tatizo StopIteration:
+            except StopIteration:
                 self.assertUongo(seq[1:])
                 endelea
             d = pickle.dumps(it, proto)
@@ -123,7 +123,7 @@ kundi EnumerateTestCase(unittest.TestCase, PickleTest):
 
     eleza test_argumentcheck(self):
         self.assertRaises(TypeError, self.enum) # no arguments
-        self.assertRaises(TypeError, self.enum, 1) # wrong type (sio iterable)
+        self.assertRaises(TypeError, self.enum, 1) # wrong type (not iterable)
         self.assertRaises(TypeError, self.enum, 'abc', 'a') # wrong type
         self.assertRaises(TypeError, self.enum, 'abc', 2, 3) # too many arguments
 
@@ -135,7 +135,7 @@ kundi EnumerateTestCase(unittest.TestCase, PickleTest):
         self.assertEqual(len(set(map(id, enumerate(self.seq)))), min(1,len(self.seq)))
 
 kundi MyEnum(enumerate):
-    pita
+    pass
 
 kundi SubclassTestCase(EnumerateTestCase):
 
@@ -157,11 +157,11 @@ kundi TestReversed(unittest.TestCase, PickleTest):
             eleza __getitem__(self, i):
                 ikiwa i < 5:
                     rudisha str(i)
-                ashiria StopIteration
+                 ashiria StopIteration
             eleza __len__(self):
                 rudisha 5
         kila data kwenye ('abc', range(5), tuple(enumerate('abc')), A(),
-                    range(1,17,5), dict.kutokakeys('abcde')):
+                    range(1,17,5), dict.fromkeys('abcde')):
             self.assertEqual(list(data)[::-1], list(reversed(data)))
         # don't allow keyword arguments
         self.assertRaises(TypeError, reversed, [], a=1)
@@ -182,7 +182,7 @@ kundi TestReversed(unittest.TestCase, PickleTest):
                 ikiwa sio self.called:
                     self.called = Kweli
                     rudisha 10
-                ashiria ZeroDivisionError
+                 ashiria ZeroDivisionError
             eleza __getitem__(self, index):
                 rudisha index
         r = reversed(SeqWithWeirdLen())
@@ -208,16 +208,16 @@ kundi TestReversed(unittest.TestCase, PickleTest):
         # this bug was never kwenye reversed, it was in
         # PyObject_CallMethod, na reversed_new calls that sometimes.
         eleza f():
-            pita
+            pass
         r = f.__reversed__ = object()
         rc = sys.getrefcount(r)
         kila i kwenye range(10):
             jaribu:
                 reversed(f)
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
             isipokua:
-                self.fail("non-callable __reversed__ didn't ashiria!")
+                self.fail("non-callable __reversed__ didn't raise!")
         self.assertEqual(rc, sys.getrefcount(r))
 
     eleza test_objmethods(self):

@@ -1,24 +1,24 @@
-import os
-import sys
-import unittest
+agiza os
+agiza sys
+agiza unittest
 
 # Bob Ippolito:
 #
-# Ok.. the code to find the filename for __getattr__ should look
+# Ok.. the code to find the filename kila __getattr__ should look
 # something like:
 #
-# import os
-# from macholib.dyld import dyld_find
+# agiza os
+# kutoka macholib.dyld agiza dyld_find
 #
-# def find_lib(name):
+# eleza find_lib(name):
 #      possible = ['lib'+name+'.dylib', name+'.dylib',
 #      name+'.framework/'+name]
-#      for dylib in possible:
+#      kila dylib kwenye possible:
 #          jaribu:
-#              return os.path.realpath(dyld_find(dylib))
-#          tatizo ValueError:
+#              rudisha os.path.realpath(dyld_find(dylib))
+#          except ValueError:
 #              pass
-#      ashiria ValueError, "%s sio found" % (name,)
+#       ashiria ValueError, "%s sio found" % (name,)
 #
 # It'll have output like this:
 #
@@ -31,33 +31,33 @@ import unittest
 #
 # -bob
 
-from ctypes.macholib.dyld import dyld_find
+kutoka ctypes.macholib.dyld agiza dyld_find
 
-def find_lib(name):
+eleza find_lib(name):
     possible = ['lib'+name+'.dylib', name+'.dylib', name+'.framework/'+name]
-    for dylib in possible:
+    kila dylib kwenye possible:
         jaribu:
-            return os.path.realpath(dyld_find(dylib))
-        tatizo ValueError:
+            rudisha os.path.realpath(dyld_find(dylib))
+        except ValueError:
             pass
-    ashiria ValueError("%s sio found" % (name,))
+     ashiria ValueError("%s sio found" % (name,))
 
-class MachOTest(unittest.TestCase):
+kundi MachOTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "darwin", 'OSX-specific test')
-    def test_find(self):
+    eleza test_find(self):
 
         self.assertEqual(find_lib('pthread'),
                              '/usr/lib/libSystem.B.dylib')
 
         result = find_lib('z')
-        # Issue #21093: dyld default search path includes $HOME/lib na
+        # Issue #21093: dyld default search path includes $HOME/lib and
         # /usr/local/lib before /usr/lib, which caused test failures if
-        # a local copy of libz exists in one of them. Now ignore the head
+        # a local copy of libz exists kwenye one of them. Now ignore the head
         # of the path.
         self.assertRegex(result, r".*/lib/libz\..*.*\.dylib")
 
         self.assertEqual(find_lib('IOKit'),
                              '/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit')
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

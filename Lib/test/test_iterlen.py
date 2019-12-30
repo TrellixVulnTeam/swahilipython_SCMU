@@ -9,7 +9,7 @@ The desired invariant is:  len(it)==len(list(it)).
 
 A complication ni that an iterable na iterator can be the same object. To
 maintain the invariant, an iterator needs to dynamically update its length.
-For instance, an iterable such kama range(10) always reports its length kama ten,
+For instance, an iterable such as range(10) always reports its length as ten,
 but it=iter(range(10)) starts at ten, na then goes to nine after next(it).
 Having this capability means that map() can ignore the distinction between
 map(func, iterable) na map(func, iter(iterable)).
@@ -31,12 +31,12 @@ then no further items are available na the length ni reported at zero.
 
 Reversed objects can also be wrapped around mutable objects; however, any
 appends after the current position are ignored.  Any other approach leads
-to confusion na possibly rudishaing the same item more than once.
+to confusion na possibly returning the same item more than once.
 
-The iterators sio listed above, such kama enumerate na the other itertools,
+The iterators sio listed above, such as enumerate na the other itertools,
 are sio length transparent because they have no way to distinguish between
 iterables that report static length na iterators whose length changes with
-each call (i.e. the difference between enumerate('abc') na
+each call (i.e. the difference between enumerate('abc') and
 enumerate(iter('abc')).
 
 """
@@ -63,7 +63,7 @@ kundi TestInvariantWithoutMutations:
 kundi TestTemporarilyImmutable(TestInvariantWithoutMutations):
 
     eleza test_immutable_during_iteration(self):
-        # objects such kama deques, sets, na dictionaries enforce
+        # objects such as deques, sets, na dictionaries enforce
         # length immutability  during iteration
 
         it = self.it
@@ -115,21 +115,21 @@ kundi TestDequeReversed(TestTemporarilyImmutable, unittest.TestCase):
 kundi TestDictKeys(TestTemporarilyImmutable, unittest.TestCase):
 
     eleza setUp(self):
-        d = dict.kutokakeys(range(n))
+        d = dict.fromkeys(range(n))
         self.it = iter(d)
         self.mutate = d.popitem
 
 kundi TestDictItems(TestTemporarilyImmutable, unittest.TestCase):
 
     eleza setUp(self):
-        d = dict.kutokakeys(range(n))
+        d = dict.fromkeys(range(n))
         self.it = iter(d.items())
         self.mutate = d.popitem
 
 kundi TestDictValues(TestTemporarilyImmutable, unittest.TestCase):
 
     eleza setUp(self):
-        d = dict.kutokakeys(range(n))
+        d = dict.fromkeys(range(n))
         self.it = iter(d.values())
         self.mutate = d.popitem
 
@@ -189,7 +189,7 @@ kundi BadLen(object):
         rudisha iter(range(10))
 
     eleza __len__(self):
-        ashiria RuntimeError('hello')
+         ashiria RuntimeError('hello')
 
 
 kundi BadLengthHint(object):
@@ -197,7 +197,7 @@ kundi BadLengthHint(object):
         rudisha iter(range(10))
 
     eleza __length_hint__(self):
-        ashiria RuntimeError('hello')
+         ashiria RuntimeError('hello')
 
 
 kundi TupuLengthHint(object):

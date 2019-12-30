@@ -38,7 +38,7 @@ kundi PackageNotFoundError(ModuleNotFoundError):
 
 
 kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
-    """An entry point kama defined by Python packaging conventions.
+    """An entry point as defined by Python packaging conventions.
 
     See `the packaging docs on entry points
     <https://packaging.python.org/specifications/entry-points/>`_
@@ -60,7 +60,7 @@ kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
         - package.module:object.attribute
         - package.module:attr [extra1, extra2]
 
-    Other combinations are possible kama well.
+    Other combinations are possible as well.
 
     The expression ni lenient about whitespace around the ':',
     following the attr, na following any extras.
@@ -96,7 +96,7 @@ kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
         config.optionxform = str
         jaribu:
             config.read_string(text)
-        tatizo AttributeError:  # pragma: nocover
+        except AttributeError:  # pragma: nocover
             # Python 2 has no read_string
             config.readfp(io.StringIO(text))
         rudisha EntryPoint._from_config(config)
@@ -112,11 +112,11 @@ kundi PackagePath(pathlib.PurePosixPath):
     """A reference to a path kwenye a package"""
 
     eleza read_text(self, encoding='utf-8'):
-        ukijumuisha self.locate().open(encoding=encoding) kama stream:
+        ukijumuisha self.locate().open(encoding=encoding) as stream:
             rudisha stream.read()
 
     eleza read_binary(self):
-        ukijumuisha self.locate().open('rb') kama stream:
+        ukijumuisha self.locate().open('rb') as stream:
             rudisha stream.read()
 
     eleza locate(self):
@@ -140,7 +140,7 @@ kundi Distribution:
         """Attempt to load metadata file given by the name.
 
         :param filename: The name of the file kwenye the distribution info.
-        :rudisha: The text ikiwa found, otherwise Tupu.
+        :return: The text ikiwa found, otherwise Tupu.
         """
 
     @abc.abstractmethod
@@ -151,13 +151,13 @@ kundi Distribution:
         """
 
     @classmethod
-    eleza kutoka_name(cls, name):
+    eleza from_name(cls, name):
         """Return the Distribution kila the given package name.
 
         :param name: The name of the distribution package to search for.
-        :rudisha: The Distribution instance (or subkundi thereof) kila the named
+        :return: The Distribution instance (or subkundi thereof) kila the named
             package, ikiwa found.
-        :ashirias PackageNotFoundError: When the named package's distribution
+        :raises PackageNotFoundError: When the named package's distribution
             metadata cannot be found.
         """
         kila resolver kwenye cls._discover_resolvers():
@@ -166,23 +166,23 @@ kundi Distribution:
             ikiwa dist ni sio Tupu:
                 rudisha dist
         isipokua:
-            ashiria PackageNotFoundError(name)
+             ashiria PackageNotFoundError(name)
 
     @classmethod
     eleza discover(cls, **kwargs):
         """Return an iterable of Distribution objects kila all packages.
 
-        Pass a ``context`` ama pita keyword arguments kila constructing
+        Pass a ``context`` ama pass keyword arguments kila constructing
         a context.
 
         :context: A ``DistributionFinder.Context`` object.
-        :rudisha: Iterable of Distribution objects kila all packages.
+        :return: Iterable of Distribution objects kila all packages.
         """
         context = kwargs.pop('context', Tupu)
         ikiwa context na kwargs:
-            ashiria ValueError("cannot accept context na kwargs")
+             ashiria ValueError("cannot accept context na kwargs")
         context = context ama DistributionFinder.Context(**kwargs)
-        rudisha itertools.chain.kutoka_iterable(
+        rudisha itertools.chain.from_iterable(
             resolver(context)
             kila resolver kwenye cls._discover_resolvers()
             )
@@ -192,7 +192,7 @@ kundi Distribution:
         """Return a Distribution kila the indicated metadata path
 
         :param path: a string ama path-like object
-        :rudisha: a concrete Distribution instance kila the path
+        :return: a concrete Distribution instance kila the path
         """
         rudisha PathDistribution(pathlib.Path(path))
 
@@ -209,7 +209,7 @@ kundi Distribution:
     eleza metadata(self):
         """Return the parsed metadata kila this Distribution.
 
-        The rudishaed object will have keys that name the various bits of
+        The returned object will have keys that name the various bits of
         metadata.  See PEP 566 kila details.
         """
         text = (
@@ -235,7 +235,7 @@ kundi Distribution:
     eleza files(self):
         """Files kwenye this distribution.
 
-        :rudisha: List of PackagePath kila this distribution ama Tupu
+        :return: List of PackagePath kila this distribution ama Tupu
 
         Result ni `Tupu` ikiwa the metadata file that enumerates files
         (i.e. RECORD kila dist-info ama SOURCES.txt kila egg-info) is
@@ -382,7 +382,7 @@ kundi MetadataPathFinder(DistributionFinder):
     @classmethod
     eleza _search_paths(cls, pattern, paths):
         """Find metadata directories kwenye paths heuristically."""
-        rudisha itertools.chain.kutoka_iterable(
+        rudisha itertools.chain.from_iterable(
             cls._search_path(path, pattern)
             kila path kwenye map(cls._switch_path, paths)
             )
@@ -439,16 +439,16 @@ kundi PathDistribution(Distribution):
 eleza distribution(distribution_name):
     """Get the ``Distribution`` instance kila the named package.
 
-    :param distribution_name: The name of the distribution package kama a string.
-    :rudisha: A ``Distribution`` instance (or subkundi thereof).
+    :param distribution_name: The name of the distribution package as a string.
+    :return: A ``Distribution`` instance (or subkundi thereof).
     """
-    rudisha Distribution.kutoka_name(distribution_name)
+    rudisha Distribution.from_name(distribution_name)
 
 
 eleza distributions(**kwargs):
     """Get all ``Distribution`` instances kwenye the current environment.
 
-    :rudisha: An iterable of ``Distribution`` instances.
+    :return: An iterable of ``Distribution`` instances.
     """
     rudisha Distribution.discover(**kwargs)
 
@@ -457,16 +457,16 @@ eleza metadata(distribution_name):
     """Get the metadata kila the named package.
 
     :param distribution_name: The name of the distribution package to query.
-    :rudisha: An email.Message containing the parsed metadata.
+    :return: An email.Message containing the parsed metadata.
     """
-    rudisha Distribution.kutoka_name(distribution_name).metadata
+    rudisha Distribution.from_name(distribution_name).metadata
 
 
 eleza version(distribution_name):
     """Get the version string kila the named package.
 
     :param distribution_name: The name of the distribution package to query.
-    :rudisha: The version string kila the package kama defined kwenye the package's
+    :return: The version string kila the package as defined kwenye the package's
         "Version" metadata key.
     """
     rudisha distribution(distribution_name).version
@@ -475,9 +475,9 @@ eleza version(distribution_name):
 eleza entry_points():
     """Return EntryPoint objects kila all installed packages.
 
-    :rudisha: EntryPoint objects kila all installed packages.
+    :return: EntryPoint objects kila all installed packages.
     """
-    eps = itertools.chain.kutoka_iterable(
+    eps = itertools.chain.from_iterable(
         dist.entry_points kila dist kwenye distributions())
     by_group = operator.attrgetter('group')
     ordered = sorted(eps, key=by_group)
@@ -492,7 +492,7 @@ eleza files(distribution_name):
     """Return a list of files kila the named package.
 
     :param distribution_name: The name of the distribution package to query.
-    :rudisha: List of files composing the distribution.
+    :return: List of files composing the distribution.
     """
     rudisha distribution(distribution_name).files
 
@@ -501,7 +501,7 @@ eleza requires(distribution_name):
     """
     Return a list of requirements kila the named package.
 
-    :rudisha: An iterator of requirements, suitable for
+    :return: An iterator of requirements, suitable for
     packaging.requirement.Requirement.
     """
     rudisha distribution(distribution_name).requires

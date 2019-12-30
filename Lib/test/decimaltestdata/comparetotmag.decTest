@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here ni sio    --
+-- particular, achieving the same results as the tests here is not    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are sio exhaustive.                   --
+-- or specification.  The tests are not exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -22,7 +22,7 @@ version: 2.59
 -- Note that it cannot be assumed that add/subtract tests cover paths
 -- for this operation adequately, here, because the code might be
 -- quite different (comparison cannot overflow or underflow, so
--- actual subtractions are sio necessary). Similarly, comparetotal
+-- actual subtractions are not necessary). Similarly, comparetotal
 -- will have some radically different paths than compare.
 
 extended:    1

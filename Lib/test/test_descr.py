@@ -15,7 +15,7 @@ kutoka test agiza support
 
 jaribu:
     agiza _testcapi
-tatizo ImportError:
+except ImportError:
     _testcapi = Tupu
 
 
@@ -76,7 +76,7 @@ kundi OperatorsTest(unittest.TestCase):
         m = getattr(t, meth)
 
         # Find method kwenye parent class
-        wakati meth haiko kwenye t.__dict__:
+        wakati meth sio kwenye t.__dict__:
             t = t.__bases__[0]
         # kwenye some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -91,7 +91,7 @@ kundi OperatorsTest(unittest.TestCase):
         self.assertEqual(eval(expr, d), res)
         t = type(a)
         m = getattr(t, meth)
-        wakati meth haiko kwenye t.__dict__:
+        wakati meth sio kwenye t.__dict__:
             t = t.__bases__[0]
         # kwenye some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -105,7 +105,7 @@ kundi OperatorsTest(unittest.TestCase):
         self.assertEqual(eval(expr, d), res)
         t = type(a)
         m = getattr(t, meth)
-        wakati meth haiko kwenye t.__dict__:
+        wakati meth sio kwenye t.__dict__:
             t = t.__bases__[0]
         # kwenye some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -120,7 +120,7 @@ kundi OperatorsTest(unittest.TestCase):
         self.assertEqual(d['a'], res)
         t = type(a)
         m = getattr(t, meth)
-        wakati meth haiko kwenye t.__dict__:
+        wakati meth sio kwenye t.__dict__:
             t = t.__bases__[0]
         # kwenye some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -139,7 +139,7 @@ kundi OperatorsTest(unittest.TestCase):
         self.assertEqual(d['a'], res)
         t = type(a)
         m = getattr(t, meth)
-        wakati meth haiko kwenye t.__dict__:
+        wakati meth sio kwenye t.__dict__:
             t = t.__bases__[0]
         # kwenye some implementations (e.g. PyPy), 'm' can be a regular unbound
         # method object; the getattr() below obtains its underlying function.
@@ -157,7 +157,7 @@ kundi OperatorsTest(unittest.TestCase):
         exec(stmt, dictionary)
         self.assertEqual(dictionary['a'], res)
         t = type(a)
-        wakati meth haiko kwenye t.__dict__:
+        wakati meth sio kwenye t.__dict__:
             t = t.__bases__[0]
         m = getattr(t, meth)
         # kwenye some implementations (e.g. PyPy), 'm' can be a regular unbound
@@ -222,14 +222,14 @@ kundi OperatorsTest(unittest.TestCase):
         dict = {'a': a, 'b': b}
 
         kila name, expr kwenye self.binops.items():
-            ikiwa name haiko kwenye skip:
+            ikiwa name sio kwenye skip:
                 name = "__%s__" % name
                 ikiwa hasattr(a, name):
                     res = eval(expr, dict)
                     self.binop_test(a, b, res, expr, name)
 
         kila name, expr kwenye list(self.unops.items()):
-            ikiwa name haiko kwenye skip:
+            ikiwa name sio kwenye skip:
                 name = "__%s__" % name
                 ikiwa hasattr(a, name):
                     res = eval(expr, dict)
@@ -241,15 +241,15 @@ kundi OperatorsTest(unittest.TestCase):
         # The following crashes kwenye Python 2.2
         self.assertEqual((1).__bool__(), 1)
         self.assertEqual((0).__bool__(), 0)
-        # This rudishas 'NotImplemented' kwenye Python 2.2
+        # This returns 'NotImplemented' kwenye Python 2.2
         kundi C(int):
             eleza __add__(self, other):
                 rudisha NotImplemented
         self.assertEqual(C(5), 5)
         jaribu:
             C() + ""
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("NotImplemented should have caused TypeError")
 
@@ -298,10 +298,10 @@ kundi OperatorsTest(unittest.TestCase):
     @support.impl_detail("the module 'xxsubtype' ni internal")
     eleza test_spam_lists(self):
         # Testing spamlist operations...
-        agiza copy, xxsubtype kama spam
+        agiza copy, xxsubtype as spam
 
         eleza spamlist(l, memo=Tupu):
-            agiza xxsubtype kama spam
+            agiza xxsubtype as spam
             rudisha spam.spamlist(l)
 
         # This ni an ugly hack:
@@ -342,9 +342,9 @@ kundi OperatorsTest(unittest.TestCase):
     @support.impl_detail("the module 'xxsubtype' ni internal")
     eleza test_spam_dicts(self):
         # Testing spamdict operations...
-        agiza copy, xxsubtype kama spam
+        agiza copy, xxsubtype as spam
         eleza spamdict(d, memo=Tupu):
-            agiza xxsubtype kama spam
+            agiza xxsubtype as spam
             sd = spam.spamdict()
             kila k, v kwenye list(d.items()):
                 sd[k] = v
@@ -485,7 +485,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         kundi _metaclass(type):
             eleza myself(cls): rudisha cls
         kundi D(metaclass=_metaclass):
-            pita
+            pass
         self.assertEqual(D.myself(), D)
         d = D()
         self.assertEqual(d.__class__, D)
@@ -494,13 +494,13 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
                 dict['__spam__'] = 1
                 rudisha type.__new__(cls, name, bases, dict)
         kundi C(metaclass=M1):
-            pita
+            pass
         self.assertEqual(C.__spam__, 1)
         c = C()
         self.assertEqual(c.__spam__, 1)
 
         kundi _instance(object):
-            pita
+            pass
         kundi M2(object):
             @staticmethod
             eleza __new__(cls, name, bases, dict):
@@ -572,7 +572,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
                         get, set = hits.get(key, (Tupu, Tupu))
                         get = val
                         hits[key] = get, set
-                    lasivyo key.startswith("_set_"):
+                    elikiwa key.startswith("_set_"):
                         key = key[5:]
                         get, set = hits.get(key, (Tupu, Tupu))
                         set = val
@@ -594,7 +594,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
 
         kundi multimetaclass(autoproperty, autosuper):
             # Merge of multiple cooperating metaclasses
-            pita
+            pass
         kundi A(metaclass=multimetaclass):
             eleza _get_x(self):
                 rudisha "A"
@@ -615,17 +615,17 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
             eleza __init__(self, *args):
                 T.counter += 1
         kundi C(metaclass=T):
-            pita
+            pass
         self.assertEqual(T.counter, 1)
         a = C()
         self.assertEqual(type(a), C)
         self.assertEqual(T.counter, 1)
 
-        kundi C(object): pita
+        kundi C(object): pass
         c = C()
         jaribu: c()
-        tatizo TypeError: pita
-        isipokua: self.fail("calling object w/o call method should ashiria "
+        except TypeError: pass
+        isipokua: self.fail("calling object w/o call method should  ashiria "
                         "TypeError")
 
         # Testing code to find most derived baseclass
@@ -634,14 +634,14 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
                 rudisha type.__new__(*args, **kwargs)
 
         kundi B(object):
-            pita
+            pass
 
         kundi C(object, metaclass=A):
-            pita
+            pass
 
         # The most derived metakundi of D ni A rather than type.
         kundi D(B, C):
-            pita
+            pass
         self.assertIs(A, type(D))
 
         # issue1294232: correct metakundi calculation
@@ -667,18 +667,18 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
                 rudisha ns
 
         kundi A(metaclass=AMeta):
-            pita
+            pass
         self.assertEqual(['AMeta'], new_calls)
         new_calls.clear()
 
         kundi B(metaclass=BMeta):
-            pita
+            pass
         # BMeta.__new__ calls AMeta.__new__ ukijumuisha super:
         self.assertEqual(['BMeta', 'AMeta'], new_calls)
         new_calls.clear()
 
         kundi C(A, B):
-            pita
+            pass
         # The most derived metakundi ni BMeta:
         self.assertEqual(['BMeta', 'AMeta'], new_calls)
         new_calls.clear()
@@ -687,20 +687,20 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
 
         # The order of the bases shouldn't matter:
         kundi C2(B, A):
-            pita
+            pass
         self.assertEqual(['BMeta', 'AMeta'], new_calls)
         new_calls.clear()
         self.assertIn('BMeta_was_here', C2.__dict__)
 
         # Check correct metakundi calculation when a metakundi ni declared:
         kundi D(C, metaclass=type):
-            pita
+            pass
         self.assertEqual(['BMeta', 'AMeta'], new_calls)
         new_calls.clear()
         self.assertIn('BMeta_was_here', D.__dict__)
 
         kundi E(C, metaclass=AMeta):
-            pita
+            pass
         self.assertEqual(['BMeta', 'AMeta'], new_calls)
         new_calls.clear()
         self.assertIn('BMeta_was_here', E.__dict__)
@@ -711,11 +711,11 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         eleza func(*args, **kwargs):
             rudisha marker
         kundi X(metaclass=func):
-            pita
+            pass
         kundi Y(object, metaclass=func):
-            pita
+            pass
         kundi Z(D, metaclass=func):
-            pita
+            pass
         self.assertIs(marker, X)
         self.assertIs(marker, Y)
         self.assertIs(marker, Z)
@@ -741,7 +741,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
                 rudisha super().__prepare__(name, bases)
 
         kundi A(metaclass=ANotMeta):
-            pita
+            pass
         self.assertIs(ANotMeta, type(A))
         self.assertEqual(['ANotMeta'], prepare_calls)
         prepare_calls.clear()
@@ -749,7 +749,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         new_calls.clear()
 
         kundi B(metaclass=BNotMeta):
-            pita
+            pass
         self.assertIs(BNotMeta, type(B))
         self.assertEqual(['BNotMeta', 'ANotMeta'], prepare_calls)
         prepare_calls.clear()
@@ -757,7 +757,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         new_calls.clear()
 
         kundi C(A, B):
-            pita
+            pass
         self.assertIs(BNotMeta, type(C))
         self.assertEqual(['BNotMeta', 'ANotMeta'], new_calls)
         new_calls.clear()
@@ -765,7 +765,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         prepare_calls.clear()
 
         kundi C2(B, A):
-            pita
+            pass
         self.assertIs(BNotMeta, type(C2))
         self.assertEqual(['BNotMeta', 'ANotMeta'], new_calls)
         new_calls.clear()
@@ -776,10 +776,10 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         # BNotMeta ni neither a subclass, nor a superkundi of type
         ukijumuisha self.assertRaises(TypeError):
             kundi D(C, metaclass=type):
-                pita
+                pass
 
         kundi E(C, metaclass=ANotMeta):
-            pita
+            pass
         self.assertIs(BNotMeta, type(E))
         self.assertEqual(['BNotMeta', 'ANotMeta'], new_calls)
         new_calls.clear()
@@ -787,7 +787,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         prepare_calls.clear()
 
         kundi F(object(), C):
-            pita
+            pass
         self.assertIs(BNotMeta, type(F))
         self.assertEqual(['BNotMeta', 'ANotMeta'], new_calls)
         new_calls.clear()
@@ -795,7 +795,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         prepare_calls.clear()
 
         kundi F2(C, object()):
-            pita
+            pass
         self.assertIs(BNotMeta, type(F2))
         self.assertEqual(['BNotMeta', 'ANotMeta'], new_calls)
         new_calls.clear()
@@ -806,10 +806,10 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         # subclass, nor a superkundi of int
         ukijumuisha self.assertRaises(TypeError):
             kundi X(C, int()):
-                pita
+                pass
         ukijumuisha self.assertRaises(TypeError):
             kundi X(int(), C):
-                pita
+                pass
 
     eleza test_module_subclasses(self):
         # Testing Python subkundi of module...
@@ -838,9 +838,9 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         # http://python.org/sf/1174712
         jaribu:
             kundi Module(types.ModuleType, str):
-                pita
-        tatizo TypeError:
-            pita
+                pass
+        except TypeError:
+            pass
         isipokua:
             self.fail("inheriting kutoka ModuleType na str at the same time "
                       "should fail")
@@ -900,51 +900,51 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
             eleza boo(self): rudisha "C"
         self.assertEqual(C().spam(), "A")
         self.assertEqual(C().boo(), "C")
-        kundi D(B, C): pita
+        kundi D(B, C): pass
         self.assertEqual(D().spam(), "B")
         self.assertEqual(D().boo(), "B")
         self.assertEqual(D.__mro__, (D, B, C, A, object))
-        kundi E(C, B): pita
+        kundi E(C, B): pass
         self.assertEqual(E().spam(), "B")
         self.assertEqual(E().boo(), "C")
         self.assertEqual(E.__mro__, (E, C, B, A, object))
         # MRO order disagreement
         jaribu:
-            kundi F(D, E): pita
-        tatizo TypeError:
-            pita
+            kundi F(D, E): pass
+        except TypeError:
+            pass
         isipokua:
             self.fail("expected MRO order disagreement (F)")
         jaribu:
-            kundi G(E, D): pita
-        tatizo TypeError:
-            pita
+            kundi G(E, D): pass
+        except TypeError:
+            pass
         isipokua:
             self.fail("expected MRO order disagreement (G)")
 
     # see thread python-dev/2002-October/029035.html
     eleza test_ex5_from_c3_switch(self):
         # Testing ex5 kutoka C3 switch discussion...
-        kundi A(object): pita
-        kundi B(object): pita
-        kundi C(object): pita
-        kundi X(A): pita
-        kundi Y(A): pita
-        kundi Z(X,B,Y,C): pita
+        kundi A(object): pass
+        kundi B(object): pass
+        kundi C(object): pass
+        kundi X(A): pass
+        kundi Y(A): pass
+        kundi Z(X,B,Y,C): pass
         self.assertEqual(Z.__mro__, (Z, X, B, Y, A, C, object))
 
     # see "A Monotonic Superkundi Linearization kila Dylan",
     # by Kim Barrett et al. (OOPSLA 1996)
     eleza test_monotonicity(self):
         # Testing MRO monotonicity...
-        kundi Boat(object): pita
-        kundi DayBoat(Boat): pita
-        kundi WheelBoat(Boat): pita
-        kundi EngineLess(DayBoat): pita
-        kundi SmallMultihull(DayBoat): pita
-        kundi PedalWheelBoat(EngineLess,WheelBoat): pita
-        kundi SmallCatamaran(SmallMultihull): pita
-        kundi Pedalo(PedalWheelBoat,SmallCatamaran): pita
+        kundi Boat(object): pass
+        kundi DayBoat(Boat): pass
+        kundi WheelBoat(Boat): pass
+        kundi EngineLess(DayBoat): pass
+        kundi SmallMultihull(DayBoat): pass
+        kundi PedalWheelBoat(EngineLess,WheelBoat): pass
+        kundi SmallCatamaran(SmallMultihull): pass
+        kundi Pedalo(PedalWheelBoat,SmallCatamaran): pass
 
         self.assertEqual(PedalWheelBoat.__mro__,
               (PedalWheelBoat, EngineLess, DayBoat, WheelBoat, Boat, object))
@@ -958,12 +958,12 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
     # by Kim Barrett et al. (OOPSLA 1996)
     eleza test_consistency_with_epg(self):
         # Testing consistency ukijumuisha EPG...
-        kundi Pane(object): pita
-        kundi ScrollingMixin(object): pita
-        kundi EditingMixin(object): pita
-        kundi ScrollablePane(Pane,ScrollingMixin): pita
-        kundi EditablePane(Pane,EditingMixin): pita
-        kundi EditableScrollablePane(ScrollablePane,EditablePane): pita
+        kundi Pane(object): pass
+        kundi ScrollingMixin(object): pass
+        kundi EditingMixin(object): pass
+        kundi ScrollablePane(Pane,ScrollingMixin): pass
+        kundi EditablePane(Pane,EditingMixin): pass
+        kundi EditableScrollablePane(ScrollablePane,EditablePane): pass
 
         self.assertEqual(EditableScrollablePane.__mro__,
               (EditableScrollablePane, ScrollablePane, EditablePane, Pane,
@@ -974,10 +974,10 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
         mro_err_msg = """Cannot create a consistent method resolution
 order (MRO) kila bases """
 
-        eleza ashirias(exc, expected, callable, *args):
+        eleza raises(exc, expected, callable, *args):
             jaribu:
                 callable(*args)
-            tatizo exc kama msg:
+            except exc as msg:
                 # the exact msg ni generally considered an impl detail
                 ikiwa support.check_impl_detail():
                     ikiwa sio str(msg).startswith(expected):
@@ -986,24 +986,24 @@ order (MRO) kila bases """
             isipokua:
                 self.fail("Expected %s" % exc)
 
-        kundi A(object): pita
-        kundi B(A): pita
-        kundi C(object): pita
+        kundi A(object): pass
+        kundi B(A): pass
+        kundi C(object): pass
 
         # Test some very simple errors
-        ashirias(TypeError, "duplicate base kundi A",
+        raises(TypeError, "duplicate base kundi A",
                type, "X", (A, A), {})
-        ashirias(TypeError, mro_err_msg,
+        raises(TypeError, mro_err_msg,
                type, "X", (A, B), {})
-        ashirias(TypeError, mro_err_msg,
+        raises(TypeError, mro_err_msg,
                type, "X", (A, C, B), {})
         # Test a slightly more complex error
-        kundi GridLayout(object): pita
-        kundi HorizontalGrid(GridLayout): pita
-        kundi VerticalGrid(GridLayout): pita
-        kundi HVGrid(HorizontalGrid, VerticalGrid): pita
-        kundi VHGrid(VerticalGrid, HorizontalGrid): pita
-        ashirias(TypeError, mro_err_msg,
+        kundi GridLayout(object): pass
+        kundi HorizontalGrid(GridLayout): pass
+        kundi VerticalGrid(GridLayout): pass
+        kundi HVGrid(HorizontalGrid, VerticalGrid): pass
+        kundi VHGrid(VerticalGrid, HorizontalGrid): pass
+        raises(TypeError, mro_err_msg,
                type, "ConfusedGrid", (HVGrid, VHGrid), {})
 
     eleza test_object_class(self):
@@ -1016,14 +1016,14 @@ order (MRO) kila bases """
         self.assertNotHasAttr(a, "foo")
         jaribu:
             a.foo = 12
-        tatizo (AttributeError, TypeError):
-            pita
+        except (AttributeError, TypeError):
+            pass
         isipokua:
             self.fail("object() should sio allow setting a foo attribute")
         self.assertNotHasAttr(object(), "__dict__")
 
         kundi Cdict(object):
-            pita
+            pass
         x = Cdict()
         self.assertEqual(x.__dict__, {})
         x.foo = 1
@@ -1138,8 +1138,8 @@ order (MRO) kila bases """
         self.assertEqual(x.get(), 5)
         jaribu:
             x.__a = 6
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             self.fail("Double underscored names sio mangled")
 
@@ -1147,36 +1147,36 @@ order (MRO) kila bases """
         jaribu:
             kundi C(object):
                 __slots__ = [Tupu]
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("[Tupu] slots sio caught")
         jaribu:
             kundi C(object):
                 __slots__ = ["foo bar"]
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("['foo bar'] slots sio caught")
         jaribu:
             kundi C(object):
                 __slots__ = ["foo\0bar"]
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("['foo\\0bar'] slots sio caught")
         jaribu:
             kundi C(object):
                 __slots__ = ["1"]
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("['1'] slots sio caught")
         jaribu:
             kundi C(object):
                 __slots__ = [""]
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("[''] slots sio caught")
         kundi C(object):
@@ -1184,7 +1184,7 @@ order (MRO) kila bases """
         # XXX(nnorwitz): was there supposed to be something tested
         # kutoka the kundi above?
 
-        # Test a single string ni sio expanded kama a sequence.
+        # Test a single string ni sio expanded as a sequence.
         kundi C(object):
             __slots__ = "abc"
         c = C()
@@ -1192,7 +1192,7 @@ order (MRO) kila bases """
         self.assertEqual(c.abc, 5)
 
         # Test unicode slot names
-        # Test a single unicode string ni sio expanded kama a sequence.
+        # Test a single unicode string ni sio expanded as a sequence.
         kundi C(object):
             __slots__ = "abc"
         c = C()
@@ -1211,8 +1211,8 @@ order (MRO) kila bases """
         jaribu:
             kundi C(object):
                 __slots__ = [chr(128)]
-        tatizo (TypeError, UnicodeEncodeError):
-            pita
+        except (TypeError, UnicodeEncodeError):
+            pass
         isipokua:
             self.fail("[chr(128)] slots sio caught")
 
@@ -1234,7 +1234,7 @@ order (MRO) kila bases """
         support.gc_collect()
         self.assertEqual(Counted.counter, 0)
         kundi D(C):
-            pita
+            pass
         x = D()
         x.a = Counted()
         x.z = Counted()
@@ -1283,7 +1283,7 @@ order (MRO) kila bases """
             eleza __del__(self_):
                 self.assertEqual(self_.a, 1)
                 self.assertEqual(self_.b, 2)
-        ukijumuisha support.captured_output('stderr') kama s:
+        ukijumuisha support.captured_output('stderr') as s:
             h = H()
             toa h
         self.assertEqual(s.getvalue(), '')
@@ -1310,8 +1310,8 @@ order (MRO) kila bases """
         self.assertNotHasAttr(a, "__dict__")
         jaribu:
             a.foo = 42
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             self.fail("shouldn't be allowed to set a.foo")
 
@@ -1379,7 +1379,7 @@ order (MRO) kila bases """
             __slots__ = "a"
 
         kundi Unrelated(object):
-            pita
+            pass
         MyABC.register(Unrelated)
 
         u = Unrelated()
@@ -1391,11 +1391,11 @@ order (MRO) kila bases """
     eleza test_dynamics(self):
         # Testing kundi attribute propagation...
         kundi D(object):
-            pita
+            pass
         kundi E(D):
-            pita
+            pass
         kundi F(D):
-            pita
+            pass
         D.foo = 1
         self.assertEqual(D.foo, 1)
         # Test that dynamic attributes are inherited
@@ -1403,7 +1403,7 @@ order (MRO) kila bases """
         self.assertEqual(F.foo, 1)
         # Test dynamic instances
         kundi C(object):
-            pita
+            pass
         a = C()
         self.assertNotHasAttr(a, "foobar")
         C.foobar = 2
@@ -1419,32 +1419,32 @@ order (MRO) kila bases """
         eleza mygetattr(self, name):
             ikiwa name == "spam":
                 rudisha "spam"
-            ashiria AttributeError
+             ashiria AttributeError
         C.__getattr__ = mygetattr
         self.assertEqual(a.spam, "spam")
         a.new = 12
         self.assertEqual(a.new, 12)
         eleza mysetattr(self, name, value):
             ikiwa name == "spam":
-                ashiria AttributeError
+                 ashiria AttributeError
             rudisha object.__setattr__(self, name, value)
         C.__setattr__ = mysetattr
         jaribu:
             a.spam = "not spam"
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             self.fail("expected AttributeError")
         self.assertEqual(a.spam, "spam")
         kundi D(C):
-            pita
+            pass
         d = D()
         d.foo = 1
         self.assertEqual(d.foo, 1)
 
         # Test handling of int*seq na seq*int
         kundi I(int):
-            pita
+            pass
         self.assertEqual("a"*I(2), "aa")
         self.assertEqual(I(2)*"a", "aa")
         self.assertEqual(2*I(3), 6)
@@ -1453,68 +1453,68 @@ order (MRO) kila bases """
 
         # Test comparison of classes ukijumuisha dynamic metaclasses
         kundi dynamicmetaclass(type):
-            pita
+            pass
         kundi someclass(metaclass=dynamicmetaclass):
-            pita
+            pass
         self.assertNotEqual(someclass, object)
 
     eleza test_errors(self):
         # Testing errors...
         jaribu:
             kundi C(list, dict):
-                pita
-        tatizo TypeError:
-            pita
+                pass
+        except TypeError:
+            pass
         isipokua:
             self.fail("inheritance kutoka both list na dict should be illegal")
 
         jaribu:
             kundi C(object, Tupu):
-                pita
-        tatizo TypeError:
-            pita
+                pass
+        except TypeError:
+            pass
         isipokua:
             self.fail("inheritance kutoka non-type should be illegal")
         kundi Classic:
-            pita
+            pass
 
         jaribu:
             kundi C(type(len)):
-                pita
-        tatizo TypeError:
-            pita
+                pass
+        except TypeError:
+            pass
         isipokua:
             self.fail("inheritance kutoka CFunction should be illegal")
 
         jaribu:
             kundi C(object):
                 __slots__ = 1
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("__slots__ = 1 should be illegal")
 
         jaribu:
             kundi C(object):
                 __slots__ = [1]
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("__slots__ = [1] should be illegal")
 
         kundi M1(type):
-            pita
+            pass
         kundi M2(type):
-            pita
+            pass
         kundi A1(object, metaclass=M1):
-            pita
+            pass
         kundi A2(object, metaclass=M2):
-            pita
+            pass
         jaribu:
             kundi B(A1, A2):
-                pita
-        tatizo TypeError:
-            pita
+                pass
+        except TypeError:
+            pass
         isipokua:
             self.fail("finding the most derived metakundi should have failed")
 
@@ -1528,7 +1528,7 @@ order (MRO) kila bases """
         self.assertEqual(c.goo(1), (C, 1))
         self.assertEqual(c.foo(1), (c, 1))
         kundi D(C):
-            pita
+            pass
         d = D()
         self.assertEqual(D.goo(1), (D, 1))
         self.assertEqual(d.goo(1), (D, 1))
@@ -1548,15 +1548,15 @@ order (MRO) kila bases """
         self.assertEqual(super(D,D).goo(), (D,))
         self.assertEqual(super(D,d).goo(), (D,))
 
-        # Verify that a non-callable will ashiria
+        # Verify that a non-callable will raise
         meth = classmethod(1).__get__(1)
         self.assertRaises(TypeError, meth)
 
         # Verify that classmethod() doesn't allow keyword args
         jaribu:
             classmethod(f, kw=1)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("classmethod shouldn't accept keyword args")
 
@@ -1580,7 +1580,7 @@ order (MRO) kila bases """
     @support.impl_detail("the module 'xxsubtype' ni internal")
     eleza test_classmethods_in_c(self):
         # Testing C-based kundi methods...
-        agiza xxsubtype kama spam
+        agiza xxsubtype as spam
         a = (1, 2, 3)
         d = {'abc': 123}
         x, a1, d1 = spam.spamlist.classmeth(*a, **d)
@@ -1596,34 +1596,34 @@ order (MRO) kila bases """
         self.assertEqual(x2, spam.spamlist)
         self.assertEqual(a2, a1)
         self.assertEqual(d2, d1)
-        kundi SubSpam(spam.spamlist): pita
+        kundi SubSpam(spam.spamlist): pass
         x2, a2, d2 = spam_cm(SubSpam, *a, **d)
         self.assertEqual(x2, SubSpam)
         self.assertEqual(a2, a1)
         self.assertEqual(d2, d1)
 
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             spam_cm()
         self.assertEqual(
             str(cm.exception),
             "descriptor 'classmeth' of 'xxsubtype.spamlist' "
             "object needs an argument")
 
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             spam_cm(spam.spamlist())
         self.assertEqual(
             str(cm.exception),
             "descriptor 'classmeth' requires a type "
             "but received a 'xxsubtype.spamlist' instance")
 
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             spam_cm(list)
         expected_errmsg = (
             "descriptor 'classmeth' requires a subtype of 'xxsubtype.spamlist' "
             "but received 'list'")
         self.assertEqual(str(cm.exception), expected_errmsg)
 
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             spam_cm.__get__(Tupu, list)
         self.assertEqual(str(cm.exception), expected_errmsg)
 
@@ -1637,7 +1637,7 @@ order (MRO) kila bases """
         self.assertEqual(c.goo(1), (1,))
         self.assertEqual(c.foo(1), (c, 1,))
         kundi D(C):
-            pita
+            pass
         d = D()
         self.assertEqual(D.goo(1), (1,))
         self.assertEqual(d.goo(1), (1,))
@@ -1663,7 +1663,7 @@ order (MRO) kila bases """
     @support.impl_detail("the module 'xxsubtype' ni internal")
     eleza test_staticmethods_in_c(self):
         # Testing C-based static methods...
-        agiza xxsubtype kama spam
+        agiza xxsubtype as spam
         a = (1, 2, 3)
         d = {"abc": 123}
         x, a1, d1 = spam.spamlist.staticmeth(*a, **d)
@@ -1685,7 +1685,7 @@ order (MRO) kila bases """
         self.assertEqual(c.goo(1), (C, 1))
         self.assertEqual(c.foo(1), (c, 1))
         kundi D(C):
-            pita
+            pass
         d = D()
         self.assertEqual(D.goo(1), (D, 1))
         self.assertEqual(d.goo(1), (D, 1))
@@ -1743,7 +1743,7 @@ order (MRO) kila bases """
         self.assertEqual(a.foo, 3)
         self.assertEqual(a.__class__, C)
         kundi D(C):
-            pita
+            pass
         b = D()
         self.assertEqual(b.foo, 3)
         self.assertEqual(b.__class__, D)
@@ -1763,7 +1763,7 @@ order (MRO) kila bases """
 
     eleza test_object_new(self):
         kundi A(object):
-            pita
+            pass
         object.__new__(A)
         self.assertRaises(TypeError, object.__new__, A, 5)
         object.__init__(A())
@@ -1799,7 +1799,7 @@ order (MRO) kila bases """
     eleza test_restored_object_new(self):
         kundi A(object):
             eleza __new__(cls, *args, **kwargs):
-                ashiria AssertionError
+                 ashiria AssertionError
         self.assertRaises(AssertionError, A)
         kundi B(A):
             __new__ = object.__new__
@@ -1824,11 +1824,11 @@ order (MRO) kila bases """
         kundi A(object):
             eleza f(self): rudisha "A"
         kundi B(A):
-            pita
+            pass
         kundi C(A):
             eleza f(self): rudisha "C"
         kundi D(B, C):
-            pita
+            pass
         self.assertEqual(A.mro(), [A, object])
         self.assertEqual(A.__mro__, (A, object))
         self.assertEqual(B.mro(), [B, A, object])
@@ -1845,7 +1845,7 @@ order (MRO) kila bases """
                 L.reverse()
                 rudisha L
         kundi X(D,B,C,A, metaclass=PerverseMetaType):
-            pita
+            pass
         self.assertEqual(X.__mro__, (object, A, C, B, D, X))
         self.assertEqual(X().f(), "A")
 
@@ -1854,17 +1854,17 @@ order (MRO) kila bases """
                 eleza mro(self):
                     rudisha [self, dict, object]
             kundi X(object, metaclass=_metaclass):
-                pita
-            # In CPython, the kundi creation above already ashirias
-            # TypeError, kama a protection against the fact that
+                pass
+            # In CPython, the kundi creation above already raises
+            # TypeError, as a protection against the fact that
             # instances of X would segfault it.  In other Python
             # implementations it would be ok to let the kundi X
             # be created, but instead get a clean TypeError on the
             # __setitem__ below.
             x = object.__new__(X)
             x[5] = 6
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("devious mro() rudisha sio caught")
 
@@ -1873,9 +1873,9 @@ order (MRO) kila bases """
                 eleza mro(self):
                     rudisha [1]
             kundi X(object, metaclass=_metaclass):
-                pita
-        tatizo TypeError:
-            pita
+                pass
+        except TypeError:
+            pass
         isipokua:
             self.fail("non-kundi mro() rudisha sio caught")
 
@@ -1884,9 +1884,9 @@ order (MRO) kila bases """
                 eleza mro(self):
                     rudisha 1
             kundi X(object, metaclass=_metaclass):
-                pita
-        tatizo TypeError:
-            pita
+                pass
+        except TypeError:
+            pass
         isipokua:
             self.fail("non-sequence mro() rudisha sio caught")
 
@@ -1901,7 +1901,7 @@ order (MRO) kila bases """
                 ikiwa name == "foo":
                     rudisha ("getattr", name)
                 isipokua:
-                    ashiria AttributeError
+                     ashiria AttributeError
             eleza __setattr__(self, name, value):
                 ikiwa name == "foo":
                     self.setattr = (name, value)
@@ -1969,27 +1969,27 @@ order (MRO) kila bases """
 
         expected_errmsg = "descriptor 'add' of 'set' object needs an argument"
 
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             set_add()
         self.assertEqual(cm.exception.args[0], expected_errmsg)
 
         expected_errmsg = "descriptor 'add' kila 'set' objects doesn't apply to a 'int' object"
 
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             set_add(0)
         self.assertEqual(cm.exception.args[0], expected_errmsg)
 
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             set_add.__get__(0)
         self.assertEqual(cm.exception.args[0], expected_errmsg)
 
     eleza test_special_method_lookup(self):
-        # The lookup of special methods bypitaes __getattr__ na
+        # The lookup of special methods bypasses __getattr__ and
         # __getattribute__, but they still can be descriptors.
 
         eleza run_context(manager):
             ukijumuisha manager:
-                pita
+                pass
         eleza iden(self):
             rudisha self
         eleza hello(self):
@@ -2001,8 +2001,8 @@ order (MRO) kila bases """
         eleza complex_num(self):
             rudisha 1j
         eleza stop(self):
-            ashiria StopIteration
-        eleza rudisha_true(self, thing=Tupu):
+             ashiria StopIteration
+        eleza return_true(self, thing=Tupu):
             rudisha Kweli
         eleza do_isinstance(obj):
             rudisha isinstance(int, obj)
@@ -2010,12 +2010,12 @@ order (MRO) kila bases """
             rudisha issubclass(int, obj)
         eleza do_dict_missing(checker):
             kundi DictSub(checker.__class__, dict):
-                pita
+                pass
             self.assertEqual(DictSub()["hi"], 4)
         eleza some_number(self_, key):
             self.assertEqual(key, "hi")
             rudisha 4
-        eleza swallow(*args): pita
+        eleza swallow(*args): pass
         eleza format_impl(self, spec):
             rudisha "hello"
 
@@ -2028,10 +2028,10 @@ order (MRO) kila bases """
             ("__length_hint__", list, zero, set(),
              {"__iter__" : iden, "__next__" : stop}),
             ("__sizeof__", sys.getsizeof, zero, set(), {}),
-            ("__instancecheck__", do_isinstance, rudisha_true, set(), {}),
+            ("__instancecheck__", do_isinstance, return_true, set(), {}),
             ("__missing__", do_dict_missing, some_number,
              set(("__class__",)), {}),
-            ("__subclasscheck__", do_issubclass, rudisha_true,
+            ("__subclasscheck__", do_issubclass, return_true,
              set(("__bases__",)), {}),
             ("__enter__", run_context, iden, set(), {"__exit__" : swallow}),
             ("__exit__", run_context, swallow, set(), {"__enter__" : iden}),
@@ -2049,7 +2049,7 @@ order (MRO) kila bases """
             eleza __getattr__(self, attr, test=self):
                 test.fail("__getattr__ called ukijumuisha {0}".format(attr))
             eleza __getattribute__(self, attr, test=self):
-                ikiwa attr haiko kwenye ok:
+                ikiwa attr sio kwenye ok:
                     test.fail("__getattribute__ called ukijumuisha {0}".format(attr))
                 rudisha object.__getattribute__(self, attr)
         kundi SpecialDescr(object):
@@ -2059,14 +2059,14 @@ order (MRO) kila bases """
                 record.append(1)
                 rudisha self.impl.__get__(obj, owner)
         kundi MyException(Exception):
-            pita
+            pass
         kundi ErrDescr(object):
             eleza __get__(self, obj, owner):
-                ashiria MyException
+                 ashiria MyException
 
         kila name, runner, meth_impl, ok, env kwenye specials:
             kundi X(Checker):
-                pita
+                pass
             kila attr, obj kwenye env.items():
                 setattr(X, attr, obj)
             setattr(X, name, meth_impl)
@@ -2074,7 +2074,7 @@ order (MRO) kila bases """
 
             record = []
             kundi X(Checker):
-                pita
+                pass
             kila attr, obj kwenye env.items():
                 setattr(X, attr, obj)
             setattr(X, name, SpecialDescr(meth_impl))
@@ -2082,7 +2082,7 @@ order (MRO) kila bases """
             self.assertEqual(record, [1], name)
 
             kundi X(Checker):
-                pita
+                pass
             kila attr, obj kwenye env.items():
                 setattr(X, attr, obj)
             setattr(X, name, ErrDescr())
@@ -2096,10 +2096,10 @@ order (MRO) kila bases """
         kundi C(object):
             eleza __getitem__(self, i):
                 ikiwa 0 <= i < 10: rudisha i
-                ashiria IndexError
+                 ashiria IndexError
         c1 = C()
         c2 = C()
-        self.assertUongo(sio c1)
+        self.assertUongo(not c1)
         self.assertNotEqual(id(c1), id(c2))
         hash(c1)
         hash(c2)
@@ -2119,10 +2119,10 @@ order (MRO) kila bases """
         kundi D(object):
             eleza __getitem__(self, i):
                 ikiwa 0 <= i < 10: rudisha i
-                ashiria IndexError
+                 ashiria IndexError
         d1 = D()
         d2 = D()
-        self.assertUongo(sio d1)
+        self.assertUongo(not d1)
         self.assertNotEqual(id(d1), id(d2))
         hash(d1)
         hash(d2)
@@ -2143,7 +2143,7 @@ order (MRO) kila bases """
             eleza __init__(self, x):
                 self.x = x
             eleza __bool__(self):
-                rudisha sio not self.x
+                rudisha sio sio self.x
             eleza __hash__(self):
                 rudisha hash(self.x)
             eleza __eq__(self, other):
@@ -2168,12 +2168,12 @@ order (MRO) kila bases """
         p1 = Proxy(1)
         p_1 = Proxy(-1)
         self.assertUongo(p0)
-        self.assertUongo(sio p1)
+        self.assertUongo(not p1)
         self.assertEqual(hash(p0), hash(0))
         self.assertEqual(p0, p0)
         self.assertNotEqual(p0, p1)
         self.assertUongo(p0 != p0)
-        self.assertEqual(sio p0, p1)
+        self.assertEqual(not p0, p1)
         self.assertKweli(p0 < p1)
         self.assertKweli(p0 <= p1)
         self.assertKweli(p1 > p0)
@@ -2190,7 +2190,7 @@ order (MRO) kila bases """
         # Testing weak references...
         agiza weakref
         kundi C(object):
-            pita
+            pass
         c = C()
         r = weakref.ref(c)
         self.assertEqual(r(), c)
@@ -2203,7 +2203,7 @@ order (MRO) kila bases """
         no = NoWeak()
         jaribu:
             weakref.ref(no)
-        tatizo TypeError kama msg:
+        except TypeError as msg:
             self.assertIn("weak reference", str(msg))
         isipokua:
             self.fail("weakref.ref(no) should be illegal")
@@ -2257,7 +2257,7 @@ order (MRO) kila bases """
         kila attr kwenye "fget", "fset", "fdel":
             jaribu:
                 setattr(raw, attr, 42)
-            tatizo AttributeError kama msg:
+            except AttributeError as msg:
                 ikiwa str(msg).find('readonly') < 0:
                     self.fail("when setting readonly attr %r on a property, "
                               "got unexpected AttributeError msg %r" % (attr, str(msg)))
@@ -2275,8 +2275,8 @@ order (MRO) kila bases """
         jaribu:
             kila i kwenye d:
                 str(i)
-        tatizo ZeroDivisionError:
-            pita
+        except ZeroDivisionError:
+            pass
         isipokua:
             self.fail("expected ZeroDivisionError kutoka bad property")
 
@@ -2289,7 +2289,7 @@ order (MRO) kila bases """
                 rudisha 0
             eleza setter(self_, value):
                 "setter method"
-                pita
+                pass
             prop = property(getter)
             self.assertEqual(prop.__doc__, "getter method")
             prop2 = property(fset=setter)
@@ -2300,8 +2300,8 @@ order (MRO) kila bases """
         # this segfaulted kwenye 2.5b2
         jaribu:
             agiza _testcapi
-        tatizo ImportError:
-            pita
+        except ImportError:
+            pass
         isipokua:
             kundi X(object):
                 p = property(_testcapi.test_with_docstring)
@@ -2334,8 +2334,8 @@ order (MRO) kila bases """
             eleza foo(self):
                 jaribu:
                     toa self._foo
-                tatizo AttributeError:
-                    pita
+                except AttributeError:
+                    pass
         d = D()
         d.foo = 24
         self.assertEqual(d.foo, 24)
@@ -2348,7 +2348,7 @@ order (MRO) kila bases """
                 rudisha self._foo
             @foo.setter
             eleza foo(self, value):
-                ashiria RuntimeError
+                 ashiria RuntimeError
             @foo.setter
             eleza foo(self, value):
                 self._foo = abs(value)
@@ -2394,14 +2394,14 @@ order (MRO) kila bases """
         kila badarg kwenye 0, 0, 0j, "0", [0], (0,):
             jaribu:
                 dict(badarg)
-            tatizo TypeError:
-                pita
-            tatizo ValueError:
+            except TypeError:
+                pass
+            except ValueError:
                 ikiwa badarg == "0":
                     # It's a sequence, na its elements are also sequences (gotta
                     # love strings <wink>), but they aren't of length 2, so this
-                    # one seemed better kama a ValueError than a TypeError.
-                    pita
+                    # one seemed better as a ValueError than a TypeError.
+                    pass
                 isipokua:
                     self.fail("no TypeError kutoka dict(%r)" % badarg)
             isipokua:
@@ -2409,8 +2409,8 @@ order (MRO) kila bases """
 
         jaribu:
             dict({}, {})
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("no TypeError kutoka dict({}, {})")
 
@@ -2420,8 +2420,8 @@ order (MRO) kila bases """
 
         jaribu:
             dict(Mapping())
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("no TypeError kutoka dict(incomplete mapping)")
 
@@ -2451,8 +2451,8 @@ order (MRO) kila bases """
         kila bad kwenye [('tooshort',)], [('too', 'long', 'by 1')]:
             jaribu:
                 dict(bad)
-            tatizo ValueError:
-                pita
+            except ValueError:
+                pass
             isipokua:
                 self.fail("no ValueError kutoka dict(%r)" % bad)
 
@@ -2466,14 +2466,14 @@ order (MRO) kila bases """
         kila arg kwenye 2, 2, 2j, 2e0, [2], "2", b"2", (2,), {2:2}, type, self.test_dir:
             dir(arg)
 
-        # Test dir on new-style classes.  Since these have object kama a
+        # Test dir on new-style classes.  Since these have object as a
         # base class, a lot more gets sucked in.
         eleza interesting(strings):
             rudisha [s kila s kwenye strings ikiwa sio s.startswith('_')]
 
         kundi C(object):
             Cdata = 1
-            eleza Cmethod(self): pita
+            eleza Cmethod(self): pass
 
         cstuff = ['Cdata', 'Cmethod']
         self.assertEqual(interesting(dir(C)), cstuff)
@@ -2489,7 +2489,7 @@ order (MRO) kila bases """
 
         kundi A(C):
             Adata = 1
-            eleza Amethod(self): pita
+            eleza Amethod(self): pass
 
         astuff = ['Adata', 'Amethod'] + cstuff
         self.assertEqual(interesting(dir(A)), astuff)
@@ -2503,13 +2503,13 @@ order (MRO) kila bases """
 
         # Try a module subclass.
         kundi M(type(sys)):
-            pita
+            pass
         minstance = M("m")
         minstance.b = 2
         minstance.a = 1
         default_attributes = ['__name__', '__doc__', '__package__',
                               '__loader__', '__spec__']
-        names = [x kila x kwenye dir(minstance) ikiwa x haiko kwenye default_attributes]
+        names = [x kila x kwenye dir(minstance) ikiwa x sio kwenye default_attributes]
         self.assertEqual(names, ['a', 'b'])
 
         kundi M2(M):
@@ -2523,10 +2523,10 @@ order (MRO) kila bases """
         self.assertEqual(m2instance.__dict__, "Not a dict!")
         jaribu:
             dir(m2instance)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
 
-        # Two essentially featureless objects, just inheriting stuff kutoka
+        # Two essentially featureless objects, just inheriting stuff from
         # object.
         self.assertEqual(dir(NotImplemented), dir(Ellipsis))
 
@@ -2600,33 +2600,33 @@ order (MRO) kila bases """
 
         self.assertEqual(F().meth(6), "F(6)[mysuper]E(6)D(6)C(6)B(6)A(6)")
 
-        # Make sure certain errors are ashiriad
+        # Make sure certain errors are raised
 
         jaribu:
             super(D, 42)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't allow super(D, 42)")
 
         jaribu:
             super(D, C())
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't allow super(D, C())")
 
         jaribu:
             super(D).__get__(12)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't allow super(D).__get__(12)")
 
         jaribu:
             super(D).__get__(C())
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't allow super(D).__get__(C())")
 
@@ -2721,7 +2721,7 @@ order (MRO) kila bases """
         # Because octlong overrides __add__, we can't check the absence of +0
         # optimizations using octlong.
         kundi longclone(int):
-            pita
+            pass
         a = longclone(1)
         self.assertIs((a + 0).__class__, int)
         self.assertIs((0 + a).__class__, int)
@@ -2930,7 +2930,7 @@ order (MRO) kila bases """
         self.assertEqual(u[0:0], "")
 
         kundi sublist(list):
-            pita
+            pass
         a = sublist(range(5))
         self.assertEqual(a, list(range(5)))
         a.append("hello")
@@ -2991,7 +2991,7 @@ order (MRO) kila bases """
         ##     jaribu:
         ##         f.close()
         ##     tatizo:
-        ##         pita
+        ##         pass
         ##     support.unlink(support.TESTFN)
 
     eleza test_keywords(self):
@@ -3009,20 +3009,20 @@ order (MRO) kila bases """
             tuple(sequence=range(3))
         ukijumuisha self.assertRaisesRegex(TypeError, 'keyword argument'):
             list(sequence=(0, 1, 2))
-        # note: kama of Python 2.3, dict() no longer has an "items" keyword arg
+        # note: as of Python 2.3, dict() no longer has an "items" keyword arg
 
         kila constructor kwenye (int, float, int, complex, str, str,
                             tuple, list):
             jaribu:
                 constructor(bogus_keyword_arg=1)
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
             isipokua:
                 self.fail("expected TypeError kutoka bogus keyword argument to %r"
                             % constructor)
 
     eleza test_str_subclass_as_dict_key(self):
-        # Testing a str subkundi used kama dict key ..
+        # Testing a str subkundi used as dict key ..
 
         kundi cistr(str):
             """Subkundi of str that computes __eq__ case-insensitively.
@@ -3056,7 +3056,7 @@ order (MRO) kila bases """
     eleza test_classic_comparisons(self):
         # Testing classic comparisons...
         kundi classic:
-            pita
+            pass
 
         kila base kwenye (classic, int, object):
             kundi C(base):
@@ -3120,7 +3120,7 @@ order (MRO) kila bases """
     eleza test_rich_comparisons(self):
         # Testing rich comparisons...
         kundi Z(complex):
-            pita
+            pass
         z = Z(1)
         self.assertEqual(z, 1+0j)
         self.assertEqual(1+0j, z)
@@ -3135,7 +3135,7 @@ order (MRO) kila bases """
         self.assertEqual(1+0j, zz)
 
         kundi classic:
-            pita
+            pass
         kila base kwenye (classic, int, object, list):
             kundi C(base):
                 eleza __init__(self, value):
@@ -3225,10 +3225,10 @@ order (MRO) kila bases """
 
     eleza test_set_class(self):
         # Testing __class__ assignment...
-        kundi C(object): pita
-        kundi D(object): pita
-        kundi E(object): pita
-        kundi F(D, E): pita
+        kundi C(object): pass
+        kundi D(object): pass
+        kundi E(object): pass
+        kundi F(D, E): pass
         kila cls kwenye C, D, E, F:
             kila cls2 kwenye C, D, E, F:
                 x = cls()
@@ -3239,14 +3239,14 @@ order (MRO) kila bases """
         eleza cant(x, C):
             jaribu:
                 x.__class__ = C
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
             isipokua:
                 self.fail("shouldn't allow %r.__class__ = %r" % (x, C))
             jaribu:
                 delattr(x, "__class__")
-            tatizo (TypeError, AttributeError):
-                pita
+            except (TypeError, AttributeError):
+                pass
             isipokua:
                 self.fail("shouldn't allow toa %r.__class__" % x)
         cant(C(), list)
@@ -3281,7 +3281,7 @@ order (MRO) kila bases """
         kundi P(J):
             __slots__ = ["__dict__"]
         kundi Q(J):
-            pita
+            pass
         kundi R(J):
             __slots__ = ["__dict__", "__weakref__"]
 
@@ -3290,11 +3290,11 @@ order (MRO) kila bases """
             x.a = 1
             x.__class__ = cls2
             self.assertIs(x.__class__, cls2,
-                   "assigning %r kama __class__ kila %r silently failed" % (cls2, x))
+                   "assigning %r as __class__ kila %r silently failed" % (cls2, x))
             self.assertEqual(x.a, 1)
             x.__class__ = cls
             self.assertIs(x.__class__, cls,
-                   "assigning %r kama __class__ kila %r silently failed" % (cls, x))
+                   "assigning %r as __class__ kila %r silently failed" % (cls, x))
             self.assertEqual(x.a, 1)
         kila cls kwenye G, J, K, L, M, N, P, R, list, Int:
             kila cls2 kwenye G, J, K, L, M, N, P, R, list, Int:
@@ -3305,7 +3305,7 @@ order (MRO) kila bases """
         # Issue5283: when __class__ changes kwenye __del__, the wrong
         # type gets DECREF'd.
         kundi O(object):
-            pita
+            pass
         kundi A(object):
             eleza __del__(self):
                 self.__class__ = O
@@ -3314,15 +3314,15 @@ order (MRO) kila bases """
 
     eleza test_set_dict(self):
         # Testing __dict__ assignment...
-        kundi C(object): pita
+        kundi C(object): pass
         a = C()
         a.__dict__ = {'b': 1}
         self.assertEqual(a.b, 1)
         eleza cant(x, dict):
             jaribu:
                 x.__dict__ = dict
-            tatizo (AttributeError, TypeError):
-                pita
+            except (AttributeError, TypeError):
+                pass
             isipokua:
                 self.fail("shouldn't allow %r.__dict__ = %r" % (x, dict))
         cant(a, Tupu)
@@ -3331,7 +3331,7 @@ order (MRO) kila bases """
         toa a.__dict__ # Deleting __dict__ ni allowed
 
         kundi Base(object):
-            pita
+            pass
         eleza verify_dict_readonly(x):
             """
             x has to be an instance of a kundi inheriting kutoka Base.
@@ -3339,42 +3339,42 @@ order (MRO) kila bases """
             cant(x, {})
             jaribu:
                 toa x.__dict__
-            tatizo (AttributeError, TypeError):
-                pita
+            except (AttributeError, TypeError):
+                pass
             isipokua:
                 self.fail("shouldn't allow toa %r.__dict__" % x)
             dict_descr = Base.__dict__["__dict__"]
             jaribu:
                 dict_descr.__set__(x, {})
-            tatizo (AttributeError, TypeError):
-                pita
+            except (AttributeError, TypeError):
+                pass
             isipokua:
                 self.fail("dict_descr allowed access to %r's dict" % x)
 
         # Classes don't allow __dict__ assignment na have readonly dicts
         kundi Meta1(type, Base):
-            pita
+            pass
         kundi Meta2(Base, type):
-            pita
+            pass
         kundi D(object, metaclass=Meta1):
-            pita
+            pass
         kundi E(object, metaclass=Meta2):
-            pita
+            pass
         kila cls kwenye C, D, E:
             verify_dict_readonly(cls)
             class_dict = cls.__dict__
             jaribu:
                 class_dict["spam"] = "eggs"
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
             isipokua:
                 self.fail("%r's __dict__ can be modified" % cls)
 
         # Modules also disallow __dict__ assignment
         kundi Module1(types.ModuleType, Base):
-            pita
+            pass
         kundi Module2(Base, types.ModuleType):
-            pita
+            pass
         kila ModuleType kwenye Module1, Module2:
             mod = ModuleType("spam")
             verify_dict_readonly(mod)
@@ -3387,14 +3387,14 @@ order (MRO) kila bases """
         eleza can_delete_dict(e):
             jaribu:
                 toa e.__dict__
-            tatizo (TypeError, AttributeError):
+            except (TypeError, AttributeError):
                 rudisha Uongo
             isipokua:
                 rudisha Kweli
         kundi Exception1(Exception, Base):
-            pita
+            pass
         kundi Exception2(Base, Exception):
-            pita
+            pass
         kila ExceptionType kwenye Exception, Exception1, Exception2:
             e = ExceptionType()
             e.__dict__ = {"a": 1}
@@ -3434,13 +3434,13 @@ order (MRO) kila bases """
     eleza test_subclass_propagation(self):
         # Testing propagation of slot functions to subclasses...
         kundi A(object):
-            pita
+            pass
         kundi B(A):
-            pita
+            pass
         kundi C(A):
-            pita
+            pass
         kundi D(B, C):
-            pita
+            pass
         d = D()
         orig_hash = hash(d) # related to id(d) kwenye platform-dependent ways
         A.__hash__ = lambda self: 42
@@ -3481,7 +3481,7 @@ order (MRO) kila bases """
         eleza __getattr__(self, name):
             ikiwa name kwenye ("spam", "foo", "bar"):
                 rudisha "hello"
-            ashiria AttributeError(name)
+             ashiria AttributeError(name)
         B.__getattr__ = __getattr__
         self.assertEqual(d.spam, "hello")
         self.assertEqual(d.foo, 24)
@@ -3494,16 +3494,16 @@ order (MRO) kila bases """
         toa B.__getattr__
         jaribu:
             d.foo
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             self.fail("d.foo should be undefined now")
 
         # Test a nasty bug kwenye recurse_down_subclasses()
         kundi A(object):
-            pita
+            pass
         kundi B(A):
-            pita
+            pass
         toa B
         support.gc_collect()
         A.__setitem__ = lambda *a: Tupu # crash
@@ -3515,7 +3515,7 @@ order (MRO) kila bases """
         # SF bug [#470040] ParseTuple t# vs subclasses.
 
         kundi MyBytes(bytes):
-            pita
+            pass
         base = b'abc'
         m = MyBytes(base)
         # b2a_hex uses the buffer interface to get its argument's value, via
@@ -3523,13 +3523,13 @@ order (MRO) kila bases """
         self.assertEqual(binascii.b2a_hex(m), binascii.b2a_hex(base))
 
         kundi MyInt(int):
-            pita
+            pass
         m = MyInt(42)
         jaribu:
             binascii.b2a_hex(m)
             self.fail('subkundi of int should sio have a buffer interface')
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
 
     eleza test_str_of_str_subclass(self):
         # Testing __str__ defined kwenye subkundi of str ...
@@ -3571,13 +3571,13 @@ order (MRO) kila bases """
     eleza test_recursive_call(self):
         # Testing recursive __call__() by setting to instance of class...
         kundi A(object):
-            pita
+            pass
 
         A.__call__ = A()
         jaribu:
             A()()
-        tatizo RecursionError:
-            pita
+        except RecursionError:
+            pass
         isipokua:
             self.fail("Recursion limit should have been reached kila __call__()")
 
@@ -3593,75 +3593,75 @@ order (MRO) kila bases """
         support.gc_collect()
         self.assertEqual(log, [1])
 
-        kundi D(object): pita
+        kundi D(object): pass
         d = D()
         jaribu: toa d[0]
-        tatizo TypeError: pita
-        isipokua: self.fail("invalid del() didn't ashiria TypeError")
+        except TypeError: pass
+        isipokua: self.fail("invalid del() didn't  ashiria TypeError")
 
     eleza test_hash_inheritance(self):
         # Testing hash of mutable subclasses...
 
         kundi mydict(dict):
-            pita
+            pass
         d = mydict()
         jaribu:
             hash(d)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("hash() of dict subkundi should fail")
 
         kundi mylist(list):
-            pita
+            pass
         d = mylist()
         jaribu:
             hash(d)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("hash() of list subkundi should fail")
 
     eleza test_str_operations(self):
         jaribu: 'a' + 5
-        tatizo TypeError: pita
-        isipokua: self.fail("'' + 5 doesn't ashiria TypeError")
+        except TypeError: pass
+        isipokua: self.fail("'' + 5 doesn't  ashiria TypeError")
 
         jaribu: ''.split('')
-        tatizo ValueError: pita
-        isipokua: self.fail("''.split('') doesn't ashiria ValueError")
+        except ValueError: pass
+        isipokua: self.fail("''.split('') doesn't  ashiria ValueError")
 
         jaribu: ''.join([0])
-        tatizo TypeError: pita
-        isipokua: self.fail("''.join([0]) doesn't ashiria TypeError")
+        except TypeError: pass
+        isipokua: self.fail("''.join([0]) doesn't  ashiria TypeError")
 
         jaribu: ''.rindex('5')
-        tatizo ValueError: pita
-        isipokua: self.fail("''.rindex('5') doesn't ashiria ValueError")
+        except ValueError: pass
+        isipokua: self.fail("''.rindex('5') doesn't  ashiria ValueError")
 
         jaribu: '%(n)s' % Tupu
-        tatizo TypeError: pita
-        isipokua: self.fail("'%(n)s' % Tupu doesn't ashiria TypeError")
+        except TypeError: pass
+        isipokua: self.fail("'%(n)s' % Tupu doesn't  ashiria TypeError")
 
         jaribu: '%(n' % {}
-        tatizo ValueError: pita
-        isipokua: self.fail("'%(n' % {} '' doesn't ashiria ValueError")
+        except ValueError: pass
+        isipokua: self.fail("'%(n' % {} '' doesn't  ashiria ValueError")
 
         jaribu: '%*s' % ('abc')
-        tatizo TypeError: pita
-        isipokua: self.fail("'%*s' % ('abc') doesn't ashiria TypeError")
+        except TypeError: pass
+        isipokua: self.fail("'%*s' % ('abc') doesn't  ashiria TypeError")
 
         jaribu: '%*.*s' % ('abc', 5)
-        tatizo TypeError: pita
-        isipokua: self.fail("'%*.*s' % ('abc', 5) doesn't ashiria TypeError")
+        except TypeError: pass
+        isipokua: self.fail("'%*.*s' % ('abc', 5) doesn't  ashiria TypeError")
 
         jaribu: '%s' % (1, 2)
-        tatizo TypeError: pita
-        isipokua: self.fail("'%s' % (1, 2) doesn't ashiria TypeError")
+        except TypeError: pass
+        isipokua: self.fail("'%s' % (1, 2) doesn't  ashiria TypeError")
 
         jaribu: '%' % Tupu
-        tatizo ValueError: pita
-        isipokua: self.fail("'%' % Tupu doesn't ashiria ValueError")
+        except ValueError: pass
+        isipokua: self.fail("'%' % Tupu doesn't  ashiria ValueError")
 
         self.assertEqual('534253'.isdigit(), 1)
         self.assertEqual('534253x'.isdigit(), 0)
@@ -3671,7 +3671,7 @@ order (MRO) kila bases """
     eleza test_deepcopy_recursive(self):
         # Testing deepcopy of recursive objects...
         kundi Node:
-            pita
+            pass
         a = Node()
         b = Node()
         a.b = b
@@ -3680,7 +3680,7 @@ order (MRO) kila bases """
 
     eleza test_uninitialized_modules(self):
         # Testing uninitialized module objects...
-        kutoka types agiza ModuleType kama M
+        kutoka types agiza ModuleType as M
         m = M.__new__(M)
         str(m)
         self.assertNotHasAttr(m, "__name__")
@@ -3691,11 +3691,11 @@ order (MRO) kila bases """
         self.assertEqual(m.__dict__, {"foo": 1})
 
     eleza test_funny_new(self):
-        # Testing __new__ rudishaing something unexpected...
+        # Testing __new__ returning something unexpected...
         kundi C(object):
             eleza __new__(cls, arg):
                 ikiwa isinstance(arg, str): rudisha [1, 2, 3]
-                lasivyo isinstance(arg, int): rudisha object.__new__(D)
+                elikiwa isinstance(arg, int): rudisha object.__new__(D)
                 isipokua: rudisha object.__new__(cls)
         kundi D(C):
             eleza __init__(self, arg):
@@ -3717,7 +3717,7 @@ order (MRO) kila bases """
                 rudisha args
         self.assertEqual(C(1, 2), (C, 1, 2))
         kundi D(C):
-            pita
+            pass
         self.assertEqual(D(1, 2), (D, 1, 2))
 
         kundi C(object):
@@ -3726,7 +3726,7 @@ order (MRO) kila bases """
                 rudisha args
         self.assertEqual(C(1, 2), (C, C, 1, 2))
         kundi D(C):
-            pita
+            pass
         self.assertEqual(D(1, 2), (D, D, 1, 2))
 
     eleza test_imul_bug(self):
@@ -3848,7 +3848,7 @@ order (MRO) kila bases """
         self.assertEqual(len(C.container), 1)
 
         # Make c mortal again, so that the test framework ukijumuisha -l doesn't report
-        # it kama a leak.
+        # it as a leak.
         toa C.__del__
 
     eleza test_slots_trash(self):
@@ -3868,7 +3868,7 @@ order (MRO) kila bases """
         kundi A(object):
             __slots__=()
         kundi B(object):
-            pita
+            pass
         kundi C(A,B) :
             __slots__=()
         ikiwa support.check_impl_detail():
@@ -3896,7 +3896,7 @@ order (MRO) kila bases """
         # [SF bug 620179]
         kundi C(object):
             eleza __ipow__(self, other):
-                pita
+                pass
         a = C()
         a **= 2
 
@@ -3905,7 +3905,7 @@ order (MRO) kila bases """
 
         # stuff that should work:
         kundi C(object):
-            pita
+            pass
         kundi C2(object):
             eleza __getattribute__(self, attr):
                 ikiwa attr == 'a':
@@ -3915,9 +3915,9 @@ order (MRO) kila bases """
             eleza meth(self):
                 rudisha 1
         kundi D(C):
-            pita
+            pass
         kundi E(D):
-            pita
+            pass
         d = D()
         e = E()
         D.__bases__ = (C,)
@@ -3930,14 +3930,14 @@ order (MRO) kila bases """
 
         jaribu:
             toa D.__bases__
-        tatizo (TypeError, AttributeError):
-            pita
+        except (TypeError, AttributeError):
+            pass
         isipokua:
             self.fail("shouldn't be able to delete .__bases__")
 
         jaribu:
             D.__bases__ = ()
-        tatizo TypeError kama msg:
+        except TypeError as msg:
             ikiwa str(msg) == "a new-style kundi can't have only classic bases":
                 self.fail("wrong error message kila .__bases__ = ()")
         isipokua:
@@ -3945,23 +3945,23 @@ order (MRO) kila bases """
 
         jaribu:
             D.__bases__ = (D,)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             # actually, we'll have crashed by here...
             self.fail("shouldn't be able to create inheritance cycles")
 
         jaribu:
             D.__bases__ = (C, C)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("didn't detect repeated base classes")
 
         jaribu:
             D.__bases__ = (E,)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't be able to create inheritance cycles")
 
@@ -3976,56 +3976,56 @@ order (MRO) kila bases """
                 self.assertEqual(len(tp.__bases__), 1, tp)
 
         kundi L(list):
-            pita
+            pass
 
         kundi C(object):
-            pita
+            pass
 
         kundi D(C):
-            pita
+            pass
 
         jaribu:
             L.__bases__ = (dict,)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't turn list subkundi into dict subclass")
 
         jaribu:
             list.__bases__ = (dict,)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't be able to assign to list.__bases__")
 
         jaribu:
             D.__bases__ = (C, list)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             assert 0, "best_base calculation found wanting"
 
     eleza test_unsubclassable_types(self):
         ukijumuisha self.assertRaises(TypeError):
             kundi X(type(Tupu)):
-                pita
+                pass
         ukijumuisha self.assertRaises(TypeError):
             kundi X(object, type(Tupu)):
-                pita
+                pass
         ukijumuisha self.assertRaises(TypeError):
             kundi X(type(Tupu), object):
-                pita
+                pass
         kundi O(object):
-            pita
+            pass
         ukijumuisha self.assertRaises(TypeError):
             kundi X(O, type(Tupu)):
-                pita
+                pass
         ukijumuisha self.assertRaises(TypeError):
             kundi X(type(Tupu), O):
-                pita
+                pass
 
         kundi X(object):
-            pita
+            pass
         ukijumuisha self.assertRaises(TypeError):
             X.__bases__ = type(Tupu),
         ukijumuisha self.assertRaises(TypeError):
@@ -4045,7 +4045,7 @@ order (MRO) kila bases """
                 rudisha super(WorkOnce, self).__new__(WorkOnce, name, bases, ns)
             eleza mro(self):
                 ikiwa self.flag > 0:
-                    ashiria RuntimeError("bozo")
+                     ashiria RuntimeError("bozo")
                 isipokua:
                     self.flag += 1
                     rudisha type.mro(self)
@@ -4059,22 +4059,22 @@ order (MRO) kila bases """
                 rudisha type.mro(self)
 
         kundi C(object):
-            pita
+            pass
 
         kundi C2(object):
-            pita
+            pass
 
         kundi D(C):
-            pita
+            pass
 
         kundi E(D):
-            pita
+            pass
 
         kundi F(D, metaclass=WorkOnce):
-            pita
+            pass
 
         kundi G(D, metaclass=WorkAlways):
-            pita
+            pass
 
         # Immediate subclasses have their mro's adjusted kwenye alphabetical
         # order, so E's will get adjusted before adjusting F's fails.  We
@@ -4085,7 +4085,7 @@ order (MRO) kila bases """
 
         jaribu:
             D.__bases__ = (C2,)
-        tatizo RuntimeError:
+        except RuntimeError:
             self.assertEqual(E.__mro__, E_mro_before)
             self.assertEqual(D.__mro__, D_mro_before)
         isipokua:
@@ -4094,31 +4094,31 @@ order (MRO) kila bases """
     eleza test_mutable_bases_catch_mro_conflict(self):
         # Testing mutable bases catch mro conflict...
         kundi A(object):
-            pita
+            pass
 
         kundi B(object):
-            pita
+            pass
 
         kundi C(A, B):
-            pita
+            pass
 
         kundi D(A, B):
-            pita
+            pass
 
         kundi E(C, D):
-            pita
+            pass
 
         jaribu:
             C.__bases__ = (B, A)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("didn't catch MRO conflict")
 
     eleza test_mutable_names(self):
         # Testing mutable names...
         kundi C(object):
-            pita
+            pass
 
         # C.__module__ could be 'test_descr' ama '__main__'
         mod = C.__module__
@@ -4131,14 +4131,14 @@ order (MRO) kila bases """
 
     eleza test_evil_type_name(self):
         # A badly placed Py_DECREF kwenye type_set_name led to arbitrary code
-        # execution wakati the type structure was haiko kwenye a sane state, na a
-        # possible segmentation fault kama a result.  See bug #16447.
+        # execution wakati the type structure was sio kwenye a sane state, na a
+        # possible segmentation fault as a result.  See bug #16447.
         kundi Nasty(str):
             eleza __del__(self):
                 C.__name__ = "other"
 
         kundi C:
-            pita
+            pass
 
         C.__name__ = Nasty("abc")
         C.__name__ = "normal"
@@ -4185,7 +4185,7 @@ order (MRO) kila bases """
         # Case 4: this didn't work right kwenye 2.2.2 na 2.3a1
 
         kundi E(C):
-            pita
+            pass
 
         self.assertEqual(E.__rfloordiv__, C.__rfloordiv__)
 
@@ -4202,11 +4202,11 @@ order (MRO) kila bases """
         # Baseline
         arg = [1, 2, 3]
         res = {1: Tupu, 2: Tupu, 3: Tupu}
-        self.assertEqual(dict.kutokakeys(arg), res)
-        self.assertEqual({}.kutokakeys(arg), res)
+        self.assertEqual(dict.fromkeys(arg), res)
+        self.assertEqual({}.fromkeys(arg), res)
 
         # Now get the descriptor
-        descr = dict.__dict__["kutokakeys"]
+        descr = dict.__dict__["fromkeys"]
 
         # More baseline using the descriptor directly
         self.assertEqual(descr.__get__(Tupu, dict)(arg), res)
@@ -4215,26 +4215,26 @@ order (MRO) kila bases """
         # Now check various error cases
         jaribu:
             descr.__get__(Tupu, Tupu)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't have allowed descr.__get__(Tupu, Tupu)")
         jaribu:
             descr.__get__(42)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't have allowed descr.__get__(42)")
         jaribu:
             descr.__get__(Tupu, 42)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't have allowed descr.__get__(Tupu, 42)")
         jaribu:
             descr.__get__(Tupu, int)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("shouldn't have allowed descr.__get__(Tupu, int)")
 
@@ -4250,28 +4250,28 @@ order (MRO) kila bases """
                     rudisha getattr(self.__obj, name)
         # Test ukijumuisha a classic class
         kundi C:
-            pita
+            pass
         a = C()
         pa = Proxy(a)
         self.assertIsInstance(a, C)  # Baseline
         self.assertIsInstance(pa, C) # Test
         # Test ukijumuisha a classic subclass
         kundi D(C):
-            pita
+            pass
         a = D()
         pa = Proxy(a)
         self.assertIsInstance(a, C)  # Baseline
         self.assertIsInstance(pa, C) # Test
         # Test ukijumuisha a new-style class
         kundi C(object):
-            pita
+            pass
         a = C()
         pa = Proxy(a)
         self.assertIsInstance(a, C)  # Baseline
         self.assertIsInstance(pa, C) # Test
         # Test ukijumuisha a new-style subclass
         kundi D(C):
-            pita
+            pass
         a = D()
         pa = Proxy(a)
         self.assertIsInstance(a, C)  # Baseline
@@ -4304,14 +4304,14 @@ order (MRO) kila bases """
         # Testing prohibition of Carlo Verre's hack...
         jaribu:
             object.__setattr__(str, "foo", 42)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("Carlo Verre __setattr__ succeeded!")
         jaribu:
             object.__delattr__(str, "lower")
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
             self.fail("Carlo Verre __delattr__ succeeded!")
 
@@ -4328,7 +4328,7 @@ order (MRO) kila bases """
                 x = self.ref()
 
         kundi Oops(object):
-            pita
+            pass
 
         o = Oops()
         o.whatever = Provoker(o)
@@ -4347,12 +4347,12 @@ order (MRO) kila bases """
         kundi StdoutGuard:
             eleza __getattr__(self, attr):
                 sys.stdout = sys.__stdout__
-                ashiria RuntimeError("Premature access to sys.stdout.%s" % attr)
+                 ashiria RuntimeError("Premature access to sys.stdout.%s" % attr)
         sys.stdout = StdoutGuard()
         jaribu:
             andika("Oops!")
-        tatizo RuntimeError:
-            pita
+        except RuntimeError:
+            pass
         mwishowe:
             sys.stdout = test_stdout
 
@@ -4369,9 +4369,9 @@ order (MRO) kila bases """
             eleza __eq__(self, other):
                 jaribu:
                     toa C.attr
-                tatizo AttributeError:
+                except AttributeError:
                     # possible race condition
-                    pita
+                    pass
                 rudisha 0
 
         kundi Descr(object):
@@ -4396,10 +4396,10 @@ order (MRO) kila bases """
                 rudisha 10
         jaribu:
             Foo()
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            self.fail("did sio test __init__() kila Tupu rudisha")
+            self.fail("did sio test __init__() kila Tupu return")
 
     eleza assertNotOrderable(self, a, b):
         ukijumuisha self.assertRaises(TypeError):
@@ -4430,7 +4430,7 @@ order (MRO) kila bases """
         hash(l.__add__)
 
     eleza test_builtin_function_or_method(self):
-        # Not really belonging to test_descr, but introspection na
+        # Not really belonging to test_descr, but introspection and
         # comparison on <type 'builtin_function_or_method'> seems not
         # to be tested elsewhere
         l = []
@@ -4478,8 +4478,8 @@ order (MRO) kila bases """
         eleza check(expr, x, y):
             jaribu:
                 exec(expr, {'x': x, 'y': y, 'operator': operator})
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
             isipokua:
                 self.fail("no TypeError kutoka %r" % (expr,))
 
@@ -4554,9 +4554,9 @@ order (MRO) kila bases """
 
         # Also check type_getattro kila correctness.
         kundi Meta(type):
-            pita
+            pass
         kundi X(metaclass=Meta):
-            pita
+            pass
         X.a = 42
         Meta.a = Descr("a")
         self.assertEqual(X.a, 42)
@@ -4569,7 +4569,7 @@ order (MRO) kila bases """
             eleza __get__(self, obj, objtype=Tupu):
                 eleza getter(name):
                     self.counter += 1
-                    ashiria AttributeError(name)
+                     ashiria AttributeError(name)
                 rudisha getter
 
         descr = Descriptor()
@@ -4591,12 +4591,12 @@ order (MRO) kila bases """
         kundi EvilGetattribute(object):
             # This used to segfault
             eleza __getattr__(self, name):
-                ashiria AttributeError(name)
+                 ashiria AttributeError(name)
             eleza __getattribute__(self, name):
                 toa EvilGetattribute.__getattr__
                 kila i kwenye range(5):
                     gc.collect()
-                ashiria AttributeError(name)
+                 ashiria AttributeError(name)
 
         self.assertRaises(AttributeError, getattr, EvilGetattribute(), "attr")
 
@@ -4607,10 +4607,10 @@ order (MRO) kila bases """
         # type pretends sio to have __abstractmethods__.
         self.assertRaises(AttributeError, getattr, type, "__abstractmethods__")
         kundi meta(type):
-            pita
+            pass
         self.assertRaises(AttributeError, getattr, meta, "__abstractmethods__")
         kundi X(object):
-            pita
+            pass
         ukijumuisha self.assertRaises(AttributeError):
             toa X.__abstractmethods__
 
@@ -4634,7 +4634,7 @@ order (MRO) kila bases """
         # Issue #11603: crash ama infinite loop when rebinding __str__ as
         # __repr__.
         kundi Foo:
-            pita
+            pass
         Foo.__repr__ = Foo.__str__
         foo = Foo()
         self.assertRaises(RecursionError, str, foo)
@@ -4651,7 +4651,7 @@ order (MRO) kila bases """
 
     eleza test_wrong_class_slot_wrapper(self):
         # Check bpo-37619: a wrapper descriptor taken kutoka the wrong class
-        # should ashiria an exception instead of silently being ignored
+        # should  ashiria an exception instead of silently being ignored
         kundi A(int):
             __eq__ = str.__eq__
             __add__ = str.__add__
@@ -4662,7 +4662,7 @@ order (MRO) kila bases """
             a + a
 
     eleza test_slot_shadows_class_variable(self):
-        ukijumuisha self.assertRaises(ValueError) kama cm:
+        ukijumuisha self.assertRaises(ValueError) as cm:
             kundi X:
                 __slots__ = ["foo"]
                 foo = Tupu
@@ -4674,10 +4674,10 @@ order (MRO) kila bases """
             "elephant"
         X.__doc__ = "banana"
         self.assertEqual(X.__doc__, "banana")
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             type(list).__dict__["__doc__"].__set__(list, "blah")
         self.assertIn("can't set list.__doc__", str(cm.exception))
-        ukijumuisha self.assertRaises(TypeError) kama cm:
+        ukijumuisha self.assertRaises(TypeError) as cm:
             type(X).__dict__["__doc__"].__delete__(X)
         self.assertIn("can't delete X.__doc__", str(cm.exception))
         self.assertEqual(X.__doc__, "banana")
@@ -4700,7 +4700,7 @@ order (MRO) kila bases """
         self.assertEqual(int.__add__.__qualname__, 'int.__add__')
 
         kundi X:
-            pita
+            pass
         ukijumuisha self.assertRaises(TypeError):
             toa X.__qualname__
 
@@ -4710,7 +4710,7 @@ order (MRO) kila bases """
         global Y
         kundi Y:
             kundi Inside:
-                pita
+                pass
         self.assertEqual(Y.__qualname__, 'Y')
         self.assertEqual(Y.Inside.__qualname__, 'Y.Inside')
 
@@ -4742,7 +4742,7 @@ order (MRO) kila bases """
     eleza test_object_new_and_init_with_parameters(self):
         # See issue #1683368
         kundi OverrideNeither:
-            pita
+            pass
         self.assertRaises(TypeError, OverrideNeither, 1)
         self.assertRaises(TypeError, OverrideNeither, kw=1)
         kundi OverrideNew:
@@ -4752,7 +4752,7 @@ order (MRO) kila bases """
             eleza __init__(self, foo, kw=0, *args, **kwargs):
                 rudisha object.__init__(self, *args, **kwargs)
         kundi OverrideBoth(OverrideNew, OverrideInit):
-            pita
+            pass
         kila case kwenye OverrideNew, OverrideInit, OverrideBoth:
             case(1)
             case(1, kw=2)
@@ -4761,28 +4761,28 @@ order (MRO) kila bases """
 
     eleza test_subclassing_does_not_duplicate_dict_descriptors(self):
         kundi Base:
-            pita
+            pass
         kundi Sub(Base):
-            pita
+            pass
         self.assertIn("__dict__", Base.__dict__)
         self.assertNotIn("__dict__", Sub.__dict__)
 
     eleza test_bound_method_repr(self):
         kundi Foo:
             eleza method(self):
-                pita
+                pass
         self.assertRegex(repr(Foo().method),
             r"<bound method .*Foo\.method of <.*Foo object at .*>>")
 
 
         kundi Base:
             eleza method(self):
-                pita
+                pass
         kundi Derived1(Base):
-            pita
+            pass
         kundi Derived2(Base):
             eleza method(self):
-                pita
+                pass
         base = Base()
         derived1 = Derived1()
         derived2 = Derived2()
@@ -4799,7 +4799,7 @@ order (MRO) kila bases """
         kundi Foo:
             @classmethod
             eleza method(cls):
-                pita
+                pass
         foo = Foo()
         self.assertRegex(repr(foo.method), # access via instance
             r"<bound method .*Foo\.method of <kundi '.*Foo'>>")
@@ -4809,7 +4809,7 @@ order (MRO) kila bases """
 
         kundi MyCallable:
             eleza __call__(self, arg):
-                pita
+                pass
         func = MyCallable() # func has no __name__ ama __qualname__ attributes
         instance = object()
         method = types.MethodType(func, instance)
@@ -4824,7 +4824,7 @@ order (MRO) kila bases """
 
     @unittest.skipIf(_testcapi ni Tupu, 'need the _testcapi module')
     eleza test_bpo25750(self):
-        # bpo-25750: calling a descriptor (implemented kama built-in
+        # bpo-25750: calling a descriptor (implemented as built-in
         # function ukijumuisha METH_FASTCALL) should sio crash CPython ikiwa the
         # descriptor deletes itself kutoka the class.
         kundi Descr:
@@ -4843,7 +4843,7 @@ kundi DictProxyTests(unittest.TestCase):
     eleza setUp(self):
         kundi C(object):
             eleza meth(self):
-                pita
+                pass
         self.C = C
 
     @unittest.skipIf(hasattr(sys, 'gettrace') na sys.gettrace(),
@@ -4880,17 +4880,17 @@ kundi DictProxyTests(unittest.TestCase):
     eleza test_dict_type_with_metaclass(self):
         # Testing type of __dict__ when metakundi set...
         kundi B(object):
-            pita
+            pass
         kundi M(type):
-            pita
+            pass
         kundi C(metaclass=M):
             # In 2.3a1, C.__dict__ was a real dict rather than a dict proxy
-            pita
+            pass
         self.assertEqual(type(C.__dict__), type(B.__dict__))
 
     eleza test_repr(self):
         # Testing mappingproxy.__repr__.
-        # We can't blindly compare ukijumuisha the repr of another dict kama ordering
+        # We can't blindly compare ukijumuisha the repr of another dict as ordering
         # of keys na values ni arbitrary na may differ.
         r = repr(self.C.__dict__)
         self.assertKweli(r.startswith('mappingproxy('), r)
@@ -4906,15 +4906,15 @@ kundi PTypesLongInitTest(unittest.TestCase):
 
         # This dumps core when SF bug 551412 isn't fixed --
         # but only when test_descr.py ni run separately.
-        # (That can't be helped -- kama soon kama PyType_Ready()
+        # (That can't be helped -- as soon as PyType_Ready()
         # ni called kila PyLong_Type, the bug ni gone.)
         kundi UserLong(object):
             eleza __pow__(self, *args):
-                pita
+                pass
         jaribu:
             pow(0, UserLong(), 0)
         tatizo:
-            pita
+            pass
 
         # Another segfault only when run early
         # (before PyType_Ready(tuple) ni called)
@@ -5043,7 +5043,7 @@ kundi PicklingTests(unittest.TestCase):
 
         kundi C10:
             eleza __getnewargs_ex__(self):
-                ashiria IndexError
+                 ashiria IndexError
         obj = C10()
         kila proto kwenye protocols:
             ikiwa proto >= 2:
@@ -5066,7 +5066,7 @@ kundi PicklingTests(unittest.TestCase):
 
         kundi C13:
             eleza __getstate__(self):
-                ashiria IndexError
+                 ashiria IndexError
         obj = C13()
         kila proto kwenye protocols:
             ukijumuisha self.assertRaises(IndexError):
@@ -5092,13 +5092,13 @@ kundi PicklingTests(unittest.TestCase):
                     obj.__reduce__()
 
         kundi C15(dict):
-            pita
+            pass
         obj = C15({"quebec": -601})
         kila proto kwenye protocols:
             self._check_reduce(proto, obj, dictitems=dict(obj))
 
         kundi C16(list):
-            pita
+            pass
         obj = C16(["yukon"])
         kila proto kwenye protocols:
             self._check_reduce(proto, obj, listitems=list(obj))
@@ -5111,7 +5111,7 @@ kundi PicklingTests(unittest.TestCase):
 
             eleza __getattr__(self, attr):
                 ikiwa attr kwenye ("__getnewargs__", "__getnewargs_ex__"):
-                    ashiria AssertionError(attr)
+                     ashiria AssertionError(attr)
                 rudisha Tupu
         kila protocol kwenye protocols:
             state = {} ikiwa protocol >= 2 isipokua Tupu
@@ -5127,7 +5127,7 @@ kundi PicklingTests(unittest.TestCase):
             # to help us verify that the two objects are copies. This allows
             # us to delegate the non-generic verification logic to the objects
             # themselves.
-            ashiria ValueError("object pitaed to _assert_is_copy must " +
+             ashiria ValueError("object passed to _assert_is_copy must " +
                              "override the __repr__ method.")
         self.assertIsNot(obj, objcopy, msg=msg)
         self.assertIs(type(obj), type(objcopy), msg=msg)
@@ -5156,7 +5156,7 @@ kundi PicklingTests(unittest.TestCase):
             eleza copy(self, obj):
                 rudisha self.loads(self.dumps(obj, self.proto))
             eleza __repr__(self):
-                # We try to be kama descriptive kama possible here since this is
+                # We try to be as descriptive as possible here since this is
                 # the string which we will allow us to tell the pickle
                 # configuration we are using during debugging.
                 rudisha ("PickleCopier(proto={}, dumps={}.{}, loads={}.{})"
@@ -5181,7 +5181,7 @@ kundi PicklingTests(unittest.TestCase):
 
         global D
         kundi D(C):
-            pita
+            pass
         ukijumuisha self.assertRaises(TypeError):
             pickle.dumps(D(), 0)
 
@@ -5194,8 +5194,8 @@ kundi PicklingTests(unittest.TestCase):
                     kila slot kwenye cls.__dict__.get('__slots__', ()):
                         jaribu:
                             state[slot] = getattr(self, slot)
-                        tatizo AttributeError:
-                            pita
+                        except AttributeError:
+                            pass
                 rudisha state
             eleza __setstate__(self, state):
                 kila k, v kwenye state.items():
@@ -5205,7 +5205,7 @@ kundi PicklingTests(unittest.TestCase):
 
         kundi D(C):
             "A subkundi of a kundi ukijumuisha slots."
-            pita
+            pass
 
         global E
         kundi E(C):
@@ -5362,7 +5362,7 @@ kundi PicklingTests(unittest.TestCase):
     eleza test_issue24097(self):
         # Slot name ni freed inside __getattr__ na ni later used.
         kundi S(str):  # Not interned
-            pita
+            pass
         kundi A:
             __slotnames__ = [S('spam')]
             eleza __getattr__(self, attr):
@@ -5370,7 +5370,7 @@ kundi PicklingTests(unittest.TestCase):
                     A.__slotnames__[:] = [S('spam')]
                     rudisha 42
                 isipokua:
-                    ashiria AttributeError
+                     ashiria AttributeError
 
         agiza copyreg
         expected = (copyreg.__newobj__, (A,), (Tupu, {'spam': 42}), Tupu, Tupu)
@@ -5396,9 +5396,9 @@ kundi SharedKeyTests(unittest.TestCase):
     eleza test_subclasses(self):
         # Verify that subclasses can share keys (per PEP 412)
         kundi A:
-            pita
+            pass
         kundi B(A):
-            pita
+            pass
 
         a, b = A(), B()
         self.assertEqual(sys.getsizeof(vars(a)), sys.getsizeof(vars(b)))
@@ -5429,7 +5429,7 @@ kundi DebugHelperMeta(type):
 kundi MroTest(unittest.TestCase):
     """
     Regressions kila some bugs revealed through
-    mcsl.mro() customization (typeobject.c: mro_internal()) na
+    mcsl.mro() customization (typeobject.c: mro_internal()) and
     cls.__bases__ assignment (typeobject.c: type_set_bases()).
     """
 
@@ -5456,7 +5456,7 @@ kundi MroTest(unittest.TestCase):
                 rudisha type.mro(cls)
 
         kundi A(metaclass=M):
-            pita
+            pass
 
     eleza test_reent_set_bases_on_base(self):
         """
@@ -5472,9 +5472,9 @@ kundi MroTest(unittest.TestCase):
                 rudisha type.mro(cls)
 
         kundi A(metaclass=M):
-            pita
+            pass
         kundi B(A):
-            pita
+            pass
         B.__bases__ += ()
 
     eleza test_reent_set_bases_on_direct_base(self):
@@ -5491,11 +5491,11 @@ kundi MroTest(unittest.TestCase):
                 rudisha type.mro(cls)
 
         kundi A(metaclass=M):
-            pita
+            pass
         kundi B(A):
-            pita
+            pass
         kundi C(B):
-            pita
+            pass
 
     eleza test_reent_set_bases_tp_base_cycle(self):
         """
@@ -5523,11 +5523,11 @@ kundi MroTest(unittest.TestCase):
                 rudisha type.mro(cls)
 
         kundi A(metaclass=M):
-            pita
+            pass
         kundi B1(A):
-            pita
+            pass
         kundi B2(A):
-            pita
+            pass
 
         self.ready = Kweli
         ukijumuisha self.assertRaises(TypeError):
@@ -5550,13 +5550,13 @@ kundi MroTest(unittest.TestCase):
                 rudisha type.mro(cls)
 
         kundi A(metaclass=M):
-            pita
+            pass
         kundi B1(A):
-            pita
+            pass
         kundi B2(A):
-            pita
+            pass
         kundi C(A):
-            pita
+            pass
 
         self.ready = Kweli
         C.__bases__ = (B1,)
@@ -5569,13 +5569,13 @@ kundi MroTest(unittest.TestCase):
         self.assertEqual(B1.__bases__, (C,))
         self.assertEqual(C.__subclasses__(), [B1])
 
-    eleza test_tp_subclasses_cycle_error_rudisha_path(self):
+    eleza test_tp_subclasses_cycle_error_return_path(self):
         """
-        The same kama test_tp_subclasses_cycle_in_update_slots, but tests
+        The same as test_tp_subclasses_cycle_in_update_slots, but tests
         a code path executed on error (goto bail).
         """
         kundi E(Exception):
-            pita
+            pass
         kundi M(DebugHelperMeta):
             eleza mro(cls):
                 ikiwa self.ready na cls.__name__ == 'C':
@@ -5583,17 +5583,17 @@ kundi MroTest(unittest.TestCase):
                         self.ready = Uongo
                     isipokua:
                         C.__bases__ = (B2,)
-                        ashiria E
+                         ashiria E
                 rudisha type.mro(cls)
 
         kundi A(metaclass=M):
-            pita
+            pass
         kundi B1(A):
-            pita
+            pass
         kundi B2(A):
-            pita
+            pass
         kundi C(A):
-            pita
+            pass
 
         self.ready = Kweli
         ukijumuisha self.assertRaises(E):
@@ -5614,12 +5614,12 @@ kundi MroTest(unittest.TestCase):
                 ikiwa cls.__mro__ ni Tupu na cls.__name__ != 'X':
                     ukijumuisha self.assertRaises(TypeError):
                         kundi X(cls):
-                            pita
+                            pass
 
                 rudisha type.mro(cls)
 
         kundi A(metaclass=M):
-            pita
+            pass
 
     eleza test_incomplete_super(self):
         """
@@ -5635,7 +5635,7 @@ kundi MroTest(unittest.TestCase):
                 rudisha type.mro(cls)
 
         kundi A(metaclass=M):
-            pita
+            pass
 
 
 eleza test_main():

@@ -7,8 +7,8 @@ agiza sys
 kutoka textwrap agiza dedent
 kutoka types agiza FunctionType, MethodType, BuiltinFunctionType
 agiza pyclbr
-kutoka unittest agiza TestCase, main kama unittest_main
-kutoka test.test_importlib agiza util kama test_importlib_util
+kutoka unittest agiza TestCase, main as unittest_main
+kutoka test.test_importlib agiza util as test_importlib_util
 
 
 StaticMethodType = type(staticmethod(lambda: Tupu))
@@ -32,7 +32,7 @@ kundi PyclbrTest(TestCase):
 
     eleza assertHasattr(self, obj, attr, ignore):
         ''' succeed iff hasattr(obj,attr) ama attr kwenye ignore. '''
-        ikiwa attr kwenye ignore: rudisha
+        ikiwa attr kwenye ignore: return
         ikiwa sio hasattr(obj, attr): andika("???", attr)
         self.assertKweli(hasattr(obj, attr),
                         'expected hasattr(%r, %r)' % (obj, attr))
@@ -40,14 +40,14 @@ kundi PyclbrTest(TestCase):
 
     eleza assertHaskey(self, obj, key, ignore):
         ''' succeed iff key kwenye obj ama key kwenye ignore. '''
-        ikiwa key kwenye ignore: rudisha
-        ikiwa key haiko kwenye obj:
+        ikiwa key kwenye ignore: return
+        ikiwa key sio kwenye obj:
             andika("***",key, file=sys.stderr)
         self.assertIn(key, obj)
 
     eleza assertEqualsOrIgnored(self, a, b, ignore):
         ''' succeed iff a == b ama a kwenye ignore ama b kwenye ignore '''
-        ikiwa a haiko kwenye ignore na b haiko kwenye ignore:
+        ikiwa a sio kwenye ignore na b sio kwenye ignore:
             self.assertEqual(a, b)
 
     eleza checkModule(self, moduleName, module=Tupu, ignore=()):
@@ -69,10 +69,10 @@ kundi PyclbrTest(TestCase):
             classdict = oclass.__dict__
             ikiwa isinstance(obj, MethodType):
                 # could be a classmethod
-                ikiwa (sio isinstance(classdict[name], ClassMethodType) ama
+                ikiwa (not isinstance(classdict[name], ClassMethodType) or
                     obj.__self__ ni sio oclass):
                     rudisha Uongo
-            lasivyo sio isinstance(obj, FunctionType):
+            elikiwa sio isinstance(obj, FunctionType):
                 rudisha Uongo
 
             objname = obj.__name__
@@ -89,12 +89,12 @@ kundi PyclbrTest(TestCase):
             ikiwa isinstance(value, pyclbr.Function):
                 self.assertIsInstance(py_item, (FunctionType, BuiltinFunctionType))
                 ikiwa py_item.__module__ != moduleName:
-                    endelea   # skip functions that came kutoka somewhere ama
+                    endelea   # skip functions that came kutoka somewhere else
                 self.assertEqual(py_item.__module__, value.module)
             isipokua:
                 self.assertIsInstance(py_item, type)
                 ikiwa py_item.__module__ != moduleName:
-                    endelea   # skip classes that came kutoka somewhere ama
+                    endelea   # skip classes that came kutoka somewhere else
 
                 real_bases = [base.__name__ kila base kwenye py_item.__bases__]
                 pyclbr_bases = [ getattr(base, 'name', base)
@@ -104,7 +104,7 @@ kundi PyclbrTest(TestCase):
                     self.assertListEq(real_bases, pyclbr_bases, ignore)
                 tatizo:
                     andika("class=%s" % py_item, file=sys.stderr)
-                    ashiria
+                    raise
 
                 actualMethods = []
                 kila m kwenye py_item.__dict__.keys():
@@ -126,7 +126,7 @@ kundi PyclbrTest(TestCase):
                     # can't check file ama lineno
                 tatizo:
                     andika("class=%s" % py_item, file=sys.stderr)
-                    ashiria
+                    raise
 
         # Now check kila missing stuff.
         eleza defined_in(item, module):
@@ -162,14 +162,14 @@ kundi PyclbrTest(TestCase):
         source = dedent("""\
         eleza f0:
             eleza f1(a,b,c):
-                eleza f2(a=1, b=2, c=3): pita
+                eleza f2(a=1, b=2, c=3): pass
                     rudisha f1(a,b,d)
-            kundi c1: pita
+            kundi c1: pass
         kundi C0:
             "Test class."
             eleza F1():
                 "Method."
-                rudisha 'rudisha'
+                rudisha 'return'
             kundi C1():
                 kundi C2:
                     "Class nested within nested class."
@@ -194,7 +194,7 @@ kundi PyclbrTest(TestCase):
             """Return equality of tree pairs.
 
             Each parent,children pair define a tree.  The parents are
-            assumed equal.  Comparing the children dictionaries kama such
+            assumed equal.  Comparing the children dictionaries as such
             does sio work due to comparison by identity na double
             linkage.  We separate comparing string na number attributes
             kutoka comparing the children of input children.
@@ -211,7 +211,7 @@ kundi PyclbrTest(TestCase):
                 self.assertEqual(t1, t2)
                 ikiwa type(o1) ni mb.Class:
                     self.assertEqual(o1.methods, o2.methods)
-                # Skip superclasses kila now kama sio part of example
+                # Skip superclasses kila now as sio part of example
                 compare(o1, o1.children, o2, o2.children)
 
         compare(Tupu, actual, Tupu, expected)
@@ -220,10 +220,10 @@ kundi PyclbrTest(TestCase):
         cm = self.checkModule
 
         # These were once about the 10 longest modules
-        cm('random', ignore=('Random',))  # kutoka _random agiza Random kama CoreGenerator
+        cm('random', ignore=('Random',))  # kutoka _random agiza Random as CoreGenerator
         cm('cgi', ignore=('log',))      # set ukijumuisha = kwenye module
         cm('pickle', ignore=('partial', 'PickleBuffer'))
-        # TODO(briancurtin): openfp ni deprecated kama of 3.7.
+        # TODO(briancurtin): openfp ni deprecated as of 3.7.
         # Update this once it has been removed.
         cm('aifc', ignore=('openfp', '_aifc_params'))  # set ukijumuisha = kwenye module
         cm('sre_parse', ignore=('dump', 'groups', 'pos')) # kutoka sre_constants agiza *; property
@@ -245,7 +245,7 @@ kundi ReadmoduleTests(TestCase):
 
 
     eleza test_dotted_name_not_a_package(self):
-        # test ImportError ni ashiriad when the first part of a dotted name is
+        # test ImportError ni raised when the first part of a dotted name is
         # sio a package.
         #
         # Issue #14798.
@@ -253,7 +253,7 @@ kundi ReadmoduleTests(TestCase):
 
     eleza test_module_has_no_spec(self):
         module_name = "doesnotexist"
-        assert module_name haiko kwenye pyclbr._modules
+        assert module_name sio kwenye pyclbr._modules
         ukijumuisha test_importlib_util.uncache(module_name):
             ukijumuisha self.assertRaises(ModuleNotFoundError):
                 pyclbr.readmodule_ex(module_name)

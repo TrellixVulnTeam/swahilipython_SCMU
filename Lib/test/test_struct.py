@@ -16,7 +16,7 @@ byteorders = '', '@', '=', '<', '>', '!'
 eleza iter_integer_formats(byteorders=byteorders):
     kila code kwenye integer_codes:
         kila byteorder kwenye byteorders:
-            ikiwa (byteorder haiko kwenye ('', '@') na code kwenye ('n', 'N')):
+            ikiwa (byteorder sio kwenye ('', '@') na code kwenye ('n', 'N')):
                 endelea
             tuma code, byteorder
 
@@ -176,7 +176,7 @@ kundi StructTest(unittest.TestCase):
                 self.code = format[-1]
                 self.byteorder = format[:-1]
                 ikiwa sio self.byteorder kwenye byteorders:
-                    ashiria ValueError("unrecognized packing byteorder: %s" %
+                     ashiria ValueError("unrecognized packing byteorder: %s" %
                                      self.byteorder)
                 self.bytesize = struct.calcsize(format)
                 self.bitsize = self.bytesize * 8
@@ -184,12 +184,12 @@ kundi StructTest(unittest.TestCase):
                     self.signed = Kweli
                     self.min_value = -(2**(self.bitsize-1))
                     self.max_value = 2**(self.bitsize-1) - 1
-                lasivyo self.code kwenye tuple('BHILQN'):
+                elikiwa self.code kwenye tuple('BHILQN'):
                     self.signed = Uongo
                     self.min_value = 0
                     self.max_value = 2**self.bitsize - 1
                 isipokua:
-                    ashiria ValueError("unrecognized format code: %s" %
+                     ashiria ValueError("unrecognized format code: %s" %
                                      self.code)
 
             eleza test_one(self, x, pack=struct.pack,
@@ -209,7 +209,7 @@ kundi StructTest(unittest.TestCase):
                     expected = unhexlify(expected)
                     expected = (b"\x00" * (self.bytesize - len(expected)) +
                                 expected)
-                    ikiwa (self.byteorder == '<' ama
+                    ikiwa (self.byteorder == '<' or
                         self.byteorder kwenye ('', '@', '=') na sio ISBIGENDIAN):
                         expected = string_reverse(expected)
                     self.assertEqual(len(expected), self.bytesize)
@@ -248,7 +248,7 @@ kundi StructTest(unittest.TestCase):
                 # Values absorbed kutoka other tests
                 values.extend([300, 700000, sys.maxsize*4])
 
-                # Try all those, na their negations, na +-1 kutoka
+                # Try all those, na their negations, na +-1 from
                 # them.  Note that this tests all power-of-2
                 # boundaries kwenye range, na a few out of range, plus
                 # +-(2**n +- 1).
@@ -264,8 +264,8 @@ kundi StructTest(unittest.TestCase):
                         rudisha 42
 
                 # Objects ukijumuisha an '__index__' method should be allowed
-                # to pack kama integers.  That ni assuming the implemented
-                # '__index__' method rudishas an 'int'.
+                # to pack as integers.  That ni assuming the implemented
+                # '__index__' method returns an 'int'.
                 kundi Indexable(object):
                     eleza __init__(self, value):
                         self._value = value
@@ -273,11 +273,11 @@ kundi StructTest(unittest.TestCase):
                     eleza __index__(self):
                         rudisha self._value
 
-                # If the '__index__' method ashirias a type error, then
+                # If the '__index__' method raises a type error, then
                 # '__int__' should be used ukijumuisha a deprecation warning.
                 kundi BadIndex(object):
                     eleza __index__(self):
-                        ashiria TypeError
+                         ashiria TypeError
 
                     eleza __int__(self):
                         rudisha 42
@@ -322,7 +322,7 @@ kundi StructTest(unittest.TestCase):
     eleza test_nN_code(self):
         # n na N don't exist kwenye standard sizes
         eleza assertStructError(func, *args, **kwargs):
-            ukijumuisha self.assertRaises(struct.error) kama cm:
+            ukijumuisha self.assertRaises(struct.error) as cm:
                 func(*args, **kwargs)
             self.assertIn("bad char kwenye struct format", str(cm.exception))
         kila code kwenye 'nN':
@@ -361,7 +361,7 @@ kundi StructTest(unittest.TestCase):
             # Packing this rounds away a solid string of trailing 1 bits.
             packed = struct.pack("<f", smaller)
             unpacked = struct.unpack("<f", packed)[0]
-            # This failed at base = 2, 4, na 32, ukijumuisha unpacked = 1, 2, na
+            # This failed at base = 2, 4, na 32, ukijumuisha unpacked = 1, 2, and
             # 16, respectively.
             self.assertEqual(base, unpacked)
             bigpacked = struct.pack(">f", smaller)
@@ -389,31 +389,31 @@ kundi StructTest(unittest.TestCase):
         self.assertRaises(struct.error, struct.pack, 'P', 1.0)
         self.assertRaises(struct.error, struct.pack, 'P', 1.5)
 
-    eleza test_unpack_kutoka(self):
+    eleza test_unpack_from(self):
         test_string = b'abcd01234'
         fmt = '4s'
         s = struct.Struct(fmt)
         kila cls kwenye (bytes, bytearray):
             data = cls(test_string)
-            self.assertEqual(s.unpack_kutoka(data), (b'abcd',))
-            self.assertEqual(s.unpack_kutoka(data, 2), (b'cd01',))
-            self.assertEqual(s.unpack_kutoka(data, 4), (b'0123',))
+            self.assertEqual(s.unpack_from(data), (b'abcd',))
+            self.assertEqual(s.unpack_from(data, 2), (b'cd01',))
+            self.assertEqual(s.unpack_from(data, 4), (b'0123',))
             kila i kwenye range(6):
-                self.assertEqual(s.unpack_kutoka(data, i), (data[i:i+4],))
+                self.assertEqual(s.unpack_from(data, i), (data[i:i+4],))
             kila i kwenye range(6, len(test_string) + 1):
-                self.assertRaises(struct.error, s.unpack_kutoka, data, i)
+                self.assertRaises(struct.error, s.unpack_from, data, i)
         kila cls kwenye (bytes, bytearray):
             data = cls(test_string)
-            self.assertEqual(struct.unpack_kutoka(fmt, data), (b'abcd',))
-            self.assertEqual(struct.unpack_kutoka(fmt, data, 2), (b'cd01',))
-            self.assertEqual(struct.unpack_kutoka(fmt, data, 4), (b'0123',))
+            self.assertEqual(struct.unpack_from(fmt, data), (b'abcd',))
+            self.assertEqual(struct.unpack_from(fmt, data, 2), (b'cd01',))
+            self.assertEqual(struct.unpack_from(fmt, data, 4), (b'0123',))
             kila i kwenye range(6):
-                self.assertEqual(struct.unpack_kutoka(fmt, data, i), (data[i:i+4],))
+                self.assertEqual(struct.unpack_from(fmt, data, i), (data[i:i+4],))
             kila i kwenye range(6, len(test_string) + 1):
-                self.assertRaises(struct.error, struct.unpack_kutoka, fmt, data, i)
+                self.assertRaises(struct.error, struct.unpack_from, fmt, data, i)
 
         # keyword arguments
-        self.assertEqual(s.unpack_kutoka(buffer=test_string, offset=2),
+        self.assertEqual(s.unpack_from(buffer=test_string, offset=2),
                          (b'cd01',))
 
     eleza test_pack_into(self):
@@ -424,13 +424,13 @@ kundi StructTest(unittest.TestCase):
 
         # Test without offset
         s.pack_into(writable_buf, 0, test_string)
-        kutoka_buf = writable_buf.tobytes()[:len(test_string)]
-        self.assertEqual(kutoka_buf, test_string)
+        from_buf = writable_buf.tobytes()[:len(test_string)]
+        self.assertEqual(from_buf, test_string)
 
         # Test ukijumuisha offset.
         s.pack_into(writable_buf, 10, test_string)
-        kutoka_buf = writable_buf.tobytes()[:len(test_string)+10]
-        self.assertEqual(kutoka_buf, test_string[:10] + test_string)
+        from_buf = writable_buf.tobytes()[:len(test_string)+10]
+        self.assertEqual(from_buf, test_string[:10] + test_string)
 
         # Go beyond boundaries.
         small_buf = array.array('b', b' '*10)
@@ -452,13 +452,13 @@ kundi StructTest(unittest.TestCase):
 
         # Test without offset.
         pack_into(writable_buf, 0, test_string)
-        kutoka_buf = writable_buf.tobytes()[:len(test_string)]
-        self.assertEqual(kutoka_buf, test_string)
+        from_buf = writable_buf.tobytes()[:len(test_string)]
+        self.assertEqual(from_buf, test_string)
 
         # Test ukijumuisha offset.
         pack_into(writable_buf, 10, test_string)
-        kutoka_buf = writable_buf.tobytes()[:len(test_string)+10]
-        self.assertEqual(kutoka_buf, test_string[:10] + test_string)
+        from_buf = writable_buf.tobytes()[:len(test_string)+10]
+        self.assertEqual(from_buf, test_string[:10] + test_string)
 
         # Go beyond boundaries.
         small_buf = array.array('b', b' '*10)
@@ -478,7 +478,7 @@ kundi StructTest(unittest.TestCase):
     eleza test_bool(self):
         kundi ExplodingBool(object):
             eleza __bool__(self):
-                ashiria OSError
+                 ashiria OSError
         kila prefix kwenye tuple("<>!=")+('',):
             false = (), [], [], '', 0
             true = [1], 'test', 5, -1, 0xffffffff+1, 0xffffffff/2
@@ -509,8 +509,8 @@ kundi StructTest(unittest.TestCase):
 
             jaribu:
                 struct.pack(prefix + '?', ExplodingBool())
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
             isipokua:
                 self.fail("Expected OSError: struct.pack(%r, "
                           "ExplodingBool())" % (prefix + '?'))
@@ -532,14 +532,14 @@ kundi StructTest(unittest.TestCase):
         self.assertRaises(struct.error, struct.pack, '12345')
         self.assertRaises(struct.error, struct.unpack, '12345', b'')
         self.assertRaises(struct.error, struct.pack_into, '12345', store, 0)
-        self.assertRaises(struct.error, struct.unpack_kutoka, '12345', store, 0)
+        self.assertRaises(struct.error, struct.unpack_from, '12345', store, 0)
 
         # Format lists ukijumuisha trailing count spec should result kwenye an error
         self.assertRaises(struct.error, struct.pack, 'c12345', 'x')
         self.assertRaises(struct.error, struct.unpack, 'c12345', b'x')
         self.assertRaises(struct.error, struct.pack_into, 'c12345', store, 0,
                            'x')
-        self.assertRaises(struct.error, struct.unpack_kutoka, 'c12345', store,
+        self.assertRaises(struct.error, struct.unpack_from, 'c12345', store,
                            0)
 
         # Mixed format tests
@@ -548,7 +548,7 @@ kundi StructTest(unittest.TestCase):
                           b'spam na eggs')
         self.assertRaises(struct.error, struct.pack_into, '14s42', store, 0,
                           'spam na eggs')
-        self.assertRaises(struct.error, struct.unpack_kutoka, '14s42', store, 0)
+        self.assertRaises(struct.error, struct.unpack_from, '14s42', store, 0)
 
     eleza test_Struct_reinitialization(self):
         # Issue 9422: there was a memory leak when reinitializing a
@@ -593,7 +593,7 @@ kundi StructTest(unittest.TestCase):
             r'\(actual buffer size ni 1\)'
         )
         ukijumuisha self.assertRaisesRegex(struct.error, regex2):
-            struct.unpack_kutoka('b', bytearray(1), 5)
+            struct.unpack_from('b', bytearray(1), 5)
 
     eleza test_boundary_error_message_with_negative_offset(self):
         byte_list = bytearray(10)
@@ -610,12 +610,12 @@ kundi StructTest(unittest.TestCase):
         ukijumuisha self.assertRaisesRegex(
                 struct.error,
                 r'not enough data to unpack 4 bytes at offset -2'):
-            struct.unpack_kutoka('<I', byte_list, -2)
+            struct.unpack_from('<I', byte_list, -2)
 
         ukijumuisha self.assertRaisesRegex(
                 struct.error,
                 "offset -11 out of range kila 10-byte buffer"):
-            struct.unpack_kutoka('<B', byte_list, -11)
+            struct.unpack_from('<B', byte_list, -11)
 
     eleza test_boundary_error_message_with_large_offset(self):
         # Test overflows cause by large offset na value size (issue 30245)
@@ -633,7 +633,7 @@ kundi StructTest(unittest.TestCase):
             r' \(actual buffer size ni 10\)'
         )
         ukijumuisha self.assertRaisesRegex(struct.error, regex2):
-            struct.unpack_kutoka('<I', bytearray(10), sys.maxsize)
+            struct.unpack_from('<I', bytearray(10), sys.maxsize)
 
     eleza test_issue29802(self):
         # When the second argument of struct.unpack() was of wrong type
@@ -722,7 +722,7 @@ kundi UnpackIteratorTest(unittest.TestCase):
         self.assertRaises(StopIteration, next, it)
 
     eleza test_half_float(self):
-        # Little-endian examples kutoka:
+        # Little-endian examples from:
         # http://en.wikipedia.org/wiki/Half_precision_floating-point_format
         format_bits_float__cleanRoundtrip_list = [
             (b'\x00\x3c', 1.0),
@@ -797,7 +797,7 @@ kundi UnpackIteratorTest(unittest.TestCase):
         kila formatcode, bits, f kwenye format_bits_float__rounding_list:
             self.assertEqual(bits, struct.pack(formatcode, f))
 
-        # This overflows, na so ashirias an error
+        # This overflows, na so raises an error
         format_bits_float__roundingError_list = [
             # Values that round to infinity.
             ('>e', 65520.0),

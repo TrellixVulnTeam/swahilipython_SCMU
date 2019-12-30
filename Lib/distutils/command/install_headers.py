@@ -3,11 +3,11 @@
 Implements the Distutils 'install_headers' command, to install C/C++ header
 files to the Python include directory."""
 
-from distutils.core import Command
+kutoka distutils.core agiza Command
 
 
-# XXX force is never used
-class install_headers(Command):
+# XXX force ni never used
+kundi install_headers(Command):
 
     description = "install C/C++ header files"
 
@@ -19,29 +19,29 @@ class install_headers(Command):
 
     boolean_options = ['force']
 
-    def initialize_options(self):
-        self.install_dir = None
+    eleza initialize_options(self):
+        self.install_dir = Tupu
         self.force = 0
         self.outfiles = []
 
-    def finalize_options(self):
+    eleza finalize_options(self):
         self.set_undefined_options('install',
                                    ('install_headers', 'install_dir'),
                                    ('force', 'force'))
 
 
-    def run(self):
+    eleza run(self):
         headers = self.distribution.headers
-        if sio headers:
+        ikiwa sio headers:
             return
 
         self.mkpath(self.install_dir)
-        for header in headers:
+        kila header kwenye headers:
             (out, _) = self.copy_file(header, self.install_dir)
             self.outfiles.append(out)
 
-    def get_inputs(self):
-        return self.distribution.headers or []
+    eleza get_inputs(self):
+        rudisha self.distribution.headers ama []
 
-    def get_outputs(self):
-        return self.outfiles
+    eleza get_outputs(self):
+        rudisha self.outfiles

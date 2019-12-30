@@ -67,7 +67,7 @@ kundi Test_MultibyteCodec(unittest.TestCase):
                           _multibytecodec.MultibyteStreamWriter, Tupu)
 
     eleza test_decode_unicode(self):
-        # Trying to decode a unicode string should ashiria a TypeError
+        # Trying to decode a unicode string should  ashiria a TypeError
         kila enc kwenye ALL_CJKENCODINGS:
             self.assertRaises(TypeError, codecs.getdecoder(enc), "")
 
@@ -118,7 +118,7 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
         self.assertEqual(encoder.encode('', Kweli), b'\xa9\xdc')
 
     eleza test_state_methods_with_buffer_state(self):
-        # euc_jis_2004 stores state kama a buffer of pending bytes
+        # euc_jis_2004 stores state as a buffer of pending bytes
         encoder = codecs.getincrementalencoder('euc_jis_2004')()
 
         initial_state = encoder.getstate()
@@ -149,17 +149,17 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
         encoder.setstate(en_state)
         self.assertEqual(encoder.encode('z'), b'z')
 
-    eleza test_getstate_rudishas_expected_value(self):
+    eleza test_getstate_returns_expected_value(self):
         # Note: getstate ni implemented such that these state values
         # are expected to be the same across all builds of Python,
         # regardless of x32/64 bit, endianness na compiler.
 
-        # euc_jis_2004 stores state kama a buffer of pending bytes
+        # euc_jis_2004 stores state as a buffer of pending bytes
         buffer_state_encoder = codecs.getincrementalencoder('euc_jis_2004')()
         self.assertEqual(buffer_state_encoder.getstate(), 0)
         buffer_state_encoder.encode('\u00e6')
         self.assertEqual(buffer_state_encoder.getstate(),
-                         int.kutoka_bytes(
+                         int.from_bytes(
                              b"\x02"
                              b"\xc3\xa6"
                              b"\x00\x00\x00\x00\x00\x00\x00\x00",
@@ -170,20 +170,20 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
         # iso2022_jp stores state without using a buffer
         non_buffer_state_encoder = codecs.getincrementalencoder('iso2022_jp')()
         self.assertEqual(non_buffer_state_encoder.getstate(),
-                         int.kutoka_bytes(
+                         int.from_bytes(
                              b"\x00"
                              b"\x42\x42\x00\x00\x00\x00\x00\x00",
                              'little'))
         non_buffer_state_encoder.encode('\u3042')
         self.assertEqual(non_buffer_state_encoder.getstate(),
-                         int.kutoka_bytes(
+                         int.from_bytes(
                              b"\x00"
                              b"\xc2\x42\x00\x00\x00\x00\x00\x00",
                              'little'))
 
     eleza test_setstate_validates_input_size(self):
         encoder = codecs.getincrementalencoder('euc_jp')()
-        pending_size_nine = int.kutoka_bytes(
+        pending_size_nine = int.from_bytes(
             b"\x09"
             b"\x00\x00\x00\x00\x00\x00\x00\x00"
             b"\x00\x00\x00\x00\x00\x00\x00\x00",
@@ -192,7 +192,7 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
 
     eleza test_setstate_validates_input_bytes(self):
         encoder = codecs.getincrementalencoder('euc_jp')()
-        invalid_utf8 = int.kutoka_bytes(
+        invalid_utf8 = int.from_bytes(
             b"\x01"
             b"\xff"
             b"\x00\x00\x00\x00\x00\x00\x00\x00",
@@ -242,7 +242,7 @@ kundi Test_IncrementalDecoder(unittest.TestCase):
         self.assertEqual(decoder.decode(b'B@$'), '\u4e16')
 
     eleza test_decode_unicode(self):
-        # Trying to decode a unicode string should ashiria a TypeError
+        # Trying to decode a unicode string should  ashiria a TypeError
         kila enc kwenye ALL_CJKENCODINGS:
             decoder = codecs.getincrementaldecoder(enc)()
             self.assertRaises(TypeError, decoder.decode, "")
@@ -275,7 +275,7 @@ kundi Test_IncrementalDecoder(unittest.TestCase):
         decoder.setstate((b'abc', 123456789))
         self.assertEqual(decoder.getstate(), (b'abc', 123456789))
 
-    eleza test_setstate_validates_input(self):
+    eleza test_setstate_validates_uliza(self):
         decoder = codecs.getincrementaldecoder('euc_jp')()
         self.assertRaises(TypeError, decoder.setstate, 123)
         self.assertRaises(TypeError, decoder.setstate, ("invalid", 0))

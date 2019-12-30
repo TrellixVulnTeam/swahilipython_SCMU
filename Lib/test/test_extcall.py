@@ -113,7 +113,7 @@ Verify clearing of SF bug #733667
     >>> g(1, 2, 3, *(4, 5))
     1 (2, 3, 4, 5) {}
 
-    >>> kundi Nothing: pita
+    >>> kundi Nothing: pass
     ...
     >>> g(*Nothing())
     Traceback (most recent call last):
@@ -133,7 +133,7 @@ Verify clearing of SF bug #733667
     ...     eleza __len__(self): rudisha 5
     ...     eleza __getitem__(self, i):
     ...         ikiwa i<3: rudisha i
-    ...         isipokua: ashiria IndexError(i)
+    ...         isipokua:  ashiria IndexError(i)
     ...
 
     >>> g(*Nothing())
@@ -144,7 +144,7 @@ Verify clearing of SF bug #733667
     ...     eleza __iter__(self): rudisha self
     ...     eleza __next__(self):
     ...         ikiwa self.c == 4:
-    ...             ashiria StopIteration
+    ...              ashiria StopIteration
     ...         c = self.c
     ...         self.c += 1
     ...         rudisha c
@@ -156,7 +156,7 @@ Verify clearing of SF bug #733667
 Check kila issue #4806: Does a TypeError kwenye a generator get propagated ukijumuisha the
 right error message? (Also check ukijumuisha other iterables.)
 
-    >>> eleza broken(): ashiria TypeError("myerror")
+    >>> eleza broken():  ashiria TypeError("myerror")
     ...
 
     >>> g(*(broken() kila i kwenye range(1)))
@@ -170,7 +170,7 @@ right error message? (Also check ukijumuisha other iterables.)
 
     >>> kundi BrokenIterable1:
     ...     eleza __iter__(self):
-    ...         ashiria TypeError('myerror')
+    ...          ashiria TypeError('myerror')
     ...
     >>> g(*BrokenIterable1())
     Traceback (most recent call last):
@@ -184,7 +184,7 @@ right error message? (Also check ukijumuisha other iterables.)
     >>> kundi BrokenIterable2:
     ...     eleza __iter__(self):
     ...         tuma 0
-    ...         ashiria TypeError('myerror')
+    ...          ashiria TypeError('myerror')
     ...
     >>> g(*BrokenIterable2())
     Traceback (most recent call last):
@@ -197,7 +197,7 @@ right error message? (Also check ukijumuisha other iterables.)
 
     >>> kundi BrokenSequence:
     ...     eleza __getitem__(self, idx):
-    ...         ashiria TypeError('myerror')
+    ...          ashiria TypeError('myerror')
     ...
     >>> g(*BrokenSequence())
     Traceback (most recent call last):
@@ -331,7 +331,7 @@ Test a kwargs mapping ukijumuisha duplicated keys.
     ...         kila k, v kwenye self._items:
     ...             ikiwa k == key:
     ...                 rudisha v
-    ...         ashiria KeyError(key)
+    ...          ashiria KeyError(key)
     ...
     ...     eleza __len__(self):
     ...         rudisha len(self._items)
@@ -392,7 +392,7 @@ Another helper function
     5
 
 A PyCFunction that takes only positional parameters should allow an
-empty keyword dictionary to pita without a complaint, but ashiria a
+empty keyword dictionary to pass without a complaint, but  ashiria a
 TypeError ikiwa te dictionary ni sio empty
 
     >>> jaribu:
@@ -414,8 +414,8 @@ the function call setup. See <http://bugs.python.org/issue2016>.
     ...     eleza __eq__(self, other):
     ...         jaribu:
     ...              toa x[self]
-    ...         tatizo KeyError:
-    ...              pita
+    ...         except KeyError:
+    ...              pass
     ...         rudisha str.__eq__(self, other)
     ...     eleza __hash__(self):
     ...         rudisha str.__hash__(self)
@@ -428,32 +428,32 @@ the function call setup. See <http://bugs.python.org/issue2016>.
 
 Too many arguments:
 
-    >>> eleza f(): pita
+    >>> eleza f(): pass
     >>> f(1)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 0 positional arguments but 1 was given
-    >>> eleza f(a): pita
+    >>> eleza f(a): pass
     >>> f(1, 2)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 1 positional argument but 2 were given
-    >>> eleza f(a, b=1): pita
+    >>> eleza f(a, b=1): pass
     >>> f(1, 2, 3)
     Traceback (most recent call last):
       ...
     TypeError: f() takes kutoka 1 to 2 positional arguments but 3 were given
-    >>> eleza f(*, kw): pita
+    >>> eleza f(*, kw): pass
     >>> f(1, kw=3)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 0 positional arguments but 1 positional argument (and 1 keyword-only argument) were given
-    >>> eleza f(*, kw, b): pita
+    >>> eleza f(*, kw, b): pass
     >>> f(1, 2, 3, b=3, kw=3)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 0 positional arguments but 3 positional arguments (and 2 keyword-only arguments) were given
-    >>> eleza f(a, b=2, *, kw): pita
+    >>> eleza f(a, b=2, *, kw): pass
     >>> f(2, 3, 4, kw=4)
     Traceback (most recent call last):
       ...
@@ -461,27 +461,27 @@ Too many arguments:
 
 Too few na missing arguments:
 
-    >>> eleza f(a): pita
+    >>> eleza f(a): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 1 required positional argument: 'a'
-    >>> eleza f(a, b): pita
+    >>> eleza f(a, b): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 2 required positional arguments: 'a' na 'b'
-    >>> eleza f(a, b, c): pita
+    >>> eleza f(a, b, c): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 3 required positional arguments: 'a', 'b', na 'c'
-    >>> eleza f(a, b, c, d, e): pita
+    >>> eleza f(a, b, c, d, e): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 5 required positional arguments: 'a', 'b', 'c', 'd', na 'e'
-    >>> eleza f(a, b=4, c=5, d=5): pita
+    >>> eleza f(a, b=4, c=5, d=5): pass
     >>> f(c=12, b=9)
     Traceback (most recent call last):
       ...
@@ -489,12 +489,12 @@ Too few na missing arguments:
 
 Same ukijumuisha keyword only args:
 
-    >>> eleza f(*, w): pita
+    >>> eleza f(*, w): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 1 required keyword-only argument: 'w'
-    >>> eleza f(*, a, b, c, d, e): pita
+    >>> eleza f(*, a, b, c, d, e): pass
     >>> f()
     Traceback (most recent call last):
       ...

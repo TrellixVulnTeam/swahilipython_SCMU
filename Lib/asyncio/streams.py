@@ -24,22 +24,22 @@ _DEFAULT_LIMIT = 2 ** 16  # 64 KiB
 
 async eleza open_connection(host=Tupu, port=Tupu, *,
                           loop=Tupu, limit=_DEFAULT_LIMIT, **kwds):
-    """A wrapper kila create_connection() rudishaing a (reader, writer) pair.
+    """A wrapper kila create_connection() returning a (reader, writer) pair.
 
-    The reader rudishaed ni a StreamReader instance; the writer ni a
+    The reader returned ni a StreamReader instance; the writer ni a
     StreamWriter instance.
 
     The arguments are all the usual arguments to create_connection()
-    tatizo protocol_factory; most common are positional host na port,
+    except protocol_factory; most common are positional host na port,
     ukijumuisha various optional keyword arguments following.
 
     Additional optional keyword arguments are loop (to set the event loop
-    instance to use) na limit (to set the buffer limit pitaed to the
+    instance to use) na limit (to set the buffer limit passed to the
     StreamReader).
 
     (If you want to customize the StreamReader and/or
     StreamReaderProtocol classes, just copy the code -- there's
-    really nothing special here tatizo some convenience.)
+    really nothing special here except some convenience.)
     """
     ikiwa loop ni Tupu:
         loop = events.get_event_loop()
@@ -67,15 +67,15 @@ async eleza start_server(client_connected_cb, host=Tupu, port=Tupu, *,
     Task.
 
     The rest of the arguments are all the usual arguments to
-    loop.create_server() tatizo protocol_factory; most common are
+    loop.create_server() except protocol_factory; most common are
     positional host na port, ukijumuisha various optional keyword arguments
-    following.  The rudisha value ni the same kama loop.create_server().
+    following.  The rudisha value ni the same as loop.create_server().
 
     Additional optional keyword arguments are loop (to set the event loop
-    instance to use) na limit (to set the buffer limit pitaed to the
+    instance to use) na limit (to set the buffer limit passed to the
     StreamReader).
 
-    The rudisha value ni the same kama loop.create_server(), i.e. a
+    The rudisha value ni the same as loop.create_server(), i.e. a
     Server object which can be used to stop the service.
     """
     ikiwa loop ni Tupu:
@@ -173,13 +173,13 @@ kundi FlowControlMixin(protocols.Protocol):
         self._connection_lost = Kweli
         # Wake up the writer ikiwa currently paused.
         ikiwa sio self._paused:
-            rudisha
+            return
         waiter = self._drain_waiter
         ikiwa waiter ni Tupu:
-            rudisha
+            return
         self._drain_waiter = Tupu
         ikiwa waiter.done():
-            rudisha
+            return
         ikiwa exc ni Tupu:
             waiter.set_result(Tupu)
         isipokua:
@@ -187,9 +187,9 @@ kundi FlowControlMixin(protocols.Protocol):
 
     async eleza _drain_helper(self):
         ikiwa self._connection_lost:
-            ashiria ConnectionResetError('Connection lost')
+             ashiria ConnectionResetError('Connection lost')
         ikiwa sio self._paused:
-            rudisha
+            return
         waiter = self._drain_waiter
         assert waiter ni Tupu ama waiter.cancelled()
         waiter = self._loop.create_future()
@@ -197,7 +197,7 @@ kundi FlowControlMixin(protocols.Protocol):
         await waiter
 
     eleza _get_close_waiter(self, stream):
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
 
 kundi StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
@@ -264,7 +264,7 @@ kundi StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
             transport.abort()
-            rudisha
+            return
         self._transport = transport
         reader = self._stream_reader
         ikiwa reader ni sio Tupu:
@@ -308,7 +308,7 @@ kundi StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
             reader.feed_eof()
         ikiwa self._over_ssl:
             # Prevent a warning kwenye SSLProtocol.eof_received:
-            # "rudishaing true kutoka eof_received()
+            # "returning true kutoka eof_received()
             # has no effect when using ssl"
             rudisha Uongo
         rudisha Kweli
@@ -328,7 +328,7 @@ kundi StreamWriter:
     """Wraps a Transport.
 
     This exposes write(), writelines(), [can_]write_eof(),
-    get_extra_info() na close().  It adds drain() which rudishas an
+    get_extra_info() na close().  It adds drain() which returns an
     optional Future on which you can wait kila flow control.  It also
     adds a transport property which references the Transport
     directly.
@@ -389,13 +389,13 @@ kundi StreamWriter:
         ikiwa self._reader ni sio Tupu:
             exc = self._reader.exception()
             ikiwa exc ni sio Tupu:
-                ashiria exc
+                 ashiria exc
         ikiwa self._transport.is_closing():
             # Wait kila protocol.connection_lost() call
             # Raise connection closing error ikiwa any,
             # ConnectionResetError otherwise
             # Yield to the event loop so connection_lost() may be
-            # called.  Without this, _drain_helper() would rudisha
+            # called.  Without this, _drain_helper() would return
             # immediately, na code that calls
             #     write(...); await drain()
             # kwenye a loop would never call connection_lost(), so it
@@ -410,10 +410,10 @@ kundi StreamReader:
 
     eleza __init__(self, limit=_DEFAULT_LIMIT, loop=Tupu):
         # The line length limit ni  a security feature;
-        # it also doubles kama half the buffer limit.
+        # it also doubles as half the buffer limit.
 
         ikiwa limit <= 0:
-            ashiria ValueError('Limit cannot be <= 0')
+             ashiria ValueError('Limit cannot be <= 0')
 
         self._limit = limit
         ikiwa loop ni Tupu:
@@ -489,17 +489,17 @@ kundi StreamReader:
         assert sio self._eof, 'feed_data after feed_eof'
 
         ikiwa sio data:
-            rudisha
+            return
 
         self._buffer.extend(data)
         self._wakeup_waiter()
 
-        ikiwa (self._transport ni sio Tupu na
-                sio self._paused na
+        ikiwa (self._transport ni sio Tupu and
+                sio self._paused and
                 len(self._buffer) > 2 * self._limit):
             jaribu:
                 self._transport.pause_reading()
-            tatizo NotImplementedError:
+            except NotImplementedError:
                 # The transport can't be paused.
                 # We'll just have to buffer all data.
                 # Forget the transport so we don't keep trying.
@@ -517,7 +517,7 @@ kundi StreamReader:
         # would have an unexpected behaviour. It would sio possible to know
         # which coroutine would get the next data.
         ikiwa self._waiter ni sio Tupu:
-            ashiria RuntimeError(
+             ashiria RuntimeError(
                 f'{func_name}() called wakati another coroutine ni '
                 f'already waiting kila incoming data')
 
@@ -541,9 +541,9 @@ kundi StreamReader:
         On success, rudisha chunk that ends ukijumuisha newline. If only partial
         line can be read due to EOF, rudisha incomplete line without
         terminating newline. When EOF was reached wakati no bytes read, empty
-        bytes object ni rudishaed.
+        bytes object ni returned.
 
-        If limit ni reached, ValueError will be ashiriad. In that case, if
+        If limit ni reached, ValueError will be raised. In that case, if
         newline was found, complete line including newline will be removed
         kutoka internal buffer. Else, internal buffer will be cleared. Limit is
         compared against part of the line without newline.
@@ -555,15 +555,15 @@ kundi StreamReader:
         seplen = len(sep)
         jaribu:
             line = await self.readuntil(sep)
-        tatizo exceptions.IncompleteReadError kama e:
+        except exceptions.IncompleteReadError as e:
             rudisha e.partial
-        tatizo exceptions.LimitOverrunError kama e:
+        except exceptions.LimitOverrunError as e:
             ikiwa self._buffer.startswith(sep, e.consumed):
                 toa self._buffer[:e.consumed + seplen]
             isipokua:
                 self._buffer.clear()
             self._maybe_resume_transport()
-            ashiria ValueError(e.args[0])
+             ashiria ValueError(e.args[0])
         rudisha line
 
     async eleza readuntil(self, separator=b'\n'):
@@ -574,26 +574,26 @@ kundi StreamReader:
         separator at the end.
 
         Configured stream limit ni used to check result. Limit sets the
-        maximal length of data that can be rudishaed, sio counting the
+        maximal length of data that can be returned, sio counting the
         separator.
 
         If an EOF occurs na the complete separator ni still sio found,
-        an IncompleteReadError exception will be ashiriad, na the internal
+        an IncompleteReadError exception will be raised, na the internal
         buffer will be reset.  The IncompleteReadError.partial attribute
         may contain the separator partially.
 
         If the data cannot be read because of over limit, a
-        LimitOverrunError exception  will be ashiriad, na the data
+        LimitOverrunError exception  will be raised, na the data
         will be left kwenye the internal buffer, so it can be read again.
         """
         seplen = len(separator)
         ikiwa seplen == 0:
-            ashiria ValueError('Separator should be at least one-byte string')
+             ashiria ValueError('Separator should be at least one-byte string')
 
         ikiwa self._exception ni sio Tupu:
-            ashiria self._exception
+             ashiria self._exception
 
-        # Consume whole buffer tatizo last bytes, which length is
+        # Consume whole buffer except last bytes, which length is
         # one less than seplen. Let's check corner cases with
         # separator='SEPARATOR':
         # * we have received almost complete separator (without last
@@ -601,7 +601,7 @@ kundi StreamReader:
         #   can safely consume len(separator) - 1 bytes.
         # * last byte of buffer ni first byte of separator, i.e.
         #   buffer='abcdefghijklmnopqrS'. We may safely consume
-        #   everything tatizo that last byte, but this require to
+        #   everything except that last byte, but this require to
         #   analyze bytes of buffer that match partial separator.
         #   This ni slow and/or require FSM. For this case our
         #   implementation ni sio optimal, since require rescanning
@@ -632,7 +632,7 @@ kundi StreamReader:
                 # see upper comment kila explanation.
                 offset = buflen + 1 - seplen
                 ikiwa offset > self._limit:
-                    ashiria exceptions.LimitOverrunError(
+                     ashiria exceptions.LimitOverrunError(
                         'Separator ni sio found, na chunk exceed the limit',
                         offset)
 
@@ -643,13 +643,13 @@ kundi StreamReader:
             ikiwa self._eof:
                 chunk = bytes(self._buffer)
                 self._buffer.clear()
-                ashiria exceptions.IncompleteReadError(chunk, Tupu)
+                 ashiria exceptions.IncompleteReadError(chunk, Tupu)
 
             # _wait_for_data() will resume reading ikiwa stream was paused.
             await self._wait_for_data('readuntil')
 
         ikiwa isep > self._limit:
-            ashiria exceptions.LimitOverrunError(
+             ashiria exceptions.LimitOverrunError(
                 'Separator ni found, but chunk ni longer than limit', isep)
 
         chunk = self._buffer[:isep + seplen]
@@ -661,14 +661,14 @@ kundi StreamReader:
         """Read up to `n` bytes kutoka the stream.
 
         If n ni sio provided, ama set to -1, read until EOF na rudisha all read
-        bytes. If the EOF was received na the internal buffer ni empty, rudisha
+        bytes. If the EOF was received na the internal buffer ni empty, return
         an empty bytes object.
 
         If n ni zero, rudisha empty bytes object immediately.
 
-        If n ni positive, this function try to read `n` bytes, na may rudisha
+        If n ni positive, this function try to read `n` bytes, na may return
         less ama equal bytes than requested, but at least one byte. If EOF was
-        received before any byte ni read, this function rudishas empty byte
+        received before any byte ni read, this function returns empty byte
         object.
 
         Returned value ni sio limited ukijumuisha limit, configured at stream
@@ -679,7 +679,7 @@ kundi StreamReader:
         """
 
         ikiwa self._exception ni sio Tupu:
-            ashiria self._exception
+             ashiria self._exception
 
         ikiwa n == 0:
             rudisha b''
@@ -723,10 +723,10 @@ kundi StreamReader:
         needed.
         """
         ikiwa n < 0:
-            ashiria ValueError('readexactly size can sio be less than zero')
+             ashiria ValueError('readexactly size can sio be less than zero')
 
         ikiwa self._exception ni sio Tupu:
-            ashiria self._exception
+             ashiria self._exception
 
         ikiwa n == 0:
             rudisha b''
@@ -735,7 +735,7 @@ kundi StreamReader:
             ikiwa self._eof:
                 incomplete = bytes(self._buffer)
                 self._buffer.clear()
-                ashiria exceptions.IncompleteReadError(incomplete, n)
+                 ashiria exceptions.IncompleteReadError(incomplete, n)
 
             await self._wait_for_data('readexactly')
 
@@ -754,5 +754,5 @@ kundi StreamReader:
     async eleza __anext__(self):
         val = await self.readline()
         ikiwa val == b'':
-            ashiria StopAsyncIteration
+             ashiria StopAsyncIteration
         rudisha val

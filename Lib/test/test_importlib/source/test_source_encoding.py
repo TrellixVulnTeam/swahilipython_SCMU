@@ -35,8 +35,8 @@ kundi EncodingTest:
     module_name = '_temp'
 
     eleza run_test(self, source):
-        ukijumuisha util.create_modules(self.module_name) kama mapping:
-            ukijumuisha open(mapping[self.module_name], 'wb') kama file:
+        ukijumuisha util.create_modules(self.module_name) as mapping:
+            ukijumuisha open(mapping[self.module_name], 'wb') as file:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(self.module_name,
                                                   mapping[self.module_name])
@@ -124,8 +124,8 @@ kundi LineEndingTest:
         module_name = '_temp'
         source_lines = [b"a = 42", b"b = -13", b'']
         source = line_ending.join(source_lines)
-        ukijumuisha util.create_modules(module_name) kama mapping:
-            ukijumuisha open(mapping[module_name], 'wb') kama file:
+        ukijumuisha util.create_modules(module_name) as mapping:
+            ukijumuisha open(mapping[module_name], 'wb') as file:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(module_name,
                                                      mapping[module_name])

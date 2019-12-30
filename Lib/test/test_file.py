@@ -5,7 +5,7 @@ kutoka array agiza array
 kutoka weakref agiza proxy
 
 agiza io
-agiza _pyio kama pyio
+agiza _pyio as pyio
 
 kutoka test.support agiza TESTFN
 kutoka test agiza support
@@ -76,7 +76,7 @@ kundi AutoFileTests:
     eleza testWritelinesNonString(self):
         # verify writelines ukijumuisha non-string object
         kundi NonString:
-            pita
+            pass
 
         self.assertRaises(TypeError, self.f.writelines,
                           [NonString(), NonString()])
@@ -115,7 +115,7 @@ kundi AutoFileTests:
 
         kila methodname, args kwenye methods:
             method = getattr(self.f, methodname)
-            # should ashiria on closed file
+            # should  ashiria on closed file
             self.assertRaises(ValueError, method, *args)
 
         # file ni closed, __exit__ shouldn't do anything
@@ -147,8 +147,8 @@ kundi OtherFileTests:
         kila mode kwenye ("", "aU", "wU+", "U+", "+U", "rU+"):
             jaribu:
                 f = self.open(TESTFN, mode)
-            tatizo ValueError:
-                pita
+            except ValueError:
+                pass
             isipokua:
                 f.close()
                 self.fail('%r ni an invalid file mode' % mode)
@@ -158,10 +158,10 @@ kundi OtherFileTests:
         bad_mode = "qwerty"
         jaribu:
             f = self.open(TESTFN, bad_mode)
-        tatizo ValueError kama msg:
+        except ValueError as msg:
             ikiwa msg.args[0] != 0:
                 s = str(msg)
-                ikiwa TESTFN kwenye s ama bad_mode haiko kwenye s:
+                ikiwa TESTFN kwenye s ama bad_mode sio kwenye s:
                     self.fail("bad error message kila invalid mode: %s" % s)
             # ikiwa msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
@@ -179,7 +179,7 @@ kundi OtherFileTests:
             d = int(f.read().decode("ascii"))
             f.close()
             f.close()
-        tatizo OSError kama msg:
+        except OSError as msg:
             self.fail('error setting buffer size %d: %s' % (s, str(msg)))
         self.assertEqual(d, s)
 
@@ -257,7 +257,7 @@ kundi OtherFileTests:
             meth(*args)  # This simply shouldn't fail
             f.close()
 
-        # Test to see ikiwa harmless (by accident) mixing of read* na
+        # Test to see ikiwa harmless (by accident) mixing of read* and
         # iteration still works. This depends on the size of the internal
         # iteration buffer (currently 8192,) but we can test it kwenye a
         # flexible manner.  Each line kwenye the bag o' ham ni 4 bytes
@@ -270,7 +270,7 @@ kundi OtherFileTests:
         testline = testlines.pop(0)
         jaribu:
             line = f.readline()
-        tatizo ValueError:
+        except ValueError:
             self.fail("readline() after next() ukijumuisha supposedly empty "
                         "iteration-buffer failed anyway")
         ikiwa line != testline:
@@ -280,7 +280,7 @@ kundi OtherFileTests:
         buf = array("b", b"\x00" * len(testline))
         jaribu:
             f.readinto(buf)
-        tatizo ValueError:
+        except ValueError:
             self.fail("readinto() after next() ukijumuisha supposedly empty "
                         "iteration-buffer failed anyway")
         line = buf.tobytes()
@@ -291,7 +291,7 @@ kundi OtherFileTests:
         testline = testlines.pop(0)
         jaribu:
             line = f.read(len(testline))
-        tatizo ValueError:
+        except ValueError:
             self.fail("read() after next() ukijumuisha supposedly empty "
                         "iteration-buffer failed anyway")
         ikiwa line != testline:
@@ -299,7 +299,7 @@ kundi OtherFileTests:
                         "failed. Got %r, expected %r" % (line, testline))
         jaribu:
             lines = f.readlines()
-        tatizo ValueError:
+        except ValueError:
             self.fail("readlines() after next() ukijumuisha supposedly empty "
                         "iteration-buffer failed anyway")
         ikiwa lines != testlines:
@@ -311,13 +311,13 @@ kundi OtherFileTests:
         f = self.open(TESTFN, 'rb')
         jaribu:
             kila line kwenye f:
-                pita
+                pass
             jaribu:
                 f.readline()
                 f.readinto(buf)
                 f.read()
                 f.readlines()
-            tatizo ValueError:
+            except ValueError:
                 self.fail("read* failed after next() consumed file")
         mwishowe:
             f.close()

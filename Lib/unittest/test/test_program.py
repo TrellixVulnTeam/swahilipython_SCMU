@@ -62,7 +62,7 @@ kundi Test_TestProgram(unittest.TestCase):
             assert Uongo
 
     kundi FooBarLoader(unittest.TestLoader):
-        """Test loader that rudishas a suite containing FooBar."""
+        """Test loader that returns a suite containing FooBar."""
         eleza loadTestsFromModule(self, module):
             rudisha self.suiteClass(
                 [self.loadTestsFromTestCase(Test_TestProgram.FooBar)])
@@ -142,20 +142,20 @@ kundi InitialisableProgram(unittest.TestProgram):
     progName = 'test'
     test = 'test'
     eleza __init__(self, *args):
-        pita
+        pass
 
 RESULT = object()
 
 kundi FakeRunner(object):
     initArgs = Tupu
     test = Tupu
-    ashiriaError = 0
+    raiseError = 0
 
     eleza __init__(self, **kwargs):
         FakeRunner.initArgs = kwargs
-        ikiwa FakeRunner.ashiriaError:
-            FakeRunner.ashiriaError -= 1
-            ashiria TypeError
+        ikiwa FakeRunner.raiseError:
+            FakeRunner.raiseError -= 1
+             ashiria TypeError
 
     eleza run(self, test):
         FakeRunner.test = test
@@ -169,7 +169,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
         self.program.createTests = lambda: Tupu
         FakeRunner.initArgs = Tupu
         FakeRunner.test = Tupu
-        FakeRunner.ashiriaError = 0
+        FakeRunner.raiseError = 0
 
     eleza testVerbosity(self):
         program = self.program
@@ -213,14 +213,14 @@ kundi TestCommandLineArgs(unittest.TestCase):
                 self.assertIs(getattr(program, attr), Kweli)
 
                 setattr(program, attr, Uongo)
-                ukijumuisha support.captured_stderr() kama stderr, \
-                    self.assertRaises(SystemExit) kama cm:
+                ukijumuisha support.captured_stderr() as stderr, \
+                    self.assertRaises(SystemExit) as cm:
                     program.parseArgs([Tupu, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
                 setattr(program, attr, Kweli)
-                ukijumuisha support.captured_stderr() kama stderr, \
-                    self.assertRaises(SystemExit) kama cm:
+                ukijumuisha support.captured_stderr() as stderr, \
+                    self.assertRaises(SystemExit) as cm:
                     program.parseArgs([Tupu, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
@@ -228,8 +228,8 @@ kundi TestCommandLineArgs(unittest.TestCase):
         """Test the warnings argument"""
         # see #10535
         kundi FakeTP(unittest.TestProgram):
-            eleza parseArgs(self, *args, **kw): pita
-            eleza runTests(self, *args, **kw): pita
+            eleza parseArgs(self, *args, **kw): pass
+            eleza runTests(self, *args, **kw): pass
         warnoptions = sys.warnoptions[:]
         jaribu:
             sys.warnoptions[:] = []
@@ -296,7 +296,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
 
         # Two TypeErrors are needed to fall all the way back to old-style
         # runners - one to fail tb_locals, one to fail buffer etc.
-        FakeRunner.ashiriaError = 2
+        FakeRunner.raiseError = 2
         program.testRunner = FakeRunner
         program.verbosity = 'verbosity'
         program.failfast = 'failfast'
@@ -305,7 +305,7 @@ kundi TestCommandLineArgs(unittest.TestCase):
 
         program.runTests()
 
-        # If initialising ashirias a type error it should be retried
+        # If initialising raises a type error it should be retried
         # without the new keyword arguments
         self.assertEqual(FakeRunner.initArgs, {})
         self.assertEqual(FakeRunner.test, 'test')
@@ -404,10 +404,10 @@ kundi TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(program.testNames, argv[1:])
 
         # it may be better to use platform specific functions to normalise paths
-        # rather than accepting '.PY' na '\' kama file separator on Linux / Mac
+        # rather than accepting '.PY' na '\' as file separator on Linux / Mac
         # it would also be better to check that a filename ni a valid module
         # identifier (we have a regex kila this kwenye loader.py)
-        # kila invalid filenames should we ashiria a useful error rather than
+        # kila invalid filenames should we  ashiria a useful error rather than
         # leaving the current error message (agiza of filename fails) kwenye place?
 
     eleza testParseArgsSelectedTestNames(self):

@@ -32,7 +32,7 @@ kundi ParenMatch:
     """
 
     RESTORE_VIRTUAL_EVENT_NAME = "<<parenmatch-check-restore>>"
-    # We want the restore event be called before the usual rudisha na
+    # We want the restore event be called before the usual rudisha and
     # backspace events.
     RESTORE_SEQUENCES = ("<KeyPress>", "<ButtonPress>",
                          "<Key-Return>", "<Key-BackSpace>")
@@ -84,11 +84,11 @@ kundi ParenMatch:
         "Handle user input of closer."
         # If user bound non-closer to <<paren-closed>>, quit.
         closer = self.text.get("insert-1c")
-        ikiwa closer haiko kwenye _openers:
-            rudisha
+        ikiwa closer sio kwenye _openers:
+            return
         hp = HyperParser(self.editwin, "insert-1c")
         ikiwa sio hp.is_in_code():
-            rudisha
+            return
         indices = hp.get_surrounding_brackets(_openers[closer], Kweli)
         self.finish_paren_event(indices)
         rudisha  # Allow calltips to see ')'
@@ -96,12 +96,12 @@ kundi ParenMatch:
     eleza finish_paren_event(self, indices):
         ikiwa indices ni Tupu na self.BELL:
             self.text.bell()
-            rudisha
+            return
         self.activate_restore()
         # self.create_tag(indices)
         self.tagfuncs.get(self.STYLE, self.create_tag_expression)(self, indices)
         # self.set_timeout()
-        (self.set_timeout_last ikiwa self.FLASH_DELAY ama
+        (self.set_timeout_last ikiwa self.FLASH_DELAY else
                             self.set_timeout_none)()
 
     eleza restore_event(self, event=Tupu):

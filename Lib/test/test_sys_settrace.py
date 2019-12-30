@@ -45,42 +45,42 @@ eleza basic():
 
 basic.events = [(0, 'call'),
                 (1, 'line'),
-                (1, 'rudisha')]
+                (1, 'return')]
 
-# Many of the tests below are tricky because they involve pita statements.
-# If there ni implicit control flow around a pita statement (in an except
+# Many of the tests below are tricky because they involve pass statements.
+# If there ni implicit control flow around a pass statement (in an except
 # clause ama isipokua clause) under what conditions do you set a line number
 # following that clause?
 
 
 # Some constructs like "wakati 0:", "ikiwa 0:" ama "ikiwa 1:...isipokua:..." are optimized
-# away.  No code # exists kila them, so the line numbers skip directly kutoka
+# away.  No code # exists kila them, so the line numbers skip directly from
 # "toa x" to "x = 1".
 eleza arigo_example0():
     x = 1
     toa x
     wakati 0:
-        pita
+        pass
     x = 1
 
 arigo_example0.events = [(0, 'call'),
                         (1, 'line'),
                         (2, 'line'),
                         (5, 'line'),
-                        (5, 'rudisha')]
+                        (5, 'return')]
 
 eleza arigo_example1():
     x = 1
     toa x
     ikiwa 0:
-        pita
+        pass
     x = 1
 
 arigo_example1.events = [(0, 'call'),
                         (1, 'line'),
                         (2, 'line'),
                         (5, 'line'),
-                        (5, 'rudisha')]
+                        (5, 'return')]
 
 eleza arigo_example2():
     x = 1
@@ -88,7 +88,7 @@ eleza arigo_example2():
     ikiwa 1:
         x = 1
     isipokua:
-        pita
+        pass
     rudisha Tupu
 
 arigo_example2.events = [(0, 'call'),
@@ -96,7 +96,7 @@ arigo_example2.events = [(0, 'call'),
                         (2, 'line'),
                         (4, 'line'),
                         (7, 'line'),
-                        (7, 'rudisha')]
+                        (7, 'return')]
 
 
 # check that lines consisting of just one instruction get traced:
@@ -109,7 +109,7 @@ one_instr_line.events = [(0, 'call'),
                          (1, 'line'),
                          (2, 'line'),
                          (3, 'line'),
-                         (3, 'rudisha')]
+                         (3, 'return')]
 
 eleza no_pop_tops():      # 0
     x = 1               # 1
@@ -128,7 +128,7 @@ no_pop_tops.events = [(0, 'call'),
                       (3, 'line'),
                       (4, 'line'),
                       (2, 'line'),
-                      (2, 'rudisha')]
+                      (2, 'return')]
 
 eleza no_pop_blocks():
     y = 1
@@ -140,7 +140,7 @@ no_pop_blocks.events = [(0, 'call'),
                         (1, 'line'),
                         (2, 'line'),
                         (4, 'line'),
-                        (4, 'rudisha')]
+                        (4, 'return')]
 
 eleza called(): # line -3
     x = 1
@@ -152,76 +152,76 @@ call.events = [(0, 'call'),
                (1, 'line'),
                (-3, 'call'),
                (-2, 'line'),
-               (-2, 'rudisha'),
-               (1, 'rudisha')]
+               (-2, 'return'),
+               (1, 'return')]
 
-eleza ashirias():
-    ashiria Exception
+eleza raises():
+     ashiria Exception
 
-eleza test_ashiria():
+eleza test_raise():
     jaribu:
-        ashirias()
-    tatizo Exception kama exc:
+        raises()
+    except Exception as exc:
         x = 1
 
-test_ashiria.events = [(0, 'call'),
+test_raise.events = [(0, 'call'),
                      (1, 'line'),
                      (2, 'line'),
                      (-3, 'call'),
                      (-2, 'line'),
                      (-2, 'exception'),
-                     (-2, 'rudisha'),
+                     (-2, 'return'),
                      (2, 'exception'),
                      (3, 'line'),
                      (4, 'line'),
-                     (4, 'rudisha')]
+                     (4, 'return')]
 
-eleza _settrace_and_rudisha(tracefunc):
+eleza _settrace_and_return(tracefunc):
     sys.settrace(tracefunc)
     sys._getframe().f_back.f_trace = tracefunc
-eleza settrace_and_rudisha(tracefunc):
-    _settrace_and_rudisha(tracefunc)
+eleza settrace_and_return(tracefunc):
+    _settrace_and_return(tracefunc)
 
-settrace_and_rudisha.events = [(1, 'rudisha')]
+settrace_and_return.events = [(1, 'return')]
 
-eleza _settrace_and_ashiria(tracefunc):
+eleza _settrace_and_raise(tracefunc):
     sys.settrace(tracefunc)
     sys._getframe().f_back.f_trace = tracefunc
-    ashiria RuntimeError
-eleza settrace_and_ashiria(tracefunc):
+     ashiria RuntimeError
+eleza settrace_and_raise(tracefunc):
     jaribu:
-        _settrace_and_ashiria(tracefunc)
-    tatizo RuntimeError kama exc:
-        pita
+        _settrace_and_raise(tracefunc)
+    except RuntimeError as exc:
+        pass
 
-settrace_and_ashiria.events = [(2, 'exception'),
+settrace_and_raise.events = [(2, 'exception'),
                              (3, 'line'),
                              (4, 'line'),
-                             (4, 'rudisha')]
+                             (4, 'return')]
 
 # implicit rudisha example
-# This test ni interesting because of the isipokua: pita
+# This test ni interesting because of the isipokua: pass
 # part of the code.  The code generate kila the true
 # part of the ikiwa contains a jump past the isipokua branch.
 # The compiler then generates an implicit "rudisha Tupu"
-# Internally, the compiler visits the pita statement
+# Internally, the compiler visits the pass statement
 # na stores its line number kila use on the next instruction.
 # The next instruction ni the implicit rudisha Tupu.
-eleza irudisha_example():
+eleza ireturn_example():
     a = 5
     b = 5
     ikiwa a == b:
         b = a+1
     isipokua:
-        pita
+        pass
 
-irudisha_example.events = [(0, 'call'),
+ireturn_example.events = [(0, 'call'),
                           (1, 'line'),
                           (2, 'line'),
                           (3, 'line'),
                           (4, 'line'),
                           (6, 'line'),
-                          (6, 'rudisha')]
+                          (6, 'return')]
 
 # Tight loop ukijumuisha while(1) example (SF #765624)
 eleza tightloop_example():
@@ -230,8 +230,8 @@ eleza tightloop_example():
         i = 0
         wakati 1:
             b = items[i]; i+=1
-    tatizo IndexError:
-        pita
+    except IndexError:
+        pass
 
 tightloop_example.events = [(0, 'call'),
                             (1, 'line'),
@@ -244,15 +244,15 @@ tightloop_example.events = [(0, 'call'),
                             (5, 'exception'),
                             (6, 'line'),
                             (7, 'line'),
-                            (7, 'rudisha')]
+                            (7, 'return')]
 
 eleza tighterloop_example():
     items = range(1, 4)
     jaribu:
         i = 0
         wakati 1: i = items[i]
-    tatizo IndexError:
-        pita
+    except IndexError:
+        pass
 
 tighterloop_example.events = [(0, 'call'),
                             (1, 'line'),
@@ -265,7 +265,7 @@ tighterloop_example.events = [(0, 'call'),
                             (4, 'exception'),
                             (5, 'line'),
                             (6, 'line'),
-                            (6, 'rudisha')]
+                            (6, 'return')]
 
 eleza generator_function():
     jaribu:
@@ -286,13 +286,13 @@ generator_example.events = ([(0, 'call'),
                              (-6, 'call'),
                              (-5, 'line'),
                              (-4, 'line'),
-                             (-4, 'rudisha'),
+                             (-4, 'return'),
                              (-4, 'call'),
                              (-4, 'exception'),
                              (-1, 'line'),
-                             (-1, 'rudisha')] +
+                             (-1, 'return')] +
                             [(5, 'line'), (6, 'line')] * 10 +
-                            [(5, 'line'), (5, 'rudisha')])
+                            [(5, 'line'), (5, 'return')])
 
 
 kundi Tracer:
@@ -322,7 +322,7 @@ kundi Tracer:
 kundi TraceTestCase(unittest.TestCase):
 
     # Disable gc collection when tracing, otherwise the
-    # deallocators may be traced kama well.
+    # deallocators may be traced as well.
     eleza setUp(self):
         self.using_gc = gc.isenabled()
         gc.disable()
@@ -369,7 +369,7 @@ kundi TraceTestCase(unittest.TestCase):
 
     eleza test_set_and_retrieve_func(self):
         eleza fn(*args):
-            pita
+            pass
 
         sys.settrace(fn)
         jaribu:
@@ -393,15 +393,15 @@ kundi TraceTestCase(unittest.TestCase):
         self.run_test(no_pop_tops)
     eleza test_06_call(self):
         self.run_test(call)
-    eleza test_07_ashiria(self):
-        self.run_test(test_ashiria)
+    eleza test_07_raise(self):
+        self.run_test(test_raise)
 
-    eleza test_08_settrace_and_rudisha(self):
-        self.run_test2(settrace_and_rudisha)
-    eleza test_09_settrace_and_ashiria(self):
-        self.run_test2(settrace_and_ashiria)
-    eleza test_10_irudisha(self):
-        self.run_test(irudisha_example)
+    eleza test_08_settrace_and_return(self):
+        self.run_test2(settrace_and_return)
+    eleza test_09_settrace_and_raise(self):
+        self.run_test2(settrace_and_raise)
+    eleza test_10_ireturn(self):
+        self.run_test(ireturn_example)
     eleza test_11_tightloop(self):
         self.run_test(tightloop_example)
     eleza test_12_tighterloop(self):
@@ -430,13 +430,13 @@ kundi TraceTestCase(unittest.TestCase):
             [(0, 'call'),
              (1, 'line'),
              (3, 'line'),
-             (3, 'rudisha')])
+             (3, 'return')])
 
     eleza test_15_loops(self):
         # issue1750076: "while" expression ni skipped by debugger
         eleza for_example():
             kila x kwenye range(2):
-                pita
+                pass
         self.run_and_compare(
             for_example,
             [(0, 'call'),
@@ -445,7 +445,7 @@ kundi TraceTestCase(unittest.TestCase):
              (1, 'line'),
              (2, 'line'),
              (1, 'line'),
-             (1, 'rudisha')])
+             (1, 'return')])
 
         eleza while_example():
             # While expression should be traced on every loop
@@ -461,16 +461,16 @@ kundi TraceTestCase(unittest.TestCase):
              (3, 'line'),
              (4, 'line'),
              (3, 'line'),
-             (3, 'rudisha')])
+             (3, 'return')])
 
     eleza test_16_blank_lines(self):
         namespace = {}
-        exec("eleza f():\n" + "\n" * 256 + "    pita", namespace)
+        exec("eleza f():\n" + "\n" * 256 + "    pass", namespace)
         self.run_and_compare(
             namespace["f"],
             [(0, 'call'),
              (257, 'line'),
-             (257, 'rudisha')])
+             (257, 'return')])
 
     eleza test_17_none_f_trace(self):
         # Issue 20041: fix TypeError when f_trace ni set to Tupu.
@@ -515,63 +515,63 @@ kundi RaisingTraceFuncTestCase(unittest.TestCase):
         self.addCleanup(sys.settrace, sys.gettrace())
 
     eleza trace(self, frame, event, arg):
-        """A trace function that ashirias an exception kwenye response to a
+        """A trace function that raises an exception kwenye response to a
         specific trace event."""
-        ikiwa event == self.ashiriaOnEvent:
-            ashiria ValueError # just something that isn't RuntimeError
+        ikiwa event == self.raiseOnEvent:
+             ashiria ValueError # just something that isn't RuntimeError
         isipokua:
             rudisha self.trace
 
     eleza f(self):
-        """The function to trace; ashirias an exception ikiwa that's the case
+        """The function to trace; raises an exception ikiwa that's the case
         we're testing, so that the 'exception' trace event fires."""
-        ikiwa self.ashiriaOnEvent == 'exception':
+        ikiwa self.raiseOnEvent == 'exception':
             x = 0
             y = 1/x
         isipokua:
             rudisha 1
 
     eleza run_test_for_event(self, event):
-        """Tests that an exception ashiriad kwenye response to the given event is
+        """Tests that an exception raised kwenye response to the given event is
         handled OK."""
-        self.ashiriaOnEvent = event
+        self.raiseOnEvent = event
         jaribu:
             kila i kwenye range(sys.getrecursionlimit() + 1):
                 sys.settrace(self.trace)
                 jaribu:
                     self.f()
-                tatizo ValueError:
-                    pita
+                except ValueError:
+                    pass
                 isipokua:
-                    self.fail("exception sio ashiriad!")
-        tatizo RuntimeError:
+                    self.fail("exception sio raised!")
+        except RuntimeError:
             self.fail("recursion counter sio reset")
 
-    # Test the handling of exceptions ashiriad by each kind of trace event.
+    # Test the handling of exceptions raised by each kind of trace event.
     eleza test_call(self):
         self.run_test_for_event('call')
     eleza test_line(self):
         self.run_test_for_event('line')
-    eleza test_rudisha(self):
-        self.run_test_for_event('rudisha')
+    eleza test_return(self):
+        self.run_test_for_event('return')
     eleza test_exception(self):
         self.run_test_for_event('exception')
 
     eleza test_trash_stack(self):
         eleza f():
             kila i kwenye range(5):
-                andika(i)  # line tracing will ashiria an exception at this line
+                andika(i)  # line tracing will  ashiria an exception at this line
 
         eleza g(frame, why, extra):
-            ikiwa (why == 'line' na
+            ikiwa (why == 'line' and
                 frame.f_lineno == f.__code__.co_firstlineno + 2):
-                ashiria RuntimeError("i am crashing")
+                 ashiria RuntimeError("i am crashing")
             rudisha g
 
         sys.settrace(g)
         jaribu:
             f()
-        tatizo RuntimeError:
+        except RuntimeError:
             # the test ni really that this doesn't segfault:
             agiza gc
             gc.collect()
@@ -582,7 +582,7 @@ kundi RaisingTraceFuncTestCase(unittest.TestCase):
     eleza test_exception_arguments(self):
         eleza f():
             x = 0
-            # this should ashiria an error
+            # this should  ashiria an error
             x.no_such_attr
         eleza g(frame, event, arg):
             ikiwa (event == 'exception'):
@@ -595,9 +595,9 @@ kundi RaisingTraceFuncTestCase(unittest.TestCase):
             sys.settrace(g)
             jaribu:
                 f()
-            tatizo AttributeError:
+            except AttributeError:
                 # this ni expected
-                pita
+                pass
         mwishowe:
             sys.settrace(existing)
 
@@ -620,15 +620,15 @@ kundi JumpTracer:
 
     eleza trace(self, frame, event, arg):
         ikiwa self.done:
-            rudisha
+            return
         # frame.f_code.co_firstlineno ni the first line of the decorator when
         # 'function' ni decorated na the decorator may be written using
         # multiple physical lines when it ni too long. Use the first line
         # trace event kwenye 'function' to find the first line of 'function'.
-        ikiwa (self.firstLine ni Tupu na frame.f_code == self.code na
+        ikiwa (self.firstLine ni Tupu na frame.f_code == self.code and
                 event == 'line'):
             self.firstLine = frame.f_lineno - 1
-        ikiwa (event == self.event na self.firstLine na
+        ikiwa (event == self.event na self.firstLine and
                 frame.f_lineno == self.firstLine + self.jumpFrom):
             f = frame
             wakati f ni sio Tupu na f.f_code != self.code:
@@ -638,7 +638,7 @@ kundi JumpTracer:
                 # no_jump_to_non_integers below).
                 jaribu:
                     frame.f_lineno = self.firstLine + self.jumpTo
-                tatizo TypeError:
+                except TypeError:
                     frame.f_lineno = self.jumpTo
                 self.done = Kweli
         rudisha self.trace
@@ -647,7 +647,7 @@ kundi JumpTracer:
 eleza no_jump_to_non_integers(output):
     jaribu:
         output.append(2)
-    tatizo ValueError kama e:
+    except ValueError as e:
         output.append('integer' kwenye str(e))
 
 # This verifies that you can't set f_lineno via _getframe ama similar
@@ -656,14 +656,14 @@ eleza no_jump_without_trace_function():
     jaribu:
         previous_frame = sys._getframe().f_back
         previous_frame.f_lineno = previous_frame.f_lineno
-    tatizo ValueError kama e:
+    except ValueError as e:
         # This ni the exception we wanted; make sure the error message
         # talks about trace functions.
-        ikiwa 'trace' haiko kwenye str(e):
-            ashiria
+        ikiwa 'trace' sio kwenye str(e):
+            raise
     isipokua:
-        # Something's wrong - the expected exception wasn't ashiriad.
-        ashiria AssertionError("Trace-function-less jump failed to fail")
+        # Something's wrong - the expected exception wasn't raised.
+         ashiria AssertionError("Trace-function-less jump failed to fail")
 
 
 kundi JumpTestCase(unittest.TestCase):
@@ -806,7 +806,7 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(2)
             1/0
-            rudisha
+            return
         mwishowe:
             output.append(6)
             output.append(7)
@@ -817,7 +817,7 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(2)
             1/0
-            rudisha
+            return
         mwishowe:
             output.append(6)
             jaribu:
@@ -828,18 +828,18 @@ kundi JumpTestCase(unittest.TestCase):
         output.append(12)
 
     @jump_test(5, 11, [2, 4, 12])
-    eleza test_jump_over_rudisha_try_finally_in_finally_block(output):
+    eleza test_jump_over_return_try_finally_in_finally_block(output):
         jaribu:
             output.append(2)
         mwishowe:
             output.append(4)
             output.append(5)
-            rudisha
+            return
             jaribu:
                 output.append(8)
             mwishowe:
                 output.append(10)
-            pita
+            pass
         output.append(12)
 
     @jump_test(3, 4, [1, 4])
@@ -911,7 +911,7 @@ kundi JumpTestCase(unittest.TestCase):
             output.append(2)
         tatizo:
             output.append(4)
-            ashiria
+            raise
         output.append(6)
 
     @jump_test(3, 1, [1, 1, 3])
@@ -921,16 +921,16 @@ kundi JumpTestCase(unittest.TestCase):
             output.append(3)
         tatizo:
             output.append(5)
-            ashiria
+            raise
 
     @jump_test(5, 7, [4, 7, 8])
     eleza test_jump_between_except_blocks(output):
         jaribu:
             1/0
-        tatizo ZeroDivisionError:
+        except ZeroDivisionError:
             output.append(4)
             output.append(5)
-        tatizo FloatingPointError:
+        except FloatingPointError:
             output.append(7)
         output.append(8)
 
@@ -1035,7 +1035,7 @@ kundi JumpTestCase(unittest.TestCase):
     eleza test_jump_out_of_with_assignment(output):
         output.append(1)
         ukijumuisha tracecontext(output, 2) \
-                kama x:
+                as x:
             output.append(4)
         output.append(5)
 
@@ -1043,17 +1043,17 @@ kundi JumpTestCase(unittest.TestCase):
     async eleza test_jump_out_of_async_with_assignment(output):
         output.append(1)
         async ukijumuisha asynctracecontext(output, 2) \
-                kama x:
+                as x:
             output.append(4)
         output.append(5)
 
     @jump_test(3, 6, [1, 6, 8, 9])
-    eleza test_jump_over_rudisha_in_try_finally_block(output):
+    eleza test_jump_over_return_in_try_finally_block(output):
         output.append(1)
         jaribu:
             output.append(3)
             ikiwa sio output: # always false
-                rudisha
+                return
             output.append(6)
         mwishowe:
             output.append(8)
@@ -1116,31 +1116,31 @@ kundi JumpTestCase(unittest.TestCase):
             output.append(2)
         tatizo:
             output.append(4)
-            ashiria
+            raise
 
     @jump_test(2, 3, [4], (ValueError, 'except'))
     eleza test_no_jump_to_except_2(output):
         jaribu:
             output.append(2)
-        tatizo ValueError:
+        except ValueError:
             output.append(4)
-            ashiria
+            raise
 
     @jump_test(2, 3, [4], (ValueError, 'except'))
     eleza test_no_jump_to_except_3(output):
         jaribu:
             output.append(2)
-        tatizo ValueError kama e:
+        except ValueError as e:
             output.append(4)
-            ashiria e
+             ashiria e
 
     @jump_test(2, 3, [4], (ValueError, 'except'))
     eleza test_no_jump_to_except_4(output):
         jaribu:
             output.append(2)
-        tatizo (ValueError, RuntimeError) kama e:
+        except (ValueError, RuntimeError) as e:
             output.append(4)
-            ashiria e
+             ashiria e
 
     @jump_test(1, 3, [], (ValueError, 'into'))
     eleza test_no_jump_forwards_into_for_block(output):
@@ -1213,7 +1213,7 @@ kundi JumpTestCase(unittest.TestCase):
             output.append(3)
         tatizo:
             output.append(5)
-            ashiria
+            raise
 
     @jump_test(6, 2, [2], (ValueError, 'into'))
     eleza test_no_jump_backwards_into_try_except_block(output):
@@ -1221,7 +1221,7 @@ kundi JumpTestCase(unittest.TestCase):
             output.append(2)
         tatizo:
             output.append(4)
-            ashiria
+            raise
         output.append(6)
 
     # 'except' ukijumuisha a variable creates an implicit finally block
@@ -1229,10 +1229,10 @@ kundi JumpTestCase(unittest.TestCase):
     eleza test_no_jump_between_except_blocks_2(output):
         jaribu:
             1/0
-        tatizo ZeroDivisionError:
+        except ZeroDivisionError:
             output.append(4)
             output.append(5)
-        tatizo FloatingPointError kama e:
+        except FloatingPointError as e:
             output.append(7)
         output.append(8)
 
@@ -1275,7 +1275,7 @@ kundi JumpTestCase(unittest.TestCase):
         output.append(1)
         jaribu:
             output.append(3)
-        tatizo Exception:
+        except Exception:
             output.append(5)
 
     @jump_test(3, 6, [2, 5, 6], (ValueError, "into an 'except'"))
@@ -1286,7 +1286,7 @@ kundi JumpTestCase(unittest.TestCase):
         tatizo:  # executed ikiwa the jump ni failed
             output.append(5)
             output.append(6)
-            ashiria
+            raise
         output.append(8)
 
     @jump_test(3, 6, [2], (ValueError, "into an 'except'"))
@@ -1294,10 +1294,10 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(2)
             output.append(3)
-        tatizo ZeroDivisionError:
+        except ZeroDivisionError:
             output.append(5)
             output.append(6)
-            ashiria
+            raise
         output.append(8)
 
     @jump_test(7, 1, [1, 3, 6], (ValueError, "out of an 'except'"))
@@ -1316,7 +1316,7 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(3)
             1/0
-        tatizo Exception:
+        except Exception:
             output.append(6)
             output.append(7)
 
@@ -1337,13 +1337,13 @@ kundi JumpTestCase(unittest.TestCase):
             output.append(5)
 
     @jump_test(5, 7, [2, 4], (ValueError, 'finally'))
-    eleza test_no_jump_over_rudisha_out_of_finally_block(output):
+    eleza test_no_jump_over_return_out_of_finally_block(output):
         jaribu:
             output.append(2)
         mwishowe:
             output.append(4)
             output.append(5)
-            rudisha
+            return
         output.append(7)
 
     @jump_test(7, 4, [1, 6], (ValueError, 'into'))
@@ -1386,7 +1386,7 @@ kundi JumpTestCase(unittest.TestCase):
             '''                       # line 1005
             x += 1                    # line 1006
             output.append(x)          # line 1007
-            rudisha""" % ('\n' * 1000,), d)
+            return""" % ('\n' * 1000,), d)
         f = d['f']
         self.run_test(f, 2, 1007, [0])
 
@@ -1409,7 +1409,7 @@ output.append(4)
         sys.settrace(Tupu)
         self.compare_jump_output([2, 3, 2, 3, 4], namespace["output"])
 
-    @jump_test(2, 3, [1], event='call', error=(ValueError, "can't jump kutoka"
+    @jump_test(2, 3, [1], event='call', error=(ValueError, "can't jump from"
                " the 'call' trace event of a new frame"))
     eleza test_no_jump_from_call(output):
         output.append(1)
@@ -1418,11 +1418,11 @@ output.append(4)
         nested()
         output.append(5)
 
-    @jump_test(2, 1, [1], event='rudisha', error=(ValueError,
+    @jump_test(2, 1, [1], event='return', error=(ValueError,
                "can only jump kutoka a 'line' trace event"))
-    eleza test_no_jump_from_rudisha_event(output):
+    eleza test_no_jump_from_return_event(output):
         output.append(1)
-        rudisha
+        return
 
     @jump_test(2, 1, [1], event='exception', error=(ValueError,
                "can only jump kutoka a 'line' trace event"))
@@ -1430,9 +1430,9 @@ output.append(4)
         output.append(1)
         1 / 0
 
-    @jump_test(3, 2, [2], event='rudisha', error=(ValueError,
+    @jump_test(3, 2, [2], event='return', error=(ValueError,
                "can't jump kutoka a tuma statement"))
-    eleza test_no_jump_from_tuma(output):
+    eleza test_no_jump_from_yield(output):
         eleza gen():
             output.append(2)
             tuma 3

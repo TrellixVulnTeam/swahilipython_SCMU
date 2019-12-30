@@ -1,5 +1,5 @@
 #
-# big5hkscs.py: Python Unicode Codec for BIG5HKSCS
+# big5hkscs.py: Python Unicode Codec kila BIG5HKSCS
 #
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #

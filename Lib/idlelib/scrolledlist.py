@@ -33,7 +33,7 @@ kundi ScrolledList:
             listbox.bind("<ButtonPress-3>", self.popup_event)
         listbox.bind("<Key-Up>", self.up_event)
         listbox.bind("<Key-Down>", self.down_event)
-        # Mark kama empty
+        # Mark as empty
         self.clear()
 
     eleza close(self):
@@ -119,13 +119,13 @@ kundi ScrolledList:
     # Methods to override kila specific actions
 
     eleza fill_menu(self):
-        pita
+        pass
 
     eleza on_select(self, index):
-        pita
+        pass
 
     eleza on_double(self, index):
-        pita
+        pass
 
 
 eleza _scrolled_list(parent):  # htest #

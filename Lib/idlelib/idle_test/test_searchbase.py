@@ -6,12 +6,12 @@ agiza unittest
 kutoka test.support agiza requires
 kutoka tkinter agiza Text, Tk, Toplevel
 kutoka tkinter.ttk agiza Frame
-kutoka idlelib agiza searchengine kama se
-kutoka idlelib agiza searchbase kama sdb
+kutoka idlelib agiza searchengine as se
+kutoka idlelib agiza searchbase as sdb
 kutoka idlelib.idle_test.mock_idle agiza Func
 ## kutoka idlelib.idle_test.mock_tk agiza Var
 
-# The ## agizas above & following could help make some tests gui-free.
+# The ## imports above & following could help make some tests gui-free.
 # However, they currently make radiobutton tests fail.
 ##eleza setUpModule():
 ##    # Replace tk objects used to initialize se.SearchEngine.

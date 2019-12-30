@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-""" Python Character Mapping Codec for ROT13.
+""" Python Character Mapping Codec kila ROT13.
 
-This codec de/encodes from str to str.
+This codec de/encodes kutoka str to str.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 """
@@ -26,10 +26,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha str.translate(input, rot13_map)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pita
+    pass
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pita
+    pass
 
 ### encodings module API
 
@@ -108,6 +108,6 @@ rot13_map.update({
 eleza rot13(infile, outfile):
     outfile.write(codecs.encode(infile.read(), 'rot-13'))
 
-if __name__ == '__main__':
-    import sys
+ikiwa __name__ == '__main__':
+    agiza sys
     rot13(sys.stdin, sys.stdout)

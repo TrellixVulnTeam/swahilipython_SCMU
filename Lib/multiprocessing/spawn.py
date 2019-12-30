@@ -118,20 +118,20 @@ eleza spawn_main(pipe_handle, parent_pid=Tupu, tracker_fd=Tupu):
 
 
 eleza _main(fd, parent_sentinel):
-    ukijumuisha os.fdopen(fd, 'rb', closefd=Kweli) kama kutoka_parent:
+    ukijumuisha os.fdopen(fd, 'rb', closefd=Kweli) as from_parent:
         process.current_process()._inheriting = Kweli
         jaribu:
-            preparation_data = reduction.pickle.load(kutoka_parent)
+            preparation_data = reduction.pickle.load(from_parent)
             prepare(preparation_data)
-            self = reduction.pickle.load(kutoka_parent)
+            self = reduction.pickle.load(from_parent)
         mwishowe:
             toa process.current_process()._inheriting
     rudisha self._bootstrap(parent_sentinel)
 
 
-eleza _check_not_agizaing_main():
+eleza _check_not_importing_main():
     ikiwa getattr(process.current_process(), '_inheriting', Uongo):
-        ashiria RuntimeError('''
+         ashiria RuntimeError('''
         An attempt has been made to start a new process before the
         current process has finished its bootstrapping phase.
 
@@ -151,7 +151,7 @@ eleza get_preparation_data(name):
     '''
     Return info about parent needed by child to unpickle process object
     '''
-    _check_not_agizaing_main()
+    _check_not_importing_main()
     d = dict(
         log_to_stderr=util._log_to_stderr,
         authkey=process.current_process().authkey,
@@ -163,8 +163,8 @@ eleza get_preparation_data(name):
     sys_path=sys.path.copy()
     jaribu:
         i = sys_path.index('')
-    tatizo ValueError:
-        pita
+    except ValueError:
+        pass
     isipokua:
         sys_path[i] = process.ORIGINAL_DIR
 
@@ -177,16 +177,16 @@ eleza get_preparation_data(name):
         start_method=get_start_method(),
         )
 
-    # Figure out whether to initialise main kwenye the subprocess kama a module
+    # Figure out whether to initialise main kwenye the subprocess as a module
     # ama through direct execution (or to leave it alone entirely)
     main_module = sys.modules['__main__']
     main_mod_name = getattr(main_module.__spec__, "name", Tupu)
     ikiwa main_mod_name ni sio Tupu:
         d['init_main_from_name'] = main_mod_name
-    lasivyo sys.platform != 'win32' ama (sio WINEXE na sio WINSERVICE):
+    elikiwa sys.platform != 'win32' ama (not WINEXE na sio WINSERVICE):
         main_path = getattr(main_module, '__file__', Tupu)
         ikiwa main_path ni sio Tupu:
-            ikiwa (sio os.path.isabs(main_path) na
+            ikiwa (not os.path.isabs(main_path) and
                         process.ORIGINAL_DIR ni sio Tupu):
                 main_path = os.path.join(process.ORIGINAL_DIR, main_path)
             d['init_main_from_path'] = os.path.normpath(main_path)
@@ -232,7 +232,7 @@ eleza prepare(data):
 
     ikiwa 'init_main_from_name' kwenye data:
         _fixup_main_from_name(data['init_main_from_name'])
-    lasivyo 'init_main_from_path' kwenye data:
+    elikiwa 'init_main_from_path' kwenye data:
         _fixup_main_from_path(data['init_main_from_path'])
 
 # Multiprocessing module helpers to fix up the main module in
@@ -244,14 +244,14 @@ eleza _fixup_main_from_name(mod_name):
     # __main__ attributes
     current_main = sys.modules['__main__']
     ikiwa mod_name == "__main__" ama mod_name.endswith(".__main__"):
-        rudisha
+        return
 
     # If this process was forked, __main__ may already be populated
     ikiwa getattr(current_main.__spec__, "name", Tupu) == mod_name:
-        rudisha
+        return
 
     # Otherwise, __main__ may contain some non-main code where we need to
-    # support unpickling it properly. We rerun it kama __mp_main__ na make
+    # support unpickling it properly. We rerun it as __mp_main__ na make
     # the normal __main__ an alias to that
     old_main_modules.append(current_main)
     main_module = types.ModuleType("__mp_main__")
@@ -272,12 +272,12 @@ eleza _fixup_main_from_path(main_path):
     # See https://github.com/ipython/ipython/issues/4698
     main_name = os.path.splitext(os.path.basename(main_path))[0]
     ikiwa main_name == 'ipython':
-        rudisha
+        return
 
     # Otherwise, ikiwa __file__ already has the setting we expect,
     # there's nothing more to do
     ikiwa getattr(current_main, '__file__', Tupu) == main_path:
-        rudisha
+        return
 
     # If the parent process has sent a path through rather than a module
     # name we assume it ni an executable script that may contain

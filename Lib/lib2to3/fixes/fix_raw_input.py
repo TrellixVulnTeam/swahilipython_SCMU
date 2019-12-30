@@ -1,7 +1,7 @@
-"""Fixer that changes raw_input(...) into input(...)."""
+"""Fixer that changes raw_uliza(...) into uliza(...)."""
 # Author: Andre Roberge
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 

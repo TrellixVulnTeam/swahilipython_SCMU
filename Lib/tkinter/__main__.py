@@ -1,7 +1,7 @@
 """Main entry point"""
 
-import sys
-if sys.argv[0].endswith("__main__.py"):
+agiza sys
+ikiwa sys.argv[0].endswith("__main__.py"):
     sys.argv[0] = "python -m tkinter"
-from . agiza _test as main
+kutoka . agiza _test as main
 main()

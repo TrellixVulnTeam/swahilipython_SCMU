@@ -1,8 +1,8 @@
-# Mailcap file kila test_mailcap; based on RFC 1524
+# Mailcap file for test_mailcap; based on RFC 1524
 # Referred to by test_mailcap.py
 
 #
-# This ni a comment.
+# This is a comment.
 #
 
 application/frame; showframe %s; print="cat %s | lp"
@@ -14,8 +14,8 @@ application/x-dvi; xdvi %s
 application/x-movie; movieplayer %s; compose=moviemaker %s; \
        description="Movie"; \
        x11-bitmap="/usr/lib/Zmail/bitmaps/movie.xbm"
-application/*; echo "This ni \"%t\" but \
-       ni 50 \% Greek to me" \; cat %s; copiousoutput
+application/*; echo "This is \"%t\" but \
+       is 50 \% Greek to me" \; cat %s; copiousoutput
 
 audio/basic; showaudio %s; compose=audiocompose %s; edit=audiocompose %s;\
 description="An audio fragment"
@@ -26,11 +26,11 @@ image/rgb; display %s
 image/x-xwindowdump; display %s
 
 # The continuation char shouldn't \
-# make a difference kwenye a comment.
+# make a difference in a comment.
 
 message/external-body; showexternal %s %{access-type} %{name} %{site} \
     %{directory} %{mode} %{server}; needsterminal; composetyped = extcompose %s; \
-    description="A reference to data stored kwenye an external location"
+    description="A reference to data stored in an external location"
 
 text/richtext; shownonascii iso-8859-8 -e richtext -p %s; test=test "`echo \
     %{charset} | tr '[A-Z]' '[a-z]'`"  = iso-8859-8; copiousoutput

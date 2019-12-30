@@ -23,11 +23,11 @@ kundi PopenMock(mock.MagicMock):
 kundi CommandTestMixin:
 
     eleza _test(self, meth, *, args=[URL], kw={}, options, arguments):
-        """Given a web browser instance method name along ukijumuisha arguments na
+        """Given a web browser instance method name along ukijumuisha arguments and
         keywords kila same (which defaults to the single argument URL), creates
         a browser instance kutoka the kundi pointed to by self.browser, calls the
         indicated instance method ukijumuisha the indicated arguments, na compares
-        the resulting options na arguments pitaed to Popen by the browser
+        the resulting options na arguments passed to Popen by the browser
         instance against the 'options' na 'args' lists.  Options are compared
         kwenye a position independent fashion, na the arguments are compared in
         sequence order to whatever ni left over after removing the options.
@@ -75,8 +75,8 @@ kundi ChromeCommandTest(CommandTestMixin, unittest.TestCase):
                    options=[],
                    arguments=[URL])
 
-    eleza test_open_with_autoashiria_false(self):
-        self._test('open', kw=dict(autoashiria=Uongo),
+    eleza test_open_with_autoraise_false(self):
+        self._test('open', kw=dict(autoraise=Uongo),
                    options=[],
                    arguments=[URL])
 
@@ -100,8 +100,8 @@ kundi MozillaCommandTest(CommandTestMixin, unittest.TestCase):
                    options=[],
                    arguments=[URL])
 
-    eleza test_open_with_autoashiria_false(self):
-        self._test('open', kw=dict(autoashiria=Uongo),
+    eleza test_open_with_autoraise_false(self):
+        self._test('open', kw=dict(autoraise=Uongo),
                    options=[],
                    arguments=[URL])
 
@@ -122,22 +122,22 @@ kundi NetscapeCommandTest(CommandTestMixin, unittest.TestCase):
 
     eleza test_open(self):
         self._test('open',
-                   options=['-ashiria', '-remote'],
+                   options=['-raise', '-remote'],
                    arguments=['openURL({})'.format(URL)])
 
-    eleza test_open_with_autoashiria_false(self):
-        self._test('open', kw=dict(autoashiria=Uongo),
-                   options=['-noashiria', '-remote'],
+    eleza test_open_with_autoraise_false(self):
+        self._test('open', kw=dict(autoraise=Uongo),
+                   options=['-noraise', '-remote'],
                    arguments=['openURL({})'.format(URL)])
 
     eleza test_open_new(self):
         self._test('open_new',
-                   options=['-ashiria', '-remote'],
+                   options=['-raise', '-remote'],
                    arguments=['openURL({},new-window)'.format(URL)])
 
     eleza test_open_new_tab(self):
         self._test('open_new_tab',
-                   options=['-ashiria', '-remote'],
+                   options=['-raise', '-remote'],
                    arguments=['openURL({},new-tab)'.format(URL)])
 
 
@@ -150,9 +150,9 @@ kundi GaleonCommandTest(CommandTestMixin, unittest.TestCase):
                    options=['-n'],
                    arguments=[URL])
 
-    eleza test_open_with_autoashiria_false(self):
-        self._test('open', kw=dict(autoashiria=Uongo),
-                   options=['-noashiria', '-n'],
+    eleza test_open_with_autoraise_false(self):
+        self._test('open', kw=dict(autoraise=Uongo),
+                   options=['-noraise', '-n'],
                    arguments=[URL])
 
     eleza test_open_new(self):
@@ -175,8 +175,8 @@ kundi OperaCommandTest(CommandTestMixin, unittest.TestCase):
                    options=[],
                    arguments=[URL])
 
-    eleza test_open_with_autoashiria_false(self):
-        self._test('open', kw=dict(autoashiria=Uongo),
+    eleza test_open_with_autoraise_false(self):
+        self._test('open', kw=dict(autoraise=Uongo),
                    options=[],
                    arguments=[URL])
 
@@ -199,7 +199,7 @@ kundi ELinksCommandTest(CommandTestMixin, unittest.TestCase):
         self._test('open', options=['-remote'],
                            arguments=['openURL({})'.format(URL)])
 
-    eleza test_open_with_autoashiria_false(self):
+    eleza test_open_with_autoraise_false(self):
         self._test('open',
                    options=['-remote'],
                    arguments=['openURL({})'.format(URL)])
@@ -230,7 +230,7 @@ kundi BrowserRegistrationTest(unittest.TestCase):
 
     eleza _check_registration(self, preferred):
         kundi ExampleBrowser:
-            pita
+            pass
 
         expected_tryorder = []
         expected_browsers = {}
@@ -275,7 +275,7 @@ kundi ImportTest(unittest.TestCase):
         self.assertUongo(webbrowser._browsers)
 
         kundi ExampleBrowser:
-            pita
+            pass
         webbrowser.register('Example1', ExampleBrowser)
         self.assertKweli(webbrowser._tryorder)
         self.assertEqual(webbrowser._tryorder[-1], 'Example1')
@@ -302,9 +302,9 @@ kundi ImportTest(unittest.TestCase):
         webbrowser = support.import_fresh_module('webbrowser')
         jaribu:
             browser = webbrowser.get().name
-        tatizo (webbrowser.Error, AttributeError) kama err:
+        except (webbrowser.Error, AttributeError) as err:
             self.skipTest(str(err))
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env["BROWSER"] = browser
             webbrowser = support.import_fresh_module('webbrowser')
             webbrowser.get()
@@ -314,15 +314,15 @@ kundi ImportTest(unittest.TestCase):
         jaribu:
             webbrowser.get()
             least_preferred_browser = webbrowser.get(webbrowser._tryorder[-1]).name
-        tatizo (webbrowser.Error, AttributeError, IndexError) kama err:
+        except (webbrowser.Error, AttributeError, IndexError) as err:
             self.skipTest(str(err))
 
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env["BROWSER"] = least_preferred_browser
             webbrowser = support.import_fresh_module('webbrowser')
             self.assertEqual(webbrowser.get().name, least_preferred_browser)
 
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env["BROWSER"] = sys.executable
             webbrowser = support.import_fresh_module('webbrowser')
             self.assertEqual(webbrowser.get().name, sys.executable)

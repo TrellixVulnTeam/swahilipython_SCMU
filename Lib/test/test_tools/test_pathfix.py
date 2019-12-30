@@ -27,7 +27,7 @@ kundi TestPathfixFunctional(unittest.TestCase):
             filename = support.TESTFN
             pathfix_arg = filename
 
-        ukijumuisha open(filename, 'w', encoding='utf8') kama f:
+        ukijumuisha open(filename, 'w', encoding='utf8') as f:
             f.write(f'{shebang}\n' + 'andika("Hello world")\n')
 
         proc = subprocess.run(
@@ -41,7 +41,7 @@ kundi TestPathfixFunctional(unittest.TestCase):
         self.assertEqual(proc.stdout, stdout, proc)
         self.assertEqual(proc.stderr, stderr, proc)
 
-        ukijumuisha open(filename, 'r', encoding='utf8') kama f:
+        ukijumuisha open(filename, 'r', encoding='utf8') as f:
             output = f.read()
 
         lines = output.split('\n')

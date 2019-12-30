@@ -35,8 +35,8 @@ kundi Queue(object):
 
     eleza __init__(self, maxsize=0, *, ctx):
         ikiwa maxsize <= 0:
-            # Can ashiria ImportError (see issues #3770 na #23400)
-            kutoka .synchronize agiza SEM_VALUE_MAX kama maxsize
+            # Can  ashiria ImportError (see issues #3770 na #23400)
+            kutoka .synchronize agiza SEM_VALUE_MAX as maxsize
         self._maxsize = maxsize
         self._reader, self._writer = connection.Pipe(duplex=Uongo)
         self._rlock = ctx.Lock()
@@ -79,9 +79,9 @@ kundi Queue(object):
 
     eleza put(self, obj, block=Kweli, timeout=Tupu):
         ikiwa self._closed:
-            ashiria ValueError(f"Queue {self!r} ni closed")
+             ashiria ValueError(f"Queue {self!r} ni closed")
         ikiwa sio self._sem.acquire(block, timeout):
-            ashiria Full
+             ashiria Full
 
         ukijumuisha self._notempty:
             ikiwa self._thread ni Tupu:
@@ -91,7 +91,7 @@ kundi Queue(object):
 
     eleza get(self, block=Kweli, timeout=Tupu):
         ikiwa self._closed:
-            ashiria ValueError(f"Queue {self!r} ni closed")
+             ashiria ValueError(f"Queue {self!r} ni closed")
         ikiwa block na timeout ni Tupu:
             ukijumuisha self._rlock:
                 res = self._recv_bytes()
@@ -100,14 +100,14 @@ kundi Queue(object):
             ikiwa block:
                 deadline = time.monotonic() + timeout
             ikiwa sio self._rlock.acquire(block, timeout):
-                ashiria Empty
+                 ashiria Empty
             jaribu:
                 ikiwa block:
                     timeout = deadline - time.monotonic()
                     ikiwa sio self._poll(timeout):
-                        ashiria Empty
-                lasivyo sio self._poll():
-                    ashiria Empty
+                         ashiria Empty
+                elikiwa sio self._poll():
+                     ashiria Empty
                 res = self._recv_bytes()
                 self._sem.release()
             mwishowe:
@@ -152,8 +152,8 @@ kundi Queue(object):
         self._joincancelled = Kweli
         jaribu:
             self._jointhread.cancel()
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
 
     eleza _start_thread(self):
         debug('Queue._start_thread()')
@@ -233,7 +233,7 @@ kundi Queue(object):
                         ikiwa obj ni sentinel:
                             debug('feeder thread got sentinel -- exiting')
                             close()
-                            rudisha
+                            return
 
                         # serialize the data before acquiring the lock
                         obj = _ForkingPickler.dumps(obj)
@@ -245,18 +245,18 @@ kundi Queue(object):
                                 send_bytes(obj)
                             mwishowe:
                                 wrelease()
-                tatizo IndexError:
-                    pita
-            tatizo Exception kama e:
+                except IndexError:
+                    pass
+            except Exception as e:
                 ikiwa ignore_epipe na getattr(e, 'errno', 0) == errno.EPIPE:
-                    rudisha
+                    return
                 # Since this runs kwenye a daemon thread the resources it uses
                 # may be become unusable wakati the process ni cleaning up.
                 # We ignore errors which happen after the process has
                 # started to cleanup.
                 ikiwa is_exiting():
                     info('error kwenye queue thread: %s', e)
-                    rudisha
+                    return
                 isipokua:
                     # Since the object has sio been sent kwenye the queue, we need
                     # to decrease the size of the queue. The error acts as
@@ -270,7 +270,7 @@ kundi Queue(object):
     eleza _on_queue_feeder_error(e, obj):
         """
         Private API hook called when feeding data kwenye the background thread
-        ashirias an exception.  For overriding by concurrent.futures.
+        raises an exception.  For overriding by concurrent.futures.
         """
         agiza traceback
         traceback.print_exc()
@@ -302,9 +302,9 @@ kundi JoinableQueue(Queue):
 
     eleza put(self, obj, block=Kweli, timeout=Tupu):
         ikiwa self._closed:
-            ashiria ValueError(f"Queue {self!r} ni closed")
+             ashiria ValueError(f"Queue {self!r} ni closed")
         ikiwa sio self._sem.acquire(block, timeout):
-            ashiria Full
+             ashiria Full
 
         ukijumuisha self._notempty, self._cond:
             ikiwa self._thread ni Tupu:
@@ -316,7 +316,7 @@ kundi JoinableQueue(Queue):
     eleza task_done(self):
         ukijumuisha self._cond:
             ikiwa sio self._unfinished_tasks.acquire(Uongo):
-                ashiria ValueError('task_done() called too many times')
+                 ashiria ValueError('task_done() called too many times')
             ikiwa self._unfinished_tasks._semlock._is_zero():
                 self._cond.notify_all()
 

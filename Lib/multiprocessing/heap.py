@@ -45,7 +45,7 @@ ikiwa sys.platform == 'win32':
                 # We have reopened a preexisting mmap.
                 buf.close()
             isipokua:
-                ashiria FileExistsError('Cannot find name kila new mmap')
+                 ashiria FileExistsError('Cannot find name kila new mmap')
             self.name = name
             self.buffer = buf
             self._state = (self.size, self.name)
@@ -99,7 +99,7 @@ isipokua:
 
     eleza reduce_arena(a):
         ikiwa a.fd == -1:
-            ashiria ValueError('Arena ni unpicklable because '
+             ashiria ValueError('Arena ni unpicklable because '
                              'forking was enabled when it was created')
         rudisha rebuild_arena, (a.size, reduction.DupFd(a.fd))
 
@@ -173,7 +173,7 @@ kundi Heap(object):
         # Reusing an existing arena ni faster than creating a new one, so
         # we only reclaim space ikiwa it's large enough.
         ikiwa length < self._DISCARD_FREE_SPACE_LARGER_THAN:
-            rudisha
+            return
         blocks = self._allocated_blocks.pop(arena)
         assert sio blocks
         toa self._start_to_block[(arena, 0)]
@@ -186,7 +186,7 @@ kundi Heap(object):
             self._lengths.remove(length)
 
     eleza _malloc(self, size):
-        # rudishas a large enough block -- it might be much larger
+        # returns a large enough block -- it might be much larger
         i = bisect.bisect_left(self._lengths, size)
         ikiwa i == len(self._lengths):
             rudisha self._new_arena(size)
@@ -208,15 +208,15 @@ kundi Heap(object):
 
         jaribu:
             prev_block = self._stop_to_block[(arena, start)]
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
         isipokua:
             start, _ = self._absorb(prev_block)
 
         jaribu:
             next_block = self._start_to_block[(arena, stop)]
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
         isipokua:
             _, stop = self._absorb(next_block)
 
@@ -225,7 +225,7 @@ kundi Heap(object):
 
         jaribu:
             self._len_to_seq[length].append(block)
-        tatizo KeyError:
+        except KeyError:
             self._len_to_seq[length] = [block]
             bisect.insort(self._lengths, length)
 
@@ -260,13 +260,13 @@ kundi Heap(object):
         wakati Kweli:
             jaribu:
                 block = self._pending_free_blocks.pop()
-            tatizo IndexError:
+            except IndexError:
                 koma
             self._add_free_block(block)
             self._remove_allocated_block(block)
 
     eleza free(self, block):
-        # free a block rudishaed by malloc()
+        # free a block returned by malloc()
         # Since free() can be called asynchronously by the GC, it could happen
         # that it's called wakati self._lock ni held: kwenye that case,
         # self._lock.acquire() would deadlock (issue #12352). To avoid that, a
@@ -276,7 +276,7 @@ kundi Heap(object):
         # _free_pending_blocks() (appending na retrieving kutoka a list ni not
         # strictly thread-safe but under CPython it's atomic thanks to the GIL).
         ikiwa os.getpid() != self._lastpid:
-            ashiria ValueError(
+             ashiria ValueError(
                 "My pid ({0:n}) ni sio last pid {1:n}".format(
                     os.getpid(),self._lastpid))
         ikiwa sio self._lock.acquire(Uongo):
@@ -296,9 +296,9 @@ kundi Heap(object):
     eleza malloc(self, size):
         # rudisha a block of right size (possibly rounded up)
         ikiwa size < 0:
-            ashiria ValueError("Size {0:n} out of range".format(size))
+             ashiria ValueError("Size {0:n} out of range".format(size))
         ikiwa sys.maxsize <= size:
-            ashiria OverflowError("Size {0:n} too large".format(size))
+             ashiria OverflowError("Size {0:n} too large".format(size))
         ikiwa os.getpid() != self._lastpid:
             self.__init__()                     # reinitialize after fork
         ukijumuisha self._lock:
@@ -309,7 +309,7 @@ kundi Heap(object):
             (arena, start, stop) = self._malloc(size)
             real_stop = start + size
             ikiwa real_stop < stop:
-                # ikiwa the rudishaed block ni larger than necessary, mark
+                # ikiwa the returned block ni larger than necessary, mark
                 # the remainder available
                 self._add_free_block((arena, real_stop, stop))
             self._allocated_blocks[arena].add((start, real_stop))
@@ -325,9 +325,9 @@ kundi BufferWrapper(object):
 
     eleza __init__(self, size):
         ikiwa size < 0:
-            ashiria ValueError("Size {0:n} out of range".format(size))
+             ashiria ValueError("Size {0:n} out of range".format(size))
         ikiwa sys.maxsize <= size:
-            ashiria OverflowError("Size {0:n} too large".format(size))
+             ashiria OverflowError("Size {0:n} too large".format(size))
         block = BufferWrapper._heap.malloc(size)
         self._state = (block, size)
         util.Finalize(self, BufferWrapper._heap.free, args=(block,))

@@ -1,15 +1,15 @@
-from ctypes import *
-import unittest
-import struct
+kutoka ctypes agiza *
+agiza unittest
+agiza struct
 
-def valid_ranges(*types):
+eleza valid_ranges(*types):
     # given a sequence of numeric types, collect their _type_
-    # attribute, which is a single format character compatible with
+    # attribute, which ni a single format character compatible with
     # the struct module, use the struct module to calculate the
-    # minimum and maximum value allowed for this format.
+    # minimum na maximum value allowed kila this format.
     # Returns a list of (min, max) values.
     result = []
-    for t in types:
+    kila t kwenye types:
         fmt = t._type_
         size = struct.calcsize(fmt)
         a = struct.unpack(fmt, (b"\x00"*32)[:size])[0]
@@ -17,7 +17,7 @@ def valid_ranges(*types):
         c = struct.unpack(fmt, (b"\x7F"+b"\x00"*32)[:size])[0]
         d = struct.unpack(fmt, (b"\x80"+b"\xFF"*32)[:size])[0]
         result.append((min(a, b, c, d), max(a, b, c, d)))
-    return result
+    rudisha result
 
 ArgType = type(byref(c_int(0)))
 
@@ -31,7 +31,7 @@ float_types = [c_double, c_float]
 jaribu:
     c_ulonglong
     c_longlong
-tatizo NameError:
+except NameError:
     pass
 isipokua:
     unsigned_types.append(c_ulonglong)
@@ -39,140 +39,140 @@ isipokua:
 
 jaribu:
     c_bool
-tatizo NameError:
+except NameError:
     pass
 isipokua:
     bool_types.append(c_bool)
 
 unsigned_ranges = valid_ranges(*unsigned_types)
 signed_ranges = valid_ranges(*signed_types)
-bool_values = [True, False, 0, 1, -1, 5000, 'test', [], [1]]
+bool_values = [Kweli, Uongo, 0, 1, -1, 5000, 'test', [], [1]]
 
 ################################################################
 
-class NumberTestCase(unittest.TestCase):
+kundi NumberTestCase(unittest.TestCase):
 
-    def test_default_init(self):
+    eleza test_default_init(self):
         # default values are set to zero
-        for t in signed_types + unsigned_types + float_types:
+        kila t kwenye signed_types + unsigned_types + float_types:
             self.assertEqual(t().value, 0)
 
-    def test_unsigned_values(self):
-        # the value given to the constructor is available
+    eleza test_unsigned_values(self):
+        # the value given to the constructor ni available
         # as the 'value' attribute
-        for t, (l, h) in zip(unsigned_types, unsigned_ranges):
+        kila t, (l, h) kwenye zip(unsigned_types, unsigned_ranges):
             self.assertEqual(t(l).value, l)
             self.assertEqual(t(h).value, h)
 
-    def test_signed_values(self):
+    eleza test_signed_values(self):
         # see above
-        for t, (l, h) in zip(signed_types, signed_ranges):
+        kila t, (l, h) kwenye zip(signed_types, signed_ranges):
             self.assertEqual(t(l).value, l)
             self.assertEqual(t(h).value, h)
 
-    def test_bool_values(self):
-        from operator import truth
-        for t, v in zip(bool_types, bool_values):
+    eleza test_bool_values(self):
+        kutoka operator agiza truth
+        kila t, v kwenye zip(bool_types, bool_values):
             self.assertEqual(t(v).value, truth(v))
 
-    def test_typeerror(self):
-        # Only numbers are allowed in the constructor,
-        # otherwise TypeError is raised
-        for t in signed_types + unsigned_types + float_types:
+    eleza test_typeerror(self):
+        # Only numbers are allowed kwenye the constructor,
+        # otherwise TypeError ni raised
+        kila t kwenye signed_types + unsigned_types + float_types:
             self.assertRaises(TypeError, t, "")
-            self.assertRaises(TypeError, t, None)
+            self.assertRaises(TypeError, t, Tupu)
 
     @unittest.skip('test disabled')
-    def test_valid_ranges(self):
+    eleza test_valid_ranges(self):
         # invalid values of the correct type
-        # ashiria ValueError (sio OverflowError)
-        for t, (l, h) in zip(unsigned_types, unsigned_ranges):
+        #  ashiria ValueError (not OverflowError)
+        kila t, (l, h) kwenye zip(unsigned_types, unsigned_ranges):
             self.assertRaises(ValueError, t, l-1)
             self.assertRaises(ValueError, t, h+1)
 
-    def test_from_param(self):
-        # the from_param class method attribute always
+    eleza test_from_param(self):
+        # the from_param kundi method attribute always
         # returns PyCArgObject instances
-        for t in signed_types + unsigned_types + float_types:
+        kila t kwenye signed_types + unsigned_types + float_types:
             self.assertEqual(ArgType, type(t.from_param(0)))
 
-    def test_byref(self):
+    eleza test_byref(self):
         # calling byref returns also a PyCArgObject instance
-        for t in signed_types + unsigned_types + float_types + bool_types:
+        kila t kwenye signed_types + unsigned_types + float_types + bool_types:
             parm = byref(t())
             self.assertEqual(ArgType, type(parm))
 
 
-    def test_floats(self):
-        # c_float and c_double can be created from
-        # Python int and float
-        class FloatLike(object):
-            def __float__(self):
-                return 2.0
+    eleza test_floats(self):
+        # c_float na c_double can be created from
+        # Python int na float
+        kundi FloatLike(object):
+            eleza __float__(self):
+                rudisha 2.0
         f = FloatLike()
-        for t in float_types:
+        kila t kwenye float_types:
             self.assertEqual(t(2.0).value, 2.0)
             self.assertEqual(t(2).value, 2.0)
             self.assertEqual(t(2).value, 2.0)
             self.assertEqual(t(f).value, 2.0)
 
-    def test_integers(self):
-        class FloatLike(object):
-            def __float__(self):
-                return 2.0
+    eleza test_integers(self):
+        kundi FloatLike(object):
+            eleza __float__(self):
+                rudisha 2.0
         f = FloatLike()
-        class IntLike(object):
-            def __int__(self):
-                return 2
+        kundi IntLike(object):
+            eleza __int__(self):
+                rudisha 2
         d = IntLike()
-        class IndexLike(object):
-            def __index__(self):
-                return 2
+        kundi IndexLike(object):
+            eleza __index__(self):
+                rudisha 2
         i = IndexLike()
-        # integers cannot be constructed from floats,
-        # but from integer-like objects
-        for t in signed_types + unsigned_types:
+        # integers cannot be constructed kutoka floats,
+        # but kutoka integer-like objects
+        kila t kwenye signed_types + unsigned_types:
             self.assertRaises(TypeError, t, 3.14)
             self.assertRaises(TypeError, t, f)
-            with self.assertWarns(DeprecationWarning):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 self.assertEqual(t(d).value, 2)
             self.assertEqual(t(i).value, 2)
 
-    def test_sizes(self):
-        for t in signed_types + unsigned_types + float_types + bool_types:
+    eleza test_sizes(self):
+        kila t kwenye signed_types + unsigned_types + float_types + bool_types:
             jaribu:
                 size = struct.calcsize(t._type_)
-            tatizo struct.error:
+            except struct.error:
                 endelea
             # sizeof of the type...
             self.assertEqual(sizeof(t), size)
-            # and sizeof of an instance
+            # na sizeof of an instance
             self.assertEqual(sizeof(t()), size)
 
-    def test_alignments(self):
-        for t in signed_types + unsigned_types + float_types:
+    eleza test_alignments(self):
+        kila t kwenye signed_types + unsigned_types + float_types:
             code = t._type_ # the typecode
             align = struct.calcsize("c%c" % code) - struct.calcsize(code)
 
             # alignment of the type...
             self.assertEqual((code, alignment(t)),
                                  (code, align))
-            # and alignment of an instance
+            # na alignment of an instance
             self.assertEqual((code, alignment(t())),
                                  (code, align))
 
-    def test_int_from_address(self):
-        from array import array
-        for t in signed_types + unsigned_types:
+    eleza test_int_from_address(self):
+        kutoka array agiza array
+        kila t kwenye signed_types + unsigned_types:
             # the array module doesn't support all format codes
-            # (no 'q' or 'Q')
+            # (no 'q' ama 'Q')
             jaribu:
                 array(t._type_)
-            tatizo ValueError:
+            except ValueError:
                 endelea
             a = array(t._type_, [100])
 
-            # v now is an integer at an 'external' memory location
+            # v now ni an integer at an 'external' memory location
             v = t.from_address(a.buffer_info()[0])
             self.assertEqual(v.value, a[0])
             self.assertEqual(type(v), t)
@@ -182,9 +182,9 @@ class NumberTestCase(unittest.TestCase):
             self.assertEqual(v.value, a[0])
 
 
-    def test_float_from_address(self):
-        from array import array
-        for t in float_types:
+    eleza test_float_from_address(self):
+        kutoka array agiza array
+        kila t kwenye float_types:
             a = array(t._type_, [3.14])
             v = t.from_address(a.buffer_info()[0])
             self.assertEqual(v.value, a[0])
@@ -193,9 +193,9 @@ class NumberTestCase(unittest.TestCase):
             self.assertEqual(v.value, a[0])
             self.assertIs(type(v), t)
 
-    def test_char_from_address(self):
-        from ctypes import c_char
-        from array import array
+    eleza test_char_from_address(self):
+        kutoka ctypes agiza c_char
+        kutoka array agiza array
 
         a = array('b', [0])
         a[0] = ord('x')
@@ -208,61 +208,61 @@ class NumberTestCase(unittest.TestCase):
 
     # array does sio support c_bool / 't'
     @unittest.skip('test disabled')
-    def test_bool_from_address(self):
-        from ctypes import c_bool
-        from array import array
-        a = array(c_bool._type_, [True])
+    eleza test_bool_from_address(self):
+        kutoka ctypes agiza c_bool
+        kutoka array agiza array
+        a = array(c_bool._type_, [Kweli])
         v = t.from_address(a.buffer_info()[0])
         self.assertEqual(v.value, a[0])
-        self.assertEqual(type(v) is t)
-        a[0] = False
+        self.assertEqual(type(v) ni t)
+        a[0] = Uongo
         self.assertEqual(v.value, a[0])
-        self.assertEqual(type(v) is t)
+        self.assertEqual(type(v) ni t)
 
-    def test_init(self):
-        # c_int() can be initialized from Python's int, and c_int.
-        # Not from c_long or so, which seems strange, abc should
+    eleza test_init(self):
+        # c_int() can be initialized kutoka Python's int, na c_int.
+        # Not kutoka c_long ama so, which seems strange, abc should
         # probably be changed:
         self.assertRaises(TypeError, c_int, c_long(42))
 
-    def test_float_overflow(self):
-        import sys
+    eleza test_float_overflow(self):
+        agiza sys
         big_int = int(sys.float_info.max) * 2
-        for t in float_types + [c_longdouble]:
+        kila t kwenye float_types + [c_longdouble]:
             self.assertRaises(OverflowError, t, big_int)
-            if (hasattr(t, "__ctype_be__")):
+            ikiwa (hasattr(t, "__ctype_be__")):
                 self.assertRaises(OverflowError, t.__ctype_be__, big_int)
-            if (hasattr(t, "__ctype_le__")):
+            ikiwa (hasattr(t, "__ctype_le__")):
                 self.assertRaises(OverflowError, t.__ctype_le__, big_int)
 
     @unittest.skip('test disabled')
-    def test_perf(self):
+    eleza test_perf(self):
         check_perf()
 
-from ctypes agiza _SimpleCData
-class c_int_S(_SimpleCData):
+kutoka ctypes agiza _SimpleCData
+kundi c_int_S(_SimpleCData):
     _type_ = "i"
     __slots__ = []
 
-def run_test(rep, msg, func, arg=None):
-##    items = [None] * rep
+eleza run_test(rep, msg, func, arg=Tupu):
+##    items = [Tupu] * rep
     items = range(rep)
-    from time import perf_counter as clock
-    if arg ni sio None:
+    kutoka time agiza perf_counter as clock
+    ikiwa arg ni sio Tupu:
         start = clock()
-        for i in items:
+        kila i kwenye items:
             func(arg); func(arg); func(arg); func(arg); func(arg)
         stop = clock()
     isipokua:
         start = clock()
-        for i in items:
+        kila i kwenye items:
             func(); func(); func(); func(); func()
         stop = clock()
-    print("%15s: %.2f us" % (msg, ((stop-start)*1e6/5/rep)))
+    andika("%15s: %.2f us" % (msg, ((stop-start)*1e6/5/rep)))
 
-def check_perf():
+eleza check_perf():
     # Construct 5 objects
-    from ctypes import c_int
+    kutoka ctypes agiza c_int
 
     REP = 200000
 
@@ -291,6 +291,6 @@ def check_perf():
 #      c_int_S(): 9.87 us
 #   c_int_S(999): 9.85 us
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
 ##    check_perf()
     unittest.main()

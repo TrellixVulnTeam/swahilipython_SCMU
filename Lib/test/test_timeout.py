@@ -4,7 +4,7 @@ agiza functools
 agiza unittest
 kutoka test agiza support
 
-# This requires the 'network' resource kama given on the regrtest command line.
+# This requires the 'network' resource as given on the regrtest command line.
 skip_expected = sio support.is_resource_enabled('network')
 
 agiza time
@@ -113,7 +113,7 @@ kundi TimeoutTestCase(unittest.TestCase):
     localhost = support.HOST
 
     eleza setUp(self):
-        ashiria NotImplementedError()
+         ashiria NotImplementedError()
 
     tearDown = setUp
 
@@ -121,7 +121,7 @@ kundi TimeoutTestCase(unittest.TestCase):
         """
         Test the specified socket method.
 
-        The method ni run at most `count` times na must ashiria a socket.timeout
+        The method ni run at most `count` times na must  ashiria a socket.timeout
         within `timeout` + self.fuzz seconds.
         """
         self.sock.settimeout(timeout)
@@ -130,11 +130,11 @@ kundi TimeoutTestCase(unittest.TestCase):
             t1 = time.monotonic()
             jaribu:
                 method(*args)
-            tatizo socket.timeout kama e:
+            except socket.timeout as e:
                 delta = time.monotonic() - t1
                 koma
         isipokua:
-            self.fail('socket.timeout was sio ashiriad')
+            self.fail('socket.timeout was sio raised')
         # These checks should account kila timing unprecision
         self.assertLess(delta, timeout + self.fuzz)
         self.assertGreater(delta, timeout - 1.0)
@@ -171,11 +171,11 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
         whitehole = resolve_address('whitehole.snakebite.net', 56667)
 
         # This address has been configured to immediately drop any incoming
-        # packets kama well, but it does it respectfully ukijumuisha regards to the
+        # packets as well, but it does it respectfully ukijumuisha regards to the
         # incoming protocol.  RSTs are sent kila TCP packets, na ICMP UNREACH
         # ni sent kila UDP/ICMP packets.  This means our attempts to connect to
         # it should be met immediately ukijumuisha ECONNREFUSED.  The test case has
-        # been structured around this premise: ikiwa we get an ECONNREFUSED kutoka
+        # been structured around this premise: ikiwa we get an ECONNREFUSED from
         # the whitehole, we proceed ukijumuisha testing connect timeout against the
         # blackhole.  If we don't, we skip the test (ukijumuisha a message about not
         # getting the required RST kutoka the whitehole within the required
@@ -199,16 +199,16 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
 
         skip = Kweli
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # Use a timeout of 3 seconds.  Why 3?  Because it's more than 1, na
+        # Use a timeout of 3 seconds.  Why 3?  Because it's more than 1, and
         # less than 5.  i.e. no particular reason.  Feel free to tweak it if
         # you feel a different value would be more appropriate.
         timeout = 3
         sock.settimeout(timeout)
         jaribu:
             sock.connect((whitehole))
-        tatizo socket.timeout:
-            pita
-        tatizo OSError kama err:
+        except socket.timeout:
+            pass
+        except OSError as err:
             ikiwa err.errno == errno.ECONNREFUSED:
                 skip = Uongo
         mwishowe:
@@ -249,16 +249,16 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
 
     eleza testSend(self):
         # Test send() timeout
-        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama serv:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serv:
             support.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())
-            # Send a lot of data kwenye order to bypita buffering kwenye the TCP stack.
+            # Send a lot of data kwenye order to bypass buffering kwenye the TCP stack.
             self._sock_operation(100, 1.5, 'send', b"X" * 200000)
 
     eleza testSendto(self):
         # Test sendto() timeout
-        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama serv:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serv:
             support.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())
@@ -268,11 +268,11 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
 
     eleza testSendall(self):
         # Test sendall() timeout
-        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) kama serv:
+        ukijumuisha socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serv:
             support.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())
-            # Send a lot of data kwenye order to bypita buffering kwenye the TCP stack.
+            # Send a lot of data kwenye order to bypass buffering kwenye the TCP stack.
             self._sock_operation(100, 1.5, 'sendall', b"X" * 200000)
 
 
@@ -285,11 +285,11 @@ kundi UDPTimeoutTestCase(TimeoutTestCase):
     eleza tearDown(self):
         self.sock.close()
 
-    eleza testRecvkutokaTimeout(self):
-        # Test recvkutoka() timeout
+    eleza testRecvfromTimeout(self):
+        # Test recvfrom() timeout
         # Prevent "Address already kwenye use" socket exceptions
         support.bind_port(self.sock, self.localhost)
-        self._sock_operation(1, 1.5, 'recvkutoka', 1024)
+        self._sock_operation(1, 1.5, 'recvfrom', 1024)
 
 
 eleza test_main():

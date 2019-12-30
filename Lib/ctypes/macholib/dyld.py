@@ -2,10 +2,10 @@
 dyld emulation
 """
 
-import os
-from ctypes.macholib.framework import framework_info
-from ctypes.macholib.dylib import dylib_info
-from itertools import *
+agiza os
+kutoka ctypes.macholib.framework agiza framework_info
+kutoka ctypes.macholib.dylib agiza dylib_info
+kutoka itertools agiza *
 
 __all__ = [
     'dyld_find', 'framework_find',
@@ -28,132 +28,132 @@ DEFAULT_LIBRARY_FALLBACK = [
     "/usr/lib",
 ]
 
-def dyld_env(env, var):
-    if env is None:
+eleza dyld_env(env, var):
+    ikiwa env ni Tupu:
         env = os.environ
     rval = env.get(var)
-    if rval is None:
-        return []
-    return rval.split(':')
+    ikiwa rval ni Tupu:
+        rudisha []
+    rudisha rval.split(':')
 
-def dyld_image_suffix(env=None):
-    if env is None:
+eleza dyld_image_suffix(env=Tupu):
+    ikiwa env ni Tupu:
         env = os.environ
-    return env.get('DYLD_IMAGE_SUFFIX')
+    rudisha env.get('DYLD_IMAGE_SUFFIX')
 
-def dyld_framework_path(env=None):
-    return dyld_env(env, 'DYLD_FRAMEWORK_PATH')
+eleza dyld_framework_path(env=Tupu):
+    rudisha dyld_env(env, 'DYLD_FRAMEWORK_PATH')
 
-def dyld_library_path(env=None):
-    return dyld_env(env, 'DYLD_LIBRARY_PATH')
+eleza dyld_library_path(env=Tupu):
+    rudisha dyld_env(env, 'DYLD_LIBRARY_PATH')
 
-def dyld_fallback_framework_path(env=None):
-    return dyld_env(env, 'DYLD_FALLBACK_FRAMEWORK_PATH')
+eleza dyld_fallback_framework_path(env=Tupu):
+    rudisha dyld_env(env, 'DYLD_FALLBACK_FRAMEWORK_PATH')
 
-def dyld_fallback_library_path(env=None):
-    return dyld_env(env, 'DYLD_FALLBACK_LIBRARY_PATH')
+eleza dyld_fallback_library_path(env=Tupu):
+    rudisha dyld_env(env, 'DYLD_FALLBACK_LIBRARY_PATH')
 
-def dyld_image_suffix_search(iterator, env=None):
+eleza dyld_image_suffix_search(iterator, env=Tupu):
     """For a potential path iterator, add DYLD_IMAGE_SUFFIX semantics"""
     suffix = dyld_image_suffix(env)
-    if suffix is None:
-        return iterator
-    def _inject(iterator=iterator, suffix=suffix):
-        for path in iterator:
-            if path.endswith('.dylib'):
-                yield path[:-len('.dylib')] + suffix + '.dylib'
+    ikiwa suffix ni Tupu:
+        rudisha iterator
+    eleza _inject(iterator=iterator, suffix=suffix):
+        kila path kwenye iterator:
+            ikiwa path.endswith('.dylib'):
+                tuma path[:-len('.dylib')] + suffix + '.dylib'
             isipokua:
-                yield path + suffix
-            yield path
-    return _inject()
+                tuma path + suffix
+            tuma path
+    rudisha _inject()
 
-def dyld_override_search(name, env=None):
-    # If DYLD_FRAMEWORK_PATH is set and this dylib_name is a
-    # framework name, use the first file that exists in the framework
-    # path if any.  If there is none go on to search the DYLD_LIBRARY_PATH
-    # if any.
+eleza dyld_override_search(name, env=Tupu):
+    # If DYLD_FRAMEWORK_PATH ni set na this dylib_name ni a
+    # framework name, use the first file that exists kwenye the framework
+    # path ikiwa any.  If there ni none go on to search the DYLD_LIBRARY_PATH
+    # ikiwa any.
 
     framework = framework_info(name)
 
-    if framework ni sio None:
-        for path in dyld_framework_path(env):
-            yield os.path.join(path, framework['name'])
+    ikiwa framework ni sio Tupu:
+        kila path kwenye dyld_framework_path(env):
+            tuma os.path.join(path, framework['name'])
 
-    # If DYLD_LIBRARY_PATH is set then use the first file that exists
-    # in the path.  If none use the original name.
-    for path in dyld_library_path(env):
-        yield os.path.join(path, os.path.basename(name))
+    # If DYLD_LIBRARY_PATH ni set then use the first file that exists
+    # kwenye the path.  If none use the original name.
+    kila path kwenye dyld_library_path(env):
+        tuma os.path.join(path, os.path.basename(name))
 
-def dyld_executable_path_search(name, executable_path=None):
-    # If we haven't done any searching and found a library and the
-    # dylib_name starts with "@executable_path/" then construct the
+eleza dyld_executable_path_search(name, executable_path=Tupu):
+    # If we haven't done any searching na found a library na the
+    # dylib_name starts ukijumuisha "@executable_path/" then construct the
     # library name.
-    if name.startswith('@executable_path/') and executable_path ni sio None:
-        yield os.path.join(executable_path, name[len('@executable_path/'):])
+    ikiwa name.startswith('@executable_path/') na executable_path ni sio Tupu:
+        tuma os.path.join(executable_path, name[len('@executable_path/'):])
 
-def dyld_default_search(name, env=None):
-    yield name
+eleza dyld_default_search(name, env=Tupu):
+    tuma name
 
     framework = framework_info(name)
 
-    if framework ni sio None:
+    ikiwa framework ni sio Tupu:
         fallback_framework_path = dyld_fallback_framework_path(env)
-        for path in fallback_framework_path:
-            yield os.path.join(path, framework['name'])
+        kila path kwenye fallback_framework_path:
+            tuma os.path.join(path, framework['name'])
 
     fallback_library_path = dyld_fallback_library_path(env)
-    for path in fallback_library_path:
-        yield os.path.join(path, os.path.basename(name))
+    kila path kwenye fallback_library_path:
+        tuma os.path.join(path, os.path.basename(name))
 
-    if framework ni sio None and sio fallback_framework_path:
-        for path in DEFAULT_FRAMEWORK_FALLBACK:
-            yield os.path.join(path, framework['name'])
+    ikiwa framework ni sio Tupu na sio fallback_framework_path:
+        kila path kwenye DEFAULT_FRAMEWORK_FALLBACK:
+            tuma os.path.join(path, framework['name'])
 
-    if sio fallback_library_path:
-        for path in DEFAULT_LIBRARY_FALLBACK:
-            yield os.path.join(path, os.path.basename(name))
+    ikiwa sio fallback_library_path:
+        kila path kwenye DEFAULT_LIBRARY_FALLBACK:
+            tuma os.path.join(path, os.path.basename(name))
 
-def dyld_find(name, executable_path=None, env=None):
+eleza dyld_find(name, executable_path=Tupu, env=Tupu):
     """
-    Find a library or framework using dyld semantics
+    Find a library ama framework using dyld semantics
     """
-    for path in dyld_image_suffix_search(chain(
+    kila path kwenye dyld_image_suffix_search(chain(
                 dyld_override_search(name, env),
                 dyld_executable_path_search(name, executable_path),
                 dyld_default_search(name, env),
             ), env):
-        if os.path.isfile(path):
-            return path
-    ashiria ValueError("dylib %s could sio be found" % (name,))
+        ikiwa os.path.isfile(path):
+            rudisha path
+     ashiria ValueError("dylib %s could sio be found" % (name,))
 
-def framework_find(fn, executable_path=None, env=None):
+eleza framework_find(fn, executable_path=Tupu, env=Tupu):
     """
-    Find a framework using dyld semantics in a very loose manner.
+    Find a framework using dyld semantics kwenye a very loose manner.
 
     Will take input such as:
         Python
         Python.framework
         Python.framework/Versions/Current
     """
-    error = None
+    error = Tupu
     jaribu:
-        return dyld_find(fn, executable_path=executable_path, env=env)
-    tatizo ValueError as e:
+        rudisha dyld_find(fn, executable_path=executable_path, env=env)
+    except ValueError as e:
         error = e
     fmwk_index = fn.rfind('.framework')
-    if fmwk_index == -1:
+    ikiwa fmwk_index == -1:
         fmwk_index = len(fn)
         fn += '.framework'
     fn = os.path.join(fn, os.path.basename(fn[:fmwk_index]))
     jaribu:
-        return dyld_find(fn, executable_path=executable_path, env=env)
-    tatizo ValueError:
-        ashiria error
+        rudisha dyld_find(fn, executable_path=executable_path, env=env)
+    except ValueError:
+         ashiria error
 
-def test_dyld_find():
+eleza test_dyld_find():
     env = {}
     assert dyld_find('libSystem.dylib') == '/usr/lib/libSystem.dylib'
     assert dyld_find('System.framework/System') == '/System/Library/Frameworks/System.framework/System'
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_dyld_find()

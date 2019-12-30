@@ -88,7 +88,7 @@ kundi TestBase:
 
         eleza xmlcharnamereplace(exc):
             ikiwa sio isinstance(exc, UnicodeEncodeError):
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
             l = []
             kila c kwenye exc.object[exc.start:exc.end]:
                 ikiwa ord(c) kwenye codepoint2name:
@@ -107,7 +107,7 @@ kundi TestBase:
         self.assertEqual(self.encode(sin,
                                     "test.xmlcharnamereplace")[0], sout)
 
-    eleza test_callback_rudishas_bytes(self):
+    eleza test_callback_returns_bytes(self):
         eleza myreplace(exc):
             rudisha (b"1234", exc.end)
         codecs.register_error("test.cjktest", myreplace)
@@ -284,15 +284,15 @@ kundi TestBase:
 
 
 kundi TestBase_Mapping(unittest.TestCase):
-    pita_enctest = []
-    pita_dectest = []
+    pass_enctest = []
+    pass_dectest = []
     supmaps = []
     codectests = []
 
     eleza setUp(self):
         jaribu:
             self.open_mapping_file().close() # test it to report the error early
-        tatizo (OSError, HTTPException):
+        except (OSError, HTTPException):
             self.skipTest("Could sio retrieve "+self.mapfileurl)
 
     eleza open_mapping_file(self):
@@ -308,7 +308,7 @@ kundi TestBase_Mapping(unittest.TestCase):
         unichrs = lambda s: ''.join(map(chr, map(eval, s.split('+'))))
         urt_wa = {}
 
-        ukijumuisha self.open_mapping_file() kama f:
+        ukijumuisha self.open_mapping_file() as f:
             kila line kwenye f:
                 ikiwa sio line:
                     koma
@@ -319,13 +319,13 @@ kundi TestBase_Mapping(unittest.TestCase):
                 csetval = eval(data[0])
                 ikiwa csetval <= 0x7F:
                     csetch = bytes([csetval & 0xff])
-                lasivyo csetval >= 0x1000000:
+                elikiwa csetval >= 0x1000000:
                     csetch = bytes([(csetval >> 24), ((csetval >> 16) & 0xff),
                                     ((csetval >> 8) & 0xff), (csetval & 0xff)])
-                lasivyo csetval >= 0x10000:
+                elikiwa csetval >= 0x10000:
                     csetch = bytes([(csetval >> 16), ((csetval >> 8) & 0xff),
                                     (csetval & 0xff)])
-                lasivyo csetval >= 0x100:
+                elikiwa csetval >= 0x100:
                     csetch = bytes([(csetval >> 8), (csetval & 0xff)])
                 isipokua:
                     endelea
@@ -338,12 +338,12 @@ kundi TestBase_Mapping(unittest.TestCase):
                 self._testpoint(csetch, unich)
 
     eleza _test_mapping_file_ucm(self):
-        ukijumuisha self.open_mapping_file() kama f:
+        ukijumuisha self.open_mapping_file() as f:
             ucmdata = f.read()
         uc = re.findall('<a u="([A-F0-9]{4})" b="([0-9A-F ]+)"/>', ucmdata)
         kila uni, coded kwenye uc:
             unich = chr(int(uni, 16))
-            codech = bytes.kutokahex(coded)
+            codech = bytes.fromhex(coded)
             self._testpoint(codech, unich)
 
     eleza test_mapping_supplemental(self):
@@ -351,9 +351,9 @@ kundi TestBase_Mapping(unittest.TestCase):
             self._testpoint(*mapping)
 
     eleza _testpoint(self, csetch, unich):
-        ikiwa (csetch, unich) haiko kwenye self.pita_enctest:
+        ikiwa (csetch, unich) sio kwenye self.pass_enctest:
             self.assertEqual(unich.encode(self.encoding), csetch)
-        ikiwa (csetch, unich) haiko kwenye self.pita_dectest:
+        ikiwa (csetch, unich) sio kwenye self.pass_dectest:
             self.assertEqual(str(csetch, self.encoding), unich)
 
     eleza test_errorhandle(self):
@@ -382,8 +382,8 @@ kundi TestBase_Mapping(unittest.TestCase):
 
 eleza load_teststring(name):
     dir = os.path.join(os.path.dirname(__file__), 'cjkencodings')
-    ukijumuisha open(os.path.join(dir, name + '.txt'), 'rb') kama f:
+    ukijumuisha open(os.path.join(dir, name + '.txt'), 'rb') as f:
         encoded = f.read()
-    ukijumuisha open(os.path.join(dir, name + '-utf8.txt'), 'rb') kama f:
+    ukijumuisha open(os.path.join(dir, name + '-utf8.txt'), 'rb') as f:
         utf8 = f.read()
     rudisha encoded, utf8

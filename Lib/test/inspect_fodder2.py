@@ -14,12 +14,12 @@ eleza replace(func):
 @wrap()
 @wrap(wrap)
 eleza wrapped():
-    pita
+    pass
 
 # line 19
 @replace
 eleza gone():
-    pita
+    pass
 
 # line 24
 oll = lambda m: m
@@ -34,11 +34,11 @@ tlli = lambda d: d na \
     d
 
 # line 36
-eleza onelinefunc(): pita
+eleza onelinefunc(): pass
 
 # line 39
 eleza manyargs(arg1, arg2,
-arg3, arg4): pita
+arg3, arg4): pass
 
 # line 43
 eleza twolinefunc(m): rudisha m na \
@@ -69,18 +69,18 @@ multiline_sig = [
 eleza func69():
     kundi cls70:
         eleza func71():
-            pita
+            pass
     rudisha cls70
 extra74 = 74
 
 # line 76
-eleza func77(): pita
+eleza func77(): pass
 (extra78, stuff78) = 'xy'
 extra79 = 'stop'
 
 # line 81
 kundi cls82:
-    eleza func83(): pita
+    eleza func83(): pass
 (extra84, stuff84) = 'xy'
 extra85 = 'stop'
 
@@ -100,15 +100,15 @@ method_in_dynamic_kundi = f().g
 
 #line 101
 eleza keyworded(*arg1, arg2=1):
-    pita
+    pass
 
 #line 105
 eleza annotated(arg1: list):
-    pita
+    pass
 
 #line 109
 eleza keyword_only_arg(*, arg):
-    pita
+    pass
 
 @wrap(lambda: Tupu)
 eleza func114():
@@ -116,7 +116,7 @@ eleza func114():
 
 kundi ClassWithMethod:
     eleza method(self):
-        pita
+        pass
 
 kutoka functools agiza wraps
 
@@ -140,16 +140,16 @@ kundi cls135:
 
 #line 141
 eleza positional_only_arg(a, /):
-    pita
+    pass
 
 #line 145
 eleza all_markers(a, b, /, c, d, *, e, f):
-    pita
+    pass
 
 # line 149
 eleza all_markers_with_args_and_kwargs(a, b, /, c, d, *args, e, f, **kwargs):
-    pita
+    pass
 
 #line 153
 eleza all_markers_with_defaults(a, b=1, /, c=2, d=3, *, e=4, f=5):
-    pita
+    pass

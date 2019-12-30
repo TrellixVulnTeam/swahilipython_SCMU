@@ -9,14 +9,14 @@ more helpful than printing of (the first line of) the docstring,
 especially when debugging a test.
 """
 
-# Testing agizas
+# Testing imports
 kutoka . agiza support
 
 kutoka lib2to3 agiza pytree
 
 jaribu:
     sorted
-tatizo NameError:
+except NameError:
     eleza sorted(lst):
         l = list(lst)
         l.sort()
@@ -28,7 +28,7 @@ kundi TestNodes(support.TestCase):
 
     eleza test_instantiate_base(self):
         ikiwa __debug__:
-            # Test that instantiating Base() ashirias an AssertionError
+            # Test that instantiating Base() raises an AssertionError
             self.assertRaises(AssertionError, pytree.Base)
 
     eleza test_leaf(self):
@@ -285,7 +285,7 @@ kundi TestNodes(support.TestCase):
         self.assertEqual(n2.children, [n1])
 
         self.assertRaises(IndexError, n1.set_child, 4, l2)
-        # I don't care what it ashirias, so long kama it's an exception
+        # I don't care what it raises, so long as it's an exception
         self.assertRaises(Exception, n1.set_child, 0, list)
 
     eleza test_node_insert_child(self):
@@ -301,7 +301,7 @@ kundi TestNodes(support.TestCase):
         n1.insert_child(2, l3)
         self.assertEqual(n1.children, [l2, l1, l3])
 
-        # I don't care what it ashirias, so long kama it's an exception
+        # I don't care what it raises, so long as it's an exception
         self.assertRaises(Exception, n1.insert_child, 0, list)
 
     eleza test_node_append_child(self):
@@ -317,7 +317,7 @@ kundi TestNodes(support.TestCase):
         self.assertEqual(l2.parent, n1)
         self.assertEqual(n1.children, [l1, l2])
 
-        # I don't care what it ashirias, so long kama it's an exception
+        # I don't care what it raises, so long as it's an exception
         self.assertRaises(Exception, n1.append_child, list)
 
     eleza test_node_next_sibling(self):

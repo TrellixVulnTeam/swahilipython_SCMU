@@ -1,16 +1,16 @@
-import unittest, os, errno
-import threading
+agiza unittest, os, errno
+agiza threading
 
-from ctypes import *
-from ctypes.util import find_library
+kutoka ctypes agiza *
+kutoka ctypes.util agiza find_library
 
-class Test(unittest.TestCase):
-    def test_open(self):
+kundi Test(unittest.TestCase):
+    eleza test_open(self):
         libc_name = find_library("c")
-        if libc_name is None:
-            ashiria unittest.SkipTest("Unable to find C library")
-        libc = CDLL(libc_name, use_errno=True)
-        if os.name == "nt":
+        ikiwa libc_name ni Tupu:
+             ashiria unittest.SkipTest("Unable to find C library")
+        libc = CDLL(libc_name, use_errno=Kweli)
+        ikiwa os.name == "nt":
             libc_open = libc._open
         isipokua:
             libc_open = libc.open
@@ -23,11 +23,11 @@ class Test(unittest.TestCase):
         self.assertEqual(set_errno(32), errno.ENOENT)
         self.assertEqual(get_errno(), 32)
 
-        def _worker():
+        eleza _worker():
             set_errno(0)
 
-            libc = CDLL(libc_name, use_errno=False)
-            if os.name == "nt":
+            libc = CDLL(libc_name, use_errno=Uongo)
+            ikiwa os.name == "nt":
                 libc_open = libc._open
             isipokua:
                 libc_open = libc.open
@@ -43,8 +43,8 @@ class Test(unittest.TestCase):
         set_errno(0)
 
     @unittest.skipUnless(os.name == "nt", 'Test specific to Windows')
-    def test_GetLastError(self):
-        dll = WinDLL("kernel32", use_last_error=True)
+    eleza test_GetLastError(self):
+        dll = WinDLL("kernel32", use_last_error=Kweli)
         GetModuleHandle = dll.GetModuleHandleA
         GetModuleHandle.argtypes = [c_wchar_p]
 
@@ -54,10 +54,10 @@ class Test(unittest.TestCase):
         self.assertEqual(set_last_error(32), 126)
         self.assertEqual(get_last_error(), 32)
 
-        def _worker():
+        eleza _worker():
             set_last_error(0)
 
-            dll = WinDLL("kernel32", use_last_error=False)
+            dll = WinDLL("kernel32", use_last_error=Uongo)
             GetModuleHandle = dll.GetModuleHandleW
             GetModuleHandle.argtypes = [c_wchar_p]
             GetModuleHandle("bar")
@@ -72,5 +72,5 @@ class Test(unittest.TestCase):
 
         set_last_error(0)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

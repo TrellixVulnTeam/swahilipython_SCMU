@@ -82,14 +82,14 @@ Verify that parenthesis are required kwenye a statement
        ...
     SyntaxError: invalid syntax
 
-Verify that parenthesis are required when used kama a keyword argument value
+Verify that parenthesis are required when used as a keyword argument value
 
     >>> dict(a = i kila i kwenye range(10))
     Traceback (most recent call last):
        ...
     SyntaxError: invalid syntax
 
-Verify that parenthesis are required when used kama a keyword argument value
+Verify that parenthesis are required when used as a keyword argument value
 
     >>> dict(a = (i kila i kwenye range(10))) #doctest: +ELLIPSIS
     {'a': <generator object <genexpr> at ...>}
@@ -132,7 +132,7 @@ Verify re-use of tuples (a side benefit of using genexps over listcomps)
     >>> int(max(tupleids) - min(tupleids))
     0
 
-Verify that syntax error's are ashiriad kila genexps used kama lvalues
+Verify that syntax error's are raised kila genexps used as lvalues
 
     >>> (y kila y kwenye (1,2)) = 10
     Traceback (most recent call last):

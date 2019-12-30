@@ -1,25 +1,25 @@
-"""Tests for distutils.util."""
-import os
-import sys
-import unittest
-from copy import copy
-from test.support import run_unittest
-from unittest import mock
+"""Tests kila distutils.util."""
+agiza os
+agiza sys
+agiza unittest
+kutoka copy agiza copy
+kutoka test.support agiza run_unittest
+kutoka unittest agiza mock
 
-from distutils.errors import DistutilsPlatformError, DistutilsByteCompileError
-from distutils.util import (get_platform, convert_path, change_root,
+kutoka distutils.errors agiza DistutilsPlatformError, DistutilsByteCompileError
+kutoka distutils.util agiza (get_platform, convert_path, change_root,
                             check_environ, split_quoted, strtobool,
                             rfc822_escape, byte_compile,
                             grok_environment_error)
-from distutils import util # used to patch _environ_checked
-from distutils.sysconfig import get_config_vars
-from distutils import sysconfig
-from distutils.tests import support
+kutoka distutils agiza util # used to patch _environ_checked
+kutoka distutils.sysconfig agiza get_config_vars
+kutoka distutils agiza sysconfig
+kutoka distutils.tests agiza support
 agiza _osx_support
 
-class UtilTestCase(support.EnvironGuard, unittest.TestCase):
+kundi UtilTestCase(support.EnvironGuard, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super(UtilTestCase, self).setUp()
         # saving the environment
         self.name = os.name
@@ -32,16 +32,16 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
         self._config_vars = copy(sysconfig._config_vars)
 
         # patching os.uname
-        if hasattr(os, 'uname'):
+        ikiwa hasattr(os, 'uname'):
             self.uname = os.uname
             self._uname = os.uname()
         isipokua:
-            self.uname = None
-            self._uname = None
+            self.uname = Tupu
+            self._uname = Tupu
 
         os.uname = self._get_uname
 
-    def tearDown(self):
+    eleza tearDown(self):
         # getting back the environment
         os.name = self.name
         sys.platform = self.platform
@@ -50,20 +50,20 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
         os.path.join = self.join
         os.path.isabs = self.isabs
         os.path.splitdrive = self.splitdrive
-        if self.uname ni sio None:
+        ikiwa self.uname ni sio Tupu:
             os.uname = self.uname
         isipokua:
             toa os.uname
         sysconfig._config_vars = copy(self._config_vars)
         super(UtilTestCase, self).tearDown()
 
-    def _set_uname(self, uname):
+    eleza _set_uname(self, uname):
         self._uname = uname
 
-    def _get_uname(self):
-        return self._uname
+    eleza _get_uname(self):
+        rudisha self._uname
 
-    def test_get_platform(self):
+    eleza test_get_platform(self):
 
         # windows XP, 32bits
         os.name = 'nt'
@@ -101,7 +101,7 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
         mwishowe:
             sys.maxsize = cursize
 
-        # macbook with fat binaries (fat, universal or fat64)
+        # macbook ukijumuisha fat binaries (fat, universal ama fat64)
         _osx_support._remove_original_values(get_config_vars())
         get_config_vars()['MACOSX_DEPLOYMENT_TARGET'] = '10.4'
         get_config_vars()['CFLAGS'] = ('-arch ppc -arch i386 -isysroot '
@@ -146,7 +146,7 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
 
         self.assertEqual(get_platform(), 'macosx-10.4-fat64')
 
-        for arch in ('ppc', 'i386', 'x86_64', 'ppc64'):
+        kila arch kwenye ('ppc', 'i386', 'x86_64', 'ppc64'):
             _osx_support._remove_original_values(get_config_vars())
             get_config_vars()['CFLAGS'] = ('-arch %s -isysroot '
                                            '/Developer/SDKs/MacOSX10.4u.sdk  '
@@ -168,11 +168,11 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
 
         # XXX more platforms to tests here
 
-    def test_convert_path(self):
+    eleza test_convert_path(self):
         # linux/mac
         os.sep = '/'
-        def _join(path):
-            return '/'.join(path)
+        eleza _join(path):
+            rudisha '/'.join(path)
         os.path.join = _join
 
         self.assertEqual(convert_path('/home/to/my/stuff'),
@@ -180,8 +180,8 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
 
         # win
         os.sep = '\\'
-        def _join(*path):
-            return '\\'.join(path)
+        eleza _join(*path):
+            rudisha '\\'.join(path)
         os.path.join = _join
 
         self.assertRaises(ValueError, convert_path, '/home/to/my/stuff')
@@ -192,14 +192,14 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
         self.assertEqual(convert_path('.'),
                          os.curdir)
 
-    def test_change_root(self):
+    eleza test_change_root(self):
         # linux/mac
         os.name = 'posix'
-        def _isabs(path):
-            return path[0] == '/'
+        eleza _isabs(path):
+            rudisha path[0] == '/'
         os.path.isabs = _isabs
-        def _join(*path):
-            return '/'.join(path)
+        eleza _join(*path):
+            rudisha '/'.join(path)
         os.path.join = _join
 
         self.assertEqual(change_root('/root', '/old/its/here'),
@@ -209,16 +209,16 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
 
         # windows
         os.name = 'nt'
-        def _isabs(path):
-            return path.startswith('c:\\')
+        eleza _isabs(path):
+            rudisha path.startswith('c:\\')
         os.path.isabs = _isabs
-        def _splitdrive(path):
-            if path.startswith('c:'):
-                return ('', path.replace('c:', ''))
-            return ('', path)
+        eleza _splitdrive(path):
+            ikiwa path.startswith('c:'):
+                rudisha ('', path.replace('c:', ''))
+            rudisha ('', path)
         os.path.splitdrive = _splitdrive
-        def _join(*path):
-            return '\\'.join(path)
+        eleza _join(*path):
+            rudisha '\\'.join(path)
         os.path.join = _join
 
         self.assertEqual(change_root('c:\\root', 'c:\\old\\its\\here'),
@@ -233,9 +233,9 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
 
         # XXX platforms to be covered: mac
 
-    def test_check_environ(self):
+    eleza test_check_environ(self):
         util._environ_checked = 0
-        os.environ.pop('HOME', None)
+        os.environ.pop('HOME', Tupu)
 
         check_environ()
 
@@ -243,67 +243,67 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
         self.assertEqual(util._environ_checked, 1)
 
     @unittest.skipUnless(os.name == 'posix', 'specific to posix')
-    def test_check_environ_getpwuid(self):
+    eleza test_check_environ_getpwuid(self):
         util._environ_checked = 0
-        os.environ.pop('HOME', None)
+        os.environ.pop('HOME', Tupu)
 
-        import pwd
+        agiza pwd
 
         # only set pw_dir field, other fields are sio used
-        result = pwd.struct_passwd((None, None, None, None, None,
-                                    '/home/distutils', None))
-        with mock.patch.object(pwd, 'getpwuid', return_value=result):
+        result = pwd.struct_passwd((Tupu, Tupu, Tupu, Tupu, Tupu,
+                                    '/home/distutils', Tupu))
+        ukijumuisha mock.patch.object(pwd, 'getpwuid', return_value=result):
             check_environ()
             self.assertEqual(os.environ['HOME'], '/home/distutils')
 
         util._environ_checked = 0
-        os.environ.pop('HOME', None)
+        os.environ.pop('HOME', Tupu)
 
         # bpo-10496: Catch pwd.getpwuid() error
-        with mock.patch.object(pwd, 'getpwuid', side_effect=KeyError):
+        ukijumuisha mock.patch.object(pwd, 'getpwuid', side_effect=KeyError):
             check_environ()
             self.assertNotIn('HOME', os.environ)
 
-    def test_split_quoted(self):
+    eleza test_split_quoted(self):
         self.assertEqual(split_quoted('""one"" "two" \'three\' \\four'),
                          ['one', 'two', 'three', 'four'])
 
-    def test_strtobool(self):
-        yes = ('y', 'Y', 'yes', 'True', 't', 'true', 'True', 'On', 'on', '1')
+    eleza test_strtobool(self):
+        yes = ('y', 'Y', 'yes', 'Kweli', 't', 'true', 'Kweli', 'On', 'on', '1')
         no = ('n', 'no', 'f', 'false', 'off', '0', 'Off', 'No', 'N')
 
-        for y in yes:
-            self.assertTrue(strtobool(y))
+        kila y kwenye yes:
+            self.assertKweli(strtobool(y))
 
-        for n in no:
-            self.assertFalse(strtobool(n))
+        kila n kwenye no:
+            self.assertUongo(strtobool(n))
 
-    def test_rfc822_escape(self):
+    eleza test_rfc822_escape(self):
         header = 'I am a\npoor\nlonesome\nheader\n'
         res = rfc822_escape(header)
         wanted = ('I am a%(8s)spoor%(8s)slonesome%(8s)s'
                   'header%(8s)s') % {'8s': '\n'+8*' '}
         self.assertEqual(res, wanted)
 
-    def test_dont_write_bytecode(self):
-        # makes sure byte_compile ashiria a DistutilsError
-        # if sys.dont_write_bytecode is True
+    eleza test_dont_write_bytecode(self):
+        # makes sure byte_compile  ashiria a DistutilsError
+        # ikiwa sys.dont_write_bytecode ni Kweli
         old_dont_write_bytecode = sys.dont_write_bytecode
-        sys.dont_write_bytecode = True
+        sys.dont_write_bytecode = Kweli
         jaribu:
             self.assertRaises(DistutilsByteCompileError, byte_compile, [])
         mwishowe:
             sys.dont_write_bytecode = old_dont_write_bytecode
 
-    def test_grok_environment_error(self):
+    eleza test_grok_environment_error(self):
         # test obsolete function to ensure backward compat (#4931)
         exc = IOError("Unable to find batch file")
         msg = grok_environment_error(exc)
         self.assertEqual(msg, "error: Unable to find batch file")
 
 
-def test_suite():
-    return unittest.makeSuite(UtilTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(UtilTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

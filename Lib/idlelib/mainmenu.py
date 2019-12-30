@@ -16,14 +16,14 @@ kutoka idlelib.config agiza idleConf
 #   after it ni determined that an OS X Aqua Tk ni kwenye use,
 #   which cannot be done until after Tk() ni first called.
 #   Do sio alter the 'file', 'options', ama 'help' cascades here
-#   without altering overrideRootMenu() kama well.
+#   without altering overrideRootMenu() as well.
 #       TODO: Make this more robust
 
 menudefs = [
  # underscore prefixes character to underscore
  ('file', [
    ('_New File', '<<open-new-window>>'),
-   ('_Open...', '<<open-window-kutoka-file>>'),
+   ('_Open...', '<<open-window-from-file>>'),
    ('Open _Module...', '<<open-module>>'),
    ('Module _Browser', '<<open-class-browser>>'),
    ('_Path Browser', '<<open-path-browser>>'),

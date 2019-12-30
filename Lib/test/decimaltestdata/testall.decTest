@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here ni sio    --
+-- particular, achieving the same results as the tests here is not    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are sio exhaustive.                   --
+-- or specification.  The tests are not exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -24,7 +24,7 @@ dectest: base
 
 dectest: abs
 dectest: add
-dectest: na
+dectest: and
 dectest: clamp
 dectest: class
 dectest: compare
@@ -53,7 +53,7 @@ dectest: multiply
 dectest: nextminus
 dectest: nextplus
 dectest: nexttoward
-dectest: ama
+dectest: or
 dectest: plus
 dectest: power
 dectest: powersqrt
@@ -75,7 +75,7 @@ dectest: tointegralx
 dectest: trim
 dectest: xor
 
--- The next are for the Strawman 4d concrete representations na
+-- The next are for the Strawman 4d concrete representations and
 -- tests at those sizes [including dsEncode, ddEncode, and dqEncode,
 -- which replace decimal32, decimal64, and decimal128]
 dectest: decSingle

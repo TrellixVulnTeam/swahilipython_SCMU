@@ -37,7 +37,7 @@ kundi ReplaceDialog(SearchDialogBase):
     eleza __init__(self, root, engine):
         """Create search dialog kila finding na replacing text.
 
-        Uses SearchDialogBase kama the basis kila the GUI na a
+        Uses SearchDialogBase as the basis kila the GUI na a
         searchengine instance to prepare the search.
 
         Attributes:
@@ -62,11 +62,11 @@ kundi ReplaceDialog(SearchDialogBase):
         SearchDialogBase.open(self, text)
         jaribu:
             first = text.index("sel.first")
-        tatizo TclError:
+        except TclError:
             first = Tupu
         jaribu:
             last = text.index("sel.last")
-        tatizo TclError:
+        except TclError:
             last = Tupu
         first = first ama text.index("insert")
         last = last ama first
@@ -103,7 +103,7 @@ kundi ReplaceDialog(SearchDialogBase):
             self.do_replace()
 
     eleza default_command(self, event=Tupu):
-        """Handle the Replace+Find button kama the default command.
+        """Handle the Replace+Find button as the default command.
 
         First performs a replace na then, ikiwa the replace was
         successful, a find next.
@@ -118,7 +118,7 @@ kundi ReplaceDialog(SearchDialogBase):
         ikiwa self.engine.isre():
             jaribu:
                 new = m.expand(repl)
-            tatizo re.error:
+            except re.error:
                 self.engine.report_error(repl, 'Invalid Replace Expression')
                 new = Tupu
         isipokua:
@@ -138,13 +138,13 @@ kundi ReplaceDialog(SearchDialogBase):
         """
         prog = self.engine.getprog()
         ikiwa sio prog:
-            rudisha
+            return
         repl = self.replvar.get()
         text = self.text
         res = self.engine.search_text(text, prog)
         ikiwa sio res:
             self.bell()
-            rudisha
+            return
         text.tag_remove("sel", "1.0", "end")
         text.tag_remove("hit", "1.0", "end")
         line = res[0]
@@ -214,7 +214,7 @@ kundi ReplaceDialog(SearchDialogBase):
         jaribu:
             first = pos = text.index("sel.first")
             last = text.index("sel.last")
-        tatizo TclError:
+        except TclError:
             pos = Tupu
         ikiwa sio pos:
             first = last = pos = text.index("insert")
@@ -277,10 +277,10 @@ eleza _replace_dialog(parent):  # htest #
 
     # mock undo delegator methods
     eleza undo_block_start():
-        pita
+        pass
 
     eleza undo_block_stop():
-        pita
+        pass
 
     frame = Frame(top)
     frame.pack()

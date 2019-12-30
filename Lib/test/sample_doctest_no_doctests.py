@@ -12,4 +12,4 @@ kundi Foo(object):
     """
 
     eleza __init__(self):
-        pita
+        pass

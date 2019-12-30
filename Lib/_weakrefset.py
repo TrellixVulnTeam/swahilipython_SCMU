@@ -61,7 +61,7 @@ kundi WeakSet:
                 item = itemref()
                 ikiwa item ni sio Tupu:
                     # Caveat: the iterator will keep a strong reference to
-                    # `item` until it ni resumed or closed.
+                    # `item` until it ni resumed ama closed.
                     tuma item
 
     eleza __len__(self):
@@ -70,8 +70,8 @@ kundi WeakSet:
     eleza __contains__(self, item):
         jaribu:
             wr = ref(item)
-        tatizo TypeError:
-            rudisha False
+        except TypeError:
+            rudisha Uongo
         rudisha wr kwenye self.data
 
     eleza __reduce__(self):
@@ -94,11 +94,11 @@ kundi WeakSet:
     eleza pop(self):
         ikiwa self._pending_removals:
             self._commit_removals()
-        wakati True:
+        wakati Kweli:
             jaribu:
                 itemref = self.data.pop()
-            tatizo KeyError:
-                ashiria KeyError('pop kutoka empty WeakSet') kutoka Tupu
+            except KeyError:
+                 ashiria KeyError('pop kutoka empty WeakSet') kutoka Tupu
             item = itemref()
             ikiwa item ni sio Tupu:
                 rudisha item

@@ -1,7 +1,7 @@
-"""Shared support for scanning document type declarations in HTML and XHTML.
+"""Shared support kila scanning document type declarations kwenye HTML na XHTML.
 
-This module is used as a foundation for the html.parser module.  It has no
-documented public API and should sio be used directly.
+This module ni used as a foundation kila the html.parser module.  It has no
+documented public API na should sio be used directly.
 
 """
 
@@ -12,7 +12,7 @@ _declstringlit_match = re.compile(r'(\'[^\']*\'|"[^"]*")\s*').match
 _commentclose = re.compile(r'--\s*>')
 _markedsectionclose = re.compile(r']\s*]\s*>')
 
-# An analysis of the MS-Word extensions is available at
+# An analysis of the MS-Word extensions ni available at
 # http://www.planetpublish.com/xmlarena/xap/Thursday/WordtoXML.pdf
 
 _msmarkedsectionclose = re.compile(r']\s*>')
@@ -22,374 +22,374 @@ toa re
 
 kundi ParserBase:
     """Parser base kundi which provides some common support methods used
-    by the SGML/HTML and XHTML parsers."""
+    by the SGML/HTML na XHTML parsers."""
 
-    def __init__(self):
-        if self.__class__ is ParserBase:
-            ashiria RuntimeError(
+    eleza __init__(self):
+        ikiwa self.__class__ ni ParserBase:
+             ashiria RuntimeError(
                 "_markupbase.ParserBase must be subclassed")
 
-    def error(self, message):
-        ashiria NotImplementedError(
+    eleza error(self, message):
+         ashiria NotImplementedError(
             "subclasses of ParserBase must override error()")
 
-    def reset(self):
+    eleza reset(self):
         self.lineno = 1
         self.offset = 0
 
-    def getpos(self):
-        """Return current line number and offset."""
-        return self.lineno, self.offset
+    eleza getpos(self):
+        """Return current line number na offset."""
+        rudisha self.lineno, self.offset
 
-    # Internal -- update line number and offset.  This should be
-    # called for each piece of data exactly once, in order -- in other
+    # Internal -- update line number na offset.  This should be
+    # called kila each piece of data exactly once, kwenye order -- kwenye other
     # words the concatenation of all the input strings to this
     # function should be exactly the entire input.
-    def updatepos(self, i, j):
-        if i >= j:
-            return j
+    eleza updatepos(self, i, j):
+        ikiwa i >= j:
+            rudisha j
         rawdata = self.rawdata
         nlines = rawdata.count("\n", i, j)
-        if nlines:
+        ikiwa nlines:
             self.lineno = self.lineno + nlines
             pos = rawdata.rindex("\n", i, j) # Should sio fail
             self.offset = j-(pos+1)
         isipokua:
             self.offset = self.offset + j-i
-        return j
+        rudisha j
 
     _decl_otherchars = ''
 
-    # Internal -- parse declaration (for use by subclasses).
-    def parse_declaration(self, i):
-        # This is some sort of declaration; in "HTML as
+    # Internal -- parse declaration (kila use by subclasses).
+    eleza parse_declaration(self, i):
+        # This ni some sort of declaration; kwenye "HTML as
         # deployed," this should only be the document type
         # declaration ("<!DOCTYPE html...>").
         # ISO 8879:1986, however, has more complex
-        # declaration syntax for elements in <!...>, including:
+        # declaration syntax kila elements kwenye <!...>, including:
         # --comment--
         # [marked section]
-        # name in the following list: ENTITY, DOCTYPE, ELEMENT,
+        # name kwenye the following list: ENTITY, DOCTYPE, ELEMENT,
         # ATTLIST, NOTATION, SHORTREF, USEMAP,
         # LINKTYPE, LINK, IDLINK, USELINK, SYSTEM
         rawdata = self.rawdata
         j = i + 2
         assert rawdata[i:j] == "<!", "unexpected call to parse_declaration"
-        if rawdata[j:j+1] == ">":
+        ikiwa rawdata[j:j+1] == ">":
             # the empty comment <!>
-            return j + 1
-        if rawdata[j:j+1] in ("-", ""):
+            rudisha j + 1
+        ikiwa rawdata[j:j+1] kwenye ("-", ""):
             # Start of comment followed by buffer boundary,
-            # or just a buffer boundary.
-            return -1
+            # ama just a buffer boundary.
+            rudisha -1
         # A simple, practical version could look like: ((name|stringlit) S*) + '>'
         n = len(rawdata)
-        if rawdata[j:j+2] == '--': #comment
+        ikiwa rawdata[j:j+2] == '--': #comment
             # Locate --.*-- as the body of the comment
-            return self.parse_comment(i)
-        lasivyo rawdata[j] == '[': #marked section
+            rudisha self.parse_comment(i)
+        elikiwa rawdata[j] == '[': #marked section
             # Locate [statusWord [...arbitrary SGML...]] as the body of the marked section
-            # Where statusWord is one of TEMP, CDATA, IGNORE, INCLUDE, RCDATA
-            # Note that this is extended by Microsoft Office "Save as Web" function
-            # to include [if...] and [endif].
-            return self.parse_marked_section(i)
+            # Where statusWord ni one of TEMP, CDATA, IGNORE, INCLUDE, RCDATA
+            # Note that this ni extended by Microsoft Office "Save as Web" function
+            # to include [if...] na [endif].
+            rudisha self.parse_marked_section(i)
         isipokua: #all other declaration elements
             decltype, j = self._scan_name(j, i)
-        if j < 0:
-            return j
-        if decltype == "doctype":
+        ikiwa j < 0:
+            rudisha j
+        ikiwa decltype == "doctype":
             self._decl_otherchars = ''
         wakati j < n:
             c = rawdata[j]
-            if c == ">":
+            ikiwa c == ">":
                 # end of declaration syntax
                 data = rawdata[i+2:j]
-                if decltype == "doctype":
+                ikiwa decltype == "doctype":
                     self.handle_decl(data)
                 isipokua:
                     # According to the HTML5 specs sections "8.2.4.44 Bogus
-                    # comment state" and "8.2.4.45 Markup declaration open
+                    # comment state" na "8.2.4.45 Markup declaration open
                     # state", a comment token should be emitted.
                     # Calling unknown_decl provides more flexibility though.
                     self.unknown_decl(data)
-                return j + 1
-            if c in "\"'":
+                rudisha j + 1
+            ikiwa c kwenye "\"'":
                 m = _declstringlit_match(rawdata, j)
-                if sio m:
-                    return -1 # incomplete
+                ikiwa sio m:
+                    rudisha -1 # incomplete
                 j = m.end()
-            lasivyo c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            elikiwa c kwenye "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
                 name, j = self._scan_name(j, i)
-            lasivyo c in self._decl_otherchars:
+            elikiwa c kwenye self._decl_otherchars:
                 j = j + 1
-            lasivyo c == "[":
-                # this could be handled in a separate doctype parser
-                if decltype == "doctype":
+            elikiwa c == "[":
+                # this could be handled kwenye a separate doctype parser
+                ikiwa decltype == "doctype":
                     j = self._parse_doctype_subset(j + 1, i)
-                lasivyo decltype in {"attlist", "linktype", "link", "element"}:
-                    # must tolerate []'d groups in a content motoa in an element declaration
-                    # also in data attribute specifications of attlist declaration
-                    # also link type declaration subsets in linktype declarations
-                    # also link attribute specification lists in link declarations
-                    self.error("unsupported '[' char in %s declaration" % decltype)
+                elikiwa decltype kwenye {"attlist", "linktype", "link", "element"}:
+                    # must tolerate []'d groups kwenye a content motoa kwenye an element declaration
+                    # also kwenye data attribute specifications of attlist declaration
+                    # also link type declaration subsets kwenye linktype declarations
+                    # also link attribute specification lists kwenye link declarations
+                    self.error("unsupported '[' char kwenye %s declaration" % decltype)
                 isipokua:
-                    self.error("unexpected '[' char in declaration")
+                    self.error("unexpected '[' char kwenye declaration")
             isipokua:
                 self.error(
-                    "unexpected %r char in declaration" % rawdata[j])
-            if j < 0:
-                return j
-        return -1 # incomplete
+                    "unexpected %r char kwenye declaration" % rawdata[j])
+            ikiwa j < 0:
+                rudisha j
+        rudisha -1 # incomplete
 
     # Internal -- parse a marked section
-    # Override this to handle MS-word extension syntax <![if word]>content<![endif]>
-    def parse_marked_section(self, i, report=1):
+    # Override this to handle MS-word extension syntax <![ikiwa word]>content<![endif]>
+    eleza parse_marked_section(self, i, report=1):
         rawdata= self.rawdata
         assert rawdata[i:i+3] == '<![', "unexpected call to parse_marked_section()"
         sectName, j = self._scan_name( i+3, i )
-        if j < 0:
-            return j
-        if sectName in {"temp", "cdata", "ignore", "include", "rcdata"}:
-            # look for standard ]]> ending
+        ikiwa j < 0:
+            rudisha j
+        ikiwa sectName kwenye {"temp", "cdata", "ignore", "include", "rcdata"}:
+            # look kila standard ]]> ending
             match= _markedsectionclose.search(rawdata, i+3)
-        lasivyo sectName in {"if", "else", "endif"}:
-            # look for MS Office ]> ending
+        elikiwa sectName kwenye {"if", "else", "endif"}:
+            # look kila MS Office ]> ending
             match= _msmarkedsectionclose.search(rawdata, i+3)
         isipokua:
-            self.error('unknown status keyword %r in marked section' % rawdata[i+3:j])
-        if sio match:
-            return -1
-        if report:
+            self.error('unknown status keyword %r kwenye marked section' % rawdata[i+3:j])
+        ikiwa sio match:
+            rudisha -1
+        ikiwa report:
             j = match.start(0)
             self.unknown_decl(rawdata[i+3: j])
-        return match.end(0)
+        rudisha match.end(0)
 
-    # Internal -- parse comment, return length or -1 if sio terminated
-    def parse_comment(self, i, report=1):
+    # Internal -- parse comment, rudisha length ama -1 ikiwa sio terminated
+    eleza parse_comment(self, i, report=1):
         rawdata = self.rawdata
-        if rawdata[i:i+4] != '<!--':
+        ikiwa rawdata[i:i+4] != '<!--':
             self.error('unexpected call to parse_comment()')
         match = _commentclose.search(rawdata, i+4)
-        if sio match:
-            return -1
-        if report:
+        ikiwa sio match:
+            rudisha -1
+        ikiwa report:
             j = match.start(0)
             self.handle_comment(rawdata[i+4: j])
-        return match.end(0)
+        rudisha match.end(0)
 
-    # Internal -- scan past the internal subset in a <!DOCTYPE declaration,
+    # Internal -- scan past the internal subset kwenye a <!DOCTYPE declaration,
     # returning the index just past any whitespace following the trailing ']'.
-    def _parse_doctype_subset(self, i, declstartpos):
+    eleza _parse_doctype_subset(self, i, declstartpos):
         rawdata = self.rawdata
         n = len(rawdata)
         j = i
         wakati j < n:
             c = rawdata[j]
-            if c == "<":
+            ikiwa c == "<":
                 s = rawdata[j:j+2]
-                if s == "<":
+                ikiwa s == "<":
                     # end of buffer; incomplete
-                    return -1
-                if s != "<!":
+                    rudisha -1
+                ikiwa s != "<!":
                     self.updatepos(declstartpos, j + 1)
-                    self.error("unexpected char in internal subset (in %r)" % s)
-                if (j + 2) == n:
+                    self.error("unexpected char kwenye internal subset (in %r)" % s)
+                ikiwa (j + 2) == n:
                     # end of buffer; incomplete
-                    return -1
-                if (j + 4) > n:
+                    rudisha -1
+                ikiwa (j + 4) > n:
                     # end of buffer; incomplete
-                    return -1
-                if rawdata[j:j+4] == "<!--":
+                    rudisha -1
+                ikiwa rawdata[j:j+4] == "<!--":
                     j = self.parse_comment(j, report=0)
-                    if j < 0:
-                        return j
+                    ikiwa j < 0:
+                        rudisha j
                     endelea
                 name, j = self._scan_name(j + 2, declstartpos)
-                if j == -1:
-                    return -1
-                if name haiko kwenye {"attlist", "element", "entity", "notation"}:
+                ikiwa j == -1:
+                    rudisha -1
+                ikiwa name sio kwenye {"attlist", "element", "entity", "notation"}:
                     self.updatepos(declstartpos, j + 2)
                     self.error(
-                        "unknown declaration %r in internal subset" % name)
+                        "unknown declaration %r kwenye internal subset" % name)
                 # handle the individual names
                 meth = getattr(self, "_parse_doctype_" + name)
                 j = meth(j, declstartpos)
-                if j < 0:
-                    return j
-            lasivyo c == "%":
+                ikiwa j < 0:
+                    rudisha j
+            elikiwa c == "%":
                 # parameter entity reference
-                if (j + 1) == n:
+                ikiwa (j + 1) == n:
                     # end of buffer; incomplete
-                    return -1
+                    rudisha -1
                 s, j = self._scan_name(j + 1, declstartpos)
-                if j < 0:
-                    return j
-                if rawdata[j] == ";":
+                ikiwa j < 0:
+                    rudisha j
+                ikiwa rawdata[j] == ";":
                     j = j + 1
-            lasivyo c == "]":
+            elikiwa c == "]":
                 j = j + 1
-                wakati j < n and rawdata[j].isspace():
+                wakati j < n na rawdata[j].isspace():
                     j = j + 1
-                if j < n:
-                    if rawdata[j] == ">":
-                        return j
+                ikiwa j < n:
+                    ikiwa rawdata[j] == ">":
+                        rudisha j
                     self.updatepos(declstartpos, j)
                     self.error("unexpected char after internal subset")
                 isipokua:
-                    return -1
-            lasivyo c.isspace():
+                    rudisha -1
+            elikiwa c.isspace():
                 j = j + 1
             isipokua:
                 self.updatepos(declstartpos, j)
-                self.error("unexpected char %r in internal subset" % c)
+                self.error("unexpected char %r kwenye internal subset" % c)
         # end of buffer reached
-        return -1
+        rudisha -1
 
     # Internal -- scan past <!ELEMENT declarations
-    def _parse_doctype_element(self, i, declstartpos):
+    eleza _parse_doctype_element(self, i, declstartpos):
         name, j = self._scan_name(i, declstartpos)
-        if j == -1:
-            return -1
+        ikiwa j == -1:
+            rudisha -1
         # style content model; just skip until '>'
         rawdata = self.rawdata
-        if '>' in rawdata[j:]:
-            return rawdata.find(">", j) + 1
-        return -1
+        ikiwa '>' kwenye rawdata[j:]:
+            rudisha rawdata.find(">", j) + 1
+        rudisha -1
 
     # Internal -- scan past <!ATTLIST declarations
-    def _parse_doctype_attlist(self, i, declstartpos):
+    eleza _parse_doctype_attlist(self, i, declstartpos):
         rawdata = self.rawdata
         name, j = self._scan_name(i, declstartpos)
         c = rawdata[j:j+1]
-        if c == "":
-            return -1
-        if c == ">":
-            return j + 1
+        ikiwa c == "":
+            rudisha -1
+        ikiwa c == ">":
+            rudisha j + 1
         wakati 1:
             # scan a series of attribute descriptions; simplified:
             #   name type [value] [#constraint]
             name, j = self._scan_name(j, declstartpos)
-            if j < 0:
-                return j
+            ikiwa j < 0:
+                rudisha j
             c = rawdata[j:j+1]
-            if c == "":
-                return -1
-            if c == "(":
-                # an enumerated type; look for ')'
-                if ")" in rawdata[j:]:
+            ikiwa c == "":
+                rudisha -1
+            ikiwa c == "(":
+                # an enumerated type; look kila ')'
+                ikiwa ")" kwenye rawdata[j:]:
                     j = rawdata.find(")", j) + 1
                 isipokua:
-                    return -1
+                    rudisha -1
                 wakati rawdata[j:j+1].isspace():
                     j = j + 1
-                if sio rawdata[j:]:
+                ikiwa sio rawdata[j:]:
                     # end of buffer, incomplete
-                    return -1
+                    rudisha -1
             isipokua:
                 name, j = self._scan_name(j, declstartpos)
             c = rawdata[j:j+1]
-            if sio c:
-                return -1
-            if c in "'\"":
+            ikiwa sio c:
+                rudisha -1
+            ikiwa c kwenye "'\"":
                 m = _declstringlit_match(rawdata, j)
-                if m:
+                ikiwa m:
                     j = m.end()
                 isipokua:
-                    return -1
+                    rudisha -1
                 c = rawdata[j:j+1]
-                if sio c:
-                    return -1
-            if c == "#":
-                if rawdata[j:] == "#":
+                ikiwa sio c:
+                    rudisha -1
+            ikiwa c == "#":
+                ikiwa rawdata[j:] == "#":
                     # end of buffer
-                    return -1
+                    rudisha -1
                 name, j = self._scan_name(j + 1, declstartpos)
-                if j < 0:
-                    return j
+                ikiwa j < 0:
+                    rudisha j
                 c = rawdata[j:j+1]
-                if sio c:
-                    return -1
-            if c == '>':
+                ikiwa sio c:
+                    rudisha -1
+            ikiwa c == '>':
                 # all done
-                return j + 1
+                rudisha j + 1
 
     # Internal -- scan past <!NOTATION declarations
-    def _parse_doctype_notation(self, i, declstartpos):
+    eleza _parse_doctype_notation(self, i, declstartpos):
         name, j = self._scan_name(i, declstartpos)
-        if j < 0:
-            return j
+        ikiwa j < 0:
+            rudisha j
         rawdata = self.rawdata
         wakati 1:
             c = rawdata[j:j+1]
-            if sio c:
+            ikiwa sio c:
                 # end of buffer; incomplete
-                return -1
-            if c == '>':
-                return j + 1
-            if c in "'\"":
+                rudisha -1
+            ikiwa c == '>':
+                rudisha j + 1
+            ikiwa c kwenye "'\"":
                 m = _declstringlit_match(rawdata, j)
-                if sio m:
-                    return -1
+                ikiwa sio m:
+                    rudisha -1
                 j = m.end()
             isipokua:
                 name, j = self._scan_name(j, declstartpos)
-                if j < 0:
-                    return j
+                ikiwa j < 0:
+                    rudisha j
 
     # Internal -- scan past <!ENTITY declarations
-    def _parse_doctype_entity(self, i, declstartpos):
+    eleza _parse_doctype_entity(self, i, declstartpos):
         rawdata = self.rawdata
-        if rawdata[i:i+1] == "%":
+        ikiwa rawdata[i:i+1] == "%":
             j = i + 1
             wakati 1:
                 c = rawdata[j:j+1]
-                if sio c:
-                    return -1
-                if c.isspace():
+                ikiwa sio c:
+                    rudisha -1
+                ikiwa c.isspace():
                     j = j + 1
                 isipokua:
                     koma
         isipokua:
             j = i
         name, j = self._scan_name(j, declstartpos)
-        if j < 0:
-            return j
+        ikiwa j < 0:
+            rudisha j
         wakati 1:
             c = self.rawdata[j:j+1]
-            if sio c:
-                return -1
-            if c in "'\"":
+            ikiwa sio c:
+                rudisha -1
+            ikiwa c kwenye "'\"":
                 m = _declstringlit_match(rawdata, j)
-                if m:
+                ikiwa m:
                     j = m.end()
                 isipokua:
-                    return -1    # incomplete
-            lasivyo c == ">":
-                return j + 1
+                    rudisha -1    # incomplete
+            elikiwa c == ">":
+                rudisha j + 1
             isipokua:
                 name, j = self._scan_name(j, declstartpos)
-                if j < 0:
-                    return j
+                ikiwa j < 0:
+                    rudisha j
 
-    # Internal -- scan a name token and the new position and the token, ama
-    # return -1 if we've reached the end of the buffer.
-    def _scan_name(self, i, declstartpos):
+    # Internal -- scan a name token na the new position na the token, or
+    # rudisha -1 ikiwa we've reached the end of the buffer.
+    eleza _scan_name(self, i, declstartpos):
         rawdata = self.rawdata
         n = len(rawdata)
-        if i == n:
-            return None, -1
+        ikiwa i == n:
+            rudisha Tupu, -1
         m = _declname_match(rawdata, i)
-        if m:
+        ikiwa m:
             s = m.group()
             name = s.strip()
-            if (i + len(s)) == n:
-                return None, -1  # end of buffer
-            return name.lower(), m.end()
+            ikiwa (i + len(s)) == n:
+                rudisha Tupu, -1  # end of buffer
+            rudisha name.lower(), m.end()
         isipokua:
             self.updatepos(declstartpos, i)
             self.error("expected name token at %r"
                        % rawdata[declstartpos:declstartpos+20])
 
-    # To be overridden -- handlers for unknown objects
-    def unknown_decl(self, data):
+    # To be overridden -- handlers kila unknown objects
+    eleza unknown_decl(self, data):
         pass

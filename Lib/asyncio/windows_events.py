@@ -61,10 +61,10 @@ kundi _OverlappedFuture(futures.Future):
 
     eleza _cancel_overlapped(self):
         ikiwa self._ov ni Tupu:
-            rudisha
+            return
         jaribu:
             self._ov.cancel()
-        tatizo OSError kama exc:
+        except OSError as exc:
             context = {
                 'message': 'Cancelling an overlapped future failed',
                 'exception': exc,
@@ -127,14 +127,14 @@ kundi _BaseWaitHandleFuture(futures.Future):
 
     eleza _unregister_wait(self):
         ikiwa sio self._registered:
-            rudisha
+            return
         self._registered = Uongo
 
         wait_handle = self._wait_handle
         self._wait_handle = Tupu
         jaribu:
             _overlapped.UnregisterWait(wait_handle)
-        tatizo OSError kama exc:
+        except OSError as exc:
             ikiwa exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
@@ -144,7 +144,7 @@ kundi _BaseWaitHandleFuture(futures.Future):
                 ikiwa self._source_traceback:
                     context['source_traceback'] = self._source_traceback
                 self._loop.call_exception_handler(context)
-                rudisha
+                return
             # ERROR_IO_PENDING means that the unregister ni pending
 
         self._unregister_wait_cb(Tupu)
@@ -173,7 +173,7 @@ kundi _WaitCancelFuture(_BaseWaitHandleFuture):
         self._done_callback = Tupu
 
     eleza cancel(self):
-        ashiria RuntimeError("_WaitCancelFuture must sio be cancelled")
+         ashiria RuntimeError("_WaitCancelFuture must sio be cancelled")
 
     eleza set_result(self, result):
         super().set_result(result)
@@ -206,7 +206,7 @@ kundi _WaitHandleFuture(_BaseWaitHandleFuture):
         #
         # If the IocpProactor already received the event, it's safe to call
         # _unregister() because we kept a reference to the Overlapped object
-        # which ni used kama a unique key.
+        # which ni used as a unique key.
         self._proactor._unregister(self._ov)
         self._proactor = Tupu
 
@@ -214,14 +214,14 @@ kundi _WaitHandleFuture(_BaseWaitHandleFuture):
 
     eleza _unregister_wait(self):
         ikiwa sio self._registered:
-            rudisha
+            return
         self._registered = Uongo
 
         wait_handle = self._wait_handle
         self._wait_handle = Tupu
         jaribu:
             _overlapped.UnregisterWaitEx(wait_handle, self._event)
-        tatizo OSError kama exc:
+        except OSError as exc:
             ikiwa exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
@@ -231,7 +231,7 @@ kundi _WaitHandleFuture(_BaseWaitHandleFuture):
                 ikiwa self._source_traceback:
                     context['source_traceback'] = self._source_traceback
                 self._loop.call_exception_handler(context)
-                rudisha
+                return
             # ERROR_IO_PENDING ni sio an error, the wait was unregistered
 
         self._event_fut = self._proactor._wait_cancel(self._event,
@@ -247,7 +247,7 @@ kundi PipeServer(object):
         self._address = address
         self._free_instances = weakref.WeakSet()
         # initialize the pipe attribute before calling _server_pipe_handle()
-        # because this function can ashiria an exception na the destructor calls
+        # because this function can  ashiria an exception na the destructor calls
         # the close() method
         self._pipe = Tupu
         self._accept_pipe_future = Tupu
@@ -346,7 +346,7 @@ kundi ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                         # A client connected before the server was closed:
                         # drop the client (close the pipe) na exit
                         pipe.close()
-                        rudisha
+                        return
 
                     protocol = protocol_factory()
                     self._make_duplex_pipe_transport(
@@ -354,10 +354,10 @@ kundi ProactorEventLoop(proactor_events.BaseProactorEventLoop):
 
                 pipe = server._get_unconnected_pipe()
                 ikiwa pipe ni Tupu:
-                    rudisha
+                    return
 
                 f = self._proactor.accept_pipe(pipe)
-            tatizo OSError kama exc:
+            except OSError as exc:
                 ikiwa pipe na pipe.fileno() != -1:
                     self.call_exception_handler({
                         'message': 'Pipe accept failed',
@@ -365,10 +365,10 @@ kundi ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                         'pipe': pipe,
                     })
                     pipe.close()
-                lasivyo self._debug:
+                elikiwa self._debug:
                     logger.warning("Accept pipe failed on pipe %r",
                                    pipe, exc_info=Kweli)
-            tatizo exceptions.CancelledError:
+            except exceptions.CancelledError:
                 ikiwa pipe:
                     pipe.close()
             isipokua:
@@ -388,12 +388,12 @@ kundi ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                                              **kwargs)
         jaribu:
             await waiter
-        tatizo (SystemExit, KeyboardInterrupt):
-            ashiria
-        tatizo BaseException:
+        except (SystemExit, KeyboardInterrupt):
+            raise
+        except BaseException:
             transp.close()
             await transp._wait()
-            ashiria
+            raise
 
         rudisha transp
 
@@ -413,7 +413,7 @@ kundi IocpProactor:
 
     eleza _check_closed(self):
         ikiwa self._iocp ni Tupu:
-            ashiria RuntimeError('IocpProactor ni closed')
+             ashiria RuntimeError('IocpProactor ni closed')
 
     eleza __repr__(self):
         info = ['overlapped#=%s' % len(self._cache),
@@ -445,18 +445,18 @@ kundi IocpProactor:
                 ov.WSARecv(conn.fileno(), nbytes, flags)
             isipokua:
                 ov.ReadFile(conn.fileno(), nbytes)
-        tatizo BrokenPipeError:
+        except BrokenPipeError:
             rudisha self._result(b'')
 
         eleza finish_recv(trans, key, ov):
             jaribu:
                 rudisha ov.getresult()
-            tatizo OSError kama exc:
+            except OSError as exc:
                 ikiwa exc.winerror kwenye (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
-                    ashiria ConnectionResetError(*exc.args)
+                     ashiria ConnectionResetError(*exc.args)
                 isipokua:
-                    ashiria
+                    raise
 
         rudisha self._register(ov, conn, finish_recv)
 
@@ -468,38 +468,38 @@ kundi IocpProactor:
                 ov.WSARecvInto(conn.fileno(), buf, flags)
             isipokua:
                 ov.ReadFileInto(conn.fileno(), buf)
-        tatizo BrokenPipeError:
+        except BrokenPipeError:
             rudisha self._result(b'')
 
         eleza finish_recv(trans, key, ov):
             jaribu:
                 rudisha ov.getresult()
-            tatizo OSError kama exc:
+            except OSError as exc:
                 ikiwa exc.winerror kwenye (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
-                    ashiria ConnectionResetError(*exc.args)
+                     ashiria ConnectionResetError(*exc.args)
                 isipokua:
-                    ashiria
+                    raise
 
         rudisha self._register(ov, conn, finish_recv)
 
-    eleza recvkutoka(self, conn, nbytes, flags=0):
+    eleza recvfrom(self, conn, nbytes, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
         jaribu:
             ov.WSARecvFrom(conn.fileno(), nbytes, flags)
-        tatizo BrokenPipeError:
+        except BrokenPipeError:
             rudisha self._result((b'', Tupu))
 
         eleza finish_recv(trans, key, ov):
             jaribu:
                 rudisha ov.getresult()
-            tatizo OSError kama exc:
+            except OSError as exc:
                 ikiwa exc.winerror kwenye (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
-                    ashiria ConnectionResetError(*exc.args)
+                     ashiria ConnectionResetError(*exc.args)
                 isipokua:
-                    ashiria
+                    raise
 
         rudisha self._register(ov, conn, finish_recv)
 
@@ -512,12 +512,12 @@ kundi IocpProactor:
         eleza finish_send(trans, key, ov):
             jaribu:
                 rudisha ov.getresult()
-            tatizo OSError kama exc:
+            except OSError as exc:
                 ikiwa exc.winerror kwenye (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
-                    ashiria ConnectionResetError(*exc.args)
+                     ashiria ConnectionResetError(*exc.args)
                 isipokua:
-                    ashiria
+                    raise
 
         rudisha self._register(ov, conn, finish_send)
 
@@ -532,12 +532,12 @@ kundi IocpProactor:
         eleza finish_send(trans, key, ov):
             jaribu:
                 rudisha ov.getresult()
-            tatizo OSError kama exc:
+            except OSError as exc:
                 ikiwa exc.winerror kwenye (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
-                    ashiria ConnectionResetError(*exc.args)
+                     ashiria ConnectionResetError(*exc.args)
                 isipokua:
-                    ashiria
+                    raise
 
         rudisha self._register(ov, conn, finish_send)
 
@@ -560,9 +560,9 @@ kundi IocpProactor:
             # Coroutine closing the accept socket ikiwa the future ni cancelled
             jaribu:
                 await future
-            tatizo exceptions.CancelledError:
+            except exceptions.CancelledError:
                 conn.close()
-                ashiria
+                raise
 
         future = self._register(ov, listener, finish_accept)
         coro = accept_coro(future, conn)
@@ -582,12 +582,12 @@ kundi IocpProactor:
         # The socket needs to be locally bound before we call ConnectEx().
         jaribu:
             _overlapped.BindLocal(conn.fileno(), conn.family)
-        tatizo OSError kama e:
+        except OSError as e:
             ikiwa e.winerror != errno.WSAEINVAL:
-                ashiria
+                raise
             # Probably already locally bound; check using getsockname().
             ikiwa conn.getsockname()[1] == 0:
-                ashiria
+                raise
         ov = _overlapped.Overlapped(NULL)
         ov.ConnectEx(conn.fileno(), address)
 
@@ -613,12 +613,12 @@ kundi IocpProactor:
         eleza finish_sendfile(trans, key, ov):
             jaribu:
                 rudisha ov.getresult()
-            tatizo OSError kama exc:
+            except OSError as exc:
                 ikiwa exc.winerror kwenye (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
-                    ashiria ConnectionResetError(*exc.args)
+                     ashiria ConnectionResetError(*exc.args)
                 isipokua:
-                    ashiria
+                    raise
         rudisha self._register(ov, sock, finish_sendfile)
 
     eleza accept_pipe(self, pipe):
@@ -647,9 +647,9 @@ kundi IocpProactor:
             jaribu:
                 handle = _overlapped.ConnectPipe(address)
                 koma
-            tatizo OSError kama exc:
+            except OSError as exc:
                 ikiwa exc.winerror != _overlapped.ERROR_PIPE_BUSY:
-                    ashiria
+                    raise
 
             # ConnectPipe() failed ukijumuisha ERROR_PIPE_BUSY: retry later
             delay = min(delay * 2, CONNECT_PIPE_MAX_DELAY)
@@ -682,7 +682,7 @@ kundi IocpProactor:
             # round away kutoka zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
 
-        # We only create ov so we can use ov.address kama a key kila the cache.
+        # We only create ov so we can use ov.address as a key kila the cache.
         ov = _overlapped.Overlapped(NULL)
         wait_handle = _overlapped.RegisterWaitWithQueue(
             handle, self._iocp, ov.address, ms)
@@ -699,7 +699,7 @@ kundi IocpProactor:
             # this ukijumuisha handles types where a successful wait has no
             # effect.  So events ama processes are all right, but locks
             # ama semaphores are not.  Also note ikiwa the handle is
-            # signalled na then quickly reset, then we may rudisha
+            # signalled na then quickly reset, then we may return
             # Uongo even though we have sio timed out.
             rudisha f._poll()
 
@@ -709,7 +709,7 @@ kundi IocpProactor:
     eleza _register_with_iocp(self, obj):
         # To get notifications of finished ops on this objects sent to the
         # completion port, were must register the handle.
-        ikiwa obj haiko kwenye self._registered:
+        ikiwa obj sio kwenye self._registered:
             self._registered.add(obj)
             _overlapped.CreateIoCompletionPort(obj.fileno(), self._iocp, 0, 0)
             # XXX We could also use SetFileCompletionNotificationModes()
@@ -721,18 +721,18 @@ kundi IocpProactor:
 
         # Return a future which will be set ukijumuisha the result of the
         # operation when it completes.  The future's value ni actually
-        # the value rudishaed by callback().
+        # the value returned by callback().
         f = _OverlappedFuture(ov, loop=self._loop)
         ikiwa f._source_traceback:
             toa f._source_traceback[-1]
         ikiwa sio ov.pending:
             # The operation has completed, so no need to postpone the
             # work.  We cannot take this short cut ikiwa we need the
-            # NumberOfBytes, CompletionKey values rudishaed by
+            # NumberOfBytes, CompletionKey values returned by
             # PostQueuedCompletionStatus().
             jaribu:
                 value = callback(Tupu, Tupu, ov)
-            tatizo OSError kama e:
+            except OSError as e:
                 f.set_exception(e)
             isipokua:
                 f.set_result(value)
@@ -766,14 +766,14 @@ kundi IocpProactor:
     eleza _poll(self, timeout=Tupu):
         ikiwa timeout ni Tupu:
             ms = INFINITE
-        lasivyo timeout < 0:
-            ashiria ValueError("negative timeout")
+        elikiwa timeout < 0:
+             ashiria ValueError("negative timeout")
         isipokua:
             # GetQueuedCompletionStatus() has a resolution of 1 millisecond,
             # round away kutoka zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
             ikiwa ms >= INFINITE:
-                ashiria ValueError("timeout too big")
+                 ashiria ValueError("timeout too big")
 
         wakati Kweli:
             status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
@@ -784,10 +784,10 @@ kundi IocpProactor:
             err, transferred, key, address = status
             jaribu:
                 f, ov, obj, callback = self._cache.pop(address)
-            tatizo KeyError:
+            except KeyError:
                 ikiwa self._loop.get_debug():
                     self._loop.call_exception_handler({
-                        'message': ('GetQueuedCompletionStatus() rudishaed an '
+                        'message': ('GetQueuedCompletionStatus() returned an '
                                     'unexpected event'),
                         'status': ('err=%s transferred=%s key=%#x address=%#x'
                                    % (err, transferred, key, address)),
@@ -795,18 +795,18 @@ kundi IocpProactor:
 
                 # key ni either zero, ama it ni used to rudisha a pipe
                 # handle which should be closed to avoid a leak.
-                ikiwa key haiko kwenye (0, _overlapped.INVALID_HANDLE_VALUE):
+                ikiwa key sio kwenye (0, _overlapped.INVALID_HANDLE_VALUE):
                     _winapi.CloseHandle(key)
                 endelea
 
             ikiwa obj kwenye self._stopped_serving:
                 f.cancel()
-            # Don't call the callback ikiwa _register() already read the result ama
+            # Don't call the callback ikiwa _register() already read the result or
             # ikiwa the overlapped has been cancelled
-            lasivyo sio f.done():
+            elikiwa sio f.done():
                 jaribu:
                     value = callback(transferred, key, ov)
-                tatizo OSError kama e:
+                except OSError as e:
                     f.set_exception(e)
                     self._results.append(f)
                 isipokua:
@@ -827,20 +827,20 @@ kundi IocpProactor:
     eleza close(self):
         ikiwa self._iocp ni Tupu:
             # already closed
-            rudisha
+            return
 
         # Cancel remaining registered operations.
         kila address, (fut, ov, obj, callback) kwenye list(self._cache.items()):
             ikiwa fut.cancelled():
                 # Nothing to do ukijumuisha cancelled futures
-                pita
-            lasivyo isinstance(fut, _WaitCancelFuture):
+                pass
+            elikiwa isinstance(fut, _WaitCancelFuture):
                 # _WaitCancelFuture must sio be cancelled
-                pita
+                pass
             isipokua:
                 jaribu:
                     fut.cancel()
-                tatizo OSError kama exc:
+                except OSError as exc:
                     ikiwa self._loop ni sio Tupu:
                         context = {
                             'message': 'Cancelling a future failed',

@@ -95,9 +95,9 @@ kundi WidgetRedirectorTest(unittest.TestCase):
         self.assertKweli(self.redir.dispatch('insert', Uongo))
         self.assertUongo(self.func.args[0])
 
-    eleza test_dispatch_bypita(self):
+    eleza test_dispatch_bypass(self):
         self.orig_insert('insert', 'asdf')
-        # tk.call rudishas '' where Python would rudisha Tupu
+        # tk.call returns '' where Python would rudisha Tupu
         self.assertEqual(self.redir.dispatch('delete', '1.0', 'end'), '')
         self.assertEqual(self.text.get('1.0', 'end'), '\n')
 
@@ -113,7 +113,7 @@ kundi WidgetRedirectorTest(unittest.TestCase):
         self.assertEqual(self.func.args, ('hello',))
         self.assertEqual(self.text.get('1.0', 'end'), '\n')
         # Ensure that called through redir .dispatch na sio through
-        # self.text.insert by having mock ashiria TclError.
+        # self.text.insert by having mock  ashiria TclError.
         self.func.__init__(TclError())
         self.assertEqual(self.root.call(self.text._w, 'insert', 'boo'), '')
 

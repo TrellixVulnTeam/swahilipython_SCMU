@@ -1,75 +1,75 @@
-"""Tests for distutils.dist."""
-import os
-import io
-import sys
-import unittest
-import warnings
-import textwrap
+"""Tests kila distutils.dist."""
+agiza os
+agiza io
+agiza sys
+agiza unittest
+agiza warnings
+agiza textwrap
 
-from unittest import mock
+kutoka unittest agiza mock
 
-from distutils.dist import Distribution, fix_help_options, DistributionMetadata
-from distutils.cmd import Command
+kutoka distutils.dist agiza Distribution, fix_help_options, DistributionMetadata
+kutoka distutils.cmd agiza Command
 
-from test.support import (
+kutoka test.support agiza (
      TESTFN, captured_stdout, captured_stderr, run_unittest
 )
-from distutils.tests import support
-from distutils import log
+kutoka distutils.tests agiza support
+kutoka distutils agiza log
 
 
-class test_dist(Command):
+kundi test_dist(Command):
     """Sample distutils extension command."""
 
     user_options = [
         ("sample-option=", "S", "help text"),
     ]
 
-    def initialize_options(self):
-        self.sample_option = None
+    eleza initialize_options(self):
+        self.sample_option = Tupu
 
 
-class TestDistribution(Distribution):
+kundi TestDistribution(Distribution):
     """Distribution subclasses that avoids the default search for
     configuration files.
 
     The ._config_files attribute must be set before
-    .parse_config_files() is called.
+    .parse_config_files() ni called.
     """
 
-    def find_config_files(self):
-        return self._config_files
+    eleza find_config_files(self):
+        rudisha self._config_files
 
 
-class DistributionTestCase(support.LoggingSilencer,
+kundi DistributionTestCase(support.LoggingSilencer,
                            support.TempdirManager,
                            support.EnvironGuard,
                            unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super(DistributionTestCase, self).setUp()
         self.argv = sys.argv, sys.argv[:]
         toa sys.argv[1:]
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.argv = self.argv[0]
         sys.argv[:] = self.argv[1]
         super(DistributionTestCase, self).tearDown()
 
-    def create_distribution(self, configfiles=()):
+    eleza create_distribution(self, configfiles=()):
         d = TestDistribution()
         d._config_files = configfiles
         d.parse_config_files()
         d.parse_command_line()
-        return d
+        rudisha d
 
-    def test_command_packages_unspecified(self):
+    eleza test_command_packages_unspecified(self):
         sys.argv.append("build")
         d = self.create_distribution()
         self.assertEqual(d.get_command_packages(), ["distutils.command"])
 
-    def test_command_packages_cmdline(self):
-        from distutils.tests.test_dist import test_dist
+    eleza test_command_packages_cmdline(self):
+        kutoka distutils.tests.test_dist agiza test_dist
         sys.argv.extend(["--command-packages",
                          "foo.bar,distutils.tests",
                          "test_dist",
@@ -83,14 +83,14 @@ class DistributionTestCase(support.LoggingSilencer,
         self.assertIsInstance(cmd, test_dist)
         self.assertEqual(cmd.sample_option, "sometext")
 
-    def test_venv_install_options(self):
+    eleza test_venv_install_options(self):
         sys.argv.append("install")
         self.addCleanup(os.unlink, TESTFN)
 
         fakepath = '/somedir'
 
-        with open(TESTFN, "w") as f:
-            print(("[install]\n"
+        ukijumuisha open(TESTFN, "w") as f:
+            andika(("[install]\n"
                    "install-base = {0}\n"
                    "install-platbase = {0}\n"
                    "install-lib = {0}\n"
@@ -105,8 +105,8 @@ class DistributionTestCase(support.LoggingSilencer,
                    "user = {0}\n"
                    "root = {0}").format(fakepath), file=f)
 
-        # Base case: Not in a Virtual Environment
-        with mock.patch.multiple(sys, prefix='/a', base_prefix='/a') as values:
+        # Base case: Not kwenye a Virtual Environment
+        ukijumuisha mock.patch.multiple(sys, prefix='/a', base_prefix='/a') as values:
             d = self.create_distribution([TESTFN])
 
         option_tuple = (TESTFN, fakepath)
@@ -131,23 +131,23 @@ class DistributionTestCase(support.LoggingSilencer,
             sorted(d.command_options.get('install').keys()),
             sorted(result_dict.keys()))
 
-        for (key, value) in d.command_options.get('install').items():
+        kila (key, value) kwenye d.command_options.get('install').items():
             self.assertEqual(value, result_dict[key])
 
         # Test case: In a Virtual Environment
-        with mock.patch.multiple(sys, prefix='/a', base_prefix='/b') as values:
+        ukijumuisha mock.patch.multiple(sys, prefix='/a', base_prefix='/b') as values:
             d = self.create_distribution([TESTFN])
 
-        for key in result_dict.keys():
+        kila key kwenye result_dict.keys():
             self.assertNotIn(key, d.command_options.get('install', {}))
 
-    def test_command_packages_configfile(self):
+    eleza test_command_packages_configfile(self):
         sys.argv.append("build")
         self.addCleanup(os.unlink, TESTFN)
         f = open(TESTFN, "w")
         jaribu:
-            print("[global]", file=f)
-            print("command_packages = foo.bar, splat", file=f)
+            andika("[global]", file=f)
+            andika("command_packages = foo.bar, splat", file=f)
         mwishowe:
             f.close()
 
@@ -162,19 +162,19 @@ class DistributionTestCase(support.LoggingSilencer,
                          ["distutils.command", "spork"])
 
         # Setting --command-packages to '' should cause the default to
-        # be used even if a config file specified something isipokua:
+        # be used even ikiwa a config file specified something isipokua:
         sys.argv[1:] = ["--command-packages", "", "build"]
         d = self.create_distribution([TESTFN])
         self.assertEqual(d.get_command_packages(), ["distutils.command"])
 
-    def test_empty_options(self):
-        # an empty options dictionary should sio stay in the
+    eleza test_empty_options(self):
+        # an empty options dictionary should sio stay kwenye the
         # list of attributes
 
         # catching warnings
         warns = []
 
-        def _warn(msg):
+        eleza _warn(msg):
             warns.append(msg)
 
         self.addCleanup(setattr, warnings, 'warn', warnings.warn)
@@ -186,14 +186,14 @@ class DistributionTestCase(support.LoggingSilencer,
         self.assertEqual(len(warns), 0)
         self.assertNotIn('options', dir(dist))
 
-    def test_finalize_options(self):
+    eleza test_finalize_options(self):
         attrs = {'keywords': 'one,two',
                  'platforms': 'one,two'}
 
         dist = Distribution(attrs=attrs)
         dist.finalize_options()
 
-        # finalize_option splits platforms and keywords
+        # finalize_option splits platforms na keywords
         self.assertEqual(dist.metadata.platforms, ['one', 'two'])
         self.assertEqual(dist.metadata.keywords, ['one', 'two'])
 
@@ -204,9 +204,9 @@ class DistributionTestCase(support.LoggingSilencer,
         self.assertEqual(dist.metadata.platforms, ['foo bar'])
         self.assertEqual(dist.metadata.keywords, ['foo bar'])
 
-    def test_get_command_packages(self):
+    eleza test_get_command_packages(self):
         dist = Distribution()
-        self.assertEqual(dist.command_packages, None)
+        self.assertEqual(dist.command_packages, Tupu)
         cmds = dist.get_command_packages()
         self.assertEqual(cmds, ['distutils.command'])
         self.assertEqual(dist.command_packages,
@@ -216,27 +216,27 @@ class DistributionTestCase(support.LoggingSilencer,
         cmds = dist.get_command_packages()
         self.assertEqual(cmds, ['distutils.command', 'one', 'two'])
 
-    def test_announce(self):
-        # make sure the level is known
+    eleza test_announce(self):
+        # make sure the level ni known
         dist = Distribution()
         args = ('ok',)
         kwargs = {'level': 'ok2'}
         self.assertRaises(ValueError, dist.announce, args, kwargs)
 
 
-    def test_find_config_files_disable(self):
+    eleza test_find_config_files_disable(self):
         # Ticket #1180: Allow user to disable their home config file.
         temp_home = self.mkdtemp()
-        if os.name == 'posix':
+        ikiwa os.name == 'posix':
             user_filename = os.path.join(temp_home, ".pydistutils.cfg")
         isipokua:
             user_filename = os.path.join(temp_home, "pydistutils.cfg")
 
-        with open(user_filename, 'w') as f:
+        ukijumuisha open(user_filename, 'w') as f:
             f.write('[distutils]\n')
 
-        def _expander(path):
-            return temp_home
+        eleza _expander(path):
+            rudisha temp_home
 
         old_expander = os.path.expanduser
         os.path.expanduser = _expander
@@ -252,24 +252,24 @@ class DistributionTestCase(support.LoggingSilencer,
         # make sure --no-user-cfg disables the user cfg file
         self.assertEqual(len(all_files)-1, len(files))
 
-class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
+kundi MetadataTestCase(support.TempdirManager, support.EnvironGuard,
                        unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super(MetadataTestCase, self).setUp()
         self.argv = sys.argv, sys.argv[:]
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.argv = self.argv[0]
         sys.argv[:] = self.argv[1]
         super(MetadataTestCase, self).tearDown()
 
-    def format_metadata(self, dist):
+    eleza format_metadata(self, dist):
         sio = io.StringIO()
         dist.metadata.write_pkg_file(sio)
-        return sio.getvalue()
+        rudisha sio.getvalue()
 
-    def test_simple_metadata(self):
+    eleza test_simple_metadata(self):
         attrs = {"name": "package",
                  "version": "1.0"}
         dist = Distribution(attrs)
@@ -279,7 +279,7 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         self.assertNotIn("requires:", meta.lower())
         self.assertNotIn("obsoletes:", meta.lower())
 
-    def test_provides(self):
+    eleza test_provides(self):
         attrs = {"name": "package",
                  "version": "1.0",
                  "provides": ["package", "package.sub"]}
@@ -293,13 +293,13 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         self.assertNotIn("requires:", meta.lower())
         self.assertNotIn("obsoletes:", meta.lower())
 
-    def test_provides_illegal(self):
+    eleza test_provides_illegal(self):
         self.assertRaises(ValueError, Distribution,
                           {"name": "package",
                            "version": "1.0",
                            "provides": ["my.pkg (splat)"]})
 
-    def test_requires(self):
+    eleza test_requires(self):
         attrs = {"name": "package",
                  "version": "1.0",
                  "requires": ["other", "another (==1.0)"]}
@@ -315,20 +315,20 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         self.assertIn("Requires: another (==1.0)", meta)
         self.assertNotIn("obsoletes:", meta.lower())
 
-    def test_requires_illegal(self):
+    eleza test_requires_illegal(self):
         self.assertRaises(ValueError, Distribution,
                           {"name": "package",
                            "version": "1.0",
                            "requires": ["my.pkg (splat)"]})
 
-    def test_requires_to_list(self):
+    eleza test_requires_to_list(self):
         attrs = {"name": "package",
                  "requires": iter(["other"])}
         dist = Distribution(attrs)
         self.assertIsInstance(dist.metadata.requires, list)
 
 
-    def test_obsoletes(self):
+    eleza test_obsoletes(self):
         attrs = {"name": "package",
                  "version": "1.0",
                  "obsoletes": ["other", "another (<1.0)"]}
@@ -344,19 +344,19 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         self.assertIn("Obsoletes: other", meta)
         self.assertIn("Obsoletes: another (<1.0)", meta)
 
-    def test_obsoletes_illegal(self):
+    eleza test_obsoletes_illegal(self):
         self.assertRaises(ValueError, Distribution,
                           {"name": "package",
                            "version": "1.0",
                            "obsoletes": ["my.pkg (splat)"]})
 
-    def test_obsoletes_to_list(self):
+    eleza test_obsoletes_to_list(self):
         attrs = {"name": "package",
                  "obsoletes": iter(["other"])}
         dist = Distribution(attrs)
         self.assertIsInstance(dist.metadata.obsoletes, list)
 
-    def test_classifier(self):
+    eleza test_classifier(self):
         attrs = {'name': 'Boa', 'version': '3.0',
                  'classifiers': ['Programming Language :: Python :: 3']}
         dist = Distribution(attrs)
@@ -365,10 +365,10 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         meta = self.format_metadata(dist)
         self.assertIn('Metadata-Version: 1.1', meta)
 
-    def test_classifier_invalid_type(self):
+    eleza test_classifier_invalid_type(self):
         attrs = {'name': 'Boa', 'version': '3.0',
                  'classifiers': ('Programming Language :: Python :: 3',)}
-        with captured_stderr() as error:
+        ukijumuisha captured_stderr() as error:
             d = Distribution(attrs)
         # should have warning about passing a non-list
         self.assertIn('should be a list', error.getvalue())
@@ -377,17 +377,17 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         self.assertEqual(d.metadata.classifiers,
                          list(attrs['classifiers']))
 
-    def test_keywords(self):
+    eleza test_keywords(self):
         attrs = {'name': 'Monty', 'version': '1.0',
                  'keywords': ['spam', 'eggs', 'life of brian']}
         dist = Distribution(attrs)
         self.assertEqual(dist.get_keywords(),
                          ['spam', 'eggs', 'life of brian'])
 
-    def test_keywords_invalid_type(self):
+    eleza test_keywords_invalid_type(self):
         attrs = {'name': 'Monty', 'version': '1.0',
                  'keywords': ('spam', 'eggs', 'life of brian')}
-        with captured_stderr() as error:
+        ukijumuisha captured_stderr() as error:
             d = Distribution(attrs)
         # should have warning about passing a non-list
         self.assertIn('should be a list', error.getvalue())
@@ -395,17 +395,17 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         self.assertIsInstance(d.metadata.keywords, list)
         self.assertEqual(d.metadata.keywords, list(attrs['keywords']))
 
-    def test_platforms(self):
+    eleza test_platforms(self):
         attrs = {'name': 'Monty', 'version': '1.0',
                  'platforms': ['GNU/Linux', 'Some Evil Platform']}
         dist = Distribution(attrs)
         self.assertEqual(dist.get_platforms(),
                          ['GNU/Linux', 'Some Evil Platform'])
 
-    def test_platforms_invalid_types(self):
+    eleza test_platforms_invalid_types(self):
         attrs = {'name': 'Monty', 'version': '1.0',
                  'platforms': ('GNU/Linux', 'Some Evil Platform')}
-        with captured_stderr() as error:
+        ukijumuisha captured_stderr() as error:
             d = Distribution(attrs)
         # should have warning about passing a non-list
         self.assertIn('should be a list', error.getvalue())
@@ -413,19 +413,19 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         self.assertIsInstance(d.metadata.platforms, list)
         self.assertEqual(d.metadata.platforms, list(attrs['platforms']))
 
-    def test_download_url(self):
+    eleza test_download_url(self):
         attrs = {'name': 'Boa', 'version': '3.0',
                  'download_url': 'http://example.org/boa'}
         dist = Distribution(attrs)
         meta = self.format_metadata(dist)
         self.assertIn('Metadata-Version: 1.1', meta)
 
-    def test_long_description(self):
+    eleza test_long_description(self):
         long_desc = textwrap.dedent("""\
         example::
               We start here
-            and endelea here
-          and end here.""")
+            na endelea here
+          na end here.""")
         attrs = {"name": "package",
                  "version": "1.0",
                  "long_description": long_desc}
@@ -435,10 +435,10 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         meta = meta.replace('\n' + 8 * ' ', '\n')
         self.assertIn(long_desc, meta)
 
-    def test_custom_pydistutils(self):
+    eleza test_custom_pydistutils(self):
         # fixes #2166
-        # make sure pydistutils.cfg is found
-        if os.name == 'posix':
+        # make sure pydistutils.cfg ni found
+        ikiwa os.name == 'posix':
             user_filename = ".pydistutils.cfg"
         isipokua:
             user_filename = "pydistutils.cfg"
@@ -455,43 +455,43 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
             dist = Distribution()
 
             # linux-style
-            if sys.platform in ('linux', 'darwin'):
+            ikiwa sys.platform kwenye ('linux', 'darwin'):
                 os.environ['HOME'] = temp_dir
                 files = dist.find_config_files()
                 self.assertIn(user_filename, files)
 
             # win32-style
-            if sys.platform == 'win32':
+            ikiwa sys.platform == 'win32':
                 # home drive should be found
                 os.environ['USERPROFILE'] = temp_dir
                 files = dist.find_config_files()
                 self.assertIn(user_filename, files,
-                              '%r sio found in %r' % (user_filename, files))
+                              '%r sio found kwenye %r' % (user_filename, files))
         mwishowe:
             os.remove(user_filename)
 
-    def test_fix_help_options(self):
+    eleza test_fix_help_options(self):
         help_tuples = [('a', 'b', 'c', 'd'), (1, 2, 3, 4)]
         fancy_options = fix_help_options(help_tuples)
         self.assertEqual(fancy_options[0], ('a', 'b', 'c'))
         self.assertEqual(fancy_options[1], (1, 2, 3))
 
-    def test_show_help(self):
-        # smoke test, just makes sure some help is displayed
+    eleza test_show_help(self):
+        # smoke test, just makes sure some help ni displayed
         self.addCleanup(log.set_threshold, log._global_log.threshold)
         dist = Distribution()
         sys.argv = []
         dist.help = 1
         dist.script_name = 'setup.py'
-        with captured_stdout() as s:
+        ukijumuisha captured_stdout() as s:
             dist.parse_command_line()
 
-        output = [line for line in s.getvalue().split('\n')
-                  if line.strip() != '']
-        self.assertTrue(output)
+        output = [line kila line kwenye s.getvalue().split('\n')
+                  ikiwa line.strip() != '']
+        self.assertKweli(output)
 
 
-    def test_read_metadata(self):
+    eleza test_read_metadata(self):
         attrs = {"name": "package",
                  "version": "1.0",
                  "long_description": "desc",
@@ -515,14 +515,14 @@ class MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         self.assertEqual(metadata.download_url, 'http://example.com')
         self.assertEqual(metadata.keywords, ['one', 'two'])
         self.assertEqual(metadata.platforms, ['UNKNOWN'])
-        self.assertEqual(metadata.obsoletes, None)
+        self.assertEqual(metadata.obsoletes, Tupu)
         self.assertEqual(metadata.requires, ['foo'])
 
-def test_suite():
+eleza test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(DistributionTestCase))
     suite.addTest(unittest.makeSuite(MetadataTestCase))
-    return suite
+    rudisha suite
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

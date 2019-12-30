@@ -27,7 +27,7 @@ kutoka copy agiza copy
 # If you add tests that are useful under -S, this skip should be moved
 # to the kundi level.
 ikiwa sys.flags.no_site:
-    ashiria unittest.SkipTest("Python was invoked ukijumuisha -S")
+     ashiria unittest.SkipTest("Python was invoked ukijumuisha -S")
 
 agiza site
 
@@ -45,8 +45,8 @@ eleza setUpModule():
             os.makedirs(site.USER_SITE)
             # modify sys.path: will be restored by tearDownModule()
             site.addsitedir(site.USER_SITE)
-        tatizo PermissionError kama exc:
-            ashiria unittest.SkipTest('unable to create user site directory (%r): %s'
+        except PermissionError as exc:
+             ashiria unittest.SkipTest('unable to create user site directory (%r): %s'
                                     % (site.USER_SITE, exc))
 
 
@@ -95,18 +95,18 @@ kundi HelperFunctionsTests(unittest.TestCase):
         kila entry kwenye [site.makepath(path)[1] kila path kwenye sys.path
                         ikiwa path na os.path.exists(path)]:
             self.assertIn(entry, dir_set,
-                          "%s kutoka sys.path sio found kwenye set rudishaed "
+                          "%s kutoka sys.path sio found kwenye set returned "
                           "by _init_pathinfo(): %s" % (entry, dir_set))
 
     eleza pth_file_tests(self, pth_file):
         """Contain common code kila testing results of reading a .pth file"""
         self.assertIn(pth_file.imported, sys.modules,
-                      "%s haiko kwenye sys.modules" % pth_file.imported)
+                      "%s sio kwenye sys.modules" % pth_file.imported)
         self.assertIn(site.makepath(pth_file.good_dir_path)[0], sys.path)
         self.assertUongo(os.path.exists(pth_file.bad_dir_path))
 
     eleza test_addpackage(self):
-        # Make sure addpackage() agizas ikiwa the line starts ukijumuisha 'agiza',
+        # Make sure addpackage() imports ikiwa the line starts ukijumuisha 'import',
         # adds directories to sys.path kila any line kwenye the file that ni sio a
         # comment ama agiza that ni a valid directory name kila where the .pth
         # file resides; invalid directories are sio added
@@ -125,7 +125,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
         pth_dir = os.path.abspath(pth_dir)
         pth_basename = pth_name + '.pth'
         pth_fn = os.path.join(pth_dir, pth_basename)
-        ukijumuisha open(pth_fn, 'w', encoding='utf-8') kama pth_file:
+        ukijumuisha open(pth_fn, 'w', encoding='utf-8') as pth_file:
             self.addCleanup(lambda: os.remove(pth_fn))
             pth_file.write(contents)
         rudisha pth_dir, pth_basename
@@ -133,7 +133,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
     eleza test_addpackage_import_bad_syntax(self):
         # Issue 10642
         pth_dir, pth_fn = self.make_pth("agiza bad-syntax\n")
-        ukijumuisha captured_stderr() kama err_out:
+        ukijumuisha captured_stderr() as err_out:
             site.addpackage(pth_dir, pth_fn, set())
         self.assertRegex(err_out.getvalue(), "line 1")
         self.assertRegex(err_out.getvalue(),
@@ -148,7 +148,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
     eleza test_addpackage_import_bad_exec(self):
         # Issue 10642
         pth_dir, pth_fn = self.make_pth("randompath\nagiza nosuchmodule\n")
-        ukijumuisha captured_stderr() kama err_out:
+        ukijumuisha captured_stderr() as err_out:
             site.addpackage(pth_dir, pth_fn, set())
         self.assertRegex(err_out.getvalue(), "line 2")
         self.assertRegex(err_out.getvalue(),
@@ -160,7 +160,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
     eleza test_addpackage_import_bad_pth_file(self):
         # Issue 5258
         pth_dir, pth_fn = self.make_pth("abc\x00def\n")
-        ukijumuisha captured_stderr() kama err_out:
+        ukijumuisha captured_stderr() as err_out:
             self.assertUongo(site.addpackage(pth_dir, pth_fn, set()))
         self.assertEqual(err_out.getvalue(), "")
         kila path kwenye sys.path:
@@ -246,7 +246,7 @@ kundi HelperFunctionsTests(unittest.TestCase):
         agiza sysconfig
         sysconfig._CONFIG_VARS = Tupu
 
-        ukijumuisha EnvironmentVarGuard() kama environ:
+        ukijumuisha EnvironmentVarGuard() as environ:
             environ['PYTHONUSERBASE'] = 'xoxo'
             self.assertKweli(site.getuserbase().startswith('xoxo'),
                             site.getuserbase())
@@ -280,12 +280,12 @@ kundi HelperFunctionsTests(unittest.TestCase):
 
     eleza test_no_home_directory(self):
         # bpo-10496: getuserbase() na getusersitepackages() must sio fail if
-        # the current user has no home directory (ikiwa expanduser() rudishas the
+        # the current user has no home directory (ikiwa expanduser() returns the
         # path unchanged).
         site.USER_SITE = Tupu
         site.USER_BASE = Tupu
 
-        ukijumuisha EnvironmentVarGuard() kama environ, \
+        ukijumuisha EnvironmentVarGuard() as environ, \
              mock.patch('os.path.expanduser', lambda path: path):
 
             toa environ['PYTHONUSERBASE']
@@ -298,8 +298,8 @@ kundi HelperFunctionsTests(unittest.TestCase):
             user_site = site.getusersitepackages()
             self.assertKweli(user_site.startswith(user_base), user_site)
 
-        ukijumuisha mock.patch('os.path.isdir', rudisha_value=Uongo) kama mock_isdir, \
-             mock.patch.object(site, 'addsitedir') kama mock_addsitedir, \
+        ukijumuisha mock.patch('os.path.isdir', return_value=Uongo) as mock_isdir, \
+             mock.patch.object(site, 'addsitedir') as mock_addsitedir, \
              support.swap_attr(site, 'ENABLE_USER_SITE', Kweli):
 
             # addusersitepackages() must sio add user_site to sys.path
@@ -328,7 +328,7 @@ kundi PthFile(object):
         self.bad_dir_path = os.path.join(self.base_dir, self.bad_dirname)
 
     eleza create(self):
-        """Create a .pth file ukijumuisha a comment, blank lines, an ``agiza
+        """Create a .pth file ukijumuisha a comment, blank lines, an ``import
         <self.imported>``, a line ukijumuisha self.good_dirname, na a line with
         self.bad_dirname.
 
@@ -368,7 +368,7 @@ kundi PthFile(object):
             os.rmdir(self.bad_dir_path)
 
 kundi ImportSideEffectTests(unittest.TestCase):
-    """Test side-effects kutoka agizaing 'site'."""
+    """Test side-effects kutoka importing 'site'."""
 
     eleza setUp(self):
         """Make a copy of sys.path"""
@@ -380,7 +380,7 @@ kundi ImportSideEffectTests(unittest.TestCase):
 
     eleza test_abs_paths(self):
         # Make sure all imported modules have their __file__ na __cached__
-        # attributes kama absolute paths.  Arranging to put the Lib directory on
+        # attributes as absolute paths.  Arranging to put the Lib directory on
         # PYTHONPATH would cause the os module to have a relative path for
         # __file__ ikiwa abs_paths() does sio get run.  sys na builtins (the
         # only other modules imported before site.py runs) do sio have
@@ -388,7 +388,7 @@ kundi ImportSideEffectTests(unittest.TestCase):
         jaribu:
             parent = os.path.relpath(os.path.dirname(os.__file__))
             cwd = os.getcwd()
-        tatizo ValueError:
+        except ValueError:
             # Failure to get relpath probably means we need to chdir
             # to the same drive.
             cwd, parent = os.path.split(os.path.dirname(os.__file__))
@@ -452,7 +452,7 @@ kundi ImportSideEffectTests(unittest.TestCase):
         # Test that the build directory's Modules directory ni used when it
         # should be.
         # XXX: implement
-        pita
+        pass
 
     eleza test_setting_quit(self):
         # 'quit' na 'exit' should be injected into builtins
@@ -481,11 +481,11 @@ kundi ImportSideEffectTests(unittest.TestCase):
 
     eleza test_sitecustomize_executed(self):
         # If sitecustomize ni available, it should have been imported.
-        ikiwa "sitecustomize" haiko kwenye sys.modules:
+        ikiwa "sitecustomize" sio kwenye sys.modules:
             jaribu:
                 agiza sitecustomize
-            tatizo ImportError:
-                pita
+            except ImportError:
+                pass
             isipokua:
                 self.fail("sitecustomize sio imported automatically")
 
@@ -502,16 +502,16 @@ kundi ImportSideEffectTests(unittest.TestCase):
         req = urllib.request.Request(url, method='HEAD')
         jaribu:
             ukijumuisha test.support.transient_internet(url):
-                ukijumuisha urllib.request.urlopen(req) kama data:
+                ukijumuisha urllib.request.urlopen(req) as data:
                     code = data.getcode()
-        tatizo urllib.error.HTTPError kama e:
+        except urllib.error.HTTPError as e:
             code = e.code
         self.assertEqual(code, 200, msg="Can't find " + url)
 
 
 kundi StartupImportTests(unittest.TestCase):
 
-    eleza test_startup_agizas(self):
+    eleza test_startup_imports(self):
         # This tests checks which modules are loaded by Python when it
         # initially starts upon startup.
         popen = subprocess.Popen([sys.executable, '-I', '-v', '-c',
@@ -568,7 +568,7 @@ kundi _pthFileTests(unittest.TestCase):
         exe_file = os.path.join(temp_dir, os.path.split(sys.executable)[1])
         shutil.copy(sys.executable, exe_file)
         _pth_file = os.path.splitext(exe_file)[0] + '._pth'
-        ukijumuisha open(_pth_file, 'w') kama f:
+        ukijumuisha open(_pth_file, 'w') as f:
             kila line kwenye lines:
                 andika(line, file=f)
         rudisha exe_file
@@ -597,7 +597,7 @@ kundi _pthFileTests(unittest.TestCase):
             pth_lines)
 
         env = os.environ.copy()
-        env['PYTHONPATH'] = 'kutoka-env'
+        env['PYTHONPATH'] = 'from-env'
         env['PATH'] = '{};{}'.format(exe_prefix, os.getenv('PATH'))
         output = subprocess.check_output([exe_file, '-c',
             'agiza sys; andika("\\n".join(sys.path) ikiwa sys.flags.no_site isipokua "")'
@@ -622,15 +622,15 @@ kundi _pthFileTests(unittest.TestCase):
         ])
         sys_prefix = os.path.dirname(exe_file)
         env = os.environ.copy()
-        env['PYTHONPATH'] = 'kutoka-env'
+        env['PYTHONPATH'] = 'from-env'
         env['PATH'] = '{};{}'.format(exe_prefix, os.getenv('PATH'))
         rc = subprocess.call([exe_file, '-c',
-            'agiza sys; sys.exit(sio sys.flags.no_site na '
-            '%r kwenye sys.path na %r kwenye sys.path na %r haiko kwenye sys.path na '
-            'all("\\r" haiko kwenye p na "\\n" haiko kwenye p kila p kwenye sys.path))' % (
+            'agiza sys; sys.exit(not sys.flags.no_site na '
+            '%r kwenye sys.path na %r kwenye sys.path na %r sio kwenye sys.path na '
+            'all("\\r" sio kwenye p na "\\n" sio kwenye p kila p kwenye sys.path))' % (
                 os.path.join(sys_prefix, 'fake-path-name'),
                 libpath,
-                os.path.join(sys_prefix, 'kutoka-env'),
+                os.path.join(sys_prefix, 'from-env'),
             )], env=env)
         self.assertKweli(rc, "sys.path ni incorrect")
 

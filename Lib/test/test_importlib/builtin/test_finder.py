@@ -33,12 +33,12 @@ kundi FindSpecTests(abc.FinderTests):
 
     eleza test_failure(self):
         name = 'importlib'
-        assert name haiko kwenye sys.builtin_module_names
+        assert name sio kwenye sys.builtin_module_names
         spec = self.machinery.BuiltinImporter.find_spec(name)
         self.assertIsTupu(spec)
 
     eleza test_ignore_path(self):
-        # The value kila 'path' should always trigger a failed agiza.
+        # The value kila 'path' should always trigger a failed import.
         ukijumuisha util.uncache(util.BUILTINS.good_name):
             spec = self.machinery.BuiltinImporter.find_spec(util.BUILTINS.good_name,
                                                             ['pkg'])
@@ -69,12 +69,12 @@ kundi FinderTests(abc.FinderTests):
     test_module_in_package = Tupu
 
     eleza test_failure(self):
-        assert 'importlib' haiko kwenye sys.builtin_module_names
+        assert 'importlib' sio kwenye sys.builtin_module_names
         loader = self.machinery.BuiltinImporter.find_module('importlib')
         self.assertIsTupu(loader)
 
     eleza test_ignore_path(self):
-        # The value kila 'path' should always trigger a failed agiza.
+        # The value kila 'path' should always trigger a failed import.
         ukijumuisha util.uncache(util.BUILTINS.good_name):
             loader = self.machinery.BuiltinImporter.find_module(util.BUILTINS.good_name,
                                                             ['pkg'])

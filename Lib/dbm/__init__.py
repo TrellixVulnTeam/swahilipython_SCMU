@@ -2,188 +2,188 @@
 
 Use
 
-        import dbm
+        agiza dbm
         d = dbm.open(file, 'w', 0o666)
 
-The returned object is a dbm.gnu, dbm.ndbm or dbm.dumb object, dependent on the
-type of database being opened (determined by the whichdb function) in the case
-of an existing dbm. If the dbm does sio exist and the create or new flag ('c'
+The returned object ni a dbm.gnu, dbm.ndbm ama dbm.dumb object, dependent on the
+type of database being opened (determined by the whichdb function) kwenye the case
+of an existing dbm. If the dbm does sio exist na the create ama new flag ('c'
 or 'n') was specified, the dbm type will be determined by the availability of
-the modules (tested in the above order).
+the modules (tested kwenye the above order).
 
-It has the following interface (key and data are strings):
+It has the following interface (key na data are strings):
 
         d[key] = data   # store data at key (may override data at
                         # existing key)
-        data = d[key]   # retrieve data at key (ashiria KeyError if no
+        data = d[key]   # retrieve data at key ( ashiria KeyError ikiwa no
                         # such key)
         toa d[key]      # delete data stored at key (raises KeyError
-                        # if no such key)
-        flag = key in d # true if the key exists
-        list = d.keys() # return a list of all existing keys (slow!)
+                        # ikiwa no such key)
+        flag = key kwenye d # true ikiwa the key exists
+        list = d.keys() # rudisha a list of all existing keys (slow!)
 
-Future versions may change the order in which implementations are
-tested for existence, and add interfaces to other dbm-like
+Future versions may change the order kwenye which implementations are
+tested kila existence, na add interfaces to other dbm-like
 implementations.
 """
 
 __all__ = ['open', 'whichdb', 'error']
 
-import io
-import os
-import struct
-import sys
+agiza io
+agiza os
+agiza struct
+agiza sys
 
 
-class error(Exception):
+kundi error(Exception):
     pass
 
 _names = ['dbm.gnu', 'dbm.ndbm', 'dbm.dumb']
-_defaultmod = None
+_defaultmod = Tupu
 _modules = {}
 
 error = (error, OSError)
 
 jaribu:
-    from dbm import ndbm
-tatizo ImportError:
-    ndbm = None
+    kutoka dbm agiza ndbm
+except ImportError:
+    ndbm = Tupu
 
 
-def open(file, flag='r', mode=0o666):
-    """Open or create database at path given by *file*.
+eleza open(file, flag='r', mode=0o666):
+    """Open ama create database at path given by *file*.
 
-    Optional argument *flag* can be 'r' (default) for read-only access, 'w'
-    for read-write access of an existing database, 'c' for read-write access
-    to a new or existing database, and 'n' for read-write access to a new
+    Optional argument *flag* can be 'r' (default) kila read-only access, 'w'
+    kila read-write access of an existing database, 'c' kila read-write access
+    to a new ama existing database, na 'n' kila read-write access to a new
     database.
 
-    Note: 'r' and 'w' fail if the database doesn't exist; 'c' creates it
-    only if it doesn't exist; and 'n' always creates a new database.
+    Note: 'r' na 'w' fail ikiwa the database doesn't exist; 'c' creates it
+    only ikiwa it doesn't exist; na 'n' always creates a new database.
     """
     global _defaultmod
-    if _defaultmod is None:
-        for name in _names:
+    ikiwa _defaultmod ni Tupu:
+        kila name kwenye _names:
             jaribu:
                 mod = __import__(name, fromlist=['open'])
-            tatizo ImportError:
+            except ImportError:
                 endelea
-            if sio _defaultmod:
+            ikiwa sio _defaultmod:
                 _defaultmod = mod
             _modules[name] = mod
-        if sio _defaultmod:
-            ashiria ImportError("no dbm clone found; tried %s" % _names)
+        ikiwa sio _defaultmod:
+             ashiria ImportError("no dbm clone found; tried %s" % _names)
 
-    # guess the type of an existing database, if sio creating a new one
-    result = whichdb(file) if 'n' haiko kwenye flag isipokua None
-    if result is None:
-        # db doesn't exist or 'n' flag was specified to create a new db
-        if 'c' in flag or 'n' in flag:
-            # file doesn't exist and the new flag was used so use default type
+    # guess the type of an existing database, ikiwa sio creating a new one
+    result = whichdb(file) ikiwa 'n' sio kwenye flag isipokua Tupu
+    ikiwa result ni Tupu:
+        # db doesn't exist ama 'n' flag was specified to create a new db
+        ikiwa 'c' kwenye flag ama 'n' kwenye flag:
+            # file doesn't exist na the new flag was used so use default type
             mod = _defaultmod
         isipokua:
-            ashiria error[0]("db file doesn't exist; "
-                           "use 'c' or 'n' flag to create a new db")
-    lasivyo result == "":
+             ashiria error[0]("db file doesn't exist; "
+                           "use 'c' ama 'n' flag to create a new db")
+    elikiwa result == "":
         # db type cannot be determined
-        ashiria error[0]("db type could sio be determined")
-    lasivyo result haiko kwenye _modules:
-        ashiria error[0]("db type is {0}, but the module ni sio "
+         ashiria error[0]("db type could sio be determined")
+    elikiwa result sio kwenye _modules:
+         ashiria error[0]("db type ni {0}, but the module ni sio "
                        "available".format(result))
     isipokua:
         mod = _modules[result]
-    return mod.open(file, flag, mode)
+    rudisha mod.open(file, flag, mode)
 
 
-def whichdb(filename):
+eleza whichdb(filename):
     """Guess which db package to use to open a db file.
 
     Return values:
 
-    - None if the database file can't be read;
-    - empty string if the file can be read but can't be recognized
-    - the name of the dbm submodule (e.g. "ndbm" or "gnu") if recognized.
+    - Tupu ikiwa the database file can't be read;
+    - empty string ikiwa the file can be read but can't be recognized
+    - the name of the dbm submodule (e.g. "ndbm" ama "gnu") ikiwa recognized.
 
-    Importing the given module may still fail, and opening the
+    Importing the given module may still fail, na opening the
     database using that module may still fail.
     """
 
-    # Check for ndbm first -- this has a .pag and a .dir file
+    # Check kila ndbm first -- this has a .pag na a .dir file
     jaribu:
         f = io.open(filename + ".pag", "rb")
         f.close()
         f = io.open(filename + ".dir", "rb")
         f.close()
-        return "dbm.ndbm"
-    tatizo OSError:
+        rudisha "dbm.ndbm"
+    except OSError:
         # some dbm emulations based on Berkeley DB generate a .db file
         # some do not, but they should be caught by the bsd checks
         jaribu:
             f = io.open(filename + ".db", "rb")
             f.close()
             # guarantee we can actually open the file using dbm
-            # kind of overkill, but since we are dealing with emulations
+            # kind of overkill, but since we are dealing ukijumuisha emulations
             # it seems like a prudent step
-            if ndbm ni sio None:
+            ikiwa ndbm ni sio Tupu:
                 d = ndbm.open(filename)
                 d.close()
-                return "dbm.ndbm"
-        tatizo OSError:
+                rudisha "dbm.ndbm"
+        except OSError:
             pass
 
-    # Check for dumbdbm next -- this has a .dir and a .dat file
+    # Check kila dumbdbm next -- this has a .dir na a .dat file
     jaribu:
-        # First check for presence of files
+        # First check kila presence of files
         os.stat(filename + ".dat")
         size = os.stat(filename + ".dir").st_size
-        # dumbdbm files with no keys are empty
-        if size == 0:
-            return "dbm.dumb"
+        # dumbdbm files ukijumuisha no keys are empty
+        ikiwa size == 0:
+            rudisha "dbm.dumb"
         f = io.open(filename + ".dir", "rb")
         jaribu:
-            if f.read(1) in (b"'", b'"'):
-                return "dbm.dumb"
+            ikiwa f.read(1) kwenye (b"'", b'"'):
+                rudisha "dbm.dumb"
         mwishowe:
             f.close()
-    tatizo OSError:
+    except OSError:
         pass
 
-    # See if the file exists, return None if not
+    # See ikiwa the file exists, rudisha Tupu ikiwa not
     jaribu:
         f = io.open(filename, "rb")
-    tatizo OSError:
-        return None
+    except OSError:
+        rudisha Tupu
 
-    with f:
+    ukijumuisha f:
         # Read the start of the file -- the magic number
         s16 = f.read(16)
     s = s16[0:4]
 
-    # Return "" if sio at least 4 bytes
-    if len(s) != 4:
-        return ""
+    # Return "" ikiwa sio at least 4 bytes
+    ikiwa len(s) != 4:
+        rudisha ""
 
-    # Convert to 4-byte int in native byte order -- return "" if impossible
+    # Convert to 4-byte int kwenye native byte order -- rudisha "" ikiwa impossible
     jaribu:
         (magic,) = struct.unpack("=l", s)
-    tatizo struct.error:
-        return ""
+    except struct.error:
+        rudisha ""
 
-    # Check for GNU dbm
-    if magic in (0x13579ace, 0x13579acd, 0x13579acf):
-        return "dbm.gnu"
+    # Check kila GNU dbm
+    ikiwa magic kwenye (0x13579ace, 0x13579acd, 0x13579acf):
+        rudisha "dbm.gnu"
 
     # Later versions of Berkeley db hash file have a 12-byte pad in
     # front of the file type
     jaribu:
         (magic,) = struct.unpack("=l", s16[-4:])
-    tatizo struct.error:
-        return ""
+    except struct.error:
+        rudisha ""
 
     # Unknown
-    return ""
+    rudisha ""
 
 
-if __name__ == "__main__":
-    for filename in sys.argv[1:]:
-        print(whichdb(filename) ama "UNKNOWN", filename)
+ikiwa __name__ == "__main__":
+    kila filename kwenye sys.argv[1:]:
+        andika(whichdb(filename) ama "UNKNOWN", filename)

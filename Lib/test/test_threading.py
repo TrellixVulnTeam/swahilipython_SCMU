@@ -143,8 +143,8 @@ kundi ThreadTests(BaseTestCase):
             andika('ukijumuisha 256 KiB thread stack size...')
         jaribu:
             threading.stack_size(262144)
-        tatizo _thread.error:
-            ashiria unittest.SkipTest(
+        except _thread.error:
+             ashiria unittest.SkipTest(
                 'platform does sio support changing thread stack size')
         self.test_various_ops()
         threading.stack_size(0)
@@ -155,8 +155,8 @@ kundi ThreadTests(BaseTestCase):
             andika('ukijumuisha 1 MiB thread stack size...')
         jaribu:
             threading.stack_size(0x100000)
-        tatizo _thread.error:
-            ashiria unittest.SkipTest(
+        except _thread.error:
+             ashiria unittest.SkipTest(
                 'platform does sio support changing thread stack size')
         self.test_various_ops()
         threading.stack_size(0)
@@ -191,7 +191,7 @@ kundi ThreadTests(BaseTestCase):
         set_async_exc.argtypes = (ctypes.c_ulong, ctypes.py_object)
 
         kundi AsyncExc(Exception):
-            pita
+            pass
 
         exception = ctypes.py_object(AsyncExc)
 
@@ -205,18 +205,18 @@ kundi ThreadTests(BaseTestCase):
             # The exception ni async, so we might have to keep the VM busy until
             # it notices.
             wakati Kweli:
-                pita
-        tatizo AsyncExc:
-            pita
+                pass
+        except AsyncExc:
+            pass
         isipokua:
             # This code ni unreachable but it reflects the intent. If we wanted
             # to be smarter the above loop wouldn't be infinite.
-            self.fail("AsyncExc sio ashiriad")
+            self.fail("AsyncExc sio raised")
         jaribu:
             self.assertEqual(result, 1) # one thread state modified
-        tatizo UnboundLocalError:
-            # The exception was ashiriad too quickly kila us to get the result.
-            pita
+        except UnboundLocalError:
+            # The exception was raised too quickly kila us to get the result.
+            pass
 
         # `worker_started` ni set by the thread when it's inside a try/except
         # block waiting to catch the asynchronously set AsyncExc exception.
@@ -234,7 +234,7 @@ kundi ThreadTests(BaseTestCase):
                     wakati Kweli:
                         worker_started.set()
                         time.sleep(0.1)
-                tatizo AsyncExc:
+                except AsyncExc:
                     self.finished = Kweli
                     worker_saw_exception.set()
 
@@ -250,7 +250,7 @@ kundi ThreadTests(BaseTestCase):
         result = set_async_exc(-1, exception)
         self.assertEqual(result, 0)  # no thread states modified
 
-        # Now ashiria an exception kwenye the worker thread.
+        # Now  ashiria an exception kwenye the worker thread.
         ikiwa verbose:
             andika("    waiting kila worker thread to get started")
         ret = worker_started.wait()
@@ -259,7 +259,7 @@ kundi ThreadTests(BaseTestCase):
             andika("    verifying worker hasn't exited")
         self.assertUongo(t.finished)
         ikiwa verbose:
-            andika("    attempting to ashiria asynch exception kwenye worker")
+            andika("    attempting to  ashiria asynch exception kwenye worker")
         result = set_async_exc(t.id, exception)
         self.assertEqual(result, 1) # one thread state modified
         ikiwa verbose:
@@ -275,7 +275,7 @@ kundi ThreadTests(BaseTestCase):
     eleza test_limbo_cleanup(self):
         # Issue 7481: Failure to start thread should cleanup the limbo map.
         eleza fail_new_thread(*args):
-            ashiria threading.ThreadError()
+             ashiria threading.ThreadError()
         _start_new_thread = threading._start_new_thread
         threading._start_new_thread = fail_new_thread
         jaribu:
@@ -296,7 +296,7 @@ kundi ThreadTests(BaseTestCase):
         rc, out, err = assert_python_failure("-c", """ikiwa 1:
             agiza ctypes, sys, time, _thread
 
-            # This lock ni used kama a simple event variable.
+            # This lock ni used as a simple event variable.
             ready = _thread.allocate_lock()
             ready.acquire()
 
@@ -359,14 +359,14 @@ kundi ThreadTests(BaseTestCase):
                     andika("Woke up, sleep function is:", sleep)
 
                 threading.Thread(target=child).start()
-                ashiria SystemExit
+                 ashiria SystemExit
             """)
         self.assertEqual(out.strip(),
             b"Woke up, sleep function is: <built-in function sleep>")
         self.assertEqual(err, b"")
 
     eleza test_enumerate_after_join(self):
-        # Try hard to trigger #1703448: a thread ni still rudishaed in
+        # Try hard to trigger #1703448: a thread ni still returned in
         # threading.enumerate() after it has been join()ed.
         enum = threading.enumerate
         old_interval = sys.getswitchinterval()
@@ -384,20 +384,20 @@ kundi ThreadTests(BaseTestCase):
 
     eleza test_no_refcycle_through_target(self):
         kundi RunSelfFunction(object):
-            eleza __init__(self, should_ashiria):
+            eleza __init__(self, should_raise):
                 # The links kwenye this refcycle kutoka Thread back to self
                 # should be cleaned up when the thread completes.
-                self.should_ashiria = should_ashiria
+                self.should_ ashiria = should_raise
                 self.thread = threading.Thread(target=self._run,
                                                args=(self,),
                                                kwargs={'yet_another':self})
                 self.thread.start()
 
             eleza _run(self, other_ref, yet_another):
-                ikiwa self.should_ashiria:
-                    ashiria SystemExit
+                ikiwa self.should_raise:
+                     ashiria SystemExit
 
-        cyclic_object = RunSelfFunction(should_ashiria=Uongo)
+        cyclic_object = RunSelfFunction(should_raise=Uongo)
         weak_cyclic_object = weakref.ref(cyclic_object)
         cyclic_object.thread.join()
         toa cyclic_object
@@ -405,7 +405,7 @@ kundi ThreadTests(BaseTestCase):
                          msg=('%d references still around' %
                               sys.getrefcount(weak_cyclic_object())))
 
-        raising_cyclic_object = RunSelfFunction(should_ashiria=Kweli)
+        raising_cyclic_object = RunSelfFunction(should_raise=Kweli)
         weak_raising_cyclic_object = weakref.ref(raising_cyclic_object)
         raising_cyclic_object.thread.join()
         toa raising_cyclic_object
@@ -668,7 +668,7 @@ kundi ThreadTests(BaseTestCase):
         self.assertIn("started", repr(t))
         finish.release()
         # "stopped" should appear kwenye the repr kwenye a reasonable amount of time.
-        # Implementation detail:  kama of this writing, that's trivially true
+        # Implementation detail:  as of this writing, that's trivially true
         # ikiwa .join() ni called, na almost trivially true ikiwa .is_alive() is
         # called.  The detail we're testing here ni that "stopped" shows up
         # "all on its own".
@@ -681,7 +681,7 @@ kundi ThreadTests(BaseTestCase):
         t.join()
 
     eleza test_BoundedSemaphore_limit(self):
-        # BoundedSemaphore should ashiria ValueError ikiwa released too often.
+        # BoundedSemaphore should  ashiria ValueError ikiwa released too often.
         kila limit kwenye range(1, 10):
             bs = threading.BoundedSemaphore(limit)
             threads = [threading.Thread(target=bs.acquire)
@@ -815,7 +815,7 @@ kundi ThreadJoinOnShutdown(BaseTestCase):
     @unittest.skipIf(sys.platform kwenye platforms_to_skip, "due to known OS bug")
     eleza test_3_join_in_forked_from_thread(self):
         # Like the test above, but fork() was called kutoka a worker thread
-        # In the forked process, the main Thread object must be marked kama stopped.
+        # In the forked process, the main Thread object must be marked as stopped.
 
         script = """ikiwa 1:
             main_thread = threading.current_thread()
@@ -853,9 +853,9 @@ kundi ThreadJoinOnShutdown(BaseTestCase):
             eleza random_io():
                 '''Loop kila a wakati sleeping random tiny amounts na doing some I/O.'''
                 wakati Kweli:
-                    ukijumuisha open(os.__file__, 'rb') kama in_f:
+                    ukijumuisha open(os.__file__, 'rb') as in_f:
                         stuff = in_f.read(200)
-                        ukijumuisha open(os.devnull, 'wb') kama null_f:
+                        ukijumuisha open(os.devnull, 'wb') as null_f:
                             null_f.write(stuff)
                             time.sleep(random.random() / 1995)
                     thread_has_run.add(threading.current_thread())
@@ -960,8 +960,8 @@ kundi SubinterpThreadingTests(BaseTestCase):
         self.assertEqual(os.read(r, 1), b"x")
 
     eleza test_threads_join_2(self):
-        # Same kama above, but a delay gets introduced after the thread's
-        # Python code rudishaed but before the thread state ni deleted.
+        # Same as above, but a delay gets introduced after the thread's
+        # Python code returned but before the thread state ni deleted.
         # To achieve this, we register a thread-local object which sleeps
         # a bit when deallocated.
         r, w = os.pipe()
@@ -1023,7 +1023,7 @@ kundi SubinterpThreadingTests(BaseTestCase):
 
 
 kundi ThreadingExceptionTests(BaseTestCase):
-    # A RuntimeError should be ashiriad ikiwa Thread.start() ni called
+    # A RuntimeError should be raised ikiwa Thread.start() ni called
     # multiple times.
     eleza test_start_thread_again(self):
         thread = threading.Thread()
@@ -1064,8 +1064,8 @@ kundi ThreadingExceptionTests(BaseTestCase):
             eleza outer():
                 jaribu:
                     recurse()
-                tatizo RecursionError:
-                    pita
+                except RecursionError:
+                    pass
 
             w = threading.Thread(target=outer)
             w.start()
@@ -1162,17 +1162,17 @@ kundi ThreadingExceptionTests(BaseTestCase):
         self.assertEqual(out, b'')
         self.assertNotIn("Unhandled exception", err.decode())
 
-    eleza test_bare_ashiria_in_brand_new_thread(self):
-        eleza bare_ashiria():
-            ashiria
+    eleza test_bare_raise_in_brand_new_thread(self):
+        eleza bare_raise():
+            raise
 
         kundi Issue27558(threading.Thread):
             exc = Tupu
 
             eleza run(self):
                 jaribu:
-                    bare_ashiria()
-                tatizo Exception kama exc:
+                    bare_raise()
+                except Exception as exc:
                     self.exc = exc
 
         thread = Issue27558()
@@ -1186,12 +1186,12 @@ kundi ThreadingExceptionTests(BaseTestCase):
 
 kundi ThreadRunFail(threading.Thread):
     eleza run(self):
-        ashiria ValueError("run failed")
+         ashiria ValueError("run failed")
 
 
 kundi ExceptHookTests(BaseTestCase):
     eleza test_excepthook(self):
-        ukijumuisha support.captured_output("stderr") kama stderr:
+        ukijumuisha support.captured_output("stderr") as stderr:
             thread = ThreadRunFail(name="excepthook thread")
             thread.start()
             thread.join()
@@ -1199,17 +1199,17 @@ kundi ExceptHookTests(BaseTestCase):
         stderr = stderr.getvalue().strip()
         self.assertIn(f'Exception kwenye thread {thread.name}:\n', stderr)
         self.assertIn('Traceback (most recent call last):\n', stderr)
-        self.assertIn('  ashiria ValueError("run failed")', stderr)
+        self.assertIn('   ashiria ValueError("run failed")', stderr)
         self.assertIn('ValueError: run failed', stderr)
 
     @support.cpython_only
     eleza test_excepthook_thread_Tupu(self):
         # threading.excepthook called ukijumuisha thread=Tupu: log the thread
         # identifier kwenye this case.
-        ukijumuisha support.captured_output("stderr") kama stderr:
+        ukijumuisha support.captured_output("stderr") as stderr:
             jaribu:
-                ashiria ValueError("bug")
-            tatizo Exception kama exc:
+                 ashiria ValueError("bug")
+            except Exception as exc:
                 args = threading.ExceptHookArgs([*sys.exc_info(), Tupu])
                 jaribu:
                     threading.excepthook(args)
@@ -1220,7 +1220,7 @@ kundi ExceptHookTests(BaseTestCase):
         stderr = stderr.getvalue().strip()
         self.assertIn(f'Exception kwenye thread {threading.get_ident()}:\n', stderr)
         self.assertIn('Traceback (most recent call last):\n', stderr)
-        self.assertIn('  ashiria ValueError("bug")', stderr)
+        self.assertIn('   ashiria ValueError("bug")', stderr)
         self.assertIn('ValueError: bug', stderr)
 
     eleza test_system_exit(self):
@@ -1229,7 +1229,7 @@ kundi ExceptHookTests(BaseTestCase):
                 sys.exit(1)
 
         # threading.excepthook() silently ignores SystemExit
-        ukijumuisha support.captured_output("stderr") kama stderr:
+        ukijumuisha support.captured_output("stderr") as stderr:
             thread = ThreadExit()
             thread.start()
             thread.join()
@@ -1259,7 +1259,7 @@ kundi ExceptHookTests(BaseTestCase):
 
     eleza test_custom_excepthook_fail(self):
         eleza threading_hook(args):
-            ashiria ValueError("threading_hook failed")
+             ashiria ValueError("threading_hook failed")
 
         err_str = Tupu
 
@@ -1269,7 +1269,7 @@ kundi ExceptHookTests(BaseTestCase):
 
         ukijumuisha support.swap_attr(threading, 'excepthook', threading_hook), \
              support.swap_attr(sys, 'excepthook', sys_hook), \
-             support.captured_output('stderr') kama stderr:
+             support.captured_output('stderr') as stderr:
             thread = ThreadRunFail()
             thread.start()
             thread.join()
@@ -1348,7 +1348,7 @@ kundi MiscTestCase(unittest.TestCase):
 kundi InterruptMainTests(unittest.TestCase):
     eleza test_interrupt_main_subthread(self):
         # Calling start_new_thread ukijumuisha a function that executes interrupt_main
-        # should ashiria KeyboardInterrupt upon completion.
+        # should  ashiria KeyboardInterrupt upon completion.
         eleza call_interrupt():
             _thread.interrupt_main()
         t = threading.Thread(target=call_interrupt)
@@ -1359,7 +1359,7 @@ kundi InterruptMainTests(unittest.TestCase):
 
     eleza test_interrupt_main_mainthread(self):
         # Make sure that ikiwa interrupt_main ni called kwenye main thread that
-        # KeyboardInterrupt ni ashiriad instantly.
+        # KeyboardInterrupt ni raised instantly.
         ukijumuisha self.assertRaises(KeyboardInterrupt):
             _thread.interrupt_main()
 

@@ -28,10 +28,10 @@ ROOT_DIR = os.path.abspath(os.path.normpath(ROOT_DIR))
 LOG_PREFIX = r'[0-9]+:[0-9]+:[0-9]+ (?:load avg: [0-9]+\.[0-9]{2} )?'
 
 TEST_INTERRUPTED = textwrap.dedent("""
-    kutoka signal agiza SIGINT, ashiria_signal
+    kutoka signal agiza SIGINT, raise_signal
     jaribu:
-        ashiria_signal(SIGINT)
-    tatizo ImportError:
+        raise_signal(SIGINT)
+    except ImportError:
         agiza os
         os.kill(os.getpid(), SIGINT)
     """)
@@ -43,14 +43,14 @@ kundi ParseArgsTestCase(unittest.TestCase):
     """
 
     eleza checkError(self, args, msg):
-        ukijumuisha support.captured_stderr() kama err, self.assertRaises(SystemExit):
+        ukijumuisha support.captured_stderr() as err, self.assertRaises(SystemExit):
             libregrtest._parse_args(args)
         self.assertIn(msg, err.getvalue())
 
     eleza test_help(self):
         kila opt kwenye '-h', '--help':
             ukijumuisha self.subTest(opt=opt):
-                ukijumuisha support.captured_stdout() kama out, \
+                ukijumuisha support.captured_stdout() as out, \
                      self.assertRaises(SystemExit):
                     libregrtest._parse_args([opt])
                 self.assertIn('Run Python regression tests.', out.getvalue())
@@ -136,11 +136,11 @@ kundi ParseArgsTestCase(unittest.TestCase):
         self.checkError(['--randseed'], 'expected one argument')
         self.checkError(['--randseed', 'foo'], 'invalid int value')
 
-    eleza test_kutokafile(self):
-        kila opt kwenye '-f', '--kutokafile':
+    eleza test_fromfile(self):
+        kila opt kwenye '-f', '--fromfile':
             ukijumuisha self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, 'foo'])
-                self.assertEqual(ns.kutokafile, 'foo')
+                self.assertEqual(ns.fromfile, 'foo')
                 self.checkError([opt], 'expected one argument')
                 self.checkError([opt, 'foo', '-s'], "don't go together")
 
@@ -169,7 +169,7 @@ kundi ParseArgsTestCase(unittest.TestCase):
         self.assertEqual(ns.match_tests, ['pattern1', 'pattern2'])
 
         self.addCleanup(support.unlink, support.TESTFN)
-        ukijumuisha open(support.TESTFN, "w") kama fp:
+        ukijumuisha open(support.TESTFN, "w") as fp:
             andika('matchfile1', file=fp)
             andika('matchfile2', file=fp)
 
@@ -289,7 +289,7 @@ kundi ParseArgsTestCase(unittest.TestCase):
     eleza test_nowindows(self):
         kila opt kwenye '-n', '--nowindows':
             ukijumuisha self.subTest(opt=opt):
-                ukijumuisha contextlib.redirect_stderr(io.StringIO()) kama stderr:
+                ukijumuisha contextlib.redirect_stderr(io.StringIO()) as stderr:
                     ns = libregrtest._parse_args([opt])
                 self.assertKweli(ns.nowindows)
                 err = stderr.getvalue()
@@ -361,7 +361,7 @@ kundi BaseTestCase(unittest.TestCase):
 
                     kundi Tests(unittest.TestCase):
                         eleza test_empty_test(self):
-                            pita
+                            pass
                 """)
 
         # test_regrtest cannot be run twice kwenye parallel because
@@ -372,12 +372,12 @@ kundi BaseTestCase(unittest.TestCase):
         self.addCleanup(support.unlink, path)
         # Use 'x' mode to ensure that we do sio override existing tests
         jaribu:
-            ukijumuisha open(path, 'x', encoding='utf-8') kama fp:
+            ukijumuisha open(path, 'x', encoding='utf-8') as fp:
                 fp.write(code)
-        tatizo PermissionError kama exc:
+        except PermissionError as exc:
             ikiwa sio sysconfig.is_python_build():
                 self.skipTest("cannot write %s: %s" % (path, exc))
-            ashiria
+            raise
         rudisha name
 
     eleza regex_search(self, regex, output):
@@ -476,14 +476,14 @@ kundi BaseTestCase(unittest.TestCase):
         result = []
         ikiwa failed:
             result.append('FAILURE')
-        lasivyo fail_env_changed na env_changed:
+        elikiwa fail_env_changed na env_changed:
             result.append('ENV CHANGED')
         ikiwa interrupted:
             result.append('INTERRUPTED')
         ikiwa sio any((good, result, failed, interrupted, skipped,
                     env_changed, fail_env_changed)):
             result.append("NO TEST RUN")
-        lasivyo sio result:
+        elikiwa sio result:
             result.append('SUCCESS')
         result = ', '.join(result)
         ikiwa rerun:
@@ -501,7 +501,7 @@ kundi BaseTestCase(unittest.TestCase):
     eleza run_command(self, args, input=Tupu, exitcode=0, **kw):
         ikiwa sio input:
             input = ''
-        ikiwa 'stderr' haiko kwenye kw:
+        ikiwa 'stderr' sio kwenye kw:
             kw['stderr'] = subprocess.PIPE
         proc = subprocess.run(args,
                               universal_newlines=Kweli,
@@ -545,9 +545,9 @@ kundi CheckActualTests(BaseTestCase):
                                              'test*.py')
         rough_counted_test_py_files = len(glob.glob(actual_testsuite_glob))
         # We're sio trying to duplicate test finding logic kwenye here,
-        # just give a rough estimate of how many there should be na
+        # just give a rough estimate of how many there should be and
         # be near that.  This ni a regression test to prevent mishaps
-        # such kama https://bugs.python.org/issue37667 kwenye the future.
+        # such as https://bugs.python.org/issue37667 kwenye the future.
         # If you need to change the values kwenye here during some
         # mythical future test suite reorganization, don't go
         # overboard ukijumuisha logic na keep that goal kwenye mind.
@@ -646,7 +646,7 @@ kundi ProgramsTestCase(BaseTestCase):
         test_args = ['--testdir=%s' % self.tmptestdir]
         ikiwa platform.machine() == 'ARM64':
             test_args.append('-arm64') # ARM 64-bit build
-        lasivyo platform.architecture()[0] == '64bit':
+        elikiwa platform.architecture()[0] == '64bit':
             test_args.append('-x64')   # 64-bit build
         ikiwa sio Py_DEBUG:
             test_args.append('+d')     # Release build, use python.exe
@@ -661,7 +661,7 @@ kundi ProgramsTestCase(BaseTestCase):
         rt_args = ["-q"]             # Quick, don't run tests twice
         ikiwa platform.machine() == 'ARM64':
             rt_args.append('-arm64') # ARM 64-bit build
-        lasivyo platform.architecture()[0] == '64bit':
+        elikiwa platform.architecture()[0] == '64bit':
             rt_args.append('-x64')   # 64-bit build
         ikiwa Py_DEBUG:
             rt_args.append('-d')     # Debug build, use python_d.exe
@@ -701,8 +701,8 @@ kundi ArgsTestCase(BaseTestCase):
                         kutoka test agiza support; support.requires(%r)
                         agiza unittest
                         kundi PassingTest(unittest.TestCase):
-                            eleza test_pita(self):
-                                pita
+                            eleza test_pass(self):
+                                pass
                     """ % resource)
 
             tests[resource] = self.create_test(resource, code)
@@ -745,8 +745,8 @@ kundi ArgsTestCase(BaseTestCase):
         test_random2 = int(match.group(1))
         self.assertEqual(test_random2, test_random)
 
-    eleza test_kutokafile(self):
-        # test --kutokafile
+    eleza test_fromfile(self):
+        # test --fromfile
         tests = [self.create_test() kila index kwenye range(5)]
 
         # Write the list of files using a format similar to regrtest output:
@@ -756,7 +756,7 @@ kundi ArgsTestCase(BaseTestCase):
         self.addCleanup(support.unlink, filename)
 
         # test format '0:00:00 [2/7] test_opcodes -- test_grammar took 0 sec'
-        ukijumuisha open(filename, "w") kama fp:
+        ukijumuisha open(filename, "w") as fp:
             previous = Tupu
             kila index, name kwenye enumerate(tests, 1):
                 line = ("00:00:%02i [%s/%s] %s"
@@ -766,31 +766,31 @@ kundi ArgsTestCase(BaseTestCase):
                 andika(line, file=fp)
                 previous = name
 
-        output = self.run_tests('--kutokafile', filename)
+        output = self.run_tests('--fromfile', filename)
         self.check_executed_tests(output, tests)
 
         # test format '[2/7] test_opcodes'
-        ukijumuisha open(filename, "w") kama fp:
+        ukijumuisha open(filename, "w") as fp:
             kila index, name kwenye enumerate(tests, 1):
                 andika("[%s/%s] %s" % (index, len(tests), name), file=fp)
 
-        output = self.run_tests('--kutokafile', filename)
+        output = self.run_tests('--fromfile', filename)
         self.check_executed_tests(output, tests)
 
         # test format 'test_opcodes'
-        ukijumuisha open(filename, "w") kama fp:
+        ukijumuisha open(filename, "w") as fp:
             kila name kwenye tests:
                 andika(name, file=fp)
 
-        output = self.run_tests('--kutokafile', filename)
+        output = self.run_tests('--fromfile', filename)
         self.check_executed_tests(output, tests)
 
         # test format 'Lib/test/test_opcodes.py'
-        ukijumuisha open(filename, "w") kama fp:
+        ukijumuisha open(filename, "w") as fp:
             kila name kwenye tests:
                 andika('Lib/test/%s.py' % name, file=fp)
 
-        output = self.run_tests('--kutokafile', filename)
+        output = self.run_tests('--fromfile', filename)
         self.check_executed_tests(output, tests)
 
     eleza test_interrupted(self):
@@ -880,7 +880,7 @@ kundi ArgsTestCase(BaseTestCase):
         line2 = '%s leaked [1, 1, 1] %s, sum=3\n' % (test, what)
         self.assertIn(line2, output)
 
-        ukijumuisha open(filename) kama fp:
+        ukijumuisha open(filename) as fp:
             reflog = fp.read()
             self.assertIn(line2, reflog)
 
@@ -926,9 +926,9 @@ kundi ArgsTestCase(BaseTestCase):
 
             kundi Tests(unittest.TestCase):
                 eleza test_method1(self):
-                    pita
+                    pass
                 eleza test_method2(self):
-                    pita
+                    pass
         """)
         testname = self.create_test(code=code)
 
@@ -966,13 +966,13 @@ kundi ArgsTestCase(BaseTestCase):
 
             kundi Tests(unittest.TestCase):
                 eleza test_method1(self):
-                    pita
+                    pass
                 eleza test_method2(self):
-                    pita
+                    pass
                 eleza test_method3(self):
-                    pita
+                    pass
                 eleza test_method4(self):
-                    pita
+                    pass
         """)
         all_methods = ['test_method1', 'test_method2',
                        'test_method3', 'test_method4']
@@ -992,7 +992,7 @@ kundi ArgsTestCase(BaseTestCase):
             'test_method1',
             # match the full identifier
             '%s.Tests.test_method3' % testname]
-        ukijumuisha open(filename, "w") kama fp:
+        ukijumuisha open(filename, "w") as fp:
             kila name kwenye subset:
                 andika(name, file=fp)
 
@@ -1062,7 +1062,7 @@ kundi ArgsTestCase(BaseTestCase):
 
             kundi Tests(unittest.TestCase):
                 eleza test_bug(self):
-                    pita
+                    pass
         """)
         testname = self.create_test(code=code)
 
@@ -1088,7 +1088,7 @@ kundi ArgsTestCase(BaseTestCase):
 
             kundi Tests(unittest.TestCase):
                 eleza test_bug(self):
-                    pita
+                    pass
         """)
         testname = self.create_test(code=code)
         testname2 = self.create_test(code=code)
@@ -1103,7 +1103,7 @@ kundi ArgsTestCase(BaseTestCase):
 
             kundi Tests(unittest.TestCase):
                 eleza test_bug(self):
-                    pita
+                    pass
         """)
         testname = self.create_test(code=code)
         other_code = textwrap.dedent("""
@@ -1111,7 +1111,7 @@ kundi ArgsTestCase(BaseTestCase):
 
             kundi Tests(unittest.TestCase):
                 eleza test_other_bug(self):
-                    pita
+                    pass
         """)
         testname2 = self.create_test(code=other_code)
 
@@ -1130,7 +1130,7 @@ kundi ArgsTestCase(BaseTestCase):
             @_testcapi.with_tp_del
             kundi Garbage:
                 eleza __tp_del__(self):
-                    pita
+                    pass
 
             kundi Tests(unittest.TestCase):
                 eleza test_garbage(self):
@@ -1158,7 +1158,7 @@ kundi ArgsTestCase(BaseTestCase):
             agiza unittest
             jaribu:
                 agiza faulthandler
-            tatizo ImportError:
+            except ImportError:
                 faulthandler = Tupu
 
             kundi Tests(unittest.TestCase):

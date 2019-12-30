@@ -7,23 +7,23 @@ Classes:
 - SaveFileDialog
 
 This module also presents tk common file dialogues, it provides interfaces
-to the native file dialogues available in Tk 4.2 and newer, and the
-directory dialogue available in Tk 8.3 and newer.
+to the native file dialogues available kwenye Tk 4.2 na newer, na the
+directory dialogue available kwenye Tk 8.3 na newer.
 These interfaces were written by Fredrik Lundh, May 1997.
 """
 
-from tkinter import *
-from tkinter.dialog import Dialog
-from tkinter import commondialog
+kutoka tkinter agiza *
+kutoka tkinter.dialog agiza Dialog
+kutoka tkinter agiza commondialog
 
-import os
-import fnmatch
+agiza os
+agiza fnmatch
 
 
 dialogstates = {}
 
 
-class FileDialog:
+kundi FileDialog:
 
     """Standard file selection dialog -- no checks on selected file.
 
@@ -31,27 +31,27 @@ class FileDialog:
 
         d = FileDialog(master)
         fname = d.go(dir_or_file, pattern, default, key)
-        if fname is None: ...canceled...
+        ikiwa fname ni Tupu: ...canceled...
         isipokua: ...open file...
 
     All arguments to go() are optional.
 
-    The 'key' argument specifies a key in the global dictionary
-    'dialogstates', which keeps track of the values for the directory
-    and pattern arguments, overriding the values passed in (it does
-    sio keep track of the default argument!).  If no key is specified,
+    The 'key' argument specifies a key kwenye the global dictionary
+    'dialogstates', which keeps track of the values kila the directory
+    na pattern arguments, overriding the values passed kwenye (it does
+    sio keep track of the default argument!).  If no key ni specified,
     the dialog keeps no memory of previous state.  Note that memory is
-    kept even when the dialog is canceled.  (All this emulates the
+    kept even when the dialog ni canceled.  (All this emulates the
     behavior of the Macintosh file selection dialogs.)
 
     """
 
     title = "File Selection Dialog"
 
-    def __init__(self, master, title=None):
-        if title is None: title = self.title
+    eleza __init__(self, master, title=Tupu):
+        ikiwa title ni Tupu: title = self.title
         self.master = master
-        self.directory = None
+        self.directory = Tupu
 
         self.top = Toplevel(master)
         self.top.title(title)
@@ -107,16 +107,16 @@ class FileDialog:
         self.cancel_button.pack(side=RIGHT)
 
         self.top.protocol('WM_DELETE_WINDOW', self.cancel_command)
-        # XXX Are the following okay for a general audience?
+        # XXX Are the following okay kila a general audience?
         self.top.bind('<Alt-w>', self.cancel_command)
         self.top.bind('<Alt-W>', self.cancel_command)
 
-    def go(self, dir_or_file=os.curdir, pattern="*", default="", key=None):
-        if key and key in dialogstates:
+    eleza go(self, dir_or_file=os.curdir, pattern="*", default="", key=Tupu):
+        ikiwa key na key kwenye dialogstates:
             self.directory, pattern = dialogstates[key]
         isipokua:
             dir_or_file = os.path.expanduser(dir_or_file)
-            if os.path.isdir(dir_or_file):
+            ikiwa os.path.isdir(dir_or_file):
                 self.directory = dir_or_file
             isipokua:
                 self.directory, default = os.path.split(dir_or_file)
@@ -124,49 +124,49 @@ class FileDialog:
         self.set_selection(default)
         self.filter_command()
         self.selection.focus_set()
-        self.top.wait_visibility() # window needs to be visible for the grab
+        self.top.wait_visibility() # window needs to be visible kila the grab
         self.top.grab_set()
-        self.how = None
+        self.how = Tupu
         self.master.mainloop()          # Exited by self.quit(how)
-        if key:
+        ikiwa key:
             directory, pattern = self.get_filter()
-            if self.how:
+            ikiwa self.how:
                 directory = os.path.dirname(self.how)
             dialogstates[key] = directory, pattern
         self.top.destroy()
-        return self.how
+        rudisha self.how
 
-    def quit(self, how=None):
+    eleza quit(self, how=Tupu):
         self.how = how
         self.master.quit()              # Exit mainloop()
 
-    def dirs_double_event(self, event):
+    eleza dirs_double_event(self, event):
         self.filter_command()
 
-    def dirs_select_event(self, event):
+    eleza dirs_select_event(self, event):
         dir, pat = self.get_filter()
         subdir = self.dirs.get('active')
         dir = os.path.normpath(os.path.join(self.directory, subdir))
         self.set_filter(dir, pat)
 
-    def files_double_event(self, event):
+    eleza files_double_event(self, event):
         self.ok_command()
 
-    def files_select_event(self, event):
+    eleza files_select_event(self, event):
         file = self.files.get('active')
         self.set_selection(file)
 
-    def ok_event(self, event):
+    eleza ok_event(self, event):
         self.ok_command()
 
-    def ok_command(self):
+    eleza ok_command(self):
         self.quit(self.get_selection())
 
-    def filter_command(self, event=None):
+    eleza filter_command(self, event=Tupu):
         dir, pat = self.get_filter()
         jaribu:
             names = os.listdir(dir)
-        tatizo OSError:
+        except OSError:
             self.master.bell()
             return
         self.directory = dir
@@ -174,78 +174,78 @@ class FileDialog:
         names.sort()
         subdirs = [os.pardir]
         matchingfiles = []
-        for name in names:
+        kila name kwenye names:
             fullname = os.path.join(dir, name)
-            if os.path.isdir(fullname):
+            ikiwa os.path.isdir(fullname):
                 subdirs.append(name)
-            lasivyo fnmatch.fnmatch(name, pat):
+            elikiwa fnmatch.fnmatch(name, pat):
                 matchingfiles.append(name)
         self.dirs.delete(0, END)
-        for name in subdirs:
+        kila name kwenye subdirs:
             self.dirs.insert(END, name)
         self.files.delete(0, END)
-        for name in matchingfiles:
+        kila name kwenye matchingfiles:
             self.files.insert(END, name)
         head, tail = os.path.split(self.get_selection())
-        if tail == os.curdir: tail = ''
+        ikiwa tail == os.curdir: tail = ''
         self.set_selection(tail)
 
-    def get_filter(self):
+    eleza get_filter(self):
         filter = self.filter.get()
         filter = os.path.expanduser(filter)
-        if filter[-1:] == os.sep or os.path.isdir(filter):
+        ikiwa filter[-1:] == os.sep ama os.path.isdir(filter):
             filter = os.path.join(filter, "*")
-        return os.path.split(filter)
+        rudisha os.path.split(filter)
 
-    def get_selection(self):
+    eleza get_selection(self):
         file = self.selection.get()
         file = os.path.expanduser(file)
-        return file
+        rudisha file
 
-    def cancel_command(self, event=None):
+    eleza cancel_command(self, event=Tupu):
         self.quit()
 
-    def set_filter(self, dir, pat):
-        if sio os.path.isabs(dir):
+    eleza set_filter(self, dir, pat):
+        ikiwa sio os.path.isabs(dir):
             jaribu:
                 pwd = os.getcwd()
-            tatizo OSError:
-                pwd = None
-            if pwd:
+            except OSError:
+                pwd = Tupu
+            ikiwa pwd:
                 dir = os.path.join(pwd, dir)
                 dir = os.path.normpath(dir)
         self.filter.delete(0, END)
-        self.filter.insert(END, os.path.join(dir or os.curdir, pat or "*"))
+        self.filter.insert(END, os.path.join(dir ama os.curdir, pat ama "*"))
 
-    def set_selection(self, file):
+    eleza set_selection(self, file):
         self.selection.delete(0, END)
         self.selection.insert(END, os.path.join(self.directory, file))
 
 
-class LoadFileDialog(FileDialog):
+kundi LoadFileDialog(FileDialog):
 
     """File selection dialog which checks that the file exists."""
 
     title = "Load File Selection Dialog"
 
-    def ok_command(self):
+    eleza ok_command(self):
         file = self.get_selection()
-        if sio os.path.isfile(file):
+        ikiwa sio os.path.isfile(file):
             self.master.bell()
         isipokua:
             self.quit(file)
 
 
-class SaveFileDialog(FileDialog):
+kundi SaveFileDialog(FileDialog):
 
     """File selection dialog which checks that the file may be created."""
 
     title = "Save File Selection Dialog"
 
-    def ok_command(self):
+    eleza ok_command(self):
         file = self.get_selection()
-        if os.path.exists(file):
-            if os.path.isdir(file):
+        ikiwa os.path.exists(file):
+            ikiwa os.path.isdir(file):
                 self.master.bell()
                 return
             d = Dialog(self.top,
@@ -254,24 +254,24 @@ class SaveFileDialog(FileDialog):
                        bitmap='questhead',
                        default=1,
                        strings=("Yes", "Cancel"))
-            if d.num != 0:
+            ikiwa d.num != 0:
                 return
         isipokua:
             head, tail = os.path.split(file)
-            if sio os.path.isdir(head):
+            ikiwa sio os.path.isdir(head):
                 self.master.bell()
                 return
         self.quit(file)
 
 
-# For the following classes and modules:
+# For the following classes na modules:
 #
 # options (all have default values):
 #
-# - defaultextension: added to filename if sio explicitly given
+# - defaultextension: added to filename ikiwa sio explicitly given
 #
 # - filetypes: sequence of (label, pattern) tuples.  the same pattern
-#   may occur with several patterns.  use "*" as pattern to indicate
+#   may occur ukijumuisha several patterns.  use "*" as pattern to indicate
 #   all files.
 #
 # - initialdir: initial directory.  preserved by dialog instance.
@@ -283,161 +283,161 @@ class SaveFileDialog(FileDialog):
 #
 # - title: dialog title
 #
-# - multiple: if true user may select more than one file
+# - multiple: ikiwa true user may select more than one file
 #
-# options for the directory chooser:
+# options kila the directory chooser:
 #
 # - initialdir, parent, title: see above
 #
-# - mustexist: if true, user must pick an existing directory
+# - mustexist: ikiwa true, user must pick an existing directory
 #
 
 
-class _Dialog(commondialog.Dialog):
+kundi _Dialog(commondialog.Dialog):
 
-    def _fixoptions(self):
+    eleza _fixoptions(self):
         jaribu:
-            # make sure "filetypes" is a tuple
+            # make sure "filetypes" ni a tuple
             self.options["filetypes"] = tuple(self.options["filetypes"])
-        tatizo KeyError:
+        except KeyError:
             pass
 
-    def _fixresult(self, widget, result):
-        if result:
-            # keep directory and filename until next time
+    eleza _fixresult(self, widget, result):
+        ikiwa result:
+            # keep directory na filename until next time
             # convert Tcl path objects to strings
             jaribu:
                 result = result.string
-            tatizo AttributeError:
-                # it already is a string
+            except AttributeError:
+                # it already ni a string
                 pass
             path, file = os.path.split(result)
             self.options["initialdir"] = path
             self.options["initialfile"] = file
         self.filename = result # compatibility
-        return result
+        rudisha result
 
 
 #
 # file dialogs
 
-class Open(_Dialog):
-    "Ask for a filename to open"
+kundi Open(_Dialog):
+    "Ask kila a filename to open"
 
     command = "tk_getOpenFile"
 
-    def _fixresult(self, widget, result):
-        if isinstance(result, tuple):
+    eleza _fixresult(self, widget, result):
+        ikiwa isinstance(result, tuple):
             # multiple results:
-            result = tuple([getattr(r, "string", r) for r in result])
-            if result:
+            result = tuple([getattr(r, "string", r) kila r kwenye result])
+            ikiwa result:
                 path, file = os.path.split(result[0])
                 self.options["initialdir"] = path
-                # don't set initialfile or filename, as we have multiple of these
-            return result
-        if sio widget.tk.wantobjects() and "multiple" in self.options:
+                # don't set initialfile ama filename, as we have multiple of these
+            rudisha result
+        ikiwa sio widget.tk.wantobjects() na "multiple" kwenye self.options:
             # Need to split result explicitly
-            return self._fixresult(widget, widget.tk.splitlist(result))
-        return _Dialog._fixresult(self, widget, result)
+            rudisha self._fixresult(widget, widget.tk.splitlist(result))
+        rudisha _Dialog._fixresult(self, widget, result)
 
 
-class SaveAs(_Dialog):
-    "Ask for a filename to save as"
+kundi SaveAs(_Dialog):
+    "Ask kila a filename to save as"
 
     command = "tk_getSaveFile"
 
 
 # the directory dialog has its own _fix routines.
-class Directory(commondialog.Dialog):
-    "Ask for a directory"
+kundi Directory(commondialog.Dialog):
+    "Ask kila a directory"
 
     command = "tk_chooseDirectory"
 
-    def _fixresult(self, widget, result):
-        if result:
+    eleza _fixresult(self, widget, result):
+        ikiwa result:
             # convert Tcl path objects to strings
             jaribu:
                 result = result.string
-            tatizo AttributeError:
-                # it already is a string
+            except AttributeError:
+                # it already ni a string
                 pass
             # keep directory until next time
             self.options["initialdir"] = result
         self.directory = result # compatibility
-        return result
+        rudisha result
 
 #
 # convenience stuff
 
 
-def askopenfilename(**options):
-    "Ask for a filename to open"
+eleza askopenfilename(**options):
+    "Ask kila a filename to open"
 
-    return Open(**options).show()
-
-
-def asksaveasfilename(**options):
-    "Ask for a filename to save as"
-
-    return SaveAs(**options).show()
+    rudisha Open(**options).show()
 
 
-def askopenfilenames(**options):
-    """Ask for multiple filenames to open
+eleza asksaveasfilename(**options):
+    "Ask kila a filename to save as"
 
-    Returns a list of filenames or empty list if
+    rudisha SaveAs(**options).show()
+
+
+eleza askopenfilenames(**options):
+    """Ask kila multiple filenames to open
+
+    Returns a list of filenames ama empty list if
     cancel button selected
     """
     options["multiple"]=1
-    return Open(**options).show()
+    rudisha Open(**options).show()
 
 # FIXME: are the following  perhaps a bit too convenient?
 
 
-def askopenfile(mode = "r", **options):
-    "Ask for a filename to open, and returned the opened file"
+eleza askopenfile(mode = "r", **options):
+    "Ask kila a filename to open, na returned the opened file"
 
     filename = Open(**options).show()
-    if filename:
-        return open(filename, mode)
-    return None
+    ikiwa filename:
+        rudisha open(filename, mode)
+    rudisha Tupu
 
 
-def askopenfiles(mode = "r", **options):
-    """Ask for multiple filenames and return the open file
+eleza askopenfiles(mode = "r", **options):
+    """Ask kila multiple filenames na rudisha the open file
     objects
 
-    returns a list of open file objects or an empty list if
+    returns a list of open file objects ama an empty list if
     cancel selected
     """
 
     files = askopenfilenames(**options)
-    if files:
+    ikiwa files:
         ofiles=[]
-        for filename in files:
+        kila filename kwenye files:
             ofiles.append(open(filename, mode))
         files=ofiles
-    return files
+    rudisha files
 
 
-def asksaveasfile(mode = "w", **options):
-    "Ask for a filename to save as, and returned the opened file"
+eleza asksaveasfile(mode = "w", **options):
+    "Ask kila a filename to save as, na returned the opened file"
 
     filename = SaveAs(**options).show()
-    if filename:
-        return open(filename, mode)
-    return None
+    ikiwa filename:
+        rudisha open(filename, mode)
+    rudisha Tupu
 
 
-def askdirectory (**options):
-    "Ask for a directory, and return the file name"
-    return Directory(**options).show()
+eleza askdirectory (**options):
+    "Ask kila a directory, na rudisha the file name"
+    rudisha Directory(**options).show()
 
 
 # --------------------------------------------------------------------
 # test stuff
 
-def test():
+eleza test():
     """Simple test program."""
     root = Tk()
     root.withdraw()
@@ -445,41 +445,41 @@ def test():
     loadfile = fd.go(key="test")
     fd = SaveFileDialog(root)
     savefile = fd.go(key="test")
-    print(loadfile, savefile)
+    andika(loadfile, savefile)
 
     # Since the file name may contain non-ASCII characters, we need
-    # to find an encoding that likely supports the file name, na
+    # to find an encoding that likely supports the file name, and
     # displays correctly on the terminal.
 
-    # Start off with UTF-8
+    # Start off ukijumuisha UTF-8
     enc = "utf-8"
-    import sys
+    agiza sys
 
-    # See whether CODESET is defined
+    # See whether CODESET ni defined
     jaribu:
-        import locale
+        agiza locale
         locale.setlocale(locale.LC_ALL,'')
         enc = locale.nl_langinfo(locale.CODESET)
-    tatizo (ImportError, AttributeError):
+    except (ImportError, AttributeError):
         pass
 
-    # dialog for opening files
+    # dialog kila opening files
 
     openfilename=askopenfilename(filetypes=[("all files", "*")])
     jaribu:
         fp=open(openfilename,"r")
         fp.close()
     tatizo:
-        print("Could sio open File: ")
-        print(sys.exc_info()[1])
+        andika("Could sio open File: ")
+        andika(sys.exc_info()[1])
 
-    print("open", openfilename.encode(enc))
+    andika("open", openfilename.encode(enc))
 
-    # dialog for saving files
+    # dialog kila saving files
 
     saveasfilename=asksaveasfilename()
-    print("saveas", saveasfilename.encode(enc))
+    andika("saveas", saveasfilename.encode(enc))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test()

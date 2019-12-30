@@ -6,7 +6,7 @@ eleza pack(width, data):
     rudisha b''.join(v.to_bytes(width, sys.byteorder, signed=Kweli) kila v kwenye data)
 
 eleza unpack(width, data):
-    rudisha [int.kutoka_bytes(data[i: i + width], sys.byteorder, signed=Kweli)
+    rudisha [int.from_bytes(data[i: i + width], sys.byteorder, signed=Kweli)
             kila i kwenye range(0, len(data), width)]
 
 packs = {w: (lambda *data, width=w: pack(width, data)) kila w kwenye (1, 2, 3, 4)}

@@ -19,9 +19,9 @@ kundi Node:
     """Class giving the NodeType constants."""
     __slots__ = ()
 
-    # DOM implementations may use this kama a base kundi kila their own
+    # DOM implementations may use this as a base kundi kila their own
     # Node implementations.  If they don't, the constants defined here
-    # should still be used kama the canonical definitions kama they match
+    # should still be used as the canonical definitions as they match
     # the values given kwenye the W3C recommendation.  Client code can
     # safely refer to these values kwenye all tests of Node.nodeType
     # values.
@@ -65,7 +65,7 @@ kundi DOMException(Exception):
 
     eleza __init__(self, *args, **kw):
         ikiwa self.__class__ ni DOMException:
-            ashiria RuntimeError(
+             ashiria RuntimeError(
                 "DOMException should sio be instantiated directly")
         Exception.__init__(self, *args, **kw)
 

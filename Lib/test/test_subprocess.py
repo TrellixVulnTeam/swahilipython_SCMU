@@ -22,12 +22,12 @@ kutoka test.support agiza FakePath
 
 jaribu:
     agiza _testcapi
-tatizo ImportError:
+except ImportError:
     _testcapi = Tupu
 
 
 ikiwa support.PGO:
-    ashiria unittest.SkipTest("test ni sio helpful kila PGO")
+     ashiria unittest.SkipTest("test ni sio helpful kila PGO")
 
 mswindows = (sys.platform == "win32")
 
@@ -75,7 +75,7 @@ kundi BaseTestCase(unittest.TestCase):
 
 
 kundi PopenTestException(Exception):
-    pita
+    pass
 
 
 kundi PopenExecuteChildRaises(subprocess.Popen):
@@ -83,7 +83,7 @@ kundi PopenExecuteChildRaises(subprocess.Popen):
     _execute_child fails.
     """
     eleza _execute_child(self, *args, **kwargs):
-        ashiria PopenTestException("Forced Exception kila Test")
+         ashiria PopenTestException("Forced Exception kila Test")
 
 
 kundi ProcessTestCase(BaseTestCase):
@@ -128,7 +128,7 @@ kundi ProcessTestCase(BaseTestCase):
         # killed, this call will deadlock since subprocess.call waits kila the
         # child.
         self.assertRaises(subprocess.TimeoutExpired, subprocess.call,
-                          [sys.executable, "-c", "wakati Kweli: pita"],
+                          [sys.executable, "-c", "wakati Kweli: pass"],
                           timeout=0.1)
 
     eleza test_check_call_zero(self):
@@ -139,7 +139,7 @@ kundi ProcessTestCase(BaseTestCase):
 
     eleza test_check_call_nonzero(self):
         # check_call() function ukijumuisha non-zero rudisha code
-        ukijumuisha self.assertRaises(subprocess.CalledProcessError) kama c:
+        ukijumuisha self.assertRaises(subprocess.CalledProcessError) as c:
             subprocess.check_call([sys.executable, "-c",
                                    "agiza sys; sys.exit(47)"])
         self.assertEqual(c.exception.returncode, 47)
@@ -152,7 +152,7 @@ kundi ProcessTestCase(BaseTestCase):
 
     eleza test_check_output_nonzero(self):
         # check_call() function ukijumuisha non-zero rudisha code
-        ukijumuisha self.assertRaises(subprocess.CalledProcessError) kama c:
+        ukijumuisha self.assertRaises(subprocess.CalledProcessError) as c:
             subprocess.check_output(
                     [sys.executable, "-c", "agiza sys; sys.exit(5)"])
         self.assertEqual(c.exception.returncode, 5)
@@ -186,7 +186,7 @@ kundi ProcessTestCase(BaseTestCase):
 
     eleza test_check_output_stdout_arg(self):
         # check_output() refuses to accept 'stdout' argument
-        ukijumuisha self.assertRaises(ValueError) kama c:
+        ukijumuisha self.assertRaises(ValueError) as c:
             output = subprocess.check_output(
                     [sys.executable, "-c", "andika('will sio be run')"],
                     stdout=sys.stdout)
@@ -199,7 +199,7 @@ kundi ProcessTestCase(BaseTestCase):
         self.addCleanup(tf.close)
         tf.write(b'pear')
         tf.seek(0)
-        ukijumuisha self.assertRaises(ValueError) kama c:
+        ukijumuisha self.assertRaises(ValueError) as c:
             output = subprocess.check_output(
                     [sys.executable, "-c", "andika('will sio be run')"],
                     stdin=tf, input=b'hare')
@@ -209,7 +209,7 @@ kundi ProcessTestCase(BaseTestCase):
 
     eleza test_check_output_timeout(self):
         # check_output() function ukijumuisha timeout arg
-        ukijumuisha self.assertRaises(subprocess.TimeoutExpired) kama c:
+        ukijumuisha self.assertRaises(subprocess.TimeoutExpired) as c:
             output = subprocess.check_output(
                     [sys.executable, "-c",
                      "agiza sys, time\n"
@@ -233,9 +233,9 @@ kundi ProcessTestCase(BaseTestCase):
         self.assertEqual(rc, 1)
 
     eleza test_invalid_args(self):
-        # Popen() called ukijumuisha invalid arguments should ashiria TypeError
+        # Popen() called ukijumuisha invalid arguments should  ashiria TypeError
         # but Popen.__del__ should sio complain (issue #12085)
-        ukijumuisha support.captured_stderr() kama s:
+        ukijumuisha support.captured_stderr() as s:
             self.assertRaises(TypeError, subprocess.Popen, invalid_arg_name=1)
             argcount = subprocess.Popen.__init__.__code__.co_argcount
             too_many_args = [0] * (argcount + 1)
@@ -394,7 +394,7 @@ kundi ProcessTestCase(BaseTestCase):
         # ni relative.
         python_dir, python_base = self._split_python_path()
         rel_python = os.path.join(os.curdir, python_base)
-        ukijumuisha support.temp_cwd() kama wrong_dir:
+        ukijumuisha support.temp_cwd() as wrong_dir:
             # Before calling ukijumuisha the correct cwd, confirm that the call fails
             # without cwd na ukijumuisha the wrong cwd.
             self.assertRaises(FileNotFoundError, subprocess.Popen,
@@ -411,7 +411,7 @@ kundi ProcessTestCase(BaseTestCase):
         python_dir, python_base = self._split_python_path()
         rel_python = os.path.join(os.curdir, python_base)
         doesntexist = "somethingyoudonthave"
-        ukijumuisha support.temp_cwd() kama wrong_dir:
+        ukijumuisha support.temp_cwd() as wrong_dir:
             # Before calling ukijumuisha the correct cwd, confirm that the call fails
             # without cwd na ukijumuisha the wrong cwd.
             self.assertRaises(FileNotFoundError, subprocess.Popen,
@@ -429,7 +429,7 @@ kundi ProcessTestCase(BaseTestCase):
         python_dir, python_base = self._split_python_path()
         abs_python = os.path.join(python_dir, python_base)
         rel_python = os.path.join(os.curdir, python_base)
-        ukijumuisha support.temp_dir() kama wrong_dir:
+        ukijumuisha support.temp_dir() as wrong_dir:
             # Before calling ukijumuisha an absolute path, confirm that using a
             # relative path fails.
             self.assertRaises(FileNotFoundError, subprocess.Popen,
@@ -553,7 +553,7 @@ kundi ProcessTestCase(BaseTestCase):
         self.assertStderrEqual(tf.read(), b"strawberry")
 
     eleza test_stderr_redirect_with_no_stdout_redirect(self):
-        # test stderr=STDOUT wakati stdout=Tupu (sio set)
+        # test stderr=STDOUT wakati stdout=Tupu (not set)
 
         # - grandchild prints to stderr
         # - child redirects grandchild's stderr to its stdout
@@ -604,7 +604,7 @@ kundi ProcessTestCase(BaseTestCase):
         # stdout ni set to 1 (#1531862).
         # To avoid printing the text on stdout, we do something similar to
         # test_stdout_none (see above).  The parent subprocess calls the child
-        # subprocess pitaing stdout=1, na this test uses stdout=PIPE in
+        # subprocess passing stdout=1, na this test uses stdout=PIPE in
         # order to capture na check the output of the parent. See #11963.
         code = ('agiza sys, subprocess; '
                 'rc = subprocess.call([sys.executable, "-c", '
@@ -651,7 +651,7 @@ kundi ProcessTestCase(BaseTestCase):
                                'agiza sys,os;'
                                'sys.stdout.write(os.getenv("FRUIT"))'],
                               stdout=subprocess.PIPE,
-                              env=newenv) kama p:
+                              env=newenv) as p:
             stdout, stderr = p.communicate()
             self.assertEqual(stdout, b"orange")
 
@@ -663,7 +663,7 @@ kundi ProcessTestCase(BaseTestCase):
                      'The Python shared library cannot be loaded '
                      'ukijumuisha an empty environment.')
     eleza test_empty_env(self):
-        """Verify that env={} ni kama empty kama possible."""
+        """Verify that env={} ni as empty as possible."""
 
         eleza is_env_var_to_ignore(n):
             """Determine ikiwa an environment variable ni under our control."""
@@ -677,7 +677,7 @@ kundi ProcessTestCase(BaseTestCase):
 
         ukijumuisha subprocess.Popen([sys.executable, "-c",
                                'agiza os; andika(list(os.environ.keys()))'],
-                              stdout=subprocess.PIPE, env={}) kama p:
+                              stdout=subprocess.PIPE, env={}) as p:
             stdout, stderr = p.communicate()
             child_env_names = eval(stdout.strip())
             self.assertIsInstance(child_env_names, list)
@@ -689,30 +689,30 @@ kundi ProcessTestCase(BaseTestCase):
         # null character kwenye the command name
         cmd = sys.executable + '\0'
         ukijumuisha self.assertRaises(ValueError):
-            subprocess.Popen([cmd, "-c", "pita"])
+            subprocess.Popen([cmd, "-c", "pass"])
 
         # null character kwenye the command argument
         ukijumuisha self.assertRaises(ValueError):
-            subprocess.Popen([sys.executable, "-c", "pita#\0"])
+            subprocess.Popen([sys.executable, "-c", "pass#\0"])
 
     eleza test_invalid_env(self):
         # null character kwenye the environment variable name
         newenv = os.environ.copy()
         newenv["FRUIT\0VEGETABLE"] = "cabbage"
         ukijumuisha self.assertRaises(ValueError):
-            subprocess.Popen([sys.executable, "-c", "pita"], env=newenv)
+            subprocess.Popen([sys.executable, "-c", "pass"], env=newenv)
 
         # null character kwenye the environment variable value
         newenv = os.environ.copy()
         newenv["FRUIT"] = "orange\0VEGETABLE=cabbage"
         ukijumuisha self.assertRaises(ValueError):
-            subprocess.Popen([sys.executable, "-c", "pita"], env=newenv)
+            subprocess.Popen([sys.executable, "-c", "pass"], env=newenv)
 
         # equal character kwenye the environment variable name
         newenv = os.environ.copy()
         newenv["FRUIT=ORANGE"] = "lemon"
         ukijumuisha self.assertRaises(ValueError):
-            subprocess.Popen([sys.executable, "-c", "pita"], env=newenv)
+            subprocess.Popen([sys.executable, "-c", "pass"], env=newenv)
 
         # equal character kwenye the environment variable value
         newenv = os.environ.copy()
@@ -721,7 +721,7 @@ kundi ProcessTestCase(BaseTestCase):
                                'agiza sys, os;'
                                'sys.stdout.write(os.getenv("FRUIT"))'],
                               stdout=subprocess.PIPE,
-                              env=newenv) kama p:
+                              env=newenv) as p:
             stdout, stderr = p.communicate()
             self.assertEqual(stdout, b"orange=lemon")
 
@@ -813,7 +813,7 @@ kundi ProcessTestCase(BaseTestCase):
                         options['stderr'] = subprocess.PIPE
                     ikiwa sio options:
                         endelea
-                    p = subprocess.Popen((sys.executable, "-c", "pita"), **options)
+                    p = subprocess.Popen((sys.executable, "-c", "pass"), **options)
                     p.communicate()
                     ikiwa p.stdin ni sio Tupu:
                         self.assertKweli(p.stdin.closed)
@@ -822,7 +822,7 @@ kundi ProcessTestCase(BaseTestCase):
                     ikiwa p.stderr ni sio Tupu:
                         self.assertKweli(p.stderr.closed)
 
-    eleza test_communicate_rudishas(self):
+    eleza test_communicate_returns(self):
         # communicate() should rudisha Tupu ikiwa no redirection ni active
         p = subprocess.Popen([sys.executable, "-c",
                               "agiza sys; sys.exit(47)"])
@@ -950,9 +950,9 @@ kundi ProcessTestCase(BaseTestCase):
     eleza test_universal_newlines_communicate_input_none(self):
         # Test communicate(input=Tupu) ukijumuisha universal newlines.
         #
-        # We set stdout to PIPE because, kama of this writing, a different
+        # We set stdout to PIPE because, as of this writing, a different
         # code path ni tested when the number of pipes ni zero ama one.
-        p = subprocess.Popen([sys.executable, "-c", "pita"],
+        p = subprocess.Popen([sys.executable, "-c", "pass"],
                              stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE,
                              universal_newlines=Kweli)
@@ -993,14 +993,14 @@ kundi ProcessTestCase(BaseTestCase):
         # kwenye particular kila encodings kwenye the UTF-16 na UTF-32 families.
         # See issue #15595.
         #
-        # UTF-16 na UTF-32-BE are sufficient to check both ukijumuisha BOM na
+        # UTF-16 na UTF-32-BE are sufficient to check both ukijumuisha BOM and
         # without, na UTF-16 na UTF-32.
         kila encoding kwenye ['utf-16', 'utf-32-be']:
             code = ("agiza sys; "
                     r"sys.stdout.buffer.write('1\r\n2\r3\n4'.encode('%s'))" %
                     encoding)
             args = [sys.executable, '-c', code]
-            # We set stdin to be non-Tupu because, kama of this writing,
+            # We set stdin to be non-Tupu because, as of this writing,
             # a different code path ni used when the number of pipes is
             # zero ama one.
             popen = subprocess.Popen(args,
@@ -1020,7 +1020,7 @@ kundi ProcessTestCase(BaseTestCase):
             code = ("agiza sys; "
                     r"sys.stdout.buffer.write(b'[\x80\x80]')")
             args = [sys.executable, '-c', code]
-            # We set stdin to be non-Tupu because, kama of this writing,
+            # We set stdin to be non-Tupu because, as of this writing,
             # a different code path ni used when the number of pipes is
             # zero ama one.
             popen = subprocess.Popen(args,
@@ -1044,9 +1044,9 @@ kundi ProcessTestCase(BaseTestCase):
                 jaribu:
                     tmpfile = os.path.join(tmpdir, support.TESTFN)
                     handles.append(os.open(tmpfile, os.O_WRONLY|os.O_CREAT))
-                tatizo OSError kama e:
+                except OSError as e:
                     ikiwa e.errno != errno.EMFILE:
-                        ashiria
+                        raise
                     koma
             isipokua:
                 self.skipTest("failed to reach the file descriptor limit "
@@ -1100,7 +1100,7 @@ kundi ProcessTestCase(BaseTestCase):
         self.assertEqual(p.poll(), 0)
 
     eleza test_wait(self):
-        p = subprocess.Popen([sys.executable, "-c", "pita"])
+        p = subprocess.Popen([sys.executable, "-c", "pass"])
         self.assertEqual(p.wait(), 0)
         # Subsequent invocations should just rudisha the returncode
         self.assertEqual(p.wait(), 0)
@@ -1108,7 +1108,7 @@ kundi ProcessTestCase(BaseTestCase):
     eleza test_wait_timeout(self):
         p = subprocess.Popen([sys.executable,
                               "-c", "agiza time; time.sleep(0.3)"])
-        ukijumuisha self.assertRaises(subprocess.TimeoutExpired) kama c:
+        ukijumuisha self.assertRaises(subprocess.TimeoutExpired) as c:
             p.wait(timeout=0.0001)
         self.assertIn("0.0001", str(c.exception))  # For coverage of __str__.
         # Some heavily loaded buildbots (sparc Debian 3.x) require this much
@@ -1116,17 +1116,17 @@ kundi ProcessTestCase(BaseTestCase):
         self.assertEqual(p.wait(timeout=3), 0)
 
     eleza test_invalid_bufsize(self):
-        # an invalid type of the bufsize argument should ashiria
+        # an invalid type of the bufsize argument should raise
         # TypeError.
         ukijumuisha self.assertRaises(TypeError):
-            subprocess.Popen([sys.executable, "-c", "pita"], "orange")
+            subprocess.Popen([sys.executable, "-c", "pass"], "orange")
 
     eleza test_bufsize_is_none(self):
-        # bufsize=Tupu should be the same kama bufsize=0.
-        p = subprocess.Popen([sys.executable, "-c", "pita"], Tupu)
+        # bufsize=Tupu should be the same as bufsize=0.
+        p = subprocess.Popen([sys.executable, "-c", "pass"], Tupu)
         self.assertEqual(p.wait(), 0)
         # Again ukijumuisha keyword arg
-        p = subprocess.Popen([sys.executable, "-c", "pita"], bufsize=Tupu)
+        p = subprocess.Popen([sys.executable, "-c", "pass"], bufsize=Tupu)
         self.assertEqual(p.wait(), 0)
 
     eleza _test_bufsize_equal_one(self, line, expected, universal_newlines):
@@ -1138,22 +1138,22 @@ kundi ProcessTestCase(BaseTestCase):
                               stdout=subprocess.PIPE,
                               stderr=subprocess.DEVNULL,
                               bufsize=1,
-                              universal_newlines=universal_newlines) kama p:
+                              universal_newlines=universal_newlines) as p:
             p.stdin.write(line) # expect that it flushes the line kwenye text mode
             os.close(p.stdin.fileno()) # close it without flushing the buffer
             read_line = p.stdout.readline()
             ukijumuisha support.SuppressCrashReport():
                 jaribu:
                     p.stdin.close()
-                tatizo OSError:
-                    pita
+                except OSError:
+                    pass
             p.stdin = Tupu
         self.assertEqual(p.returncode, 0)
         self.assertEqual(read_line, expected)
 
     eleza test_bufsize_equal_one_text_mode(self):
         # line ni flushed kwenye text mode ukijumuisha bufsize=1.
-        # we should get the full line kwenye rudisha
+        # we should get the full line kwenye return
         line = "line\n"
         self._test_bufsize_equal_one(line, line, universal_newlines=Kweli)
 
@@ -1186,7 +1186,7 @@ kundi ProcessTestCase(BaseTestCase):
         jaribu:
             agiza msvcrt
             msvcrt.CrtSetReportMode
-        tatizo (AttributeError, ImportError):
+        except (AttributeError, ImportError):
             self.skipTest("need msvcrt.CrtSetReportMode")
 
         code = textwrap.dedent(f"""
@@ -1205,8 +1205,8 @@ kundi ProcessTestCase(BaseTestCase):
                 subprocess.Popen(cmd,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
         """)
         cmd = [sys.executable, "-c", code]
         proc = subprocess.Popen(cmd,
@@ -1238,13 +1238,13 @@ kundi ProcessTestCase(BaseTestCase):
             kila fd kwenye fds:
                 # If a double close occurred, some of those fds will
                 # already have been closed by mistake, na os.close()
-                # here will ashiria.
+                # here will raise.
                 jaribu:
                     os.close(fd)
-                tatizo OSError kama e:
+                except OSError as e:
                     exc = e
             ikiwa exc ni sio Tupu:
-                ashiria exc
+                 ashiria exc
 
     eleza test_threadsafe_wait(self):
         """Issue21291: Popen.wait() needs to be threadsafe kila returncode."""
@@ -1289,7 +1289,7 @@ kundi ProcessTestCase(BaseTestCase):
                          msg="unexpected result kwenye second main wait.")
 
         t.join()
-        # Ensure that all of the thread results are kama expected.
+        # Ensure that all of the thread results are as expected.
         # When a race condition occurs kwenye wait(), the returncode could
         # be set by the wrong thread that doesn't actually have it
         # leading to an incorrect value.
@@ -1318,7 +1318,7 @@ kundi ProcessTestCase(BaseTestCase):
         jaribu:
             subprocess.Popen (["*"], stdin=ifhandle, stdout=ofhandle,
               stderr=efhandle)
-        tatizo OSError:
+        except OSError:
             os.close(ifhandle)
             os.remove(ifname)
             os.close(ofhandle)
@@ -1331,7 +1331,7 @@ kundi ProcessTestCase(BaseTestCase):
 
     eleza test_communicate_epipe(self):
         # Issue 10963: communicate() should hide EPIPE
-        p = subprocess.Popen([sys.executable, "-c", 'pita'],
+        p = subprocess.Popen([sys.executable, "-c", 'pass'],
                              stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
@@ -1342,7 +1342,7 @@ kundi ProcessTestCase(BaseTestCase):
 
     eleza test_communicate_epipe_only_stdin(self):
         # Issue 10963: communicate() should hide EPIPE
-        p = subprocess.Popen([sys.executable, "-c", 'pita'],
+        p = subprocess.Popen([sys.executable, "-c", 'pass'],
                              stdin=subprocess.PIPE)
         self.addCleanup(p.stdin.close)
         p.wait()
@@ -1357,7 +1357,7 @@ kundi ProcessTestCase(BaseTestCase):
     eleza test_communicate_eintr(self):
         # Issue #12493: communicate() should handle EINTR
         eleza handler(signum, frame):
-            pita
+            pass
         old_handler = signal.signal(signal.SIGUSR1, handler)
         self.addCleanup(signal.signal, signal.SIGUSR1, old_handler)
 
@@ -1366,7 +1366,7 @@ kundi ProcessTestCase(BaseTestCase):
                 'os.kill(os.getppid(), signal.SIGUSR1)']
         kila stream kwenye ('stdout', 'stderr'):
             kw = {stream: subprocess.PIPE}
-            ukijumuisha subprocess.Popen(args, **kw) kama process:
+            ukijumuisha subprocess.Popen(args, **kw) as process:
                 # communicate() will be interrupted by SIGUSR1
                 process.communicate()
 
@@ -1381,7 +1381,7 @@ kundi ProcessTestCase(BaseTestCase):
         fds_before_popen = os.listdir(fd_directory)
         ukijumuisha self.assertRaises(PopenTestException):
             PopenExecuteChildRaises(
-                    [sys.executable, '-c', 'pita'], stdin=subprocess.PIPE,
+                    [sys.executable, '-c', 'pass'], stdin=subprocess.PIPE,
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         # NOTE: This test doesn't verify that the real _execute_child
@@ -1393,13 +1393,13 @@ kundi ProcessTestCase(BaseTestCase):
 
     @unittest.skipIf(mswindows, "behavior currently sio supported on Windows")
     eleza test_file_not_found_includes_filename(self):
-        ukijumuisha self.assertRaises(FileNotFoundError) kama c:
+        ukijumuisha self.assertRaises(FileNotFoundError) as c:
             subprocess.call(['/opt/nonexistent_binary', 'with', 'some', 'args'])
         self.assertEqual(c.exception.filename, '/opt/nonexistent_binary')
 
     @unittest.skipIf(mswindows, "behavior currently sio supported on Windows")
     eleza test_file_not_found_with_bad_cwd(self):
-        ukijumuisha self.assertRaises(FileNotFoundError) kama c:
+        ukijumuisha self.assertRaises(FileNotFoundError) as c:
             subprocess.Popen(['exit', '0'], cwd='/some/nonexistent/directory')
         self.assertEqual(c.exception.filename, '/some/nonexistent/directory')
 
@@ -1418,12 +1418,12 @@ kundi RunFuncTestCase(BaseTestCase):
             cp.check_returncode()
 
     eleza test_check(self):
-        ukijumuisha self.assertRaises(subprocess.CalledProcessError) kama c:
+        ukijumuisha self.assertRaises(subprocess.CalledProcessError) as c:
             self.run_python("agiza sys; sys.exit(47)", check=Kweli)
         self.assertEqual(c.exception.returncode, 47)
 
     eleza test_check_zero(self):
-        # check_returncode shouldn't ashiria when returncode ni zero
+        # check_returncode shouldn't  ashiria when returncode ni zero
         cp = self.run_python("agiza sys; sys.exit(0)", check=Kweli)
         self.assertEqual(cp.returncode, 0)
 
@@ -1433,7 +1433,7 @@ kundi RunFuncTestCase(BaseTestCase):
         # killed, this call will deadlock since subprocess.run waits kila the
         # child.
         ukijumuisha self.assertRaises(subprocess.TimeoutExpired):
-            self.run_python("wakati Kweli: pita", timeout=0.0001)
+            self.run_python("wakati Kweli: pass", timeout=0.0001)
 
     eleza test_capture_stdout(self):
         # capture stdout ukijumuisha zero rudisha code
@@ -1470,14 +1470,14 @@ kundi RunFuncTestCase(BaseTestCase):
         tf.write(b'pear')
         tf.seek(0)
         ukijumuisha self.assertRaises(ValueError,
-              msg="Expected ValueError when stdin na input args supplied.") kama c:
+              msg="Expected ValueError when stdin na input args supplied.") as c:
             output = self.run_python("andika('will sio be run')",
                                      stdin=tf, input=b'hare')
         self.assertIn('stdin', c.exception.args[0])
         self.assertIn('input', c.exception.args[0])
 
     eleza test_check_output_timeout(self):
-        ukijumuisha self.assertRaises(subprocess.TimeoutExpired) kama c:
+        ukijumuisha self.assertRaises(subprocess.TimeoutExpired) as c:
             cp = self.run_python((
                      "agiza sys, time\n"
                      "sys.stdout.write('BDFL')\n"
@@ -1540,7 +1540,7 @@ kundi RunFuncTestCase(BaseTestCase):
         self.addCleanup(tf.close)
         ukijumuisha self.assertRaises(ValueError,
             msg=("Expected ValueError when stdout na capture_output "
-                 "args supplied.")) kama c:
+                 "args supplied.")) as c:
             output = self.run_python("andika('will sio be run')",
                                       capture_output=Kweli, stdout=tf)
         self.assertIn('stdout', c.exception.args[0])
@@ -1552,14 +1552,14 @@ kundi RunFuncTestCase(BaseTestCase):
         self.addCleanup(tf.close)
         ukijumuisha self.assertRaises(ValueError,
             msg=("Expected ValueError when stderr na capture_output "
-                 "args supplied.")) kama c:
+                 "args supplied.")) as c:
             output = self.run_python("andika('will sio be run')",
                                       capture_output=Kweli, stderr=tf)
         self.assertIn('stderr', c.exception.args[0])
         self.assertIn('capture_output', c.exception.args[0])
 
     # This test _might_ wind up a bit fragile on loaded build+test machines
-    # kama it depends on the timing ukijumuisha wide enough margins kila normal situations
+    # as it depends on the timing ukijumuisha wide enough margins kila normal situations
     # but does assert that it happened "soon enough" to believe the right thing
     # happened.
     @unittest.skipIf(mswindows, "requires posix like 'sleep' shell command")
@@ -1569,11 +1569,11 @@ kundi RunFuncTestCase(BaseTestCase):
         jaribu:
             subprocess.run('sleep 3', shell=Kweli, timeout=0.1,
                            capture_output=Kweli)  # New session unspecified.
-        tatizo subprocess.TimeoutExpired kama exc:
+        except subprocess.TimeoutExpired as exc:
             after_secs = time.monotonic()
             stacks = traceback.format_exc()  # assertRaises doesn't give this.
         isipokua:
-            self.fail("TimeoutExpired sio ashiriad.")
+            self.fail("TimeoutExpired sio raised.")
         self.assertLess(after_secs - before_secs, 1.5,
                         msg="TimeoutExpired was delayed! Bad traceback:\n```\n"
                         f"{stacks}```")
@@ -1589,7 +1589,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
     eleza _get_chdir_exception(self):
         jaribu:
             os.chdir(self._nonexistent_dir)
-        tatizo OSError kama e:
+        except OSError as e:
             # This avoids hard coding the errno value ama the OS perror()
             # string na instead capture the exception that we want to see
             # below kila comparison.
@@ -1600,14 +1600,14 @@ kundi POSIXProcessTestCase(BaseTestCase):
         rudisha desired_exception
 
     eleza test_exception_cwd(self):
-        """Test error kwenye the child ashiriad kwenye the parent kila a bad cwd."""
+        """Test error kwenye the child raised kwenye the parent kila a bad cwd."""
         desired_exception = self._get_chdir_exception()
         jaribu:
             p = subprocess.Popen([sys.executable, "-c", ""],
                                  cwd=self._nonexistent_dir)
-        tatizo OSError kama e:
+        except OSError as e:
             # Test that the child process chdir failure actually makes
-            # it up to the parent process kama the correct exception.
+            # it up to the parent process as the correct exception.
             self.assertEqual(desired_exception.errno, e.errno)
             self.assertEqual(desired_exception.strerror, e.strerror)
             self.assertEqual(desired_exception.filename, e.filename)
@@ -1615,14 +1615,14 @@ kundi POSIXProcessTestCase(BaseTestCase):
             self.fail("Expected OSError: %s" % desired_exception)
 
     eleza test_exception_bad_executable(self):
-        """Test error kwenye the child ashiriad kwenye the parent kila a bad executable."""
+        """Test error kwenye the child raised kwenye the parent kila a bad executable."""
         desired_exception = self._get_chdir_exception()
         jaribu:
             p = subprocess.Popen([sys.executable, "-c", ""],
                                  executable=self._nonexistent_dir)
-        tatizo OSError kama e:
+        except OSError as e:
             # Test that the child process exec failure actually makes
-            # it up to the parent process kama the correct exception.
+            # it up to the parent process as the correct exception.
             self.assertEqual(desired_exception.errno, e.errno)
             self.assertEqual(desired_exception.strerror, e.strerror)
             self.assertEqual(desired_exception.filename, e.filename)
@@ -1630,13 +1630,13 @@ kundi POSIXProcessTestCase(BaseTestCase):
             self.fail("Expected OSError: %s" % desired_exception)
 
     eleza test_exception_bad_args_0(self):
-        """Test error kwenye the child ashiriad kwenye the parent kila a bad args[0]."""
+        """Test error kwenye the child raised kwenye the parent kila a bad args[0]."""
         desired_exception = self._get_chdir_exception()
         jaribu:
             p = subprocess.Popen([self._nonexistent_dir, "-c", ""])
-        tatizo OSError kama e:
+        except OSError as e:
             # Test that the child process exec failure actually makes
-            # it up to the parent process kama the correct exception.
+            # it up to the parent process as the correct exception.
             self.assertEqual(desired_exception.errno, e.errno)
             self.assertEqual(desired_exception.strerror, e.strerror)
             self.assertEqual(desired_exception.filename, e.filename)
@@ -1644,7 +1644,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
             self.fail("Expected OSError: %s" % desired_exception)
 
     # We mock the __del__ method kila Popen kwenye the next two tests
-    # because it does cleanup based on the pid rudishaed by fork_exec
+    # because it does cleanup based on the pid returned by fork_exec
     # along ukijumuisha issuing a resource warning ikiwa it still exists. Since
     # we don't actually spawn a process kwenye these tests we can forego
     # the destructor. An alternative would be to set _child_created to
@@ -1652,11 +1652,11 @@ kundi POSIXProcessTestCase(BaseTestCase):
     # to do that
     kundi PopenNoDestructor(subprocess.Popen):
         eleza __del__(self):
-            pita
+            pass
 
     @mock.patch("subprocess._posixsubprocess.fork_exec")
     eleza test_exception_errpipe_normal(self, fork_exec):
-        """Test error pitaing done through errpipe_write kwenye the good case"""
+        """Test error passing done through errpipe_write kwenye the good case"""
         eleza proper_error(*args):
             errpipe_write = args[13]
             # Write the hex kila the error code EISDIR: 'is a directory'
@@ -1673,7 +1673,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
 
     @mock.patch("subprocess._posixsubprocess.fork_exec")
     eleza test_exception_errpipe_bad_data(self, fork_exec):
-        """Test error pitaing done through errpipe_write where its not
+        """Test error passing done through errpipe_write where its not
         kwenye the expected format"""
         error_data = b"\xFF\x00\xDE\xAD"
         eleza bad_error(*args):
@@ -1688,12 +1688,12 @@ kundi POSIXProcessTestCase(BaseTestCase):
 
         ukijumuisha mock.patch("subprocess.os.waitpid",
                         side_effect=ChildProcessError):
-            ukijumuisha self.assertRaises(subprocess.SubprocessError) kama e:
+            ukijumuisha self.assertRaises(subprocess.SubprocessError) as e:
                 self.PopenNoDestructor(["non_existent_command"])
 
         self.assertIn(repr(error_data), str(e.exception))
 
-    @unittest.skipIf(sio os.path.exists('/proc/self/status'),
+    @unittest.skipIf(not os.path.exists('/proc/self/status'),
                      "need /proc/self/status")
     eleza test_restore_signals(self):
         # Blindly assume that cat exists on systems ukijumuisha /proc/self/status...
@@ -1725,9 +1725,9 @@ kundi POSIXProcessTestCase(BaseTestCase):
             output = subprocess.check_output(
                     [sys.executable, "-c", "agiza os; andika(os.getsid(0))"],
                     start_new_session=Kweli)
-        tatizo OSError kama e:
+        except OSError as e:
             ikiwa e.errno != errno.EPERM:
-                ashiria
+                raise
         isipokua:
             parent_sid = os.getsid(0)
             child_sid = int(output)
@@ -1747,7 +1747,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
         # We're relying on the repr() of the signal.Signals intenum to provide
         # the word signal, the signal name na the numeric value.
         self.assertIn("signal", error_string.lower())
-        # We're sio being specific about the signal name kama some signals have
+        # We're sio being specific about the signal name as some signals have
         # multiple names na which name ni revealed can vary.
         self.assertIn("SIG", error_string)
         self.assertIn(str(signal.SIGABRT), error_string)
@@ -1774,19 +1774,19 @@ kundi POSIXProcessTestCase(BaseTestCase):
             self.assertEqual(p.stdout.read(), b"apple")
 
     eleza test_preexec_exception(self):
-        eleza ashiria_it():
-            ashiria ValueError("What ikiwa two swallows carried a coconut?")
+        eleza raise_it():
+             ashiria ValueError("What ikiwa two swallows carried a coconut?")
         jaribu:
             p = subprocess.Popen([sys.executable, "-c", ""],
-                                 preexec_fn=ashiria_it)
-        tatizo subprocess.SubprocessError kama e:
+                                 preexec_fn=raise_it)
+        except subprocess.SubprocessError as e:
             self.assertKweli(
                     subprocess._posixsubprocess,
                     "Expected a ValueError kutoka the preexec_fn")
-        tatizo ValueError kama e:
+        except ValueError as e:
             self.assertIn("coconut", e.args[0])
         isipokua:
-            self.fail("Exception ashiriad by preexec_fn did sio make it "
+            self.fail("Exception raised by preexec_fn did sio make it "
                       "to the parent process.")
 
     kundi _TestExecuteChildPopen(subprocess.Popen):
@@ -1800,7 +1800,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
                 subprocess.Popen._execute_child(self, *args, **kwargs)
             mwishowe:
                 # Open a bunch of file descriptors na verify that
-                # none of them are the same kama the ones the Popen
+                # none of them are the same as the ones the Popen
                 # instance ni using kila stdin/stdout/stderr.
                 devzero_fds = [os.open("/dev/zero", os.O_RDONLY)
                                kila _ kwenye range(8)]
@@ -1814,25 +1814,25 @@ kundi POSIXProcessTestCase(BaseTestCase):
                     kila fd kwenye devzero_fds:
                         os.close(fd)
 
-    @unittest.skipIf(sio os.path.exists("/dev/zero"), "/dev/zero required.")
+    @unittest.skipIf(not os.path.exists("/dev/zero"), "/dev/zero required.")
     eleza test_preexec_errpipe_does_not_double_close_pipes(self):
         """Issue16140: Don't double close pipes on preexec error."""
 
-        eleza ashiria_it():
-            ashiria subprocess.SubprocessError(
+        eleza raise_it():
+             ashiria subprocess.SubprocessError(
                     "force the _execute_child() errpipe_data path.")
 
         ukijumuisha self.assertRaises(subprocess.SubprocessError):
             self._TestExecuteChildPopen(
-                        self, [sys.executable, "-c", "pita"],
+                        self, [sys.executable, "-c", "pass"],
                         stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE, preexec_fn=ashiria_it)
+                        stderr=subprocess.PIPE, preexec_fn=raise_it)
 
     eleza test_preexec_gc_module_failure(self):
         # This tests the code that disables garbage collection ikiwa the child
         # process will execute any Python.
-        eleza ashiria_runtime_error():
-            ashiria RuntimeError("this shouldn't escape")
+        eleza raise_runtime_error():
+             ashiria RuntimeError("this shouldn't escape")
         enabled = gc.isenabled()
         orig_gc_disable = gc.disable
         orig_gc_isenabled = gc.isenabled
@@ -1850,7 +1850,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
                             preexec_fn=lambda: Tupu)
             self.assertKweli(gc.isenabled(), "Popen left gc disabled.")
 
-            gc.disable = ashiria_runtime_error
+            gc.disable = raise_runtime_error
             self.assertRaises(RuntimeError, subprocess.Popen,
                               [sys.executable, '-c', ''],
                               preexec_fn=lambda: Tupu)
@@ -1872,7 +1872,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
         # re-enabling garbage collection
         jaribu:
             kutoka resource agiza getrlimit, setrlimit, RLIMIT_NPROC
-        tatizo ImportError kama err:
+        except ImportError as err:
             self.skipTest(err)  # RLIMIT_NPROC ni specific to Linux na BSD
         limits = getrlimit(RLIMIT_NPROC)
         [_, hard] = limits
@@ -1881,9 +1881,9 @@ kundi POSIXProcessTestCase(BaseTestCase):
         jaribu:
             subprocess.call([sys.executable, '-c', ''],
                             preexec_fn=lambda: Tupu)
-        tatizo BlockingIOError:
-            # Forking should ashiria EAGAIN, translated to BlockingIOError
-            pita
+        except BlockingIOError:
+            # Forking should  ashiria EAGAIN, translated to BlockingIOError
+            pass
         isipokua:
             self.skipTest('RLIMIT_NPROC had no effect; probably superuser')
 
@@ -1891,7 +1891,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
         # args ni a string
         fd, fname = tempfile.mkstemp()
         # reopen kwenye text mode
-        ukijumuisha open(fd, "w", errors="surrogateescape") kama fobj:
+        ukijumuisha open(fd, "w", errors="surrogateescape") as fobj:
             fobj.write("#!%s\n" % support.unix_shell)
             fobj.write("exec '%s' -c 'agiza sys; sys.exit(47)'\n" %
                        sys.executable)
@@ -1902,7 +1902,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
         self.assertEqual(p.returncode, 47)
 
     eleza test_invalid_args(self):
-        # invalid arguments should ashiria ValueError
+        # invalid arguments should  ashiria ValueError
         self.assertRaises(ValueError, subprocess.call,
                           [sys.executable, "-c",
                            "agiza sys; sys.exit(47)"],
@@ -1936,7 +1936,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
         # call() function ukijumuisha string argument on UNIX
         fd, fname = tempfile.mkstemp()
         # reopen kwenye text mode
-        ukijumuisha open(fd, "w", errors="surrogateescape") kama fobj:
+        ukijumuisha open(fd, "w", errors="surrogateescape") as fobj:
             fobj.write("#!%s\n" % support.unix_shell)
             fobj.write("exec '%s' -c 'agiza sys; sys.exit(47)'\n" %
                        sys.executable)
@@ -1946,7 +1946,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
         self.assertEqual(rc, 47)
 
     eleza test_specific_shell(self):
-        # Issue #9265: Incorrect name pitaed kama arg[0].
+        # Issue #9265: Incorrect name passed as arg[0].
         shells = []
         kila prefix kwenye ['/bin', '/usr/bin/', '/usr/local/bin']:
             kila name kwenye ['bash', 'ksh']:
@@ -2009,7 +2009,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
         p.stdout.read(1)
         # The process should end after this
         time.sleep(1)
-        # This shouldn't ashiria even though the child ni now dead
+        # This shouldn't  ashiria even though the child ni now dead
         getattr(p, method)(*args)
         p.communicate()
 
@@ -2226,20 +2226,20 @@ kundi POSIXProcessTestCase(BaseTestCase):
         self.check_swap_fds(2, 0, 1)
         self.check_swap_fds(2, 1, 0)
 
-    eleza _check_swap_std_fds_with_one_closed(self, kutoka_fds, to_fds):
+    eleza _check_swap_std_fds_with_one_closed(self, from_fds, to_fds):
         saved_fds = self._save_fds(range(3))
         jaribu:
-            kila kutoka_fd kwenye kutoka_fds:
-                ukijumuisha tempfile.TemporaryFile() kama f:
-                    os.dup2(f.fileno(), kutoka_fd)
+            kila from_fd kwenye from_fds:
+                ukijumuisha tempfile.TemporaryFile() as f:
+                    os.dup2(f.fileno(), from_fd)
 
-            fd_to_close = (set(range(3)) - set(kutoka_fds)).pop()
+            fd_to_close = (set(range(3)) - set(from_fds)).pop()
             os.close(fd_to_close)
 
             arg_names = ['stdin', 'stdout', 'stderr']
             kwargs = {}
-            kila kutoka_fd, to_fd kwenye zip(kutoka_fds, to_fds):
-                kwargs[arg_names[to_fd]] = kutoka_fd
+            kila from_fd, to_fd kwenye zip(from_fds, to_fds):
+                kwargs[arg_names[to_fd]] = from_fd
 
             code = textwrap.dedent(r'''
                 agiza os, sys
@@ -2255,13 +2255,13 @@ kundi POSIXProcessTestCase(BaseTestCase):
                                  **kwargs)
             self.assertEqual(rc, 0)
 
-            kila kutoka_fd, to_fd kwenye zip(kutoka_fds, to_fds):
-                os.lseek(kutoka_fd, 0, os.SEEK_SET)
-                read_bytes = os.read(kutoka_fd, 1024)
+            kila from_fd, to_fd kwenye zip(from_fds, to_fds):
+                os.lseek(from_fd, 0, os.SEEK_SET)
+                read_bytes = os.read(from_fd, 1024)
                 read_fds = list(map(int, read_bytes.decode('ascii')))
                 msg = textwrap.dedent(f"""
-                    When testing {kutoka_fds} to {to_fds} redirection,
-                    parent descriptor {kutoka_fd} got redirected
+                    When testing {from_fds} to {to_fds} redirection,
+                    parent descriptor {from_fd} got redirected
                     to descriptor(s) {read_fds} instead of descriptor {to_fd}.
                 """)
                 self.assertEqual([to_fd], read_fds, msg)
@@ -2271,23 +2271,23 @@ kundi POSIXProcessTestCase(BaseTestCase):
     # Check that subprocess can remap std fds correctly even
     # ikiwa one of them ni closed (#32844).
     eleza test_swap_std_fds_with_one_closed(self):
-        kila kutoka_fds kwenye itertools.combinations(range(3), 2):
+        kila from_fds kwenye itertools.combinations(range(3), 2):
             kila to_fds kwenye itertools.permutations(range(3), 2):
-                self._check_swap_std_fds_with_one_closed(kutoka_fds, to_fds)
+                self._check_swap_std_fds_with_one_closed(from_fds, to_fds)
 
     eleza test_surrogates_error_message(self):
         eleza prepare():
-            ashiria ValueError("surrogate:\uDCff")
+             ashiria ValueError("surrogate:\uDCff")
 
         jaribu:
             subprocess.call(
-                [sys.executable, "-c", "pita"],
+                [sys.executable, "-c", "pass"],
                 preexec_fn=prepare)
-        tatizo ValueError kama err:
+        except ValueError as err:
             # Pure Python implementations keeps the message
             self.assertIsTupu(subprocess._posixsubprocess)
             self.assertEqual(str(err), "surrogate:\uDCff")
-        tatizo subprocess.SubprocessError kama err:
+        except subprocess.SubprocessError as err:
             # _posixsubprocess uses a default message
             self.assertIsNotTupu(subprocess._posixsubprocess)
             self.assertEqual(str(err), "Exception occurred kwenye preexec_fn.")
@@ -2329,24 +2329,24 @@ kundi POSIXProcessTestCase(BaseTestCase):
         program = os.fsencode(program)
 
         # absolute bytes path
-        exitcode = subprocess.call([abs_program, "-c", "pita"])
+        exitcode = subprocess.call([abs_program, "-c", "pass"])
         self.assertEqual(exitcode, 0)
 
-        # absolute bytes path kama a string
-        cmd = b"'" + abs_program + b"' -c pita"
+        # absolute bytes path as a string
+        cmd = b"'" + abs_program + b"' -c pass"
         exitcode = subprocess.call(cmd, shell=Kweli)
         self.assertEqual(exitcode, 0)
 
         # bytes program, unicode PATH
         env = os.environ.copy()
         env["PATH"] = path
-        exitcode = subprocess.call([program, "-c", "pita"], env=env)
+        exitcode = subprocess.call([program, "-c", "pass"], env=env)
         self.assertEqual(exitcode, 0)
 
         # bytes program, bytes PATH
         envb = os.environb.copy()
         envb[b"PATH"] = os.fsencode(path)
-        exitcode = subprocess.call([program, "-c", "pita"], env=envb)
+        exitcode = subprocess.call([program, "-c", "pass"], env=envb)
         self.assertEqual(exitcode, 0)
 
     eleza test_pipe_cloexec(self):
@@ -2392,13 +2392,13 @@ kundi POSIXProcessTestCase(BaseTestCase):
         eleza kill_p1():
             jaribu:
                 p1.terminate()
-            tatizo ProcessLookupError:
-                pita
+            except ProcessLookupError:
+                pass
         eleza kill_p2():
             jaribu:
                 p2.terminate()
-            tatizo ProcessLookupError:
-                pita
+            except ProcessLookupError:
+                pass
         self.addCleanup(kill_p1)
         self.addCleanup(kill_p2)
 
@@ -2452,16 +2452,16 @@ kundi POSIXProcessTestCase(BaseTestCase):
         fds_to_keep = set(open_fds.pop() kila _ kwenye range(8))
         p = subprocess.Popen([sys.executable, fd_status],
                              stdout=subprocess.PIPE, close_fds=Kweli,
-                             pita_fds=fds_to_keep)
+                             pass_fds=fds_to_keep)
         output, ignored = p.communicate()
         remaining_fds = set(map(int, output.split(b',')))
 
         self.assertUongo((remaining_fds - fds_to_keep) & open_fds,
-                         "Some fds haiko kwenye pita_fds were left open")
+                         "Some fds sio kwenye pass_fds were left open")
         self.assertIn(1, remaining_fds, "Subprocess failed")
 
 
-    @unittest.skipIf(sys.platform.startswith("freebsd") na
+    @unittest.skipIf(sys.platform.startswith("freebsd") and
                      os.stat("/dev").st_dev == os.stat("/dev/fd").st_dev,
                      "Requires fdescfs mounted on /dev/fd on FreeBSD.")
     eleza test_close_fds_when_max_fd_is_lowered(self):
@@ -2483,14 +2483,14 @@ kundi POSIXProcessTestCase(BaseTestCase):
         '''
         agiza os, resource, subprocess, sys, textwrap
         open_fds = set()
-        # Add a bunch more fds to pita down.
+        # Add a bunch more fds to pass down.
         kila _ kwenye range(40):
             fd = os.open(os.devnull, os.O_RDONLY)
             open_fds.add(fd)
 
         # Leave a two pairs of low ones available kila use by the
         # internal child error pipe na the stdout pipe.
-        # We also leave 10 more open kama some Python buildbots run into
+        # We also leave 10 more open as some Python buildbots run into
         # "too many open files" errors during the test ikiwa we do not.
         kila fd kwenye sorted(open_fds)[:14]:
             os.close(fd)
@@ -2513,9 +2513,9 @@ kundi POSIXProcessTestCase(BaseTestCase):
             # Launch a new Python interpreter ukijumuisha our low fd rlim_cur that
             # inherits open fds above that limit.  It then uses subprocess
             # ukijumuisha close_fds=Kweli to get a report of open fds kwenye the child.
-            # An explicit list of fds to check ni pitaed to fd_status.py as
+            # An explicit list of fds to check ni passed to fd_status.py as
             # letting fd_status rely on its default logic would miss the
-            # fds above rlim_cur kama it normally only checks up to that limit.
+            # fds above rlim_cur as it normally only checks up to that limit.
             subprocess.Popen(
                 [sys.executable, '-c',
                  textwrap.dedent("""
@@ -2543,9 +2543,9 @@ kundi POSIXProcessTestCase(BaseTestCase):
     # Mac OS X Tiger (10.4) has a kernel bug: sometimes, the file
     # descriptor of a pipe closed kwenye the parent process ni valid kwenye the
     # child process according to fstat(), but the mode of the file
-    # descriptor ni invalid, na read ama write ashiria an error.
+    # descriptor ni invalid, na read ama write  ashiria an error.
     @support.requires_mac_ver(10, 5)
-    eleza test_pita_fds(self):
+    eleza test_pass_fds(self):
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
 
         open_fds = set()
@@ -2561,24 +2561,24 @@ kundi POSIXProcessTestCase(BaseTestCase):
         kila fd kwenye open_fds:
             p = subprocess.Popen([sys.executable, fd_status],
                                  stdout=subprocess.PIPE, close_fds=Kweli,
-                                 pita_fds=(fd, ))
+                                 pass_fds=(fd, ))
             output, ignored = p.communicate()
 
             remaining_fds = set(map(int, output.split(b',')))
             to_be_closed = open_fds - {fd}
 
-            self.assertIn(fd, remaining_fds, "fd to be pitaed sio pitaed")
+            self.assertIn(fd, remaining_fds, "fd to be passed sio passed")
             self.assertUongo(remaining_fds & to_be_closed,
-                             "fd to be closed pitaed")
+                             "fd to be closed passed")
 
-            # pita_fds overrides close_fds ukijumuisha a warning.
-            ukijumuisha self.assertWarns(RuntimeWarning) kama context:
+            # pass_fds overrides close_fds ukijumuisha a warning.
+            ukijumuisha self.assertWarns(RuntimeWarning) as context:
                 self.assertUongo(subprocess.call(
                         [sys.executable, "-c", "agiza sys; sys.exit(0)"],
-                        close_fds=Uongo, pita_fds=(fd, )))
+                        close_fds=Uongo, pass_fds=(fd, )))
             self.assertIn('overriding close_fds', str(context.warning))
 
-    eleza test_pita_fds_inheritable(self):
+    eleza test_pass_fds_inheritable(self):
         script = support.findfile("fd_status.py", subdir="subprocessdata")
 
         inheritable, non_inheritable = os.pipe()
@@ -2586,68 +2586,68 @@ kundi POSIXProcessTestCase(BaseTestCase):
         self.addCleanup(os.close, non_inheritable)
         os.set_inheritable(inheritable, Kweli)
         os.set_inheritable(non_inheritable, Uongo)
-        pita_fds = (inheritable, non_inheritable)
+        pass_fds = (inheritable, non_inheritable)
         args = [sys.executable, script]
-        args += list(map(str, pita_fds))
+        args += list(map(str, pass_fds))
 
         p = subprocess.Popen(args,
                              stdout=subprocess.PIPE, close_fds=Kweli,
-                             pita_fds=pita_fds)
+                             pass_fds=pass_fds)
         output, ignored = p.communicate()
         fds = set(map(int, output.split(b',')))
 
         # the inheritable file descriptor must be inherited, so its inheritable
         # flag must be set kwenye the child process after fork() na before exec()
-        self.assertEqual(fds, set(pita_fds), "output=%a" % output)
+        self.assertEqual(fds, set(pass_fds), "output=%a" % output)
 
         # inheritable flag must sio be changed kwenye the parent process
         self.assertEqual(os.get_inheritable(inheritable), Kweli)
         self.assertEqual(os.get_inheritable(non_inheritable), Uongo)
 
 
-    # bpo-32270: Ensure that descriptors specified kwenye pita_fds
+    # bpo-32270: Ensure that descriptors specified kwenye pass_fds
     # are inherited even ikiwa they are used kwenye redirections.
     # Contributed by @izbyshev.
-    eleza test_pita_fds_redirected(self):
+    eleza test_pass_fds_redirected(self):
         """Regression test kila https://bugs.python.org/issue32270."""
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
-        pita_fds = []
+        pass_fds = []
         kila _ kwenye range(2):
             fd = os.open(os.devnull, os.O_RDWR)
             self.addCleanup(os.close, fd)
-            pita_fds.append(fd)
+            pass_fds.append(fd)
 
         stdout_r, stdout_w = os.pipe()
         self.addCleanup(os.close, stdout_r)
         self.addCleanup(os.close, stdout_w)
-        pita_fds.insert(1, stdout_w)
+        pass_fds.insert(1, stdout_w)
 
         ukijumuisha subprocess.Popen([sys.executable, fd_status],
-                              stdin=pita_fds[0],
-                              stdout=pita_fds[1],
-                              stderr=pita_fds[2],
+                              stdin=pass_fds[0],
+                              stdout=pass_fds[1],
+                              stderr=pass_fds[2],
                               close_fds=Kweli,
-                              pita_fds=pita_fds):
+                              pass_fds=pass_fds):
             output = os.read(stdout_r, 1024)
         fds = {int(num) kila num kwenye output.split(b',')}
 
-        self.assertEqual(fds, {0, 1, 2} | frozenset(pita_fds), f"output={output!a}")
+        self.assertEqual(fds, {0, 1, 2} | frozenset(pass_fds), f"output={output!a}")
 
 
     eleza test_stdout_stdin_are_single_inout_fd(self):
-        ukijumuisha io.open(os.devnull, "r+") kama inout:
+        ukijumuisha io.open(os.devnull, "r+") as inout:
             p = subprocess.Popen([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                                  stdout=inout, stdin=inout)
             p.wait()
 
     eleza test_stdout_stderr_are_single_inout_fd(self):
-        ukijumuisha io.open(os.devnull, "r+") kama inout:
+        ukijumuisha io.open(os.devnull, "r+") as inout:
             p = subprocess.Popen([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                                  stdout=inout, stderr=inout)
             p.wait()
 
     eleza test_stderr_stdin_are_single_inout_fd(self):
-        ukijumuisha io.open(os.devnull, "r+") kama inout:
+        ukijumuisha io.open(os.devnull, "r+") as inout:
             p = subprocess.Popen([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                                  stderr=inout, stdin=inout)
             p.wait()
@@ -2736,8 +2736,8 @@ kundi POSIXProcessTestCase(BaseTestCase):
         ukijumuisha self.assertRaises(OSError):
             ukijumuisha subprocess.Popen(NONEXISTING_CMD,
                                   stdout=subprocess.PIPE,
-                                  stderr=subprocess.PIPE) kama proc:
-                pita
+                                  stderr=subprocess.PIPE) as proc:
+                pass
         # p should have been wait()ed on, na removed kutoka the _active list
         self.assertRaises(OSError, os.waitpid, pid, 0)
         ikiwa mswindows:
@@ -2749,7 +2749,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
     eleza test_close_fds_after_preexec(self):
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
 
-        # this FD ni used kama dup2() target by preexec_fn, na should be closed
+        # this FD ni used as dup2() target by preexec_fn, na should be closed
         # kwenye the child process
         fd = os.dup(1)
         self.addCleanup(os.close, fd)
@@ -2805,7 +2805,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
                 ikiwa self.first:
                     self.first = Uongo
                     rudisha self.value
-                ashiria ValueError
+                 ashiria ValueError
 
         gc_enabled = gc.isenabled()
         jaribu:
@@ -2821,7 +2821,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
             ):
                 ukijumuisha self.assertRaises(
                         ValueError,
-                        msg='fds_to_keep={}'.format(fds_to_keep)) kama c:
+                        msg='fds_to_keep={}'.format(fds_to_keep)) as c:
                     _posixsubprocess.fork_exec(
                         [b"false"], [b"false"],
                         Kweli, fds_to_keep, Tupu, [b"env"],
@@ -2836,8 +2836,8 @@ kundi POSIXProcessTestCase(BaseTestCase):
     eleza test_communicate_BrokenPipeError_stdin_close(self):
         # By sio setting stdout ama stderr ama a timeout we force the fast path
         # that just calls _stdin_write() internally due to our mock.
-        proc = subprocess.Popen([sys.executable, '-c', 'pita'])
-        ukijumuisha proc, mock.patch.object(proc, 'stdin') kama mock_proc_stdin:
+        proc = subprocess.Popen([sys.executable, '-c', 'pass'])
+        ukijumuisha proc, mock.patch.object(proc, 'stdin') as mock_proc_stdin:
             mock_proc_stdin.close.side_effect = BrokenPipeError
             proc.communicate()  # Should swallow BrokenPipeError kutoka close.
             mock_proc_stdin.close.assert_called_with()
@@ -2845,8 +2845,8 @@ kundi POSIXProcessTestCase(BaseTestCase):
     eleza test_communicate_BrokenPipeError_stdin_write(self):
         # By sio setting stdout ama stderr ama a timeout we force the fast path
         # that just calls _stdin_write() internally due to our mock.
-        proc = subprocess.Popen([sys.executable, '-c', 'pita'])
-        ukijumuisha proc, mock.patch.object(proc, 'stdin') kama mock_proc_stdin:
+        proc = subprocess.Popen([sys.executable, '-c', 'pass'])
+        ukijumuisha proc, mock.patch.object(proc, 'stdin') as mock_proc_stdin:
             mock_proc_stdin.write.side_effect = BrokenPipeError
             proc.communicate(b'stuff')  # Should swallow the BrokenPipeError.
             mock_proc_stdin.write.assert_called_once_with(b'stuff')
@@ -2854,26 +2854,26 @@ kundi POSIXProcessTestCase(BaseTestCase):
 
     eleza test_communicate_BrokenPipeError_stdin_flush(self):
         # Setting stdin na stdout forces the ._communicate() code path.
-        # python -h exits faster than python -c pita (but spams stdout).
+        # python -h exits faster than python -c pass (but spams stdout).
         proc = subprocess.Popen([sys.executable, '-h'],
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE)
-        ukijumuisha proc, mock.patch.object(proc, 'stdin') kama mock_proc_stdin, \
-                open(os.devnull, 'wb') kama dev_null:
+        ukijumuisha proc, mock.patch.object(proc, 'stdin') as mock_proc_stdin, \
+                open(os.devnull, 'wb') as dev_null:
             mock_proc_stdin.flush.side_effect = BrokenPipeError
             # because _communicate registers a selector using proc.stdin...
-            mock_proc_stdin.fileno.rudisha_value = dev_null.fileno()
+            mock_proc_stdin.fileno.return_value = dev_null.fileno()
             # _communicate() should swallow BrokenPipeError kutoka flush.
             proc.communicate(b'stuff')
             mock_proc_stdin.flush.assert_called_once_with()
 
     eleza test_communicate_BrokenPipeError_stdin_close_with_timeout(self):
         # Setting stdin na stdout forces the ._communicate() code path.
-        # python -h exits faster than python -c pita (but spams stdout).
+        # python -h exits faster than python -c pass (but spams stdout).
         proc = subprocess.Popen([sys.executable, '-h'],
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE)
-        ukijumuisha proc, mock.patch.object(proc, 'stdin') kama mock_proc_stdin:
+        ukijumuisha proc, mock.patch.object(proc, 'stdin') as mock_proc_stdin:
             mock_proc_stdin.close.side_effect = BrokenPipeError
             # _communicate() should swallow BrokenPipeError kutoka close.
             proc.communicate(timeout=999)
@@ -2883,8 +2883,8 @@ kundi POSIXProcessTestCase(BaseTestCase):
                          na hasattr(_testcapi, 'W_STOPCODE'),
                          'need _testcapi.W_STOPCODE')
     eleza test_stopped(self):
-        """Test wait() behavior when waitpid rudishas WIFSTOPPED; issue29335."""
-        args = [sys.executable, '-c', 'pita']
+        """Test wait() behavior when waitpid returns WIFSTOPPED; issue29335."""
+        args = [sys.executable, '-c', 'pass']
         proc = subprocess.Popen(args)
 
         # Wait until the real process completes to avoid zombie process
@@ -2893,7 +2893,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
         self.assertEqual(status, 0)
 
         status = _testcapi.W_STOPCODE(3)
-        ukijumuisha mock.patch('subprocess.os.waitpid', rudisha_value=(pid, status)):
+        ukijumuisha mock.patch('subprocess.os.waitpid', return_value=(pid, status)):
             returncode = proc.wait()
 
         self.assertEqual(returncode, -3)
@@ -2942,8 +2942,8 @@ kundi Win32ProcessTestCase(BaseTestCase):
         # Call Popen() twice ukijumuisha the same startupinfo object to make sure
         # that it's sio modified
         kila _ kwenye range(2):
-            cmd = [sys.executable, "-c", "pita"]
-            ukijumuisha open(os.devnull, 'w') kama null:
+            cmd = [sys.executable, "-c", "pass"]
+            ukijumuisha open(os.devnull, 'w') as null:
                 proc = subprocess.Popen(cmd,
                                         stdout=null,
                                         stderr=subprocess.STDOUT,
@@ -2969,7 +2969,7 @@ kundi Win32ProcessTestCase(BaseTestCase):
                         creationflags=CREATE_NEW_CONSOLE)
 
     eleza test_invalid_args(self):
-        # invalid arguments should ashiria ValueError
+        # invalid arguments should  ashiria ValueError
         self.assertRaises(ValueError, subprocess.call,
                           [sys.executable, "-c",
                            "agiza sys; sys.exit(47)"],
@@ -2982,7 +2982,7 @@ kundi Win32ProcessTestCase(BaseTestCase):
         kundi BadEnv(dict):
             keys = Tupu
         ukijumuisha self.assertRaises(TypeError):
-            subprocess.Popen([sys.executable, "-c", "pita"], env=BadEnv())
+            subprocess.Popen([sys.executable, "-c", "pass"], env=BadEnv())
 
     eleza test_close_fds(self):
         # close file descriptors
@@ -3017,7 +3017,7 @@ kundi Win32ProcessTestCase(BaseTestCase):
         self.assertEqual(p.returncode, 1)
         self.assertIn(b"OSError", stderr)
 
-        # The same kama the previous call, but ukijumuisha an empty handle_list
+        # The same as the previous call, but ukijumuisha an empty handle_list
         handle_list = []
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.lpAttributeList = {"handle_list": handle_list}
@@ -3091,7 +3091,7 @@ kundi Win32ProcessTestCase(BaseTestCase):
         self.assertEqual(rc, 47)
 
     eleza _kill_process(self, method, *args):
-        # Some win32 buildbot ashirias EOFError ikiwa stdin ni inherited
+        # Some win32 buildbot raises EOFError ikiwa stdin ni inherited
         p = subprocess.Popen([sys.executable, "-c", """ikiwa 1:
                              agiza sys, time
                              sys.stdout.write('x\\n')
@@ -3127,7 +3127,7 @@ kundi Win32ProcessTestCase(BaseTestCase):
             p.stdout.read(1)
             # The process should end after this
             time.sleep(1)
-            # This shouldn't ashiria even though the child ni now dead
+            # This shouldn't  ashiria even though the child ni now dead
             getattr(p, method)(*args)
             _, stderr = p.communicate()
             self.assertStderrEqual(stderr, b'')
@@ -3175,8 +3175,8 @@ kundi MiscTests(unittest.TestCase):
 
         mock__communicate.side_effect = KeyboardInterrupt
         jaribu:
-            ukijumuisha mock.patch.object(subprocess.Popen, "_wait") kama mock__wait:
-                # We patch out _wait() kama no signal was involved so the
+            ukijumuisha mock.patch.object(subprocess.Popen, "_wait") as mock__wait:
+                # We patch out _wait() as no signal was involved so the
                 # child process isn't actually going to exit rapidly.
                 mock__wait.side_effect = KeyboardInterrupt
                 ukijumuisha mock.patch.object(subprocess, "Popen",
@@ -3214,8 +3214,8 @@ kundi MiscTests(unittest.TestCase):
 
     eleza test_context_manager_keyboardinterrupt_no_kill(self):
         eleza popen_via_context_manager(*args, **kwargs):
-            ukijumuisha subprocess.Popen(*args, **kwargs) kama unused_process:
-                ashiria KeyboardInterrupt  # Test how __exit__ handles ^C.
+            ukijumuisha subprocess.Popen(*args, **kwargs) as unused_process:
+                 ashiria KeyboardInterrupt  # Test how __exit__ handles ^C.
         self._test_keyboardinterrupt_no_kill(popen_via_context_manager)
 
     eleza test_getoutput(self):
@@ -3317,7 +3317,7 @@ kundi ContextManagerTests(BaseTestCase):
                                "sys.stdout.write('stdout');"
                                "sys.stderr.write('stderr');"],
                               stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE) kama proc:
+                              stderr=subprocess.PIPE) as proc:
             self.assertEqual(proc.stdout.read(), b"stdout")
             self.assertStderrEqual(proc.stderr.read(), b"stderr")
 
@@ -3326,8 +3326,8 @@ kundi ContextManagerTests(BaseTestCase):
 
     eleza test_returncode(self):
         ukijumuisha subprocess.Popen([sys.executable, "-c",
-                               "agiza sys; sys.exit(100)"]) kama proc:
-            pita
+                               "agiza sys; sys.exit(100)"]) as proc:
+            pass
         # __exit__ calls wait(), so the returncode should be set
         self.assertEqual(proc.returncode, 100)
 
@@ -3335,7 +3335,7 @@ kundi ContextManagerTests(BaseTestCase):
         ukijumuisha subprocess.Popen([sys.executable, "-c",
                               "agiza sys;"
                               "sys.exit(sys.stdin.read() == 'context')"],
-                             stdin=subprocess.PIPE) kama proc:
+                             stdin=subprocess.PIPE) as proc:
             proc.communicate(b"context")
             self.assertEqual(proc.returncode, 1)
 
@@ -3343,16 +3343,16 @@ kundi ContextManagerTests(BaseTestCase):
         ukijumuisha self.assertRaises(NONEXISTING_ERRORS):
             ukijumuisha subprocess.Popen(NONEXISTING_CMD,
                                   stdout=subprocess.PIPE,
-                                  stderr=subprocess.PIPE) kama proc:
-                pita
+                                  stderr=subprocess.PIPE) as proc:
+                pass
 
     eleza test_broken_pipe_cleanup(self):
         """Broken pipe error should sio prevent wait() (Issue 21619)"""
-        proc = subprocess.Popen([sys.executable, '-c', 'pita'],
+        proc = subprocess.Popen([sys.executable, '-c', 'pass'],
                                 stdin=subprocess.PIPE,
                                 bufsize=support.PIPE_MAX_SIZE*2)
         proc = proc.__enter__()
-        # Prepare to send enough data to overflow any OS pipe buffering na
+        # Prepare to send enough data to overflow any OS pipe buffering and
         # guarantee a broken pipe error. Data ni held kwenye BufferedWriter
         # buffer until closed.
         proc.stdin.write(b'x' * support.PIPE_MAX_SIZE)

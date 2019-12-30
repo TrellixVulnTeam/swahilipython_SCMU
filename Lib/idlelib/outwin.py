@@ -1,4 +1,4 @@
-"""Editor window that can serve kama an output file.
+"""Editor window that can serve as an output file.
 """
 
 agiza re
@@ -32,7 +32,7 @@ eleza file_line_helper(line):
     """Extract file name na line number kutoka line of text.
 
     Check ikiwa line of text contains one of the file/line patterns.
-    If it does na ikiwa the file na line are valid, rudisha
+    If it does na ikiwa the file na line are valid, return
     a tuple of the file name na line number.  If it doesn't match
     ama ikiwa the file ama line ni invalid, rudisha Tupu.
     """
@@ -46,18 +46,18 @@ eleza file_line_helper(line):
                 f = open(filename, "r")
                 f.close()
                 koma
-            tatizo OSError:
+            except OSError:
                 endelea
     isipokua:
         rudisha Tupu
     jaribu:
         rudisha filename, int(lineno)
-    tatizo TypeError:
+    except TypeError:
         rudisha Tupu
 
 
 kundi OutputWindow(EditorWindow):
-    """An editor window that can serve kama an output file.
+    """An editor window that can serve as an output file.
 
     Also the future base kundi kila the Python shell window.
     This kundi has no input facilities.
@@ -93,14 +93,14 @@ kundi OutputWindow(EditorWindow):
         "Customize EditorWindow to sio display save file messagebox."
         rudisha 'yes' ikiwa self.get_saved() isipokua 'no'
 
-    # Act kama output file
+    # Act as output file
     eleza write(self, s, tags=(), mark="insert"):
         """Write text to text widget.
 
         The text ni inserted at the given index ukijumuisha the provided
         tags.  The text widget ni then scrolled to make it visible
         na updated to display it, giving the effect of seeing each
-        line kama it ni added.
+        line as it ni added.
 
         Args:
             s: Text to insert into text widget.
@@ -123,8 +123,8 @@ kundi OutputWindow(EditorWindow):
             self.write(line)
 
     eleza flush(self):
-        "No flushing needed kama write() directly writes to widget."
-        pita
+        "No flushing needed as write() directly writes to widget."
+        pass
 
     eleza showerror(self, *args, **kwargs):
         messagebox.showerror(*args, **kwargs)
@@ -152,7 +152,7 @@ kundi OutputWindow(EditorWindow):
                     "The line you point at doesn't look like "
                     "a valid file name followed by a line number.",
                     parent=self.text)
-                rudisha
+                return
         filename, lineno = result
         self.flist.gotofileline(filename, lineno)
 
@@ -181,7 +181,7 @@ kundi OnDemandOutputWindow:
         kila tag, cnf kwenye self.tagdefs.items():
             ikiwa cnf:
                 text.tag_configure(tag, **cnf)
-        text.tag_ashiria('sel')
+        text.tag_raise('sel')
         self.write = self.owin.write
 
 ikiwa __name__ == '__main__':

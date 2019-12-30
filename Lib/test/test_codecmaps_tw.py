@@ -15,7 +15,7 @@ kundi TestCP950Map(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'cp950'
     mapfileurl = 'http://www.pythontest.net/unicode/CP950.TXT'
-    pita_enctest = [
+    pass_enctest = [
         (b'\xa2\xcc', '\u5341'),
         (b'\xa2\xce', '\u5345'),
     ]

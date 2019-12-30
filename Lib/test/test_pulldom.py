@@ -37,7 +37,7 @@ kundi PullDOMTestCase(unittest.TestCase):
         list(handler)
 
         # Test ukijumuisha a file object:
-        ukijumuisha open(tstfile, "rb") kama fin:
+        ukijumuisha open(tstfile, "rb") as fin:
             list(pulldom.parse(fin))
 
     eleza test_parse_semantics(self):
@@ -103,7 +103,7 @@ kundi PullDOMTestCase(unittest.TestCase):
         #self.assertEqual(pulldom.END_DOCUMENT, evt)
 
     eleza test_expandItem(self):
-        """Ensure expandItem works kama expected."""
+        """Ensure expandItem works as expected."""
         items = pulldom.parseString(SMALL_SAMPLE)
         # Loop through the nodes until we get to a "title" start tag:
         kila evt, item kwenye items:
@@ -156,7 +156,7 @@ kundi PullDOMTestCase(unittest.TestCase):
             # Assert that the next node ni END_DOCUMENT:
             evt, node = next(items)
             self.assertEqual(pulldom.END_DOCUMENT, evt)
-        tatizo StopIteration:
+        except StopIteration:
             self.fail(
                 "Ran out of events, but should have received END_DOCUMENT")
 
@@ -164,7 +164,7 @@ kundi PullDOMTestCase(unittest.TestCase):
         parser = pulldom.parseString(SMALL_SAMPLE)
         ukijumuisha self.assertWarnsRegex(DeprecationWarning,
                                    r'Use iterator protocol instead'):
-            # This should have rudishaed 'END_ELEMENT'.
+            # This should have returned 'END_ELEMENT'.
             self.assertEqual(parser[-1][0], pulldom.START_DOCUMENT)
 
     eleza test_external_ges_default(self):
@@ -268,13 +268,13 @@ kundi SAXExerciser(object):
 
     eleza stub(self, *args, **kwargs):
         """Stub method. Does nothing."""
-        pita
+        pass
     setProperty = stub
     setFeature = stub
 
 
 kundi SAX2DOMExerciser(SAXExerciser):
-    """The same kama SAXExerciser, but without the processing instruction na
+    """The same as SAXExerciser, but without the processing instruction and
     comment before the root element, because S2D can"t handle it"""
 
     eleza parse(self, _):
@@ -307,18 +307,18 @@ kundi SAX2DOMTestCase(unittest.TestCase):
 
     eleza test_basic(self):
         """Ensure SAX2DOM can parse kutoka a stream."""
-        ukijumuisha io.StringIO(SMALL_SAMPLE) kama fin:
+        ukijumuisha io.StringIO(SMALL_SAMPLE) as fin:
             sd = SAX2DOMTestHelper(fin, xml.sax.make_parser(),
                                    len(SMALL_SAMPLE))
             kila evt, node kwenye sd:
                 ikiwa evt == pulldom.START_ELEMENT na node.tagName == "html":
                     koma
-            # Because the buffer ni the same length kama the XML, all the
+            # Because the buffer ni the same length as the XML, all the
             # nodes should have been parsed na added:
             self.assertGreater(len(node.childNodes), 0)
 
     eleza testSAX2DOM(self):
-        """Ensure SAX2DOM expands nodes kama expected."""
+        """Ensure SAX2DOM expands nodes as expected."""
         sax2dom = pulldom.SAX2DOM()
         sax2dom.startDocument()
         sax2dom.startElement("doc", {})

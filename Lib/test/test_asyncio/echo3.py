@@ -1,11 +1,11 @@
-import os
+agiza os
 
-if __name__ == '__main__':
-    wakati True:
+ikiwa __name__ == '__main__':
+    wakati Kweli:
         buf = os.read(0, 1024)
-        if sio buf:
+        ikiwa sio buf:
             koma
         jaribu:
             os.write(1, b'OUT:'+buf)
-        tatizo OSError as ex:
+        except OSError as ex:
             os.write(2, b'ERR:' + ex.__class__.__name__.encode('ascii'))

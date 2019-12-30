@@ -21,7 +21,7 @@ The following diagram na text describe the data-flow through the system:
 |          |     +------------+     |        |     +-----------+    |         |
 |          |     | 6: call()  |     |        |     | ...       |    |         |
 |          |     |    future  |     |        |     | 4, result |    |         |
-|          |     | ...        |     |        |     | 3, tatizo |    |         |
+|          |     | ...        |     |        |     | 3, except |    |         |
 +----------+     +------------+     +--------+     +-----------+    +---------+
 
 Executor.submit() called:
@@ -31,7 +31,7 @@ Executor.submit() called:
 Local worker thread:
 - reads work ids kutoka the "Work Ids" queue na looks up the corresponding
   WorkItem kutoka the "Work Items" dict: ikiwa the work item has been cancelled then
-  it ni simply removed kutoka the dict, otherwise it ni repackaged kama a
+  it ni simply removed kutoka the dict, otherwise it ni repackaged as a
   _CallItem na put kwenye the "Call Q". New _CallItems are put kwenye the "Call Q"
   until "Call Q" ni full. NOTE: the size of the "Call Q" ni kept small because
   calls placed kwenye the "Call Q" can no longer be cancelled ukijumuisha Future.cancel().
@@ -50,7 +50,7 @@ agiza os
 kutoka concurrent.futures agiza _base
 agiza queue
 kutoka queue agiza Full
-agiza multiprocessing kama mp
+agiza multiprocessing as mp
 agiza multiprocessing.connection
 kutoka multiprocessing.queues agiza Queue
 agiza threading
@@ -60,7 +60,7 @@ agiza itertools
 agiza sys
 agiza traceback
 
-# Workers are created kama daemon threads na processes. This ni done to allow the
+# Workers are created as daemon threads na processes. This ni done to allow the
 # interpreter to exit when there are still idle processes kwenye a
 # ProcessPoolExecutor's process pool (i.e. shutdown() was sio called). However,
 # allowing workers to die ukijumuisha the interpreter has two undesirable properties:
@@ -183,14 +183,14 @@ eleza _get_chunks(*iterables, chunksize):
     wakati Kweli:
         chunk = tuple(itertools.islice(it, chunksize))
         ikiwa sio chunk:
-            rudisha
+            return
         tuma chunk
 
 eleza _process_chunk(fn, chunk):
-    """ Processes a chunk of an iterable pitaed to map.
+    """ Processes a chunk of an iterable passed to map.
 
-    Runs the function pitaed to map() on a chunk of the
-    iterable pitaed to map.
+    Runs the function passed to map() on a chunk of the
+    iterable passed to map.
 
     This function ni run kwenye a separate process.
 
@@ -203,7 +203,7 @@ eleza _sendback_result(result_queue, work_id, result=Tupu, exception=Tupu):
     jaribu:
         result_queue.put(_ResultItem(work_id, result=result,
                                      exception=exception))
-    tatizo BaseException kama e:
+    except BaseException as e:
         exc = _ExceptionWithTraceback(e, e.__traceback__)
         result_queue.put(_ResultItem(work_id, exception=exc))
 
@@ -214,7 +214,7 @@ eleza _process_worker(call_queue, result_queue, initializer, initargs):
     This worker ni run kwenye a separate process.
 
     Args:
-        call_queue: A ctx.Queue of _CallItems that will be read na
+        call_queue: A ctx.Queue of _CallItems that will be read and
             evaluated by the worker.
         result_queue: A ctx.Queue of _ResultItems that will written
             to by the worker.
@@ -224,27 +224,27 @@ eleza _process_worker(call_queue, result_queue, initializer, initargs):
     ikiwa initializer ni sio Tupu:
         jaribu:
             initializer(*initargs)
-        tatizo BaseException:
+        except BaseException:
             _base.LOGGER.critical('Exception kwenye initializer:', exc_info=Kweli)
-            # The parent will notice that the process stopped na
+            # The parent will notice that the process stopped and
             # mark the pool broken
-            rudisha
+            return
     wakati Kweli:
         call_item = call_queue.get(block=Kweli)
         ikiwa call_item ni Tupu:
             # Wake up queue management thread
             result_queue.put(os.getpid())
-            rudisha
+            return
         jaribu:
             r = call_item.fn(*call_item.args, **call_item.kwargs)
-        tatizo BaseException kama e:
+        except BaseException as e:
             exc = _ExceptionWithTraceback(e, e.__traceback__)
             _sendback_result(result_queue, call_item.work_id, exception=exc)
         isipokua:
             _sendback_result(result_queue, call_item.work_id, result=r)
             toa r
 
-        # Liberate the resource kama soon kama possible, to avoid holding onto
+        # Liberate the resource as soon as possible, to avoid holding onto
         # open files ama shared memory that ni sio needed anymore
         toa call_item
 
@@ -260,7 +260,7 @@ eleza _add_call_item_to_queue(pending_work_items,
         pending_work_items: A dict mapping work ids to _WorkItems e.g.
             {5: <_WorkItem...>, 6: <_WorkItem...>, ...}
         work_ids: A queue.Queue of work ids e.g. Queue([5, 6, ...]). Work ids
-            are consumed na the corresponding _WorkItems kutoka
+            are consumed na the corresponding _WorkItems from
             pending_work_items are transformed into _CallItems na put in
             call_queue.
         call_queue: A multiprocessing.Queue that will be filled ukijumuisha _CallItems
@@ -268,11 +268,11 @@ eleza _add_call_item_to_queue(pending_work_items,
     """
     wakati Kweli:
         ikiwa call_queue.full():
-            rudisha
+            return
         jaribu:
             work_id = work_ids.get(block=Uongo)
-        tatizo queue.Empty:
-            rudisha
+        except queue.Empty:
+            return
         isipokua:
             work_item = pending_work_items[work_id]
 
@@ -333,11 +333,11 @@ eleza _queue_management_worker(executor_reference,
                 jaribu:
                     call_queue.put_nowait(Tupu)
                     n_sentinels_sent += 1
-                tatizo Full:
+                except Full:
                     koma
             n_children_alive = sum(p.is_alive() kila p kwenye processes.values())
 
-        # Release the queue's resources kama soon kama possible.
+        # Release the queue's resources as soon as possible.
         call_queue.close()
         # If .join() ni sio called on the created processes then
         # some ctx.Queue methods may deadlock on Mac OS X.
@@ -367,10 +367,10 @@ eleza _queue_management_worker(executor_reference,
             jaribu:
                 result_item = result_reader.recv()
                 is_broken = Uongo
-            tatizo BaseException kama e:
+            except BaseException as e:
                 cause = traceback.format_exception(type(e), e, e.__traceback__)
 
-        lasivyo wakeup_reader kwenye ready:
+        elikiwa wakeup_reader kwenye ready:
             is_broken = Uongo
             result_item = Tupu
         thread_wakeup.clear()
@@ -400,7 +400,7 @@ eleza _queue_management_worker(executor_reference,
             kila p kwenye processes.values():
                 p.terminate()
             shutdown_worker()
-            rudisha
+            return
         ikiwa isinstance(result_item, int):
             # Clean shutdown of a worker using its PID
             # (avoids marking the executor broken)
@@ -409,8 +409,8 @@ eleza _queue_management_worker(executor_reference,
             p.join()
             ikiwa sio processes:
                 shutdown_worker()
-                rudisha
-        lasivyo result_item ni sio Tupu:
+                return
+        elikiwa result_item ni sio Tupu:
             work_item = pending_work_items.pop(result_item.work_id, Tupu)
             # work_item can be Tupu ikiwa another process terminated (see above)
             ikiwa work_item ni sio Tupu:
@@ -425,13 +425,13 @@ eleza _queue_management_worker(executor_reference,
 
         # Check whether we should start shutting down.
         executor = executor_reference()
-        # No more work items can be added ikiwa:
+        # No more work items can be added if:
         #   - The interpreter ni shutting down OR
         #   - The executor that owns this worker has been collected OR
         #   - The executor that owns this worker has been shutdown.
         ikiwa shutting_down():
             jaribu:
-                # Flag the executor kama shutting down kama early kama possible ikiwa it
+                # Flag the executor as shutting down as early as possible ikiwa it
                 # ni sio gc-ed yet.
                 ikiwa executor ni sio Tupu:
                     executor._shutdown_thread = Kweli
@@ -439,11 +439,11 @@ eleza _queue_management_worker(executor_reference,
                 # this thread ikiwa there are no pending work items.
                 ikiwa sio pending_work_items:
                     shutdown_worker()
-                    rudisha
-            tatizo Full:
+                    return
+            except Full:
                 # This ni sio a problem: we will eventually be woken up (in
                 # result_queue.get()) na be able to send a sentinel again.
-                pita
+                pass
         executor = Tupu
 
 
@@ -455,31 +455,31 @@ eleza _check_system_limits():
     global _system_limits_checked, _system_limited
     ikiwa _system_limits_checked:
         ikiwa _system_limited:
-            ashiria NotImplementedError(_system_limited)
+             ashiria NotImplementedError(_system_limited)
     _system_limits_checked = Kweli
     jaribu:
         nsems_max = os.sysconf("SC_SEM_NSEMS_MAX")
-    tatizo (AttributeError, ValueError):
+    except (AttributeError, ValueError):
         # sysconf sio available ama setting sio available
-        rudisha
+        return
     ikiwa nsems_max == -1:
         # indetermined limit, assume that limit ni determined
         # by available memory only
-        rudisha
+        return
     ikiwa nsems_max >= 256:
         # minimum number of semaphores available
         # according to POSIX
-        rudisha
+        return
     _system_limited = ("system provides too few semaphores (%d"
                        " available, 256 necessary)" % nsems_max)
-    ashiria NotImplementedError(_system_limited)
+     ashiria NotImplementedError(_system_limited)
 
 
 eleza _chain_from_iterable_of_lists(iterable):
     """
-    Specialized implementation of itertools.chain.kutoka_iterable.
+    Specialized implementation of itertools.chain.from_iterable.
     Each item kwenye *iterable* should be a list.  This function is
-    careful sio to keep references to tumaed objects.
+    careful sio to keep references to yielded objects.
     """
     kila element kwenye iterable:
         element.reverse()
@@ -501,12 +501,12 @@ kundi ProcessPoolExecutor(_base.Executor):
 
         Args:
             max_workers: The maximum number of processes that can be used to
-                execute the given calls. If Tupu ama sio given then kama many
-                worker processes will be created kama the machine has processors.
+                execute the given calls. If Tupu ama sio given then as many
+                worker processes will be created as the machine has processors.
             mp_context: A multiprocessing context to launch the workers. This
                 object should provide SimpleQueue, Queue na Process.
             initializer: A callable used to initialize worker processes.
-            initargs: A tuple of arguments to pita to the initializer.
+            initargs: A tuple of arguments to pass to the initializer.
         """
         _check_system_limits()
 
@@ -517,10 +517,10 @@ kundi ProcessPoolExecutor(_base.Executor):
                                         self._max_workers)
         isipokua:
             ikiwa max_workers <= 0:
-                ashiria ValueError("max_workers must be greater than 0")
-            lasivyo (sys.platform == 'win32' na
+                 ashiria ValueError("max_workers must be greater than 0")
+            elikiwa (sys.platform == 'win32' and
                 max_workers > _MAX_WINDOWS_WORKERS):
-                ashiria ValueError(
+                 ashiria ValueError(
                     f"max_workers must be <= {_MAX_WINDOWS_WORKERS}")
 
             self._max_workers = max_workers
@@ -530,7 +530,7 @@ kundi ProcessPoolExecutor(_base.Executor):
         self._mp_context = mp_context
 
         ikiwa initializer ni sio Tupu na sio callable(initializer):
-            ashiria TypeError("initializer must be a callable")
+             ashiria TypeError("initializer must be a callable")
         self._initializer = initializer
         self._initargs = initargs
 
@@ -566,7 +566,7 @@ kundi ProcessPoolExecutor(_base.Executor):
         # of the main loop of queue_manager_thread kutoka another thread (e.g.
         # when calling executor.submit ama executor.shutdown). We do sio use the
         # _result_queue to send the wakeup signal to the queue_manager_thread
-        # kama it could result kwenye a deadlock ikiwa a worker process dies ukijumuisha the
+        # as it could result kwenye a deadlock ikiwa a worker process dies ukijumuisha the
         # _result_queue write lock still acquired.
         self._queue_management_thread_wakeup = _ThreadWakeup()
 
@@ -611,26 +611,26 @@ kundi ProcessPoolExecutor(_base.Executor):
     eleza submit(*args, **kwargs):
         ikiwa len(args) >= 2:
             self, fn, *args = args
-        lasivyo sio args:
-            ashiria TypeError("descriptor 'submit' of 'ProcessPoolExecutor' object "
+        elikiwa sio args:
+             ashiria TypeError("descriptor 'submit' of 'ProcessPoolExecutor' object "
                             "needs an argument")
-        lasivyo 'fn' kwenye kwargs:
+        elikiwa 'fn' kwenye kwargs:
             fn = kwargs.pop('fn')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'fn' kama keyword argument ni deprecated",
+            warnings.warn("Passing 'fn' as keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-            ashiria TypeError('submit expected at least 1 positional argument, '
+             ashiria TypeError('submit expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         ukijumuisha self._shutdown_lock:
             ikiwa self._broken:
-                ashiria BrokenProcessPool(self._broken)
+                 ashiria BrokenProcessPool(self._broken)
             ikiwa self._shutdown_thread:
-                ashiria RuntimeError('cannot schedule new futures after shutdown')
+                 ashiria RuntimeError('cannot schedule new futures after shutdown')
             ikiwa _global_shutdown:
-                ashiria RuntimeError('cannot schedule new futures after '
+                 ashiria RuntimeError('cannot schedule new futures after '
                                    'interpreter shutdown')
 
             f = _base.Future()
@@ -651,8 +651,8 @@ kundi ProcessPoolExecutor(_base.Executor):
         """Returns an iterator equivalent to map(fn, iter).
 
         Args:
-            fn: A callable that will take kama many arguments kama there are
-                pitaed iterables.
+            fn: A callable that will take as many arguments as there are
+                passed iterables.
             timeout: The maximum number of seconds to wait. If Tupu, then there
                 ni no limit on the wait time.
             chunksize: If greater than one, the iterables will be chopped into
@@ -666,10 +666,10 @@ kundi ProcessPoolExecutor(_base.Executor):
         Raises:
             TimeoutError: If the entire result iterator could sio be generated
                 before the given timeout.
-            Exception: If fn(*args) ashirias kila any values.
+            Exception: If fn(*args) raises kila any values.
         """
         ikiwa chunksize < 1:
-            ashiria ValueError("chunksize must be >= 1.")
+             ashiria ValueError("chunksize must be >= 1.")
 
         results = super().map(partial(_process_chunk, fn),
                               _get_chunks(*iterables, chunksize=chunksize),

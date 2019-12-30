@@ -25,29 +25,29 @@ async eleza staggered_race(
 
     This method takes an iterable of coroutine functions. The first one is
     started immediately. From then on, whenever the immediately preceding one
-    fails (ashirias an exception), ama when *delay* seconds has pitaed, the next
+    fails (raises an exception), ama when *delay* seconds has passed, the next
     coroutine ni started. This endeleas until one of the coroutines complete
     successfully, kwenye which case all others are cancelled, ama until all
     coroutines fail.
 
     The coroutines provided should be well-behaved kwenye the following way:
 
-    * They should only ``rudisha`` ikiwa completed successfully.
+    * They should only ``return`` ikiwa completed successfully.
 
-    * They should always ashiria an exception ikiwa they did sio complete
+    * They should always  ashiria an exception ikiwa they did sio complete
       successfully. In particular, ikiwa they handle cancellation, they should
-      probably reashiria, like this::
+      probably reraise, like this::
 
         jaribu:
             # do work
-        tatizo asyncio.CancelledError:
+        except asyncio.CancelledError:
             # undo partially completed work
-            ashiria
+            raise
 
     Args:
         coro_fns: an iterable of coroutine functions, i.e. callables that
-            rudisha a coroutine object when called. Use ``functools.partial`` ama
-            lambdas to pita arguments.
+            rudisha a coroutine object when called. Use ``functools.partial`` or
+            lambdas to pass arguments.
 
         delay: amount of time, kwenye seconds, between starting coroutines. If
             ``Tupu``, the coroutines will run sequentially.
@@ -65,9 +65,9 @@ async eleza staggered_race(
           coroutine may rudisha Tupu on success, *winner_index* can be used
           to definitively determine whether any coroutine won.
 
-        - *exceptions*: list of exceptions rudishaed by the coroutines.
+        - *exceptions*: list of exceptions returned by the coroutines.
           ``len(exceptions)`` ni equal to the number of coroutines actually
-          started, na the order ni the same kama kwenye ``coro_fns``. The winning
+          started, na the order ni the same as kwenye ``coro_fns``. The winning
           coroutine's entry ni ``Tupu``.
 
     """
@@ -92,8 +92,8 @@ async eleza staggered_race(
         # Get the next coroutine to run
         jaribu:
             this_index, coro_fn = next(enum_coro_fns)
-        tatizo StopIteration:
-            rudisha
+        except StopIteration:
+            return
         # Start task that will run the next coroutine
         this_failed = locks.Event()
         next_task = loop.create_task(run_one_coro(this_failed))
@@ -105,9 +105,9 @@ async eleza staggered_race(
 
         jaribu:
             result = await coro_fn()
-        tatizo (SystemExit, KeyboardInterrupt):
-            ashiria
-        tatizo BaseException kama e:
+        except (SystemExit, KeyboardInterrupt):
+            raise
+        except BaseException as e:
             exceptions[this_index] = e
             this_failed.set()  # Kickstart the next coroutine
         isipokua:
@@ -117,10 +117,10 @@ async eleza staggered_race(
             winner_index = this_index
             winner_result = result
             # Cancel all other tasks. We take care to sio cancel the current
-            # task kama well. If we do so, then since there ni no `await` after
+            # task as well. If we do so, then since there ni no `await` after
             # here na CancelledError are usually thrown at one, we will
             # encounter a curious corner case where the current task will end
-            # up kama done() == Kweli, cancelled() == Uongo, exception() ==
+            # up as done() == Kweli, cancelled() == Uongo, exception() ==
             # asyncio.CancelledError. This behavior ni specified in
             # https://bugs.python.org/issue30048
             kila i, t kwenye enumerate(running_tasks):
@@ -136,12 +136,12 @@ async eleza staggered_race(
         wakati done_count != len(running_tasks):
             done, _ = await tasks.wait(running_tasks)
             done_count = len(done)
-            # If run_one_coro ashirias an unhandled exception, it's probably a
+            # If run_one_coro raises an unhandled exception, it's probably a
             # programming error, na I want to see it.
             ikiwa __debug__:
                 kila d kwenye done:
                     ikiwa d.done() na sio d.cancelled() na d.exception():
-                        ashiria d.exception()
+                         ashiria d.exception()
         rudisha winner_result, winner_index, exceptions
     mwishowe:
         # Make sure no tasks are left running ikiwa we leave this function

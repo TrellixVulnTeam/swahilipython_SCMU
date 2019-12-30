@@ -9,7 +9,7 @@ agiza tempfile
 kutoka types agiza ModuleType
 agiza unittest
 agiza warnings
-agiza zipagiza
+agiza zipimport
 
 
 kundi FinderTests:
@@ -20,7 +20,7 @@ kundi FinderTests:
     check_found = Tupu
 
     eleza test_failure(self):
-        # Test Tupu rudishaed upon sio finding a suitable loader.
+        # Test Tupu returned upon sio finding a suitable loader.
         module = '<test module>'
         ukijumuisha util.import_state():
             self.assertIsTupu(self.find(module))
@@ -47,7 +47,7 @@ kundi FinderTests:
             self.check_found(found, importer)
 
     eleza test_empty_list(self):
-        # An empty list should sio count kama asking kila sys.path.
+        # An empty list should sio count as asking kila sys.path.
         module = 'module'
         path = '<test path>'
         importer = util.mock_spec(module)
@@ -69,12 +69,12 @@ kundi FinderTests:
             self.assertIs(sys.path_importer_cache[path], importer)
 
     eleza test_empty_path_hooks(self):
-        # Test that ikiwa sys.path_hooks ni empty a warning ni ashiriad,
-        # sys.path_importer_cache gets Tupu set, na PathFinder rudishas Tupu.
+        # Test that ikiwa sys.path_hooks ni empty a warning ni raised,
+        # sys.path_importer_cache gets Tupu set, na PathFinder returns Tupu.
         path_entry = 'bogus_path'
         ukijumuisha util.import_state(path_importer_cache={}, path_hooks=[],
                                path=[path_entry]):
-            ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
+            ukijumuisha warnings.catch_warnings(record=Kweli) as w:
                 warnings.simplefilter('always')
                 self.assertIsTupu(self.find('os'))
                 self.assertIsTupu(sys.path_importer_cache[path_entry])
@@ -99,7 +99,7 @@ kundi FinderTests:
         new_path.insert(0, Tupu)
         new_path_importer_cache = sys.path_importer_cache.copy()
         new_path_importer_cache.pop(Tupu, Tupu)
-        new_path_hooks = [zipagiza.zipimporter,
+        new_path_hooks = [zipimport.zipimporter,
                           self.machinery.FileFinder.path_hook(
                               *self.importlib._bootstrap_external._get_supported_file_loaders())]
         missing = object()
@@ -118,7 +118,7 @@ kundi FinderTests:
     eleza test_finder_with_find_module(self):
         kundi TestFinder:
             eleza find_module(self, fullname):
-                rudisha self.to_rudisha
+                rudisha self.to_return
         failing_finder = TestFinder()
         failing_finder.to_rudisha = Tupu
         path = 'testing path'
@@ -171,17 +171,17 @@ kundi FinderTests:
             os.chdir(new_dir)
             jaribu:
                 os.rmdir(new_dir)
-            tatizo OSError:
+            except OSError:
                 # EINVAL on Solaris, EBUSY on AIX, ENOTEMPTY on Windows
                 self.skipTest("platform does sio allow "
                               "the deletion of the cwd")
         tatizo:
             os.chdir(old_dir)
             os.rmdir(new_dir)
-            ashiria
+            raise
 
         ukijumuisha util.import_state(path=['']):
-            # Do sio want FileNotFoundError ashiriad.
+            # Do sio want FileNotFoundError raised.
             self.assertIsTupu(self.machinery.PathFinder.find_spec('whatever'))
 
     eleza test_invalidate_caches_finders(self):
@@ -239,7 +239,7 @@ kundi PathEntryFinderTests:
             path_location = 'test_finder_with_find_module'
             eleza __init__(self, path):
                 ikiwa path != self.path_location:
-                    ashiria ImportError
+                     ashiria ImportError
 
             @staticmethod
             eleza find_module(fullname):
@@ -257,7 +257,7 @@ kundi PathEntryFinderTests:
             path_location = 'test_finder_with_find_module'
             eleza __init__(self, path):
                 ikiwa path != self.path_location:
-                    ashiria ImportError
+                     ashiria ImportError
 
             @staticmethod
             eleza find_module(fullname):

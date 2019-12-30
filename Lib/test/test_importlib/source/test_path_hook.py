@@ -14,12 +14,12 @@ kundi PathHookTest:
             self.machinery.SOURCE_SUFFIXES))
 
     eleza test_success(self):
-        ukijumuisha util.create_modules('dummy') kama mapping:
+        ukijumuisha util.create_modules('dummy') as mapping:
             self.assertKweli(hasattr(self.path_hook()(mapping['.root']),
                                     'find_spec'))
 
     eleza test_success_legacy(self):
-        ukijumuisha util.create_modules('dummy') kama mapping:
+        ukijumuisha util.create_modules('dummy') as mapping:
             self.assertKweli(hasattr(self.path_hook()(mapping['.root']),
                                     'find_module'))
 

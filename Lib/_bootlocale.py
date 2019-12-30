@@ -1,5 +1,5 @@
 """A minimal subset of the locale module used at interpreter startup
-(imported by the _io module), in order to reduce startup time.
+(imported by the _io module), kwenye order to reduce startup time.
 
 Don't agiza directly kutoka third-party code; use the `locale` module instead!
 """
@@ -15,17 +15,17 @@ ikiwa sys.platform.startswith("win"):
 isipokua:
     jaribu:
         _locale.CODESET
-    tatizo AttributeError:
+    except AttributeError:
         ikiwa hasattr(sys, 'getandroidapilevel'):
-            # On Android langinfo.h and CODESET are missing, and UTF-8 is
-            # always used in mbstowcs() and wcstombs().
+            # On Android langinfo.h na CODESET are missing, na UTF-8 is
+            # always used kwenye mbstowcs() na wcstombs().
             eleza getpreferredencoding(do_setlocale=Kweli):
                 rudisha 'UTF-8'
         isipokua:
             eleza getpreferredencoding(do_setlocale=Kweli):
                 ikiwa sys.flags.utf8_mode:
                     rudisha 'UTF-8'
-                # This path for legacy systems needs the more complex
+                # This path kila legacy systems needs the more complex
                 # getdefaultlocale() function, agiza the full locale module.
                 agiza locale
                 rudisha locale.getpreferredencoding(do_setlocale)
@@ -38,8 +38,8 @@ isipokua:
             ikiwa sio result na sys.platform == 'darwin':
                 # nl_langinfo can rudisha an empty string
                 # when the setting has an invalid value.
-                # Default to UTF-8 in that case because
-                # UTF-8 is the default charset on OSX na
+                # Default to UTF-8 kwenye that case because
+                # UTF-8 ni the default charset on OSX and
                 # returning nothing will crash the
                 # interpreter.
                 result = 'UTF-8'

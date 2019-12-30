@@ -10,19 +10,19 @@ The compiler compiles a pattern to a pytree.*Pattern instance.
 
 __author__ = "Guido van Rossum <guido@python.org>"
 
-# Python agizas
+# Python imports
 agiza io
 
-# Fairly local agizas
+# Fairly local imports
 kutoka .pgen2 agiza driver, literals, token, tokenize, parse, grammar
 
-# Really local agizas
+# Really local imports
 kutoka . agiza pytree
 kutoka . agiza pygram
 
 
 kundi PatternSyntaxError(Exception):
-    pita
+    pass
 
 
 eleza tokenize_wrapper(input):
@@ -31,7 +31,7 @@ eleza tokenize_wrapper(input):
     tokens = tokenize.generate_tokens(io.StringIO(input).readline)
     kila quintuple kwenye tokens:
         type, value, start, end, line_text = quintuple
-        ikiwa type haiko kwenye skip:
+        ikiwa type sio kwenye skip:
             tuma quintuple
 
 
@@ -57,8 +57,8 @@ kundi PatternCompiler(object):
         tokens = tokenize_wrapper(input)
         jaribu:
             root = self.driver.parse_tokens(tokens, debug=debug)
-        tatizo parse.ParseError kama e:
-            ashiria PatternSyntaxError(str(e)) kutoka Tupu
+        except parse.ParseError as e:
+             ashiria PatternSyntaxError(str(e)) kutoka Tupu
         ikiwa with_tree:
             rudisha self.compile_node(root), root
         isipokua:
@@ -116,10 +116,10 @@ kundi PatternCompiler(object):
             ikiwa child.type == token.STAR:
                 min = 0
                 max = pytree.HUGE
-            lasivyo child.type == token.PLUS:
+            elikiwa child.type == token.PLUS:
                 min = 1
                 max = pytree.HUGE
-            lasivyo child.type == token.LBRACE:
+            elikiwa child.type == token.LBRACE:
                 assert children[-1].type == token.RBRACE
                 assert  len(children) kwenye (3, 5)
                 min = max = self.get_int(children[1])
@@ -142,29 +142,29 @@ kundi PatternCompiler(object):
         ikiwa node.type == token.STRING:
             value = str(literals.evalString(node.value))
             rudisha pytree.LeafPattern(_type_of_literal(value), value)
-        lasivyo node.type == token.NAME:
+        elikiwa node.type == token.NAME:
             value = node.value
             ikiwa value.isupper():
-                ikiwa value haiko kwenye TOKEN_MAP:
-                    ashiria PatternSyntaxError("Invalid token: %r" % value)
+                ikiwa value sio kwenye TOKEN_MAP:
+                     ashiria PatternSyntaxError("Invalid token: %r" % value)
                 ikiwa nodes[1:]:
-                    ashiria PatternSyntaxError("Can't have details kila token")
+                     ashiria PatternSyntaxError("Can't have details kila token")
                 rudisha pytree.LeafPattern(TOKEN_MAP[value])
             isipokua:
                 ikiwa value == "any":
                     type = Tupu
-                lasivyo sio value.startswith("_"):
+                elikiwa sio value.startswith("_"):
                     type = getattr(self.pysyms, value, Tupu)
                     ikiwa type ni Tupu:
-                        ashiria PatternSyntaxError("Invalid symbol: %r" % value)
+                         ashiria PatternSyntaxError("Invalid symbol: %r" % value)
                 ikiwa nodes[1:]: # Details present
                     content = [self.compile_node(nodes[1].children[1])]
                 isipokua:
                     content = Tupu
                 rudisha pytree.NodePattern(type, content)
-        lasivyo node.value == "(":
+        elikiwa node.value == "(":
             rudisha self.compile_node(nodes[1])
-        lasivyo node.value == "[":
+        elikiwa node.value == "[":
             assert repeat ni Tupu
             subpattern = self.compile_node(nodes[1])
             rudisha pytree.WildcardPattern([[subpattern]], min=0, max=1)
@@ -185,7 +185,7 @@ TOKEN_MAP = {"NAME": token.NAME,
 eleza _type_of_literal(value):
     ikiwa value[0].isalpha():
         rudisha token.NAME
-    lasivyo value kwenye grammar.opmap:
+    elikiwa value kwenye grammar.opmap:
         rudisha grammar.opmap[value]
     isipokua:
         rudisha Tupu

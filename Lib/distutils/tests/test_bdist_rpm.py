@@ -1,40 +1,40 @@
-"""Tests for distutils.command.bdist_rpm."""
+"""Tests kila distutils.command.bdist_rpm."""
 
-import unittest
-import sys
-import os
-from test.support import run_unittest, requires_zlib
+agiza unittest
+agiza sys
+agiza os
+kutoka test.support agiza run_unittest, requires_zlib
 
-from distutils.core import Distribution
-from distutils.command.bdist_rpm import bdist_rpm
-from distutils.tests import support
-from distutils.spawn import find_executable
+kutoka distutils.core agiza Distribution
+kutoka distutils.command.bdist_rpm agiza bdist_rpm
+kutoka distutils.tests agiza support
+kutoka distutils.spawn agiza find_executable
 
 SETUP_PY = """\
-from distutils.core import setup
-import foo
+kutoka distutils.core agiza setup
+agiza foo
 
 setup(name='foo', version='0.1', py_modules=['foo'],
       url='xxx', author='xxx', author_email='xxx')
 
 """
 
-class BuildRpmTestCase(support.TempdirManager,
+kundi BuildRpmTestCase(support.TempdirManager,
                        support.EnvironGuard,
                        support.LoggingSilencer,
                        unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         jaribu:
             sys.executable.encode("UTF-8")
-        tatizo UnicodeEncodeError:
-            ashiria unittest.SkipTest("sys.executable ni sio encodable to UTF-8")
+        except UnicodeEncodeError:
+             ashiria unittest.SkipTest("sys.executable ni sio encodable to UTF-8")
 
         super(BuildRpmTestCase, self).setUp()
         self.old_location = os.getcwd()
         self.old_sys_argv = sys.argv, sys.argv[:]
 
-    def tearDown(self):
+    eleza tearDown(self):
         os.chdir(self.old_location)
         sys.argv = self.old_sys_argv[0]
         sys.argv[:] = self.old_sys_argv[1]
@@ -45,11 +45,11 @@ class BuildRpmTestCase(support.TempdirManager,
     @unittest.skipUnless(sys.platform.startswith('linux'),
                          'spurious sdtout/stderr output under Mac OS X')
     @requires_zlib
-    @unittest.skipIf(find_executable('rpm') is None,
+    @unittest.skipIf(find_executable('rpm') ni Tupu,
                      'the rpm command ni sio found')
-    @unittest.skipIf(find_executable('rpmbuild') is None,
+    @unittest.skipIf(find_executable('rpmbuild') ni Tupu,
                      'the rpmbuild command ni sio found')
-    def test_quiet(self):
+    eleza test_quiet(self):
         # let's create a package
         tmp_dir = self.mkdtemp()
         os.environ['HOME'] = tmp_dir   # to confine dir '.rpmdb' creation
@@ -69,9 +69,9 @@ class BuildRpmTestCase(support.TempdirManager,
 
         sys.argv = ['setup.py']
         cmd = bdist_rpm(dist)
-        cmd.fix_python = True
+        cmd.fix_python = Kweli
 
-        # running in quiet mode
+        # running kwenye quiet mode
         cmd.quiet = 1
         cmd.ensure_finalized()
         cmd.run()
@@ -89,11 +89,11 @@ class BuildRpmTestCase(support.TempdirManager,
                          'spurious sdtout/stderr output under Mac OS X')
     @requires_zlib
     # http://bugs.python.org/issue1533164
-    @unittest.skipIf(find_executable('rpm') is None,
+    @unittest.skipIf(find_executable('rpm') ni Tupu,
                      'the rpm command ni sio found')
-    @unittest.skipIf(find_executable('rpmbuild') is None,
+    @unittest.skipIf(find_executable('rpmbuild') ni Tupu,
                      'the rpmbuild command ni sio found')
-    def test_no_optimize_flag(self):
+    eleza test_no_optimize_flag(self):
         # let's create a package that komas bdist_rpm
         tmp_dir = self.mkdtemp()
         os.environ['HOME'] = tmp_dir   # to confine dir '.rpmdb' creation
@@ -113,7 +113,7 @@ class BuildRpmTestCase(support.TempdirManager,
 
         sys.argv = ['setup.py']
         cmd = bdist_rpm(dist)
-        cmd.fix_python = True
+        cmd.fix_python = Kweli
 
         cmd.quiet = 1
         cmd.ensure_finalized()
@@ -128,8 +128,8 @@ class BuildRpmTestCase(support.TempdirManager,
 
         os.remove(os.path.join(pkg_dir, 'dist', 'foo-0.1-1.noarch.rpm'))
 
-def test_suite():
-    return unittest.makeSuite(BuildRpmTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(BuildRpmTestCase)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     run_unittest(test_suite())

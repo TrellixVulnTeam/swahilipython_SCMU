@@ -6,7 +6,7 @@ fnmatchcase(FILENAME, PATTERN) always takes case kwenye account.
 The functions operate by translating the pattern into a regular
 expression.  They cache the compiled regular expressions kila speed.
 
-The function translate(PATTERN) rudishas a regular expression
+The function translate(PATTERN) returns a regular expression
 corresponding to PATTERN.  (It does sio compile it.)
 """
 agiza os
@@ -24,7 +24,7 @@ eleza fnmatch(name, pat):
     *       matches everything
     ?       matches any single character
     [seq]   matches any character kwenye seq
-    [!seq]  matches any char haiko kwenye seq
+    [!seq]  matches any char sio kwenye seq
 
     An initial period kwenye FILENAME ni sio special.
     Both FILENAME na PATTERN are first case-normalized
@@ -84,9 +84,9 @@ eleza translate(pat):
         i = i+1
         ikiwa c == '*':
             res = res + '.*'
-        lasivyo c == '?':
+        elikiwa c == '?':
             res = res + '.'
-        lasivyo c == '[':
+        elikiwa c == '[':
             j = i
             ikiwa j < n na pat[j] == '!':
                 j = j+1
@@ -98,7 +98,7 @@ eleza translate(pat):
                 res = res + '\\['
             isipokua:
                 stuff = pat[i:j]
-                ikiwa '--' haiko kwenye stuff:
+                ikiwa '--' sio kwenye stuff:
                     stuff = stuff.replace('\\', r'\\')
                 isipokua:
                     chunks = []
@@ -120,7 +120,7 @@ eleza translate(pat):
                 i = j+1
                 ikiwa stuff[0] == '!':
                     stuff = '^' + stuff[1:]
-                lasivyo stuff[0] kwenye ('^', '['):
+                elikiwa stuff[0] kwenye ('^', '['):
                     stuff = '\\' + stuff
                 res = '%s[%s]' % (res, stuff)
         isipokua:

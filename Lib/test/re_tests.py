@@ -447,9 +447,9 @@ tests = [
 
     # lookbehind: split by : but sio ikiwa it ni escaped by -.
     ('(?<!-):(.*?)(?<!-):', 'a:bc-:de:f', SUCCEED, 'g1', 'bc-:de' ),
-    # escaping ukijumuisha \ kama we know it
+    # escaping ukijumuisha \ as we know it
     ('(?<!\\\\):(.*?)(?<!\\\\):', 'a:bc\\:de:f', SUCCEED, 'g1', 'bc\\:de' ),
-    # terminating ukijumuisha ' na escaping ukijumuisha ? kama kwenye edifact
+    # terminating ukijumuisha ' na escaping ukijumuisha ? as kwenye edifact
     ("(?<!\\?)'(.*?)(?<!\\?)'", "a'bc?'de'f", SUCCEED, 'g1', "bc?'de" ),
 
     # Comments using the (?#...) syntax

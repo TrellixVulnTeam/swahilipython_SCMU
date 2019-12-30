@@ -1,203 +1,203 @@
 """distutils.spawn
 
 Provides the 'spawn()' function, a front-end to various platform-
-specific functions for launching another program in a sub-process.
-Also provides the 'find_executable()' to search the path for a given
+specific functions kila launching another program kwenye a sub-process.
+Also provides the 'find_executable()' to search the path kila a given
 executable name.
 """
 
-import sys
-import os
+agiza sys
+agiza os
 
-from distutils.errors import DistutilsPlatformError, DistutilsExecError
-from distutils.debug import DEBUG
-from distutils import log
+kutoka distutils.errors agiza DistutilsPlatformError, DistutilsExecError
+kutoka distutils.debug agiza DEBUG
+kutoka distutils agiza log
 
-def spawn(cmd, search_path=1, verbose=0, dry_run=0):
-    """Run another program, specified as a command list 'cmd', in a new process.
+eleza spawn(cmd, search_path=1, verbose=0, dry_run=0):
+    """Run another program, specified as a command list 'cmd', kwenye a new process.
 
-    'cmd' is just the argument list for the new process, ie.
-    cmd[0] is the program to run and cmd[1:] are the rest of its arguments.
-    There is no way to run a program with a name different from that of its
+    'cmd' ni just the argument list kila the new process, ie.
+    cmd[0] ni the program to run na cmd[1:] are the rest of its arguments.
+    There ni no way to run a program ukijumuisha a name different kutoka that of its
     executable.
 
-    If 'search_path' is true (the default), the system's executable
+    If 'search_path' ni true (the default), the system's executable
     search path will be used to find the program; otherwise, cmd[0]
-    must be the exact path to the executable.  If 'dry_run' is true,
+    must be the exact path to the executable.  If 'dry_run' ni true,
     the command will sio actually be run.
 
-    Raise DistutilsExecError if running the program fails in any way; just
-    return on success.
+    Raise DistutilsExecError ikiwa running the program fails kwenye any way; just
+    rudisha on success.
     """
-    # cmd is documented as a list, but just in case some code passes a tuple
+    # cmd ni documented as a list, but just kwenye case some code passes a tuple
     # in, protect our %-formatting code against horrible death
     cmd = list(cmd)
-    if os.name == 'posix':
+    ikiwa os.name == 'posix':
         _spawn_posix(cmd, search_path, dry_run=dry_run)
-    lasivyo os.name == 'nt':
+    elikiwa os.name == 'nt':
         _spawn_nt(cmd, search_path, dry_run=dry_run)
     isipokua:
-        ashiria DistutilsPlatformError(
+         ashiria DistutilsPlatformError(
               "don't know how to spawn programs on platform '%s'" % os.name)
 
-def _nt_quote_args(args):
-    """Quote command-line arguments for DOS/Windows conventions.
+eleza _nt_quote_args(args):
+    """Quote command-line arguments kila DOS/Windows conventions.
 
-    Just wraps every argument which contains blanks in double quotes, na
+    Just wraps every argument which contains blanks kwenye double quotes, and
     returns a new argument list.
     """
-    # XXX this doesn't seem very robust to me -- but if the Windows guys
-    # say it'll work, I guess I'll have to accept it.  (What if an arg
+    # XXX this doesn't seem very robust to me -- but ikiwa the Windows guys
+    # say it'll work, I guess I'll have to accept it.  (What ikiwa an arg
     # contains quotes?  What other magic characters, other than spaces,
     # have to be escaped?  Is there an escaping mechanism other than
     # quoting?)
-    for i, arg in enumerate(args):
-        if ' ' in arg:
+    kila i, arg kwenye enumerate(args):
+        ikiwa ' ' kwenye arg:
             args[i] = '"%s"' % arg
-    return args
+    rudisha args
 
-def _spawn_nt(cmd, search_path=1, verbose=0, dry_run=0):
+eleza _spawn_nt(cmd, search_path=1, verbose=0, dry_run=0):
     executable = cmd[0]
     cmd = _nt_quote_args(cmd)
-    if search_path:
-        # either we find one or it stays the same
+    ikiwa search_path:
+        # either we find one ama it stays the same
         executable = find_executable(executable) ama executable
     log.info(' '.join([executable] + cmd[1:]))
-    if sio dry_run:
-        # spawn for NT requires a full path to the .exe
+    ikiwa sio dry_run:
+        # spawn kila NT requires a full path to the .exe
         jaribu:
             rc = os.spawnv(os.P_WAIT, executable, cmd)
-        tatizo OSError as exc:
+        except OSError as exc:
             # this seems to happen when the command isn't found
-            if sio DEBUG:
+            ikiwa sio DEBUG:
                 cmd = executable
-            ashiria DistutilsExecError(
+             ashiria DistutilsExecError(
                   "command %r failed: %s" % (cmd, exc.args[-1]))
-        if rc != 0:
-            # and this reflects the command running but failing
-            if sio DEBUG:
+        ikiwa rc != 0:
+            # na this reflects the command running but failing
+            ikiwa sio DEBUG:
                 cmd = executable
-            ashiria DistutilsExecError(
-                  "command %r failed with exit status %d" % (cmd, rc))
+             ashiria DistutilsExecError(
+                  "command %r failed ukijumuisha exit status %d" % (cmd, rc))
 
-if sys.platform == 'darwin':
-    _cfg_target = None
-    _cfg_target_split = None
+ikiwa sys.platform == 'darwin':
+    _cfg_target = Tupu
+    _cfg_target_split = Tupu
 
-def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
+eleza _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
     log.info(' '.join(cmd))
-    if dry_run:
+    ikiwa dry_run:
         return
     executable = cmd[0]
-    exec_fn = search_path and os.execvp or os.execv
-    env = None
-    if sys.platform == 'darwin':
+    exec_fn = search_path na os.execvp ama os.execv
+    env = Tupu
+    ikiwa sys.platform == 'darwin':
         global _cfg_target, _cfg_target_split
-        if _cfg_target is None:
-            from distutils import sysconfig
+        ikiwa _cfg_target ni Tupu:
+            kutoka distutils agiza sysconfig
             _cfg_target = sysconfig.get_config_var(
                                   'MACOSX_DEPLOYMENT_TARGET') ama ''
-            if _cfg_target:
-                _cfg_target_split = [int(x) for x in _cfg_target.split('.')]
-        if _cfg_target:
+            ikiwa _cfg_target:
+                _cfg_target_split = [int(x) kila x kwenye _cfg_target.split('.')]
+        ikiwa _cfg_target:
             # ensure that the deployment target of build process ni sio less
             # than that used when the interpreter was built. This ensures
-            # extension modules are built with correct compatibility values
+            # extension modules are built ukijumuisha correct compatibility values
             cur_target = os.environ.get('MACOSX_DEPLOYMENT_TARGET', _cfg_target)
-            if _cfg_target_split > [int(x) for x in cur_target.split('.')]:
+            ikiwa _cfg_target_split > [int(x) kila x kwenye cur_target.split('.')]:
                 my_msg = ('$MACOSX_DEPLOYMENT_TARGET mismatch: '
                           'now "%s" but "%s" during configure'
                                 % (cur_target, _cfg_target))
-                ashiria DistutilsPlatformError(my_msg)
+                 ashiria DistutilsPlatformError(my_msg)
             env = dict(os.environ,
                        MACOSX_DEPLOYMENT_TARGET=cur_target)
-            exec_fn = search_path and os.execvpe or os.execve
+            exec_fn = search_path na os.execvpe ama os.execve
     pid = os.fork()
-    if pid == 0: # in the child
+    ikiwa pid == 0: # kwenye the child
         jaribu:
-            if env is None:
+            ikiwa env ni Tupu:
                 exec_fn(executable, cmd)
             isipokua:
                 exec_fn(executable, cmd, env)
-        tatizo OSError as e:
-            if sio DEBUG:
+        except OSError as e:
+            ikiwa sio DEBUG:
                 cmd = executable
             sys.stderr.write("unable to execute %r: %s\n"
                              % (cmd, e.strerror))
             os._exit(1)
 
-        if sio DEBUG:
+        ikiwa sio DEBUG:
             cmd = executable
-        sys.stderr.write("unable to execute %r for unknown reasons" % cmd)
+        sys.stderr.write("unable to execute %r kila unknown reasons" % cmd)
         os._exit(1)
-    isipokua: # in the parent
-        # Loop until the child either exits or is terminated by a signal
-        # (ie. keep waiting if it's merely stopped)
-        wakati True:
+    isipokua: # kwenye the parent
+        # Loop until the child either exits ama ni terminated by a signal
+        # (ie. keep waiting ikiwa it's merely stopped)
+        wakati Kweli:
             jaribu:
                 pid, status = os.waitpid(pid, 0)
-            tatizo OSError as exc:
-                if sio DEBUG:
+            except OSError as exc:
+                ikiwa sio DEBUG:
                     cmd = executable
-                ashiria DistutilsExecError(
+                 ashiria DistutilsExecError(
                       "command %r failed: %s" % (cmd, exc.args[-1]))
-            if os.WIFSIGNALED(status):
-                if sio DEBUG:
+            ikiwa os.WIFSIGNALED(status):
+                ikiwa sio DEBUG:
                     cmd = executable
-                ashiria DistutilsExecError(
+                 ashiria DistutilsExecError(
                       "command %r terminated by signal %d"
                       % (cmd, os.WTERMSIG(status)))
-            lasivyo os.WIFEXITED(status):
+            elikiwa os.WIFEXITED(status):
                 exit_status = os.WEXITSTATUS(status)
-                if exit_status == 0:
-                    return   # hey, it succeeded!
+                ikiwa exit_status == 0:
+                    rudisha   # hey, it succeeded!
                 isipokua:
-                    if sio DEBUG:
+                    ikiwa sio DEBUG:
                         cmd = executable
-                    ashiria DistutilsExecError(
-                          "command %r failed with exit status %d"
+                     ashiria DistutilsExecError(
+                          "command %r failed ukijumuisha exit status %d"
                           % (cmd, exit_status))
-            lasivyo os.WIFSTOPPED(status):
+            elikiwa os.WIFSTOPPED(status):
                 endelea
             isipokua:
-                if sio DEBUG:
+                ikiwa sio DEBUG:
                     cmd = executable
-                ashiria DistutilsExecError(
+                 ashiria DistutilsExecError(
                       "unknown error executing %r: termination status %d"
                       % (cmd, status))
 
-def find_executable(executable, path=None):
-    """Tries to find 'executable' in the directories listed in 'path'.
+eleza find_executable(executable, path=Tupu):
+    """Tries to find 'executable' kwenye the directories listed kwenye 'path'.
 
     A string listing directories separated by 'os.pathsep'; defaults to
-    os.environ['PATH'].  Returns the complete filename or None if sio found.
+    os.environ['PATH'].  Returns the complete filename ama Tupu ikiwa sio found.
     """
     _, ext = os.path.splitext(executable)
-    if (sys.platform == 'win32') and (ext != '.exe'):
+    ikiwa (sys.platform == 'win32') na (ext != '.exe'):
         executable = executable + '.exe'
 
-    if os.path.isfile(executable):
-        return executable
+    ikiwa os.path.isfile(executable):
+        rudisha executable
 
-    if path is None:
-        path = os.environ.get('PATH', None)
-        if path is None:
+    ikiwa path ni Tupu:
+        path = os.environ.get('PATH', Tupu)
+        ikiwa path ni Tupu:
             jaribu:
                 path = os.confstr("CS_PATH")
-            tatizo (AttributeError, ValueError):
+            except (AttributeError, ValueError):
                 # os.confstr() ama CS_PATH ni sio available
                 path = os.defpath
-        # bpo-35755: Don't use os.defpath if the PATH environment variable is
+        # bpo-35755: Don't use os.defpath ikiwa the PATH environment variable is
         # set to an empty string
 
-    # PATH='' doesn't match, whereas PATH=':' looks in the current directory
-    if sio path:
-        return None
+    # PATH='' doesn't match, whereas PATH=':' looks kwenye the current directory
+    ikiwa sio path:
+        rudisha Tupu
 
     paths = path.split(os.pathsep)
-    for p in paths:
+    kila p kwenye paths:
         f = os.path.join(p, executable)
-        if os.path.isfile(f):
+        ikiwa os.path.isfile(f):
             # the file exists, we have a shot at spawn working
-            return f
-    return None
+            rudisha f
+    rudisha Tupu

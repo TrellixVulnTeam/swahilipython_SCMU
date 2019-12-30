@@ -1,48 +1,48 @@
-import asyncio
-import unittest
+agiza asyncio
+agiza unittest
 
-from test.test_asyncio import functional as func_tests
-
-
-def tearDownModule():
-    asyncio.set_event_loop_policy(None)
+kutoka test.test_asyncio agiza functional as func_tests
 
 
-class ReceiveStuffProto(asyncio.BufferedProtocol):
-    def __init__(self, cb, con_lost_fut):
+eleza tearDownModule():
+    asyncio.set_event_loop_policy(Tupu)
+
+
+kundi ReceiveStuffProto(asyncio.BufferedProtocol):
+    eleza __init__(self, cb, con_lost_fut):
         self.cb = cb
         self.con_lost_fut = con_lost_fut
 
-    def get_buffer(self, sizehint):
+    eleza get_buffer(self, sizehint):
         self.buffer = bytearray(100)
-        return self.buffer
+        rudisha self.buffer
 
-    def buffer_updated(self, nbytes):
+    eleza buffer_updated(self, nbytes):
         self.cb(self.buffer[:nbytes])
 
-    def connection_lost(self, exc):
-        if exc is None:
-            self.con_lost_fut.set_result(None)
+    eleza connection_lost(self, exc):
+        ikiwa exc ni Tupu:
+            self.con_lost_fut.set_result(Tupu)
         isipokua:
             self.con_lost_fut.set_exception(exc)
 
 
-class BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
+kundi BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
 
-    def new_loop(self):
-        ashiria NotImplementedError
+    eleza new_loop(self):
+         ashiria NotImplementedError
 
-    def test_buffered_proto_create_connection(self):
+    eleza test_buffered_proto_create_connection(self):
 
         NOISE = b'12345678+' * 1024
 
-        async def client(addr):
+        async eleza client(addr):
             data = b''
 
-            def on_buf(buf):
+            eleza on_buf(buf):
                 nonlocal data
                 data += buf
-                if data == NOISE:
+                ikiwa data == NOISE:
                     tr.write(b'1')
 
             conn_lost_fut = self.loop.create_future()
@@ -52,7 +52,7 @@ class BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
 
             await conn_lost_fut
 
-        async def on_server_client(reader, writer):
+        async eleza on_server_client(reader, writer):
             writer.write(NOISE)
             await reader.readexactly(1)
             writer.close()
@@ -70,20 +70,20 @@ class BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
         self.loop.run_until_complete(srv.wait_closed())
 
 
-class BufferedProtocolSelectorTests(BaseTestBufferedProtocol,
+kundi BufferedProtocolSelectorTests(BaseTestBufferedProtocol,
                                     unittest.TestCase):
 
-    def new_loop(self):
-        return asyncio.SelectorEventLoop()
+    eleza new_loop(self):
+        rudisha asyncio.SelectorEventLoop()
 
 
 @unittest.skipUnless(hasattr(asyncio, 'ProactorEventLoop'), 'Windows only')
-class BufferedProtocolProactorTests(BaseTestBufferedProtocol,
+kundi BufferedProtocolProactorTests(BaseTestBufferedProtocol,
                                     unittest.TestCase):
 
-    def new_loop(self):
-        return asyncio.ProactorEventLoop()
+    eleza new_loop(self):
+        rudisha asyncio.ProactorEventLoop()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

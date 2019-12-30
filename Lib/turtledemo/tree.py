@@ -10,13 +10,13 @@ which use a depth-first-algorithm.
 Uses:
 (1) a tree-generator, where the drawing is
 quasi the side-effect, whereas the generator
-always tumas Tupu.
+always yields Tupu.
 (2) Turtle-cloning: At each branching point
 the current pen ni cloned. So kwenye the end
 there are 1024 turtles.
 """
 kutoka turtle agiza Turtle, mainloop
-kutoka time agiza perf_counter kama clock
+kutoka time agiza perf_counter as clock
 
 eleza tree(plist, l, a, f):
     """ plist ni list of pens
@@ -48,7 +48,7 @@ eleza maketree():
     p.pendown()
     t = tree([p], 200, 65, 0.6375)
     kila x kwenye t:
-        pita
+        pass
 
 eleza main():
     a=clock()

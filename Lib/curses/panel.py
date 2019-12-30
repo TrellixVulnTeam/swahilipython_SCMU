@@ -1,6 +1,6 @@
 """curses.panel
 
-Module for using panels with curses.
+Module kila using panels ukijumuisha curses.
 """
 
-from _curses_panel import *
+kutoka _curses_panel agiza *

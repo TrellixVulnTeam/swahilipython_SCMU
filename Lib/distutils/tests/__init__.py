@@ -1,36 +1,36 @@
-"""Test suite for distutils.
+"""Test suite kila distutils.
 
-This test suite consists of a collection of test modules in the
+This test suite consists of a collection of test modules kwenye the
 distutils.tests package.  Each test module has a name starting with
-'test' and contains a function test_suite().  The function is expected
-to return an initialized unittest.TestSuite instance.
+'test' na contains a function test_suite().  The function ni expected
+to rudisha an initialized unittest.TestSuite instance.
 
-Tests for the command classes in the distutils.command package are
-included in distutils.tests as well, instead of using a separate
-distutils.command.tests package, since command identification is done
-by import rather than matching pre-defined names.
+Tests kila the command classes kwenye the distutils.command package are
+included kwenye distutils.tests as well, instead of using a separate
+distutils.command.tests package, since command identification ni done
+by agiza rather than matching pre-defined names.
 
 """
 
-import os
-import sys
-import unittest
-from test.support import run_unittest
+agiza os
+agiza sys
+agiza unittest
+kutoka test.support agiza run_unittest
 
 
 here = os.path.dirname(__file__) ama os.curdir
 
 
-def test_suite():
+eleza test_suite():
     suite = unittest.TestSuite()
-    for fn in os.listdir(here):
-        if fn.startswith("test") and fn.endswith(".py"):
+    kila fn kwenye os.listdir(here):
+        ikiwa fn.startswith("test") na fn.endswith(".py"):
             modname = "distutils.tests." + fn[:-3]
             __import__(modname)
             module = sys.modules[modname]
             suite.addTest(module.test_suite())
-    return suite
+    rudisha suite
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

@@ -1,10 +1,10 @@
-"""When called with a single argument, simulated fgrep with a single
-argument and no options."""
+"""When called ukijumuisha a single argument, simulated fgrep ukijumuisha a single
+argument na no options."""
 
-import sys
+agiza sys
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     pattern = sys.argv[1]
-    for line in sys.stdin:
-        if pattern in line:
+    kila line kwenye sys.stdin:
+        ikiwa pattern kwenye line:
             sys.stdout.write(line)

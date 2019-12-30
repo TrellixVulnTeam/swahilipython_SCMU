@@ -3,7 +3,7 @@
 
 """Fixer that transforms `xyzzy` into repr(xyzzy)."""
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Call, Name, parenthesize
 

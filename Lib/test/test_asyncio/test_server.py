@@ -1,32 +1,32 @@
-import asyncio
-import time
-import threading
-import unittest
+agiza asyncio
+agiza time
+agiza threading
+agiza unittest
 
-from test import support
-from test.test_asyncio import utils as test_utils
-from test.test_asyncio import functional as func_tests
-
-
-def tearDownModule():
-    asyncio.set_event_loop_policy(None)
+kutoka test agiza support
+kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza functional as func_tests
 
 
-class BaseStartServer(func_tests.FunctionalTestCaseMixin):
+eleza tearDownModule():
+    asyncio.set_event_loop_policy(Tupu)
 
-    def new_loop(self):
-        ashiria NotImplementedError
 
-    def test_start_server_1(self):
+kundi BaseStartServer(func_tests.FunctionalTestCaseMixin):
+
+    eleza new_loop(self):
+         ashiria NotImplementedError
+
+    eleza test_start_server_1(self):
         HELLO_MSG = b'1' * 1024 * 5 + b'\n'
 
-        def client(sock, addr):
-            for i in range(10):
+        eleza client(sock, addr):
+            kila i kwenye range(10):
                 time.sleep(0.2)
-                if srv.is_serving():
+                ikiwa srv.is_serving():
                     koma
             isipokua:
-                ashiria RuntimeError
+                 ashiria RuntimeError
 
             sock.settimeout(2)
             sock.connect(addr)
@@ -34,51 +34,51 @@ class BaseStartServer(func_tests.FunctionalTestCaseMixin):
             sock.recv_all(1)
             sock.close()
 
-        async def serve(reader, writer):
+        async eleza serve(reader, writer):
             await reader.readline()
             main_task.cancel()
             writer.write(b'1')
             writer.close()
             await writer.wait_closed()
 
-        async def main(srv):
-            async with srv:
+        async eleza main(srv):
+            async ukijumuisha srv:
                 await srv.serve_forever()
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             srv = self.loop.run_until_complete(asyncio.start_server(
-                serve, support.HOSTv4, 0, loop=self.loop, start_serving=False))
+                serve, support.HOSTv4, 0, loop=self.loop, start_serving=Uongo))
 
-        self.assertFalse(srv.is_serving())
+        self.assertUongo(srv.is_serving())
 
         main_task = self.loop.create_task(main(srv))
 
         addr = srv.sockets[0].getsockname()
-        with self.assertRaises(asyncio.CancelledError):
-            with self.tcp_client(lambda sock: client(sock, addr)):
+        ukijumuisha self.assertRaises(asyncio.CancelledError):
+            ukijumuisha self.tcp_client(lambda sock: client(sock, addr)):
                 self.loop.run_until_complete(main_task)
 
         self.assertEqual(srv.sockets, ())
 
-        self.assertIsNone(srv._sockets)
-        self.assertIsNone(srv._waiters)
-        self.assertFalse(srv.is_serving())
+        self.assertIsTupu(srv._sockets)
+        self.assertIsTupu(srv._waiters)
+        self.assertUongo(srv.is_serving())
 
-        with self.assertRaisesRegex(RuntimeError, r'is closed'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, r'is closed'):
             self.loop.run_until_complete(srv.serve_forever())
 
 
-class SelectorStartServerTests(BaseStartServer, unittest.TestCase):
+kundi SelectorStartServerTests(BaseStartServer, unittest.TestCase):
 
-    def new_loop(self):
-        return asyncio.SelectorEventLoop()
+    eleza new_loop(self):
+        rudisha asyncio.SelectorEventLoop()
 
     @support.skip_unless_bind_unix_socket
-    def test_start_unix_server_1(self):
+    eleza test_start_unix_server_1(self):
         HELLO_MSG = b'1' * 1024 * 5 + b'\n'
         started = threading.Event()
 
-        def client(sock, addr):
+        eleza client(sock, addr):
             sock.settimeout(2)
             started.wait(5)
             sock.connect(addr)
@@ -86,48 +86,48 @@ class SelectorStartServerTests(BaseStartServer, unittest.TestCase):
             sock.recv_all(1)
             sock.close()
 
-        async def serve(reader, writer):
+        async eleza serve(reader, writer):
             await reader.readline()
             main_task.cancel()
             writer.write(b'1')
             writer.close()
             await writer.wait_closed()
 
-        async def main(srv):
-            async with srv:
-                self.assertFalse(srv.is_serving())
+        async eleza main(srv):
+            async ukijumuisha srv:
+                self.assertUongo(srv.is_serving())
                 await srv.start_serving()
-                self.assertTrue(srv.is_serving())
+                self.assertKweli(srv.is_serving())
                 started.set()
                 await srv.serve_forever()
 
-        with test_utils.unix_socket_path() as addr:
-            with self.assertWarns(DeprecationWarning):
+        ukijumuisha test_utils.unix_socket_path() as addr:
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 srv = self.loop.run_until_complete(asyncio.start_unix_server(
-                    serve, addr, loop=self.loop, start_serving=False))
+                    serve, addr, loop=self.loop, start_serving=Uongo))
 
             main_task = self.loop.create_task(main(srv))
 
-            with self.assertRaises(asyncio.CancelledError):
-                with self.unix_client(lambda sock: client(sock, addr)):
+            ukijumuisha self.assertRaises(asyncio.CancelledError):
+                ukijumuisha self.unix_client(lambda sock: client(sock, addr)):
                     self.loop.run_until_complete(main_task)
 
             self.assertEqual(srv.sockets, ())
 
-            self.assertIsNone(srv._sockets)
-            self.assertIsNone(srv._waiters)
-            self.assertFalse(srv.is_serving())
+            self.assertIsTupu(srv._sockets)
+            self.assertIsTupu(srv._waiters)
+            self.assertUongo(srv.is_serving())
 
-            with self.assertRaisesRegex(RuntimeError, r'is closed'):
+            ukijumuisha self.assertRaisesRegex(RuntimeError, r'is closed'):
                 self.loop.run_until_complete(srv.serve_forever())
 
 
 @unittest.skipUnless(hasattr(asyncio, 'ProactorEventLoop'), 'Windows only')
-class ProactorStartServerTests(BaseStartServer, unittest.TestCase):
+kundi ProactorStartServerTests(BaseStartServer, unittest.TestCase):
 
-    def new_loop(self):
-        return asyncio.ProactorEventLoop()
+    eleza new_loop(self):
+        rudisha asyncio.ProactorEventLoop()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

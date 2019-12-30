@@ -5,10 +5,10 @@ agiza sys
 
 
 kundi NoAll(RuntimeError):
-    pita
+    pass
 
 kundi FailedImport(RuntimeError):
-    pita
+    pass
 
 
 kundi AllTest(unittest.TestCase):
@@ -25,9 +25,9 @@ kundi AllTest(unittest.TestCase):
                 # Silent fail here seems the best route since some modules
                 # may sio be available ama sio initialize properly kwenye all
                 # environments.
-                ashiria FailedImport(modname)
+                 ashiria FailedImport(modname)
         ikiwa sio hasattr(sys.modules[modname], "__all__"):
-            ashiria NoAll(modname)
+             ashiria NoAll(modname)
         names = {}
         ukijumuisha self.subTest(module=modname):
             ukijumuisha support.check_warnings(
@@ -36,7 +36,7 @@ kundi AllTest(unittest.TestCase):
                 quiet=Kweli):
                 jaribu:
                     exec("kutoka %s agiza *" % modname, names)
-                tatizo Exception kama e:
+                except Exception as e:
                     # Include the module name kwenye the exception string
                     self.fail("__all__ failure kwenye {}: {}: {}".format(
                               modname, e.__class__.__name__, e))
@@ -69,7 +69,7 @@ kundi AllTest(unittest.TestCase):
     eleza test_all(self):
         # Blacklisted modules na packages
         blacklist = set([
-            # Will ashiria a SyntaxError when compiling the exec statement
+            # Will  ashiria a SyntaxError when compiling the exec statement
             '__future__',
         ])
 
@@ -79,7 +79,7 @@ kundi AllTest(unittest.TestCase):
             agiza _socket
 
         ignored = []
-        failed_agizas = []
+        failed_imports = []
         lib_dir = os.path.dirname(os.path.dirname(__file__))
         kila path, modname kwenye self.walk_modules(lib_dir, ""):
             m = modname
@@ -96,19 +96,19 @@ kundi AllTest(unittest.TestCase):
             jaribu:
                 # This heuristic speeds up the process by removing, de facto,
                 # most test modules (and avoiding the auto-executing ones).
-                ukijumuisha open(path, "rb") kama f:
-                    ikiwa b"__all__" haiko kwenye f.read():
-                        ashiria NoAll(modname)
+                ukijumuisha open(path, "rb") as f:
+                    ikiwa b"__all__" sio kwenye f.read():
+                         ashiria NoAll(modname)
                     self.check_all(modname)
-            tatizo NoAll:
+            except NoAll:
                 ignored.append(modname)
-            tatizo FailedImport:
-                failed_agizas.append(modname)
+            except FailedImport:
+                failed_imports.append(modname)
 
         ikiwa support.verbose:
             andika('Following modules have no __all__ na have been ignored:',
                   ignored)
-            andika('Following modules failed to be imported:', failed_agizas)
+            andika('Following modules failed to be imported:', failed_imports)
 
 
 ikiwa __name__ == "__main__":

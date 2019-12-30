@@ -1,4 +1,4 @@
-"""Exception classes ashiriad by urllib.
+"""Exception classes raised by urllib.
 
 The base exception kundi ni URLError, which inherits kutoka OSError.  It
 doesn't define any behavior of its own, but ni the base kundi kila all
@@ -33,7 +33,7 @@ kundi URLError(OSError):
 
 
 kundi HTTPError(URLError, urllib.response.addinfourl):
-    """Raised when HTTP error occurs, but also acts like non-error rudisha"""
+    """Raised when HTTP error occurs, but also acts like non-error return"""
     __super_init = urllib.response.addinfourl.__init__
 
     eleza __init__(self, url, code, msg, hdrs, fp):
@@ -71,7 +71,7 @@ kundi HTTPError(URLError, urllib.response.addinfourl):
 
 
 kundi ContentTooShortError(URLError):
-    """Exception ashiriad when downloaded size does sio match content-length."""
+    """Exception raised when downloaded size does sio match content-length."""
     eleza __init__(self, message, content):
         URLError.__init__(self, message)
         self.content = content

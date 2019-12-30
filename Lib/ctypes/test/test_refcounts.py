@@ -1,7 +1,7 @@
-import unittest
-from test import support
-import ctypes
-import gc
+agiza unittest
+kutoka test agiza support
+agiza ctypes
+agiza gc
 
 MyCallback = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int)
 OtherCallback = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_ulonglong)
@@ -9,19 +9,19 @@ OtherCallback = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_ulonglong)
 agiza _ctypes_test
 dll = ctypes.CDLL(_ctypes_test.__file__)
 
-class RefcountTestCase(unittest.TestCase):
+kundi RefcountTestCase(unittest.TestCase):
 
     @support.refcount_test
-    def test_1(self):
-        from sys import getrefcount as grc
+    eleza test_1(self):
+        kutoka sys agiza getrefcount as grc
 
         f = dll._testfunc_callback_i_if
         f.restype = ctypes.c_int
         f.argtypes = [ctypes.c_int, MyCallback]
 
-        def callback(value):
+        eleza callback(value):
             #print "called back with", value
-            return value
+            rudisha value
 
         self.assertEqual(grc(callback), 2)
         cb = MyCallback(callback)
@@ -29,7 +29,7 @@ class RefcountTestCase(unittest.TestCase):
         self.assertGreater(grc(callback), 2)
         result = f(-10, cb)
         self.assertEqual(result, -18)
-        cb = None
+        cb = Tupu
 
         gc.collect()
 
@@ -37,18 +37,18 @@ class RefcountTestCase(unittest.TestCase):
 
 
     @support.refcount_test
-    def test_refcount(self):
-        from sys import getrefcount as grc
-        def func(*args):
+    eleza test_refcount(self):
+        kutoka sys agiza getrefcount as grc
+        eleza func(*args):
             pass
-        # this is the standard refcount for func
+        # this ni the standard refcount kila func
         self.assertEqual(grc(func), 2)
 
         # the CFuncPtr instance holds at least one refcount on func:
         f = OtherCallback(func)
         self.assertGreater(grc(func), 2)
 
-        # and may release it again
+        # na may release it again
         toa f
         self.assertGreaterEqual(grc(func), 2)
 
@@ -56,7 +56,7 @@ class RefcountTestCase(unittest.TestCase):
         gc.collect()
         self.assertEqual(grc(func), 2)
 
-        class X(ctypes.Structure):
+        kundi X(ctypes.Structure):
             _fields_ = [("a", OtherCallback)]
         x = X()
         x.a = OtherCallback(func)
@@ -64,11 +64,11 @@ class RefcountTestCase(unittest.TestCase):
         # the CFuncPtr instance holds at least one refcount on func:
         self.assertGreater(grc(func), 2)
 
-        # and may release it again
+        # na may release it again
         toa x
         self.assertGreaterEqual(grc(func), 2)
 
-        # and now it must be gone again
+        # na now it must be gone again
         gc.collect()
         self.assertEqual(grc(func), 2)
 
@@ -84,18 +84,18 @@ class RefcountTestCase(unittest.TestCase):
         gc.collect()
         self.assertEqual(grc(func), 2)
 
-class AnotherLeak(unittest.TestCase):
-    def test_callback(self):
-        import sys
+kundi AnotherLeak(unittest.TestCase):
+    eleza test_callback(self):
+        agiza sys
 
         proto = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_int)
-        def func(a, b):
-            return a * b * 2
+        eleza func(a, b):
+            rudisha a * b * 2
         f = proto(func)
 
         a = sys.getrefcount(ctypes.c_int)
         f(1, 2)
         self.assertEqual(sys.getrefcount(ctypes.c_int), a)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -41,8 +41,8 @@ kundi History:
     eleza fetch(self, reverse):
         '''Fetch statement na replace current line kwenye text widget.
 
-        Set prefix na pointer kama needed kila successive fetches.
-        Reset them to Tupu, Tupu when rudishaing to the start line.
+        Set prefix na pointer as needed kila successive fetches.
+        Reset them to Tupu, Tupu when returning to the start line.
         Sound bell when rudisha to start line ama cannot leave a line
         because cyclic ni Uongo.
         '''
@@ -63,14 +63,14 @@ kundi History:
                     pointer = -1  # will be incremented
                 isipokua:  # abort history_next
                     self.text.bell()
-                    rudisha
+                    return
         nprefix = len(prefix)
         wakati 1:
             pointer += -1 ikiwa reverse isipokua 1
             ikiwa pointer < 0 ama pointer >= nhist:
                 self.text.bell()
                 ikiwa sio self.cyclic na pointer < 0:  # abort history_prev
-                    rudisha
+                    return
                 isipokua:
                     ikiwa self.text.get("iomark", "end-1c") != prefix:
                         self.text.delete("iomark", "end-1c")
@@ -94,8 +94,8 @@ kundi History:
             # avoid duplicates
             jaribu:
                 self.history.remove(source)
-            tatizo ValueError:
-                pita
+            except ValueError:
+                pass
             self.history.append(source)
         self.pointer = Tupu
         self.prefix = Tupu

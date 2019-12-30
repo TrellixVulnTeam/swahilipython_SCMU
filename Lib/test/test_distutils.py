@@ -1,7 +1,7 @@
 """Tests kila distutils.
 
 The tests kila distutils are defined kwenye the distutils.tests package;
-the test_suite() function there rudishas a test suite that's ready to
+the test_suite() function there returns a test suite that's ready to
 be run.
 """
 

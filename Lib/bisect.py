@@ -24,7 +24,7 @@ eleza bisect_right(a, x, lo=0, hi=Tupu):
     """
 
     ikiwa lo < 0:
-        ashiria ValueError('lo must be non-negative')
+         ashiria ValueError('lo must be non-negative')
     ikiwa hi ni Tupu:
         hi = len(a)
     wakati lo < hi:
@@ -58,7 +58,7 @@ eleza bisect_left(a, x, lo=0, hi=Tupu):
     """
 
     ikiwa lo < 0:
-        ashiria ValueError('lo must be non-negative')
+         ashiria ValueError('lo must be non-negative')
     ikiwa hi ni Tupu:
         hi = len(a)
     wakati lo < hi:
@@ -70,8 +70,8 @@ eleza bisect_left(a, x, lo=0, hi=Tupu):
 # Overwrite above definitions ukijumuisha a fast C implementation
 jaribu:
     kutoka _bisect agiza *
-tatizo ImportError:
-    pita
+except ImportError:
+    pass
 
 # Create aliases
 bisect = bisect_right

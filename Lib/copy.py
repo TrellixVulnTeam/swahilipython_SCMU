@@ -1,4 +1,4 @@
-"""Generic (shallow and deep) copying operations.
+"""Generic (shallow na deep) copying operations.
 
 Interface summary:
 
@@ -7,23 +7,23 @@ Interface summary:
         x = copy.copy(y)        # make a shallow copy of y
         x = copy.deepcopy(y)    # make a deep copy of y
 
-For module specific errors, copy.Error is raised.
+For module specific errors, copy.Error ni raised.
 
-The difference between shallow and deep copying is only relevant for
-compound objects (objects that contain other objects, like lists ama
+The difference between shallow na deep copying ni only relevant for
+compound objects (objects that contain other objects, like lists or
 kundi instances).
 
-- A shallow copy constructs a new compound object and then (to the
+- A shallow copy constructs a new compound object na then (to the
   extent possible) inserts *the same objects* into it that the
   original contains.
 
-- A deep copy constructs a new compound object and then, recursively,
-  inserts *copies* into it of the objects found in the original.
+- A deep copy constructs a new compound object na then, recursively,
+  inserts *copies* into it of the objects found kwenye the original.
 
-Two problems often exist with deep copy operations that don't exist
-with shallow copy operations:
+Two problems often exist ukijumuisha deep copy operations that don't exist
+ukijumuisha shallow copy operations:
 
- a) recursive objects (compound objects that, directly or indirectly,
+ a) recursive objects (compound objects that, directly ama indirectly,
     contain a reference to themselves) may cause a recursive loop
 
  b) because deep copy copies *everything* it may copy too much, e.g.
@@ -35,7 +35,7 @@ Python's deep copy operation avoids these problems by:
  a) keeping a table of objects already copied during the current
     copying pass
 
- b) letting user-defined classes override the copying operation or the
+ b) letting user-defined classes override the copying operation ama the
     set of components copied
 
 This version does sio copy types like module, class, function, method,
@@ -44,8 +44,8 @@ any similar types.
 
 Classes can use the same interfaces to control copying that they use
 to control pickling: they can define methods called __getinitargs__(),
-__getstate__() and __setstate__().  See the documentation for module
-"pickle" for information on these methods.
+__getstate__() na __setstate__().  See the documentation kila module
+"pickle" kila information on these methods.
 """
 
 agiza types
@@ -58,61 +58,61 @@ error = Error   # backward compatibility
 
 jaribu:
     kutoka org.python.core agiza PyStringMap
-tatizo ImportError:
-    PyStringMap = None
+except ImportError:
+    PyStringMap = Tupu
 
 __all__ = ["Error", "copy", "deepcopy"]
 
-def copy(x):
+eleza copy(x):
     """Shallow copy operation on arbitrary Python objects.
 
-    See the module's __doc__ string for more info.
+    See the module's __doc__ string kila more info.
     """
 
     cls = type(x)
 
     copier = _copy_dispatch.get(cls)
-    if copier:
-        return copier(x)
+    ikiwa copier:
+        rudisha copier(x)
 
-    if issubclass(cls, type):
+    ikiwa issubclass(cls, type):
         # treat it as a regular class:
-        return _copy_immutable(x)
+        rudisha _copy_immutable(x)
 
-    copier = getattr(cls, "__copy__", None)
-    if copier ni sio None:
-        return copier(x)
+    copier = getattr(cls, "__copy__", Tupu)
+    ikiwa copier ni sio Tupu:
+        rudisha copier(x)
 
     reductor = dispatch_table.get(cls)
-    if reductor ni sio None:
+    ikiwa reductor ni sio Tupu:
         rv = reductor(x)
     isipokua:
-        reductor = getattr(x, "__reduce_ex__", None)
-        if reductor ni sio None:
+        reductor = getattr(x, "__reduce_ex__", Tupu)
+        ikiwa reductor ni sio Tupu:
             rv = reductor(4)
         isipokua:
-            reductor = getattr(x, "__reduce__", None)
-            if reductor:
+            reductor = getattr(x, "__reduce__", Tupu)
+            ikiwa reductor:
                 rv = reductor()
             isipokua:
-                ashiria Error("un(shallow)copyable object of type %s" % cls)
+                 ashiria Error("un(shallow)copyable object of type %s" % cls)
 
-    if isinstance(rv, str):
-        return x
-    return _reconstruct(x, None, *rv)
+    ikiwa isinstance(rv, str):
+        rudisha x
+    rudisha _reconstruct(x, Tupu, *rv)
 
 
 _copy_dispatch = d = {}
 
-def _copy_immutable(x):
-    return x
-for t in (type(None), int, float, bool, complex, str, tuple,
+eleza _copy_immutable(x):
+    rudisha x
+kila t kwenye (type(Tupu), int, float, bool, complex, str, tuple,
           bytes, frozenset, type, range, slice,
           types.BuiltinFunctionType, type(Ellipsis), type(NotImplemented),
           types.FunctionType, weakref.ref):
     d[t] = _copy_immutable
-t = getattr(types, "CodeType", None)
-if t ni sio None:
+t = getattr(types, "CodeType", Tupu)
+ikiwa t ni sio Tupu:
     d[t] = _copy_immutable
 
 d[list] = list.copy
@@ -120,68 +120,68 @@ d[dict] = dict.copy
 d[set] = set.copy
 d[bytearray] = bytearray.copy
 
-if PyStringMap ni sio None:
+ikiwa PyStringMap ni sio Tupu:
     d[PyStringMap] = PyStringMap.copy
 
 toa d, t
 
-def deepcopy(x, memo=None, _nil=[]):
+eleza deepcopy(x, memo=Tupu, _nil=[]):
     """Deep copy operation on arbitrary Python objects.
 
-    See the module's __doc__ string for more info.
+    See the module's __doc__ string kila more info.
     """
 
-    if memo is None:
+    ikiwa memo ni Tupu:
         memo = {}
 
     d = id(x)
     y = memo.get(d, _nil)
-    if y ni sio _nil:
-        return y
+    ikiwa y ni sio _nil:
+        rudisha y
 
     cls = type(x)
 
     copier = _deepcopy_dispatch.get(cls)
-    if copier ni sio None:
+    ikiwa copier ni sio Tupu:
         y = copier(x, memo)
     isipokua:
-        if issubclass(cls, type):
+        ikiwa issubclass(cls, type):
             y = _deepcopy_atomic(x, memo)
         isipokua:
-            copier = getattr(x, "__deepcopy__", None)
-            if copier ni sio None:
+            copier = getattr(x, "__deepcopy__", Tupu)
+            ikiwa copier ni sio Tupu:
                 y = copier(memo)
             isipokua:
                 reductor = dispatch_table.get(cls)
-                if reductor:
+                ikiwa reductor:
                     rv = reductor(x)
                 isipokua:
-                    reductor = getattr(x, "__reduce_ex__", None)
-                    if reductor ni sio None:
+                    reductor = getattr(x, "__reduce_ex__", Tupu)
+                    ikiwa reductor ni sio Tupu:
                         rv = reductor(4)
                     isipokua:
-                        reductor = getattr(x, "__reduce__", None)
-                        if reductor:
+                        reductor = getattr(x, "__reduce__", Tupu)
+                        ikiwa reductor:
                             rv = reductor()
                         isipokua:
-                            ashiria Error(
+                             ashiria Error(
                                 "un(deep)copyable object of type %s" % cls)
-                if isinstance(rv, str):
+                ikiwa isinstance(rv, str):
                     y = x
                 isipokua:
                     y = _reconstruct(x, memo, *rv)
 
-    # If is its own copy, don't memoize.
-    if y ni sio x:
+    # If ni its own copy, don't memoize.
+    ikiwa y ni sio x:
         memo[d] = y
         _keep_alive(x, memo) # Make sure x lives at least as long as d
-    return y
+    rudisha y
 
 _deepcopy_dispatch = d = {}
 
-def _deepcopy_atomic(x, memo):
-    return x
-d[type(None)] = _deepcopy_atomic
+eleza _deepcopy_atomic(x, memo):
+    rudisha x
+d[type(Tupu)] = _deepcopy_atomic
 d[type(Ellipsis)] = _deepcopy_atomic
 d[type(NotImplemented)] = _deepcopy_atomic
 d[int] = _deepcopy_atomic
@@ -196,50 +196,50 @@ d[types.BuiltinFunctionType] = _deepcopy_atomic
 d[types.FunctionType] = _deepcopy_atomic
 d[weakref.ref] = _deepcopy_atomic
 
-def _deepcopy_list(x, memo, deepcopy=deepcopy):
+eleza _deepcopy_list(x, memo, deepcopy=deepcopy):
     y = []
     memo[id(x)] = y
     append = y.append
-    for a in x:
+    kila a kwenye x:
         append(deepcopy(a, memo))
-    return y
+    rudisha y
 d[list] = _deepcopy_list
 
-def _deepcopy_tuple(x, memo, deepcopy=deepcopy):
-    y = [deepcopy(a, memo) for a in x]
-    # We're sio going to put the tuple in the memo, but it's still agizaant we
-    # check for it, in case the tuple contains recursive mutable structures.
+eleza _deepcopy_tuple(x, memo, deepcopy=deepcopy):
+    y = [deepcopy(a, memo) kila a kwenye x]
+    # We're sio going to put the tuple kwenye the memo, but it's still important we
+    # check kila it, kwenye case the tuple contains recursive mutable structures.
     jaribu:
-        return memo[id(x)]
-    tatizo KeyError:
+        rudisha memo[id(x)]
+    except KeyError:
         pass
-    for k, j in zip(x, y):
-        if k ni sio j:
+    kila k, j kwenye zip(x, y):
+        ikiwa k ni sio j:
             y = tuple(y)
             koma
     isipokua:
         y = x
-    return y
+    rudisha y
 d[tuple] = _deepcopy_tuple
 
-def _deepcopy_dict(x, memo, deepcopy=deepcopy):
+eleza _deepcopy_dict(x, memo, deepcopy=deepcopy):
     y = {}
     memo[id(x)] = y
-    for key, value in x.items():
+    kila key, value kwenye x.items():
         y[deepcopy(key, memo)] = deepcopy(value, memo)
-    return y
+    rudisha y
 d[dict] = _deepcopy_dict
-if PyStringMap ni sio None:
+ikiwa PyStringMap ni sio Tupu:
     d[PyStringMap] = _deepcopy_dict
 
-def _deepcopy_method(x, memo): # Copy instance methods
-    return type(x)(x.__func__, deepcopy(x.__self__, memo))
+eleza _deepcopy_method(x, memo): # Copy instance methods
+    rudisha type(x)(x.__func__, deepcopy(x.__self__, memo))
 d[types.MethodType] = _deepcopy_method
 
 toa d
 
-def _keep_alive(x, memo):
-    """Keeps a reference to the object x in the memo.
+eleza _keep_alive(x, memo):
+    """Keeps a reference to the object x kwenye the memo.
 
     Because we remember objects by their id, we have
     to assure that possibly temporary objects are kept
@@ -250,53 +250,53 @@ def _keep_alive(x, memo):
     """
     jaribu:
         memo[id(memo)].append(x)
-    tatizo KeyError:
-        # aha, this is the first one :-)
+    except KeyError:
+        # aha, this ni the first one :-)
         memo[id(memo)]=[x]
 
-def _reconstruct(x, memo, func, args,
-                 state=None, listiter=None, dictiter=None,
+eleza _reconstruct(x, memo, func, args,
+                 state=Tupu, listiter=Tupu, dictiter=Tupu,
                  deepcopy=deepcopy):
-    deep = memo ni sio None
-    if deep and args:
-        args = (deepcopy(arg, memo) for arg in args)
+    deep = memo ni sio Tupu
+    ikiwa deep na args:
+        args = (deepcopy(arg, memo) kila arg kwenye args)
     y = func(*args)
-    if deep:
+    ikiwa deep:
         memo[id(x)] = y
 
-    if state ni sio None:
-        if deep:
+    ikiwa state ni sio Tupu:
+        ikiwa deep:
             state = deepcopy(state, memo)
-        if hasattr(y, '__setstate__'):
+        ikiwa hasattr(y, '__setstate__'):
             y.__setstate__(state)
         isipokua:
-            if isinstance(state, tuple) and len(state) == 2:
+            ikiwa isinstance(state, tuple) na len(state) == 2:
                 state, slotstate = state
             isipokua:
-                slotstate = None
-            if state ni sio None:
+                slotstate = Tupu
+            ikiwa state ni sio Tupu:
                 y.__dict__.update(state)
-            if slotstate ni sio None:
-                for key, value in slotstate.items():
+            ikiwa slotstate ni sio Tupu:
+                kila key, value kwenye slotstate.items():
                     setattr(y, key, value)
 
-    if listiter ni sio None:
-        if deep:
-            for item in listiter:
+    ikiwa listiter ni sio Tupu:
+        ikiwa deep:
+            kila item kwenye listiter:
                 item = deepcopy(item, memo)
                 y.append(item)
         isipokua:
-            for item in listiter:
+            kila item kwenye listiter:
                 y.append(item)
-    if dictiter ni sio None:
-        if deep:
-            for key, value in dictiter:
+    ikiwa dictiter ni sio Tupu:
+        ikiwa deep:
+            kila key, value kwenye dictiter:
                 key = deepcopy(key, memo)
                 value = deepcopy(value, memo)
                 y[key] = value
         isipokua:
-            for key, value in dictiter:
+            kila key, value kwenye dictiter:
                 y[key] = value
-    return y
+    rudisha y
 
 toa types, weakref, PyStringMap

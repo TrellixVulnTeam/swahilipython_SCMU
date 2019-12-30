@@ -21,7 +21,7 @@ kundi InvalidStateError(Exception):
 kundi SendfileNotAvailableError(RuntimeError):
     """Sendfile syscall ni sio available.
 
-    Raised ikiwa OS does sio support sendfile syscall kila given socket ama
+    Raised ikiwa OS does sio support sendfile syscall kila given socket or
     file type.
     """
 

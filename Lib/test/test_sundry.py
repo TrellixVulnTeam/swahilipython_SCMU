@@ -12,7 +12,7 @@ kundi TestUntestedModules(unittest.TestCase):
             kila name kwenye untested:
                 jaribu:
                     support.import_module('test.test_{}'.format(name))
-                tatizo unittest.SkipTest:
+                except unittest.SkipTest:
                     importlib.import_module(name)
                 isipokua:
                     self.fail('{} has tests even though test_sundry claims '
@@ -48,7 +48,7 @@ kundi TestUntestedModules(unittest.TestCase):
 
             jaribu:
                 agiza tty  # Not available on Windows
-            tatizo ImportError:
+            except ImportError:
                 ikiwa support.verbose:
                     andika("skipping tty")
 

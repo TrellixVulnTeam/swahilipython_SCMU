@@ -3,7 +3,7 @@
 
               tdemo_peace.py
 
-A simple drawing suitable kama a beginner's
+A simple drawing suitable as a beginner's
 programming example. Aside kutoka the
 peacecolors assignment na the kila loop,
 it only uses turtle commands.

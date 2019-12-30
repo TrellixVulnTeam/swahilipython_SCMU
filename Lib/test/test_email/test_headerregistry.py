@@ -1,65 +1,65 @@
-import datetime
-import textwrap
-import unittest
-from email import errors
-from email import policy
-from email.message import Message
-from test.test_email import TestEmailBase, parameterize
-from email import headerregistry
-from email.headerregistry import Address, Group
+agiza datetime
+agiza textwrap
+agiza unittest
+kutoka email agiza errors
+kutoka email agiza policy
+kutoka email.message agiza Message
+kutoka test.test_email agiza TestEmailBase, parameterize
+kutoka email agiza headerregistry
+kutoka email.headerregistry agiza Address, Group
 
 
 DITTO = object()
 
 
-class TestHeaderRegistry(TestEmailBase):
+kundi TestHeaderRegistry(TestEmailBase):
 
-    def test_arbitrary_name_unstructured(self):
+    eleza test_arbitrary_name_unstructured(self):
         factory = headerregistry.HeaderRegistry()
         h = factory('foobar', 'test')
         self.assertIsInstance(h, headerregistry.BaseHeader)
         self.assertIsInstance(h, headerregistry.UnstructuredHeader)
 
-    def test_name_case_ignored(self):
+    eleza test_name_case_ignored(self):
         factory = headerregistry.HeaderRegistry()
-        # Whitebox check that test is valid
+        # Whitebox check that test ni valid
         self.assertNotIn('Subject', factory.registry)
         h = factory('Subject', 'test')
         self.assertIsInstance(h, headerregistry.BaseHeader)
         self.assertIsInstance(h, headerregistry.UniqueUnstructuredHeader)
 
-    class FooBase:
-        def __init__(self, *args, **kw):
+    kundi FooBase:
+        eleza __init__(self, *args, **kw):
             pass
 
-    def test_override_default_base_class(self):
+    eleza test_override_default_base_class(self):
         factory = headerregistry.HeaderRegistry(base_class=self.FooBase)
         h = factory('foobar', 'test')
         self.assertIsInstance(h, self.FooBase)
         self.assertIsInstance(h, headerregistry.UnstructuredHeader)
 
-    class FooDefault:
+    kundi FooDefault:
         parse = headerregistry.UnstructuredHeader.parse
 
-    def test_override_default_class(self):
+    eleza test_override_default_class(self):
         factory = headerregistry.HeaderRegistry(default_class=self.FooDefault)
         h = factory('foobar', 'test')
         self.assertIsInstance(h, headerregistry.BaseHeader)
         self.assertIsInstance(h, self.FooDefault)
 
-    def test_override_default_class_only_overrides_default(self):
+    eleza test_override_default_class_only_overrides_default(self):
         factory = headerregistry.HeaderRegistry(default_class=self.FooDefault)
         h = factory('subject', 'test')
         self.assertIsInstance(h, headerregistry.BaseHeader)
         self.assertIsInstance(h, headerregistry.UniqueUnstructuredHeader)
 
-    def test_dont_use_default_map(self):
-        factory = headerregistry.HeaderRegistry(use_default_map=False)
+    eleza test_dont_use_default_map(self):
+        factory = headerregistry.HeaderRegistry(use_default_map=Uongo)
         h = factory('subject', 'test')
         self.assertIsInstance(h, headerregistry.BaseHeader)
         self.assertIsInstance(h, headerregistry.UnstructuredHeader)
 
-    def test_map_to_type(self):
+    eleza test_map_to_type(self):
         factory = headerregistry.HeaderRegistry()
         h1 = factory('foobar', 'test')
         factory.map_to_type('foobar', headerregistry.UniqueUnstructuredHeader)
@@ -70,54 +70,54 @@ class TestHeaderRegistry(TestEmailBase):
         self.assertIsInstance(h2, headerregistry.UniqueUnstructuredHeader)
 
 
-class TestHeaderBase(TestEmailBase):
+kundi TestHeaderBase(TestEmailBase):
 
     factory = headerregistry.HeaderRegistry()
 
-    def make_header(self, name, value):
-        return self.factory(name, value)
+    eleza make_header(self, name, value):
+        rudisha self.factory(name, value)
 
 
-class TestBaseHeaderFeatures(TestHeaderBase):
+kundi TestBaseHeaderFeatures(TestHeaderBase):
 
-    def test_str(self):
-        h = self.make_header('subject', 'this is a test')
+    eleza test_str(self):
+        h = self.make_header('subject', 'this ni a test')
         self.assertIsInstance(h, str)
-        self.assertEqual(h, 'this is a test')
-        self.assertEqual(str(h), 'this is a test')
+        self.assertEqual(h, 'this ni a test')
+        self.assertEqual(str(h), 'this ni a test')
 
-    def test_substr(self):
-        h = self.make_header('subject', 'this is a test')
+    eleza test_substr(self):
+        h = self.make_header('subject', 'this ni a test')
         self.assertEqual(h[5:7], 'is')
 
-    def test_has_name(self):
-        h = self.make_header('subject', 'this is a test')
+    eleza test_has_name(self):
+        h = self.make_header('subject', 'this ni a test')
         self.assertEqual(h.name, 'subject')
 
-    def _test_attr_ro(self, attr):
-        h = self.make_header('subject', 'this is a test')
-        with self.assertRaises(AttributeError):
+    eleza _test_attr_ro(self, attr):
+        h = self.make_header('subject', 'this ni a test')
+        ukijumuisha self.assertRaises(AttributeError):
             setattr(h, attr, 'foo')
 
-    def test_name_read_only(self):
+    eleza test_name_read_only(self):
         self._test_attr_ro('name')
 
-    def test_defects_read_only(self):
+    eleza test_defects_read_only(self):
         self._test_attr_ro('defects')
 
-    def test_defects_is_tuple(self):
-        h = self.make_header('subject', 'this is a test')
+    eleza test_defects_is_tuple(self):
+        h = self.make_header('subject', 'this ni a test')
         self.assertEqual(len(h.defects), 0)
         self.assertIsInstance(h.defects, tuple)
-        # Make sure it is still true when there are defects.
+        # Make sure it ni still true when there are defects.
         h = self.make_header('date', '')
         self.assertEqual(len(h.defects), 1)
         self.assertIsInstance(h.defects, tuple)
 
     # XXX: FIXME
-    #def test_CR_in_value(self):
+    #eleza test_CR_in_value(self):
     #    # XXX: this also re-raises the issue of embedded headers,
-    #    # need test and solution for that.
+    #    # need test na solution kila that.
     #    value = '\r'.join(['this is', ' a test'])
     #    h = self.make_header('subject', value)
     #    self.assertEqual(h, value)
@@ -125,16 +125,16 @@ class TestBaseHeaderFeatures(TestHeaderBase):
 
 
 @parameterize
-class TestUnstructuredHeader(TestHeaderBase):
+kundi TestUnstructuredHeader(TestHeaderBase):
 
-    def string_as_value(self,
+    eleza string_as_value(self,
                         source,
                         decoded,
                         *args):
         l = len(args)
-        defects = args[0] if l>0 isipokua []
-        header = 'Subject:' + (' ' if source isipokua '')
-        folded = header + (args[1] if l>1 isipokua source) + '\n'
+        defects = args[0] ikiwa l>0 isipokua []
+        header = 'Subject:' + (' ' ikiwa source isipokua '')
+        folded = header + (args[1] ikiwa l>1 isipokua source) + '\n'
         h = self.make_header('Subject', source)
         self.assertEqual(h, decoded)
         self.assertDefectsEqual(h.defects, defects)
@@ -144,9 +144,9 @@ class TestUnstructuredHeader(TestHeaderBase):
 
         'rfc2047_simple_quopri': (
             '=?utf-8?q?this_is_a_test?=',
-            'this is a test',
+            'this ni a test',
             [],
-            'this is a test'),
+            'this ni a test'),
 
         'rfc2047_gb2312_base64': (
             '=?gb2312?b?1eLKx9bQzsSy4srUo6E=?=',
@@ -166,49 +166,49 @@ class TestUnstructuredHeader(TestHeaderBase):
 
 
 @parameterize
-class TestDateHeader(TestHeaderBase):
+kundi TestDateHeader(TestHeaderBase):
 
     datestring = 'Sun, 23 Sep 2001 20:10:55 -0700'
     utcoffset = datetime.timedelta(hours=-7)
     tz = datetime.timezone(utcoffset)
     dt = datetime.datetime(2001, 9, 23, 20, 10, 55, tzinfo=tz)
 
-    def test_parse_date(self):
+    eleza test_parse_date(self):
         h = self.make_header('date', self.datestring)
         self.assertEqual(h, self.datestring)
         self.assertEqual(h.datetime, self.dt)
         self.assertEqual(h.datetime.utcoffset(), self.utcoffset)
         self.assertEqual(h.defects, ())
 
-    def test_set_from_datetime(self):
+    eleza test_set_from_datetime(self):
         h = self.make_header('date', self.dt)
         self.assertEqual(h, self.datestring)
         self.assertEqual(h.datetime, self.dt)
         self.assertEqual(h.defects, ())
 
-    def test_date_header_properties(self):
+    eleza test_date_header_properties(self):
         h = self.make_header('date', self.datestring)
         self.assertIsInstance(h, headerregistry.UniqueDateHeader)
         self.assertEqual(h.max_count, 1)
         self.assertEqual(h.defects, ())
 
-    def test_resent_date_header_properties(self):
+    eleza test_resent_date_header_properties(self):
         h = self.make_header('resent-date', self.datestring)
         self.assertIsInstance(h, headerregistry.DateHeader)
-        self.assertEqual(h.max_count, None)
+        self.assertEqual(h.max_count, Tupu)
         self.assertEqual(h.defects, ())
 
-    def test_no_value_is_defect(self):
+    eleza test_no_value_is_defect(self):
         h = self.make_header('date', '')
         self.assertEqual(len(h.defects), 1)
         self.assertIsInstance(h.defects[0], errors.HeaderMissingRequiredValue)
 
-    def test_datetime_read_only(self):
+    eleza test_datetime_read_only(self):
         h = self.make_header('date', self.datestring)
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             h.datetime = 'foo'
 
-    def test_set_date_header_from_datetime(self):
+    eleza test_set_date_header_from_datetime(self):
         m = Message(policy=policy.default)
         m['Date'] = self.dt
         self.assertEqual(m['Date'], self.datestring)
@@ -216,34 +216,34 @@ class TestDateHeader(TestHeaderBase):
 
 
 @parameterize
-class TestContentTypeHeader(TestHeaderBase):
+kundi TestContentTypeHeader(TestHeaderBase):
 
-    def content_type_as_value(self,
+    eleza content_type_as_value(self,
                               source,
                               content_type,
                               maintype,
                               subtype,
                               *args):
         l = len(args)
-        parmdict = args[0] if l>0 isipokua {}
-        defects =  args[1] if l>1 isipokua []
-        decoded =  args[2] if l>2 and args[2] ni sio DITTO isipokua source
-        header = 'Content-Type:' + ' ' if source isipokua ''
-        folded = args[3] if l>3 isipokua header + decoded + '\n'
+        parmdict = args[0] ikiwa l>0 isipokua {}
+        defects =  args[1] ikiwa l>1 isipokua []
+        decoded =  args[2] ikiwa l>2 na args[2] ni sio DITTO isipokua source
+        header = 'Content-Type:' + ' ' ikiwa source isipokua ''
+        folded = args[3] ikiwa l>3 isipokua header + decoded + '\n'
         h = self.make_header('Content-Type', source)
         self.assertEqual(h.content_type, content_type)
         self.assertEqual(h.maintype, maintype)
         self.assertEqual(h.subtype, subtype)
         self.assertEqual(h.params, parmdict)
-        with self.assertRaises(TypeError):
-            h.params['abc'] = 'xyz'   # make sure params is read-only.
+        ukijumuisha self.assertRaises(TypeError):
+            h.params['abc'] = 'xyz'   # make sure params ni read-only.
         self.assertDefectsEqual(h.defects, defects)
         self.assertEqual(h, decoded)
         self.assertEqual(h.fold(policy=policy.default), folded)
 
     content_type_params = {
 
-        # Examples from RFC 2045.
+        # Examples kutoka RFC 2045.
 
         'RFC_2045_1': (
             'text/plain; charset=us-ascii (Plain text)',
@@ -308,8 +308,8 @@ class TestContentTypeHeader(TestHeaderBase):
         # But unknown names are OK.  We could make non-IANA names a defect, but
         # by sio doing so we make ourselves future proof.  The fact that they
         # are unknown will be detectable by the fact that they don't appear in
-        # the mime_registry...and the application is free to extend that list
-        # to handle them even if the core library doesn't.
+        # the mime_registry...and the application ni free to extend that list
+        # to handle them even ikiwa the core library doesn't.
 
         'unknown_content_type': (
             'bad/names',
@@ -317,7 +317,7 @@ class TestContentTypeHeader(TestHeaderBase):
             'bad',
             'names'),
 
-        # The content type is case insensitive, and CFWS is ignored.
+        # The content type ni case insensitive, na CFWS ni ignored.
 
         'mixed_case_content_type': (
             'ImAge/JPeg',
@@ -337,9 +337,9 @@ class TestContentTypeHeader(TestHeaderBase):
             'text',
             'plain'),
 
-        # test some parameters (more tests could be added for parameters
-        # associated with other content types, but since parameter parsing is
-        # generic they would be redundant for the current implementation).
+        # test some parameters (more tests could be added kila parameters
+        # associated ukijumuisha other content types, but since parameter parsing is
+        # generic they would be redundant kila the current implementation).
 
         'charset_param': (
             'text/plain; charset="utf-8"',
@@ -372,10 +372,10 @@ class TestContentTypeHeader(TestHeaderBase):
             # Should the parameter name be lowercased here?
             'text/plain; Charset="utf-8"'),
 
-        # Since this is pretty much the ur-mimeheader, we'll put all the tests
-        # that exercise the parameter parsing and formatting here.  Note that
+        # Since this ni pretty much the ur-mimeheader, we'll put all the tests
+        # that exercise the parameter parsing na formatting here.  Note that
         # when we refold we may canonicalize, so things like whitespace,
-        # quoting, and rfc2231 encoding may change from what was in the input
+        # quoting, na rfc2231 encoding may change kutoka what was kwenye the input
         # header.
 
         'unquoted_param_value': (
@@ -491,11 +491,11 @@ class TestContentTypeHeader(TestHeaderBase):
             [errors.UndecodableBytesDefect]*3,
             'foo�/bar; b�r="two"; baz="thr�e"',
             # XXX Two bugs here: the mime type ni sio allowed to be an encoded
-            # word, and we shouldn't be emitting surrogates in the parameter
+            # word, na we shouldn't be emitting surrogates kwenye the parameter
             # names.  But I don't know what the behavior should be here, so I'm
-            # punting for now.  In practice this is unlikely to be encountered
-            # since headers with binary in them only come from a binary source
-            # and are almost certain to be re-emitted without refolding.
+            # punting kila now.  In practice this ni unlikely to be encountered
+            # since headers ukijumuisha binary kwenye them only come kutoka a binary source
+            # na are almost certain to be re-emitted without refolding.
             'Content-Type: =?unknown-8bit?q?foo=A7?=/bar; b\udca7r="two";\n'
             " baz*=unknown-8bit''thr%A7e\n",
             ),
@@ -553,12 +553,12 @@ class TestContentTypeHeader(TestHeaderBase):
             'text/plain',
             'text',
             'plain',
-            {'name': 'This is ***fun*** is it not.pdf'},
+            {'name': 'This ni ***fun*** ni it not.pdf'},
             [],
-            'text/plain; name="This is ***fun*** is it not.pdf"',
+            'text/plain; name="This ni ***fun*** ni it not.pdf"',
             ),
 
-        # Make sure we also handle it if there are spurious double quotes.
+        # Make sure we also handle it ikiwa there are spurious double quotes.
         'rfc2231_encoded_with_double_quotes': (
             ("text/plain;"
                 '\tname*0*="us-ascii\'\'This%20is%20even%20more%20";'
@@ -567,9 +567,9 @@ class TestContentTypeHeader(TestHeaderBase):
             'text/plain',
             'text',
             'plain',
-            {'name': 'This is even more ***fun*** is it not.pdf'},
+            {'name': 'This ni even more ***fun*** ni it not.pdf'},
             [errors.InvalidHeaderDefect]*2,
-            'text/plain; name="This is even more ***fun*** is it not.pdf"',
+            'text/plain; name="This ni even more ***fun*** ni it not.pdf"',
             ),
 
         'rfc2231_single_quote_inside_double_quotes': (
@@ -580,12 +580,12 @@ class TestContentTypeHeader(TestHeaderBase):
             'text/plain',
             'text',
             'plain',
-            {'charset': 'us-ascii', 'title': "This is really ***fun*** isn't it!"},
+            {'charset': 'us-ascii', 'title': "This ni really ***fun*** isn't it!"},
             [errors.InvalidHeaderDefect]*2,
             ('text/plain; charset="us-ascii"; '
-               'title="This is really ***fun*** isn\'t it!"'),
+               'title="This ni really ***fun*** isn\'t it!"'),
             ('Content-Type: text/plain; charset="us-ascii";\n'
-                ' title="This is really ***fun*** isn\'t it!"\n'),
+                ' title="This ni really ***fun*** isn\'t it!"\n'),
             ),
 
         'rfc2231_single_quote_in_value_with_charset_and_lang': (
@@ -627,9 +627,9 @@ class TestContentTypeHeader(TestHeaderBase):
             'text/plain',
             'text',
             'plain',
-            {'name': 'This is even more ***fun*** is it.pdf'},
+            {'name': 'This ni even more ***fun*** ni it.pdf'},
             [errors.InvalidHeaderDefect]*2,
-            'text/plain; name="This is even more ***fun*** is it.pdf"',
+            'text/plain; name="This ni even more ***fun*** ni it.pdf"',
             ),
 
         'rfc2231_partly_encoded': (
@@ -640,9 +640,9 @@ class TestContentTypeHeader(TestHeaderBase):
             'text/plain',
             'text',
             'plain',
-            {'name': 'This is even more ***fun*** is it.pdf'},
+            {'name': 'This ni even more ***fun*** ni it.pdf'},
             [errors.InvalidHeaderDefect]*2,
-            'text/plain; name="This is even more ***fun*** is it.pdf"',
+            'text/plain; name="This ni even more ***fun*** ni it.pdf"',
             ),
 
         'rfc2231_partly_encoded_2': (
@@ -653,12 +653,12 @@ class TestContentTypeHeader(TestHeaderBase):
             'text/plain',
             'text',
             'plain',
-            {'name': 'This is even more %2A%2A%2Afun%2A%2A%2A%20is it.pdf'},
+            {'name': 'This ni even more %2A%2A%2Afun%2A%2A%2A%20is it.pdf'},
             [errors.InvalidHeaderDefect],
             ('text/plain;'
-             ' name="This is even more %2A%2A%2Afun%2A%2A%2A%20is it.pdf"'),
+             ' name="This ni even more %2A%2A%2Afun%2A%2A%2A%20is it.pdf"'),
             ('Content-Type: text/plain;\n'
-             ' name="This is even more %2A%2A%2Afun%2A%2A%2A%20is'
+             ' name="This ni even more %2A%2A%2Afun%2A%2A%2A%20is'
                 ' it.pdf"\n'),
             ),
 
@@ -692,7 +692,7 @@ class TestContentTypeHeader(TestHeaderBase):
             [errors.UndecodableBytesDefect],
             'text/plain; charset="utf-8”"',
             # XXX Should folding change the charset to utf8?  Currently it just
-            # reproduces the original, which is arguably fine.
+            # reproduces the original, which ni arguably fine.
             "Content-Type: text/plain;"
             " charset*=unknown-8bit''utf-8%E2%80%9D\n",
             ),
@@ -710,8 +710,8 @@ class TestContentTypeHeader(TestHeaderBase):
             'application/x-foo; name="My Document For You"',
             ),
 
-        # My reading of the RFC is that this is an invalid header.  The RFC
-        # says that if charset and language information is given, the first
+        # My reading of the RFC ni that this ni an invalid header.  The RFC
+        # says that ikiwa charset na language information ni given, the first
         # segment *must* be encoded.
         'rfc2231_unencoded_then_encoded_segments': (
             ('application/x-foo;'
@@ -726,14 +726,14 @@ class TestContentTypeHeader(TestHeaderBase):
             'application/x-foo; name="My Document For You"',
             ),
 
-        # XXX: I would say this one should default to ascii/en for the
-        # "encoded" segment, since the first segment ni sio encoded and is
-        # in double quotes, making the value a valid non-encoded string.  The
+        # XXX: I would say this one should default to ascii/en kila the
+        # "encoded" segment, since the first segment ni sio encoded na is
+        # kwenye double quotes, making the value a valid non-encoded string.  The
         # old parser decodes this just like the previous case, which may be the
-        # better Postel rule, but could equally result in borking headers that
-        # intentionally have quoted quotes in them.  We could get this 98%
-        # right if we treat it as a quoted string *unless* it matches the
-        # charset'lang'value pattern exactly *and* there is at least one
+        # better Postel rule, but could equally result kwenye borking headers that
+        # intentionally have quoted quotes kwenye them.  We could get this 98%
+        # right ikiwa we treat it as a quoted string *unless* it matches the
+        # charset'lang'value pattern exactly *and* there ni at least one
         # encoded segment.  Implementing that algorithm will require some
         # refactoring, so I haven't done it (yet).
         'rfc2231_quoted_unencoded_then_encoded_segments': (
@@ -750,18 +750,18 @@ class TestContentTypeHeader(TestHeaderBase):
             ),
 
         # Make sure our folding algorithm produces multiple sections correctly.
-        # We could mix encoded and non-encoded segments, but we don't, we just
+        # We could mix encoded na non-encoded segments, but we don't, we just
         # make them all encoded.  It might be worth fixing that, since the
-        # sections can get used for wrapping ascii text.
+        # sections can get used kila wrapping ascii text.
         'rfc2231_folded_segments_correctly_formatted': (
             ('application/x-foo;'
-                '\tname="' + "with spaces"*8 + '"'),
+                '\tname="' + "ukijumuisha spaces"*8 + '"'),
             'application/x-foo',
             'application',
             'x-foo',
-            {'name': "with spaces"*8},
+            {'name': "ukijumuisha spaces"*8},
             [],
-            'application/x-foo; name="' + "with spaces"*8 + '"',
+            'application/x-foo; name="' + "ukijumuisha spaces"*8 + '"',
             "Content-Type: application/x-foo;\n"
             " name*0*=us-ascii''with%20spaceswith%20spaceswith%20spaceswith"
                 "%20spaceswith;\n"
@@ -772,17 +772,17 @@ class TestContentTypeHeader(TestHeaderBase):
 
 
 @parameterize
-class TestContentTransferEncoding(TestHeaderBase):
+kundi TestContentTransferEncoding(TestHeaderBase):
 
-    def cte_as_value(self,
+    eleza cte_as_value(self,
                      source,
                      cte,
                      *args):
         l = len(args)
-        defects =  args[0] if l>0 isipokua []
-        decoded =  args[1] if l>1 and args[1] ni sio DITTO isipokua source
-        header = 'Content-Transfer-Encoding:' + ' ' if source isipokua ''
-        folded = args[2] if l>2 isipokua header + source + '\n'
+        defects =  args[0] ikiwa l>0 isipokua []
+        decoded =  args[1] ikiwa l>1 na args[1] ni sio DITTO isipokua source
+        header = 'Content-Transfer-Encoding:' + ' ' ikiwa source isipokua ''
+        folded = args[2] ikiwa l>2 isipokua header + source + '\n'
         h = self.make_header('Content-Transfer-Encoding', source)
         self.assertEqual(h.cte, cte)
         self.assertDefectsEqual(h.defects, defects)
@@ -804,7 +804,7 @@ class TestContentTransferEncoding(TestHeaderBase):
             ),
 
         'junk_after_cte': (
-            '7bit and a bunch more',
+            '7bit na a bunch more',
             '7bit',
             [errors.InvalidHeaderDefect]),
 
@@ -812,18 +812,18 @@ class TestContentTransferEncoding(TestHeaderBase):
 
 
 @parameterize
-class TestContentDisposition(TestHeaderBase):
+kundi TestContentDisposition(TestHeaderBase):
 
-    def content_disp_as_value(self,
+    eleza content_disp_as_value(self,
                               source,
                               content_disposition,
                               *args):
         l = len(args)
-        parmdict = args[0] if l>0 isipokua {}
-        defects =  args[1] if l>1 isipokua []
-        decoded =  args[2] if l>2 and args[2] ni sio DITTO isipokua source
-        header = 'Content-Disposition:' + ' ' if source isipokua ''
-        folded = args[3] if l>3 isipokua header + source + '\n'
+        parmdict = args[0] ikiwa l>0 isipokua {}
+        defects =  args[1] ikiwa l>1 isipokua []
+        decoded =  args[2] ikiwa l>2 na args[2] ni sio DITTO isipokua source
+        header = 'Content-Disposition:' + ' ' ikiwa source isipokua ''
+        folded = args[3] ikiwa l>3 isipokua header + source + '\n'
         h = self.make_header('Content-Disposition', source)
         self.assertEqual(h.content_disposition, content_disposition)
         self.assertEqual(h.params, parmdict)
@@ -833,7 +833,7 @@ class TestContentDisposition(TestHeaderBase):
 
     content_disp_params = {
 
-        # Examples from RFC 2183.
+        # Examples kutoka RFC 2183.
 
         'RFC_2183_1': (
             'inline',
@@ -854,7 +854,7 @@ class TestContentDisposition(TestHeaderBase):
 
         'no_value': (
             '',
-            None,
+            Tupu,
             {},
             [errors.HeaderMissingRequiredValue],
             '',
@@ -876,9 +876,9 @@ class TestContentDisposition(TestHeaderBase):
 
 
 @parameterize
-class TestMIMEVersionHeader(TestHeaderBase):
+kundi TestMIMEVersionHeader(TestHeaderBase):
 
-    def version_string_as_MIME_Version(self,
+    eleza version_string_as_MIME_Version(self,
                                        source,
                                        decoded,
                                        version,
@@ -891,14 +891,14 @@ class TestMIMEVersionHeader(TestHeaderBase):
         self.assertEqual(h.major, major)
         self.assertEqual(h.minor, minor)
         self.assertDefectsEqual(h.defects, defects)
-        if source:
+        ikiwa source:
             source = ' ' + source
         self.assertEqual(h.fold(policy=policy.default),
                          'MIME-Version:' + source + '\n')
 
     version_string_params = {
 
-        # Examples from the RFC.
+        # Examples kutoka the RFC.
 
         'RFC_2045_1': (
             '1.0',
@@ -968,7 +968,7 @@ class TestMIMEVersionHeader(TestHeaderBase):
 
         # Recoverable invalid values.  We can recover here only because we
         # already have a valid value by the time we encounter the garbage.
-        # Anywhere else, and we don't know where the garbage ends.
+        # Anywhere else, na we don't know where the garbage ends.
 
         'non_comment_garbage_after': (
             '1.0 <abc>',
@@ -985,56 +985,56 @@ class TestMIMEVersionHeader(TestHeaderBase):
         'non_comment_garbage_before': (
             '<abc> 1.0',
             '<abc> 1.0',
-            None,
-            None,
-            None,
+            Tupu,
+            Tupu,
+            Tupu,
             [errors.InvalidHeaderDefect]),
 
         'non_comment_garbage_inside': (
             '1.<abc>0',
             '1.<abc>0',
-            None,
-            None,
-            None,
+            Tupu,
+            Tupu,
+            Tupu,
             [errors.InvalidHeaderDefect]),
 
         'two_periods': (
             '1..0',
             '1..0',
-            None,
-            None,
-            None,
+            Tupu,
+            Tupu,
+            Tupu,
             [errors.InvalidHeaderDefect]),
 
         '2_x': (
             '2.x',
             '2.x',
-            None,  # This could be 2, but it seems safer to make it None.
-            None,
-            None,
+            Tupu,  # This could be 2, but it seems safer to make it Tupu.
+            Tupu,
+            Tupu,
             [errors.InvalidHeaderDefect]),
 
         'foo': (
             'foo',
             'foo',
-            None,
-            None,
-            None,
+            Tupu,
+            Tupu,
+            Tupu,
             [errors.InvalidHeaderDefect]),
 
         'missing': (
             '',
             '',
-            None,
-            None,
-            None,
+            Tupu,
+            Tupu,
+            Tupu,
             [errors.HeaderMissingRequiredValue]),
 
         }
 
 
 @parameterize
-class TestAddressHeader(TestHeaderBase):
+kundi TestAddressHeader(TestHeaderBase):
 
     example_params = {
 
@@ -1046,7 +1046,7 @@ class TestAddressHeader(TestHeaderBase):
              '<>',
              '',
              '',
-             None),
+             Tupu),
 
         'address_only':
             ('zippy@pinhead.com',
@@ -1056,7 +1056,7 @@ class TestAddressHeader(TestHeaderBase):
              'zippy@pinhead.com',
              'zippy',
              'pinhead.com',
-             None),
+             Tupu),
 
         'name_and_address':
             ('Zaphrod Beblebrux <zippy@pinhead.com>',
@@ -1066,7 +1066,7 @@ class TestAddressHeader(TestHeaderBase):
              'zippy@pinhead.com',
              'zippy',
              'pinhead.com',
-             None),
+             Tupu),
 
         'quoted_local_part':
             ('Zaphrod Beblebrux <"foo bar"@pinhead.com>',
@@ -1076,7 +1076,7 @@ class TestAddressHeader(TestHeaderBase):
              '"foo bar"@pinhead.com',
              'foo bar',
              'pinhead.com',
-             None),
+             Tupu),
 
         'quoted_parens_in_name':
             (r'"A \(Special\) Person" <person@dom.ain>',
@@ -1086,7 +1086,7 @@ class TestAddressHeader(TestHeaderBase):
              'person@dom.ain',
              'person',
              'dom.ain',
-             None),
+             Tupu),
 
         'quoted_backslashes_in_name':
             (r'"Arthur \\Backslash\\ Foobar" <person@dom.ain>',
@@ -1096,7 +1096,7 @@ class TestAddressHeader(TestHeaderBase):
              'person@dom.ain',
              'person',
              'dom.ain',
-             None),
+             Tupu),
 
         'name_with_dot':
             ('John X. Doe <jxd@example.com>',
@@ -1106,7 +1106,7 @@ class TestAddressHeader(TestHeaderBase):
              'jxd@example.com',
              'jxd',
              'example.com',
-             None),
+             Tupu),
 
         'quoted_strings_in_local_part':
             ('""example" example"@example.com',
@@ -1116,7 +1116,7 @@ class TestAddressHeader(TestHeaderBase):
              '"example example"@example.com',
              'example example',
              'example.com',
-             None),
+             Tupu),
 
         'escaped_quoted_strings_in_local_part':
             (r'"\"example\" example"@example.com',
@@ -1126,7 +1126,7 @@ class TestAddressHeader(TestHeaderBase):
              r'"\"example\" example"@example.com',
              r'"example" example',
              'example.com',
-            None),
+            Tupu),
 
         'escaped_escapes_in_local_part':
             (r'"\\"example\\" example"@example.com',
@@ -1136,7 +1136,7 @@ class TestAddressHeader(TestHeaderBase):
              r'"\\example\\\\ example"@example.com',
              r'\example\\ example',
              'example.com',
-            None),
+            Tupu),
 
         'spaces_in_unquoted_local_part_collapsed':
             ('merwok  wok  @example.com',
@@ -1146,7 +1146,7 @@ class TestAddressHeader(TestHeaderBase):
              '"merwok wok"@example.com',
              'merwok wok',
              'example.com',
-             None),
+             Tupu),
 
         'spaces_around_dots_in_local_part_removed':
             ('merwok. wok .  wok@example.com',
@@ -1156,7 +1156,7 @@ class TestAddressHeader(TestHeaderBase):
              'merwok.wok.wok@example.com',
              'merwok.wok.wok',
              'example.com',
-             None),
+             Tupu),
 
         'rfc2047_atom_is_decoded':
             ('=?utf-8?q?=C3=89ric?= <foo@example.com>',
@@ -1166,7 +1166,7 @@ class TestAddressHeader(TestHeaderBase):
             'foo@example.com',
             'foo',
             'example.com',
-            None),
+            Tupu),
 
         'rfc2047_atom_in_phrase_is_decoded':
             ('The =?utf-8?q?=C3=89ric=2C?= Himself <foo@example.com>',
@@ -1176,7 +1176,7 @@ class TestAddressHeader(TestHeaderBase):
             'foo@example.com',
             'foo',
             'example.com',
-            None),
+            Tupu),
 
         'rfc2047_atom_in_quoted_string_is_decoded':
             ('"=?utf-8?q?=C3=89ric?=" <foo@example.com>',
@@ -1187,15 +1187,15 @@ class TestAddressHeader(TestHeaderBase):
             'foo@example.com',
             'foo',
             'example.com',
-            None),
+            Tupu),
 
         }
 
-        # XXX: Need many more examples, and in particular some with names in
+        # XXX: Need many more examples, na kwenye particular some ukijumuisha names in
         # trailing comments, which aren't currently handled.  comments in
         # general are sio handled yet.
 
-    def example_as_address(self, source, defects, decoded, display_name,
+    eleza example_as_address(self, source, defects, decoded, display_name,
                            addr_spec, username, domain, comment):
         h = self.make_header('sender', source)
         self.assertEqual(h, decoded)
@@ -1212,10 +1212,10 @@ class TestAddressHeader(TestHeaderBase):
         # XXX: we have no comment support yet.
         #self.assertEqual(a.comment, comment)
 
-    def example_as_group(self, source, defects, decoded, display_name,
+    eleza example_as_group(self, source, defects, decoded, display_name,
                          addr_spec, username, domain, comment):
         source = 'foo: {};'.format(source)
-        gdecoded = 'foo: {};'.format(decoded) if decoded isipokua 'foo:;'
+        gdecoded = 'foo: {};'.format(decoded) ikiwa decoded isipokua 'foo:;'
         h = self.make_header('to', source)
         self.assertEqual(h, gdecoded)
         self.assertDefectsEqual(h.defects, defects)
@@ -1229,14 +1229,14 @@ class TestAddressHeader(TestHeaderBase):
         self.assertEqual(a.username, username)
         self.assertEqual(a.domain, domain)
 
-    def test_simple_address_list(self):
+    eleza test_simple_address_list(self):
         value = ('Fred <dinsdale@python.org>, foo@example.com, '
                     '"Harry W. Hastings" <hasty@example.com>')
         h = self.make_header('to', value)
         self.assertEqual(h, value)
         self.assertEqual(len(h.groups), 3)
         self.assertEqual(len(h.addresses), 3)
-        for i in range(3):
+        kila i kwenye range(3):
             self.assertEqual(h.groups[i].addresses[0], h.addresses[i])
         self.assertEqual(str(h.addresses[0]), 'Fred <dinsdale@python.org>')
         self.assertEqual(str(h.addresses[1]), 'foo@example.com')
@@ -1245,21 +1245,21 @@ class TestAddressHeader(TestHeaderBase):
         self.assertEqual(h.addresses[2].display_name,
             'Harry W. Hastings')
 
-    def test_complex_address_list(self):
+    eleza test_complex_address_list(self):
         examples = list(self.example_params.values())
         source = ('dummy list:;, another: (empty);,' +
-                 ', '.join([x[0] for x in examples[:4]]) + ', ' +
+                 ', '.join([x[0] kila x kwenye examples[:4]]) + ', ' +
                  r'"A \"list\"": ' +
-                    ', '.join([x[0] for x in examples[4:6]]) + ';,' +
-                 ', '.join([x[0] for x in examples[6:]])
+                    ', '.join([x[0] kila x kwenye examples[4:6]]) + ';,' +
+                 ', '.join([x[0] kila x kwenye examples[6:]])
             )
-        # XXX: the fact that (empty) disappears here is a potential API design
+        # XXX: the fact that (empty) disappears here ni a potential API design
         # bug.  We don't currently have a way to preserve comments.
         expected = ('dummy list:;, another:;, ' +
-                 ', '.join([x[2] for x in examples[:4]]) + ', ' +
+                 ', '.join([x[2] kila x kwenye examples[:4]]) + ', ' +
                  r'"A \"list\"": ' +
-                    ', '.join([x[2] for x in examples[4:6]]) + ';, ' +
-                 ', '.join([x[2] for x in examples[6:]])
+                    ', '.join([x[2] kila x kwenye examples[4:6]]) + ';, ' +
+                 ', '.join([x[2] kila x kwenye examples[6:]])
             )
 
         h = self.make_header('to', source)
@@ -1270,92 +1270,92 @@ class TestAddressHeader(TestHeaderBase):
         self.assertEqual(h.groups[1].display_name, 'another')
         self.assertEqual(h.groups[6].display_name, 'A "list"')
         self.assertEqual(len(h.addresses), len(examples))
-        for i in range(4):
-            self.assertIsNone(h.groups[i+2].display_name)
+        kila i kwenye range(4):
+            self.assertIsTupu(h.groups[i+2].display_name)
             self.assertEqual(str(h.groups[i+2].addresses[0]), examples[i][2])
-        for i in range(7, 7 + len(examples) - 6):
-            self.assertIsNone(h.groups[i].display_name)
+        kila i kwenye range(7, 7 + len(examples) - 6):
+            self.assertIsTupu(h.groups[i].display_name)
             self.assertEqual(str(h.groups[i].addresses[0]), examples[i-1][2])
-        for i in range(len(examples)):
+        kila i kwenye range(len(examples)):
             self.assertEqual(str(h.addresses[i]), examples[i][2])
             self.assertEqual(h.addresses[i].addr_spec, examples[i][4])
 
-    def test_address_read_only(self):
+    eleza test_address_read_only(self):
         h = self.make_header('sender', 'abc@xyz.com')
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             h.address = 'foo'
 
-    def test_addresses_read_only(self):
+    eleza test_addresses_read_only(self):
         h = self.make_header('sender', 'abc@xyz.com')
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             h.addresses = 'foo'
 
-    def test_groups_read_only(self):
+    eleza test_groups_read_only(self):
         h = self.make_header('sender', 'abc@xyz.com')
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             h.groups = 'foo'
 
-    def test_addresses_types(self):
+    eleza test_addresses_types(self):
         source = 'me <who@example.com>'
         h = self.make_header('to', source)
         self.assertIsInstance(h.addresses, tuple)
         self.assertIsInstance(h.addresses[0], Address)
 
-    def test_groups_types(self):
+    eleza test_groups_types(self):
         source = 'me <who@example.com>'
         h = self.make_header('to', source)
         self.assertIsInstance(h.groups, tuple)
         self.assertIsInstance(h.groups[0], Group)
 
-    def test_set_from_Address(self):
+    eleza test_set_from_Address(self):
         h = self.make_header('to', Address('me', 'foo', 'example.com'))
         self.assertEqual(h, 'me <foo@example.com>')
 
-    def test_set_from_Address_list(self):
+    eleza test_set_from_Address_list(self):
         h = self.make_header('to', [Address('me', 'foo', 'example.com'),
                                     Address('you', 'bar', 'example.com')])
         self.assertEqual(h, 'me <foo@example.com>, you <bar@example.com>')
 
-    def test_set_from_Address_and_Group_list(self):
+    eleza test_set_from_Address_and_Group_list(self):
         h = self.make_header('to', [Address('me', 'foo', 'example.com'),
                                     Group('bing', [Address('fiz', 'z', 'b.com'),
                                                    Address('zif', 'f', 'c.com')]),
                                     Address('you', 'bar', 'example.com')])
         self.assertEqual(h, 'me <foo@example.com>, bing: fiz <z@b.com>, '
-                            'zif <f@c.com>;, you <bar@example.com>')
+                            'zikiwa <f@c.com>;, you <bar@example.com>')
         self.assertEqual(h.fold(policy=policy.default.clone(max_line_length=40)),
                         'to: me <foo@example.com>,\n'
-                        ' bing: fiz <z@b.com>, zif <f@c.com>;,\n'
+                        ' bing: fiz <z@b.com>, zikiwa <f@c.com>;,\n'
                         ' you <bar@example.com>\n')
 
-    def test_set_from_Group_list(self):
+    eleza test_set_from_Group_list(self):
         h = self.make_header('to', [Group('bing', [Address('fiz', 'z', 'b.com'),
                                                    Address('zif', 'f', 'c.com')])])
-        self.assertEqual(h, 'bing: fiz <z@b.com>, zif <f@c.com>;')
+        self.assertEqual(h, 'bing: fiz <z@b.com>, zikiwa <f@c.com>;')
 
 
-class TestAddressAndGroup(TestEmailBase):
+kundi TestAddressAndGroup(TestEmailBase):
 
-    def _test_attr_ro(self, obj, attr):
-        with self.assertRaises(AttributeError):
+    eleza _test_attr_ro(self, obj, attr):
+        ukijumuisha self.assertRaises(AttributeError):
             setattr(obj, attr, 'foo')
 
-    def test_address_display_name_ro(self):
+    eleza test_address_display_name_ro(self):
         self._test_attr_ro(Address('foo', 'bar', 'baz'), 'display_name')
 
-    def test_address_username_ro(self):
+    eleza test_address_username_ro(self):
         self._test_attr_ro(Address('foo', 'bar', 'baz'), 'username')
 
-    def test_address_domain_ro(self):
+    eleza test_address_domain_ro(self):
         self._test_attr_ro(Address('foo', 'bar', 'baz'), 'domain')
 
-    def test_group_display_name_ro(self):
+    eleza test_group_display_name_ro(self):
         self._test_attr_ro(Group('foo'), 'display_name')
 
-    def test_group_addresses_ro(self):
+    eleza test_group_addresses_ro(self):
         self._test_attr_ro(Group('foo'), 'addresses')
 
-    def test_address_from_username_domain(self):
+    eleza test_address_from_username_domain(self):
         a = Address('foo', 'bar', 'baz')
         self.assertEqual(a.display_name, 'foo')
         self.assertEqual(a.username, 'bar')
@@ -1363,7 +1363,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(a.addr_spec, 'bar@baz')
         self.assertEqual(str(a), 'foo <bar@baz>')
 
-    def test_address_from_addr_spec(self):
+    eleza test_address_from_addr_spec(self):
         a = Address('foo', addr_spec='bar@baz')
         self.assertEqual(a.display_name, 'foo')
         self.assertEqual(a.username, 'bar')
@@ -1371,7 +1371,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(a.addr_spec, 'bar@baz')
         self.assertEqual(str(a), 'foo <bar@baz>')
 
-    def test_address_with_no_display_name(self):
+    eleza test_address_with_no_display_name(self):
         a = Address(addr_spec='bar@baz')
         self.assertEqual(a.display_name, '')
         self.assertEqual(a.username, 'bar')
@@ -1379,7 +1379,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(a.addr_spec, 'bar@baz')
         self.assertEqual(str(a), 'bar@baz')
 
-    def test_null_address(self):
+    eleza test_null_address(self):
         a = Address()
         self.assertEqual(a.display_name, '')
         self.assertEqual(a.username, '')
@@ -1387,7 +1387,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(a.addr_spec, '<>')
         self.assertEqual(str(a), '<>')
 
-    def test_domain_only(self):
+    eleza test_domain_only(self):
         # This isn't really a valid address.
         a = Address(domain='buzz')
         self.assertEqual(a.display_name, '')
@@ -1396,7 +1396,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(a.addr_spec, '@buzz')
         self.assertEqual(str(a), '@buzz')
 
-    def test_username_only(self):
+    eleza test_username_only(self):
         # This isn't really a valid address.
         a = Address(username='buzz')
         self.assertEqual(a.display_name, '')
@@ -1405,7 +1405,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(a.addr_spec, 'buzz')
         self.assertEqual(str(a), 'buzz')
 
-    def test_display_name_only(self):
+    eleza test_display_name_only(self):
         a = Address('buzz')
         self.assertEqual(a.display_name, 'buzz')
         self.assertEqual(a.username, '')
@@ -1413,7 +1413,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(a.addr_spec, '<>')
         self.assertEqual(str(a), 'buzz <>')
 
-    def test_quoting(self):
+    eleza test_quoting(self):
         # Ideally we'd check every special individually, but I'm sio up for
         # writing that many tests.
         a = Address('Sara J.', 'bad name', 'example.com')
@@ -1423,7 +1423,7 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(a.addr_spec, '"bad name"@example.com')
         self.assertEqual(str(a), '"Sara J." <"bad name"@example.com>')
 
-    def test_il8n(self):
+    eleza test_il8n(self):
         a = Address('Éric', 'wok', 'exàmple.com')
         self.assertEqual(a.display_name, 'Éric')
         self.assertEqual(a.username, 'wok')
@@ -1431,94 +1431,94 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(a.addr_spec, 'wok@exàmple.com')
         self.assertEqual(str(a), 'Éric <wok@exàmple.com>')
 
-    # XXX: there is an API design issue that needs to be solved here.
-    #def test_non_ascii_username_raises(self):
-    #    with self.assertRaises(ValueError):
+    # XXX: there ni an API design issue that needs to be solved here.
+    #eleza test_non_ascii_username_raises(self):
+    #    ukijumuisha self.assertRaises(ValueError):
     #        Address('foo', 'wők', 'example.com')
 
-    def test_non_ascii_username_in_addr_spec_raises(self):
-        with self.assertRaises(ValueError):
+    eleza test_non_ascii_username_in_addr_spec_raises(self):
+        ukijumuisha self.assertRaises(ValueError):
             Address('foo', addr_spec='wők@example.com')
 
-    def test_address_addr_spec_and_username_raises(self):
-        with self.assertRaises(TypeError):
+    eleza test_address_addr_spec_and_username_raises(self):
+        ukijumuisha self.assertRaises(TypeError):
             Address('foo', username='bing', addr_spec='bar@baz')
 
-    def test_address_addr_spec_and_domain_raises(self):
-        with self.assertRaises(TypeError):
+    eleza test_address_addr_spec_and_domain_raises(self):
+        ukijumuisha self.assertRaises(TypeError):
             Address('foo', domain='bing', addr_spec='bar@baz')
 
-    def test_address_addr_spec_and_username_and_domain_raises(self):
-        with self.assertRaises(TypeError):
+    eleza test_address_addr_spec_and_username_and_domain_raises(self):
+        ukijumuisha self.assertRaises(TypeError):
             Address('foo', username='bong', domain='bing', addr_spec='bar@baz')
 
-    def test_space_in_addr_spec_username_raises(self):
-        with self.assertRaises(ValueError):
+    eleza test_space_in_addr_spec_username_raises(self):
+        ukijumuisha self.assertRaises(ValueError):
             Address('foo', addr_spec="bad name@example.com")
 
-    def test_bad_addr_sepc_raises(self):
-        with self.assertRaises(ValueError):
+    eleza test_bad_addr_sepc_raises(self):
+        ukijumuisha self.assertRaises(ValueError):
             Address('foo', addr_spec="name@ex[]ample.com")
 
-    def test_empty_group(self):
+    eleza test_empty_group(self):
         g = Group('foo')
         self.assertEqual(g.display_name, 'foo')
         self.assertEqual(g.addresses, tuple())
         self.assertEqual(str(g), 'foo:;')
 
-    def test_empty_group_list(self):
+    eleza test_empty_group_list(self):
         g = Group('foo', addresses=[])
         self.assertEqual(g.display_name, 'foo')
         self.assertEqual(g.addresses, tuple())
         self.assertEqual(str(g), 'foo:;')
 
-    def test_null_group(self):
+    eleza test_null_group(self):
         g = Group()
-        self.assertIsNone(g.display_name)
+        self.assertIsTupu(g.display_name)
         self.assertEqual(g.addresses, tuple())
-        self.assertEqual(str(g), 'None:;')
+        self.assertEqual(str(g), 'Tupu:;')
 
-    def test_group_with_addresses(self):
+    eleza test_group_with_addresses(self):
         addrs = [Address('b', 'b', 'c'), Address('a', 'b','c')]
         g = Group('foo', addrs)
         self.assertEqual(g.display_name, 'foo')
         self.assertEqual(g.addresses, tuple(addrs))
         self.assertEqual(str(g), 'foo: b <b@c>, a <b@c>;')
 
-    def test_group_with_addresses_no_display_name(self):
+    eleza test_group_with_addresses_no_display_name(self):
         addrs = [Address('b', 'b', 'c'), Address('a', 'b','c')]
         g = Group(addresses=addrs)
-        self.assertIsNone(g.display_name)
+        self.assertIsTupu(g.display_name)
         self.assertEqual(g.addresses, tuple(addrs))
-        self.assertEqual(str(g), 'None: b <b@c>, a <b@c>;')
+        self.assertEqual(str(g), 'Tupu: b <b@c>, a <b@c>;')
 
-    def test_group_with_one_address_no_display_name(self):
+    eleza test_group_with_one_address_no_display_name(self):
         addrs = [Address('b', 'b', 'c')]
         g = Group(addresses=addrs)
-        self.assertIsNone(g.display_name)
+        self.assertIsTupu(g.display_name)
         self.assertEqual(g.addresses, tuple(addrs))
         self.assertEqual(str(g), 'b <b@c>')
 
-    def test_display_name_quoting(self):
+    eleza test_display_name_quoting(self):
         g = Group('foo.bar')
         self.assertEqual(g.display_name, 'foo.bar')
         self.assertEqual(g.addresses, tuple())
         self.assertEqual(str(g), '"foo.bar":;')
 
-    def test_display_name_blanks_not_quoted(self):
+    eleza test_display_name_blanks_not_quoted(self):
         g = Group('foo bar')
         self.assertEqual(g.display_name, 'foo bar')
         self.assertEqual(g.addresses, tuple())
         self.assertEqual(str(g), 'foo bar:;')
 
-    def test_set_message_header_from_address(self):
+    eleza test_set_message_header_from_address(self):
         a = Address('foo', 'bar', 'example.com')
         m = Message(policy=policy.default)
         m['To'] = a
         self.assertEqual(m['to'], 'foo <bar@example.com>')
         self.assertEqual(m['to'].addresses, (a,))
 
-    def test_set_message_header_from_group(self):
+    eleza test_set_message_header_from_group(self):
         g = Group('foo bar')
         m = Message(policy=policy.default)
         m['To'] = g
@@ -1526,11 +1526,11 @@ class TestAddressAndGroup(TestEmailBase):
         self.assertEqual(m['to'].addresses, g.addresses)
 
 
-class TestFolding(TestHeaderBase):
+kundi TestFolding(TestHeaderBase):
 
-    def test_address_display_names(self):
-        """Test the folding and encoding of address headers."""
-        for name, result in (
+    eleza test_address_display_names(self):
+        """Test the folding na encoding of address headers."""
+        kila name, result kwenye (
                 ('Foo Bar, France', '"Foo Bar, France"'),
                 ('Foo Bar (France)', '"Foo Bar (France)"'),
                 ('Foo Bar, España', 'Foo =?utf-8?q?Bar=2C_Espa=C3=B1a?='),
@@ -1552,42 +1552,42 @@ class TestFolding(TestHeaderBase):
             self.assertEqual(h.fold(policy=policy.default),
                                     'To: %s <a@b.com>\n' % result)
 
-    def test_short_unstructured(self):
-        h = self.make_header('subject', 'this is a test')
+    eleza test_short_unstructured(self):
+        h = self.make_header('subject', 'this ni a test')
         self.assertEqual(h.fold(policy=policy.default),
-                         'subject: this is a test\n')
+                         'subject: this ni a test\n')
 
-    def test_long_unstructured(self):
-        h = self.make_header('Subject', 'This is a long header '
+    eleza test_long_unstructured(self):
+        h = self.make_header('Subject', 'This ni a long header '
             'line that will need to be folded into two lines '
             'and will demonstrate basic folding')
         self.assertEqual(h.fold(policy=policy.default),
-                        'Subject: This is a long header line that will '
+                        'Subject: This ni a long header line that will '
                             'need to be folded into two lines\n'
-                        ' and will demonstrate basic folding\n')
+                        ' na will demonstrate basic folding\n')
 
-    def test_unstructured_short_max_line_length(self):
-        h = self.make_header('Subject', 'this is a short header '
+    eleza test_unstructured_short_max_line_length(self):
+        h = self.make_header('Subject', 'this ni a short header '
             'that will be folded anyway')
         self.assertEqual(
             h.fold(policy=policy.default.clone(max_line_length=20)),
             textwrap.dedent("""\
-                Subject: this is a
+                Subject: this ni a
                  short header that
                  will be folded
                  anyway
                 """))
 
-    def test_fold_unstructured_single_word(self):
+    eleza test_fold_unstructured_single_word(self):
         h = self.make_header('Subject', 'test')
         self.assertEqual(h.fold(policy=policy.default), 'Subject: test\n')
 
-    def test_fold_unstructured_short(self):
+    eleza test_fold_unstructured_short(self):
         h = self.make_header('Subject', 'test test test')
         self.assertEqual(h.fold(policy=policy.default),
                         'Subject: test test test\n')
 
-    def test_fold_unstructured_with_overlong_word(self):
+    eleza test_fold_unstructured_with_overlong_word(self):
         h = self.make_header('Subject', 'thisisaverylonglineconsistingofa'
             'singlewordthatwontfit')
         self.assertEqual(
@@ -1603,7 +1603,7 @@ class TestFolding(TestHeaderBase):
             ' =?utf-8?q?tfit?=\n'
             )
 
-    def test_fold_unstructured_with_two_overlong_words(self):
+    eleza test_fold_unstructured_with_two_overlong_words(self):
         h = self.make_header('Subject', 'thisisaverylonglineconsistingofa'
             'singlewordthatwontfit plusanotherverylongwordthatwontfit')
         self.assertEqual(
@@ -1624,43 +1624,43 @@ class TestFolding(TestHeaderBase):
             ' =?utf-8?q?tfit?=\n'
             )
 
-    # XXX Need test for when max_line_length is less than the chrome size.
+    # XXX Need test kila when max_line_length ni less than the chrome size.
 
-    def test_fold_unstructured_with_slightly_long_word(self):
+    eleza test_fold_unstructured_with_slightly_long_word(self):
         h = self.make_header('Subject', 'thislongwordislessthanmaxlinelen')
         self.assertEqual(
             h.fold(policy=policy.default.clone(max_line_length=35)),
             'Subject:\n thislongwordislessthanmaxlinelen\n')
 
-    def test_fold_unstructured_with_commas(self):
+    eleza test_fold_unstructured_with_commas(self):
         # The old wrapper would fold this at the commas.
-        h = self.make_header('Subject', "This header is intended to "
-            "demonstrate, in a fairly succinct way, that we now do "
-            "not give a , special treatment in unstructured headers.")
+        h = self.make_header('Subject', "This header ni intended to "
+            "demonstrate, kwenye a fairly succinct way, that we now do "
+            "not give a , special treatment kwenye unstructured headers.")
         self.assertEqual(
             h.fold(policy=policy.default.clone(max_line_length=60)),
             textwrap.dedent("""\
-                Subject: This header is intended to demonstrate, in a fairly
+                Subject: This header ni intended to demonstrate, kwenye a fairly
                  succinct way, that we now do sio give a , special treatment
-                 in unstructured headers.
+                 kwenye unstructured headers.
                  """))
 
-    def test_fold_address_list(self):
+    eleza test_fold_address_list(self):
         h = self.make_header('To', '"Theodore H. Perfect" <yes@man.com>, '
-            '"My address is very long because my name is long" <foo@bar.com>, '
+            '"My address ni very long because my name ni long" <foo@bar.com>, '
             '"Only A. Friend" <no@yes.com>')
         self.assertEqual(h.fold(policy=policy.default), textwrap.dedent("""\
             To: "Theodore H. Perfect" <yes@man.com>,
-             "My address is very long because my name is long" <foo@bar.com>,
+             "My address ni very long because my name ni long" <foo@bar.com>,
              "Only A. Friend" <no@yes.com>
              """))
 
-    def test_fold_date_header(self):
+    eleza test_fold_date_header(self):
         h = self.make_header('Date', 'Sat, 2 Feb 2002 17:00:06 -0800')
         self.assertEqual(h.fold(policy=policy.default),
                         'Date: Sat, 02 Feb 2002 17:00:06 -0800\n')
 
-    def test_fold_overlong_words_using_RFC2047(self):
+    eleza test_fold_overlong_words_using_RFC2047(self):
         h = self.make_header(
             'X-Report-Abuse',
             '<https://www.mailitapp.com/report_abuse.php?'
@@ -1673,7 +1673,7 @@ class TestFolding(TestHeaderBase):
                 'xxxxxxxxxxxxxxxxxxxx=3D=3D-xxx-xx-xx?=\n'
             ' =?utf-8?q?=3E?=\n')
 
-    def test_message_id_header_is_not_folded(self):
+    eleza test_message_id_header_is_not_folded(self):
         h = self.make_header(
             'Message-ID',
             '<somemessageidlongerthan@maxlinelength.com>')
@@ -1681,7 +1681,7 @@ class TestFolding(TestHeaderBase):
             h.fold(policy=policy.default.clone(max_line_length=20)),
             'Message-ID: <somemessageidlongerthan@maxlinelength.com>\n')
 
-        # Test message-id isn't folded when id-right is no-fold-literal.
+        # Test message-id isn't folded when id-right ni no-fold-literal.
         h = self.make_header(
             'Message-ID',
             '<somemessageidlongerthan@[127.0.0.0.0.0.0.0.0.1]>')
@@ -1689,18 +1689,18 @@ class TestFolding(TestHeaderBase):
             h.fold(policy=policy.default.clone(max_line_length=20)),
             'Message-ID: <somemessageidlongerthan@[127.0.0.0.0.0.0.0.0.1]>\n')
 
-        # Test message-id isn't folded when id-right is non-ascii characters.
+        # Test message-id isn't folded when id-right ni non-ascii characters.
         h = self.make_header('Message-ID', '<ईमेल@wők.com>')
         self.assertEqual(
             h.fold(policy=policy.default.clone(max_line_length=30)),
             'Message-ID: <ईमेल@wők.com>\n')
 
-        # Test message-id is folded without komaing the msg-id token into
-        # encoded words, *even* if they don't fit into max_line_length.
+        # Test message-id ni folded without komaing the msg-id token into
+        # encoded words, *even* ikiwa they don't fit into max_line_length.
         h = self.make_header('Message-ID', '<ईमेलfromMessage@wők.com>')
         self.assertEqual(
             h.fold(policy=policy.default.clone(max_line_length=20)),
             'Message-ID:\n <ईमेलfromMessage@wők.com>\n')
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

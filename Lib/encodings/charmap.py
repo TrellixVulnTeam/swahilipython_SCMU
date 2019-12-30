@@ -1,7 +1,7 @@
 """ Generic Python Character Mapping Codec.
 
     Use this codec directly rather than through the automatic
-    conversion mechanisms supplied by unicode() and .encode().
+    conversion mechanisms supplied by unicode() na .encode().
 
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
@@ -16,8 +16,8 @@ agiza codecs
 
 kundi Codec(codecs.Codec):
 
-    # Note: Binding these as C functions will result in the kundi not
-    # converting them to methods. This is intended.
+    # Note: Binding these as C functions will result kwenye the kundi not
+    # converting them to methods. This ni intended.
     encode = codecs.charmap_encode
     decode = codecs.charmap_decode
 

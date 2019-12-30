@@ -1,187 +1,187 @@
-"""Drag-and-drop support for Tkinter.
+"""Drag-and-drop support kila Tkinter.
 
-This is very preliminary.  I currently only support dnd *within* one
+This ni very preliminary.  I currently only support dnd *within* one
 application, between different windows (or within the same window).
 
 I am trying to make this as generic as possible -- sio dependent on
-the use of a particular widget or icon type, etc.  I also hope that
-this will work with Pmw.
+the use of a particular widget ama icon type, etc.  I also hope that
+this will work ukijumuisha Pmw.
 
 To enable an object to be dragged, you must create an event binding
-for it that starts the drag-and-drop process. Typically, you should
+kila it that starts the drag-and-drop process. Typically, you should
 bind <ButtonPress> to a callback function that you write. The function
-should call Tkdnd.dnd_start(source, event), where 'source' is the
-object to be dragged, and 'event' is the event that invoked the call
-(the argument to your callback function).  Even though this is a class
+should call Tkdnd.dnd_start(source, event), where 'source' ni the
+object to be dragged, na 'event' ni the event that invoked the call
+(the argument to your callback function).  Even though this ni a class
 instantiation, the returned instance should sio be stored -- it will
-be kept alive automatically for the duration of the drag-and-drop.
+be kept alive automatically kila the duration of the drag-and-drop.
 
-When a drag-and-drop is already in process for the Tk interpreter, the
-call is *ignored*; this normally averts starting multiple simultaneous
+When a drag-and-drop ni already kwenye process kila the Tk interpreter, the
+call ni *ignored*; this normally averts starting multiple simultaneous
 dnd processes, e.g. because different button callbacks all
 dnd_start().
 
-The object is *not* necessarily a widget -- it can be any
-application-specific object that is meaningful to potential
+The object ni *not* necessarily a widget -- it can be any
+application-specific object that ni meaningful to potential
 drag-and-drop targets.
 
 Potential drag-and-drop targets are discovered as follows.  Whenever
-the mouse moves, and at the start and end of a drag-and-drop move, the
-Tk widget directly under the mouse is inspected.  This is the target
-widget (sio to be confused with the target object, yet to be
-determined).  If there is no target widget, there is no dnd target
-object.  If there is a target widget, and it has an attribute
+the mouse moves, na at the start na end of a drag-and-drop move, the
+Tk widget directly under the mouse ni inspected.  This ni the target
+widget (not to be confused ukijumuisha the target object, yet to be
+determined).  If there ni no target widget, there ni no dnd target
+object.  If there ni a target widget, na it has an attribute
 dnd_accept, this should be a function (or any callable object).  The
-function is called as dnd_accept(source, event), where 'source' is the
-object being dragged (the object passed to dnd_start() above), na
-'event' is the most recent event object (generally a <Motion> event;
-it can also be <ButtonPress> or <ButtonRelease>).  If the dnd_accept()
-function returns something other than None, this is the new dnd target
-object.  If dnd_accept() returns None, or if the target widget has no
-dnd_accept attribute, the target widget's parent is considered as the
-target widget, and the search for a target object is repeated from
-there.  If necessary, the search is repeated all the way up to the
+function ni called as dnd_accept(source, event), where 'source' ni the
+object being dragged (the object passed to dnd_start() above), and
+'event' ni the most recent event object (generally a <Motion> event;
+it can also be <ButtonPress> ama <ButtonRelease>).  If the dnd_accept()
+function returns something other than Tupu, this ni the new dnd target
+object.  If dnd_accept() returns Tupu, ama ikiwa the target widget has no
+dnd_accept attribute, the target widget's parent ni considered as the
+target widget, na the search kila a target object ni repeated from
+there.  If necessary, the search ni repeated all the way up to the
 root widget.  If none of the target widgets can produce a target
-object, there is no target object (the target object is None).
+object, there ni no target object (the target object ni Tupu).
 
-The target object thus produced, if any, is called the new target
-object.  It is compared with the old target object (or None, if there
-was no old target widget).  There are several cases ('source' is the
-source object, and 'event' is the most recent event object):
+The target object thus produced, ikiwa any, ni called the new target
+object.  It ni compared ukijumuisha the old target object (or Tupu, ikiwa there
+was no old target widget).  There are several cases ('source' ni the
+source object, na 'event' ni the most recent event object):
 
-- Both the old and new target objects are None.  Nothing happens.
+- Both the old na new target objects are Tupu.  Nothing happens.
 
-- The old and new target objects are the same object.  Its method
-dnd_motion(source, event) is called.
+- The old na new target objects are the same object.  Its method
+dnd_motion(source, event) ni called.
 
-- The old target object was None, and the new target object is not
-None.  The new target object's method dnd_enter(source, event) is
+- The old target object was Tupu, na the new target object ni not
+Tupu.  The new target object's method dnd_enter(source, event) is
 called.
 
-- The new target object is None, and the old target object is not
-None.  The old target object's method dnd_leave(source, event) is
+- The new target object ni Tupu, na the old target object ni not
+Tupu.  The old target object's method dnd_leave(source, event) is
 called.
 
-- The old and new target objects differ and neither is None.  The old
-target object's method dnd_leave(source, event), and then the new
-target object's method dnd_enter(source, event) is called.
+- The old na new target objects differ na neither ni Tupu.  The old
+target object's method dnd_leave(source, event), na then the new
+target object's method dnd_enter(source, event) ni called.
 
-Once this is done, the new target object replaces the old one, and the
-Tk mainloop proceeds.  The return value of the methods mentioned above
-is ignored; if they ashiria an exception, the normal exception handling
+Once this ni done, the new target object replaces the old one, na the
+Tk mainloop proceeds.  The rudisha value of the methods mentioned above
+is ignored; ikiwa they  ashiria an exception, the normal exception handling
 mechanisms take over.
 
-The drag-and-drop processes can end in two ways: a final target object
-is selected, or no final target object is selected.  When a final
-target object is selected, it will always have been notified of the
+The drag-and-drop processes can end kwenye two ways: a final target object
+is selected, ama no final target object ni selected.  When a final
+target object ni selected, it will always have been notified of the
 potential drop by a call to its dnd_enter() method, as described
-above, and possibly one or more calls to its dnd_motion() method; its
+above, na possibly one ama more calls to its dnd_motion() method; its
 dnd_leave() method has sio been called since the last call to
-dnd_enter().  The target is notified of the drop by a call to its
+dnd_enter().  The target ni notified of the drop by a call to its
 method dnd_commit(source, event).
 
-If no final target object is selected, and there was an old target
-object, its dnd_leave(source, event) method is called to complete the
+If no final target object ni selected, na there was an old target
+object, its dnd_leave(source, event) method ni called to complete the
 dnd sequence.
 
-Finally, the source object is notified that the drag-and-drop process
+Finally, the source object ni notified that the drag-and-drop process
 is over, by a call to source.dnd_end(target, event), specifying either
-the selected target object, or None if no target object was selected.
+the selected target object, ama Tupu ikiwa no target object was selected.
 The source object can use this to implement the commit action; this is
-sometimes simpler than to do it in the target's dnd_commit().  The
+sometimes simpler than to do it kwenye the target's dnd_commit().  The
 target's dnd_commit() method could then simply be aliased to
 dnd_leave().
 
 At any time during a dnd sequence, the application can cancel the
 sequence by calling the cancel() method on the object returned by
-dnd_start().  This will call dnd_leave() if a target is currently
+dnd_start().  This will call dnd_leave() ikiwa a target ni currently
 active; it will never call dnd_commit().
 
 """
 
 
-import tkinter
+agiza tkinter
 
 
 # The factory function
 
-def dnd_start(source, event):
+eleza dnd_start(source, event):
     h = DndHandler(source, event)
-    if h.root:
-        return h
+    ikiwa h.root:
+        rudisha h
     isipokua:
-        return None
+        rudisha Tupu
 
 
-# The class that does the work
+# The kundi that does the work
 
-class DndHandler:
+kundi DndHandler:
 
-    root = None
+    root = Tupu
 
-    def __init__(self, source, event):
-        if event.num > 5:
+    eleza __init__(self, source, event):
+        ikiwa event.num > 5:
             return
         root = event.widget._root()
         jaribu:
             root.__dnd
-            return # Don't start recursive dnd
-        tatizo AttributeError:
+            rudisha # Don't start recursive dnd
+        except AttributeError:
             root.__dnd = self
             self.root = root
         self.source = source
-        self.target = None
+        self.target = Tupu
         self.initial_button = button = event.num
         self.initial_widget = widget = event.widget
         self.release_pattern = "<B%d-ButtonRelease-%d>" % (button, button)
-        self.save_cursor = widget['cursor'] or ""
+        self.save_cursor = widget['cursor'] ama ""
         widget.bind(self.release_pattern, self.on_release)
         widget.bind("<Motion>", self.on_motion)
         widget['cursor'] = "hand2"
 
-    def __del__(self):
+    eleza __del__(self):
         root = self.root
-        self.root = None
-        if root:
+        self.root = Tupu
+        ikiwa root:
             jaribu:
                 toa root.__dnd
-            tatizo AttributeError:
+            except AttributeError:
                 pass
 
-    def on_motion(self, event):
+    eleza on_motion(self, event):
         x, y = event.x_root, event.y_root
         target_widget = self.initial_widget.winfo_containing(x, y)
         source = self.source
-        new_target = None
+        new_target = Tupu
         wakati target_widget:
             jaribu:
                 attr = target_widget.dnd_accept
-            tatizo AttributeError:
+            except AttributeError:
                 pass
             isipokua:
                 new_target = attr(source, event)
-                if new_target:
+                ikiwa new_target:
                     koma
             target_widget = target_widget.master
         old_target = self.target
-        if old_target is new_target:
-            if old_target:
+        ikiwa old_target ni new_target:
+            ikiwa old_target:
                 old_target.dnd_motion(source, event)
         isipokua:
-            if old_target:
-                self.target = None
+            ikiwa old_target:
+                self.target = Tupu
                 old_target.dnd_leave(source, event)
-            if new_target:
+            ikiwa new_target:
                 new_target.dnd_enter(source, event)
                 self.target = new_target
 
-    def on_release(self, event):
+    eleza on_release(self, event):
         self.finish(event, 1)
 
-    def cancel(self, event=None):
+    eleza cancel(self, event=Tupu):
         self.finish(event, 0)
 
-    def finish(self, event, commit=0):
+    eleza finish(self, event, commit=0):
         target = self.target
         source = self.source
         widget = self.initial_widget
@@ -191,9 +191,9 @@ class DndHandler:
             self.initial_widget.unbind(self.release_pattern)
             self.initial_widget.unbind("<Motion>")
             widget['cursor'] = self.save_cursor
-            self.target = self.source = self.initial_widget = self.root = None
-            if target:
-                if commit:
+            self.target = self.source = self.initial_widget = self.root = Tupu
+            ikiwa target:
+                ikiwa commit:
                     target.dnd_commit(source, event)
                 isipokua:
                     target.dnd_leave(source, event)
@@ -202,21 +202,21 @@ class DndHandler:
 
 
 # ----------------------------------------------------------------------
-# The rest is here for testing and demonstration purposes only!
+# The rest ni here kila testing na demonstration purposes only!
 
-class Icon:
+kundi Icon:
 
-    def __init__(self, name):
+    eleza __init__(self, name):
         self.name = name
-        self.canvas = self.label = self.id = None
+        self.canvas = self.label = self.id = Tupu
 
-    def attach(self, canvas, x=10, y=10):
-        if canvas is self.canvas:
+    eleza attach(self, canvas, x=10, y=10):
+        ikiwa canvas ni self.canvas:
             self.canvas.coords(self.id, x, y)
             return
-        if self.canvas:
+        ikiwa self.canvas:
             self.detach()
-        if sio canvas:
+        ikiwa sio canvas:
             return
         label = tkinter.Label(canvas, text=self.name,
                               borderwidth=2, relief="raised")
@@ -226,57 +226,57 @@ class Icon:
         self.id = id
         label.bind("<ButtonPress>", self.press)
 
-    def detach(self):
+    eleza detach(self):
         canvas = self.canvas
-        if sio canvas:
+        ikiwa sio canvas:
             return
         id = self.id
         label = self.label
-        self.canvas = self.label = self.id = None
+        self.canvas = self.label = self.id = Tupu
         canvas.delete(id)
         label.destroy()
 
-    def press(self, event):
-        if dnd_start(self, event):
-            # where the pointer is relative to the label widget:
+    eleza press(self, event):
+        ikiwa dnd_start(self, event):
+            # where the pointer ni relative to the label widget:
             self.x_off = event.x
             self.y_off = event.y
-            # where the widget is relative to the canvas:
+            # where the widget ni relative to the canvas:
             self.x_orig, self.y_orig = self.canvas.coords(self.id)
 
-    def move(self, event):
+    eleza move(self, event):
         x, y = self.where(self.canvas, event)
         self.canvas.coords(self.id, x, y)
 
-    def putback(self):
+    eleza putback(self):
         self.canvas.coords(self.id, self.x_orig, self.y_orig)
 
-    def where(self, canvas, event):
-        # where the corner of the canvas is relative to the screen:
+    eleza where(self, canvas, event):
+        # where the corner of the canvas ni relative to the screen:
         x_org = canvas.winfo_rootx()
         y_org = canvas.winfo_rooty()
-        # where the pointer is relative to the canvas widget:
+        # where the pointer ni relative to the canvas widget:
         x = event.x_root - x_org
         y = event.y_root - y_org
-        # compensate for initial pointer offset
-        return x - self.x_off, y - self.y_off
+        # compensate kila initial pointer offset
+        rudisha x - self.x_off, y - self.y_off
 
-    def dnd_end(self, target, event):
+    eleza dnd_end(self, target, event):
         pass
 
 
-class Tester:
+kundi Tester:
 
-    def __init__(self, root):
+    eleza __init__(self, root):
         self.top = tkinter.Toplevel(root)
         self.canvas = tkinter.Canvas(self.top, width=100, height=100)
         self.canvas.pack(fill="both", expand=1)
         self.canvas.dnd_accept = self.dnd_accept
 
-    def dnd_accept(self, source, event):
-        return self
+    eleza dnd_accept(self, source, event):
+        rudisha self
 
-    def dnd_enter(self, source, event):
+    eleza dnd_enter(self, source, event):
         self.canvas.focus_set() # Show highlight border
         x, y = source.where(self.canvas, event)
         x1, y1, x2, y2 = source.canvas.bbox(source.id)
@@ -284,23 +284,23 @@ class Tester:
         self.dndid = self.canvas.create_rectangle(x, y, x+dx, y+dy)
         self.dnd_motion(source, event)
 
-    def dnd_motion(self, source, event):
+    eleza dnd_motion(self, source, event):
         x, y = source.where(self.canvas, event)
         x1, y1, x2, y2 = self.canvas.bbox(self.dndid)
         self.canvas.move(self.dndid, x-x1, y-y1)
 
-    def dnd_leave(self, source, event):
+    eleza dnd_leave(self, source, event):
         self.top.focus_set() # Hide highlight border
         self.canvas.delete(self.dndid)
-        self.dndid = None
+        self.dndid = Tupu
 
-    def dnd_commit(self, source, event):
+    eleza dnd_commit(self, source, event):
         self.dnd_leave(source, event)
         x, y = source.where(self.canvas, event)
         source.attach(self.canvas, x, y)
 
 
-def test():
+eleza test():
     root = tkinter.Tk()
     root.geometry("+1+1")
     tkinter.Button(command=root.quit, text="Quit").pack()
@@ -319,5 +319,5 @@ def test():
     root.mainloop()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test()

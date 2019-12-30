@@ -21,7 +21,7 @@ eleza init_database():
 
 kundi MsiDatabaseTestCase(unittest.TestCase):
 
-    eleza test_view_fetch_rudishas_none(self):
+    eleza test_view_fetch_returns_none(self):
         db, db_path = init_database()
         properties = []
         view = db.OpenView('SELECT Property, Value FROM Property')
@@ -66,13 +66,13 @@ kundi MsiDatabaseTestCase(unittest.TestCase):
             os.unlink(db_path)
 
     eleza test_database_open_failed(self):
-        ukijumuisha self.assertRaises(msilib.MSIError) kama cm:
+        ukijumuisha self.assertRaises(msilib.MSIError) as cm:
             msilib.OpenDatabase('non-existent.msi', msilib.MSIDBOPEN_READONLY)
         self.assertEqual(str(cm.exception), 'open failed')
 
     eleza test_database_create_failed(self):
         db_path = os.path.join(TESTFN, 'test.msi')
-        ukijumuisha self.assertRaises(msilib.MSIError) kama cm:
+        ukijumuisha self.assertRaises(msilib.MSIError) as cm:
             msilib.OpenDatabase(db_path, msilib.MSIDBOPEN_CREATE)
         self.assertEqual(str(cm.exception), 'create failed')
 

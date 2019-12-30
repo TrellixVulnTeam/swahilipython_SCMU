@@ -54,7 +54,7 @@ kundi CmdLineTest(unittest.TestCase):
             self.assertKweli(out.startswith(version))
 
     eleza test_verbose(self):
-        # -v causes agizas to write to stderr.  If the write to
+        # -v causes imports to write to stderr.  If the write to
         # stderr itself causes an agiza to happen (kila the output
         # codec), a recursion loop can occur.
         rc, out, err = assert_python_ok('-v')
@@ -136,9 +136,9 @@ kundi CmdLineTest(unittest.TestCase):
         # Switch needs an argument
         assert_python_failure('-c')
         # Check we get an error kila an uncaught exception
-        assert_python_failure('-c', 'ashiria Exception')
+        assert_python_failure('-c', ' ashiria Exception')
         # All good ikiwa execution ni successful
-        assert_python_ok('-c', 'pita')
+        assert_python_ok('-c', 'pass')
 
     @unittest.skipUnless(support.FS_NONASCII, 'need support.FS_NONASCII')
     eleza test_non_ascii(self):
@@ -147,10 +147,10 @@ kundi CmdLineTest(unittest.TestCase):
                    % (support.FS_NONASCII, ord(support.FS_NONASCII)))
         assert_python_ok('-c', command)
 
-    # On Windows, pita bytes to subprocess doesn't test how Python decodes the
+    # On Windows, pass bytes to subprocess doesn't test how Python decodes the
     # command line, but how subprocess does decode bytes to unicode. Python
     # doesn't decode the command line because Windows provides directly the
-    # arguments kama unicode (using wmain() instead of main()).
+    # arguments as unicode (using wmain() instead of main()).
     @unittest.skipIf(sys.platform == 'win32',
                      'Windows has a native unicode API')
     eleza test_undecodable_code(self):
@@ -169,24 +169,24 @@ kundi CmdLineTest(unittest.TestCase):
             env=env)
         stdout, stderr = p.communicate()
         ikiwa p.returncode == 1:
-            # _Py_char2wchar() decoded b'\xff' kama '\udcff' (b'\xff' ni not
+            # _Py_char2wchar() decoded b'\xff' as '\udcff' (b'\xff' ni not
             # decodable kutoka ASCII) na run_command() failed on
             # PyUnicode_AsUTF8String(). This ni the expected behaviour on
             # Linux.
             pattern = b"Unable to decode the command kutoka the command line:"
-        lasivyo p.returncode == 0:
-            # _Py_char2wchar() decoded b'\xff' kama '\xff' even ikiwa the locale is
+        elikiwa p.returncode == 0:
+            # _Py_char2wchar() decoded b'\xff' as '\xff' even ikiwa the locale is
             # C na the locale encoding ni ASCII. It occurs on FreeBSD, Solaris
             # na Mac OS X.
             pattern = b"'\\xff' "
             # The output ni followed by the encoding name, an alias to ASCII.
             # Examples: "US-ASCII" ama "646" (ISO 646, on Solaris).
         isipokua:
-            ashiria AssertionError("Unknown exit code: %s, output=%a" % (p.returncode, stdout))
+             ashiria AssertionError("Unknown exit code: %s, output=%a" % (p.returncode, stdout))
         ikiwa sio stdout.startswith(pattern):
-            ashiria AssertionError("%a doesn't start ukijumuisha %a" % (stdout, pattern))
+             ashiria AssertionError("%a doesn't start ukijumuisha %a" % (stdout, pattern))
 
-    @unittest.skipUnless((sys.platform == 'darwin' ama
+    @unittest.skipUnless((sys.platform == 'darwin' or
                 support.is_android), 'test specific to Mac OS X na Android')
     eleza test_osx_android_utf8(self):
         eleza check_output(text):
@@ -235,7 +235,7 @@ kundi CmdLineTest(unittest.TestCase):
             data = err ikiwa stream == 'stderr' isipokua out
             self.assertEqual(data, b'x', "text %s sio unbuffered" % stream)
 
-    eleza test_unbuffered_input(self):
+    eleza test_unbuffered_uliza(self):
         # sys.stdin still works ukijumuisha '-u'
         code = ("agiza sys; sys.stdout.write(sys.stdin.read(1))")
         p = spawn_python('-u', '-c', code)
@@ -265,7 +265,7 @@ kundi CmdLineTest(unittest.TestCase):
         # empty string ni equivalent to sio setting PATH at all,
         # which ni an exception to the rule that kwenye a string like
         # "/bin::/usr/bin" the empty string kwenye the middle gets
-        # interpreted kama '.'
+        # interpreted as '.'
         code = """ikiwa 1:
             agiza sys
             path = ":".join(sys.path)
@@ -295,29 +295,29 @@ kundi CmdLineTest(unittest.TestCase):
             escaped = repr(text).encode(encoding, 'backslashreplace')
             self.assertIn(escaped, data)
 
-    eleza check_input(self, code, expected):
-        ukijumuisha tempfile.NamedTemporaryFile("wb+") kama stdin:
+    eleza check_uliza(self, code, expected):
+        ukijumuisha tempfile.NamedTemporaryFile("wb+") as stdin:
             sep = os.linesep.encode('ASCII')
             stdin.write(sep.join((b'abc', b'def')))
             stdin.flush()
             stdin.seek(0)
             ukijumuisha subprocess.Popen(
                 (sys.executable, "-c", code),
-                stdin=stdin, stdout=subprocess.PIPE) kama proc:
+                stdin=stdin, stdout=subprocess.PIPE) as proc:
                 stdout, stderr = proc.communicate()
         self.assertEqual(stdout.rstrip(), expected)
 
     eleza test_stdin_readline(self):
         # Issue #11272: check that sys.stdin.readline() replaces '\r\n' by '\n'
         # on Windows (sys.stdin ni opened kwenye binary mode)
-        self.check_input(
+        self.check_uliza(
             "agiza sys; andika(repr(sys.stdin.readline()))",
             b"'abc\\n'")
 
-    eleza test_builtin_input(self):
-        # Issue #11272: check that input() strips newlines ('\n' ama '\r\n')
-        self.check_input(
-            "andika(repr(input()))",
+    eleza test_builtin_uliza(self):
+        # Issue #11272: check that uliza() strips newlines ('\n' ama '\r\n')
+        self.check_uliza(
+            "andika(repr(uliza()))",
             b"'abc'")
 
     eleza test_output_newline(self):
@@ -449,7 +449,7 @@ kundi CmdLineTest(unittest.TestCase):
         # the dict whereas the module was destroyed
         filename = support.TESTFN
         self.addCleanup(support.unlink, filename)
-        ukijumuisha open(filename, "w") kama script:
+        ukijumuisha open(filename, "w") as script:
             andika("agiza sys", file=script)
             andika("toa sys.modules['__main__']", file=script)
         assert_python_ok(filename)
@@ -478,17 +478,17 @@ kundi CmdLineTest(unittest.TestCase):
         self.verify_valid_flag('-I')
         self.verify_valid_flag('-IEs')
         rc, out, err = assert_python_ok('-I', '-c',
-            'kutoka sys agiza flags kama f; '
+            'kutoka sys agiza flags as f; '
             'andika(f.no_user_site, f.ignore_environment, f.isolated)',
             # dummyvar to prevent extraneous -E
             dummyvar="")
         self.assertEqual(out.strip(), b'1 1 1')
-        ukijumuisha support.temp_cwd() kama tmpdir:
+        ukijumuisha support.temp_cwd() as tmpdir:
             fake = os.path.join(tmpdir, "uuid.py")
             main = os.path.join(tmpdir, "main.py")
-            ukijumuisha open(fake, "w") kama f:
-                f.write("ashiria RuntimeError('isolated mode test')\n")
-            ukijumuisha open(main, "w") kama f:
+            ukijumuisha open(fake, "w") as f:
+                f.write(" ashiria RuntimeError('isolated mode test')\n")
+            ukijumuisha open(main, "w") as f:
                 f.write("agiza uuid\n")
                 f.write("andika('ok')\n")
             self.assertRaises(subprocess.CalledProcessError,
@@ -512,7 +512,7 @@ kundi CmdLineTest(unittest.TestCase):
             code = (
                 "agiza sys; "
                 "sys.stderr.write(str(sys.flags)); "
-                f"""sys.exit(sio (
+                f"""sys.exit(not (
                     sys.flags.debug == sys.flags.optimize ==
                     sys.flags.verbose ==
                     {expected}
@@ -523,7 +523,7 @@ kundi CmdLineTest(unittest.TestCase):
                 assert_python_ok('-c', code, **env_vars)
 
     eleza test_set_pycache_prefix(self):
-        # sys.pycache_prefix can be set kutoka either -X pycache_prefix ama
+        # sys.pycache_prefix can be set kutoka either -X pycache_prefix or
         # PYTHONPYCACHEPREFIX env var, ukijumuisha the former taking precedence.
         NO_VALUE = object()  # `-X pycache_prefix` ukijumuisha no `=PATH`
         cases = [
@@ -537,12 +537,12 @@ kundi CmdLineTest(unittest.TestCase):
         ]
         kila envval, opt, expected kwenye cases:
             exp_clause = "is Tupu" ikiwa expected ni Tupu isipokua f'== "{expected}"'
-            code = f"agiza sys; sys.exit(sio sys.pycache_prefix {exp_clause})"
+            code = f"agiza sys; sys.exit(not sys.pycache_prefix {exp_clause})"
             args = ['-c', code]
             env = {} ikiwa envval ni Tupu isipokua {'PYTHONPYCACHEPREFIX': envval}
             ikiwa opt ni NO_VALUE:
                 args[:0] = ['-X', 'pycache_prefix']
-            lasivyo opt ni sio Tupu:
+            elikiwa opt ni sio Tupu:
                 args[:0] = ['-X', f'pycache_prefix={opt}']
             ukijumuisha self.subTest(envval=envval, opt=opt):
                 ukijumuisha support.temp_cwd():
@@ -604,8 +604,8 @@ kundi CmdLineTest(unittest.TestCase):
         # Memory allocator debug hooks
         jaribu:
             agiza _testcapi
-        tatizo ImportError:
-            pita
+        except ImportError:
+            pass
         isipokua:
             code = "agiza _testcapi; andika(_testcapi.pymem_getallocatorsname())"
             ukijumuisha support.SuppressCrashReport():
@@ -619,8 +619,8 @@ kundi CmdLineTest(unittest.TestCase):
         # Faulthandler
         jaribu:
             agiza faulthandler
-        tatizo ImportError:
-            pita
+        except ImportError:
+            pass
         isipokua:
             code = "agiza faulthandler; andika(faulthandler.is_enabled())"
             out = self.run_xdev("-c", code)
@@ -745,16 +745,16 @@ kundi CmdLineTest(unittest.TestCase):
 kundi IgnoreEnvironmentTest(unittest.TestCase):
 
     eleza run_ignoring_vars(self, predicate, **env_vars):
-        # Runs a subprocess ukijumuisha -E set, even though we're pitaing
+        # Runs a subprocess ukijumuisha -E set, even though we're passing
         # specific environment variables
-        # Logical inversion to match predicate check to a zero rudisha
+        # Logical inversion to match predicate check to a zero return
         # code indicating success
-        code = "agiza sys; sys.stderr.write(str(sys.flags)); sys.exit(sio ({}))".format(predicate)
+        code = "agiza sys; sys.stderr.write(str(sys.flags)); sys.exit(not ({}))".format(predicate)
         rudisha assert_python_ok('-E', '-c', code, **env_vars)
 
     eleza test_ignore_PYTHONPATH(self):
         path = "should_be_ignored"
-        self.run_ignoring_vars("'{}' haiko kwenye sys.path".format(path),
+        self.run_ignoring_vars("'{}' sio kwenye sys.path".format(path),
                                PYTHONPATH=path)
 
     eleza test_ignore_PYTHONHASHSEED(self):

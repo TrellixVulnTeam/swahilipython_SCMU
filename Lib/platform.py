@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-""" This module tries to retrieve kama much platform-identifying data as
+""" This module tries to retrieve as much platform-identifying data as
     possible. It makes this information available via function APIs.
 
     If called kutoka the command line, it prints the platform
-    information concatenated kama single string to stdout. The output
-    format ni useable kama part of a filename.
+    information concatenated as single string to stdout. The output
+    format ni useable as part of a filename.
 
 """
 #    This module ni maintained by Marc-Andre Lemburg <mal@egenix.com>.
@@ -46,7 +46,7 @@
 #    0.7.2 - fixed architecture() to use sizeof(pointer) where available
 #    0.7.1 - added support kila Caldera OpenLinux
 #    0.7.0 - some fixes kila WinCE; untabified the source file
-#    0.6.2 - support kila OpenVMS - requires version 1.5.2-V006 ama higher na
+#    0.6.2 - support kila OpenVMS - requires version 1.5.2-V006 ama higher and
 #            vms_lib.getsyi() configured
 #    0.6.1 - added code to prevent 'uname -p' on platforms which are
 #            known sio to support it
@@ -59,7 +59,7 @@
 #            workarounds kwenye _syscmd_ver() -- still sio 100% elegant
 #            though
 #    0.5.2 - fixed uname() to rudisha '' instead of 'unknown' kwenye all
-#            rudisha values (the system uname command tends to rudisha
+#            rudisha values (the system uname command tends to return
 #            'unknown' instead of just leaving the field empty)
 #    0.5.1 - included code kila slackware dist; added exception handlers
 #            to cover up situations where platforms don't have os.popen
@@ -80,7 +80,7 @@
 #    0.2.2 - added 'wince' to syscmd_ver() supported platforms
 #    0.2.1 - added cache logic na changed the platform string format
 #    0.2.0 - changed the API to use functions instead of module globals
-#            since some action take too long to be run on module agiza
+#            since some action take too long to be run on module import
 #    0.1.0 - first release
 #
 #    You can always get the latest version of this module at:
@@ -139,11 +139,11 @@ _component_re = re.compile(r'([0-9]+|[._+-])')
 eleza _comparable_version(version):
     result = []
     kila v kwenye _component_re.split(version):
-        ikiwa v haiko kwenye '._+-':
+        ikiwa v sio kwenye '._+-':
             jaribu:
                 v = int(v, 10)
                 t = 100
-            tatizo ValueError:
+            except ValueError:
                 t = _ver_stages.get(v, 0)
             result.extend((t, v))
     rudisha result
@@ -174,13 +174,13 @@ eleza libc_ver(executable=Tupu, lib='', version='', chunksize=16384):
     ikiwa executable ni Tupu:
         jaribu:
             ver = os.confstr('CS_GNU_LIBC_VERSION')
-            # parse 'glibc 2.28' kama ('glibc', '2.28')
+            # parse 'glibc 2.28' as ('glibc', '2.28')
             parts = ver.split(maxsplit=1)
             ikiwa len(parts) == 2:
                 rudisha tuple(parts)
-        tatizo (AttributeError, ValueError, OSError):
+        except (AttributeError, ValueError, OSError):
             # os.confstr() ama CS_GNU_LIBC_VERSION value sio available
-            pita
+            pass
 
         executable = sys.executable
 
@@ -190,7 +190,7 @@ eleza libc_ver(executable=Tupu, lib='', version='', chunksize=16384):
         # here to work around problems ukijumuisha Cygwin sio being
         # able to open symlinks kila reading
         executable = os.path.realpath(executable)
-    ukijumuisha open(executable, 'rb') kama f:
+    ukijumuisha open(executable, 'rb') as f:
         binary = f.read(chunksize)
         pos = 0
         wakati pos < len(binary):
@@ -211,16 +211,16 @@ eleza libc_ver(executable=Tupu, lib='', version='', chunksize=16384):
                 kila s kwenye m.groups()]
             ikiwa libcinit na sio lib:
                 lib = 'libc'
-            lasivyo glibc:
+            elikiwa glibc:
                 ikiwa lib != 'glibc':
                     lib = 'glibc'
                     version = glibcversion
-                lasivyo V(glibcversion) > V(version):
+                elikiwa V(glibcversion) > V(version):
                     version = glibcversion
-            lasivyo so:
+            elikiwa so:
                 ikiwa lib != 'glibc':
                     lib = 'libc'
-                    ikiwa soversion na (sio version ama V(soversion) > V(version)):
+                    ikiwa soversion na (not version ama V(soversion) > V(version)):
                         version = soversion
                     ikiwa threads na version[-len(threads):] != threads:
                         version = version + threads
@@ -237,7 +237,7 @@ eleza _norm_version(version, build=''):
         l.append(build)
     jaribu:
         ints = map(int, l)
-    tatizo ValueError:
+    except ValueError:
         strings = l
     isipokua:
         strings = list(map(str, ints))
@@ -261,7 +261,7 @@ eleza _syscmd_ver(system='', release='', version='',
 
                supported_platforms=('win32', 'win16', 'dos')):
 
-    """ Tries to figure out the OS version used na rudishas
+    """ Tries to figure out the OS version used na returns
         a tuple (system, release, version).
 
         It uses the "ver" shell command kila this which ni known
@@ -271,7 +271,7 @@ eleza _syscmd_ver(system='', release='', version='',
         defaults.
 
     """
-    ikiwa sys.platform haiko kwenye supported_platforms:
+    ikiwa sys.platform sio kwenye supported_platforms:
         rudisha system, release, version
 
     # Try some common cmd strings
@@ -282,7 +282,7 @@ eleza _syscmd_ver(system='', release='', version='',
                                            stderr=subprocess.DEVNULL,
                                            text=Kweli,
                                            shell=Kweli)
-        tatizo (OSError, subprocess.CalledProcessError) kama why:
+        except (OSError, subprocess.CalledProcessError) as why:
             #andika('Command %s failed: %s' % (cmd, why))
             endelea
         isipokua:
@@ -341,32 +341,32 @@ eleza win32_edition():
     jaribu:
         jaribu:
             agiza winreg
-        tatizo ImportError:
-            agiza _winreg kama winreg
-    tatizo ImportError:
-        pita
+        except ImportError:
+            agiza _winreg as winreg
+    except ImportError:
+        pass
     isipokua:
         jaribu:
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-            ukijumuisha winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) kama key:
+            ukijumuisha winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) as key:
                 rudisha winreg.QueryValueEx(key, 'EditionId')[0]
-        tatizo OSError:
-            pita
+        except OSError:
+            pass
 
     rudisha Tupu
 
 eleza win32_ver(release='', version='', csd='', ptype=''):
     jaribu:
         kutoka sys agiza getwindowsversion
-    tatizo ImportError:
+    except ImportError:
         rudisha release, version, csd, ptype
 
     winver = getwindowsversion()
     maj, min, build = winver.platform_version ama winver[:3]
     version = '{0}.{1}.{2}'.format(maj, min, build)
 
-    release = (_WIN32_CLIENT_RELEASES.get((maj, min)) ama
-               _WIN32_CLIENT_RELEASES.get((maj, Tupu)) ama
+    release = (_WIN32_CLIENT_RELEASES.get((maj, min)) or
+               _WIN32_CLIENT_RELEASES.get((maj, Tupu)) or
                release)
 
     # getwindowsversion() reflect the compatibility mode Python is
@@ -375,30 +375,30 @@ eleza win32_ver(release='', version='', csd='', ptype=''):
     ikiwa winver[:2] == (maj, min):
         jaribu:
             csd = 'SP{}'.format(winver.service_pack_major)
-        tatizo AttributeError:
+        except AttributeError:
             ikiwa csd[:13] == 'Service Pack ':
                 csd = 'SP' + csd[13:]
 
     # VER_NT_SERVER = 3
     ikiwa getattr(winver, 'product_type', Tupu) == 3:
-        release = (_WIN32_SERVER_RELEASES.get((maj, min)) ama
-                   _WIN32_SERVER_RELEASES.get((maj, Tupu)) ama
+        release = (_WIN32_SERVER_RELEASES.get((maj, min)) or
+                   _WIN32_SERVER_RELEASES.get((maj, Tupu)) or
                    release)
 
     jaribu:
         jaribu:
             agiza winreg
-        tatizo ImportError:
-            agiza _winreg kama winreg
-    tatizo ImportError:
-        pita
+        except ImportError:
+            agiza _winreg as winreg
+    except ImportError:
+        pass
     isipokua:
         jaribu:
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-            ukijumuisha winreg.OpenKeyEx(HKEY_LOCAL_MACHINE, cvkey) kama key:
+            ukijumuisha winreg.OpenKeyEx(HKEY_LOCAL_MACHINE, cvkey) as key:
                 ptype = QueryValueEx(key, 'CurrentType')[0]
         tatizo:
-            pita
+            pass
 
     rudisha release, version, csd, ptype
 
@@ -410,10 +410,10 @@ eleza _mac_ver_xml():
 
     jaribu:
         agiza plistlib
-    tatizo ImportError:
+    except ImportError:
         rudisha Tupu
 
-    ukijumuisha open(fn, 'rb') kama f:
+    ukijumuisha open(fn, 'rb') as f:
         pl = plistlib.load(f)
     release = pl['ProductVersion']
     versioninfo = ('', '', '')
@@ -427,7 +427,7 @@ eleza _mac_ver_xml():
 
 eleza mac_ver(release='', versioninfo=('', '', ''), machine=''):
 
-    """ Get macOS version information na rudisha it kama tuple (release,
+    """ Get macOS version information na rudisha it as tuple (release,
         versioninfo, machine) ukijumuisha versioninfo being a tuple (version,
         dev_stage, non_release_version).
 
@@ -452,7 +452,7 @@ eleza _java_getprop(name, default):
         ikiwa value ni Tupu:
             rudisha default
         rudisha value
-    tatizo AttributeError:
+    except AttributeError:
         rudisha default
 
 eleza java_ver(release='', vendor='', vminfo=('', '', ''), osinfo=('', '', '')):
@@ -464,13 +464,13 @@ eleza java_ver(release='', vendor='', vminfo=('', '', ''), osinfo=('', '', '')):
         tuple (os_name, os_version, os_arch).
 
         Values which cannot be determined are set to the defaults
-        given kama parameters (which all default to '').
+        given as parameters (which all default to '').
 
     """
     # Import the needed APIs
     jaribu:
         agiza java.lang
-    tatizo ImportError:
+    except ImportError:
         rudisha release, vendor, vminfo, osinfo
 
     vendor = _java_getprop('java.vendor', vendor)
@@ -509,8 +509,8 @@ eleza system_alias(system, release, version):
         ikiwa l:
             jaribu:
                 major = int(l[0])
-            tatizo ValueError:
-                pita
+            except ValueError:
+                pass
             isipokua:
                 major = major - 3
                 l[0] = str(major)
@@ -521,7 +521,7 @@ eleza system_alias(system, release, version):
             # XXX Whatever the new SunOS marketing name is...
             system = 'Solaris'
 
-    lasivyo system == 'IRIX64':
+    elikiwa system == 'IRIX64':
         # IRIX reports IRIX64 on platforms ukijumuisha 64-bit support; yet it
         # ni really a version na sio a different platform, since 32-bit
         # apps are also supported..
@@ -531,11 +531,11 @@ eleza system_alias(system, release, version):
         isipokua:
             version = '64bit'
 
-    lasivyo system kwenye ('win32', 'win16'):
+    elikiwa system kwenye ('win32', 'win16'):
         # In case one of the other tricks
         system = 'Windows'
 
-    # bpo-35516: Don't replace Darwin ukijumuisha macOS since input release na
+    # bpo-35516: Don't replace Darwin ukijumuisha macOS since input release and
     # version arguments can be different than the currently running version.
 
     rudisha system, release, version
@@ -580,12 +580,12 @@ eleza _node(default=''):
     """
     jaribu:
         agiza socket
-    tatizo ImportError:
+    except ImportError:
         # No sockets...
         rudisha default
     jaribu:
         rudisha socket.gethostname()
-    tatizo OSError:
+    except OSError:
         # Still sio working...
         rudisha default
 
@@ -613,7 +613,7 @@ eleza _syscmd_uname(option, default=''):
         output = subprocess.check_output(('uname', option),
                                          stderr=subprocess.DEVNULL,
                                          text=Kweli)
-    tatizo (OSError, subprocess.CalledProcessError):
+    except (OSError, subprocess.CalledProcessError):
         rudisha default
     rudisha (output.strip() ama default)
 
@@ -622,7 +622,7 @@ eleza _syscmd_file(target, default=''):
     """ Interface to the system's file command.
 
         The function uses the -b option of the file command to have it
-        omit the filename kwenye its output. Follow the symlinks. It rudishas
+        omit the filename kwenye its output. Follow the symlinks. It returns
         default kwenye case the command should fail.
 
     """
@@ -640,7 +640,7 @@ eleza _syscmd_file(target, default=''):
         output = subprocess.check_output(['file', '-b', target],
                                          stderr=subprocess.DEVNULL,
                                          env=env)
-    tatizo (OSError, subprocess.CalledProcessError):
+    except (OSError, subprocess.CalledProcessError):
         rudisha default
     ikiwa sio output:
         rudisha default
@@ -651,7 +651,7 @@ eleza _syscmd_file(target, default=''):
 ### Information about the used architecture
 
 # Default values kila architecture; non-empty strings override the
-# defaults given kama parameters
+# defaults given as parameters
 _default_architecture = {
     'win32': ('', 'WindowsPE'),
     'win16': ('', 'Windows'),
@@ -665,10 +665,10 @@ eleza architecture(executable=sys.executable, bits='', linkage=''):
 
         Returns a tuple (bits, linkage) which contains information about
         the bit architecture na the linkage format used kila the
-        executable. Both values are rudishaed kama strings.
+        executable. Both values are returned as strings.
 
-        Values that cannot be determined are rudishaed kama given by the
-        parameter presets. If bits ni given kama '', the sizeof(pointer)
+        Values that cannot be determined are returned as given by the
+        parameter presets. If bits ni given as '', the sizeof(pointer)
         (or sizeof(long) on Python version < 1.5.2) ni used as
         indicator kila the supported pointer size.
 
@@ -679,8 +679,8 @@ eleza architecture(executable=sys.executable, bits='', linkage=''):
         binary defaults kutoka _default_architecture are used.
 
     """
-    # Use the sizeof(pointer) kama default number of bits ikiwa nothing
-    # isipokua ni given kama default.
+    # Use the sizeof(pointer) as default number of bits ikiwa nothing
+    # isipokua ni given as default.
     ikiwa sio bits:
         agiza struct
         size = struct.calcsize('P')
@@ -704,35 +704,35 @@ eleza architecture(executable=sys.executable, bits='', linkage=''):
                 linkage = l
         rudisha bits, linkage
 
-    ikiwa 'executable' haiko kwenye fileout na 'shared object' haiko kwenye fileout:
+    ikiwa 'executable' sio kwenye fileout na 'shared object' sio kwenye fileout:
         # Format sio supported
         rudisha bits, linkage
 
     # Bits
     ikiwa '32-bit' kwenye fileout:
         bits = '32bit'
-    lasivyo 'N32' kwenye fileout:
+    elikiwa 'N32' kwenye fileout:
         # On Irix only
         bits = 'n32bit'
-    lasivyo '64-bit' kwenye fileout:
+    elikiwa '64-bit' kwenye fileout:
         bits = '64bit'
 
     # Linkage
     ikiwa 'ELF' kwenye fileout:
         linkage = 'ELF'
-    lasivyo 'PE' kwenye fileout:
+    elikiwa 'PE' kwenye fileout:
         # E.g. Windows uses this format
         ikiwa 'Windows' kwenye fileout:
             linkage = 'WindowsPE'
         isipokua:
             linkage = 'PE'
-    lasivyo 'COFF' kwenye fileout:
+    elikiwa 'COFF' kwenye fileout:
         linkage = 'COFF'
-    lasivyo 'MS-DOS' kwenye fileout:
+    elikiwa 'MS-DOS' kwenye fileout:
         linkage = 'MSDOS'
     isipokua:
         # XXX the A.OUT format also falls under this class...
-        pita
+        pass
 
     rudisha bits, linkage
 
@@ -749,8 +749,8 @@ eleza uname():
         of strings (system, node, release, version, machine, processor)
         identifying the underlying platform.
 
-        Note that unlike the os.uname function this also rudishas
-        possible processor information kama an additional tuple entry.
+        Note that unlike the os.uname function this also returns
+        possible processor information as an additional tuple entry.
 
         Entries which cannot be determined are set to ''.
 
@@ -766,11 +766,11 @@ eleza uname():
     # Get some infos kutoka the builtin os.uname API...
     jaribu:
         system, node, release, version, machine = os.uname()
-    tatizo AttributeError:
+    except AttributeError:
         no_os_uname = 1
 
     ikiwa no_os_uname ama sio list(filter(Tupu, (system, node, release, version, machine))):
-        # Hmm, no there ni either no uname ama uname has rudishaed
+        # Hmm, no there ni either no uname ama uname has returned
         #'unknowns'... we'll have to poke around the system then.
         ikiwa no_os_uname:
             system = sys.platform
@@ -788,7 +788,7 @@ eleza uname():
                 use_syscmd_ver = 0
             # Try to use the PROCESSOR_* environment variables
             # available on Win XP na later; see
-            # http://support.microsoft.com/kb/888731 na
+            # http://support.microsoft.com/kb/888731 and
             # http://www.geocities.com/rick_lively/MANUALS/ENV/MSWIN/PROCESSI.HTM
             ikiwa sio machine:
                 # WOW64 processes mask the native architecture
@@ -803,11 +803,11 @@ eleza uname():
         # platforms
         ikiwa use_syscmd_ver:
             system, release, version = _syscmd_ver(system)
-            # Normalize system to what win32_ver() normally rudishas
-            # (_syscmd_ver() tends to rudisha the vendor name kama well)
+            # Normalize system to what win32_ver() normally returns
+            # (_syscmd_ver() tends to rudisha the vendor name as well)
             ikiwa system == 'Microsoft Windows':
                 system = 'Windows'
-            lasivyo system == 'Microsoft' na release == 'Windows':
+            elikiwa system == 'Microsoft' na release == 'Windows':
                 # Under Windows Vista na Windows Server 2008,
                 # Microsoft changed the output of the ver command. The
                 # release ni no longer printed.  This causes the
@@ -828,7 +828,7 @@ eleza uname():
                     version = '16bit'
             system = 'Windows'
 
-        lasivyo system[:4] == 'java':
+        elikiwa system[:4] == 'java':
             release, vendor, vminfo, osinfo = java_ver()
             system = 'Java'
             version = ', '.join(vminfo)
@@ -844,8 +844,8 @@ eleza uname():
         # Get processor information
         jaribu:
             agiza vms_lib
-        tatizo ImportError:
-            pita
+        except ImportError:
+            pass
         isipokua:
             csid, cpu_number = vms_lib.getsyi('SYI$_CPU', 0)
             ikiwa (cpu_number >= 128):
@@ -885,7 +885,7 @@ eleza system():
 
     """ Returns the system/OS name, e.g. 'Linux', 'Windows' ama 'Java'.
 
-        An empty string ni rudishaed ikiwa the value cannot be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().system
@@ -895,7 +895,7 @@ eleza node():
     """ Returns the computer's network name (which may sio be fully
         qualified)
 
-        An empty string ni rudishaed ikiwa the value cannot be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().node
@@ -904,7 +904,7 @@ eleza release():
 
     """ Returns the system's release, e.g. '2.2.0' ama 'NT'
 
-        An empty string ni rudishaed ikiwa the value cannot be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().release
@@ -913,7 +913,7 @@ eleza version():
 
     """ Returns the system's release version, e.g. '#3 on degas'
 
-        An empty string ni rudishaed ikiwa the value cannot be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().version
@@ -922,7 +922,7 @@ eleza machine():
 
     """ Returns the machine type, e.g. 'i386'
 
-        An empty string ni rudishaed ikiwa the value cannot be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().machine
@@ -931,9 +931,9 @@ eleza processor():
 
     """ Returns the (true) processor name, e.g. 'amdk6'
 
-        An empty string ni rudishaed ikiwa the value cannot be
+        An empty string ni returned ikiwa the value cannot be
         determined. Note that many platforms do sio provide this
-        information ama simply rudisha the same value kama kila machine(),
+        information ama simply rudisha the same value as kila machine(),
         e.g.  NetBSD does this.
 
     """
@@ -971,17 +971,17 @@ _sys_version_cache = {}
 
 eleza _sys_version(sys_version=Tupu):
 
-    """ Returns a parsed version of Python's sys.version kama tuple
+    """ Returns a parsed version of Python's sys.version as tuple
         (name, version, branch, revision, buildno, builddate, compiler)
         referring to the Python implementation name, version, branch,
-        revision, build number, build date/time kama string na the compiler
+        revision, build number, build date/time as string na the compiler
         identification string.
 
-        Note that unlike the Python sys.version, the rudishaed value
+        Note that unlike the Python sys.version, the returned value
         kila the Python version will always include the patchlevel (it
         defaults to '.0').
 
-        The function rudishas empty strings kila tuple entries that
+        The function returns empty strings kila tuple entries that
         cannot be determined.
 
         sys_version may be given to parse an alternative version
@@ -1008,7 +1008,7 @@ eleza _sys_version(sys_version=Tupu):
             match = _ironpython26_sys_version_parser.match(sys_version)
 
         ikiwa match ni Tupu:
-            ashiria ValueError(
+             ashiria ValueError(
                 'failed to parse IronPython sys.version: %s' %
                 repr(sys_version))
 
@@ -1016,12 +1016,12 @@ eleza _sys_version(sys_version=Tupu):
         buildno = ''
         builddate = ''
 
-    lasivyo sys.platform.startswith('java'):
+    elikiwa sys.platform.startswith('java'):
         # Jython
         name = 'Jython'
         match = _sys_version_parser.match(sys_version)
         ikiwa match ni Tupu:
-            ashiria ValueError(
+             ashiria ValueError(
                 'failed to parse Jython sys.version: %s' %
                 repr(sys_version))
         version, buildno, builddate, buildtime, _ = match.groups()
@@ -1029,12 +1029,12 @@ eleza _sys_version(sys_version=Tupu):
             builddate = ''
         compiler = sys.platform
 
-    lasivyo "PyPy" kwenye sys_version:
+    elikiwa "PyPy" kwenye sys_version:
         # PyPy
         name = "PyPy"
         match = _pypy_sys_version_parser.match(sys_version)
         ikiwa match ni Tupu:
-            ashiria ValueError("failed to parse PyPy sys.version: %s" %
+             ashiria ValueError("failed to parse PyPy sys.version: %s" %
                              repr(sys_version))
         version, buildno, builddate, buildtime = match.groups()
         compiler = ""
@@ -1043,7 +1043,7 @@ eleza _sys_version(sys_version=Tupu):
         # CPython
         match = _sys_version_parser.match(sys_version)
         ikiwa match ni Tupu:
-            ashiria ValueError(
+             ashiria ValueError(
                 'failed to parse CPython sys.version: %s' %
                 repr(sys_version))
         version, buildno, builddate, buildtime, compiler = \
@@ -1051,12 +1051,12 @@ eleza _sys_version(sys_version=Tupu):
         name = 'CPython'
         ikiwa builddate ni Tupu:
             builddate = ''
-        lasivyo buildtime:
+        elikiwa buildtime:
             builddate = builddate + ' ' + buildtime
 
     ikiwa hasattr(sys, '_git'):
         _, branch, revision = sys._git
-    lasivyo hasattr(sys, '_mercurial'):
+    elikiwa hasattr(sys, '_mercurial'):
         _, branch, revision = sys._mercurial
     isipokua:
         branch = ''
@@ -1088,9 +1088,9 @@ eleza python_implementation():
 
 eleza python_version():
 
-    """ Returns the Python version kama string 'major.minor.patchlevel'
+    """ Returns the Python version as string 'major.minor.patchlevel'
 
-        Note that unlike the Python sys.version, the rudishaed value
+        Note that unlike the Python sys.version, the returned value
         will always include the patchlevel (it defaults to 0).
 
     """
@@ -1098,10 +1098,10 @@ eleza python_version():
 
 eleza python_version_tuple():
 
-    """ Returns the Python version kama tuple (major, minor, patchlevel)
+    """ Returns the Python version as tuple (major, minor, patchlevel)
         of strings.
 
-        Note that unlike the Python sys.version, the rudishaed value
+        Note that unlike the Python sys.version, the returned value
         will always include the patchlevel (it defaults to 0).
 
     """
@@ -1115,7 +1115,7 @@ eleza python_branch():
         For CPython this ni the SCM branch kutoka which the
         Python binary was built.
 
-        If sio available, an empty string ni rudishaed.
+        If sio available, an empty string ni returned.
 
     """
 
@@ -1129,7 +1129,7 @@ eleza python_revision():
         For CPython this ni the SCM revision kutoka which the
         Python binary was built.
 
-        If sio available, an empty string ni rudishaed.
+        If sio available, an empty string ni returned.
 
     """
     rudisha _sys_version()[3]
@@ -1137,7 +1137,7 @@ eleza python_revision():
 eleza python_build():
 
     """ Returns a tuple (buildno, builddate) stating the Python
-        build number na date kama strings.
+        build number na date as strings.
 
     """
     rudisha _sys_version()[4:6]
@@ -1157,14 +1157,14 @@ _platform_cache = {}
 eleza platform(aliased=0, terse=0):
 
     """ Returns a single string identifying the underlying platform
-        ukijumuisha kama much useful information kama possible (but no more :).
+        ukijumuisha as much useful information as possible (but no more :).
 
         The output ni intended to be human readable rather than
         machine parseable. It may look different on different
         platforms na this ni intended.
 
         If "aliased" ni true, the function will use aliases for
-        various platforms that report system names which differ kutoka
+        various platforms that report system names which differ from
         their common names, e.g. SunOS will be reported as
         Solaris. The system_alias() function ni used to implement
         this.
@@ -1200,13 +1200,13 @@ eleza platform(aliased=0, terse=0):
         isipokua:
             platform = _platform(system, release, version, csd)
 
-    lasivyo system kwenye ('Linux',):
+    elikiwa system kwenye ('Linux',):
         # check kila libc vs. glibc
         libcname, libcversion = libc_ver(sys.executable)
         platform = _platform(system, release, machine, processor,
                              'with',
                              libcname+libcversion)
-    lasivyo system == 'Java':
+    elikiwa system == 'Java':
         # Java platforms
         r, v, vminfo, (os_name, os_version, os_arch) = java_ver()
         ikiwa terse ama sio os_name:
@@ -1233,6 +1233,6 @@ eleza platform(aliased=0, terse=0):
 ikiwa __name__ == '__main__':
     # Default ni to print the aliased verbose platform string
     terse = ('terse' kwenye sys.argv ama '--terse' kwenye sys.argv)
-    aliased = (sio 'nonaliased' kwenye sys.argv na sio '--nonaliased' kwenye sys.argv)
+    aliased = (not 'nonaliased' kwenye sys.argv na sio '--nonaliased' kwenye sys.argv)
     andika(platform(aliased, terse))
     sys.exit(0)

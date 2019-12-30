@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here ni sio    --
+-- particular, achieving the same results as the tests here is not    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are sio exhaustive.                   --
+-- or specification.  The tests are not exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -204,7 +204,7 @@ dqcan225 add     #780000000000f0000000000000000000 0 -> #78000000000000000000000
 dqcan226 add  0  #78000000000000000005000000000000   -> #78000000000000000000000000000000
 dqcan227 add     #780000000000000000000000000a0000 0 -> #78000000000000000000000000000000
 
------ Class: [does sio return encoded]
+----- Class: [does not return encoded]
 
 ----- Compare:
 dqcan231 compare -Inf   1     ->  #a2080000000000000000000000000001
@@ -220,7 +220,7 @@ dqcan243 comparesig  1    -Inf   ->  #22080000000000000000000000000001
 dqcan244 comparesig  #7c400ff3ffff3fcff3fcff3fcff3fcff   -1000 -> #7c000ff3fcff3fcff3fcff3fcff3fcff Invalid_operation
 dqcan245 comparesig  #7e050ff3fcfffffff3fcff3fcff3fcff   -1000 -> #7c000ff3fcff3fcff3fcff3fcff3fcff Invalid_operation
 
------ Copy: [does sio usually canonicalize]
+----- Copy: [does not usually canonicalize]
 -- finites
 dqcan250 copy  #6e080ff3fcff3fcfffffff3fcfffffff -> #6e080ff3fcff3fcfffffff3fcfffffff
 dqcan251 copy  #ee080ff3fcff3ffff3fcff3ffff3fcff -> #ee080ff3fcff3ffff3fcff3ffff3fcff
@@ -234,7 +234,7 @@ dqcan255 copy  #7e100ff3fcff3fcff3fcff3fcff3fcff -> #7e100ff3fcff3fcff3fcff3fcff
 dqcan258 copy  #78002000000000000000000000000000 -> #78002000000000000000000000000000
 dqcan259 copy  #78000000000010000000000000100000 -> #78000000000010000000000000100000
 
------ CopyAbs: [does sio usually canonicalize]
+----- CopyAbs: [does not usually canonicalize]
 -- finites
 dqcan260 copyabs  #6e080ff3fcff3fcfffffff3fcfffffff -> #6e080ff3fcff3fcfffffff3fcfffffff
 dqcan261 copyabs  #ee080ff3fcff3ffff3fcff3ffff3fcff -> #6e080ff3fcff3ffff3fcff3ffff3fcff
@@ -248,7 +248,7 @@ dqcan265 copyabs  #fe100ff3fcff3fcff3fcff3fcff3fcff -> #7e100ff3fcff3fcff3fcff3f
 dqcan268 copyabs  #f8002000000000000000000000000000 -> #78002000000000000000000000000000
 dqcan269 copyabs  #f8000000000000700700700000000000 -> #78000000000000700700700000000000
 
------ CopyNegate: [does sio usually canonicalize]
+----- CopyNegate: [does not usually canonicalize]
 -- finites
 dqcan270 copynegate  #6e080ff3fcff3fcfffffff3fcfffffff -> #ee080ff3fcff3fcfffffff3fcfffffff
 dqcan271 copynegate  #ee080ff3fcff3ffff3fcff3ffff3fcff -> #6e080ff3fcff3ffff3fcff3ffff3fcff
@@ -262,7 +262,7 @@ dqcan275 copynegate  #7e100ff3fcff3fcff3fcff3fcff3fcff -> #fe100ff3fcff3fcff3fcf
 dqcan278 copynegate  #78002000000000000000000000000000 -> #f8002000000000000000000000000000
 dqcan279 copynegate  #78000000000010000000000000100000 -> #f8000000000010000000000000100000
 
------ CopySign: [does sio usually canonicalize]
+----- CopySign: [does not usually canonicalize]
 -- finites
 dqcan280 copysign  #6e080ff3fcff3fcfffffff3fcfffffff -1 -> #ee080ff3fcff3fcfffffff3fcfffffff
 dqcan281 copysign  #ee080ff3fcff3ffff3fcff3ffff3fcff  1 -> #6e080ff3fcff3ffff3fcff3ffff3fcff

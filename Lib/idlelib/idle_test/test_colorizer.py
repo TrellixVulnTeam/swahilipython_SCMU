@@ -21,7 +21,7 @@ testcfg = {
 
 source = (
     "ikiwa Kweli: int ('1') # keyword, builtin, string, comment\n"
-    "lasivyo Uongo: andika(0)  # 'string' kwenye comment\n"
+    "elikiwa Uongo: andika(0)  # 'string' kwenye comment\n"
     "isipokua: float(Tupu)  # ikiwa kwenye comment\n"
     "ikiwa iF + If + IF: 'keyword matching must respect case'\n"
     "if'': x or''  # valid string-keyword no-space combinations\n"
@@ -91,7 +91,7 @@ kundi ColorConfigTest(unittest.TestCase):
         text = self.text
         eq = self.assertEqual
         colorizer.color_config(text)
-        # Uses IDLE Classic theme kama default.
+        # Uses IDLE Classic theme as default.
         eq(text['background'], '#ffffff')
         eq(text['foreground'], '#000000')
         eq(text['selectbackground'], 'gray')
@@ -184,7 +184,7 @@ kundi ColorDelegatorTest(unittest.TestCase):
             ukijumuisha self.subTest(tag=tag):
                 self.assertIn('background', colors)
                 self.assertIn('foreground', colors)
-                ikiwa tag haiko kwenye ('SYNC', 'TODO'):
+                ikiwa tag sio kwenye ('SYNC', 'TODO'):
                     self.assertEqual(colors, highlight(element=tag.lower()))
 
     eleza test_config_colors(self):
@@ -198,7 +198,7 @@ kundi ColorDelegatorTest(unittest.TestCase):
                     isipokua:
                         self.assertEqual(text.tag_cget(tag, plane),
                                          highlight(element=tag.lower())[plane])
-        # 'sel' ni marked kama the highest priority.
+        # 'sel' ni marked as the highest priority.
         self.assertEqual(text.tag_names()[-1], 'sel')
 
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
@@ -296,7 +296,7 @@ kundi ColorDelegatorTest(unittest.TestCase):
         self.assertKweli(color.stop_colorizing)
         self.assertUongo(color.allow_colorizing)
 
-        # Toggle on wakati colorizing haiko kwenye progress.
+        # Toggle on wakati colorizing sio kwenye progress.
         color.colorizing = Uongo
         color.toggle_colorize_event()
         eq(self.root.tk.call('after', 'info', color.after_id)[1], 'timer')

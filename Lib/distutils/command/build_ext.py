@@ -1,71 +1,71 @@
 """distutils.command.build_ext
 
-Implements the Distutils 'build_ext' command, for building extension
+Implements the Distutils 'build_ext' command, kila building extension
 modules (currently limited to C extensions, should accommodate C++
 extensions ASAP)."""
 
-import contextlib
-import os
-import re
-import sys
-from distutils.core import Command
-from distutils.errors import *
-from distutils.sysconfig import customize_compiler, get_python_version
-from distutils.sysconfig import get_config_h_filename
-from distutils.dep_util import newer_group
-from distutils.extension import Extension
-from distutils.util import get_platform
-from distutils import log
+agiza contextlib
+agiza os
+agiza re
+agiza sys
+kutoka distutils.core agiza Command
+kutoka distutils.errors agiza *
+kutoka distutils.sysconfig agiza customize_compiler, get_python_version
+kutoka distutils.sysconfig agiza get_config_h_filename
+kutoka distutils.dep_util agiza newer_group
+kutoka distutils.extension agiza Extension
+kutoka distutils.util agiza get_platform
+kutoka distutils agiza log
 
-from site import USER_BASE
+kutoka site agiza USER_BASE
 
-# An extension name is just a dot-separated list of Python NAMEs (ie.
+# An extension name ni just a dot-separated list of Python NAMEs (ie.
 # the same as a fully-qualified module name).
 extension_name_re = re.compile \
     (r'^[a-zA-Z_][a-zA-Z_0-9]*(\.[a-zA-Z_][a-zA-Z_0-9]*)*$')
 
 
-def show_compilers ():
-    from distutils.ccompiler import show_compilers
+eleza show_compilers ():
+    kutoka distutils.ccompiler agiza show_compilers
     show_compilers()
 
 
-class build_ext(Command):
+kundi build_ext(Command):
 
     description = "build C/C++ extensions (compile/link to build directory)"
 
-    # XXX thoughts on how to deal with complex command-line options like
+    # XXX thoughts on how to deal ukijumuisha complex command-line options like
     # these, i.e. how to make it so fancy_getopt can suck them off the
-    # command line and make it look like setup.py defined the appropriate
+    # command line na make it look like setup.py defined the appropriate
     # lists of tuples of what-have-you.
     #   - each command needs a callback to process its command-line options
     #   - Command.__init__() needs access to its share of the whole
     #     command line (must ultimately come from
     #     Distribution.parse_command_line())
     #   - it then calls the current command class' option-parsing
-    #     callback to deal with weird options like -D, which have to
-    #     parse the option text and churn out some custom data
+    #     callback to deal ukijumuisha weird options like -D, which have to
+    #     parse the option text na churn out some custom data
     #     structure
     #   - that data structure (in this case, a list of 2-tuples)
-    #     will then be present in the command object by the time
+    #     will then be present kwenye the command object by the time
     #     we get to finalize_options() (i.e. the constructor
-    #     takes care of both command-line and client options
-    #     in between initialize_options() and finalize_options())
+    #     takes care of both command-line na client options
+    #     kwenye between initialize_options() na finalize_options())
 
     sep_by = " (separated by '%s')" % os.pathsep
     user_options = [
         ('build-lib=', 'b',
-         "directory for compiled extension modules"),
+         "directory kila compiled extension modules"),
         ('build-temp=', 't',
-         "directory for temporary files (build by-products)"),
+         "directory kila temporary files (build by-products)"),
         ('plat-name=', 'p',
-         "platform name to cross-compile for, if supported "
+         "platform name to cross-compile for, ikiwa supported "
          "(default: %s)" % get_platform()),
         ('inplace', 'i',
-         "ignore build-lib and put compiled extensions into the source " +
+         "ignore build-lib na put compiled extensions into the source " +
          "directory alongside your pure Python modules"),
         ('include-dirs=', 'I',
-         "list of directories to search for header files" + sep_by),
+         "list of directories to search kila header files" + sep_by),
         ('define=', 'D',
          "C preprocessor macros to define"),
         ('undef=', 'U',
@@ -73,62 +73,62 @@ class build_ext(Command):
         ('libraries=', 'l',
          "external C libraries to link with"),
         ('library-dirs=', 'L',
-         "directories to search for external C libraries" + sep_by),
+         "directories to search kila external C libraries" + sep_by),
         ('rpath=', 'R',
-         "directories to search for shared C libraries at runtime"),
+         "directories to search kila shared C libraries at runtime"),
         ('link-objects=', 'O',
-         "extra explicit link objects to include in the link"),
+         "extra explicit link objects to include kwenye the link"),
         ('debug', 'g',
-         "compile/link with debugging information"),
+         "compile/link ukijumuisha debugging information"),
         ('force', 'f',
          "forcibly build everything (ignore file timestamps)"),
         ('compiler=', 'c',
          "specify the compiler type"),
         ('parallel=', 'j',
          "number of parallel build jobs"),
-        ('swig-cpp', None,
-         "make SWIG create C++ files (default is C)"),
-        ('swig-opts=', None,
+        ('swig-cpp', Tupu,
+         "make SWIG create C++ files (default ni C)"),
+        ('swig-opts=', Tupu,
          "list of SWIG command line options"),
-        ('swig=', None,
+        ('swig=', Tupu,
          "path to the SWIG executable"),
-        ('user', None,
-         "add user include, library and rpath")
+        ('user', Tupu,
+         "add user include, library na rpath")
         ]
 
     boolean_options = ['inplace', 'debug', 'force', 'swig-cpp', 'user']
 
     help_options = [
-        ('help-compiler', None,
+        ('help-compiler', Tupu,
          "list available compilers", show_compilers),
         ]
 
-    def initialize_options(self):
-        self.extensions = None
-        self.build_lib = None
-        self.plat_name = None
-        self.build_temp = None
+    eleza initialize_options(self):
+        self.extensions = Tupu
+        self.build_lib = Tupu
+        self.plat_name = Tupu
+        self.build_temp = Tupu
         self.inplace = 0
-        self.package = None
+        self.package = Tupu
 
-        self.include_dirs = None
-        self.define = None
-        self.undef = None
-        self.libraries = None
-        self.library_dirs = None
-        self.rpath = None
-        self.link_objects = None
-        self.debug = None
-        self.force = None
-        self.compiler = None
-        self.swig = None
-        self.swig_cpp = None
-        self.swig_opts = None
-        self.user = None
-        self.parallel = None
+        self.include_dirs = Tupu
+        self.define = Tupu
+        self.uneleza = Tupu
+        self.libraries = Tupu
+        self.library_dirs = Tupu
+        self.rpath = Tupu
+        self.link_objects = Tupu
+        self.debug = Tupu
+        self.force = Tupu
+        self.compiler = Tupu
+        self.swig = Tupu
+        self.swig_cpp = Tupu
+        self.swig_opts = Tupu
+        self.user = Tupu
+        self.parallel = Tupu
 
-    def finalize_options(self):
-        from distutils import sysconfig
+    eleza finalize_options(self):
+        kutoka distutils agiza sysconfig
 
         self.set_undefined_options('build',
                                    ('build_lib', 'build_lib'),
@@ -140,86 +140,86 @@ class build_ext(Command):
                                    ('plat_name', 'plat_name'),
                                    )
 
-        if self.package is None:
+        ikiwa self.package ni Tupu:
             self.package = self.distribution.ext_package
 
         self.extensions = self.distribution.ext_modules
 
-        # Make sure Python's include directories (for Python.h, pyconfig.h,
-        # etc.) are in the include search path.
+        # Make sure Python's include directories (kila Python.h, pyconfig.h,
+        # etc.) are kwenye the include search path.
         py_include = sysconfig.get_python_inc()
         plat_py_include = sysconfig.get_python_inc(plat_specific=1)
-        if self.include_dirs is None:
-            self.include_dirs = self.distribution.include_dirs or []
-        if isinstance(self.include_dirs, str):
+        ikiwa self.include_dirs ni Tupu:
+            self.include_dirs = self.distribution.include_dirs ama []
+        ikiwa isinstance(self.include_dirs, str):
             self.include_dirs = self.include_dirs.split(os.pathsep)
 
-        # If in a virtualenv, add its include directory
+        # If kwenye a virtualenv, add its include directory
         # Issue 16116
-        if sys.exec_prefix != sys.base_exec_prefix:
+        ikiwa sys.exec_prefix != sys.base_exec_prefix:
             self.include_dirs.append(os.path.join(sys.exec_prefix, 'include'))
 
         # Put the Python "system" include dir at the end, so that
         # any local include dirs take precedence.
         self.include_dirs.extend(py_include.split(os.path.pathsep))
-        if plat_py_include != py_include:
+        ikiwa plat_py_include != py_include:
             self.include_dirs.extend(
                 plat_py_include.split(os.path.pathsep))
 
         self.ensure_string_list('libraries')
         self.ensure_string_list('link_objects')
 
-        # Life is easier if we're sio forever checking for None, so
-        # simplify these options to empty lists if unset
-        if self.libraries is None:
+        # Life ni easier ikiwa we're sio forever checking kila Tupu, so
+        # simplify these options to empty lists ikiwa unset
+        ikiwa self.libraries ni Tupu:
             self.libraries = []
-        if self.library_dirs is None:
+        ikiwa self.library_dirs ni Tupu:
             self.library_dirs = []
-        lasivyo isinstance(self.library_dirs, str):
+        elikiwa isinstance(self.library_dirs, str):
             self.library_dirs = self.library_dirs.split(os.pathsep)
 
-        if self.rpath is None:
+        ikiwa self.rpath ni Tupu:
             self.rpath = []
-        lasivyo isinstance(self.rpath, str):
+        elikiwa isinstance(self.rpath, str):
             self.rpath = self.rpath.split(os.pathsep)
 
-        # for extensions under windows use different directories
-        # for Release and Debug builds.
+        # kila extensions under windows use different directories
+        # kila Release na Debug builds.
         # also Python's library directory must be appended to library_dirs
-        if os.name == 'nt':
-            # the 'libs' directory is for binary installs - we assume that
+        ikiwa os.name == 'nt':
+            # the 'libs' directory ni kila binary installs - we assume that
             # must be the *native* platform.  But we don't really support
             # cross-compiling via a binary install anyway, so we let it go.
             self.library_dirs.append(os.path.join(sys.exec_prefix, 'libs'))
-            if sys.base_exec_prefix != sys.prefix:  # Issue 16116
+            ikiwa sys.base_exec_prefix != sys.prefix:  # Issue 16116
                 self.library_dirs.append(os.path.join(sys.base_exec_prefix, 'libs'))
-            if self.debug:
+            ikiwa self.debug:
                 self.build_temp = os.path.join(self.build_temp, "Debug")
             isipokua:
                 self.build_temp = os.path.join(self.build_temp, "Release")
 
-            # Append the source distribution include and library directories,
-            # this allows distutils on windows to work in the source tree
+            # Append the source distribution include na library directories,
+            # this allows distutils on windows to work kwenye the source tree
             self.include_dirs.append(os.path.dirname(get_config_h_filename()))
-            _sys_home = getattr(sys, '_home', None)
-            if _sys_home:
+            _sys_home = getattr(sys, '_home', Tupu)
+            ikiwa _sys_home:
                 self.library_dirs.append(_sys_home)
 
-            # Use the .lib files for the correct architecture
-            if self.plat_name == 'win32':
+            # Use the .lib files kila the correct architecture
+            ikiwa self.plat_name == 'win32':
                 suffix = 'win32'
             isipokua:
                 # win-amd64
                 suffix = self.plat_name[4:]
             new_lib = os.path.join(sys.exec_prefix, 'PCbuild')
-            if suffix:
+            ikiwa suffix:
                 new_lib = os.path.join(new_lib, suffix)
             self.library_dirs.append(new_lib)
 
         # For extensions under Cygwin, Python's library directory must be
         # appended to library_dirs
-        if sys.platform[:6] == 'cygwin':
-            if sys.executable.startswith(os.path.join(sys.exec_prefix, "bin")):
+        ikiwa sys.platform[:6] == 'cygwin':
+            ikiwa sys.executable.startswith(os.path.join(sys.exec_prefix, "bin")):
                 # building third party extensions
                 self.library_dirs.append(os.path.join(sys.prefix, "lib",
                                                       "python" + get_python_version(),
@@ -228,301 +228,301 @@ class build_ext(Command):
                 # building python standard extensions
                 self.library_dirs.append('.')
 
-        # For building extensions with a shared Python library,
+        # For building extensions ukijumuisha a shared Python library,
         # Python's library directory must be appended to library_dirs
         # See Issues: #1600860, #4366
-        if (sysconfig.get_config_var('Py_ENABLE_SHARED')):
-            if sio sysconfig.python_build:
+        ikiwa (sysconfig.get_config_var('Py_ENABLE_SHARED')):
+            ikiwa sio sysconfig.python_build:
                 # building third party extensions
                 self.library_dirs.append(sysconfig.get_config_var('LIBDIR'))
             isipokua:
                 # building python standard extensions
                 self.library_dirs.append('.')
 
-        # The argument parsing will result in self.define being a string, but
+        # The argument parsing will result kwenye self.define being a string, but
         # it has to be a list of 2-tuples.  All the preprocessor symbols
         # specified by the 'define' option will be set to '1'.  Multiple
-        # symbols can be separated with commas.
+        # symbols can be separated ukijumuisha commas.
 
-        if self.define:
+        ikiwa self.define:
             defines = self.define.split(',')
-            self.define = [(symbol, '1') for symbol in defines]
+            self.define = [(symbol, '1') kila symbol kwenye defines]
 
-        # The option for macros to undefine is also a string from the
+        # The option kila macros to undefine ni also a string kutoka the
         # option parsing, but has to be a list.  Multiple symbols can also
-        # be separated with commas here.
-        if self.undef:
-            self.undef = self.undef.split(',')
+        # be separated ukijumuisha commas here.
+        ikiwa self.undef:
+            self.uneleza = self.undef.split(',')
 
-        if self.swig_opts is None:
+        ikiwa self.swig_opts ni Tupu:
             self.swig_opts = []
         isipokua:
             self.swig_opts = self.swig_opts.split(' ')
 
-        # Finally add the user include and library directories if requested
-        if self.user:
+        # Finally add the user include na library directories ikiwa requested
+        ikiwa self.user:
             user_include = os.path.join(USER_BASE, "include")
             user_lib = os.path.join(USER_BASE, "lib")
-            if os.path.isdir(user_include):
+            ikiwa os.path.isdir(user_include):
                 self.include_dirs.append(user_include)
-            if os.path.isdir(user_lib):
+            ikiwa os.path.isdir(user_lib):
                 self.library_dirs.append(user_lib)
                 self.rpath.append(user_lib)
 
-        if isinstance(self.parallel, str):
+        ikiwa isinstance(self.parallel, str):
             jaribu:
                 self.parallel = int(self.parallel)
-            tatizo ValueError:
-                ashiria DistutilsOptionError("parallel should be an integer")
+            except ValueError:
+                 ashiria DistutilsOptionError("parallel should be an integer")
 
-    def run(self):
-        from distutils.ccompiler import new_compiler
+    eleza run(self):
+        kutoka distutils.ccompiler agiza new_compiler
 
-        # 'self.extensions', as supplied by setup.py, is a list of
-        # Extension instances.  See the documentation for Extension (in
-        # distutils.extension) for details.
+        # 'self.extensions', as supplied by setup.py, ni a list of
+        # Extension instances.  See the documentation kila Extension (in
+        # distutils.extension) kila details.
         #
-        # For backwards compatibility with Distutils 0.8.2 and earlier, we
+        # For backwards compatibility ukijumuisha Distutils 0.8.2 na earlier, we
         # also allow the 'extensions' list to be a list of tuples:
         #    (ext_name, build_info)
-        # where build_info is a dictionary containing everything that
-        # Extension instances do tatizo the name, with a few things being
+        # where build_info ni a dictionary containing everything that
+        # Extension instances do except the name, ukijumuisha a few things being
         # differently named.  We convert these 2-tuples to Extension
         # instances as needed.
 
-        if sio self.extensions:
+        ikiwa sio self.extensions:
             return
 
         # If we were asked to build any C/C++ libraries, make sure that the
-        # directory where we put them is in the library search path for
+        # directory where we put them ni kwenye the library search path for
         # linking extensions.
-        if self.distribution.has_c_libraries():
+        ikiwa self.distribution.has_c_libraries():
             build_clib = self.get_finalized_command('build_clib')
             self.libraries.extend(build_clib.get_library_names() ama [])
             self.library_dirs.append(build_clib.build_clib)
 
         # Setup the CCompiler object that we'll use to do all the
-        # compiling and linking
+        # compiling na linking
         self.compiler = new_compiler(compiler=self.compiler,
                                      verbose=self.verbose,
                                      dry_run=self.dry_run,
                                      force=self.force)
         customize_compiler(self.compiler)
-        # If we are cross-compiling, init the compiler now (if we are not
+        # If we are cross-compiling, init the compiler now (ikiwa we are not
         # cross-compiling, init would sio hurt, but people may rely on
-        # late initialization of compiler even if they shouldn't...)
-        if os.name == 'nt' and self.plat_name != get_platform():
+        # late initialization of compiler even ikiwa they shouldn't...)
+        ikiwa os.name == 'nt' na self.plat_name != get_platform():
             self.compiler.initialize(self.plat_name)
 
         # And make sure that any compile/link-related options (which might
-        # come from the command-line or from the setup script) are set in
+        # come kutoka the command-line ama kutoka the setup script) are set in
         # that CCompiler object -- that way, they automatically apply to
-        # all compiling and linking done here.
-        if self.include_dirs ni sio None:
+        # all compiling na linking done here.
+        ikiwa self.include_dirs ni sio Tupu:
             self.compiler.set_include_dirs(self.include_dirs)
-        if self.define ni sio None:
-            # 'define' option is a list of (name,value) tuples
-            for (name, value) in self.define:
+        ikiwa self.define ni sio Tupu:
+            # 'define' option ni a list of (name,value) tuples
+            kila (name, value) kwenye self.define:
                 self.compiler.define_macro(name, value)
-        if self.undef ni sio None:
-            for macro in self.undef:
+        ikiwa self.uneleza ni sio Tupu:
+            kila macro kwenye self.undef:
                 self.compiler.undefine_macro(macro)
-        if self.libraries ni sio None:
+        ikiwa self.libraries ni sio Tupu:
             self.compiler.set_libraries(self.libraries)
-        if self.library_dirs ni sio None:
+        ikiwa self.library_dirs ni sio Tupu:
             self.compiler.set_library_dirs(self.library_dirs)
-        if self.rpath ni sio None:
+        ikiwa self.rpath ni sio Tupu:
             self.compiler.set_runtime_library_dirs(self.rpath)
-        if self.link_objects ni sio None:
+        ikiwa self.link_objects ni sio Tupu:
             self.compiler.set_link_objects(self.link_objects)
 
-        # Now actually compile and link everything.
+        # Now actually compile na link everything.
         self.build_extensions()
 
-    def check_extensions_list(self, extensions):
+    eleza check_extensions_list(self, extensions):
         """Ensure that the list of extensions (presumably provided as a
-        command option 'extensions') is valid, i.e. it is a list of
+        command option 'extensions') ni valid, i.e. it ni a list of
         Extension objects.  We also support the old-style list of 2-tuples,
         where the tuples are (ext_name, build_info), which are converted to
         Extension instances here.
 
-        Raise DistutilsSetupError if the structure is invalid anywhere;
+        Raise DistutilsSetupError ikiwa the structure ni invalid anywhere;
         just returns otherwise.
         """
-        if sio isinstance(extensions, list):
-            ashiria DistutilsSetupError(
+        ikiwa sio isinstance(extensions, list):
+             ashiria DistutilsSetupError(
                   "'ext_modules' option must be a list of Extension instances")
 
-        for i, ext in enumerate(extensions):
-            if isinstance(ext, Extension):
+        kila i, ext kwenye enumerate(extensions):
+            ikiwa isinstance(ext, Extension):
                 endelea                # OK! (assume type-checking done
                                         # by Extension constructor)
 
-            if sio isinstance(ext, tuple) ama len(ext) != 2:
-                ashiria DistutilsSetupError(
+            ikiwa sio isinstance(ext, tuple) ama len(ext) != 2:
+                 ashiria DistutilsSetupError(
                        "each element of 'ext_modules' option must be an "
-                       "Extension instance or 2-tuple")
+                       "Extension instance ama 2-tuple")
 
             ext_name, build_info = ext
 
-            log.warn("old-style (ext_name, build_info) tuple found in "
-                     "ext_modules for extension '%s' "
+            log.warn("old-style (ext_name, build_info) tuple found kwenye "
+                     "ext_modules kila extension '%s' "
                      "-- please convert to Extension instance", ext_name)
 
-            if sio (isinstance(ext_name, str) na
+            ikiwa sio (isinstance(ext_name, str) and
                     extension_name_re.match(ext_name)):
-                ashiria DistutilsSetupError(
-                       "first element of each tuple in 'ext_modules' "
+                 ashiria DistutilsSetupError(
+                       "first element of each tuple kwenye 'ext_modules' "
                        "must be the extension name (a string)")
 
-            if sio isinstance(build_info, dict):
-                ashiria DistutilsSetupError(
-                       "second element of each tuple in 'ext_modules' "
+            ikiwa sio isinstance(build_info, dict):
+                 ashiria DistutilsSetupError(
+                       "second element of each tuple kwenye 'ext_modules' "
                        "must be a dictionary (build info)")
 
-            # OK, the (ext_name, build_info) dict is type-safe: convert it
+            # OK, the (ext_name, build_info) dict ni type-safe: convert it
             # to an Extension instance.
             ext = Extension(ext_name, build_info['sources'])
 
-            # Easy stuff: one-to-one mapping from dict elements to
+            # Easy stuff: one-to-one mapping kutoka dict elements to
             # instance attributes.
-            for key in ('include_dirs', 'library_dirs', 'libraries',
+            kila key kwenye ('include_dirs', 'library_dirs', 'libraries',
                         'extra_objects', 'extra_compile_args',
                         'extra_link_args'):
                 val = build_info.get(key)
-                if val ni sio None:
+                ikiwa val ni sio Tupu:
                     setattr(ext, key, val)
 
             # Medium-easy stuff: same syntax/semantics, different names.
             ext.runtime_library_dirs = build_info.get('rpath')
-            if 'def_file' in build_info:
+            ikiwa 'def_file' kwenye build_info:
                 log.warn("'def_file' element of build info dict "
                          "no longer supported")
 
             # Non-trivial stuff: 'macros' split into 'define_macros'
-            # and 'undef_macros'.
+            # na 'undef_macros'.
             macros = build_info.get('macros')
-            if macros:
+            ikiwa macros:
                 ext.define_macros = []
                 ext.undef_macros = []
-                for macro in macros:
-                    if sio (isinstance(macro, tuple) and len(macro) in (1, 2)):
-                        ashiria DistutilsSetupError(
+                kila macro kwenye macros:
+                    ikiwa sio (isinstance(macro, tuple) na len(macro) kwenye (1, 2)):
+                         ashiria DistutilsSetupError(
                               "'macros' element of build info dict "
-                              "must be 1- or 2-tuple")
-                    if len(macro) == 1:
+                              "must be 1- ama 2-tuple")
+                    ikiwa len(macro) == 1:
                         ext.undef_macros.append(macro[0])
-                    lasivyo len(macro) == 2:
+                    elikiwa len(macro) == 2:
                         ext.define_macros.append(macro)
 
             extensions[i] = ext
 
-    def get_source_files(self):
+    eleza get_source_files(self):
         self.check_extensions_list(self.extensions)
         filenames = []
 
-        # Wouldn't it be neat if we knew the names of header files too...
-        for ext in self.extensions:
+        # Wouldn't it be neat ikiwa we knew the names of header files too...
+        kila ext kwenye self.extensions:
             filenames.extend(ext.sources)
-        return filenames
+        rudisha filenames
 
-    def get_outputs(self):
-        # Sanity check the 'extensions' list -- can't assume this is being
-        # done in the same run as a 'build_extensions()' call (in fact, we
+    eleza get_outputs(self):
+        # Sanity check the 'extensions' list -- can't assume this ni being
+        # done kwenye the same run as a 'build_extensions()' call (in fact, we
         # can probably assume that it *isn't*!).
         self.check_extensions_list(self.extensions)
 
         # And build the list of output (built) filenames.  Note that this
-        # ignores the 'inplace' flag, and assumes everything goes in the
+        # ignores the 'inplace' flag, na assumes everything goes kwenye the
         # "build" tree.
         outputs = []
-        for ext in self.extensions:
+        kila ext kwenye self.extensions:
             outputs.append(self.get_ext_fullpath(ext.name))
-        return outputs
+        rudisha outputs
 
-    def build_extensions(self):
+    eleza build_extensions(self):
         # First, sanity-check the 'extensions' list
         self.check_extensions_list(self.extensions)
-        if self.parallel:
+        ikiwa self.parallel:
             self._build_extensions_parallel()
         isipokua:
             self._build_extensions_serial()
 
-    def _build_extensions_parallel(self):
+    eleza _build_extensions_parallel(self):
         workers = self.parallel
-        if self.parallel is True:
-            workers = os.cpu_count()  # may return None
+        ikiwa self.parallel ni Kweli:
+            workers = os.cpu_count()  # may rudisha Tupu
         jaribu:
-            from concurrent.futures import ThreadPoolExecutor
-        tatizo ImportError:
-            workers = None
+            kutoka concurrent.futures agiza ThreadPoolExecutor
+        except ImportError:
+            workers = Tupu
 
-        if workers is None:
+        ikiwa workers ni Tupu:
             self._build_extensions_serial()
             return
 
-        with ThreadPoolExecutor(max_workers=workers) as executor:
+        ukijumuisha ThreadPoolExecutor(max_workers=workers) as executor:
             futures = [executor.submit(self.build_extension, ext)
-                       for ext in self.extensions]
-            for ext, fut in zip(self.extensions, futures):
-                with self._filter_build_errors(ext):
+                       kila ext kwenye self.extensions]
+            kila ext, fut kwenye zip(self.extensions, futures):
+                ukijumuisha self._filter_build_errors(ext):
                     fut.result()
 
-    def _build_extensions_serial(self):
-        for ext in self.extensions:
-            with self._filter_build_errors(ext):
+    eleza _build_extensions_serial(self):
+        kila ext kwenye self.extensions:
+            ukijumuisha self._filter_build_errors(ext):
                 self.build_extension(ext)
 
     @contextlib.contextmanager
-    def _filter_build_errors(self, ext):
+    eleza _filter_build_errors(self, ext):
         jaribu:
             yield
-        tatizo (CCompilerError, DistutilsError, CompileError) as e:
-            if sio ext.optional:
+        except (CCompilerError, DistutilsError, CompileError) as e:
+            ikiwa sio ext.optional:
                 raise
             self.warn('building extension "%s" failed: %s' %
                       (ext.name, e))
 
-    def build_extension(self, ext):
+    eleza build_extension(self, ext):
         sources = ext.sources
-        if sources is None or sio isinstance(sources, (list, tuple)):
-            ashiria DistutilsSetupError(
+        ikiwa sources ni Tupu ama sio isinstance(sources, (list, tuple)):
+             ashiria DistutilsSetupError(
                   "in 'ext_modules' option (extension '%s'), "
-                  "'sources' must be present and must be "
+                  "'sources' must be present na must be "
                   "a list of source filenames" % ext.name)
         sources = list(sources)
 
         ext_path = self.get_ext_fullpath(ext.name)
         depends = sources + ext.depends
-        if sio (self.force or newer_group(depends, ext_path, 'newer')):
+        ikiwa sio (self.force ama newer_group(depends, ext_path, 'newer')):
             log.debug("skipping '%s' extension (up-to-date)", ext.name)
             return
         isipokua:
             log.info("building '%s' extension", ext.name)
 
-        # First, scan the sources for SWIG definition files (.i), run
-        # SWIG on 'em to create .c files, and modify the sources list
+        # First, scan the sources kila SWIG definition files (.i), run
+        # SWIG on 'em to create .c files, na modify the sources list
         # accordingly.
         sources = self.swig_sources(sources, ext)
 
         # Next, compile the source code to object files.
 
-        # XXX sio honouring 'define_macros' or 'undef_macros' -- the
-        # CCompiler API needs to change to accommodate this, and I
+        # XXX sio honouring 'define_macros' ama 'undef_macros' -- the
+        # CCompiler API needs to change to accommodate this, na I
         # want to do one thing at a time!
 
-        # Two possible sources for extra compiler arguments:
-        #   - 'extra_compile_args' in Extension object
-        #   - CFLAGS environment variable (sio particularly
-        #     elegant, but people seem to expect it and I
+        # Two possible sources kila extra compiler arguments:
+        #   - 'extra_compile_args' kwenye Extension object
+        #   - CFLAGS environment variable (not particularly
+        #     elegant, but people seem to expect it na I
         #     guess it's useful)
-        # The environment variable should take precedence, na
+        # The environment variable should take precedence, and
         # any sensible compiler will give precedence to later
-        # command line args.  Hence we combine them in order:
-        extra_args = ext.extra_compile_args or []
+        # command line args.  Hence we combine them kwenye order:
+        extra_args = ext.extra_compile_args ama []
 
         macros = ext.define_macros[:]
-        for undef in ext.undef_macros:
+        kila uneleza kwenye ext.undef_macros:
             macros.append((undef,))
 
         objects = self.compiler.compile(sources,
@@ -533,19 +533,19 @@ class build_ext(Command):
                                          extra_postargs=extra_args,
                                          depends=ext.depends)
 
-        # XXX outdated variable, kept here in case third-part code
+        # XXX outdated variable, kept here kwenye case third-part code
         # needs it.
         self._built_objects = objects[:]
 
         # Now link the object files together into a "shared object" --
         # of course, first we have to figure out all the other things
         # that go into the mix.
-        if ext.extra_objects:
+        ikiwa ext.extra_objects:
             objects.extend(ext.extra_objects)
-        extra_args = ext.extra_link_args or []
+        extra_args = ext.extra_link_args ama []
 
-        # Detect target language, if sio provided
-        language = ext.language or self.compiler.detect_language(sources)
+        # Detect target language, ikiwa sio provided
+        language = ext.language ama self.compiler.detect_language(sources)
 
         self.compiler.link_shared_object(
             objects, ext_path,
@@ -558,10 +558,10 @@ class build_ext(Command):
             build_temp=self.build_temp,
             target_lang=language)
 
-    def swig_sources(self, sources, extension):
-        """Walk the list of source files in 'sources', looking for SWIG
-        interface (.i) files.  Run SWIG on all that are found, na
-        return a modified 'sources' list with SWIG source files replaced
+    eleza swig_sources(self, sources, extension):
+        """Walk the list of source files kwenye 'sources', looking kila SWIG
+        interface (.i) files.  Run SWIG on all that are found, and
+        rudisha a modified 'sources' list ukijumuisha SWIG source files replaced
         by the generated C (or C++) files.
         """
         new_sources = []
@@ -569,177 +569,177 @@ class build_ext(Command):
         swig_targets = {}
 
         # XXX this drops generated C/C++ files into the source tree, which
-        # is fine for developers who want to distribute the generated
+        # ni fine kila developers who want to distribute the generated
         # source -- but there should be an option to put SWIG output in
         # the temp dir.
 
-        if self.swig_cpp:
-            log.warn("--swig-cpp is deprecated - use --swig-opts=-c++")
+        ikiwa self.swig_cpp:
+            log.warn("--swig-cpp ni deprecated - use --swig-opts=-c++")
 
-        if self.swig_cpp or ('-c++' in self.swig_opts) ama \
-           ('-c++' in extension.swig_opts):
+        ikiwa self.swig_cpp ama ('-c++' kwenye self.swig_opts) ama \
+           ('-c++' kwenye extension.swig_opts):
             target_ext = '.cpp'
         isipokua:
             target_ext = '.c'
 
-        for source in sources:
+        kila source kwenye sources:
             (base, ext) = os.path.splitext(source)
-            if ext == ".i":             # SWIG interface file
+            ikiwa ext == ".i":             # SWIG interface file
                 new_sources.append(base + '_wrap' + target_ext)
                 swig_sources.append(source)
                 swig_targets[source] = new_sources[-1]
             isipokua:
                 new_sources.append(source)
 
-        if sio swig_sources:
-            return new_sources
+        ikiwa sio swig_sources:
+            rudisha new_sources
 
-        swig = self.swig or self.find_swig()
+        swig = self.swig ama self.find_swig()
         swig_cmd = [swig, "-python"]
         swig_cmd.extend(self.swig_opts)
-        if self.swig_cpp:
+        ikiwa self.swig_cpp:
             swig_cmd.append("-c++")
 
         # Do sio override commandline arguments
-        if sio self.swig_opts:
-            for o in extension.swig_opts:
+        ikiwa sio self.swig_opts:
+            kila o kwenye extension.swig_opts:
                 swig_cmd.append(o)
 
-        for source in swig_sources:
+        kila source kwenye swig_sources:
             target = swig_targets[source]
             log.info("swigging %s to %s", source, target)
             self.spawn(swig_cmd + ["-o", target, source])
 
-        return new_sources
+        rudisha new_sources
 
-    def find_swig(self):
+    eleza find_swig(self):
         """Return the name of the SWIG executable.  On Unix, this is
-        just "swig" -- it should be in the PATH.  Tries a bit harder on
+        just "swig" -- it should be kwenye the PATH.  Tries a bit harder on
         Windows.
         """
-        if os.name == "posix":
-            return "swig"
-        lasivyo os.name == "nt":
-            # Look for SWIG in its standard installation directory on
+        ikiwa os.name == "posix":
+            rudisha "swig"
+        elikiwa os.name == "nt":
+            # Look kila SWIG kwenye its standard installation directory on
             # Windows (or so I presume!).  If we find it there, great;
-            # if not, act like Unix and assume it's in the PATH.
-            for vers in ("1.3", "1.2", "1.1"):
+            # ikiwa not, act like Unix na assume it's kwenye the PATH.
+            kila vers kwenye ("1.3", "1.2", "1.1"):
                 fn = os.path.join("c:\\swig%s" % vers, "swig.exe")
-                if os.path.isfile(fn):
-                    return fn
+                ikiwa os.path.isfile(fn):
+                    rudisha fn
             isipokua:
-                return "swig.exe"
+                rudisha "swig.exe"
         isipokua:
-            ashiria DistutilsPlatformError(
+             ashiria DistutilsPlatformError(
                   "I don't know how to find (much less run) SWIG "
                   "on platform '%s'" % os.name)
 
     # -- Name generators -----------------------------------------------
     # (extension names, filenames, whatever)
-    def get_ext_fullpath(self, ext_name):
-        """Returns the path of the filename for a given extension.
+    eleza get_ext_fullpath(self, ext_name):
+        """Returns the path of the filename kila a given extension.
 
-        The file is located in `build_lib` or directly in the package
+        The file ni located kwenye `build_lib` ama directly kwenye the package
         (inplace option).
         """
         fullname = self.get_ext_fullname(ext_name)
         modpath = fullname.split('.')
         filename = self.get_ext_filename(modpath[-1])
 
-        if sio self.inplace:
+        ikiwa sio self.inplace:
             # no further work needed
             # returning :
             #   build_dir/package/path/filename
             filename = os.path.join(*modpath[:-1]+[filename])
-            return os.path.join(self.build_lib, filename)
+            rudisha os.path.join(self.build_lib, filename)
 
         # the inplace option requires to find the package directory
-        # using the build_py command for that
+        # using the build_py command kila that
         package = '.'.join(modpath[0:-1])
         build_py = self.get_finalized_command('build_py')
         package_dir = os.path.abspath(build_py.get_package_dir(package))
 
         # returning
         #   package_dir/filename
-        return os.path.join(package_dir, filename)
+        rudisha os.path.join(package_dir, filename)
 
-    def get_ext_fullname(self, ext_name):
+    eleza get_ext_fullname(self, ext_name):
         """Returns the fullname of a given extension name.
 
         Adds the `package.` prefix"""
-        if self.package is None:
-            return ext_name
+        ikiwa self.package ni Tupu:
+            rudisha ext_name
         isipokua:
-            return self.package + '.' + ext_name
+            rudisha self.package + '.' + ext_name
 
-    def get_ext_filename(self, ext_name):
+    eleza get_ext_filename(self, ext_name):
         r"""Convert the name of an extension (eg. "foo.bar") into the name
-        of the file from which it will be loaded (eg. "foo/bar.so", ama
+        of the file kutoka which it will be loaded (eg. "foo/bar.so", or
         "foo\bar.pyd").
         """
-        from distutils.sysconfig import get_config_var
+        kutoka distutils.sysconfig agiza get_config_var
         ext_path = ext_name.split('.')
         ext_suffix = get_config_var('EXT_SUFFIX')
-        return os.path.join(*ext_path) + ext_suffix
+        rudisha os.path.join(*ext_path) + ext_suffix
 
-    def get_export_symbols(self, ext):
+    eleza get_export_symbols(self, ext):
         """Return the list of symbols that a shared extension has to
-        export.  This either uses 'ext.export_symbols' or, if it's not
+        export.  This either uses 'ext.export_symbols' or, ikiwa it's not
         provided, "PyInit_" + module_name.  Only relevant on Windows, where
         the .pyd file (DLL) must export the module "PyInit_" function.
         """
         initfunc_name = "PyInit_" + ext.name.split('.')[-1]
-        if initfunc_name haiko kwenye ext.export_symbols:
+        ikiwa initfunc_name sio kwenye ext.export_symbols:
             ext.export_symbols.append(initfunc_name)
-        return ext.export_symbols
+        rudisha ext.export_symbols
 
-    def get_libraries(self, ext):
+    eleza get_libraries(self, ext):
         """Return the list of libraries to link against when building a
-        shared extension.  On most platforms, this is just 'ext.libraries';
+        shared extension.  On most platforms, this ni just 'ext.libraries';
         on Windows, we add the Python library (eg. python20.dll).
         """
-        # The python library is always needed on Windows.  For MSVC, this
-        # is redundant, since the library is mentioned in a pragma in
+        # The python library ni always needed on Windows.  For MSVC, this
+        # ni redundant, since the library ni mentioned kwenye a pragma in
         # pyconfig.h that MSVC groks.  The other Windows compilers all seem
         # to need it mentioned explicitly, though, so that's what we do.
-        # Append '_d' to the python import library on debug builds.
-        if sys.platform == "win32":
-            from distutils._msvccompiler import MSVCCompiler
-            if sio isinstance(self.compiler, MSVCCompiler):
+        # Append '_d' to the python agiza library on debug builds.
+        ikiwa sys.platform == "win32":
+            kutoka distutils._msvccompiler agiza MSVCCompiler
+            ikiwa sio isinstance(self.compiler, MSVCCompiler):
                 template = "python%d%d"
-                if self.debug:
+                ikiwa self.debug:
                     template = template + '_d'
                 pythonlib = (template %
                        (sys.hexversion >> 24, (sys.hexversion >> 16) & 0xff))
-                # don't extend ext.libraries, it may be shared with other
-                # extensions, it is a reference to the original list
-                return ext.libraries + [pythonlib]
+                # don't extend ext.libraries, it may be shared ukijumuisha other
+                # extensions, it ni a reference to the original list
+                rudisha ext.libraries + [pythonlib]
         isipokua:
-            # On Android only the main executable and LD_PRELOADs are considered
+            # On Android only the main executable na LD_PRELOADs are considered
             # to be RTLD_GLOBAL, all the dependencies of the main executable
-            # remain RTLD_LOCAL and so the shared libraries must be linked with
-            # libpython when python is built with a shared python library (issue
+            # remain RTLD_LOCAL na so the shared libraries must be linked with
+            # libpython when python ni built ukijumuisha a shared python library (issue
             # bpo-21536).
-            # On Cygwin (and if required, other POSIX-like platforms based on
-            # Windows like MinGW) it is simply necessary that all symbols in
+            # On Cygwin (and ikiwa required, other POSIX-like platforms based on
+            # Windows like MinGW) it ni simply necessary that all symbols in
             # shared libraries are resolved at link time.
-            from distutils.sysconfig import get_config_var
-            link_libpython = False
-            if get_config_var('Py_ENABLE_SHARED'):
-                # A native build on an Android device or on Cygwin
-                if hasattr(sys, 'getandroidapilevel'):
-                    link_libpython = True
-                lasivyo sys.platform == 'cygwin':
-                    link_libpython = True
-                lasivyo '_PYTHON_HOST_PLATFORM' in os.environ:
-                    # We are cross-compiling for one of the relevant platforms
-                    if get_config_var('ANDROID_API_LEVEL') != 0:
-                        link_libpython = True
-                    lasivyo get_config_var('MACHDEP') == 'cygwin':
-                        link_libpython = True
+            kutoka distutils.sysconfig agiza get_config_var
+            link_libpython = Uongo
+            ikiwa get_config_var('Py_ENABLE_SHARED'):
+                # A native build on an Android device ama on Cygwin
+                ikiwa hasattr(sys, 'getandroidapilevel'):
+                    link_libpython = Kweli
+                elikiwa sys.platform == 'cygwin':
+                    link_libpython = Kweli
+                elikiwa '_PYTHON_HOST_PLATFORM' kwenye os.environ:
+                    # We are cross-compiling kila one of the relevant platforms
+                    ikiwa get_config_var('ANDROID_API_LEVEL') != 0:
+                        link_libpython = Kweli
+                    elikiwa get_config_var('MACHDEP') == 'cygwin':
+                        link_libpython = Kweli
 
-            if link_libpython:
+            ikiwa link_libpython:
                 ldversion = get_config_var('LDVERSION')
-                return ext.libraries + ['python' + ldversion]
+                rudisha ext.libraries + ['python' + ldversion]
 
-        return ext.libraries
+        rudisha ext.libraries

@@ -62,7 +62,7 @@ kundi GUIProxy:
 
     eleza interaction(self, message, frame, info=Tupu):
         # calls rpc.SocketIO.remotecall() via run.MyHandler instance
-        # pita frame na traceback object IDs instead of the objects themselves
+        # pass frame na traceback object IDs instead of the objects themselves
         self.conn.remotecall(self.oid, "interaction",
                              (message, wrap_frame(frame), wrap_info(info)),
                              {})
@@ -87,9 +87,9 @@ kundi IdbAdapter:
         frame = frametable[fid]
         self.idb.set_next(frame)
 
-    eleza set_rudisha(self, fid):
+    eleza set_return(self, fid):
         frame = frametable[fid]
-        self.idb.set_rudisha(frame)
+        self.idb.set_return(frame)
 
     eleza get_stack(self, fid, tbid):
         frame = frametable[fid]
@@ -157,7 +157,7 @@ kundi IdbAdapter:
     #----------called by a DictProxy----------
 
     eleza dict_keys(self, did):
-        ashiria NotImplementedError("dict_keys sio public ama pickleable")
+         ashiria NotImplementedError("dict_keys sio public ama pickleable")
 ##         dict = dicttable[did]
 ##         rudisha dict.keys()
 
@@ -208,7 +208,7 @@ kundi FrameProxy:
 
     eleza __getattr__(self, name):
         ikiwa name[:1] == "_":
-            ashiria AttributeError(name)
+             ashiria AttributeError(name)
         ikiwa name == "f_code":
             rudisha self._get_f_code()
         ikiwa name == "f_globals":
@@ -277,7 +277,7 @@ kundi DictProxy:
 
     eleza __getattr__(self, name):
         ##andika("*** Failed DictProxy.__getattr__:", name)
-        ashiria AttributeError(name)
+         ashiria AttributeError(name)
 
 
 kundi GUIAdapter:
@@ -302,7 +302,7 @@ kundi IdbProxy:
     eleza call(self, methodname, /, *args, **kwargs):
         ##andika("*** IdbProxy.call %s %s %s" % (methodname, args, kwargs))
         value = self.conn.remotecall(self.oid, methodname, args, kwargs)
-        ##andika("*** IdbProxy.call %s rudishas %r" % (methodname, value))
+        ##andika("*** IdbProxy.call %s returns %r" % (methodname, value))
         rudisha value
 
     eleza run(self, cmd, locals):
@@ -311,7 +311,7 @@ kundi IdbProxy:
         self.shell.interp.active_seq = seq
 
     eleza get_stack(self, frame, tbid):
-        # pitaing frame na traceback IDs, sio the objects themselves
+        # passing frame na traceback IDs, sio the objects themselves
         stack, i = self.call("get_stack", frame._fid, tbid)
         stack = [(FrameProxy(self.conn, fid), k) kila fid, k kwenye stack]
         rudisha stack, i
@@ -325,8 +325,8 @@ kundi IdbProxy:
     eleza set_next(self, frame):
         self.call("set_next", frame._fid)
 
-    eleza set_rudisha(self, frame):
-        self.call("set_rudisha", frame._fid)
+    eleza set_return(self, frame):
+        self.call("set_return", frame._fid)
 
     eleza set_quit(self):
         self.call("set_quit")
@@ -353,7 +353,7 @@ eleza start_remote_debugger(rpcclt, pyshell):
     Register the GUIAdapter ukijumuisha the RPCClient to handle debugger GUI
     interaction requests coming kutoka the subprocess debugger via the GUIProxy.
 
-    The IdbAdapter will pita execution na environment requests coming kutoka the
+    The IdbAdapter will pass execution na environment requests coming kutoka the
     Idle debugger GUI to the subprocess debugger via the IdbProxy.
 
     """

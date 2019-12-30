@@ -1,4 +1,4 @@
-agiza sqlite3 kama sqlite
+agiza sqlite3 as sqlite
 agiza unittest
 
 
@@ -40,18 +40,18 @@ kundi BackupTests(unittest.TestCase):
         bck = sqlite.connect(':memory:')
         bck.execute('CREATE TABLE bar (key INTEGER)')
         bck.executemany('INSERT INTO bar (key) VALUES (?)', [(3,), (4,)])
-        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
             self.cx.backup(bck)
         ikiwa sqlite.sqlite_version_info < (3, 8, 8):
             self.assertEqual(str(cm.exception), 'target ni kwenye transaction')
 
     eleza test_keyword_only_args(self):
         ukijumuisha self.assertRaises(TypeError):
-            ukijumuisha sqlite.connect(':memory:') kama bck:
+            ukijumuisha sqlite.connect(':memory:') as bck:
                 self.cx.backup(bck, 1)
 
     eleza test_simple(self):
-        ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha sqlite.connect(':memory:') as bck:
             self.cx.backup(bck)
             self.verify_backup(bck)
 
@@ -61,7 +61,7 @@ kundi BackupTests(unittest.TestCase):
         eleza progress(status, remaining, total):
             journal.append(status)
 
-        ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha sqlite.connect(':memory:') as bck:
             self.cx.backup(bck, pages=1, progress=progress)
             self.verify_backup(bck)
 
@@ -75,7 +75,7 @@ kundi BackupTests(unittest.TestCase):
         eleza progress(status, remaining, total):
             journal.append(remaining)
 
-        ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha sqlite.connect(':memory:') as bck:
             self.cx.backup(bck, progress=progress)
             self.verify_backup(bck)
 
@@ -88,7 +88,7 @@ kundi BackupTests(unittest.TestCase):
         eleza progress(status, remaining, total):
             journal.append(remaining)
 
-        ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha sqlite.connect(':memory:') as bck:
             self.cx.backup(bck, pages=-1, progress=progress)
             self.verify_backup(bck)
 
@@ -96,8 +96,8 @@ kundi BackupTests(unittest.TestCase):
         self.assertEqual(journal[0], 0)
 
     eleza test_non_callable_progress(self):
-        ukijumuisha self.assertRaises(TypeError) kama cm:
-            ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha self.assertRaises(TypeError) as cm:
+            ukijumuisha sqlite.connect(':memory:') as bck:
                 self.cx.backup(bck, pages=1, progress='bar')
         self.assertEqual(str(cm.exception), 'progress argument must be a callable')
 
@@ -110,7 +110,7 @@ kundi BackupTests(unittest.TestCase):
                 self.cx.commit()
             journal.append(remaining)
 
-        ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha sqlite.connect(':memory:') as bck:
             self.cx.backup(bck, pages=1, progress=progress)
             self.verify_backup(bck)
 
@@ -126,20 +126,20 @@ kundi BackupTests(unittest.TestCase):
 
     eleza test_failing_progress(self):
         eleza progress(status, remaining, total):
-            ashiria SystemError('nearly out of space')
+             ashiria SystemError('nearly out of space')
 
-        ukijumuisha self.assertRaises(SystemError) kama err:
-            ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha self.assertRaises(SystemError) as err:
+            ukijumuisha sqlite.connect(':memory:') as bck:
                 self.cx.backup(bck, progress=progress)
         self.assertEqual(str(err.exception), 'nearly out of space')
 
     eleza test_database_source_name(self):
-        ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha sqlite.connect(':memory:') as bck:
             self.cx.backup(bck, name='main')
-        ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha sqlite.connect(':memory:') as bck:
             self.cx.backup(bck, name='temp')
-        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
-            ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
+            ukijumuisha sqlite.connect(':memory:') as bck:
                 self.cx.backup(bck, name='non-existing')
         self.assertIn(
             str(cm.exception),
@@ -150,7 +150,7 @@ kundi BackupTests(unittest.TestCase):
         self.cx.execute('CREATE TABLE attached_db.foo (key INTEGER)')
         self.cx.executemany('INSERT INTO attached_db.foo (key) VALUES (?)', [(3,), (4,)])
         self.cx.commit()
-        ukijumuisha sqlite.connect(':memory:') kama bck:
+        ukijumuisha sqlite.connect(':memory:') as bck:
             self.cx.backup(bck, name='attached_db')
             self.verify_backup(bck)
 

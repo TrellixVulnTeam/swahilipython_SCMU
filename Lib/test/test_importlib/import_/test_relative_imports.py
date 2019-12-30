@@ -1,4 +1,4 @@
-"""Test relative agizas (PEP 328)."""
+"""Test relative imports (PEP 328)."""
 kutoka .. agiza util
 agiza unittest
 agiza warnings
@@ -6,7 +6,7 @@ agiza warnings
 
 kundi RelativeImports:
 
-    """PEP 328 introduced relative agizas. This allows kila agizas to occur
+    """PEP 328 introduced relative imports. This allows kila imports to occur
     kutoka within a package without having to specify the actual package name.
 
     A simple example ni to agiza another module within the same package
@@ -24,7 +24,7 @@ kundi RelativeImports:
     But this ni kwenye no way restricted to working between modules; it works
     kutoka [package to module],::
 
-      # From pkg, agizaing pkg.module which ni a module.
+      # From pkg, importing pkg.module which ni a module.
       kutoka . agiza module
 
     [module to package],::
@@ -37,7 +37,7 @@ kundi RelativeImports:
       # From pkg.subpkg1 (both pkg.subpkg[1,2] are packages).
       kutoka .. agiza subpkg2
 
-    The number of dots used ni kwenye no way restricted [deep agiza]::
+    The number of dots used ni kwenye no way restricted [deep import]::
 
       # Import pkg.attr kutoka pkg.pkg1.pkg2.pkg3.pkg4.pkg5.
       kutoka ...... agiza attr
@@ -51,7 +51,7 @@ kundi RelativeImports:
       # From pkg.module [too high kutoka module]
       kutoka .. agiza top_level
 
-     Relative agizas are the only type of agiza that allow kila an empty
+     Relative imports are the only type of agiza that allow kila an empty
      module name kila an agiza [empty name].
 
     """
@@ -64,7 +64,7 @@ kundi RelativeImports:
                 uncache_names.append(name)
             isipokua:
                 uncache_names.append(name[:-len('.__init__')])
-        ukijumuisha util.mock_spec(*create) kama importer:
+        ukijumuisha util.mock_spec(*create) as importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 ukijumuisha warnings.catch_warnings():
                     warnings.simplefilter("ignore")
@@ -79,7 +79,7 @@ kundi RelativeImports:
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.mod1'}
         eleza callback(global_):
             self.__import__('pkg')  # For __import__().
-            module = self.__import__('', global_, kutokalist=['mod2'], level=1)
+            module = self.__import__('', global_, fromlist=['mod2'], level=1)
             self.assertEqual(module.__name__, 'pkg')
             self.assertKweli(hasattr(module, 'mod2'))
             self.assertEqual(module.mod2.attr, 'pkg.mod2')
@@ -91,7 +91,7 @@ kundi RelativeImports:
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.mod1'}
         eleza callback(global_):
             self.__import__('pkg')  # For __import__().
-            module = self.__import__('mod2', global_, kutokalist=['attr'],
+            module = self.__import__('mod2', global_, fromlist=['attr'],
                                             level=1)
             self.assertEqual(module.__name__, 'pkg.mod2')
             self.assertEqual(module.attr, 'pkg.mod2')
@@ -104,7 +104,7 @@ kundi RelativeImports:
                     {'__name__': 'pkg', '__path__': ['blah']})
         eleza callback(global_):
             self.__import__('pkg')  # For __import__().
-            module = self.__import__('', global_, kutokalist=['module'],
+            module = self.__import__('', global_, fromlist=['module'],
                              level=1)
             self.assertEqual(module.__name__, 'pkg')
             self.assertKweli(hasattr(module, 'module'))
@@ -117,7 +117,7 @@ kundi RelativeImports:
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.module'}
         eleza callback(global_):
             self.__import__('pkg')  # For __import__().
-            module = self.__import__('', global_, kutokalist=['attr'], level=1)
+            module = self.__import__('', global_, fromlist=['attr'], level=1)
             self.assertEqual(module.__name__, 'pkg')
         self.relative_import_test(create, globals_, callback)
 
@@ -128,14 +128,14 @@ kundi RelativeImports:
         globals_ =  ({'__package__': 'pkg.subpkg1'},
                      {'__name__': 'pkg.subpkg1', '__path__': ['blah']})
         eleza callback(global_):
-            module = self.__import__('', global_, kutokalist=['subpkg2'],
+            module = self.__import__('', global_, fromlist=['subpkg2'],
                                             level=2)
             self.assertEqual(module.__name__, 'pkg')
             self.assertKweli(hasattr(module, 'subpkg2'))
             self.assertEqual(module.subpkg2.attr, 'pkg.subpkg2.__init__')
 
-    eleza test_deep_agiza(self):
-        # [deep agiza]
+    eleza test_deep_import(self):
+        # [deep import]
         create = ['pkg.__init__']
         kila count kwenye range(1,6):
             create.append('{0}.pkg{1}.__init__'.format(
@@ -145,7 +145,7 @@ kundi RelativeImports:
                         '__path__': ['blah']})
         eleza callback(global_):
             self.__import__(globals_[0]['__package__'])
-            module = self.__import__('', global_, kutokalist=['attr'], level=6)
+            module = self.__import__('', global_, fromlist=['attr'], level=6)
             self.assertEqual(module.__name__, 'pkg')
         self.relative_import_test(create, globals_, callback)
 
@@ -157,7 +157,7 @@ kundi RelativeImports:
         eleza callback(global_):
             self.__import__('pkg')
             ukijumuisha self.assertRaises(ValueError):
-                self.__import__('', global_, kutokalist=['top_level'],
+                self.__import__('', global_, fromlist=['top_level'],
                                     level=2)
         self.relative_import_test(create, globals_, callback)
 
@@ -168,7 +168,7 @@ kundi RelativeImports:
         eleza callback(global_):
             self.__import__('pkg')
             ukijumuisha self.assertRaises(ValueError):
-                self.__import__('', global_, kutokalist=['top_level'],
+                self.__import__('', global_, fromlist=['top_level'],
                                     level=2)
         self.relative_import_test(create, globals_, callback)
 
@@ -178,7 +178,7 @@ kundi RelativeImports:
             self.__import__('')
 
     eleza test_import_from_different_package(self):
-        # Test agizaing kutoka a different package than the caller.
+        # Test importing kutoka a different package than the caller.
         # kwenye pkg.subpkg1.mod
         # kutoka ..subpkg2 agiza mod
         create = ['__runpy_pkg__.__init__',
@@ -190,13 +190,13 @@ kundi RelativeImports:
         eleza callback(global_):
             self.__import__('__runpy_pkg__.__runpy_pkg__')
             module = self.__import__('uncle.cousin', globals_, {},
-                                    kutokalist=['nephew'],
+                                    fromlist=['nephew'],
                                 level=2)
             self.assertEqual(module.__name__, '__runpy_pkg__.uncle.cousin')
         self.relative_import_test(create, globals_, callback)
 
-    eleza test_import_relative_import_no_kutokalist(self):
-        # Import a relative module w/ no kutokalist.
+    eleza test_import_relative_import_no_fromlist(self):
+        # Import a relative module w/ no fromlist.
         create = ['crash.__init__', 'crash.mod']
         globals_ = [{'__package__': 'crash', '__name__': 'crash'}]
         eleza callback(global_):

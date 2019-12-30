@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
-"""Python interface for the 'lsprof' profiler.
-   Compatible with the 'profile' module.
+"""Python interface kila the 'lsprof' profiler.
+   Compatible ukijumuisha the 'profile' module.
 """
 
 __all__ = ["run", "runctx", "Profile"]
@@ -12,11 +12,11 @@ agiza profile as _pyprofile
 # ____________________________________________________________
 # Simple interface
 
-def run(statement, filename=None, sort=-1):
-    return _pyprofile._Utils(Profile).run(statement, filename, sort)
+eleza run(statement, filename=Tupu, sort=-1):
+    rudisha _pyprofile._Utils(Profile).run(statement, filename, sort)
 
-def runctx(statement, globals, locals, filename=None, sort=-1):
-    return _pyprofile._Utils(Profile).runctx(statement, globals, locals,
+eleza runctx(statement, globals, locals, filename=Tupu, sort=-1):
+    rudisha _pyprofile._Utils(Profile).runctx(statement, globals, locals,
                                              filename, sort)
 
 run.__doc__ = _pyprofile.run.__doc__
@@ -25,38 +25,38 @@ runctx.__doc__ = _pyprofile.runctx.__doc__
 # ____________________________________________________________
 
 kundi Profile(_lsprof.Profiler):
-    """Profile(timer=None, timeunit=None, subcalls=True, builtins=True)
+    """Profile(timer=Tupu, timeunit=Tupu, subcalls=Kweli, builtins=Kweli)
 
     Builds a profiler object using the specified timer function.
-    The default timer is a fast built-in one based on real time.
+    The default timer ni a fast built-in one based on real time.
     For custom timer functions returning integers, timeunit can
     be a float specifying a scale (i.e. how long each integer unit
-    is, in seconds).
+    is, kwenye seconds).
     """
 
-    # Most of the functionality is in the base class.
-    # This subkundi only adds convenient and backward-compatible methods.
+    # Most of the functionality ni kwenye the base class.
+    # This subkundi only adds convenient na backward-compatible methods.
 
-    def print_stats(self, sort=-1):
+    eleza print_stats(self, sort=-1):
         agiza pstats
         pstats.Stats(self).strip_dirs().sort_stats(sort).print_stats()
 
-    def dump_stats(self, file):
+    eleza dump_stats(self, file):
         agiza marshal
-        with open(file, 'wb') as f:
+        ukijumuisha open(file, 'wb') as f:
             self.create_stats()
             marshal.dump(self.stats, f)
 
-    def create_stats(self):
+    eleza create_stats(self):
         self.disable()
         self.snapshot_stats()
 
-    def snapshot_stats(self):
+    eleza snapshot_stats(self):
         entries = self.getstats()
         self.stats = {}
         callersdicts = {}
         # call information
-        for entry in entries:
+        kila entry kwenye entries:
             func = label(entry.code)
             nc = entry.callcount         # ncalls column of pstats (before '/')
             cc = nc - entry.reccallcount # ncalls column of pstats (after '/')
@@ -66,19 +66,19 @@ kundi Profile(_lsprof.Profiler):
             callersdicts[id(entry.code)] = callers
             self.stats[func] = cc, nc, tt, ct, callers
         # subcall information
-        for entry in entries:
-            if entry.calls:
+        kila entry kwenye entries:
+            ikiwa entry.calls:
                 func = label(entry.code)
-                for subentry in entry.calls:
+                kila subentry kwenye entry.calls:
                     jaribu:
                         callers = callersdicts[id(subentry.code)]
-                    tatizo KeyError:
+                    except KeyError:
                         endelea
                     nc = subentry.callcount
                     cc = nc - subentry.reccallcount
                     tt = subentry.inlinetime
                     ct = subentry.totaltime
-                    if func in callers:
+                    ikiwa func kwenye callers:
                         prev = callers[func]
                         nc += prev[0]
                         cc += prev[1]
@@ -89,61 +89,61 @@ kundi Profile(_lsprof.Profiler):
     # The following two methods can be called by clients to use
     # a profiler to profile a statement, given as a string.
 
-    def run(self, cmd):
+    eleza run(self, cmd):
         agiza __main__
         dict = __main__.__dict__
-        return self.runctx(cmd, dict, dict)
+        rudisha self.runctx(cmd, dict, dict)
 
-    def runctx(self, cmd, globals, locals):
+    eleza runctx(self, cmd, globals, locals):
         self.enable()
         jaribu:
             exec(cmd, globals, locals)
         mwishowe:
             self.disable()
-        return self
+        rudisha self
 
-    # This method is more useful to profile a single function call.
-    def runcall(*args, **kw):
-        if len(args) >= 2:
+    # This method ni more useful to profile a single function call.
+    eleza runcall(*args, **kw):
+        ikiwa len(args) >= 2:
             self, func, *args = args
-        lasivyo sio args:
-            ashiria TypeError("descriptor 'runcall' of 'Profile' object "
+        elikiwa sio args:
+             ashiria TypeError("descriptor 'runcall' of 'Profile' object "
                             "needs an argument")
-        lasivyo 'func' in kw:
+        elikiwa 'func' kwenye kw:
             func = kw.pop('func')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'func' as keyword argument is deprecated",
+            warnings.warn("Passing 'func' as keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-            ashiria TypeError('runcall expected at least 1 positional argument, '
+             ashiria TypeError('runcall expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         self.enable()
         jaribu:
-            return func(*args, **kw)
+            rudisha func(*args, **kw)
         mwishowe:
             self.disable()
     runcall.__text_signature__ = '($self, func, /, *args, **kw)'
 
-    def __enter__(self):
+    eleza __enter__(self):
         self.enable()
-        return self
+        rudisha self
 
-    def __exit__(self, *exc_info):
+    eleza __exit__(self, *exc_info):
         self.disable()
 
 # ____________________________________________________________
 
-def label(code):
-    if isinstance(code, str):
-        return ('~', 0, code)    # built-in functions ('~' sorts at the end)
+eleza label(code):
+    ikiwa isinstance(code, str):
+        rudisha ('~', 0, code)    # built-in functions ('~' sorts at the end)
     isipokua:
-        return (code.co_filename, code.co_firstlineno, code.co_name)
+        rudisha (code.co_filename, code.co_firstlineno, code.co_name)
 
 # ____________________________________________________________
 
-def main():
+eleza main():
     agiza os
     agiza sys
     agiza runpy
@@ -151,25 +151,25 @@ def main():
     kutoka optparse agiza OptionParser
     usage = "cProfile.py [-o output_file_path] [-s sort] [-m module | scriptfile] [arg] ..."
     parser = OptionParser(usage=usage)
-    parser.allow_interspersed_args = False
+    parser.allow_interspersed_args = Uongo
     parser.add_option('-o', '--outfile', dest="outfile",
-        help="Save stats to <outfile>", default=None)
+        help="Save stats to <outfile>", default=Tupu)
     parser.add_option('-s', '--sort', dest="sort",
         help="Sort order when printing to stdout, based on pstats.Stats class",
         default=-1,
         choices=sorted(pstats.Stats.sort_arg_dict_default))
     parser.add_option('-m', dest="module", action="store_true",
-        help="Profile a library module", default=False)
+        help="Profile a library module", default=Uongo)
 
-    if sio sys.argv[1:]:
+    ikiwa sio sys.argv[1:]:
         parser.print_usage()
         sys.exit(2)
 
     (options, args) = parser.parse_args()
     sys.argv[:] = args
 
-    if len(args) > 0:
-        if options.module:
+    ikiwa len(args) > 0:
+        ikiwa options.module:
             code = "run_module(modname, run_name='__main__')"
             globs = {
                 'run_module': runpy.run_module,
@@ -178,19 +178,19 @@ def main():
         isipokua:
             progname = args[0]
             sys.path.insert(0, os.path.dirname(progname))
-            with open(progname, 'rb') as fp:
+            ukijumuisha open(progname, 'rb') as fp:
                 code = compile(fp.read(), progname, 'exec')
             globs = {
                 '__file__': progname,
                 '__name__': '__main__',
-                '__package__': None,
-                '__cached__': None,
+                '__package__': Tupu,
+                '__cached__': Tupu,
             }
-        runctx(code, globs, None, options.outfile, options.sort)
+        runctx(code, globs, Tupu, options.outfile, options.sort)
     isipokua:
         parser.print_usage()
-    return parser
+    rudisha parser
 
 # When invoked as main program, invoke the profiler on a script
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

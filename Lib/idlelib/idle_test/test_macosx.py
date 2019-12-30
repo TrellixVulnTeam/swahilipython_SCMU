@@ -3,8 +3,8 @@
 kutoka idlelib agiza macosx
 agiza unittest
 kutoka test.support agiza requires
-agiza tkinter kama tk
-agiza unittest.mock kama mock
+agiza tkinter as tk
+agiza unittest.mock as mock
 kutoka idlelib.filelist agiza FileList
 
 mactypes = {'carbon', 'cocoa', 'xquartz'}

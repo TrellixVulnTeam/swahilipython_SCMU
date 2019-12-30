@@ -1,90 +1,90 @@
-import socket
-import asyncio
-import sys
-from asyncio import proactor_events
-from itertools import cycle, islice
-from test.test_asyncio import utils as test_utils
-from test import support
+agiza socket
+agiza asyncio
+agiza sys
+kutoka asyncio agiza proactor_events
+kutoka itertools agiza cycle, islice
+kutoka test.test_asyncio agiza utils as test_utils
+kutoka test agiza support
 
 
-class MyProto(asyncio.Protocol):
-    connected = None
-    done = None
+kundi MyProto(asyncio.Protocol):
+    connected = Tupu
+    done = Tupu
 
-    def __init__(self, loop=None):
-        self.transport = None
+    eleza __init__(self, loop=Tupu):
+        self.transport = Tupu
         self.state = 'INITIAL'
         self.nbytes = 0
-        if loop ni sio None:
+        ikiwa loop ni sio Tupu:
             self.connected = loop.create_future()
             self.done = loop.create_future()
 
-    def connection_made(self, transport):
+    eleza connection_made(self, transport):
         self.transport = transport
         assert self.state == 'INITIAL', self.state
         self.state = 'CONNECTED'
-        if self.connected:
-            self.connected.set_result(None)
+        ikiwa self.connected:
+            self.connected.set_result(Tupu)
         transport.write(b'GET / HTTP/1.0\r\nHost: example.com\r\n\r\n')
 
-    def data_received(self, data):
+    eleza data_received(self, data):
         assert self.state == 'CONNECTED', self.state
         self.nbytes += len(data)
 
-    def eof_received(self):
+    eleza eof_received(self):
         assert self.state == 'CONNECTED', self.state
         self.state = 'EOF'
 
-    def connection_lost(self, exc):
-        assert self.state in ('CONNECTED', 'EOF'), self.state
+    eleza connection_lost(self, exc):
+        assert self.state kwenye ('CONNECTED', 'EOF'), self.state
         self.state = 'CLOSED'
-        if self.done:
-            self.done.set_result(None)
+        ikiwa self.done:
+            self.done.set_result(Tupu)
 
 
-class BaseSockTestsMixin:
+kundi BaseSockTestsMixin:
 
-    def create_event_loop(self):
-        ashiria NotImplementedError
+    eleza create_event_loop(self):
+         ashiria NotImplementedError
 
-    def setUp(self):
+    eleza setUp(self):
         self.loop = self.create_event_loop()
         self.set_event_loop(self.loop)
         super().setUp()
 
-    def tearDown(self):
-        # just in case if we have transport close callbacks
-        if sio self.loop.is_closed():
+    eleza tearDown(self):
+        # just kwenye case ikiwa we have transport close callbacks
+        ikiwa sio self.loop.is_closed():
             test_utils.run_briefly(self.loop)
 
         self.doCleanups()
         support.gc_collect()
         super().tearDown()
 
-    def _basetest_sock_client_ops(self, httpd, sock):
-        if sio isinstance(self.loop, proactor_events.BaseProactorEventLoop):
-            # in debug mode, socket operations must fail
-            # if the socket is haiko kwenye blocking mode
-            self.loop.set_debug(True)
-            sock.setblocking(True)
-            with self.assertRaises(ValueError):
+    eleza _basetest_sock_client_ops(self, httpd, sock):
+        ikiwa sio isinstance(self.loop, proactor_events.BaseProactorEventLoop):
+            # kwenye debug mode, socket operations must fail
+            # ikiwa the socket ni sio kwenye blocking mode
+            self.loop.set_debug(Kweli)
+            sock.setblocking(Kweli)
+            ukijumuisha self.assertRaises(ValueError):
                 self.loop.run_until_complete(
                     self.loop.sock_connect(sock, httpd.address))
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 self.loop.run_until_complete(
                     self.loop.sock_sendall(sock, b'GET / HTTP/1.0\r\n\r\n'))
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 self.loop.run_until_complete(
                     self.loop.sock_recv(sock, 1024))
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 self.loop.run_until_complete(
                     self.loop.sock_recv_into(sock, bytearray()))
-            with self.assertRaises(ValueError):
+            ukijumuisha self.assertRaises(ValueError):
                 self.loop.run_until_complete(
                     self.loop.sock_accept(sock))
 
-        # test in non-blocking mode
-        sock.setblocking(False)
+        # test kwenye non-blocking mode
+        sock.setblocking(Uongo)
         self.loop.run_until_complete(
             self.loop.sock_connect(sock, httpd.address))
         self.loop.run_until_complete(
@@ -95,35 +95,35 @@ class BaseSockTestsMixin:
         self.loop.run_until_complete(
             self.loop.sock_recv(sock, 1024))
         sock.close()
-        self.assertTrue(data.startswith(b'HTTP/1.0 200 OK'))
+        self.assertKweli(data.startswith(b'HTTP/1.0 200 OK'))
 
-    def _basetest_sock_recv_into(self, httpd, sock):
+    eleza _basetest_sock_recv_into(self, httpd, sock):
         # same as _basetest_sock_client_ops, but using sock_recv_into
-        sock.setblocking(False)
+        sock.setblocking(Uongo)
         self.loop.run_until_complete(
             self.loop.sock_connect(sock, httpd.address))
         self.loop.run_until_complete(
             self.loop.sock_sendall(sock, b'GET / HTTP/1.0\r\n\r\n'))
         data = bytearray(1024)
-        with memoryview(data) as buf:
+        ukijumuisha memoryview(data) as buf:
             nbytes = self.loop.run_until_complete(
                 self.loop.sock_recv_into(sock, buf[:1024]))
             # consume data
             self.loop.run_until_complete(
                 self.loop.sock_recv_into(sock, buf[nbytes:]))
         sock.close()
-        self.assertTrue(data.startswith(b'HTTP/1.0 200 OK'))
+        self.assertKweli(data.startswith(b'HTTP/1.0 200 OK'))
 
-    def test_sock_client_ops(self):
-        with test_utils.run_test_server() as httpd:
+    eleza test_sock_client_ops(self):
+        ukijumuisha test_utils.run_test_server() as httpd:
             sock = socket.socket()
             self._basetest_sock_client_ops(httpd, sock)
             sock = socket.socket()
             self._basetest_sock_recv_into(httpd, sock)
 
-    async def _basetest_huge_content(self, address):
+    async eleza _basetest_huge_content(self, address):
         sock = socket.socket()
-        sock.setblocking(False)
+        sock.setblocking(Uongo)
         DATA_SIZE = 10_000_00
 
         chunk = b'0123456789' * (DATA_SIZE // 10)
@@ -137,9 +137,9 @@ class BaseSockTestsMixin:
         task = asyncio.create_task(self.loop.sock_sendall(sock, chunk))
 
         data = await self.loop.sock_recv(sock, DATA_SIZE)
-        # HTTP headers size is less than MTU,
+        # HTTP headers size ni less than MTU,
         # they are sent by the first packet always
-        self.assertTrue(data.startswith(b'HTTP/1.0 200 OK'))
+        self.assertKweli(data.startswith(b'HTTP/1.0 200 OK'))
         wakati data.find(b'\r\n\r\n') == -1:
             data += await self.loop.sock_recv(sock, DATA_SIZE)
         # Strip headers
@@ -153,9 +153,9 @@ class BaseSockTestsMixin:
         self.assertEqual(data, expected)
         size -= len(data)
 
-        wakati True:
+        wakati Kweli:
             data = await self.loop.sock_recv(sock, DATA_SIZE)
-            if sio data:
+            ikiwa sio data:
                 koma
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
@@ -165,14 +165,14 @@ class BaseSockTestsMixin:
         await task
         sock.close()
 
-    def test_huge_content(self):
-        with test_utils.run_test_server() as httpd:
+    eleza test_huge_content(self):
+        ukijumuisha test_utils.run_test_server() as httpd:
             self.loop.run_until_complete(
                 self._basetest_huge_content(httpd.address))
 
-    async def _basetest_huge_content_recvinto(self, address):
+    async eleza _basetest_huge_content_recvinto(self, address):
         sock = socket.socket()
-        sock.setblocking(False)
+        sock.setblocking(Uongo)
         DATA_SIZE = 10_000_00
 
         chunk = b'0123456789' * (DATA_SIZE // 10)
@@ -190,9 +190,9 @@ class BaseSockTestsMixin:
 
         nbytes = await self.loop.sock_recv_into(sock, buf)
         data = bytes(buf[:nbytes])
-        # HTTP headers size is less than MTU,
+        # HTTP headers size ni less than MTU,
         # they are sent by the first packet always
-        self.assertTrue(data.startswith(b'HTTP/1.0 200 OK'))
+        self.assertKweli(data.startswith(b'HTTP/1.0 200 OK'))
         wakati data.find(b'\r\n\r\n') == -1:
             nbytes = await self.loop.sock_recv_into(sock, buf)
             data = bytes(buf[:nbytes])
@@ -207,10 +207,10 @@ class BaseSockTestsMixin:
         self.assertEqual(data, expected)
         size -= len(data)
 
-        wakati True:
+        wakati Kweli:
             nbytes = await self.loop.sock_recv_into(sock, buf)
             data = buf[:nbytes]
-            if sio data:
+            ikiwa sio data:
                 koma
             expected = bytes(islice(checker, len(data)))
             self.assertEqual(data, expected)
@@ -220,22 +220,22 @@ class BaseSockTestsMixin:
         await task
         sock.close()
 
-    def test_huge_content_recvinto(self):
-        with test_utils.run_test_server() as httpd:
+    eleza test_huge_content_recvinto(self):
+        ukijumuisha test_utils.run_test_server() as httpd:
             self.loop.run_until_complete(
                 self._basetest_huge_content_recvinto(httpd.address))
 
     @support.skip_unless_bind_unix_socket
-    def test_unix_sock_client_ops(self):
-        with test_utils.run_test_unix_server() as httpd:
+    eleza test_unix_sock_client_ops(self):
+        ukijumuisha test_utils.run_test_unix_server() as httpd:
             sock = socket.socket(socket.AF_UNIX)
             self._basetest_sock_client_ops(httpd, sock)
             sock = socket.socket(socket.AF_UNIX)
             self._basetest_sock_recv_into(httpd, sock)
 
-    def test_sock_client_fail(self):
+    eleza test_sock_client_fail(self):
         # Make sure that we will get an unused port
-        address = None
+        address = Tupu
         jaribu:
             s = socket.socket()
             s.bind(('127.0.0.1', 0))
@@ -244,15 +244,15 @@ class BaseSockTestsMixin:
             s.close()
 
         sock = socket.socket()
-        sock.setblocking(False)
-        with self.assertRaises(ConnectionRefusedError):
+        sock.setblocking(Uongo)
+        ukijumuisha self.assertRaises(ConnectionRefusedError):
             self.loop.run_until_complete(
                 self.loop.sock_connect(sock, address))
         sock.close()
 
-    def test_sock_accept(self):
+    eleza test_sock_accept(self):
         listener = socket.socket()
-        listener.setblocking(False)
+        listener.setblocking(Uongo)
         listener.bind(('127.0.0.1', 0))
         listener.listen(1)
         client = socket.socket()
@@ -267,24 +267,24 @@ class BaseSockTestsMixin:
         conn.close()
         listener.close()
 
-    def test_create_connection_sock(self):
-        with test_utils.run_test_server() as httpd:
-            sock = None
+    eleza test_create_connection_sock(self):
+        ukijumuisha test_utils.run_test_server() as httpd:
+            sock = Tupu
             infos = self.loop.run_until_complete(
                 self.loop.getaddrinfo(
                     *httpd.address, type=socket.SOCK_STREAM))
-            for family, type, proto, cname, address in infos:
+            kila family, type, proto, cname, address kwenye infos:
                 jaribu:
                     sock = socket.socket(family=family, type=type, proto=proto)
-                    sock.setblocking(False)
+                    sock.setblocking(Uongo)
                     self.loop.run_until_complete(
                         self.loop.sock_connect(sock, address))
-                tatizo BaseException:
+                except BaseException:
                     pass
                 isipokua:
                     koma
             isipokua:
-                assert False, 'Can sio create socket.'
+                assert Uongo, 'Can sio create socket.'
 
             f = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop), sock=sock)
@@ -296,48 +296,48 @@ class BaseSockTestsMixin:
             tr.close()
 
 
-if sys.platform == 'win32':
+ikiwa sys.platform == 'win32':
 
-    class SelectEventLoopTests(BaseSockTestsMixin,
+    kundi SelectEventLoopTests(BaseSockTestsMixin,
                                test_utils.TestCase):
 
-        def create_event_loop(self):
-            return asyncio.SelectorEventLoop()
+        eleza create_event_loop(self):
+            rudisha asyncio.SelectorEventLoop()
 
-    class ProactorEventLoopTests(BaseSockTestsMixin,
+    kundi ProactorEventLoopTests(BaseSockTestsMixin,
                                  test_utils.TestCase):
 
-        def create_event_loop(self):
-            return asyncio.ProactorEventLoop()
+        eleza create_event_loop(self):
+            rudisha asyncio.ProactorEventLoop()
 
 isipokua:
-    import selectors
+    agiza selectors
 
-    if hasattr(selectors, 'KqueueSelector'):
-        class KqueueEventLoopTests(BaseSockTestsMixin,
+    ikiwa hasattr(selectors, 'KqueueSelector'):
+        kundi KqueueEventLoopTests(BaseSockTestsMixin,
                                    test_utils.TestCase):
 
-            def create_event_loop(self):
-                return asyncio.SelectorEventLoop(
+            eleza create_event_loop(self):
+                rudisha asyncio.SelectorEventLoop(
                     selectors.KqueueSelector())
 
-    if hasattr(selectors, 'EpollSelector'):
-        class EPollEventLoopTests(BaseSockTestsMixin,
+    ikiwa hasattr(selectors, 'EpollSelector'):
+        kundi EPollEventLoopTests(BaseSockTestsMixin,
                                   test_utils.TestCase):
 
-            def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.EpollSelector())
+            eleza create_event_loop(self):
+                rudisha asyncio.SelectorEventLoop(selectors.EpollSelector())
 
-    if hasattr(selectors, 'PollSelector'):
-        class PollEventLoopTests(BaseSockTestsMixin,
+    ikiwa hasattr(selectors, 'PollSelector'):
+        kundi PollEventLoopTests(BaseSockTestsMixin,
                                  test_utils.TestCase):
 
-            def create_event_loop(self):
-                return asyncio.SelectorEventLoop(selectors.PollSelector())
+            eleza create_event_loop(self):
+                rudisha asyncio.SelectorEventLoop(selectors.PollSelector())
 
     # Should always exist.
-    class SelectEventLoopTests(BaseSockTestsMixin,
+    kundi SelectEventLoopTests(BaseSockTestsMixin,
                                test_utils.TestCase):
 
-        def create_event_loop(self):
-            return asyncio.SelectorEventLoop(selectors.SelectSelector())
+        eleza create_event_loop(self):
+            rudisha asyncio.SelectorEventLoop(selectors.SelectSelector())

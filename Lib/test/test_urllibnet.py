@@ -59,17 +59,17 @@ kundi urlopenNetworkTests(unittest.TestCase):
                 r.close()
 
     eleza test_basic(self):
-        # Simple test expected to pita.
-        ukijumuisha self.urlopen(self.url) kama open_url:
+        # Simple test expected to pass.
+        ukijumuisha self.urlopen(self.url) as open_url:
             kila attr kwenye ("read", "readline", "readlines", "fileno", "close",
                          "info", "geturl"):
-                self.assertKweli(hasattr(open_url, attr), "object rudishaed kutoka "
+                self.assertKweli(hasattr(open_url, attr), "object returned kutoka "
                                 "urlopen lacks the %s attribute" % attr)
             self.assertKweli(open_url.read(), "calling 'read' failed")
 
     eleza test_readlines(self):
         # Test both readline na readlines.
-        ukijumuisha self.urlopen(self.url) kama open_url:
+        ukijumuisha self.urlopen(self.url) as open_url:
             self.assertIsInstance(open_url.readline(), bytes,
                                   "readline did sio rudisha a string")
             self.assertIsInstance(open_url.readlines(), list,
@@ -77,16 +77,16 @@ kundi urlopenNetworkTests(unittest.TestCase):
 
     eleza test_info(self):
         # Test 'info'.
-        ukijumuisha self.urlopen(self.url) kama open_url:
+        ukijumuisha self.urlopen(self.url) as open_url:
             info_obj = open_url.info()
             self.assertIsInstance(info_obj, email.message.Message,
-                                  "object rudishaed by 'info' ni sio an "
+                                  "object returned by 'info' ni sio an "
                                   "instance of email.message.Message")
             self.assertEqual(info_obj.get_content_subtype(), "html")
 
     eleza test_geturl(self):
-        # Make sure same URL kama opened ni rudishaed by geturl.
-        ukijumuisha self.urlopen(self.url) kama open_url:
+        # Make sure same URL as opened ni returned by geturl.
+        ukijumuisha self.urlopen(self.url) as open_url:
             gotten_url = open_url.geturl()
             self.assertEqual(gotten_url, self.url)
 
@@ -103,7 +103,7 @@ kundi urlopenNetworkTests(unittest.TestCase):
             self.assertEqual(code, 404)
 
     eleza test_bad_address(self):
-        # Make sure proper exception ni ashiriad when connecting to a bogus
+        # Make sure proper exception ni raised when connecting to a bogus
         # address.
 
         # Given that both VeriSign na various ISPs have in
@@ -118,25 +118,25 @@ kundi urlopenNetworkTests(unittest.TestCase):
         # related problem: The normal DNS resolver appends
         # the domain names kutoka the search path ikiwa there is
         # no '.' the end and, na ikiwa one of those domains
-        # implements a '*' rule a result ni rudishaed.
-        # However, none of this will prevent the test kutoka
+        # implements a '*' rule a result ni returned.
+        # However, none of this will prevent the test from
         # failing ikiwa the ISP hijacks all invalid domain
         # requests.  The real solution would be to be able to
         # parameterize the framework ukijumuisha a mock resolver.
         bogus_domain = "sadflkjsasf.i.nvali.d."
         jaribu:
             socket.gethostbyname(bogus_domain)
-        tatizo OSError:
+        except OSError:
             # socket.gaierror ni too narrow, since getaddrinfo() may also
             # fail ukijumuisha EAI_SYSTEM na ETIMEDOUT (seen on Ubuntu 13.04),
             # i.e. Python's TimeoutError.
-            pita
+            pass
         isipokua:
-            # This happens ukijumuisha some overzealous DNS providers such kama OpenDNS
+            # This happens ukijumuisha some overzealous DNS providers such as OpenDNS
             self.skipTest("%r should sio resolve kila test to work" % bogus_domain)
-        failure_explanation = ('opening an invalid URL did sio ashiria OSError; '
+        failure_explanation = ('opening an invalid URL did sio  ashiria OSError; '
                                'can be caused by a broken DNS server '
-                               '(e.g. rudishas 404 ama hijacks page)')
+                               '(e.g. returns 404 ama hijacks page)')
         ukijumuisha self.assertRaises(OSError, msg=failure_explanation):
             urllib.request.urlopen("http://{}/".format(bogus_domain))
 
@@ -156,38 +156,38 @@ kundi urlretrieveNetworkTests(unittest.TestCase):
 
     eleza test_basic(self):
         # Test basic functionality.
-        ukijumuisha self.urlretrieve(self.logo) kama (file_location, info):
-            self.assertKweli(os.path.exists(file_location), "file location rudishaed by"
+        ukijumuisha self.urlretrieve(self.logo) as (file_location, info):
+            self.assertKweli(os.path.exists(file_location), "file location returned by"
                             " urlretrieve ni sio a valid path")
-            ukijumuisha open(file_location, 'rb') kama f:
-                self.assertKweli(f.read(), "reading kutoka the file location rudishaed"
+            ukijumuisha open(file_location, 'rb') as f:
+                self.assertKweli(f.read(), "reading kutoka the file location returned"
                                 " by urlretrieve failed")
 
     eleza test_specified_path(self):
         # Make sure that specifying the location of the file to write to works.
         ukijumuisha self.urlretrieve(self.logo,
-                              support.TESTFN) kama (file_location, info):
+                              support.TESTFN) as (file_location, info):
             self.assertEqual(file_location, support.TESTFN)
             self.assertKweli(os.path.exists(file_location))
-            ukijumuisha open(file_location, 'rb') kama f:
+            ukijumuisha open(file_location, 'rb') as f:
                 self.assertKweli(f.read(), "reading kutoka temporary file failed")
 
     eleza test_header(self):
-        # Make sure header rudishaed kama 2nd value kutoka urlretrieve ni good.
-        ukijumuisha self.urlretrieve(self.logo) kama (file_location, info):
+        # Make sure header returned as 2nd value kutoka urlretrieve ni good.
+        ukijumuisha self.urlretrieve(self.logo) as (file_location, info):
             self.assertIsInstance(info, email.message.Message,
                                   "info ni sio an instance of email.message.Message")
 
     logo = "http://www.pythontest.net/"
 
     eleza test_data_header(self):
-        ukijumuisha self.urlretrieve(self.logo) kama (file_location, fileheaders):
+        ukijumuisha self.urlretrieve(self.logo) as (file_location, fileheaders):
             datevalue = fileheaders.get('Date')
             dateformat = '%a, %d %b %Y %H:%M:%S GMT'
             jaribu:
                 time.strptime(datevalue, dateformat)
-            tatizo ValueError:
-                self.fail('Date value haiko kwenye %r format' % dateformat)
+            except ValueError:
+                self.fail('Date value sio kwenye %r format' % dateformat)
 
     eleza test_reporthook(self):
         records = []
@@ -195,7 +195,7 @@ kundi urlretrieveNetworkTests(unittest.TestCase):
         eleza recording_reporthook(blocks, block_size, total_size):
             records.append((blocks, block_size, total_size))
 
-        ukijumuisha self.urlretrieve(self.logo, reporthook=recording_reporthook) kama (
+        ukijumuisha self.urlretrieve(self.logo, reporthook=recording_reporthook) as (
                 file_location, fileheaders):
             expected_size = int(fileheaders['Content-Length'])
 

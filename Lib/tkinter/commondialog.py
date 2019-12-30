@@ -1,36 +1,36 @@
-# base class for tk common dialogues
+# base kundi kila tk common dialogues
 #
-# this module provides a base class for accessing the common
-# dialogues available in Tk 4.2 and newer.  use filedialog,
-# colorchooser, and messagebox to access the individual
+# this module provides a base kundi kila accessing the common
+# dialogues available kwenye Tk 4.2 na newer.  use filedialog,
+# colorchooser, na messagebox to access the individual
 # dialogs.
 #
 # written by Fredrik Lundh, May 1997
 #
 
-from tkinter import *
+kutoka tkinter agiza *
 
 
-class Dialog:
+kundi Dialog:
 
-    command  = None
+    command  = Tupu
 
-    def __init__(self, master=None, **options):
+    eleza __init__(self, master=Tupu, **options):
         self.master  = master
         self.options = options
-        if sio master and options.get('parent'):
+        ikiwa sio master na options.get('parent'):
             self.master = options['parent']
 
-    def _fixoptions(self):
+    eleza _fixoptions(self):
         pass # hook
 
-    def _fixresult(self, widget, result):
-        return result # hook
+    eleza _fixresult(self, widget, result):
+        rudisha result # hook
 
-    def show(self, **options):
+    eleza show(self, **options):
 
         # update instance options
-        for k, v in options.items():
+        kila k, v kwenye options.items():
             self.options[k] = v
 
         self._fixoptions()
@@ -53,4 +53,4 @@ class Dialog:
             tatizo:
                 pass
 
-        return s
+        rudisha s

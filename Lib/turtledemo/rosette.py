@@ -14,7 +14,7 @@ parallel.
 Followed by a complete undo().
 """
 kutoka turtle agiza Screen, Turtle, mainloop
-kutoka time agiza perf_counter kama clock, sleep
+kutoka time agiza perf_counter as clock, sleep
 
 eleza mn_eck(p, ne,sz):
     turtlelist = [p]

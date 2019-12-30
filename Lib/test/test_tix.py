@@ -16,7 +16,7 @@ kundi TestTix(unittest.TestCase):
     eleza setUp(self):
         jaribu:
             self.root = tix.Tk()
-        tatizo TclError:
+        except TclError:
             ikiwa sys.platform.startswith('win'):
                 self.fail('Tix should always be available on Windows')
             self.skipTest('Tix sio available')
@@ -25,7 +25,7 @@ kundi TestTix(unittest.TestCase):
 
     eleza test_tix_available(self):
         # this test ni just here to make setUp run
-        pita
+        pass
 
 
 ikiwa __name__ == '__main__':

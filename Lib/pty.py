@@ -24,8 +24,8 @@ eleza openpty():
 
     jaribu:
         rudisha os.openpty()
-    tatizo (AttributeError, OSError):
-        pita
+    except (AttributeError, OSError):
+        pass
     master_fd, slave_name = _open_terminal()
     slave_fd = slave_open(slave_name)
     rudisha master_fd, slave_fd
@@ -37,8 +37,8 @@ eleza master_open():
 
     jaribu:
         master_fd, slave_fd = os.openpty()
-    tatizo (AttributeError, OSError):
-        pita
+    except (AttributeError, OSError):
+        pass
     isipokua:
         slave_name = os.ttyname(slave_fd)
         os.close(slave_fd)
@@ -53,27 +53,27 @@ eleza _open_terminal():
             pty_name = '/dev/pty' + x + y
             jaribu:
                 fd = os.open(pty_name, os.O_RDWR)
-            tatizo OSError:
+            except OSError:
                 endelea
             rudisha (fd, '/dev/tty' + x + y)
-    ashiria OSError('out of pty devices')
+     ashiria OSError('out of pty devices')
 
 eleza slave_open(tty_name):
     """slave_open(tty_name) -> slave_fd
-    Open the pty slave na acquire the controlling terminal, rudishaing
+    Open the pty slave na acquire the controlling terminal, returning
     opened filedescriptor.
     Deprecated, use openpty() instead."""
 
     result = os.open(tty_name, os.O_RDWR)
     jaribu:
         kutoka fcntl agiza ioctl, I_PUSH
-    tatizo ImportError:
+    except ImportError:
         rudisha result
     jaribu:
         ioctl(result, I_PUSH, "ptem")
         ioctl(result, I_PUSH, "ldterm")
-    tatizo OSError:
-        pita
+    except OSError:
+        pass
     rudisha result
 
 eleza fork():
@@ -82,15 +82,15 @@ eleza fork():
 
     jaribu:
         pid, fd = os.forkpty()
-    tatizo (AttributeError, OSError):
-        pita
+    except (AttributeError, OSError):
+        pass
     isipokua:
         ikiwa pid == CHILD:
             jaribu:
                 os.setsid()
-            tatizo OSError:
+            except OSError:
                 # os.forkpty() already set us session leader
-                pita
+                pass
         rudisha pid, fd
 
     master_fd, slave_fd = openpty()
@@ -158,11 +158,11 @@ eleza spawn(argv, master_read=_read, stdin_read=_read):
         mode = tty.tcgetattr(STDIN_FILENO)
         tty.setraw(STDIN_FILENO)
         restore = 1
-    tatizo tty.error:    # This ni the same kama termios.error
+    except tty.error:    # This ni the same as termios.error
         restore = 0
     jaribu:
         _copy(master_fd, master_read, stdin_read)
-    tatizo OSError:
+    except OSError:
         ikiwa restore:
             tty.tcsetattr(STDIN_FILENO, tty.TCSAFLUSH, mode)
 

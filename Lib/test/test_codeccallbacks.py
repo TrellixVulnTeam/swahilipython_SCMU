@@ -86,12 +86,12 @@ kundi CodecCallbackTest(unittest.TestCase):
 
         eleza xmlcharnamereplace(exc):
             ikiwa sio isinstance(exc, UnicodeEncodeError):
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
             l = []
             kila c kwenye exc.object[exc.start:exc.end]:
                 jaribu:
                     l.append("&%s;" % html.entities.codepoint2name[ord(c)])
-                tatizo KeyError:
+                except KeyError:
                     l.append("&#%d;" % ord(c))
             rudisha ("".join(l), exc.end)
 
@@ -117,7 +117,7 @@ kundi CodecCallbackTest(unittest.TestCase):
 
         eleza uninamereplace(exc):
             ikiwa sio isinstance(exc, UnicodeEncodeError):
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
             l = []
             kila c kwenye exc.object[exc.start:exc.end]:
                 l.append(unicodedata.name(c, "0x%x" % ord(c)))
@@ -137,7 +137,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         self.assertEqual(sin.encode("iso-8859-15", "test.uninamereplace"), sout)
 
     eleza test_backslashescape(self):
-        # Does the same kama the "unicode-escape" encoding, but ukijumuisha different
+        # Does the same as the "unicode-escape" encoding, but ukijumuisha different
         # base encodings.
         sin = "a\xac\u1234\u20ac\u8000\U0010ffff"
         sout = b"a\\xac\\u1234\\u20ac\\u8000\\U0010ffff"
@@ -150,7 +150,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         self.assertEqual(sin.encode("iso-8859-15", "backslashreplace"), sout)
 
     eleza test_nameescape(self):
-        # Does the same kama backslashescape, but prefers ``\N{...}`` escape
+        # Does the same as backslashescape, but prefers ``\N{...}`` escape
         # sequences.
         sin = "a\xac\u1234\u20ac\u8000\U0010ffff"
         sout = (b'a\\N{NOT SIGN}\\N{ETHIOPIC SYLLABLE SEE}\\N{EURO SIGN}'
@@ -168,15 +168,15 @@ kundi CodecCallbackTest(unittest.TestCase):
     eleza test_decoding_callbacks(self):
         # This ni a test kila a decoding callback handler
         # that allows the decoding of the invalid sequence
-        # "\xc0\x80" na rudishas "\x00" instead of raising an error.
+        # "\xc0\x80" na returns "\x00" instead of raising an error.
         # All other illegal sequences will be handled strictly.
         eleza relaxedutf8(exc):
             ikiwa sio isinstance(exc, UnicodeDecodeError):
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
             ikiwa exc.object[exc.start:exc.start+2] == b"\xc0\x80":
                 rudisha ("\x00", exc.start+2) # retry after two bytes
             isipokua:
-                ashiria exc
+                 ashiria exc
 
         codecs.register_error("test.relaxedutf8", relaxedutf8)
 
@@ -185,7 +185,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         sout = "a\x00b\x00c\xfc\x00\x00"
         self.assertEqual(sin.decode("utf-8", "test.relaxedutf8"), sout)
 
-        # "\xc0\x81" ni sio valid na a UnicodeDecodeError will be ashiriad
+        # "\xc0\x81" ni sio valid na a UnicodeDecodeError will be raised
         sin = b"\xc0\x80\xc0\x81"
         self.assertRaises(UnicodeDecodeError, sin.decode,
                           "utf-8", "test.relaxedutf8")
@@ -216,17 +216,17 @@ kundi CodecCallbackTest(unittest.TestCase):
             r = range(exc.start, exc.end)
             ikiwa isinstance(exc, UnicodeEncodeError):
                 l = ["<%d>" % ord(exc.object[pos]) kila pos kwenye r]
-            lasivyo isinstance(exc, UnicodeDecodeError):
+            elikiwa isinstance(exc, UnicodeDecodeError):
                 l = ["<%d>" % exc.object[pos] kila pos kwenye r]
             isipokua:
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
             rudisha ("[%s]" % "".join(l), exc.end)
 
         codecs.register_error("test.handler1", handler1)
 
         eleza handler2(exc):
             ikiwa sio isinstance(exc, UnicodeDecodeError):
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
             l = ["<%d>" % exc.object[pos] kila pos kwenye range(exc.start, exc.end)]
             rudisha ("[%s]" % "".join(l), exc.end+1) # skip one character
 
@@ -284,8 +284,8 @@ kundi CodecCallbackTest(unittest.TestCase):
                 kila err kwenye errors:
                     jaribu:
                         uni.encode(enc, err)
-                    tatizo UnicodeError:
-                        pita
+                    except UnicodeError:
+                        pass
 
     eleza check_exceptionobjectargs(self, exctype, args, msg):
         # Test UnicodeError subclasses: construction, attribute assignment na __str__ conversion
@@ -384,7 +384,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodstrictexceptions(self):
-        # "strict" complains about a non-exception pitaed in
+        # "strict" complains about a non-exception passed in
         self.assertRaises(
             TypeError,
             codecs.strict_errors,
@@ -397,7 +397,7 @@ kundi CodecCallbackTest(unittest.TestCase):
             Exception("ouch")
         )
 
-        # If the correct exception ni pitaed in, "strict" ashirias it
+        # If the correct exception ni passed in, "strict" raises it
         self.assertRaises(
             UnicodeEncodeError,
             codecs.strict_errors,
@@ -415,7 +415,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodignoreexceptions(self):
-        # "ignore" complains about a non-exception pitaed in
+        # "ignore" complains about a non-exception passed in
         self.assertRaises(
            TypeError,
            codecs.ignore_errors,
@@ -427,7 +427,7 @@ kundi CodecCallbackTest(unittest.TestCase):
            codecs.ignore_errors,
            UnicodeError("ouch")
         )
-        # If the correct exception ni pitaed in, "ignore" rudishas an empty replacement
+        # If the correct exception ni passed in, "ignore" returns an empty replacement
         self.assertEqual(
             codecs.ignore_errors(
                 UnicodeEncodeError("ascii", "a\u3042b", 1, 2, "ouch")),
@@ -445,7 +445,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodreplaceexceptions(self):
-        # "replace" complains about a non-exception pitaed in
+        # "replace" complains about a non-exception passed in
         self.assertRaises(
            TypeError,
            codecs.replace_errors,
@@ -467,7 +467,7 @@ kundi CodecCallbackTest(unittest.TestCase):
             codecs.replace_errors,
             BadObjectUnicodeDecodeError()
         )
-        # With the correct exception, "replace" rudishas an "?" ama "\ufffd" replacement
+        # With the correct exception, "replace" returns an "?" ama "\ufffd" replacement
         self.assertEqual(
             codecs.replace_errors(
                 UnicodeEncodeError("ascii", "a\u3042b", 1, 2, "ouch")),
@@ -485,7 +485,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodxmlcharrefreplaceexceptions(self):
-        # "xmlcharrefreplace" complains about a non-exception pitaed in
+        # "xmlcharrefreplace" complains about a non-exception passed in
         self.assertRaises(
            TypeError,
            codecs.xmlcharrefreplace_errors,
@@ -522,7 +522,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodbackslashreplaceexceptions(self):
-        # "backslashreplace" complains about a non-exception pitaed in
+        # "backslashreplace" complains about a non-exception passed in
         self.assertRaises(
            TypeError,
            codecs.backslashreplace_errors,
@@ -580,7 +580,7 @@ kundi CodecCallbackTest(unittest.TestCase):
                 )
 
     eleza test_badandgoodnamereplaceexceptions(self):
-        # "namereplace" complains about a non-exception pitaed in
+        # "namereplace" complains about a non-exception passed in
         self.assertRaises(
            TypeError,
            codecs.namereplace_errors,
@@ -627,7 +627,7 @@ kundi CodecCallbackTest(unittest.TestCase):
 
     eleza test_badandgoodsurrogateescapeexceptions(self):
         surrogateescape_errors = codecs.lookup_error('surrogateescape')
-        # "surrogateescape" complains about a non-exception pitaed in
+        # "surrogateescape" complains about a non-exception passed in
         self.assertRaises(
            TypeError,
            surrogateescape_errors,
@@ -669,24 +669,24 @@ kundi CodecCallbackTest(unittest.TestCase):
             ("\udc80", 2)
         )
 
-    eleza test_badandgoodsurrogatepitaexceptions(self):
-        surrogatepita_errors = codecs.lookup_error('surrogatepita')
-        # "surrogatepita" complains about a non-exception pitaed in
+    eleza test_badandgoodsurrogatepassexceptions(self):
+        surrogatepass_errors = codecs.lookup_error('surrogatepass')
+        # "surrogatepass" complains about a non-exception passed in
         self.assertRaises(
            TypeError,
-           surrogatepita_errors,
+           surrogatepass_errors,
            42
         )
-        # "surrogatepita" complains about the wrong exception types
+        # "surrogatepass" complains about the wrong exception types
         self.assertRaises(
            TypeError,
-           surrogatepita_errors,
+           surrogatepass_errors,
            UnicodeError("ouch")
         )
-        # "surrogatepita" can sio be used kila translating
+        # "surrogatepass" can sio be used kila translating
         self.assertRaises(
             TypeError,
-            surrogatepita_errors,
+            surrogatepass_errors,
             UnicodeTranslateError("\ud800", 0, 1, "ouch")
         )
         # Use the correct exception
@@ -694,19 +694,19 @@ kundi CodecCallbackTest(unittest.TestCase):
             ukijumuisha self.subTest(encoding=enc):
                 self.assertRaises(
                     UnicodeEncodeError,
-                    surrogatepita_errors,
+                    surrogatepass_errors,
                     UnicodeEncodeError(enc, "a", 0, 1, "ouch")
                 )
                 self.assertRaises(
                     UnicodeDecodeError,
-                    surrogatepita_errors,
+                    surrogatepass_errors,
                     UnicodeDecodeError(enc, "a".encode(enc), 0, 1, "ouch")
                 )
         kila s kwenye ("\ud800", "\udfff", "\ud800\udfff"):
             ukijumuisha self.subTest(str=s):
                 self.assertRaises(
                     UnicodeEncodeError,
-                    surrogatepita_errors,
+                    surrogatepass_errors,
                     UnicodeEncodeError("ascii", s, 0, len(s), "ouch")
                 )
         tests = [
@@ -729,13 +729,13 @@ kundi CodecCallbackTest(unittest.TestCase):
         kila enc, s, b, n kwenye tests:
             ukijumuisha self.subTest(encoding=enc, str=s, bytes=b):
                 self.assertEqual(
-                    surrogatepita_errors(
+                    surrogatepass_errors(
                         UnicodeEncodeError(enc, "a" + s + "b",
                                            1, 1 + len(s), "ouch")),
                     (b, 1 + len(s))
                 )
                 self.assertEqual(
-                    surrogatepita_errors(
+                    surrogatepass_errors(
                         UnicodeDecodeError(enc, bytearray(b"a" + b[:n] + b"b"),
                                            1, 1 + n, "ouch")),
                     (s[:1], 1 + n)
@@ -788,7 +788,7 @@ kundi CodecCallbackTest(unittest.TestCase):
             ikiwa isinstance(exc, UnicodeEncodeError):
                 rudisha ("\u4242", exc.end)
             isipokua:
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
         codecs.register_error("test.unencreplhandler", unencrepl)
         kila enc kwenye ("ascii", "iso-8859-1", "iso-8859-15"):
             self.assertRaises(
@@ -833,55 +833,55 @@ kundi CodecCallbackTest(unittest.TestCase):
         # na callers
         self.assertRaises(LookupError, b"\xff".decode, "ascii", "test.unknown")
 
-        eleza baddecoderudisha1(exc):
+        eleza baddecodereturn1(exc):
             rudisha 42
-        codecs.register_error("test.baddecoderudisha1", baddecoderudisha1)
-        self.assertRaises(TypeError, b"\xff".decode, "ascii", "test.baddecoderudisha1")
-        self.assertRaises(TypeError, b"\\".decode, "unicode-escape", "test.baddecoderudisha1")
-        self.assertRaises(TypeError, b"\\x0".decode, "unicode-escape", "test.baddecoderudisha1")
-        self.assertRaises(TypeError, b"\\x0y".decode, "unicode-escape", "test.baddecoderudisha1")
-        self.assertRaises(TypeError, b"\\Uffffeeee".decode, "unicode-escape", "test.baddecoderudisha1")
-        self.assertRaises(TypeError, b"\\uyyyy".decode, "raw-unicode-escape", "test.baddecoderudisha1")
+        codecs.register_error("test.baddecodereturn1", baddecodereturn1)
+        self.assertRaises(TypeError, b"\xff".decode, "ascii", "test.baddecodereturn1")
+        self.assertRaises(TypeError, b"\\".decode, "unicode-escape", "test.baddecodereturn1")
+        self.assertRaises(TypeError, b"\\x0".decode, "unicode-escape", "test.baddecodereturn1")
+        self.assertRaises(TypeError, b"\\x0y".decode, "unicode-escape", "test.baddecodereturn1")
+        self.assertRaises(TypeError, b"\\Uffffeeee".decode, "unicode-escape", "test.baddecodereturn1")
+        self.assertRaises(TypeError, b"\\uyyyy".decode, "raw-unicode-escape", "test.baddecodereturn1")
 
-        eleza baddecoderudisha2(exc):
+        eleza baddecodereturn2(exc):
             rudisha ("?", Tupu)
-        codecs.register_error("test.baddecoderudisha2", baddecoderudisha2)
-        self.assertRaises(TypeError, b"\xff".decode, "ascii", "test.baddecoderudisha2")
+        codecs.register_error("test.baddecodereturn2", baddecodereturn2)
+        self.assertRaises(TypeError, b"\xff".decode, "ascii", "test.baddecodereturn2")
 
         handler = PosReturn()
-        codecs.register_error("test.posrudisha", handler.handle)
+        codecs.register_error("test.posreturn", handler.handle)
 
         # Valid negative position
         handler.pos = -1
-        self.assertEqual(b"\xff0".decode("ascii", "test.posrudisha"), "<?>0")
+        self.assertEqual(b"\xff0".decode("ascii", "test.posreturn"), "<?>0")
 
         # Valid negative position
         handler.pos = -2
-        self.assertEqual(b"\xff0".decode("ascii", "test.posrudisha"), "<?><?>")
+        self.assertEqual(b"\xff0".decode("ascii", "test.posreturn"), "<?><?>")
 
         # Negative position out of bounds
         handler.pos = -3
-        self.assertRaises(IndexError, b"\xff0".decode, "ascii", "test.posrudisha")
+        self.assertRaises(IndexError, b"\xff0".decode, "ascii", "test.posreturn")
 
         # Valid positive position
         handler.pos = 1
-        self.assertEqual(b"\xff0".decode("ascii", "test.posrudisha"), "<?>0")
+        self.assertEqual(b"\xff0".decode("ascii", "test.posreturn"), "<?>0")
 
         # Largest valid positive position (one beyond end of input)
         handler.pos = 2
-        self.assertEqual(b"\xff0".decode("ascii", "test.posrudisha"), "<?>")
+        self.assertEqual(b"\xff0".decode("ascii", "test.posreturn"), "<?>")
 
         # Invalid positive position
         handler.pos = 3
-        self.assertRaises(IndexError, b"\xff0".decode, "ascii", "test.posrudisha")
+        self.assertRaises(IndexError, b"\xff0".decode, "ascii", "test.posreturn")
 
         # Restart at the "0"
         handler.pos = 6
-        self.assertEqual(b"\\uyyyy0".decode("raw-unicode-escape", "test.posrudisha"), "<?>0")
+        self.assertEqual(b"\\uyyyy0".decode("raw-unicode-escape", "test.posreturn"), "<?>0")
 
         kundi D(dict):
             eleza __getitem__(self, key):
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(UnicodeError, codecs.charmap_decode, b"\xff", "strict", {0xff: Tupu})
         self.assertRaises(ValueError, codecs.charmap_decode, b"\xff", "strict", D())
         self.assertRaises(TypeError, codecs.charmap_decode, b"\xff", "strict", {0xff: sys.maxunicode+1})
@@ -892,50 +892,50 @@ kundi CodecCallbackTest(unittest.TestCase):
         # na callers
         self.assertRaises(LookupError, "\xff".encode, "ascii", "test.unknown")
 
-        eleza badencoderudisha1(exc):
+        eleza badencodereturn1(exc):
             rudisha 42
-        codecs.register_error("test.badencoderudisha1", badencoderudisha1)
-        self.assertRaises(TypeError, "\xff".encode, "ascii", "test.badencoderudisha1")
+        codecs.register_error("test.badencodereturn1", badencodereturn1)
+        self.assertRaises(TypeError, "\xff".encode, "ascii", "test.badencodereturn1")
 
-        eleza badencoderudisha2(exc):
+        eleza badencodereturn2(exc):
             rudisha ("?", Tupu)
-        codecs.register_error("test.badencoderudisha2", badencoderudisha2)
-        self.assertRaises(TypeError, "\xff".encode, "ascii", "test.badencoderudisha2")
+        codecs.register_error("test.badencodereturn2", badencodereturn2)
+        self.assertRaises(TypeError, "\xff".encode, "ascii", "test.badencodereturn2")
 
         handler = PosReturn()
-        codecs.register_error("test.posrudisha", handler.handle)
+        codecs.register_error("test.posreturn", handler.handle)
 
         # Valid negative position
         handler.pos = -1
-        self.assertEqual("\xff0".encode("ascii", "test.posrudisha"), b"<?>0")
+        self.assertEqual("\xff0".encode("ascii", "test.posreturn"), b"<?>0")
 
         # Valid negative position
         handler.pos = -2
-        self.assertEqual("\xff0".encode("ascii", "test.posrudisha"), b"<?><?>")
+        self.assertEqual("\xff0".encode("ascii", "test.posreturn"), b"<?><?>")
 
         # Negative position out of bounds
         handler.pos = -3
-        self.assertRaises(IndexError, "\xff0".encode, "ascii", "test.posrudisha")
+        self.assertRaises(IndexError, "\xff0".encode, "ascii", "test.posreturn")
 
         # Valid positive position
         handler.pos = 1
-        self.assertEqual("\xff0".encode("ascii", "test.posrudisha"), b"<?>0")
+        self.assertEqual("\xff0".encode("ascii", "test.posreturn"), b"<?>0")
 
         # Largest valid positive position (one beyond end of input
         handler.pos = 2
-        self.assertEqual("\xff0".encode("ascii", "test.posrudisha"), b"<?>")
+        self.assertEqual("\xff0".encode("ascii", "test.posreturn"), b"<?>")
 
         # Invalid positive position
         handler.pos = 3
-        self.assertRaises(IndexError, "\xff0".encode, "ascii", "test.posrudisha")
+        self.assertRaises(IndexError, "\xff0".encode, "ascii", "test.posreturn")
 
         handler.pos = 0
 
         kundi D(dict):
             eleza __getitem__(self, key):
-                ashiria ValueError
+                 ashiria ValueError
         kila err kwenye ("strict", "replace", "xmlcharrefreplace",
-                    "backslashreplace", "namereplace", "test.posrudisha"):
+                    "backslashreplace", "namereplace", "test.posreturn"):
             self.assertRaises(UnicodeError, codecs.charmap_encode, "\xff", err, {0xff: Tupu})
             self.assertRaises(ValueError, codecs.charmap_encode, "\xff", err, D())
             self.assertRaises(TypeError, codecs.charmap_encode, "\xff", err, {0xff: 300})
@@ -948,7 +948,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         # kutoka Python, so we can't test that much)
         kundi D(dict):
             eleza __getitem__(self, key):
-                ashiria ValueError
+                 ashiria ValueError
         #self.assertRaises(ValueError, "\xff".translate, D())
         self.assertRaises(ValueError, "\xff".translate, {0xff: sys.maxunicode+1})
         self.assertRaises(TypeError, "\xff".translate, {0xff: ()})
@@ -981,7 +981,7 @@ kundi CodecCallbackTest(unittest.TestCase):
                 exc.object = 42
                 rudisha ("\u4242", 0)
             isipokua:
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
         codecs.register_error("test.replacing", replacing)
 
         kila (encoding, data) kwenye baddata:
@@ -993,7 +993,7 @@ kundi CodecCallbackTest(unittest.TestCase):
                 exc.object = b""
                 rudisha ("\u4242", 0)
             isipokua:
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
         codecs.register_error("test.mutating", mutating)
         # If the decoder doesn't pick up the modified input the following
         # will lead to an endless loop
@@ -1009,7 +1009,7 @@ kundi CodecCallbackTest(unittest.TestCase):
                 # size one character, 0 < forward < exc.end
                 rudisha ('\ufffd', exc.start+1)
             isipokua:
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
         codecs.register_error(
             "test.forward_shorter_than_end", forward_shorter_than_end)
 
@@ -1039,7 +1039,7 @@ kundi CodecCallbackTest(unittest.TestCase):
                 exc.object = b"\x00" * 8
                 rudisha ('\ufffd', exc.start)
             isipokua:
-                ashiria TypeError("don't know how to handle %r" % exc)
+                 ashiria TypeError("don't know how to handle %r" % exc)
         codecs.register_error("test.replace_with_long", replace_with_long)
 
         self.assertEqual(
@@ -1061,7 +1061,7 @@ kundi CodecCallbackTest(unittest.TestCase):
             codecs.namereplace_errors,
             codecs.xmlcharrefreplace_errors,
             codecs.lookup_error('surrogateescape'),
-            codecs.lookup_error('surrogatepita'),
+            codecs.lookup_error('surrogatepass'),
         ]
         kila cls kwenye UnicodeEncodeError, UnicodeDecodeError, UnicodeTranslateError:
             kundi FakeUnicodeError(str):

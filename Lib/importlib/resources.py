@@ -1,7 +1,7 @@
 agiza os
 agiza tempfile
 
-kutoka . agiza abc kama resources_abc
+kutoka . agiza abc as resources_abc
 kutoka contextlib agiza contextmanager, suppress
 kutoka importlib agiza import_module
 kutoka importlib.abc agiza ResourceLoader
@@ -34,19 +34,19 @@ Resource = Union[str, os.PathLike]
 eleza _get_package(package) -> ModuleType:
     """Take a package name ama module object na rudisha the module.
 
-    If a name, the module ni imported.  If the pitaed ama imported module
-    object ni sio a package, ashiria an exception.
+    If a name, the module ni imported.  If the passed ama imported module
+    object ni sio a package,  ashiria an exception.
     """
     ikiwa hasattr(package, '__spec__'):
         ikiwa package.__spec__.submodule_search_locations ni Tupu:
-            ashiria TypeError('{!r} ni sio a package'.format(
+             ashiria TypeError('{!r} ni sio a package'.format(
                 package.__spec__.name))
         isipokua:
             rudisha package
     isipokua:
         module = import_module(package)
         ikiwa module.__spec__.submodule_search_locations ni Tupu:
-            ashiria TypeError('{!r} ni sio a package'.format(package))
+             ashiria TypeError('{!r} ni sio a package'.format(package))
         isipokua:
             rudisha module
 
@@ -54,11 +54,11 @@ eleza _get_package(package) -> ModuleType:
 eleza _normalize_path(path) -> str:
     """Normalize a path by ensuring it ni a string.
 
-    If the resulting string contains path separators, an exception ni ashiriad.
+    If the resulting string contains path separators, an exception ni raised.
     """
     parent, file_name = os.path.split(path)
     ikiwa parent:
-        ashiria ValueError('{!r} must be only a file name'.format(path))
+         ashiria ValueError('{!r} must be only a file name'.format(path))
     isipokua:
         rudisha file_name
 
@@ -68,7 +68,7 @@ eleza _get_resource_reader(
     # Return the package's loader ikiwa it's a ResourceReader.  We can't use
     # a issubclass() check here because apparently abc.'s __subclasscheck__()
     # hook wants to create a weak reference to the object, but
-    # zipagiza.zipimporter does sio support weak references, resulting kwenye a
+    # zipimport.zipimporter does sio support weak references, resulting kwenye a
     # TypeError.  That seems terrible.
     spec = package.__spec__
     ikiwa hasattr(spec.loader, 'get_resource_reader'):
@@ -79,7 +79,7 @@ eleza _get_resource_reader(
 
 eleza _check_location(package):
     ikiwa package.__spec__.origin ni Tupu ama sio package.__spec__.has_location:
-        ashiria FileNotFoundError(f'Package has no location {package!r}')
+         ashiria FileNotFoundError(f'Package has no location {package!r}')
 
 
 eleza open_binary(package: Package, resource: Resource) -> BinaryIO:
@@ -95,7 +95,7 @@ eleza open_binary(package: Package, resource: Resource) -> BinaryIO:
     full_path = os.path.join(package_path, resource)
     jaribu:
         rudisha open(full_path, mode='rb')
-    tatizo OSError:
+    except OSError:
         # Just assume the loader ni a resource loader; all the relevant
         # importlib.machinery loaders are na an AttributeError for
         # get_data() will make it clear what ni needed kutoka the loader.
@@ -108,7 +108,7 @@ eleza open_binary(package: Package, resource: Resource) -> BinaryIO:
             package_name = package.__spec__.name
             message = '{!r} resource sio found kwenye {!r}'.format(
                 resource, package_name)
-            ashiria FileNotFoundError(message)
+             ashiria FileNotFoundError(message)
         isipokua:
             rudisha BytesIO(data)
 
@@ -129,7 +129,7 @@ eleza open_text(package: Package,
     full_path = os.path.join(package_path, resource)
     jaribu:
         rudisha open(full_path, mode='r', encoding=encoding, errors=errors)
-    tatizo OSError:
+    except OSError:
         # Just assume the loader ni a resource loader; all the relevant
         # importlib.machinery loaders are na an AttributeError for
         # get_data() will make it clear what ni needed kutoka the loader.
@@ -142,7 +142,7 @@ eleza open_text(package: Package,
             package_name = package.__spec__.name
             message = '{!r} resource sio found kwenye {!r}'.format(
                 resource, package_name)
-            ashiria FileNotFoundError(message)
+             ashiria FileNotFoundError(message)
         isipokua:
             rudisha TextIOWrapper(BytesIO(data), encoding, errors)
 
@@ -151,7 +151,7 @@ eleza read_binary(package: Package, resource: Resource) -> bytes:
     """Return the binary contents of the resource."""
     resource = _normalize_path(resource)
     package = _get_package(package)
-    ukijumuisha open_binary(package, resource) kama fp:
+    ukijumuisha open_binary(package, resource) as fp:
         rudisha fp.read()
 
 
@@ -161,12 +161,12 @@ eleza read_text(package: Package,
               errors: str = 'strict') -> str:
     """Return the decoded string of the resource.
 
-    The decoding-related arguments have the same semantics kama those of
+    The decoding-related arguments have the same semantics as those of
     bytes.decode().
     """
     resource = _normalize_path(resource)
     package = _get_package(package)
-    ukijumuisha open_text(package, resource, encoding, errors) kama fp:
+    ukijumuisha open_text(package, resource, encoding, errors) as fp:
         rudisha fp.read()
 
 
@@ -177,7 +177,7 @@ eleza path(package: Package, resource: Resource) -> Iterator[Path]:
     If the resource does sio already exist on its own on the file system,
     a temporary file will be created. If the file was created, the file
     will be deleted upon exiting the context manager (no exception is
-    ashiriad ikiwa the file was deleted prior to the context manager
+    raised ikiwa the file was deleted prior to the context manager
     exiting).
     """
     resource = _normalize_path(resource)
@@ -186,21 +186,21 @@ eleza path(package: Package, resource: Resource) -> Iterator[Path]:
     ikiwa reader ni sio Tupu:
         jaribu:
             tuma Path(reader.resource_path(resource))
-            rudisha
-        tatizo FileNotFoundError:
-            pita
+            return
+        except FileNotFoundError:
+            pass
     isipokua:
         _check_location(package)
     # Fall-through kila both the lack of resource_path() *and* if
-    # resource_path() ashirias FileNotFoundError.
+    # resource_path() raises FileNotFoundError.
     package_directory = Path(package.__spec__.origin).parent
     file_path = package_directory / resource
     ikiwa file_path.exists():
         tuma file_path
     isipokua:
-        ukijumuisha open_binary(package, resource) kama fp:
+        ukijumuisha open_binary(package, resource) as fp:
             data = fp.read()
-        # Not using tempfile.NamedTemporaryFile kama it leads to deeper 'try'
+        # Not using tempfile.NamedTemporaryFile as it leads to deeper 'try'
         # blocks due to the need to close the temporary file to work on
         # Windows properly.
         fd, raw_path = tempfile.mkstemp()
@@ -211,8 +211,8 @@ eleza path(package: Package, resource: Resource) -> Iterator[Path]:
         mwishowe:
             jaribu:
                 os.remove(raw_path)
-            tatizo FileNotFoundError:
-                pita
+            except FileNotFoundError:
+                pass
 
 
 eleza is_resource(package: Package, name: str) -> bool:
@@ -227,11 +227,11 @@ eleza is_resource(package: Package, name: str) -> bool:
         rudisha reader.is_resource(name)
     jaribu:
         package_contents = set(contents(package))
-    tatizo (NotADirectoryError, FileNotFoundError):
+    except (NotADirectoryError, FileNotFoundError):
         rudisha Uongo
-    ikiwa name haiko kwenye package_contents:
+    ikiwa name sio kwenye package_contents:
         rudisha Uongo
-    # Just because the given file_name lives kama an entry kwenye the package's
+    # Just because the given file_name lives as an entry kwenye the package's
     # contents doesn't necessarily mean it's a resource.  Directories are not
     # resources, so let's try to find out ikiwa it's a directory ama not.
     path = Path(package.__spec__.origin).parent / name
@@ -242,7 +242,7 @@ eleza contents(package: Package) -> Iterable[str]:
     """Return an iterable of entries kwenye 'package'.
 
     Note that sio all entries are resources.  Specifically, directories are
-    sio considered resources.  Use `is_resource()` on each entry rudishaed here
+    sio considered resources.  Use `is_resource()` on each entry returned here
     to check ikiwa it ni a resource ama not.
     """
     package = _get_package(package)
@@ -252,7 +252,7 @@ eleza contents(package: Package) -> Iterable[str]:
     # Is the package a namespace package?  By definition, namespace packages
     # cannot have resources.  We could use _check_location() na catch the
     # exception, but that's extra work, so just inline the check.
-    lasivyo package.__spec__.origin ni Tupu ama sio package.__spec__.has_location:
+    elikiwa package.__spec__.origin ni Tupu ama sio package.__spec__.has_location:
         rudisha ()
     isipokua:
         package_directory = Path(package.__spec__.origin).parent

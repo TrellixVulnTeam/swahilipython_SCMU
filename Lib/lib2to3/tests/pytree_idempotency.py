@@ -8,15 +8,15 @@ kutoka __future__ agiza print_function
 
 __author__ = "Guido van Rossum <guido@python.org>"
 
-# Support agizas (need to be imported first)
+# Support imports (need to be imported first)
 kutoka . agiza support
 
-# Python agizas
+# Python imports
 agiza os
 agiza sys
 agiza logging
 
-# Local agizas
+# Local imports
 kutoka .. agiza pytree
 kutoka .. agiza pgen2
 kutoka ..pgen2 agiza driver
@@ -51,11 +51,11 @@ eleza main():
         ikiwa diff(fn, tree):
             problems.append(fn)
 
-    # Process every single module on sys.path (but haiko kwenye packages)
+    # Process every single module on sys.path (but sio kwenye packages)
     kila dir kwenye sys.path:
         jaribu:
             names = os.listdir(dir)
-        tatizo OSError:
+        except OSError:
             endelea
         andika("Scanning", dir, "...", file=sys.stderr)
         kila name kwenye names:
@@ -65,7 +65,7 @@ eleza main():
             fn = os.path.join(dir, name)
             jaribu:
                 tree = dr.parse_file(fn, debug=Kweli)
-            tatizo pgen2.parse.ParseError kama err:
+            except pgen2.parse.ParseError as err:
                 andika("ParseError:", err)
             isipokua:
                 ikiwa diff(fn, tree):

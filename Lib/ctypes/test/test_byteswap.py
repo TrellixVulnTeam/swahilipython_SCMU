@@ -1,33 +1,33 @@
-import sys, unittest, struct, math, ctypes
-from binascii import hexlify
+agiza sys, unittest, struct, math, ctypes
+kutoka binascii agiza hexlify
 
-from ctypes import *
+kutoka ctypes agiza *
 
-def bin(s):
-    return hexlify(memoryview(s)).decode().upper()
+eleza bin(s):
+    rudisha hexlify(memoryview(s)).decode().upper()
 
 # Each *simple* type that supports different byte orders has an
-# __ctype_be__ attribute that specifies the same type in BIG ENDIAN
-# byte order, and a __ctype_le__ attribute that is the same type in
+# __ctype_be__ attribute that specifies the same type kwenye BIG ENDIAN
+# byte order, na a __ctype_le__ attribute that ni the same type in
 # LITTLE ENDIAN byte order.
 #
-# For Structures and Unions, these types are created on demand.
+# For Structures na Unions, these types are created on demand.
 
-class Test(unittest.TestCase):
+kundi Test(unittest.TestCase):
     @unittest.skip('test disabled')
-    def test_X(self):
-        print(sys.byteorder, file=sys.stderr)
-        for i in range(32):
+    eleza test_X(self):
+        andika(sys.byteorder, file=sys.stderr)
+        kila i kwenye range(32):
             bits = BITS()
             setattr(bits, "i%s" % i, 1)
             dump(bits)
 
-    def test_slots(self):
-        class BigPoint(BigEndianStructure):
+    eleza test_slots(self):
+        kundi BigPoint(BigEndianStructure):
             __slots__ = ()
             _fields_ = [("x", c_int), ("y", c_int)]
 
-        class LowPoint(LittleEndianStructure):
+        kundi LowPoint(LittleEndianStructure):
             __slots__ = ()
             _fields_ = [("x", c_int), ("y", c_int)]
 
@@ -37,13 +37,13 @@ class Test(unittest.TestCase):
         big.y = 2
         little.x = 2
         little.y = 4
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             big.z = 42
-        with self.assertRaises(AttributeError):
+        ukijumuisha self.assertRaises(AttributeError):
             little.z = 24
 
-    def test_endian_short(self):
-        if sys.byteorder == "little":
+    eleza test_endian_short(self):
+        ikiwa sys.byteorder == "little":
             self.assertIs(c_short.__ctype_le__, c_short)
             self.assertIs(c_short.__ctype_be__.__ctype_le__, c_short)
         isipokua:
@@ -69,8 +69,8 @@ class Test(unittest.TestCase):
         self.assertEqual(bin(s), "3412")
         self.assertEqual(s.value, 0x1234)
 
-    def test_endian_int(self):
-        if sys.byteorder == "little":
+    eleza test_endian_int(self):
+        ikiwa sys.byteorder == "little":
             self.assertIs(c_int.__ctype_le__, c_int)
             self.assertIs(c_int.__ctype_be__.__ctype_le__, c_int)
         isipokua:
@@ -97,8 +97,8 @@ class Test(unittest.TestCase):
         self.assertEqual(bin(s), "78563412")
         self.assertEqual(s.value, 0x12345678)
 
-    def test_endian_longlong(self):
-        if sys.byteorder == "little":
+    eleza test_endian_longlong(self):
+        ikiwa sys.byteorder == "little":
             self.assertIs(c_longlong.__ctype_le__, c_longlong)
             self.assertIs(c_longlong.__ctype_be__.__ctype_le__, c_longlong)
         isipokua:
@@ -125,8 +125,8 @@ class Test(unittest.TestCase):
         self.assertEqual(bin(s), "EFCDAB9078563412")
         self.assertEqual(s.value, 0x1234567890ABCDEF)
 
-    def test_endian_float(self):
-        if sys.byteorder == "little":
+    eleza test_endian_float(self):
+        ikiwa sys.byteorder == "little":
             self.assertIs(c_float.__ctype_le__, c_float)
             self.assertIs(c_float.__ctype_be__.__ctype_le__, c_float)
         isipokua:
@@ -143,8 +143,8 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(s.value, math.pi, places=6)
         self.assertEqual(bin(struct.pack(">f", math.pi)), bin(s))
 
-    def test_endian_double(self):
-        if sys.byteorder == "little":
+    eleza test_endian_double(self):
+        ikiwa sys.byteorder == "little":
             self.assertIs(c_double.__ctype_le__, c_double)
             self.assertIs(c_double.__ctype_be__.__ctype_le__, c_double)
         isipokua:
@@ -160,7 +160,7 @@ class Test(unittest.TestCase):
         self.assertEqual(s.value, math.pi)
         self.assertEqual(bin(struct.pack(">d", math.pi)), bin(s))
 
-    def test_endian_other(self):
+    eleza test_endian_other(self):
         self.assertIs(c_byte.__ctype_le__, c_byte)
         self.assertIs(c_byte.__ctype_be__, c_byte)
 
@@ -170,13 +170,13 @@ class Test(unittest.TestCase):
         self.assertIs(c_char.__ctype_le__, c_char)
         self.assertIs(c_char.__ctype_be__, c_char)
 
-    def test_struct_fields_1(self):
-        if sys.byteorder == "little":
+    eleza test_struct_fields_1(self):
+        ikiwa sys.byteorder == "little":
             base = BigEndianStructure
         isipokua:
             base = LittleEndianStructure
 
-        class T(base):
+        kundi T(base):
             pass
         _fields_ = [("a", c_ubyte),
                     ("b", c_byte),
@@ -199,31 +199,31 @@ class Test(unittest.TestCase):
         T._fields_ = _fields_
 
         # these fields do sio support different byte order:
-        for typ in c_wchar, c_void_p, POINTER(c_int):
+        kila typ kwenye c_wchar, c_void_p, POINTER(c_int):
             _fields_.append(("x", typ))
-            class T(base):
+            kundi T(base):
                 pass
             self.assertRaises(TypeError, setattr, T, "_fields_", [("x", typ)])
 
-    def test_struct_struct(self):
-        # nested structures with different byteorders
+    eleza test_struct_struct(self):
+        # nested structures ukijumuisha different byteorders
 
-        # create nested structures with given byteorders and set memory to data
+        # create nested structures ukijumuisha given byteorders na set memory to data
 
-        for nested, data in (
+        kila nested, data kwenye (
             (BigEndianStructure, b'\0\0\0\1\0\0\0\2'),
             (LittleEndianStructure, b'\1\0\0\0\2\0\0\0'),
         ):
-            for parent in (
+            kila parent kwenye (
                 BigEndianStructure,
                 LittleEndianStructure,
                 Structure,
             ):
-                class NestedStructure(nested):
+                kundi NestedStructure(nested):
                     _fields_ = [("x", c_uint32),
                                 ("y", c_uint32)]
 
-                class TestStructure(parent):
+                kundi TestStructure(parent):
                     _fields_ = [("point", NestedStructure)]
 
                 self.assertEqual(len(data), sizeof(TestStructure))
@@ -233,20 +233,20 @@ class Test(unittest.TestCase):
                 self.assertEqual(s.point.x, 1)
                 self.assertEqual(s.point.y, 2)
 
-    def test_struct_fields_2(self):
-        # standard packing in struct uses no alignment.
+    eleza test_struct_fields_2(self):
+        # standard packing kwenye struct uses no alignment.
         # So, we have to align using pad bytes.
         #
         # Unaligned accesses will crash Python (on those platforms that
         # don't allow it, like sparc solaris).
-        if sys.byteorder == "little":
+        ikiwa sys.byteorder == "little":
             base = BigEndianStructure
             fmt = ">bxhid"
         isipokua:
             base = LittleEndianStructure
             fmt = "<bxhid"
 
-        class S(base):
+        kundi S(base):
             _fields_ = [("b", c_byte),
                         ("h", c_short),
                         ("i", c_int),
@@ -256,15 +256,15 @@ class Test(unittest.TestCase):
         s2 = struct.pack(fmt, 0x12, 0x1234, 0x12345678, 3.14)
         self.assertEqual(bin(s1), bin(s2))
 
-    def test_unaligned_nonnative_struct_fields(self):
-        if sys.byteorder == "little":
+    eleza test_unaligned_nonnative_struct_fields(self):
+        ikiwa sys.byteorder == "little":
             base = BigEndianStructure
             fmt = ">b h xi xd"
         isipokua:
             base = LittleEndianStructure
             fmt = "<b h xi xd"
 
-        class S(base):
+        kundi S(base):
             _pack_ = 1
             _fields_ = [("b", c_byte),
 
@@ -284,14 +284,14 @@ class Test(unittest.TestCase):
         s2 = struct.pack(fmt, 0x12, 0x1234, 0x12345678, 3.14)
         self.assertEqual(bin(s1), bin(s2))
 
-    def test_unaligned_native_struct_fields(self):
-        if sys.byteorder == "little":
+    eleza test_unaligned_native_struct_fields(self):
+        ikiwa sys.byteorder == "little":
             fmt = "<b h xi xd"
         isipokua:
             base = LittleEndianStructure
             fmt = ">b h xi xd"
 
-        class S(Structure):
+        kundi S(Structure):
             _pack_ = 1
             _fields_ = [("b", c_byte),
 
@@ -311,5 +311,5 @@ class Test(unittest.TestCase):
         s2 = struct.pack(fmt, 0x12, 0x1234, 0x12345678, 3.14)
         self.assertEqual(bin(s1), bin(s2))
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

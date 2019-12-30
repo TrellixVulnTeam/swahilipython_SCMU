@@ -28,12 +28,12 @@
   Clear screen by pressing the CLEAR button.
   Restart by pressing the START button again.
 
-  SPECIAL demos, such kama clock.py are those which run EVENTDRIVEN.
+  SPECIAL demos, such as clock.py are those which run EVENTDRIVEN.
 
       Press START button to start the demo.
 
       - Until the EVENTLOOP ni entered everything works
-      kama kwenye an ordinary demo script.
+      as kwenye an ordinary demo script.
 
       - When the EVENTLOOP ni entered, you control the
       application by using the mouse and/or keys (or it's
@@ -56,9 +56,9 @@
 
    (2) How to add your own demos to the demo repository
 
-   - Place the file kwenye the same directory kama turtledemo/__main__.py
+   - Place the file kwenye the same directory as turtledemo/__main__.py
      IMPORTANT! When imported, the demo should sio modify the system
-     by calling functions kwenye other modules, such kama sys, tkinter, ama
+     by calling functions kwenye other modules, such as sys, tkinter, or
      turtle. Global variables should be initialized kwenye main().
 
    - The code must contain a main() function which will
@@ -66,7 +66,7 @@
      It may rudisha a string which will be displayed kwenye the Label below
      the source code window (when execution has finished.)
 
-   - In order to run mydemo.py by itself, such kama during development,
+   - In order to run mydemo.py by itself, such as during development,
      add the following at the end of the file:
 
     ikiwa __name__ == '__main__':
@@ -79,10 +79,10 @@
      "EVENTLOOP". This informs the demo viewer that the script is
      still running na must be stopped by the user!
 
-     If an "EVENTLOOP" demo runs by itself, kama ukijumuisha clock, which uses
+     If an "EVENTLOOP" demo runs by itself, as ukijumuisha clock, which uses
      ontimer, ama minimal_hanoi, which loops by recursion, then the
      code should catch the turtle.Terminator exception that will be
-     ashiriad when the user presses the STOP button.  (Paint ni sio such
+     raised when the user presses the STOP button.  (Paint ni sio such
      a demo; it only acts kwenye response to mouse clicks na movements.)
 """
 agiza sys
@@ -92,7 +92,7 @@ kutoka tkinter agiza *
 kutoka idlelib.colorizer agiza ColorDelegator, color_config
 kutoka idlelib.percolator agiza Percolator
 kutoka idlelib.textview agiza view_text
-kutoka turtledemo agiza __doc__ kama about_turtledemo
+kutoka turtledemo agiza __doc__ as about_turtledemo
 
 agiza turtle
 
@@ -261,7 +261,7 @@ kundi DemoWindow(object):
     eleza update_mousewheel(self, event):
         # For wheel up, event.delta = 120 on Windows, -1 on darwin.
         # X-11 sends Control-Button-4 event instead.
-        ikiwa (event.delta < 0) == (sio darwin):
+        ikiwa (event.delta < 0) == (not darwin):
             rudisha self.decrease_size()
         isipokua:
             rudisha self.increase_size()
@@ -320,7 +320,7 @@ kundi DemoWindow(object):
         modname = 'turtledemo.' + filename
         __import__(modname)
         self.module = sys.modules[modname]
-        ukijumuisha open(self.module.__file__, 'r') kama f:
+        ukijumuisha open(self.module.__file__, 'r') as f:
             chars = f.read()
         self.text.delete("1.0", "end")
         self.text.insert("1.0", chars)
@@ -345,15 +345,15 @@ kundi DemoWindow(object):
                 self.state = EVENTDRIVEN
             isipokua:
                 self.state = DONE
-        tatizo turtle.Terminator:
+        except turtle.Terminator:
             ikiwa self.root ni Tupu:
-                rudisha
+                return
             self.state = DONE
             result = "stopped!"
         ikiwa self.state == DONE:
             self.configGUI(NORMAL, DISABLED, NORMAL,
                            result)
-        lasivyo self.state == EVENTDRIVEN:
+        elikiwa self.state == EVENTDRIVEN:
             self.exitflag = Kweli
             self.configGUI(DISABLED, NORMAL, DISABLED,
                            "use mouse/keys ama STOP", "red")

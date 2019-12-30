@@ -13,5 +13,5 @@ eleza geohash(latitude, longitude, datedow):
     '''
     # https://xkcd.com/426/
     h = hashlib.md5(datedow).hexdigest()
-    p, q = [('%f' % float.kutokahex('0.' + x)) kila x kwenye (h[:16], h[16:32])]
+    p, q = [('%f' % float.fromhex('0.' + x)) kila x kwenye (h[:16], h[16:32])]
     andika('%d%s %d%s' % (latitude, p[1:], longitude, q[1:]))

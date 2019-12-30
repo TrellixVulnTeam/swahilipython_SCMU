@@ -4,7 +4,7 @@
 """
 Python parse tree definitions.
 
-This ni a very concrete parse tree; we need to keep every token na
+This ni a very concrete parse tree; we need to keep every token and
 even the comments na whitespace between tokens.
 
 There's also a pattern matching implementation here.
@@ -22,7 +22,7 @@ eleza type_repr(type_num):
     global _type_reprs
     ikiwa sio _type_reprs:
         kutoka .pygram agiza python_symbols
-        # printing tokens ni possible but sio kama useful
+        # printing tokens ni possible but sio as useful
         # kutoka .pgen2 agiza token // token.__dict__.items():
         kila name, val kwenye python_symbols.__dict__.items():
             ikiwa type(val) == int: _type_reprs[val] = name
@@ -72,7 +72,7 @@ kundi Base(object):
         Nodes should be considered equal ikiwa they have the same structure,
         ignoring the prefix string na other context information.
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza clone(self):
         """
@@ -80,7 +80,7 @@ kundi Base(object):
 
         This must be implemented by the concrete subclass.
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza post_order(self):
         """
@@ -88,7 +88,7 @@ kundi Base(object):
 
         This must be implemented by the concrete subclass.
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza pre_order(self):
         """
@@ -96,7 +96,7 @@ kundi Base(object):
 
         This must be implemented by the concrete subclass.
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza replace(self, new):
         """Replace this node ukijumuisha a new one kwenye the parent."""
@@ -126,7 +126,7 @@ kundi Base(object):
         node = self
         wakati sio isinstance(node, Leaf):
             ikiwa sio node.children:
-                rudisha
+                return
             node = node.children[0]
         rudisha node.lineno
 
@@ -162,7 +162,7 @@ kundi Base(object):
             ikiwa child ni self:
                 jaribu:
                     rudisha self.parent.children[i+1]
-                tatizo IndexError:
+                except IndexError:
                     rudisha Tupu
 
     @property
@@ -396,7 +396,7 @@ eleza convert(gr, raw_node):
     """
     Convert raw node information to a Node ama Leaf instance.
 
-    This ni pitaed to the parser driver which calls it whenever a reduction of a
+    This ni passed to the parser driver which calls it whenever a reduction of a
     grammar rule produces a new complete node, so that the tree ni build
     strictly bottom-up.
     """
@@ -416,7 +416,7 @@ kundi BasePattern(object):
     """
     A pattern ni a tree matching pattern.
 
-    It looks kila a specific node type (token ama symbol), na
+    It looks kila a specific node type (token ama symbol), and
     optionally kila a specific content.
 
     This ni an abstract base class.  There are three concrete
@@ -445,7 +445,7 @@ kundi BasePattern(object):
 
     eleza optimize(self):
         """
-        A subkundi can define this kama a hook kila optimizations.
+        A subkundi can define this as a hook kila optimizations.
 
         Returns either self ama another node ukijumuisha the same effect.
         """
@@ -488,7 +488,7 @@ kundi BasePattern(object):
 
     eleza generate_matches(self, nodes):
         """
-        Generator tumaing all matches kila this pattern.
+        Generator yielding all matches kila this pattern.
 
         Default implementation kila non-wildcard patterns.
         """
@@ -536,7 +536,7 @@ kundi LeafPattern(BasePattern):
         If results ni sio Tupu, it must be a dict which will be
         updated ukijumuisha the nodes matching named subpatterns.
 
-        When rudishaing Uongo, the results dict may still be updated.
+        When returning Uongo, the results dict may still be updated.
         """
         rudisha self.content == node.value
 
@@ -551,7 +551,7 @@ kundi NodePattern(BasePattern):
 
         The type, ikiwa given, must be a symbol type (>= 256).  If the
         type ni Tupu this matches *any* single node (leaf ama not),
-        tatizo ikiwa content ni sio Tupu, kwenye which it only matches
+        except ikiwa content ni sio Tupu, kwenye which it only matches
         non-leaf nodes that also match the content pattern.
 
         The content, ikiwa sio Tupu, must be a sequence of Patterns that
@@ -585,7 +585,7 @@ kundi NodePattern(BasePattern):
         If results ni sio Tupu, it must be a dict which will be
         updated ukijumuisha the nodes matching named subpatterns.
 
-        When rudishaing Uongo, the results dict may still be updated.
+        When returning Uongo, the results dict may still be updated.
         """
         ikiwa self.wildcards:
             kila c, r kwenye generate_matches(self.content, node.children):
@@ -613,7 +613,7 @@ kundi WildcardPattern(BasePattern):
     (a b c | d e | f)
     (...)*  (...)+  (...)?  (...){m,n}
 
-    tatizo it always uses non-greedy matching.
+    except it always uses non-greedy matching.
     """
 
     eleza __init__(self, content=Tupu, min=0, max=HUGE, name=Tupu):
@@ -631,7 +631,7 @@ kundi WildcardPattern(BasePattern):
         [*] Thus, ikiwa content ni [[a, b, c], [d, e], [f, g, h]] this is
             equivalent to (a b c | d e | f g h); ikiwa content ni Tupu,
             this ni equivalent to '.' kwenye regular expression terms.
-            The min na max parameters work kama follows:
+            The min na max parameters work as follows:
                 min=0, max=maxint: .*
                 min=1, max=maxint: .+
                 min=0, max=1: .?
@@ -654,7 +654,7 @@ kundi WildcardPattern(BasePattern):
     eleza optimize(self):
         """Optimize certain stacked wildcard patterns."""
         subpattern = Tupu
-        ikiwa (self.content ni sio Tupu na
+        ikiwa (self.content ni sio Tupu and
             len(self.content) == 1 na len(self.content[0]) == 1):
             subpattern = self.content[0][0]
         ikiwa self.min == 1 na self.max == 1:
@@ -662,7 +662,7 @@ kundi WildcardPattern(BasePattern):
                 rudisha NodePattern(name=self.name)
             ikiwa subpattern ni sio Tupu na  self.name == subpattern.name:
                 rudisha subpattern.optimize()
-        ikiwa (self.min <= 1 na isinstance(subpattern, WildcardPattern) na
+        ikiwa (self.min <= 1 na isinstance(subpattern, WildcardPattern) and
             subpattern.min <= 1 na self.name == subpattern.name):
             rudisha WildcardPattern(subpattern.content,
                                    self.min*subpattern.min,
@@ -687,7 +687,7 @@ kundi WildcardPattern(BasePattern):
 
     eleza generate_matches(self, nodes):
         """
-        Generator tumaing matches kila a sequence of nodes.
+        Generator yielding matches kila a sequence of nodes.
 
         Args:
             nodes: sequence of nodes
@@ -704,7 +704,7 @@ kundi WildcardPattern(BasePattern):
                 ikiwa self.name:
                     r[self.name] = nodes[:count]
                 tuma count, r
-        lasivyo self.name == "bare_name":
+        elikiwa self.name == "bare_name":
             tuma self._bare_name_matches(nodes)
         isipokua:
             # The reason kila this ni that hitting the recursion limit usually
@@ -719,7 +719,7 @@ kundi WildcardPattern(BasePattern):
                     ikiwa self.name:
                         r[self.name] = nodes[:count]
                     tuma count, r
-            tatizo RuntimeError:
+            except RuntimeError:
                 # We fall back to the iterative pattern matching scheme ikiwa the recursive
                 # scheme hits the recursion limit.
                 kila count, r kwenye self._iterative_matches(nodes):
@@ -821,13 +821,13 @@ kundi NegatedPattern(BasePattern):
         isipokua:
             # Return a match ikiwa the argument pattern has no matches
             kila c, r kwenye self.content.generate_matches(nodes):
-                rudisha
+                return
             tuma 0, {}
 
 
 eleza generate_matches(patterns, nodes):
     """
-    Generator tumaing matches kila a sequence of patterns na nodes.
+    Generator yielding matches kila a sequence of patterns na nodes.
 
     Args:
         patterns: a sequence of patterns

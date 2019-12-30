@@ -9,7 +9,7 @@ __all__ = ["BZ2File", "BZ2Compressor", "BZ2Decompressor",
 
 __author__ = "Nadeem Vawda <nadeem.vawda@gmail.com>"
 
-kutoka builtins agiza open kama _builtin_open
+kutoka builtins agiza open as _builtin_open
 agiza io
 agiza os
 agiza warnings
@@ -31,11 +31,11 @@ kundi BZ2File(_compression.BaseStream):
 
     """A file object providing transparent bzip2 (de)compression.
 
-    A BZ2File can act kama a wrapper kila an existing file object, ama refer
+    A BZ2File can act as a wrapper kila an existing file object, ama refer
     directly to a named file on disk.
 
     Note that BZ2File provides a *binary* file interface - data read is
-    rudishaed kama bytes, na data to be written should be given kama bytes.
+    returned as bytes, na data to be written should be given as bytes.
     """
 
     eleza __init__(self, filename, mode="r", buffering=_sentinel, compresslevel=9):
@@ -47,7 +47,7 @@ kundi BZ2File(_compression.BaseStream):
 
         mode can be 'r' kila reading (default), 'w' kila (over)writing,
         'x' kila creating exclusively, ama 'a' kila appending. These can
-        equivalently be given kama 'rb', 'wb', 'xb', na 'ab'.
+        equivalently be given as 'rb', 'wb', 'xb', na 'ab'.
 
         buffering ni ignored since Python 3.0. Its use ni deprecated.
 
@@ -72,35 +72,35 @@ kundi BZ2File(_compression.BaseStream):
                           stacklevel=2)
 
         ikiwa sio (1 <= compresslevel <= 9):
-            ashiria ValueError("compresslevel must be between 1 na 9")
+             ashiria ValueError("compresslevel must be between 1 na 9")
 
         ikiwa mode kwenye ("", "r", "rb"):
             mode = "rb"
             mode_code = _MODE_READ
-        lasivyo mode kwenye ("w", "wb"):
+        elikiwa mode kwenye ("w", "wb"):
             mode = "wb"
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
-        lasivyo mode kwenye ("x", "xb"):
+        elikiwa mode kwenye ("x", "xb"):
             mode = "xb"
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
-        lasivyo mode kwenye ("a", "ab"):
+        elikiwa mode kwenye ("a", "ab"):
             mode = "ab"
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
         isipokua:
-            ashiria ValueError("Invalid mode: %r" % (mode,))
+             ashiria ValueError("Invalid mode: %r" % (mode,))
 
         ikiwa isinstance(filename, (str, bytes, os.PathLike)):
             self._fp = _builtin_open(filename, mode)
             self._closefp = Kweli
             self._mode = mode_code
-        lasivyo hasattr(filename, "read") ama hasattr(filename, "write"):
+        elikiwa hasattr(filename, "read") ama hasattr(filename, "write"):
             self._fp = filename
             self._mode = mode_code
         isipokua:
-            ashiria TypeError("filename must be a str, bytes, file ama PathLike object")
+             ashiria TypeError("filename must be a str, bytes, file ama PathLike object")
 
         ikiwa self._mode == _MODE_READ:
             raw = _compression.DecompressReader(self._fp,
@@ -113,15 +113,15 @@ kundi BZ2File(_compression.BaseStream):
         """Flush na close the file.
 
         May be called more than once without error. Once the file is
-        closed, any other operation on it will ashiria a ValueError.
+        closed, any other operation on it will  ashiria a ValueError.
         """
         ukijumuisha self._lock:
             ikiwa self._mode == _MODE_CLOSED:
-                rudisha
+                return
             jaribu:
                 ikiwa self._mode == _MODE_READ:
                     self._buffer.close()
-                lasivyo self._mode == _MODE_WRITE:
+                elikiwa self._mode == _MODE_WRITE:
                     self._fp.write(self._compressor.flush())
                     self._compressor = Tupu
             mwishowe:
@@ -161,13 +161,13 @@ kundi BZ2File(_compression.BaseStream):
     eleza peek(self, n=0):
         """Return buffered data without advancing the file position.
 
-        Always rudishas at least one byte of data, unless at EOF.
-        The exact number of bytes rudishaed ni unspecified.
+        Always returns at least one byte of data, unless at EOF.
+        The exact number of bytes returned ni unspecified.
         """
         ukijumuisha self._lock:
             self._check_can_read()
             # Relies on the undocumented fact that BufferedReader.peek()
-            # always rudishas at least one byte (tatizo at EOF), independent
+            # always returns at least one byte (except at EOF), independent
             # of the value of n
             rudisha self._buffer.peek(n)
 
@@ -212,7 +212,7 @@ kundi BZ2File(_compression.BaseStream):
         """
         ikiwa sio isinstance(size, int):
             ikiwa sio hasattr(size, "__index__"):
-                ashiria TypeError("Integer argument expected")
+                 ashiria TypeError("Integer argument expected")
             size = size.__index__()
         ukijumuisha self._lock:
             self._check_can_read()
@@ -227,7 +227,7 @@ kundi BZ2File(_compression.BaseStream):
         """
         ikiwa sio isinstance(size, int):
             ikiwa sio hasattr(size, "__index__"):
-                ashiria TypeError("Integer argument expected")
+                 ashiria TypeError("Integer argument expected")
             size = size.__index__()
         ukijumuisha self._lock:
             self._check_can_read()
@@ -251,7 +251,7 @@ kundi BZ2File(_compression.BaseStream):
         """Write a sequence of byte strings to the file.
 
         Returns the number of uncompressed bytes written.
-        seq can be any iterable tumaing byte strings.
+        seq can be any iterable yielding byte strings.
 
         Line separators are sio added between the written byte strings.
         """
@@ -290,11 +290,11 @@ eleza open(filename, mode="rb", compresslevel=9,
          encoding=Tupu, errors=Tupu, newline=Tupu):
     """Open a bzip2-compressed file kwenye binary ama text mode.
 
-    The filename argument can be an actual filename (a str, bytes, ama
+    The filename argument can be an actual filename (a str, bytes, or
     PathLike object), ama an existing file object to read kutoka ama write
     to.
 
-    The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" ama
+    The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" or
     "ab" kila binary mode, ama "rt", "wt", "xt" ama "at" kila text mode.
     The default mode ni "rb", na the default compresslevel ni 9.
 
@@ -309,14 +309,14 @@ eleza open(filename, mode="rb", compresslevel=9,
     """
     ikiwa "t" kwenye mode:
         ikiwa "b" kwenye mode:
-            ashiria ValueError("Invalid mode: %r" % (mode,))
+             ashiria ValueError("Invalid mode: %r" % (mode,))
     isipokua:
         ikiwa encoding ni sio Tupu:
-            ashiria ValueError("Argument 'encoding' sio supported kwenye binary mode")
+             ashiria ValueError("Argument 'encoding' sio supported kwenye binary mode")
         ikiwa errors ni sio Tupu:
-            ashiria ValueError("Argument 'errors' sio supported kwenye binary mode")
+             ashiria ValueError("Argument 'errors' sio supported kwenye binary mode")
         ikiwa newline ni sio Tupu:
-            ashiria ValueError("Argument 'newline' sio supported kwenye binary mode")
+             ashiria ValueError("Argument 'newline' sio supported kwenye binary mode")
 
     bz_mode = mode.replace("t", "")
     binary_file = BZ2File(filename, bz_mode, compresslevel=compresslevel)
@@ -348,14 +348,14 @@ eleza decompress(data):
         decomp = BZ2Decompressor()
         jaribu:
             res = decomp.decompress(data)
-        tatizo OSError:
+        except OSError:
             ikiwa results:
                 koma  # Leftover data ni sio a valid bzip2 stream; ignore it.
             isipokua:
-                ashiria  # Error on the first iteration; bail out.
+                 ashiria  # Error on the first iteration; bail out.
         results.append(res)
         ikiwa sio decomp.eof:
-            ashiria ValueError("Compressed data ended before the "
+             ashiria ValueError("Compressed data ended before the "
                              "end-of-stream marker was reached")
         data = decomp.unused_data
     rudisha b"".join(results)

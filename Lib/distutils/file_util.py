@@ -1,238 +1,238 @@
 """distutils.file_util
 
-Utility functions for operating on single files.
+Utility functions kila operating on single files.
 """
 
-import os
-from distutils.errors import DistutilsFileError
-from distutils import log
+agiza os
+kutoka distutils.errors agiza DistutilsFileError
+kutoka distutils agiza log
 
-# for generating verbose output in 'copy_file()'
-_copy_action = { None:   'copying',
+# kila generating verbose output kwenye 'copy_file()'
+_copy_action = { Tupu:   'copying',
                  'hard': 'hard linking',
                  'sym':  'symbolically linking' }
 
 
-def _copy_file_contents(src, dst, buffer_size=16*1024):
+eleza _copy_file_contents(src, dst, buffer_size=16*1024):
     """Copy the file 'src' to 'dst'; both must be filenames.  Any error
-    opening either file, reading from 'src', or writing to 'dst', raises
-    DistutilsFileError.  Data is read/written in chunks of 'buffer_size'
-    bytes (default 16k).  No attempt is made to handle anything apart from
+    opening either file, reading kutoka 'src', ama writing to 'dst', raises
+    DistutilsFileError.  Data ni read/written kwenye chunks of 'buffer_size'
+    bytes (default 16k).  No attempt ni made to handle anything apart from
     regular files.
     """
-    # Stolen from shutil module in the standard library, but with
+    # Stolen kutoka shutil module kwenye the standard library, but with
     # custom error-handling added.
-    fsrc = None
-    fdst = None
+    fsrc = Tupu
+    fdst = Tupu
     jaribu:
         jaribu:
             fsrc = open(src, 'rb')
-        tatizo OSError as e:
-            ashiria DistutilsFileError("could sio open '%s': %s" % (src, e.strerror))
+        except OSError as e:
+             ashiria DistutilsFileError("could sio open '%s': %s" % (src, e.strerror))
 
-        if os.path.exists(dst):
+        ikiwa os.path.exists(dst):
             jaribu:
                 os.unlink(dst)
-            tatizo OSError as e:
-                ashiria DistutilsFileError(
+            except OSError as e:
+                 ashiria DistutilsFileError(
                       "could sio delete '%s': %s" % (dst, e.strerror))
 
         jaribu:
             fdst = open(dst, 'wb')
-        tatizo OSError as e:
-            ashiria DistutilsFileError(
+        except OSError as e:
+             ashiria DistutilsFileError(
                   "could sio create '%s': %s" % (dst, e.strerror))
 
-        wakati True:
+        wakati Kweli:
             jaribu:
                 buf = fsrc.read(buffer_size)
-            tatizo OSError as e:
-                ashiria DistutilsFileError(
-                      "could sio read from '%s': %s" % (src, e.strerror))
+            except OSError as e:
+                 ashiria DistutilsFileError(
+                      "could sio read kutoka '%s': %s" % (src, e.strerror))
 
-            if sio buf:
+            ikiwa sio buf:
                 koma
 
             jaribu:
                 fdst.write(buf)
-            tatizo OSError as e:
-                ashiria DistutilsFileError(
+            except OSError as e:
+                 ashiria DistutilsFileError(
                       "could sio write to '%s': %s" % (dst, e.strerror))
     mwishowe:
-        if fdst:
+        ikiwa fdst:
             fdst.close()
-        if fsrc:
+        ikiwa fsrc:
             fsrc.close()
 
-def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
-              link=None, verbose=1, dry_run=0):
-    """Copy a file 'src' to 'dst'.  If 'dst' is a directory, then 'src' is
-    copied there with the same name; otherwise, it must be a filename.  (If
+eleza copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
+              link=Tupu, verbose=1, dry_run=0):
+    """Copy a file 'src' to 'dst'.  If 'dst' ni a directory, then 'src' is
+    copied there ukijumuisha the same name; otherwise, it must be a filename.  (If
     the file exists, it will be ruthlessly clobbered.)  If 'preserve_mode'
-    is true (the default), the file's mode (type and permission bits, ama
-    whatever is analogous on the current platform) is copied.  If
-    'preserve_times' is true (the default), the last-modified na
-    last-access times are copied as well.  If 'update' is true, 'src' will
-    only be copied if 'dst' does sio exist, or if 'dst' does exist but is
+    ni true (the default), the file's mode (type na permission bits, or
+    whatever ni analogous on the current platform) ni copied.  If
+    'preserve_times' ni true (the default), the last-modified and
+    last-access times are copied as well.  If 'update' ni true, 'src' will
+    only be copied ikiwa 'dst' does sio exist, ama ikiwa 'dst' does exist but is
     older than 'src'.
 
     'link' allows you to make hard links (os.link) ama symbolic links
-    (os.symlink) instead of copying: set it to "hard" or "sym"; if it is
-    None (the default), files are copied.  Don't set 'link' on systems that
-    don't support it: 'copy_file()' doesn't check if hard or symbolic
-    linking is available. If hardlink fails, falls back to
+    (os.symlink) instead of copying: set it to "hard" ama "sym"; ikiwa it is
+    Tupu (the default), files are copied.  Don't set 'link' on systems that
+    don't support it: 'copy_file()' doesn't check ikiwa hard ama symbolic
+    linking ni available. If hardlink fails, falls back to
     _copy_file_contents().
 
-    Under Mac OS, uses the native file copy function in macostools; on
+    Under Mac OS, uses the native file copy function kwenye macostools; on
     other systems, uses '_copy_file_contents()' to copy file contents.
 
-    Return a tuple (dest_name, copied): 'dest_name' is the actual name of
-    the output file, and 'copied' is true if the file was copied (or would
-    have been copied, if 'dry_run' true).
+    Return a tuple (dest_name, copied): 'dest_name' ni the actual name of
+    the output file, na 'copied' ni true ikiwa the file was copied (or would
+    have been copied, ikiwa 'dry_run' true).
     """
-    # XXX if the destination file already exists, we clobber it if
-    # copying, but blow up if linking.  Hmmm.  And I don't know what
-    # macostools.copyfile() does.  Should definitely be consistent, na
-    # should probably blow up if destination exists and we would be
+    # XXX ikiwa the destination file already exists, we clobber it if
+    # copying, but blow up ikiwa linking.  Hmmm.  And I don't know what
+    # macostools.copyfile() does.  Should definitely be consistent, and
+    # should probably blow up ikiwa destination exists na we would be
     # changing it (ie. it's sio already a hard/soft link to src OR
-    # (sio update) and (src newer than dst).
+    # (not update) na (src newer than dst).
 
-    from distutils.dep_util import newer
-    from stat import ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
+    kutoka distutils.dep_util agiza newer
+    kutoka stat agiza ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
 
-    if sio os.path.isfile(src):
-        ashiria DistutilsFileError(
-              "can't copy '%s': doesn't exist or sio a regular file" % src)
+    ikiwa sio os.path.isfile(src):
+         ashiria DistutilsFileError(
+              "can't copy '%s': doesn't exist ama sio a regular file" % src)
 
-    if os.path.isdir(dst):
+    ikiwa os.path.isdir(dst):
         dir = dst
         dst = os.path.join(dst, os.path.basename(src))
     isipokua:
         dir = os.path.dirname(dst)
 
-    if update and sio newer(src, dst):
-        if verbose >= 1:
+    ikiwa update na sio newer(src, dst):
+        ikiwa verbose >= 1:
             log.debug("not copying %s (output up-to-date)", src)
-        return (dst, 0)
+        rudisha (dst, 0)
 
     jaribu:
         action = _copy_action[link]
-    tatizo KeyError:
-        ashiria ValueError("invalid value '%s' for 'link' argument" % link)
+    except KeyError:
+         ashiria ValueError("invalid value '%s' kila 'link' argument" % link)
 
-    if verbose >= 1:
-        if os.path.basename(dst) == os.path.basename(src):
+    ikiwa verbose >= 1:
+        ikiwa os.path.basename(dst) == os.path.basename(src):
             log.info("%s %s -> %s", action, src, dir)
         isipokua:
             log.info("%s %s -> %s", action, src, dst)
 
-    if dry_run:
-        return (dst, 1)
+    ikiwa dry_run:
+        rudisha (dst, 1)
 
-    # If linking (hard or symbolic), use the appropriate system call
+    # If linking (hard ama symbolic), use the appropriate system call
     # (Unix only, of course, but that's the caller's responsibility)
-    lasivyo link == 'hard':
-        if sio (os.path.exists(dst) and os.path.samefile(src, dst)):
+    elikiwa link == 'hard':
+        ikiwa sio (os.path.exists(dst) na os.path.samefile(src, dst)):
             jaribu:
                 os.link(src, dst)
-                return (dst, 1)
-            tatizo OSError:
+                rudisha (dst, 1)
+            except OSError:
                 # If hard linking fails, fall back on copying file
                 # (some special filesystems don't support hard linking
                 #  even under Unix, see issue #8876).
                 pass
-    lasivyo link == 'sym':
-        if sio (os.path.exists(dst) and os.path.samefile(src, dst)):
+    elikiwa link == 'sym':
+        ikiwa sio (os.path.exists(dst) na os.path.samefile(src, dst)):
             os.symlink(src, dst)
-            return (dst, 1)
+            rudisha (dst, 1)
 
-    # Otherwise (non-Mac, sio linking), copy the file contents na
-    # (optionally) copy the times and mode.
+    # Otherwise (non-Mac, sio linking), copy the file contents and
+    # (optionally) copy the times na mode.
     _copy_file_contents(src, dst)
-    if preserve_mode or preserve_times:
+    ikiwa preserve_mode ama preserve_times:
         st = os.stat(src)
 
         # According to David Ascher <da@ski.org>, utime() should be done
         # before chmod() (at least under NT).
-        if preserve_times:
+        ikiwa preserve_times:
             os.utime(dst, (st[ST_ATIME], st[ST_MTIME]))
-        if preserve_mode:
+        ikiwa preserve_mode:
             os.chmod(dst, S_IMODE(st[ST_MODE]))
 
-    return (dst, 1)
+    rudisha (dst, 1)
 
 
-# XXX I suspect this is Unix-specific -- need porting help!
-def move_file (src, dst,
+# XXX I suspect this ni Unix-specific -- need porting help!
+eleza move_file (src, dst,
                verbose=1,
                dry_run=0):
 
-    """Move a file 'src' to 'dst'.  If 'dst' is a directory, the file will
-    be moved into it with the same name; otherwise, 'src' is just renamed
+    """Move a file 'src' to 'dst'.  If 'dst' ni a directory, the file will
+    be moved into it ukijumuisha the same name; otherwise, 'src' ni just renamed
     to 'dst'.  Return the new full name of the file.
 
     Handles cross-device moves on Unix using 'copy_file()'.  What about
     other systems???
     """
-    from os.path import exists, isfile, isdir, basename, dirname
-    import errno
+    kutoka os.path agiza exists, isfile, isdir, basename, dirname
+    agiza errno
 
-    if verbose >= 1:
+    ikiwa verbose >= 1:
         log.info("moving %s -> %s", src, dst)
 
-    if dry_run:
-        return dst
+    ikiwa dry_run:
+        rudisha dst
 
-    if sio isfile(src):
-        ashiria DistutilsFileError("can't move '%s': sio a regular file" % src)
+    ikiwa sio isfile(src):
+         ashiria DistutilsFileError("can't move '%s': sio a regular file" % src)
 
-    if isdir(dst):
+    ikiwa isdir(dst):
         dst = os.path.join(dst, basename(src))
-    lasivyo exists(dst):
-        ashiria DistutilsFileError(
+    elikiwa exists(dst):
+         ashiria DistutilsFileError(
               "can't move '%s': destination '%s' already exists" %
               (src, dst))
 
-    if sio isdir(dirname(dst)):
-        ashiria DistutilsFileError(
+    ikiwa sio isdir(dirname(dst)):
+         ashiria DistutilsFileError(
               "can't move '%s': destination '%s' sio a valid path" %
               (src, dst))
 
-    copy_it = False
+    copy_it = Uongo
     jaribu:
         os.rename(src, dst)
-    tatizo OSError as e:
+    except OSError as e:
         (num, msg) = e.args
-        if num == errno.EXDEV:
-            copy_it = True
+        ikiwa num == errno.EXDEV:
+            copy_it = Kweli
         isipokua:
-            ashiria DistutilsFileError(
+             ashiria DistutilsFileError(
                   "couldn't move '%s' to '%s': %s" % (src, dst, msg))
 
-    if copy_it:
+    ikiwa copy_it:
         copy_file(src, dst, verbose=verbose)
         jaribu:
             os.unlink(src)
-        tatizo OSError as e:
+        except OSError as e:
             (num, msg) = e.args
             jaribu:
                 os.unlink(dst)
-            tatizo OSError:
+            except OSError:
                 pass
-            ashiria DistutilsFileError(
+             ashiria DistutilsFileError(
                   "couldn't move '%s' to '%s' by copy/delete: "
                   "delete '%s' failed: %s"
                   % (src, dst, src, msg))
-    return dst
+    rudisha dst
 
 
-def write_file (filename, contents):
-    """Create a file with the specified name and write 'contents' (a
+eleza write_file (filename, contents):
+    """Create a file ukijumuisha the specified name na write 'contents' (a
     sequence of strings without line terminators) to it.
     """
     f = open(filename, "w")
     jaribu:
-        for line in contents:
+        kila line kwenye contents:
             f.write(line + "\n")
     mwishowe:
         f.close()

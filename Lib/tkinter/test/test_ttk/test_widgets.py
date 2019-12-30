@@ -1,32 +1,32 @@
-import unittest
-import tkinter
-from tkinter import ttk, TclError
-from test.support import requires
-import sys
+agiza unittest
+agiza tkinter
+kutoka tkinter agiza ttk, TclError
+kutoka test.support agiza requires
+agiza sys
 
-from tkinter.test.test_ttk.test_functions import MockTclObj
-from tkinter.test.support import (AbstractTkTest, tcl_version, get_tk_patchlevel,
+kutoka tkinter.test.test_ttk.test_functions agiza MockTclObj
+kutoka tkinter.test.support agiza (AbstractTkTest, tcl_version, get_tk_patchlevel,
                                   simulate_mouse_click)
-from tkinter.test.widget_tests import (add_standard_options, noconv,
+kutoka tkinter.test.widget_tests agiza (add_standard_options, noconv,
     AbstractWidgetTest, StandardOptionsTests, IntegerSizeTests, PixelSizeTests,
     setUpModule)
 
 requires('gui')
 
 
-class StandardTtkOptionsTests(StandardOptionsTests):
+kundi StandardTtkOptionsTests(StandardOptionsTests):
 
-    def test_class(self):
+    eleza test_class(self):
         widget = self.create()
         self.assertEqual(widget['class'], '')
         errmsg='attempt to change read-only option'
-        if get_tk_patchlevel() < (8, 6, 0, 'beta', 3):
+        ikiwa get_tk_patchlevel() < (8, 6, 0, 'beta', 3):
             errmsg='Attempt to change read-only option'
         self.checkInvalidParam(widget, 'class', 'Foo', errmsg=errmsg)
         widget2 = self.create(class_='Foo')
         self.assertEqual(widget2['class'], 'Foo')
 
-    def test_padding(self):
+    eleza test_padding(self):
         widget = self.create()
         self.checkParam(widget, 'padding', 0, expected=('0',))
         self.checkParam(widget, 'padding', 5, expected=('5',))
@@ -38,11 +38,11 @@ class StandardTtkOptionsTests(StandardOptionsTests):
         self.checkParam(widget, 'padding', ('5p', '6p', '7p', '8p'))
         self.checkParam(widget, 'padding', (), expected='')
 
-    def test_style(self):
+    eleza test_style(self):
         widget = self.create()
         self.assertEqual(widget['style'], '')
         errmsg = 'Layout Foo sio found'
-        if hasattr(self, 'default_orient'):
+        ikiwa hasattr(self, 'default_orient'):
             errmsg = ('Layout %s.Foo sio found' %
                       getattr(self, 'default_orient').title())
         self.checkInvalidParam(widget, 'style', 'Foo',
@@ -53,17 +53,17 @@ class StandardTtkOptionsTests(StandardOptionsTests):
         pass
 
 
-class WidgetTest(AbstractTkTest, unittest.TestCase):
-    """Tests methods available in every ttk widget."""
+kundi WidgetTest(AbstractTkTest, unittest.TestCase):
+    """Tests methods available kwenye every ttk widget."""
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.widget = ttk.Button(self.root, width=0, text="Text")
         self.widget.pack()
         self.widget.wait_visibility()
 
 
-    def test_identify(self):
+    eleza test_identify(self):
         self.widget.update_idletasks()
         self.assertEqual(self.widget.identify(
             int(self.widget.winfo_width() / 2),
@@ -71,17 +71,17 @@ class WidgetTest(AbstractTkTest, unittest.TestCase):
             ), "label")
         self.assertEqual(self.widget.identify(-1, -1), "")
 
-        self.assertRaises(tkinter.TclError, self.widget.identify, None, 5)
-        self.assertRaises(tkinter.TclError, self.widget.identify, 5, None)
+        self.assertRaises(tkinter.TclError, self.widget.identify, Tupu, 5)
+        self.assertRaises(tkinter.TclError, self.widget.identify, 5, Tupu)
         self.assertRaises(tkinter.TclError, self.widget.identify, 5, '')
 
 
-    def test_widget_state(self):
+    eleza test_widget_state(self):
         # XXX sio sure about the portability of all these tests
         self.assertEqual(self.widget.state(), ())
-        self.assertEqual(self.widget.instate(['!disabled']), True)
+        self.assertEqual(self.widget.instate(['!disabled']), Kweli)
 
-        # changing from !disabled to disabled
+        # changing kutoka !disabled to disabled
         self.assertEqual(self.widget.state(['disabled']), ('!disabled', ))
         # no state change
         self.assertEqual(self.widget.state(['disabled']), ())
@@ -92,8 +92,8 @@ class WidgetTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(self.widget.state(['!disabled', 'active']), ())
         self.assertEqual(self.widget.state(['active', '!disabled']), ())
 
-        def test_cb(arg1, **kw):
-            return arg1, kw
+        eleza test_cb(arg1, **kw):
+            rudisha arg1, kw
         self.assertEqual(self.widget.instate(['!disabled'],
             test_cb, "hi", **{"msg": "there"}),
             ('hi', {'msg': 'there'}))
@@ -107,29 +107,29 @@ class WidgetTest(AbstractTkTest, unittest.TestCase):
         # verify that widget didn't change its state
         self.assertEqual(currstate, self.widget.state())
 
-        # ensuring that passing None as state doesn't modify current state
+        # ensuring that passing Tupu as state doesn't modify current state
         self.widget.state(['active', '!disabled'])
         self.assertEqual(self.widget.state(), ('active', ))
 
 
-class AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
+kundi AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
     _conv_pixels = noconv
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class FrameTest(AbstractToplevelTest, unittest.TestCase):
+kundi FrameTest(AbstractToplevelTest, unittest.TestCase):
     OPTIONS = (
         'borderwidth', 'class', 'cursor', 'height',
         'padding', 'relief', 'style', 'takefocus',
         'width',
     )
 
-    def create(self, **kwargs):
-        return ttk.Frame(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Frame(self.root, **kwargs)
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
+kundi LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
     OPTIONS = (
         'borderwidth', 'class', 'cursor', 'height',
         'labelanchor', 'labelwidget',
@@ -137,26 +137,26 @@ class LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
         'text', 'underline', 'width',
     )
 
-    def create(self, **kwargs):
-        return ttk.LabelFrame(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.LabelFrame(self.root, **kwargs)
 
-    def test_labelanchor(self):
+    eleza test_labelanchor(self):
         widget = self.create()
         self.checkEnumParam(widget, 'labelanchor',
                 'e', 'en', 'es', 'n', 'ne', 'nw', 's', 'se', 'sw', 'w', 'wn', 'ws',
                 errmsg='Bad label anchor specification {}')
         self.checkInvalidParam(widget, 'labelanchor', 'center')
 
-    def test_labelwidget(self):
+    eleza test_labelwidget(self):
         widget = self.create()
         label = ttk.Label(self.root, text='Mupp', name='foo')
         self.checkParam(widget, 'labelwidget', label, expected='.foo')
         label.destroy()
 
 
-class AbstractLabelTest(AbstractWidgetTest):
+kundi AbstractLabelTest(AbstractWidgetTest):
 
-    def checkImageParam(self, widget, name):
+    eleza checkImageParam(self, widget, name):
         image = tkinter.PhotoImage(master=self.root, name='image1')
         image2 = tkinter.PhotoImage(master=self.root, name='image2')
         self.checkParam(widget, name, image, expected=('image1',))
@@ -169,23 +169,23 @@ class AbstractLabelTest(AbstractWidgetTest):
         self.checkInvalidParam(widget, name, 'spam',
                 errmsg='image "spam" doesn\'t exist')
 
-    def test_compound(self):
+    eleza test_compound(self):
         widget = self.create()
         self.checkEnumParam(widget, 'compound',
                 'none', 'text', 'image', 'center',
                 'top', 'bottom', 'left', 'right')
 
-    def test_state(self):
+    eleza test_state(self):
         widget = self.create()
         self.checkParams(widget, 'state', 'active', 'disabled', 'normal')
 
-    def test_width(self):
+    eleza test_width(self):
         widget = self.create()
         self.checkParams(widget, 'width', 402, -402, 0)
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class LabelTest(AbstractLabelTest, unittest.TestCase):
+kundi LabelTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'anchor', 'background', 'borderwidth',
         'class', 'compound', 'cursor', 'font', 'foreground',
@@ -195,17 +195,17 @@ class LabelTest(AbstractLabelTest, unittest.TestCase):
     )
     _conv_pixels = noconv
 
-    def create(self, **kwargs):
-        return ttk.Label(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Label(self.root, **kwargs)
 
-    def test_font(self):
+    eleza test_font(self):
         widget = self.create()
         self.checkParam(widget, 'font',
                         '-Adobe-Helvetica-Medium-R-Normal--*-120-*-*-*-*-*-*')
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class ButtonTest(AbstractLabelTest, unittest.TestCase):
+kundi ButtonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'compound', 'cursor', 'default',
         'image', 'padding', 'state', 'style',
@@ -213,22 +213,22 @@ class ButtonTest(AbstractLabelTest, unittest.TestCase):
         'underline', 'width',
     )
 
-    def create(self, **kwargs):
-        return ttk.Button(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Button(self.root, **kwargs)
 
-    def test_default(self):
+    eleza test_default(self):
         widget = self.create()
         self.checkEnumParam(widget, 'default', 'normal', 'active', 'disabled')
 
-    def test_invoke(self):
+    eleza test_invoke(self):
         success = []
         btn = ttk.Button(self.root, command=lambda: success.append(1))
         btn.invoke()
-        self.assertTrue(success)
+        self.assertKweli(success)
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
+kundi CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'compound', 'cursor',
         'image',
@@ -238,25 +238,25 @@ class CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
         'underline', 'variable', 'width',
     )
 
-    def create(self, **kwargs):
-        return ttk.Checkbutton(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Checkbutton(self.root, **kwargs)
 
-    def test_offvalue(self):
+    eleza test_offvalue(self):
         widget = self.create()
         self.checkParams(widget, 'offvalue', 1, 2.3, '', 'any string')
 
-    def test_onvalue(self):
+    eleza test_onvalue(self):
         widget = self.create()
         self.checkParams(widget, 'onvalue', 1, 2.3, '', 'any string')
 
-    def test_invoke(self):
+    eleza test_invoke(self):
         success = []
-        def cb_test():
+        eleza cb_test():
             success.append(1)
-            return "cb test called"
+            rudisha "cb test called"
 
         cbtn = ttk.Checkbutton(self.root, command=cb_test)
-        # the variable automatically created by ttk.Checkbutton is actually
+        # the variable automatically created by ttk.Checkbutton ni actually
         # undefined till we invoke the Checkbutton
         self.assertEqual(cbtn.state(), ('alternate', ))
         self.assertRaises(tkinter.TclError, cbtn.tk.globalgetvar,
@@ -266,18 +266,18 @@ class CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
         self.assertEqual(res, "cb test called")
         self.assertEqual(cbtn['onvalue'],
             cbtn.tk.globalgetvar(cbtn['variable']))
-        self.assertTrue(success)
+        self.assertKweli(success)
 
         cbtn['command'] = ''
         res = cbtn.invoke()
-        self.assertFalse(str(res))
+        self.assertUongo(str(res))
         self.assertLessEqual(len(success), 1)
         self.assertEqual(cbtn['offvalue'],
             cbtn.tk.globalgetvar(cbtn['variable']))
 
 
 @add_standard_options(IntegerSizeTests, StandardTtkOptionsTests)
-class EntryTest(AbstractWidgetTest, unittest.TestCase):
+kundi EntryTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'background', 'class', 'cursor',
         'exportselection', 'font', 'foreground',
@@ -286,79 +286,79 @@ class EntryTest(AbstractWidgetTest, unittest.TestCase):
         'validate', 'validatecommand', 'width', 'xscrollcommand',
     )
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.entry = self.create()
 
-    def create(self, **kwargs):
-        return ttk.Entry(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Entry(self.root, **kwargs)
 
-    def test_invalidcommand(self):
+    eleza test_invalidcommand(self):
         widget = self.create()
         self.checkCommandParam(widget, 'invalidcommand')
 
-    def test_show(self):
+    eleza test_show(self):
         widget = self.create()
         self.checkParam(widget, 'show', '*')
         self.checkParam(widget, 'show', '')
         self.checkParam(widget, 'show', ' ')
 
-    def test_state(self):
+    eleza test_state(self):
         widget = self.create()
         self.checkParams(widget, 'state',
                          'disabled', 'normal', 'readonly')
 
-    def test_validate(self):
+    eleza test_validate(self):
         widget = self.create()
         self.checkEnumParam(widget, 'validate',
                 'all', 'key', 'focus', 'focusin', 'focusout', 'none')
 
-    def test_validatecommand(self):
+    eleza test_validatecommand(self):
         widget = self.create()
         self.checkCommandParam(widget, 'validatecommand')
 
 
-    def test_bbox(self):
+    eleza test_bbox(self):
         self.assertIsBoundingBox(self.entry.bbox(0))
         self.assertRaises(tkinter.TclError, self.entry.bbox, 'noindex')
-        self.assertRaises(tkinter.TclError, self.entry.bbox, None)
+        self.assertRaises(tkinter.TclError, self.entry.bbox, Tupu)
 
 
-    def test_identify(self):
+    eleza test_identify(self):
         self.entry.pack()
         self.entry.wait_visibility()
         self.entry.update_idletasks()
 
-        # bpo-27313: macOS Cocoa widget differs from X, allow either
-        if sys.platform == 'darwin':
+        # bpo-27313: macOS Cocoa widget differs kutoka X, allow either
+        ikiwa sys.platform == 'darwin':
             self.assertIn(self.entry.identify(5, 5),
                 ("textarea", "Combobox.button") )
         isipokua:
             self.assertEqual(self.entry.identify(5, 5), "textarea")
         self.assertEqual(self.entry.identify(-1, -1), "")
 
-        self.assertRaises(tkinter.TclError, self.entry.identify, None, 5)
-        self.assertRaises(tkinter.TclError, self.entry.identify, 5, None)
+        self.assertRaises(tkinter.TclError, self.entry.identify, Tupu, 5)
+        self.assertRaises(tkinter.TclError, self.entry.identify, 5, Tupu)
         self.assertRaises(tkinter.TclError, self.entry.identify, 5, '')
 
 
-    def test_validation_options(self):
+    eleza test_validation_options(self):
         success = []
-        test_invalid = lambda: success.append(True)
+        test_invalid = lambda: success.append(Kweli)
 
         self.entry['validate'] = 'none'
-        self.entry['validatecommand'] = lambda: False
+        self.entry['validatecommand'] = lambda: Uongo
 
         self.entry['invalidcommand'] = test_invalid
         self.entry.validate()
-        self.assertTrue(success)
+        self.assertKweli(success)
 
         self.entry['invalidcommand'] = ''
         self.entry.validate()
         self.assertEqual(len(success), 1)
 
         self.entry['invalidcommand'] = test_invalid
-        self.entry['validatecommand'] = lambda: True
+        self.entry['validatecommand'] = lambda: Kweli
         self.entry.validate()
         self.assertEqual(len(success), 1)
 
@@ -366,55 +366,55 @@ class EntryTest(AbstractWidgetTest, unittest.TestCase):
         self.entry.validate()
         self.assertEqual(len(success), 1)
 
-        self.entry['validatecommand'] = True
+        self.entry['validatecommand'] = Kweli
         self.assertRaises(tkinter.TclError, self.entry.validate)
 
 
-    def test_validation(self):
+    eleza test_validation(self):
         validation = []
-        def validate(to_insert):
-            if sio 'a' <= to_insert.lower() <= 'z':
-                validation.append(False)
-                return False
-            validation.append(True)
-            return True
+        eleza validate(to_insert):
+            ikiwa sio 'a' <= to_insert.lower() <= 'z':
+                validation.append(Uongo)
+                rudisha Uongo
+            validation.append(Kweli)
+            rudisha Kweli
 
         self.entry['validate'] = 'key'
         self.entry['validatecommand'] = self.entry.register(validate), '%S'
 
         self.entry.insert('end', 1)
         self.entry.insert('end', 'a')
-        self.assertEqual(validation, [False, True])
+        self.assertEqual(validation, [Uongo, Kweli])
         self.assertEqual(self.entry.get(), 'a')
 
 
-    def test_revalidation(self):
-        def validate(content):
-            for letter in content:
-                if sio 'a' <= letter.lower() <= 'z':
-                    return False
-            return True
+    eleza test_revalidation(self):
+        eleza validate(content):
+            kila letter kwenye content:
+                ikiwa sio 'a' <= letter.lower() <= 'z':
+                    rudisha Uongo
+            rudisha Kweli
 
         self.entry['validatecommand'] = self.entry.register(validate), '%P'
 
         self.entry.insert('end', 'avocado')
-        self.assertEqual(self.entry.validate(), True)
+        self.assertEqual(self.entry.validate(), Kweli)
         self.assertEqual(self.entry.state(), ())
 
         self.entry.delete(0, 'end')
         self.assertEqual(self.entry.get(), '')
 
         self.entry.insert('end', 'a1b')
-        self.assertEqual(self.entry.validate(), False)
+        self.assertEqual(self.entry.validate(), Uongo)
         self.assertEqual(self.entry.state(), ('invalid', ))
 
         self.entry.delete(1)
-        self.assertEqual(self.entry.validate(), True)
+        self.assertEqual(self.entry.validate(), Kweli)
         self.assertEqual(self.entry.state(), ())
 
 
 @add_standard_options(IntegerSizeTests, StandardTtkOptionsTests)
-class ComboboxTest(EntryTest, unittest.TestCase):
+kundi ComboboxTest(EntryTest, unittest.TestCase):
     OPTIONS = (
         'background', 'class', 'cursor', 'exportselection',
         'font', 'foreground', 'height', 'invalidcommand',
@@ -424,30 +424,30 @@ class ComboboxTest(EntryTest, unittest.TestCase):
         'width', 'xscrollcommand',
     )
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.combo = self.create()
 
-    def create(self, **kwargs):
-        return ttk.Combobox(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Combobox(self.root, **kwargs)
 
-    def test_height(self):
+    eleza test_height(self):
         widget = self.create()
         self.checkParams(widget, 'height', 100, 101.2, 102.6, -100, 0, '1i')
 
-    def _show_drop_down_listbox(self):
+    eleza _show_drop_down_listbox(self):
         width = self.combo.winfo_width()
         self.combo.event_generate('<ButtonPress-1>', x=width - 5, y=5)
         self.combo.event_generate('<ButtonRelease-1>', x=width - 5, y=5)
         self.combo.update_idletasks()
 
 
-    def test_virtual_event(self):
+    eleza test_virtual_event(self):
         success = []
 
         self.combo['values'] = [1]
         self.combo.bind('<<ComboboxSelected>>',
-            lambda evt: success.append(True))
+            lambda evt: success.append(Kweli))
         self.combo.pack()
         self.combo.wait_visibility()
 
@@ -457,18 +457,18 @@ class ComboboxTest(EntryTest, unittest.TestCase):
         self.combo.event_generate('<Return>')
         self.combo.update()
 
-        self.assertTrue(success)
+        self.assertKweli(success)
 
 
-    def test_postcommand(self):
+    eleza test_postcommand(self):
         success = []
 
-        self.combo['postcommand'] = lambda: success.append(True)
+        self.combo['postcommand'] = lambda: success.append(Kweli)
         self.combo.pack()
         self.combo.wait_visibility()
 
         self._show_drop_down_listbox()
-        self.assertTrue(success)
+        self.assertKweli(success)
 
         # testing postcommand removal
         self.combo['postcommand'] = ''
@@ -476,13 +476,13 @@ class ComboboxTest(EntryTest, unittest.TestCase):
         self.assertEqual(len(success), 1)
 
 
-    def test_values(self):
-        def check_get_current(getval, currval):
+    eleza test_values(self):
+        eleza check_get_current(getval, currval):
             self.assertEqual(self.combo.get(), getval)
             self.assertEqual(self.combo.current(), currval)
 
         self.assertEqual(self.combo['values'],
-                         () if tcl_version < (8, 5) isipokua '')
+                         () ikiwa tcl_version < (8, 5) isipokua '')
         check_get_current('', -1)
 
         self.checkParam(self.combo, 'values', 'mon tue wed thur',
@@ -502,27 +502,27 @@ class ComboboxTest(EntryTest, unittest.TestCase):
         self.combo.set('d')
         check_get_current('d', -1)
 
-        # testing values with empty string
+        # testing values ukijumuisha empty string
         self.combo.set('')
         self.combo['values'] = (1, 2, '', 3)
         check_get_current('', 2)
 
-        # testing values with empty string set through configure
+        # testing values ukijumuisha empty string set through configure
         self.combo.configure(values=[1, '', 2])
         self.assertEqual(self.combo['values'],
-                         ('1', '', '2') if self.wantobjects ama
+                         ('1', '', '2') ikiwa self.wantobjects else
                          '1 {} 2')
 
-        # testing values with spaces
+        # testing values ukijumuisha spaces
         self.combo['values'] = ['a b', 'a\tb', 'a\nb']
         self.assertEqual(self.combo['values'],
-                         ('a b', 'a\tb', 'a\nb') if self.wantobjects ama
+                         ('a b', 'a\tb', 'a\nb') ikiwa self.wantobjects else
                          '{a b} {a\tb} {a\nb}')
 
-        # testing values with special characters
+        # testing values ukijumuisha special characters
         self.combo['values'] = [r'a\tb', '"a"', '} {']
         self.assertEqual(self.combo['values'],
-                         (r'a\tb', '"a"', '} {') if self.wantobjects ama
+                         (r'a\tb', '"a"', '} {') ikiwa self.wantobjects else
                          r'a\\tb {"a"} \}\ \{')
 
         # out of range
@@ -531,39 +531,39 @@ class ComboboxTest(EntryTest, unittest.TestCase):
         # it expects an integer (or something that can be converted to int)
         self.assertRaises(tkinter.TclError, self.combo.current, '')
 
-        # testing creating combobox with empty string in values
+        # testing creating combobox ukijumuisha empty string kwenye values
         combo2 = ttk.Combobox(self.root, values=[1, 2, ''])
         self.assertEqual(combo2['values'],
-                         ('1', '2', '') if self.wantobjects isipokua '1 2 {}')
+                         ('1', '2', '') ikiwa self.wantobjects isipokua '1 2 {}')
         combo2.destroy()
 
 
 @add_standard_options(IntegerSizeTests, StandardTtkOptionsTests)
-class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
+kundi PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'cursor', 'height',
         'orient', 'style', 'takefocus', 'width',
     )
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.paned = self.create()
 
-    def create(self, **kwargs):
-        return ttk.PanedWindow(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.PanedWindow(self.root, **kwargs)
 
-    def test_orient(self):
+    eleza test_orient(self):
         widget = self.create()
         self.assertEqual(str(widget['orient']), 'vertical')
         errmsg='attempt to change read-only option'
-        if get_tk_patchlevel() < (8, 6, 0, 'beta', 3):
+        ikiwa get_tk_patchlevel() < (8, 6, 0, 'beta', 3):
             errmsg='Attempt to change read-only option'
         self.checkInvalidParam(widget, 'orient', 'horizontal',
                 errmsg=errmsg)
         widget2 = self.create(orient='horizontal')
         self.assertEqual(str(widget2['orient']), 'horizontal')
 
-    def test_add(self):
+    eleza test_add(self):
         # attempt to add a child that ni sio a direct child of the paned window
         label = ttk.Label(self.paned)
         child = ttk.Label(label)
@@ -591,8 +591,8 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.paned.pane, 0)
 
 
-    def test_forget(self):
-        self.assertRaises(tkinter.TclError, self.paned.forget, None)
+    eleza test_forget(self):
+        self.assertRaises(tkinter.TclError, self.paned.forget, Tupu)
         self.assertRaises(tkinter.TclError, self.paned.forget, 0)
 
         self.paned.add(ttk.Label(self.root))
@@ -600,9 +600,9 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.paned.forget, 0)
 
 
-    def test_insert(self):
-        self.assertRaises(tkinter.TclError, self.paned.insert, None, 0)
-        self.assertRaises(tkinter.TclError, self.paned.insert, 0, None)
+    eleza test_insert(self):
+        self.assertRaises(tkinter.TclError, self.paned.insert, Tupu, 0)
+        self.assertRaises(tkinter.TclError, self.paned.insert, 0, Tupu)
         self.assertRaises(tkinter.TclError, self.paned.insert, 0, 0)
 
         child = ttk.Label(self.root)
@@ -627,33 +627,33 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.paned.insert('end', child3)
         self.assertEqual(panes, self.paned.panes())
 
-        # moving child3 to child2 position should result in child2 ending up
-        # in previous child position and child ending up in previous child3
+        # moving child3 to child2 position should result kwenye child2 ending up
+        # kwenye previous child position na child ending up kwenye previous child3
         # position
         self.paned.insert(child2, child3)
         self.assertEqual(self.paned.panes(),
             (str(child3), str(child2), str(child)))
 
 
-    def test_pane(self):
+    eleza test_pane(self):
         self.assertRaises(tkinter.TclError, self.paned.pane, 0)
 
         child = ttk.Label(self.root)
         self.paned.add(child)
         self.assertIsInstance(self.paned.pane(0), dict)
-        self.assertEqual(self.paned.pane(0, weight=None),
-                         0 if self.wantobjects isipokua '0')
-        # newer form for querying a single option
+        self.assertEqual(self.paned.pane(0, weight=Tupu),
+                         0 ikiwa self.wantobjects isipokua '0')
+        # newer form kila querying a single option
         self.assertEqual(self.paned.pane(0, 'weight'),
-                         0 if self.wantobjects isipokua '0')
+                         0 ikiwa self.wantobjects isipokua '0')
         self.assertEqual(self.paned.pane(0), self.paned.pane(str(child)))
 
         self.assertRaises(tkinter.TclError, self.paned.pane, 0,
             badoption='somevalue')
 
 
-    def test_sashpos(self):
-        self.assertRaises(tkinter.TclError, self.paned.sashpos, None)
+    eleza test_sashpos(self):
+        self.assertRaises(tkinter.TclError, self.paned.sashpos, Tupu)
         self.assertRaises(tkinter.TclError, self.paned.sashpos, '')
         self.assertRaises(tkinter.TclError, self.paned.sashpos, 0)
 
@@ -664,7 +664,7 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.paned.add(child2)
         self.assertRaises(tkinter.TclError, self.paned.sashpos, 1)
 
-        self.paned.pack(expand=True, fill='both')
+        self.paned.pack(expand=Kweli, fill='both')
         self.paned.wait_visibility()
 
         curr_pos = self.paned.sashpos(0)
@@ -674,7 +674,7 @@ class PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
+kundi RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'compound', 'cursor',
         'image',
@@ -683,18 +683,18 @@ class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
         'underline', 'value', 'variable', 'width',
     )
 
-    def create(self, **kwargs):
-        return ttk.Radiobutton(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Radiobutton(self.root, **kwargs)
 
-    def test_value(self):
+    eleza test_value(self):
         widget = self.create()
         self.checkParams(widget, 'value', 1, 2.3, '', 'any string')
 
-    def test_invoke(self):
+    eleza test_invoke(self):
         success = []
-        def cb_test():
+        eleza cb_test():
             success.append(1)
-            return "cb test called"
+            rudisha "cb test called"
 
         myvar = tkinter.IntVar(self.root)
         cbtn = ttk.Radiobutton(self.root, command=cb_test,
@@ -702,7 +702,7 @@ class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
         cbtn2 = ttk.Radiobutton(self.root, command=cb_test,
                                 variable=myvar, value=1)
 
-        if self.wantobjects:
+        ikiwa self.wantobjects:
             conv = lambda x: x
         isipokua:
             conv = int
@@ -712,7 +712,7 @@ class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
         self.assertEqual(conv(cbtn['value']), myvar.get())
         self.assertEqual(myvar.get(),
             conv(cbtn.tk.globalgetvar(cbtn['variable'])))
-        self.assertTrue(success)
+        self.assertKweli(success)
 
         cbtn2['command'] = ''
         res = cbtn2.invoke()
@@ -725,7 +725,7 @@ class RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
         self.assertEqual(str(cbtn['variable']), str(cbtn2['variable']))
 
 
-class MenubuttonTest(AbstractLabelTest, unittest.TestCase):
+kundi MenubuttonTest(AbstractLabelTest, unittest.TestCase):
     OPTIONS = (
         'class', 'compound', 'cursor', 'direction',
         'image', 'menu', 'padding', 'state', 'style',
@@ -733,15 +733,15 @@ class MenubuttonTest(AbstractLabelTest, unittest.TestCase):
         'underline', 'width',
     )
 
-    def create(self, **kwargs):
-        return ttk.Menubutton(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Menubutton(self.root, **kwargs)
 
-    def test_direction(self):
+    eleza test_direction(self):
         widget = self.create()
         self.checkEnumParam(widget, 'direction',
                 'above', 'below', 'left', 'right', 'flush')
 
-    def test_menu(self):
+    eleza test_menu(self):
         widget = self.create()
         menu = tkinter.Menu(widget, name='menu')
         self.checkParam(widget, 'menu', menu, conv=str)
@@ -749,7 +749,7 @@ class MenubuttonTest(AbstractLabelTest, unittest.TestCase):
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class ScaleTest(AbstractWidgetTest, unittest.TestCase):
+kundi ScaleTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'cursor', 'from', 'length',
         'orient', 'style', 'takefocus', 'to', 'value', 'variable',
@@ -757,32 +757,32 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
     _conv_pixels = noconv
     default_orient = 'horizontal'
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.scale = self.create()
         self.scale.pack()
         self.scale.update()
 
-    def create(self, **kwargs):
-        return ttk.Scale(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Scale(self.root, **kwargs)
 
-    def test_from(self):
+    eleza test_from(self):
         widget = self.create()
-        self.checkFloatParam(widget, 'from', 100, 14.9, 15.1, conv=False)
+        self.checkFloatParam(widget, 'from', 100, 14.9, 15.1, conv=Uongo)
 
-    def test_length(self):
+    eleza test_length(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'length', 130, 131.2, 135.6, '5i')
 
-    def test_to(self):
+    eleza test_to(self):
         widget = self.create()
-        self.checkFloatParam(widget, 'to', 300, 14.9, 15.1, -10, conv=False)
+        self.checkFloatParam(widget, 'to', 300, 14.9, 15.1, -10, conv=Uongo)
 
-    def test_value(self):
+    eleza test_value(self):
         widget = self.create()
-        self.checkFloatParam(widget, 'value', 300, 14.9, 15.1, -10, conv=False)
+        self.checkFloatParam(widget, 'value', 300, 14.9, 15.1, -10, conv=Uongo)
 
-    def test_custom_event(self):
+    eleza test_custom_event(self):
         failure = [1, 1, 1] # will need to be empty
 
         funcid = self.scale.bind('<<RangeChanged>>', lambda evt: failure.pop())
@@ -791,18 +791,18 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
         self.scale['from_'] = 10
         self.scale['to'] = 3
 
-        self.assertFalse(failure)
+        self.assertUongo(failure)
 
         failure = [1, 1, 1]
         self.scale.configure(from_=2, to=5)
         self.scale.configure(from_=0, to=-2)
         self.scale.configure(to=10)
 
-        self.assertFalse(failure)
+        self.assertUongo(failure)
 
 
-    def test_get(self):
-        if self.wantobjects:
+    eleza test_get(self):
+        ikiwa self.wantobjects:
             conv = lambda x: x
         isipokua:
             conv = float
@@ -819,8 +819,8 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.scale.get, 0, '')
 
 
-    def test_set(self):
-        if self.wantobjects:
+    eleza test_set(self):
+        ikiwa self.wantobjects:
             conv = lambda x: x
         isipokua:
             conv = float
@@ -842,7 +842,7 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(conv(self.scale.get()), max + 5)
         toa var
 
-        # the same happens with the value option
+        # the same happens ukijumuisha the value option
         self.scale['value'] = max + 10
         self.assertEqual(conv(self.scale.get()), max + 10)
         self.assertEqual(conv(self.scale.get()), conv(self.scale['value']))
@@ -852,11 +852,11 @@ class ScaleTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(conv(self.scale.get(0, 0)), min)
         self.assertEqual(conv(self.scale.get(self.scale.winfo_width(), 0)), max)
 
-        self.assertRaises(tkinter.TclError, self.scale.set, None)
+        self.assertRaises(tkinter.TclError, self.scale.set, Tupu)
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
+kundi ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'cursor', 'orient', 'length',
         'mode', 'maximum', 'phase',
@@ -865,51 +865,51 @@ class ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
     _conv_pixels = noconv
     default_orient = 'horizontal'
 
-    def create(self, **kwargs):
-        return ttk.Progressbar(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Progressbar(self.root, **kwargs)
 
-    def test_length(self):
+    eleza test_length(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'length', 100.1, 56.7, '2i')
 
-    def test_maximum(self):
+    eleza test_maximum(self):
         widget = self.create()
-        self.checkFloatParam(widget, 'maximum', 150.2, 77.7, 0, -10, conv=False)
+        self.checkFloatParam(widget, 'maximum', 150.2, 77.7, 0, -10, conv=Uongo)
 
-    def test_mode(self):
+    eleza test_mode(self):
         widget = self.create()
         self.checkEnumParam(widget, 'mode', 'determinate', 'indeterminate')
 
-    def test_phase(self):
+    eleza test_phase(self):
         # XXX
         pass
 
-    def test_value(self):
+    eleza test_value(self):
         widget = self.create()
         self.checkFloatParam(widget, 'value', 150.2, 77.7, 0, -10,
-                             conv=False)
+                             conv=Uongo)
 
 
 @unittest.skipIf(sys.platform == 'darwin',
-                 'ttk.Scrollbar is special on MacOSX')
+                 'ttk.Scrollbar ni special on MacOSX')
 @add_standard_options(StandardTtkOptionsTests)
-class ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
+kundi ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'cursor', 'orient', 'style', 'takefocus',
     )
     default_orient = 'vertical'
 
-    def create(self, **kwargs):
-        return ttk.Scrollbar(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Scrollbar(self.root, **kwargs)
 
 
 @add_standard_options(IntegerSizeTests, StandardTtkOptionsTests)
-class NotebookTest(AbstractWidgetTest, unittest.TestCase):
+kundi NotebookTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'cursor', 'height', 'padding', 'style', 'takefocus', 'width',
     )
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.nb = self.create(padding=0)
         self.child1 = ttk.Label(self.root)
@@ -917,10 +917,10 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.nb.add(self.child1, text='a')
         self.nb.add(self.child2, text='b')
 
-    def create(self, **kwargs):
-        return ttk.Notebook(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Notebook(self.root, **kwargs)
 
-    def test_tab_identifiers(self):
+    eleza test_tab_identifiers(self):
         self.nb.forget(0)
         self.nb.hide(self.child2)
         self.assertRaises(tkinter.TclError, self.nb.tab, self.child1)
@@ -929,33 +929,33 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.index('end'), 1)
         self.nb.select(self.child2)
 
-        self.assertTrue(self.nb.tab('current'))
+        self.assertKweli(self.nb.tab('current'))
         self.nb.add(self.child1, text='a')
 
         self.nb.pack()
         self.nb.wait_visibility()
-        if sys.platform == 'darwin':
+        ikiwa sys.platform == 'darwin':
             tb_idx = "@20,5"
         isipokua:
             tb_idx = "@5,5"
         self.assertEqual(self.nb.tab(tb_idx), self.nb.tab('current'))
 
-        for i in range(5, 100, 5):
+        kila i kwenye range(5, 100, 5):
             jaribu:
-                if self.nb.tab('@%d, 5' % i, text=None) == 'a':
+                ikiwa self.nb.tab('@%d, 5' % i, text=Tupu) == 'a':
                     koma
-            tatizo tkinter.TclError:
+            except tkinter.TclError:
                 pass
 
         isipokua:
-            self.fail("Tab with text 'a' sio found")
+            self.fail("Tab ukijumuisha text 'a' sio found")
 
 
-    def test_add_and_hidden(self):
+    eleza test_add_and_hidden(self):
         self.assertRaises(tkinter.TclError, self.nb.hide, -1)
         self.assertRaises(tkinter.TclError, self.nb.hide, 'hi')
-        self.assertRaises(tkinter.TclError, self.nb.hide, None)
-        self.assertRaises(tkinter.TclError, self.nb.add, None)
+        self.assertRaises(tkinter.TclError, self.nb.hide, Tupu)
+        self.assertRaises(tkinter.TclError, self.nb.add, Tupu)
         self.assertRaises(tkinter.TclError, self.nb.add, ttk.Label(self.root),
             unknown='option')
 
@@ -976,14 +976,14 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.tabs(), tabs)
         self.assertEqual(self.nb.index(self.child2), child2_index)
         self.assertEqual(str(self.child2), self.nb.tabs()[child2_index])
-        # but the tab next to it (sio hidden) is the one selected now
+        # but the tab next to it (not hidden) ni the one selected now
         self.assertEqual(self.nb.index('current'), curr + 1)
 
 
-    def test_forget(self):
+    eleza test_forget(self):
         self.assertRaises(tkinter.TclError, self.nb.forget, -1)
         self.assertRaises(tkinter.TclError, self.nb.forget, 'hi')
-        self.assertRaises(tkinter.TclError, self.nb.forget, None)
+        self.assertRaises(tkinter.TclError, self.nb.forget, Tupu)
 
         tabs = self.nb.tabs()
         child1_index = self.nb.index(self.child1)
@@ -996,9 +996,9 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertNotEqual(child1_index, self.nb.index(self.child1))
 
 
-    def test_index(self):
+    eleza test_index(self):
         self.assertRaises(tkinter.TclError, self.nb.index, -1)
-        self.assertRaises(tkinter.TclError, self.nb.index, None)
+        self.assertRaises(tkinter.TclError, self.nb.index, Tupu)
 
         self.assertIsInstance(self.nb.index('end'), int)
         self.assertEqual(self.nb.index(self.child1), 0)
@@ -1006,7 +1006,7 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.index('end'), 2)
 
 
-    def test_insert(self):
+    eleza test_insert(self):
         # moving tabs
         tabs = self.nb.tabs()
         self.nb.insert(1, tabs[0])
@@ -1034,46 +1034,46 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.nb.insert, -1, child3)
 
         # bad inserts
-        self.assertRaises(tkinter.TclError, self.nb.insert, 'end', None)
-        self.assertRaises(tkinter.TclError, self.nb.insert, None, 0)
-        self.assertRaises(tkinter.TclError, self.nb.insert, None, None)
+        self.assertRaises(tkinter.TclError, self.nb.insert, 'end', Tupu)
+        self.assertRaises(tkinter.TclError, self.nb.insert, Tupu, 0)
+        self.assertRaises(tkinter.TclError, self.nb.insert, Tupu, Tupu)
 
 
-    def test_select(self):
+    eleza test_select(self):
         self.nb.pack()
         self.nb.wait_visibility()
 
         success = []
         tab_changed = []
 
-        self.child1.bind('<Unmap>', lambda evt: success.append(True))
+        self.child1.bind('<Unmap>', lambda evt: success.append(Kweli))
         self.nb.bind('<<NotebookTabChanged>>',
-            lambda evt: tab_changed.append(True))
+            lambda evt: tab_changed.append(Kweli))
 
         self.assertEqual(self.nb.select(), str(self.child1))
         self.nb.select(self.child2)
-        self.assertTrue(success)
+        self.assertKweli(success)
         self.assertEqual(self.nb.select(), str(self.child2))
 
         self.nb.update()
-        self.assertTrue(tab_changed)
+        self.assertKweli(tab_changed)
 
 
-    def test_tab(self):
+    eleza test_tab(self):
         self.assertRaises(tkinter.TclError, self.nb.tab, -1)
         self.assertRaises(tkinter.TclError, self.nb.tab, 'notab')
-        self.assertRaises(tkinter.TclError, self.nb.tab, None)
+        self.assertRaises(tkinter.TclError, self.nb.tab, Tupu)
 
         self.assertIsInstance(self.nb.tab(self.child1), dict)
-        self.assertEqual(self.nb.tab(self.child1, text=None), 'a')
-        # newer form for querying a single option
+        self.assertEqual(self.nb.tab(self.child1, text=Tupu), 'a')
+        # newer form kila querying a single option
         self.assertEqual(self.nb.tab(self.child1, 'text'), 'a')
         self.nb.tab(self.child1, text='abc')
-        self.assertEqual(self.nb.tab(self.child1, text=None), 'abc')
+        self.assertEqual(self.nb.tab(self.child1, text=Tupu), 'abc')
         self.assertEqual(self.nb.tab(self.child1, 'text'), 'abc')
 
 
-    def test_tabs(self):
+    eleza test_tabs(self):
         self.assertEqual(len(self.nb.tabs()), 2)
 
         self.nb.forget(self.child1)
@@ -1082,7 +1082,7 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.tabs(), ())
 
 
-    def test_traversal(self):
+    eleza test_traversal(self):
         self.nb.pack()
         self.nb.wait_visibility()
 
@@ -1103,14 +1103,14 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.nb.enable_traversal()
         self.nb.focus_force()
         simulate_mouse_click(self.nb, 5, 5)
-        if sys.platform == 'darwin':
+        ikiwa sys.platform == 'darwin':
             self.nb.event_generate('<Option-a>')
         isipokua:
             self.nb.event_generate('<Alt-a>')
         self.assertEqual(self.nb.select(), str(self.child1))
 
 @add_standard_options(IntegerSizeTests, StandardTtkOptionsTests)
-class SpinboxTest(EntryTest, unittest.TestCase):
+kundi SpinboxTest(EntryTest, unittest.TestCase):
     OPTIONS = (
         'background', 'class', 'command', 'cursor', 'exportselection',
         'font', 'foreground', 'format', 'from',  'increment',
@@ -1119,15 +1119,15 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         'values', 'width', 'wrap', 'xscrollcommand',
     )
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.spin = self.create()
         self.spin.pack()
 
-    def create(self, **kwargs):
-        return ttk.Spinbox(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Spinbox(self.root, **kwargs)
 
-    def _click_increment_arrow(self):
+    eleza _click_increment_arrow(self):
         width = self.spin.winfo_width()
         height = self.spin.winfo_height()
         x = width - 5
@@ -1136,7 +1136,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self.spin.event_generate('<ButtonRelease-1>', x=x, y=y)
         self.spin.update_idletasks()
 
-    def _click_decrement_arrow(self):
+    eleza _click_decrement_arrow(self):
         width = self.spin.winfo_width()
         height = self.spin.winfo_height()
         x = width - 5
@@ -1145,14 +1145,14 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self.spin.event_generate('<ButtonRelease-1>', x=x, y=y)
         self.spin.update_idletasks()
 
-    def test_command(self):
+    eleza test_command(self):
         success = []
 
-        self.spin['command'] = lambda: success.append(True)
+        self.spin['command'] = lambda: success.append(Kweli)
         self.spin.update()
         self._click_increment_arrow()
         self.spin.update()
-        self.assertTrue(success)
+        self.assertKweli(success)
 
         self._click_decrement_arrow()
         self.assertEqual(len(success), 2)
@@ -1165,7 +1165,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self.spin.update()
         self.assertEqual(len(success), 2)
 
-    def test_to(self):
+    eleza test_to(self):
         self.spin['from'] = 0
         self.spin['to'] = 5
         self.spin.set(4)
@@ -1177,7 +1177,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self._click_increment_arrow()  # 5
         self.assertEqual(self.spin.get(), '5')
 
-    def test_from(self):
+    eleza test_from(self):
         self.spin['from'] = 1
         self.spin['to'] = 10
         self.spin.set(2)
@@ -1187,7 +1187,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self._click_decrement_arrow()  # 1
         self.assertEqual(self.spin.get(), '1')
 
-    def test_increment(self):
+    eleza test_increment(self):
         self.spin['from'] = 0
         self.spin['to'] = 10
         self.spin['increment'] = 4
@@ -1201,7 +1201,7 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self._click_decrement_arrow()  # 3
         self.assertEqual(self.spin.get(), '3')
 
-    def test_format(self):
+    eleza test_format(self):
         self.spin.set(1)
         self.spin['format'] = '%10.3f'
         self.spin.update()
@@ -1215,14 +1215,14 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self.spin.update()
         self._click_increment_arrow()
         value = self.spin.get()
-        self.assertTrue('.' haiko kwenye value)
+        self.assertKweli('.' sio kwenye value)
         self.assertEqual(len(value), 1)
 
-    def test_wrap(self):
+    eleza test_wrap(self):
         self.spin['to'] = 10
         self.spin['from'] = 1
         self.spin.set(1)
-        self.spin['wrap'] = True
+        self.spin['wrap'] = Kweli
         self.spin.update()
 
         self._click_decrement_arrow()
@@ -1231,15 +1231,15 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self._click_increment_arrow()
         self.assertEqual(self.spin.get(), '1')
 
-        self.spin['wrap'] = False
+        self.spin['wrap'] = Uongo
         self.spin.update()
 
         self._click_decrement_arrow()
         self.assertEqual(self.spin.get(), '1')
 
-    def test_values(self):
+    eleza test_values(self):
         self.assertEqual(self.spin['values'],
-                         () if tcl_version < (8, 5) isipokua '')
+                         () ikiwa tcl_version < (8, 5) isipokua '')
         self.checkParam(self.spin, 'values', 'mon tue wed thur',
                         expected=('mon', 'tue', 'wed', 'thur'))
         self.checkParam(self.spin, 'values', ('mon', 'tue', 'wed', 'thur'))
@@ -1257,54 +1257,54 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         self._click_decrement_arrow()
         self.assertEqual(self.spin.get(), 'a')
 
-        # testing values with empty string set through configure
+        # testing values ukijumuisha empty string set through configure
         self.spin.configure(values=[1, '', 2])
         self.assertEqual(self.spin['values'],
-                         ('1', '', '2') if self.wantobjects ama
+                         ('1', '', '2') ikiwa self.wantobjects else
                          '1 {} 2')
 
-        # testing values with spaces
+        # testing values ukijumuisha spaces
         self.spin['values'] = ['a b', 'a\tb', 'a\nb']
         self.assertEqual(self.spin['values'],
-                         ('a b', 'a\tb', 'a\nb') if self.wantobjects ama
+                         ('a b', 'a\tb', 'a\nb') ikiwa self.wantobjects else
                          '{a b} {a\tb} {a\nb}')
 
-        # testing values with special characters
+        # testing values ukijumuisha special characters
         self.spin['values'] = [r'a\tb', '"a"', '} {']
         self.assertEqual(self.spin['values'],
-                         (r'a\tb', '"a"', '} {') if self.wantobjects ama
+                         (r'a\tb', '"a"', '} {') ikiwa self.wantobjects else
                          r'a\\tb {"a"} \}\ \{')
 
-        # testing creating spinbox with empty string in values
+        # testing creating spinbox ukijumuisha empty string kwenye values
         spin2 = ttk.Spinbox(self.root, values=[1, 2, ''])
         self.assertEqual(spin2['values'],
-                         ('1', '2', '') if self.wantobjects isipokua '1 2 {}')
+                         ('1', '2', '') ikiwa self.wantobjects isipokua '1 2 {}')
         spin2.destroy()
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
+kundi TreeviewTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'columns', 'cursor', 'displaycolumns',
         'height', 'padding', 'selectmode', 'show',
         'style', 'takefocus', 'xscrollcommand', 'yscrollcommand',
     )
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.tv = self.create(padding=0)
 
-    def create(self, **kwargs):
-        return ttk.Treeview(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Treeview(self.root, **kwargs)
 
-    def test_columns(self):
+    eleza test_columns(self):
         widget = self.create()
         self.checkParam(widget, 'columns', 'a b c',
                         expected=('a', 'b', 'c'))
         self.checkParam(widget, 'columns', ('a', 'b', 'c'))
         self.checkParam(widget, 'columns', '')
 
-    def test_displaycolumns(self):
+    eleza test_displaycolumns(self):
         widget = self.create()
         widget['columns'] = ('a', 'b', 'c')
         self.checkParam(widget, 'displaycolumns', 'b a c',
@@ -1320,17 +1320,17 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.checkInvalidParam(widget, 'displaycolumns', (1, -2),
                                errmsg='Column index -2 out of bounds')
 
-    def test_height(self):
+    eleza test_height(self):
         widget = self.create()
-        self.checkPixelsParam(widget, 'height', 100, -100, 0, '3c', conv=False)
+        self.checkPixelsParam(widget, 'height', 100, -100, 0, '3c', conv=Uongo)
         self.checkPixelsParam(widget, 'height', 101.2, 102.6, conv=noconv)
 
-    def test_selectmode(self):
+    eleza test_selectmode(self):
         widget = self.create()
         self.checkEnumParam(widget, 'selectmode',
                             'none', 'browse', 'extended')
 
-    def test_show(self):
+    eleza test_show(self):
         widget = self.create()
         self.checkParam(widget, 'show', 'tree headings',
                         expected=('tree', 'headings'))
@@ -1339,7 +1339,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.checkParam(widget, 'show', 'tree', expected=('tree',))
         self.checkParam(widget, 'show', 'headings', expected=('headings',))
 
-    def test_bbox(self):
+    eleza test_bbox(self):
         self.tv.pack()
         self.assertEqual(self.tv.bbox(''), '')
         self.tv.wait_visibility()
@@ -1347,26 +1347,26 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         item_id = self.tv.insert('', 'end')
         children = self.tv.get_children()
-        self.assertTrue(children)
+        self.assertKweli(children)
 
         bbox = self.tv.bbox(children[0])
         self.assertIsBoundingBox(bbox)
 
-        # compare width in bboxes
+        # compare width kwenye bboxes
         self.tv['columns'] = ['test']
         self.tv.column('test', width=50)
         bbox_column0 = self.tv.bbox(children[0], 0)
-        root_width = self.tv.column('#0', width=None)
-        if sio self.wantobjects:
+        root_width = self.tv.column('#0', width=Tupu)
+        ikiwa sio self.wantobjects:
             root_width = int(root_width)
         self.assertEqual(bbox_column0[0], bbox[0] + root_width)
 
-        # verify that bbox of a closed item is the empty string
+        # verify that bbox of a closed item ni the empty string
         child1 = self.tv.insert(item_id, 'end')
         self.assertEqual(self.tv.bbox(child1), '')
 
 
-    def test_children(self):
+    eleza test_children(self):
         # no children yet, should get an empty tuple
         self.assertEqual(self.tv.get_children(), ())
 
@@ -1374,14 +1374,14 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertIsInstance(self.tv.get_children(), tuple)
         self.assertEqual(self.tv.get_children()[0], item_id)
 
-        # add item_id and child3 as children of child2
+        # add item_id na child3 as children of child2
         child2 = self.tv.insert('', 'end')
         child3 = self.tv.insert('', 'end')
         self.tv.set_children(child2, item_id, child3)
         self.assertEqual(self.tv.get_children(child2), (item_id, child3))
 
         # child3 has child2 as parent, thus trying to set child2 as a children
-        # of child3 should result in an error
+        # of child3 should result kwenye an error
         self.assertRaises(tkinter.TclError,
             self.tv.set_children, child3, child2)
 
@@ -1394,19 +1394,19 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(), ())
 
 
-    def test_column(self):
-        # return a dict with all options/values
+    eleza test_column(self):
+        # rudisha a dict ukijumuisha all options/values
         self.assertIsInstance(self.tv.column('#0'), dict)
-        # return a single value of the given option
-        if self.wantobjects:
-            self.assertIsInstance(self.tv.column('#0', width=None), int)
-        # set a new value for an option
+        # rudisha a single value of the given option
+        ikiwa self.wantobjects:
+            self.assertIsInstance(self.tv.column('#0', width=Tupu), int)
+        # set a new value kila an option
         self.tv.column('#0', width=10)
         # testing new way to get option value
         self.assertEqual(self.tv.column('#0', 'width'),
-                         10 if self.wantobjects isipokua '10')
-        self.assertEqual(self.tv.column('#0', width=None),
-                         10 if self.wantobjects isipokua '10')
+                         10 ikiwa self.wantobjects isipokua '10')
+        self.assertEqual(self.tv.column('#0', width=Tupu),
+                         10 ikiwa self.wantobjects isipokua '10')
         # check read-only option
         self.assertRaises(tkinter.TclError, self.tv.column, '#0', id='X')
 
@@ -1415,12 +1415,12 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             {'unknown_option': 'some value'},  {'stretch': 'wrong'},
             {'anchor': 'wrong'}, {'width': 'wrong'}, {'minwidth': 'wrong'}
         ]
-        for kw in invalid_kws:
+        kila kw kwenye invalid_kws:
             self.assertRaises(tkinter.TclError, self.tv.column, '#0',
                 **kw)
 
 
-    def test_delete(self):
+    eleza test_delete(self):
         self.assertRaises(tkinter.TclError, self.tv.delete, '#0')
 
         item_id = self.tv.insert('', 'end')
@@ -1429,7 +1429,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(item_id), (item2, ))
 
         self.tv.delete(item_id)
-        self.assertFalse(self.tv.get_children())
+        self.assertUongo(self.tv.get_children())
 
         # reattach should fail
         self.assertRaises(tkinter.TclError,
@@ -1441,14 +1441,14 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(), (item1, item2))
 
         self.tv.delete(item1, item2)
-        self.assertFalse(self.tv.get_children())
+        self.assertUongo(self.tv.get_children())
 
 
-    def test_detach_reattach(self):
+    eleza test_detach_reattach(self):
         item_id = self.tv.insert('', 'end')
         item2 = self.tv.insert(item_id, 'end')
 
-        # calling detach without items is valid, although it does nothing
+        # calling detach without items ni valid, although it does nothing
         prev = self.tv.get_children()
         self.tv.detach() # this should do nothing
         self.assertEqual(prev, self.tv.get_children())
@@ -1456,11 +1456,11 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(), (item_id, ))
         self.assertEqual(self.tv.get_children(item_id), (item2, ))
 
-        # detach item with children
+        # detach item ukijumuisha children
         self.tv.detach(item_id)
-        self.assertFalse(self.tv.get_children())
+        self.assertUongo(self.tv.get_children())
 
-        # reattach item with children
+        # reattach item ukijumuisha children
         self.tv.reattach(item_id, '', 'end')
         self.assertEqual(self.tv.get_children(), (item_id, ))
         self.assertEqual(self.tv.get_children(item_id), (item2, ))
@@ -1486,19 +1486,19 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(item_id), ())
 
 
-    def test_exists(self):
-        self.assertEqual(self.tv.exists('something'), False)
-        self.assertEqual(self.tv.exists(''), True)
-        self.assertEqual(self.tv.exists({}), False)
+    eleza test_exists(self):
+        self.assertEqual(self.tv.exists('something'), Uongo)
+        self.assertEqual(self.tv.exists(''), Kweli)
+        self.assertEqual(self.tv.exists({}), Uongo)
 
         # the following will make a tk.call equivalent to
-        # tk.call(treeview, "exists") which should result in an error
-        # in the tcl interpreter since tk requires an item.
-        self.assertRaises(tkinter.TclError, self.tv.exists, None)
+        # tk.call(treeview, "exists") which should result kwenye an error
+        # kwenye the tcl interpreter since tk requires an item.
+        self.assertRaises(tkinter.TclError, self.tv.exists, Tupu)
 
 
-    def test_focus(self):
-        # nothing is focused right now
+    eleza test_focus(self):
+        # nothing ni focused right now
         self.assertEqual(self.tv.focus(), '')
 
         item1 = self.tv.insert('', 'end')
@@ -1512,57 +1512,57 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.tv.focus, 'hi')
 
 
-    def test_heading(self):
-        # check a dict is returned
+    eleza test_heading(self):
+        # check a dict ni returned
         self.assertIsInstance(self.tv.heading('#0'), dict)
 
-        # check a value is returned
+        # check a value ni returned
         self.tv.heading('#0', text='hi')
         self.assertEqual(self.tv.heading('#0', 'text'), 'hi')
-        self.assertEqual(self.tv.heading('#0', text=None), 'hi')
+        self.assertEqual(self.tv.heading('#0', text=Tupu), 'hi')
 
         # invalid option
         self.assertRaises(tkinter.TclError, self.tv.heading, '#0',
-            background=None)
+            background=Tupu)
         # invalid value
         self.assertRaises(tkinter.TclError, self.tv.heading, '#0',
             anchor=1)
 
-    def test_heading_callback(self):
-        def simulate_heading_click(x, y):
+    eleza test_heading_callback(self):
+        eleza simulate_heading_click(x, y):
             simulate_mouse_click(self.tv, x, y)
             self.tv.update()
 
-        success = [] # no success for now
+        success = [] # no success kila now
 
         self.tv.pack()
         self.tv.wait_visibility()
-        self.tv.heading('#0', command=lambda: success.append(True))
+        self.tv.heading('#0', command=lambda: success.append(Kweli))
         self.tv.column('#0', width=100)
         self.tv.update()
 
         # assuming that the coords (5, 5) fall into heading #0
         simulate_heading_click(5, 5)
-        if sio success:
+        ikiwa sio success:
             self.fail("The command associated to the treeview heading wasn't "
                 "invoked.")
 
         success = []
         commands = self.tv.master._tclCommands
-        self.tv.heading('#0', command=str(self.tv.heading('#0', command=None)))
+        self.tv.heading('#0', command=str(self.tv.heading('#0', command=Tupu)))
         self.assertEqual(commands, self.tv.master._tclCommands)
         simulate_heading_click(5, 5)
-        if sio success:
+        ikiwa sio success:
             self.fail("The command associated to the treeview heading wasn't "
                 "invoked.")
 
-        # XXX The following raises an error in a tcl interpreter, but sio in
+        # XXX The following raises an error kwenye a tcl interpreter, but sio in
         # Python
         #self.tv.heading('#0', command='I dont exist')
         #simulate_heading_click(5, 5)
 
 
-    def test_index(self):
+    eleza test_index(self):
         # item 'what' doesn't exist
         self.assertRaises(tkinter.TclError, self.tv.index, 'what')
 
@@ -1581,7 +1581,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.index(item2), 0)
         self.assertEqual(self.tv.index(item1), 1)
 
-        # check that index still works even after its parent and siblings
+        # check that index still works even after its parent na siblings
         # have been detached
         self.tv.detach(item1)
         self.assertEqual(self.tv.index(c2), 1)
@@ -1593,7 +1593,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.tv.index, c2)
 
 
-    def test_insert_item(self):
+    eleza test_insert_item(self):
         # parent 'none' doesn't exist
         self.assertRaises(tkinter.TclError, self.tv.insert, 'none', 'end')
 
@@ -1602,13 +1602,13 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             open='')
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end',
             open='please')
-        self.assertFalse(self.tv.delete(self.tv.insert('', 'end', open=True)))
-        self.assertFalse(self.tv.delete(self.tv.insert('', 'end', open=False)))
+        self.assertUongo(self.tv.delete(self.tv.insert('', 'end', open=Kweli)))
+        self.assertUongo(self.tv.delete(self.tv.insert('', 'end', open=Uongo)))
 
         # invalid index
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'middle')
 
-        # trying to duplicate item id is invalid
+        # trying to duplicate item id ni invalid
         itemid = self.tv.insert('', 'end', 'first-item')
         self.assertEqual(itemid, 'first-item')
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end',
@@ -1620,57 +1620,57 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         value = '\xe1ba'
         item = self.tv.insert('', 'end', values=(value, ))
         self.assertEqual(self.tv.item(item, 'values'),
-                         (value,) if self.wantobjects isipokua value)
-        self.assertEqual(self.tv.item(item, values=None),
-                         (value,) if self.wantobjects isipokua value)
+                         (value,) ikiwa self.wantobjects isipokua value)
+        self.assertEqual(self.tv.item(item, values=Tupu),
+                         (value,) ikiwa self.wantobjects isipokua value)
 
-        self.tv.item(item, values=self.root.splitlist(self.tv.item(item, values=None)))
-        self.assertEqual(self.tv.item(item, values=None),
-                         (value,) if self.wantobjects isipokua value)
+        self.tv.item(item, values=self.root.splitlist(self.tv.item(item, values=Tupu)))
+        self.assertEqual(self.tv.item(item, values=Tupu),
+                         (value,) ikiwa self.wantobjects isipokua value)
 
         self.assertIsInstance(self.tv.item(item), dict)
 
         # erase item values
         self.tv.item(item, values='')
-        self.assertFalse(self.tv.item(item, values=None))
+        self.assertUongo(self.tv.item(item, values=Tupu))
 
         # item tags
         item = self.tv.insert('', 'end', tags=[1, 2, value])
-        self.assertEqual(self.tv.item(item, tags=None),
-                         ('1', '2', value) if self.wantobjects ama
+        self.assertEqual(self.tv.item(item, tags=Tupu),
+                         ('1', '2', value) ikiwa self.wantobjects else
                          '1 2 %s' % value)
         self.tv.item(item, tags=[])
-        self.assertFalse(self.tv.item(item, tags=None))
+        self.assertUongo(self.tv.item(item, tags=Tupu))
         self.tv.item(item, tags=(1, 2))
-        self.assertEqual(self.tv.item(item, tags=None),
-                         ('1', '2') if self.wantobjects isipokua '1 2')
+        self.assertEqual(self.tv.item(item, tags=Tupu),
+                         ('1', '2') ikiwa self.wantobjects isipokua '1 2')
 
-        # values with spaces
+        # values ukijumuisha spaces
         item = self.tv.insert('', 'end', values=('a b c',
             '%s %s' % (value, value)))
-        self.assertEqual(self.tv.item(item, values=None),
-            ('a b c', '%s %s' % (value, value)) if self.wantobjects ama
+        self.assertEqual(self.tv.item(item, values=Tupu),
+            ('a b c', '%s %s' % (value, value)) ikiwa self.wantobjects else
             '{a b c} {%s %s}' % (value, value))
 
         # text
         self.assertEqual(self.tv.item(
-            self.tv.insert('', 'end', text="Label here"), text=None),
+            self.tv.insert('', 'end', text="Label here"), text=Tupu),
             "Label here")
         self.assertEqual(self.tv.item(
-            self.tv.insert('', 'end', text=value), text=None),
+            self.tv.insert('', 'end', text=value), text=Tupu),
             value)
 
-        # test for values which are sio None
+        # test kila values which are sio Tupu
         itemid = self.tv.insert('', 'end', 0)
         self.assertEqual(itemid, '0')
         itemid = self.tv.insert('', 'end', 0.0)
         self.assertEqual(itemid, '0.0')
-        # this is because False resolves to 0 and element with 0 iid is already present
-        self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', False)
+        # this ni because Uongo resolves to 0 na element ukijumuisha 0 iid ni already present
+        self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', Uongo)
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', '')
 
 
-    def test_selection(self):
+    eleza test_selection(self):
         self.assertRaises(TypeError, self.tv.selection, 'spam')
         # item 'none' doesn't exist
         self.assertRaises(tkinter.TclError, self.tv.selection_set, 'none')
@@ -1711,9 +1711,9 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv.selection_toggle()
         self.assertEqual(self.tv.selection(), (c3,))
 
-        self.tv.insert('', 'end', id='with spaces')
-        self.tv.selection_set('with spaces')
-        self.assertEqual(self.tv.selection(), ('with spaces',))
+        self.tv.insert('', 'end', id='ukijumuisha spaces')
+        self.tv.selection_set('ukijumuisha spaces')
+        self.assertEqual(self.tv.selection(), ('ukijumuisha spaces',))
 
         self.tv.insert('', 'end', id='{brace')
         self.tv.selection_set('{brace')
@@ -1741,30 +1741,30 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.selection(), (c3, item2))
 
 
-    def test_set(self):
+    eleza test_set(self):
         self.tv['columns'] = ['A', 'B']
         item = self.tv.insert('', 'end', values=['a', 'b'])
         self.assertEqual(self.tv.set(item), {'A': 'a', 'B': 'b'})
 
         self.tv.set(item, 'B', 'a')
-        self.assertEqual(self.tv.item(item, values=None),
-                         ('a', 'a') if self.wantobjects isipokua 'a a')
+        self.assertEqual(self.tv.item(item, values=Tupu),
+                         ('a', 'a') ikiwa self.wantobjects isipokua 'a a')
 
         self.tv['columns'] = ['B']
         self.assertEqual(self.tv.set(item), {'B': 'a'})
 
         self.tv.set(item, 'B', 'b')
         self.assertEqual(self.tv.set(item, column='B'), 'b')
-        self.assertEqual(self.tv.item(item, values=None),
-                         ('b', 'a') if self.wantobjects isipokua 'b a')
+        self.assertEqual(self.tv.item(item, values=Tupu),
+                         ('b', 'a') ikiwa self.wantobjects isipokua 'b a')
 
         self.tv.set(item, 'B', 123)
         self.assertEqual(self.tv.set(item, 'B'),
-                         123 if self.wantobjects isipokua '123')
-        self.assertEqual(self.tv.item(item, values=None),
-                         (123, 'a') if self.wantobjects isipokua '123 a')
+                         123 ikiwa self.wantobjects isipokua '123')
+        self.assertEqual(self.tv.item(item, values=Tupu),
+                         (123, 'a') ikiwa self.wantobjects isipokua '123 a')
         self.assertEqual(self.tv.set(item),
-                         {'B': 123} if self.wantobjects isipokua {'B': '123'})
+                         {'B': 123} ikiwa self.wantobjects isipokua {'B': '123'})
 
         # inexistent column
         self.assertRaises(tkinter.TclError, self.tv.set, item, 'A')
@@ -1774,7 +1774,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.tv.set, 'notme')
 
 
-    def test_tag_bind(self):
+    eleza test_tag_bind(self):
         events = []
         item1 = self.tv.insert('', 'end', tags=['call'])
         item2 = self.tv.insert('', 'end', tags=['call'])
@@ -1789,74 +1789,74 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         pos_y = set()
         found = set()
-        for i in range(0, 100, 10):
-            if len(found) == 2: # item1 and item2 already found
+        kila i kwenye range(0, 100, 10):
+            ikiwa len(found) == 2: # item1 na item2 already found
                 koma
             item_id = self.tv.identify_row(i)
-            if item_id and item_id haiko kwenye found:
+            ikiwa item_id na item_id sio kwenye found:
                 pos_y.add(i)
                 found.add(item_id)
 
-        self.assertEqual(len(pos_y), 2) # item1 and item2 y pos
-        for y in pos_y:
+        self.assertEqual(len(pos_y), 2) # item1 na item2 y pos
+        kila y kwenye pos_y:
             simulate_mouse_click(self.tv, 0, y)
 
-        # by now there should be 4 things in the events list, since each
-        # item had a bind for two events that were simulated above
+        # by now there should be 4 things kwenye the events list, since each
+        # item had a bind kila two events that were simulated above
         self.assertEqual(len(events), 4)
-        for evt in zip(events[::2], events[1::2]):
+        kila evt kwenye zip(events[::2], events[1::2]):
             self.assertEqual(evt, (1, 2))
 
 
-    def test_tag_configure(self):
-        # Just testing parameter passing for now
+    eleza test_tag_configure(self):
+        # Just testing parameter passing kila now
         self.assertRaises(TypeError, self.tv.tag_configure)
         self.assertRaises(tkinter.TclError, self.tv.tag_configure,
             'test', sky='blue')
         self.tv.tag_configure('test', foreground='blue')
         self.assertEqual(str(self.tv.tag_configure('test', 'foreground')),
             'blue')
-        self.assertEqual(str(self.tv.tag_configure('test', foreground=None)),
+        self.assertEqual(str(self.tv.tag_configure('test', foreground=Tupu)),
             'blue')
         self.assertIsInstance(self.tv.tag_configure('test'), dict)
 
-    def test_tag_has(self):
+    eleza test_tag_has(self):
         item1 = self.tv.insert('', 'end', text='Item 1', tags=['tag1'])
         item2 = self.tv.insert('', 'end', text='Item 2', tags=['tag2'])
         self.assertRaises(TypeError, self.tv.tag_has)
         self.assertRaises(TclError, self.tv.tag_has, 'tag1', 'non-existing')
-        self.assertTrue(self.tv.tag_has('tag1', item1))
-        self.assertFalse(self.tv.tag_has('tag1', item2))
-        self.assertFalse(self.tv.tag_has('tag2', item1))
-        self.assertTrue(self.tv.tag_has('tag2', item2))
-        self.assertFalse(self.tv.tag_has('tag3', item1))
-        self.assertFalse(self.tv.tag_has('tag3', item2))
+        self.assertKweli(self.tv.tag_has('tag1', item1))
+        self.assertUongo(self.tv.tag_has('tag1', item2))
+        self.assertUongo(self.tv.tag_has('tag2', item1))
+        self.assertKweli(self.tv.tag_has('tag2', item2))
+        self.assertUongo(self.tv.tag_has('tag3', item1))
+        self.assertUongo(self.tv.tag_has('tag3', item2))
         self.assertEqual(self.tv.tag_has('tag1'), (item1,))
         self.assertEqual(self.tv.tag_has('tag2'), (item2,))
         self.assertEqual(self.tv.tag_has('tag3'), ())
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class SeparatorTest(AbstractWidgetTest, unittest.TestCase):
+kundi SeparatorTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'cursor', 'orient', 'style', 'takefocus',
         # 'state'?
     )
     default_orient = 'horizontal'
 
-    def create(self, **kwargs):
-        return ttk.Separator(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Separator(self.root, **kwargs)
 
 
 @add_standard_options(StandardTtkOptionsTests)
-class SizegripTest(AbstractWidgetTest, unittest.TestCase):
+kundi SizegripTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'cursor', 'style', 'takefocus',
         # 'state'?
     )
 
-    def create(self, **kwargs):
-        return ttk.Sizegrip(self.root, **kwargs)
+    eleza create(self, **kwargs):
+        rudisha ttk.Sizegrip(self.root, **kwargs)
 
 tests_gui = (
         ButtonTest, CheckbuttonTest, ComboboxTest, EntryTest,
@@ -1866,5 +1866,5 @@ tests_gui = (
         SizegripTest, SpinboxTest, TreeviewTest, WidgetTest,
         )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

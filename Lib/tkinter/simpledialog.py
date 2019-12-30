@@ -3,7 +3,7 @@
 #
 # Copyright (c) 1997 by Fredrik Lundh
 #
-# This copyright applies to Dialog, askinteger, askfloat and asktring
+# This copyright applies to Dialog, askinteger, askfloat na asktring
 #
 # fredrik@pythonware.com
 # http://www.pythonware.com
@@ -14,31 +14,31 @@ It contains the following public symbols:
 
 SimpleDialog -- A simple but flexible modal dialog box
 
-Dialog -- a base class for dialogs
+Dialog -- a base kundi kila dialogs
 
-askinteger -- get an integer from the user
+askinteger -- get an integer kutoka the user
 
-askfloat -- get a float from the user
+askfloat -- get a float kutoka the user
 
-askstring -- get a string from the user
+askstring -- get a string kutoka the user
 """
 
-from tkinter import *
-from tkinter import messagebox
+kutoka tkinter agiza *
+kutoka tkinter agiza messagebox
 
-import tkinter # used at _QueryDialog for tkinter._default_root
+agiza tkinter # used at _QueryDialog kila tkinter._default_root
 
 
-class SimpleDialog:
+kundi SimpleDialog:
 
-    def __init__(self, master,
-                 text='', buttons=[], default=None, cancel=None,
-                 title=None, class_=None):
-        if class_:
+    eleza __init__(self, master,
+                 text='', buttons=[], default=Tupu, cancel=Tupu,
+                 title=Tupu, class_=Tupu):
+        ikiwa class_:
             self.root = Toplevel(master, class_=class_)
         isipokua:
             self.root = Toplevel(master)
-        if title:
+        ikiwa title:
             self.root.title(title)
             self.root.iconname(title)
         self.message = Message(self.root, text=text, aspect=400)
@@ -49,22 +49,22 @@ class SimpleDialog:
         self.cancel = cancel
         self.default = default
         self.root.bind('<Return>', self.return_event)
-        for num in range(len(buttons)):
+        kila num kwenye range(len(buttons)):
             s = buttons[num]
             b = Button(self.frame, text=s,
                        command=(lambda self=self, num=num: self.done(num)))
-            if num == default:
+            ikiwa num == default:
                 b.config(relief=RIDGE, borderwidth=8)
             b.pack(side=LEFT, fill=BOTH, expand=1)
         self.root.protocol('WM_DELETE_WINDOW', self.wm_delete_window)
         self._set_transient(master)
 
-    def _set_transient(self, master, relx=0.5, rely=0.3):
+    eleza _set_transient(self, master, relx=0.5, rely=0.3):
         widget = self.root
         widget.withdraw() # Remain invisible wakati we figure out the geometry
         widget.transient(master)
         widget.update_idletasks() # Actualize geometry information
-        if master.winfo_ismapped():
+        ikiwa master.winfo_ismapped():
             m_width = master.winfo_width()
             m_height = master.winfo_height()
             m_x = master.winfo_rootx()
@@ -77,49 +77,49 @@ class SimpleDialog:
         w_height = widget.winfo_reqheight()
         x = m_x + (m_width - w_width) * relx
         y = m_y + (m_height - w_height) * rely
-        if x+w_width > master.winfo_screenwidth():
+        ikiwa x+w_width > master.winfo_screenwidth():
             x = master.winfo_screenwidth() - w_width
-        lasivyo x < 0:
+        elikiwa x < 0:
             x = 0
-        if y+w_height > master.winfo_screenheight():
+        ikiwa y+w_height > master.winfo_screenheight():
             y = master.winfo_screenheight() - w_height
-        lasivyo y < 0:
+        elikiwa y < 0:
             y = 0
         widget.geometry("+%d+%d" % (x, y))
         widget.deiconify() # Become visible at the desired location
 
-    def go(self):
+    eleza go(self):
         self.root.wait_visibility()
         self.root.grab_set()
         self.root.mainloop()
         self.root.destroy()
-        return self.num
+        rudisha self.num
 
-    def return_event(self, event):
-        if self.default is None:
+    eleza return_event(self, event):
+        ikiwa self.default ni Tupu:
             self.root.bell()
         isipokua:
             self.done(self.default)
 
-    def wm_delete_window(self):
-        if self.cancel is None:
+    eleza wm_delete_window(self):
+        ikiwa self.cancel ni Tupu:
             self.root.bell()
         isipokua:
             self.done(self.cancel)
 
-    def done(self, num):
+    eleza done(self, num):
         self.num = num
         self.root.quit()
 
 
-class Dialog(Toplevel):
+kundi Dialog(Toplevel):
 
     '''Class to open dialogs.
 
-    This class is intended as a base class for custom dialogs
+    This kundi ni intended as a base kundi kila custom dialogs
     '''
 
-    def __init__(self, parent, title = None):
+    eleza __init__(self, parent, title = Tupu):
         '''Initialize a dialog.
 
         Arguments:
@@ -130,19 +130,19 @@ class Dialog(Toplevel):
         '''
         Toplevel.__init__(self, parent)
 
-        self.withdraw() # remain invisible for now
+        self.withdraw() # remain invisible kila now
         # If the master ni sio viewable, don't
-        # make the child transient, or isipokua it
+        # make the child transient, ama isipokua it
         # would be opened withdrawn
-        if parent.winfo_viewable():
+        ikiwa parent.winfo_viewable():
             self.transient(parent)
 
-        if title:
+        ikiwa title:
             self.title(title)
 
         self.parent = parent
 
-        self.result = None
+        self.result = Tupu
 
         body = Frame(self)
         self.initial_focus = self.body(body)
@@ -150,12 +150,12 @@ class Dialog(Toplevel):
 
         self.buttonbox()
 
-        if sio self.initial_focus:
+        ikiwa sio self.initial_focus:
             self.initial_focus = self
 
         self.protocol("WM_DELETE_WINDOW", self.cancel)
 
-        if self.parent ni sio None:
+        ikiwa self.parent ni sio Tupu:
             self.geometry("+%d+%d" % (parent.winfo_rootx()+50,
                                       parent.winfo_rooty()+50))
 
@@ -163,32 +163,32 @@ class Dialog(Toplevel):
 
         self.initial_focus.focus_set()
 
-        # wait for window to appear on screen before calling grab_set
+        # wait kila window to appear on screen before calling grab_set
         self.wait_visibility()
         self.grab_set()
         self.wait_window(self)
 
-    def destroy(self):
+    eleza destroy(self):
         '''Destroy the window'''
-        self.initial_focus = None
+        self.initial_focus = Tupu
         Toplevel.destroy(self)
 
     #
     # construction hooks
 
-    def body(self, master):
+    eleza body(self, master):
         '''create dialog body.
 
-        return widget that should have initial focus.
-        This method should be overridden, and is called
+        rudisha widget that should have initial focus.
+        This method should be overridden, na ni called
         by the __init__ method.
         '''
         pass
 
-    def buttonbox(self):
+    eleza buttonbox(self):
         '''add standard button box.
 
-        override if you do sio want the standard buttons
+        override ikiwa you do sio want the standard buttons
         '''
 
         box = Frame(self)
@@ -206,9 +206,9 @@ class Dialog(Toplevel):
     #
     # standard button semantics
 
-    def ok(self, event=None):
+    eleza ok(self, event=Tupu):
 
-        if sio self.validate():
+        ikiwa sio self.validate():
             self.initial_focus.focus_set() # put focus back
             return
 
@@ -220,30 +220,30 @@ class Dialog(Toplevel):
         mwishowe:
             self.cancel()
 
-    def cancel(self, event=None):
+    eleza cancel(self, event=Tupu):
 
         # put focus back to the parent window
-        if self.parent ni sio None:
+        ikiwa self.parent ni sio Tupu:
             self.parent.focus_set()
         self.destroy()
 
     #
     # command hooks
 
-    def validate(self):
+    eleza validate(self):
         '''validate the data
 
-        This method is called automatically to validate the data before the
-        dialog is destroyed. By default, it always validates OK.
+        This method ni called automatically to validate the data before the
+        dialog ni destroyed. By default, it always validates OK.
         '''
 
-        return 1 # override
+        rudisha 1 # override
 
-    def apply(self):
+    eleza apply(self):
         '''process the data
 
-        This method is called automatically to process the data, *after*
-        the dialog is destroyed. By default, it does nothing.
+        This method ni called automatically to process the data, *after*
+        the dialog ni destroyed. By default, it does nothing.
         '''
 
         pass # override
@@ -252,14 +252,14 @@ class Dialog(Toplevel):
 # --------------------------------------------------------------------
 # convenience dialogues
 
-class _QueryDialog(Dialog):
+kundi _QueryDialog(Dialog):
 
-    def __init__(self, title, prompt,
-                 initialvalue=None,
-                 minvalue = None, maxvalue = None,
-                 parent = None):
+    eleza __init__(self, title, prompt,
+                 initialvalue=Tupu,
+                 minvalue = Tupu, maxvalue = Tupu,
+                 parent = Tupu):
 
-        if sio parent:
+        ikiwa sio parent:
             parent = tkinter._default_root
 
         self.prompt   = prompt
@@ -270,11 +270,11 @@ class _QueryDialog(Dialog):
 
         Dialog.__init__(self, parent, title)
 
-    def destroy(self):
-        self.entry = None
+    eleza destroy(self):
+        self.entry = Tupu
         Dialog.destroy(self)
 
-    def body(self, master):
+    eleza body(self, master):
 
         w = Label(master, text=self.prompt, justify=LEFT)
         w.grid(row=0, padx=5, sticky=W)
@@ -282,55 +282,55 @@ class _QueryDialog(Dialog):
         self.entry = Entry(master, name="entry")
         self.entry.grid(row=1, padx=5, sticky=W+E)
 
-        if self.initialvalue ni sio None:
+        ikiwa self.initialvalue ni sio Tupu:
             self.entry.insert(0, self.initialvalue)
             self.entry.select_range(0, END)
 
-        return self.entry
+        rudisha self.entry
 
-    def validate(self):
+    eleza validate(self):
         jaribu:
             result = self.getresult()
-        tatizo ValueError:
+        except ValueError:
             messagebox.showwarning(
                 "Illegal value",
                 self.errormessage + "\nPlease try again",
                 parent = self
             )
-            return 0
+            rudisha 0
 
-        if self.minvalue ni sio None and result < self.minvalue:
+        ikiwa self.minvalue ni sio Tupu na result < self.minvalue:
             messagebox.showwarning(
                 "Too small",
-                "The allowed minimum value is %s. "
+                "The allowed minimum value ni %s. "
                 "Please try again." % self.minvalue,
                 parent = self
             )
-            return 0
+            rudisha 0
 
-        if self.maxvalue ni sio None and result > self.maxvalue:
+        ikiwa self.maxvalue ni sio Tupu na result > self.maxvalue:
             messagebox.showwarning(
                 "Too large",
-                "The allowed maximum value is %s. "
+                "The allowed maximum value ni %s. "
                 "Please try again." % self.maxvalue,
                 parent = self
             )
-            return 0
+            rudisha 0
 
         self.result = result
 
-        return 1
+        rudisha 1
 
 
-class _QueryInteger(_QueryDialog):
+kundi _QueryInteger(_QueryDialog):
     errormessage = "Not an integer."
 
-    def getresult(self):
-        return self.getint(self.entry.get())
+    eleza getresult(self):
+        rudisha self.getint(self.entry.get())
 
 
-def askinteger(title, prompt, **kw):
-    '''get an integer from the user
+eleza askinteger(title, prompt, **kw):
+    '''get an integer kutoka the user
 
     Arguments:
 
@@ -338,21 +338,21 @@ def askinteger(title, prompt, **kw):
         prompt -- the label text
         **kw -- see SimpleDialog class
 
-    Return value is an integer
+    Return value ni an integer
     '''
     d = _QueryInteger(title, prompt, **kw)
-    return d.result
+    rudisha d.result
 
 
-class _QueryFloat(_QueryDialog):
+kundi _QueryFloat(_QueryDialog):
     errormessage = "Not a floating point value."
 
-    def getresult(self):
-        return self.getdouble(self.entry.get())
+    eleza getresult(self):
+        rudisha self.getdouble(self.entry.get())
 
 
-def askfloat(title, prompt, **kw):
-    '''get a float from the user
+eleza askfloat(title, prompt, **kw):
+    '''get a float kutoka the user
 
     Arguments:
 
@@ -360,33 +360,33 @@ def askfloat(title, prompt, **kw):
         prompt -- the label text
         **kw -- see SimpleDialog class
 
-    Return value is a float
+    Return value ni a float
     '''
     d = _QueryFloat(title, prompt, **kw)
-    return d.result
+    rudisha d.result
 
 
-class _QueryString(_QueryDialog):
-    def __init__(self, *args, **kw):
-        if "show" in kw:
+kundi _QueryString(_QueryDialog):
+    eleza __init__(self, *args, **kw):
+        ikiwa "show" kwenye kw:
             self.__show = kw["show"]
             toa kw["show"]
         isipokua:
-            self.__show = None
+            self.__show = Tupu
         _QueryDialog.__init__(self, *args, **kw)
 
-    def body(self, master):
+    eleza body(self, master):
         entry = _QueryDialog.body(self, master)
-        if self.__show ni sio None:
+        ikiwa self.__show ni sio Tupu:
             entry.configure(show=self.__show)
-        return entry
+        rudisha entry
 
-    def getresult(self):
-        return self.entry.get()
+    eleza getresult(self):
+        rudisha self.entry.get()
 
 
-def askstring(title, prompt, **kw):
-    '''get a string from the user
+eleza askstring(title, prompt, **kw):
+    '''get a string kutoka the user
 
     Arguments:
 
@@ -394,19 +394,19 @@ def askstring(title, prompt, **kw):
         prompt -- the label text
         **kw -- see SimpleDialog class
 
-    Return value is a string
+    Return value ni a string
     '''
     d = _QueryString(title, prompt, **kw)
-    return d.result
+    rudisha d.result
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
 
-    def test():
+    eleza test():
         root = Tk()
-        def doit(root=root):
+        eleza doit(root=root):
             d = SimpleDialog(root,
-                         text="This is a test dialog.  "
+                         text="This ni a test dialog.  "
                               "Would this have been an actual dialog, "
                               "the buttons below would have been glowing "
                               "in soft pink light.\n"
@@ -415,11 +415,11 @@ if __name__ == '__main__':
                          default=0,
                          cancel=2,
                          title="Test Dialog")
-            print(d.go())
-            print(askinteger("Spam", "Egg count", initialvalue=12*12))
-            print(askfloat("Spam", "Egg weight\n(in tons)", minvalue=1,
+            andika(d.go())
+            andika(askinteger("Spam", "Egg count", initialvalue=12*12))
+            andika(askfloat("Spam", "Egg weight\n(in tons)", minvalue=1,
                            maxvalue=100))
-            print(askstring("Spam", "Egg label"))
+            andika(askstring("Spam", "Egg label"))
         t = Button(root, text='Test', command=doit)
         t.pack()
         q = Button(root, text='Quit', command=t.quit)

@@ -1,25 +1,25 @@
-"""Tests for distutils.command.bdist_msi."""
-import sys
-import unittest
-from test.support import run_unittest
-from distutils.tests import support
+"""Tests kila distutils.command.bdist_msi."""
+agiza sys
+agiza unittest
+kutoka test.support agiza run_unittest
+kutoka distutils.tests agiza support
 
 
 @unittest.skipUnless(sys.platform == 'win32', 'these tests require Windows')
-class BDistMSITestCase(support.TempdirManager,
+kundi BDistMSITestCase(support.TempdirManager,
                        support.LoggingSilencer,
                        unittest.TestCase):
 
-    def test_minimal(self):
+    eleza test_minimal(self):
         # minimal test XXX need more tests
-        from distutils.command.bdist_msi import bdist_msi
+        kutoka distutils.command.bdist_msi agiza bdist_msi
         project_dir, dist = self.create_dist()
         cmd = bdist_msi(dist)
         cmd.ensure_finalized()
 
 
-def test_suite():
-    return unittest.makeSuite(BDistMSITestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(BDistMSITestCase)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     run_unittest(test_suite())

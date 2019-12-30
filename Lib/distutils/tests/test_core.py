@@ -1,140 +1,140 @@
-"""Tests for distutils.core."""
+"""Tests kila distutils.core."""
 
-import io
-import distutils.core
-import os
-import shutil
-import sys
-import test.support
-from test.support import captured_stdout, run_unittest
-import unittest
-from distutils.tests import support
-from distutils import log
+agiza io
+agiza distutils.core
+agiza os
+agiza shutil
+agiza sys
+agiza test.support
+kutoka test.support agiza captured_stdout, run_unittest
+agiza unittest
+kutoka distutils.tests agiza support
+kutoka distutils agiza log
 
 # setup script that uses __file__
 setup_using___file__ = """\
 
 __file__
 
-from distutils.core import setup
+kutoka distutils.core agiza setup
 setup()
 """
 
 setup_prints_cwd = """\
 
-import os
-print(os.getcwd())
+agiza os
+andika(os.getcwd())
 
-from distutils.core import setup
+kutoka distutils.core agiza setup
 setup()
 """
 
 setup_does_nothing = """\
-from distutils.core import setup
+kutoka distutils.core agiza setup
 setup()
 """
 
 
-setup_defines_subclass = """\
-from distutils.core import setup
-from distutils.command.install import install as _install
+setup_defines_subkundi = """\
+kutoka distutils.core agiza setup
+kutoka distutils.command.install agiza install as _install
 
-class install(_install):
+kundi install(_install):
     sub_commands = _install.sub_commands + ['cmd']
 
 setup(cmdclass={'install': install})
 """
 
-class CoreTestCase(support.EnvironGuard, unittest.TestCase):
+kundi CoreTestCase(support.EnvironGuard, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super(CoreTestCase, self).setUp()
         self.old_stdout = sys.stdout
         self.cleanup_testfn()
         self.old_argv = sys.argv, sys.argv[:]
         self.addCleanup(log.set_threshold, log._global_log.threshold)
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.stdout = self.old_stdout
         self.cleanup_testfn()
         sys.argv = self.old_argv[0]
         sys.argv[:] = self.old_argv[1]
         super(CoreTestCase, self).tearDown()
 
-    def cleanup_testfn(self):
+    eleza cleanup_testfn(self):
         path = test.support.TESTFN
-        if os.path.isfile(path):
+        ikiwa os.path.isfile(path):
             os.remove(path)
-        lasivyo os.path.isdir(path):
+        elikiwa os.path.isdir(path):
             shutil.rmtree(path)
 
-    def write_setup(self, text, path=test.support.TESTFN):
+    eleza write_setup(self, text, path=test.support.TESTFN):
         f = open(path, "w")
         jaribu:
             f.write(text)
         mwishowe:
             f.close()
-        return path
+        rudisha path
 
-    def test_run_setup_provides_file(self):
-        # Make sure the script can use __file__; if that's missing, the test
-        # setup.py script will ashiria NameError.
+    eleza test_run_setup_provides_file(self):
+        # Make sure the script can use __file__; ikiwa that's missing, the test
+        # setup.py script will  ashiria NameError.
         distutils.core.run_setup(
             self.write_setup(setup_using___file__))
 
-    def test_run_setup_preserves_sys_argv(self):
+    eleza test_run_setup_preserves_sys_argv(self):
         # Make sure run_setup does sio clobber sys.argv
         argv_copy = sys.argv.copy()
         distutils.core.run_setup(
             self.write_setup(setup_does_nothing))
         self.assertEqual(sys.argv, argv_copy)
 
-    def test_run_setup_defines_subclass(self):
-        # Make sure the script can use __file__; if that's missing, the test
-        # setup.py script will ashiria NameError.
+    eleza test_run_setup_defines_subclass(self):
+        # Make sure the script can use __file__; ikiwa that's missing, the test
+        # setup.py script will  ashiria NameError.
         dist = distutils.core.run_setup(
             self.write_setup(setup_defines_subclass))
         install = dist.get_command_obj('install')
         self.assertIn('cmd', install.sub_commands)
 
-    def test_run_setup_uses_current_dir(self):
-        # This tests that the setup script is run with the current directory
+    eleza test_run_setup_uses_current_dir(self):
+        # This tests that the setup script ni run ukijumuisha the current directory
         # as its own current directory; this was temporarily broken by a
         # previous patch when TESTFN did sio use the current directory.
         sys.stdout = io.StringIO()
         cwd = os.getcwd()
 
-        # Create a directory and write the setup.py file there:
+        # Create a directory na write the setup.py file there:
         os.mkdir(test.support.TESTFN)
         setup_py = os.path.join(test.support.TESTFN, "setup.py")
         distutils.core.run_setup(
             self.write_setup(setup_prints_cwd, path=setup_py))
 
         output = sys.stdout.getvalue()
-        if output.endswith("\n"):
+        ikiwa output.endswith("\n"):
             output = output[:-1]
         self.assertEqual(cwd, output)
 
-    def test_debug_mode(self):
-        # this covers the code called when DEBUG is set
+    eleza test_debug_mode(self):
+        # this covers the code called when DEBUG ni set
         sys.argv = ['setup.py', '--name']
-        with captured_stdout() as stdout:
+        ukijumuisha captured_stdout() as stdout:
             distutils.core.setup(name='bar')
         stdout.seek(0)
         self.assertEqual(stdout.read(), 'bar\n')
 
-        distutils.core.DEBUG = True
+        distutils.core.DEBUG = Kweli
         jaribu:
-            with captured_stdout() as stdout:
+            ukijumuisha captured_stdout() as stdout:
                 distutils.core.setup(name='bar')
         mwishowe:
-            distutils.core.DEBUG = False
+            distutils.core.DEBUG = Uongo
         stdout.seek(0)
         wanted = "options (after parsing config files):\n"
         self.assertEqual(stdout.readlines()[0], wanted)
 
-def test_suite():
-    return unittest.makeSuite(CoreTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(CoreTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

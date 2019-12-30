@@ -46,7 +46,7 @@ kundi AutoCompleteWindow:
         # The index of the start of the completion
         self.startindex = Tupu
         # The last typed start, used so that when the selection changes,
-        # the new start will be kama close kama possible to the last typed one.
+        # the new start will be as close as possible to the last typed one.
         self.lasttypedstart = Tupu
         # Do we have an indication that the user wants the completion window
         # (kila example, he clicked the list)
@@ -172,7 +172,7 @@ kundi AutoCompleteWindow:
             self._change_start(completed)
             i = self._binary_search(completed)
             ikiwa self.completions[i] == completed na \
-               (i == len(self.completions)-1 ama
+               (i == len(self.completions)-1 or
                 self.completions[i+1][:len(completed)] != completed):
                 # There ni exactly one matching completion
                 rudisha completed == start
@@ -191,8 +191,8 @@ kundi AutoCompleteWindow:
             # the focus.
             acw.tk.call("::tk::unsupported::MacWindowStyle", "style", acw._w,
                         "help", "noActivates")
-        tatizo TclError:
-            pita
+        except TclError:
+            pass
         self.scrollbar = scrollbar = Scrollbar(acw, orient=VERTICAL)
         self.listbox = listbox = Listbox(acw, yscrollcommand=scrollbar.set,
                                          exportselection=Uongo)
@@ -234,11 +234,11 @@ kundi AutoCompleteWindow:
     eleza winconfig_event(self, event):
         ikiwa self.is_configuring:
             # Avoid running on recursive <Configure> callback invocations.
-            rudisha
+            return
 
         self.is_configuring = Kweli
         ikiwa sio self.is_active():
-            rudisha
+            return
         # Position the completion list window
         text = self.widget
         text.see(self.startindex)
@@ -269,26 +269,26 @@ kundi AutoCompleteWindow:
 
     eleza _hide_event_check(self):
         ikiwa sio self.autocompletewindow:
-            rudisha
+            return
 
         jaribu:
             ikiwa sio self.autocompletewindow.focus_get():
                 self.hide_window()
-        tatizo KeyError:
+        except KeyError:
             # See issue 734176, when user click on menu, acw.focus_get()
             # will get KeyError.
             self.hide_window()
 
     eleza hide_event(self, event):
-        # Hide autocomplete list ikiwa it exists na does sio have focus ama
+        # Hide autocomplete list ikiwa it exists na does sio have focus or
         # mouse click on widget / text area.
         ikiwa self.is_active():
             ikiwa event.type == EventType.FocusOut:
                 # On Windows platform, it will need to delay the check for
-                # acw.focus_get() when click on acw, otherwise it will rudisha
+                # acw.focus_get() when click on acw, otherwise it will return
                 # Tupu na close the window
                 self.widget.after(1, self._hide_event_check)
-            lasivyo event.type == EventType.ButtonPress:
+            elikiwa event.type == EventType.ButtonPress:
                 # ButtonPress event only bind to self.widget
                 self.hide_window()
 
@@ -321,11 +321,11 @@ kundi AutoCompleteWindow:
             # Normal editing of text
             ikiwa len(keysym) == 1:
                 self._change_start(self.start + keysym)
-            lasivyo keysym == "underscore":
+            elikiwa keysym == "underscore":
                 self._change_start(self.start + '_')
-            lasivyo keysym == "period":
+            elikiwa keysym == "period":
                 self._change_start(self.start + '.')
-            lasivyo keysym == "minus":
+            elikiwa keysym == "minus":
                 self._change_start(self.start + '-')
             isipokua:
                 # keysym == "BackSpace"
@@ -339,12 +339,12 @@ kundi AutoCompleteWindow:
             self._selection_changed()
             rudisha "koma"
 
-        lasivyo keysym == "Return":
+        elikiwa keysym == "Return":
             self.complete()
             self.hide_window()
             rudisha 'koma'
 
-        lasivyo (self.mode == ATTRS na keysym in
+        elikiwa (self.mode == ATTRS na keysym in
               ("period", "space", "parenleft", "parenright", "bracketleft",
                "bracketright")) ama \
              (self.mode == FILES na keysym in
@@ -360,16 +360,16 @@ kundi AutoCompleteWindow:
             self.hide_window()
             rudisha Tupu
 
-        lasivyo keysym kwenye ("Home", "End", "Prior", "Next", "Up", "Down") na \
+        elikiwa keysym kwenye ("Home", "End", "Prior", "Next", "Up", "Down") na \
              sio state:
             # Move the selection kwenye the listbox
             self.userwantswindow = Kweli
             cursel = int(self.listbox.curselection()[0])
             ikiwa keysym == "Home":
                 newsel = 0
-            lasivyo keysym == "End":
+            elikiwa keysym == "End":
                 newsel = len(self.completions)-1
-            lasivyo keysym kwenye ("Prior", "Next"):
+            elikiwa keysym kwenye ("Prior", "Next"):
                 jump = self.listbox.nearest(self.listbox.winfo_height()) - \
                        self.listbox.nearest(0)
                 ikiwa keysym == "Prior":
@@ -377,7 +377,7 @@ kundi AutoCompleteWindow:
                 isipokua:
                     assert keysym == "Next"
                     newsel = min(len(self.completions)-1, cursel+jump)
-            lasivyo keysym == "Up":
+            elikiwa keysym == "Up":
                 newsel = max(0, cursel-1)
             isipokua:
                 assert keysym == "Down"
@@ -388,7 +388,7 @@ kundi AutoCompleteWindow:
             self._change_start(self.completions[newsel])
             rudisha "koma"
 
-        lasivyo (keysym == "Tab" na sio state):
+        elikiwa (keysym == "Tab" na sio state):
             ikiwa self.lastkey_was_tab:
                 # two tabs kwenye a row; insert current selection na close acw
                 cursel = int(self.listbox.curselection()[0])
@@ -401,12 +401,12 @@ kundi AutoCompleteWindow:
                 self.lastkey_was_tab = Kweli
                 rudisha Tupu
 
-        lasivyo any(s kwenye keysym kila s kwenye ("Shift", "Control", "Alt",
+        elikiwa any(s kwenye keysym kila s kwenye ("Shift", "Control", "Alt",
                                        "Meta", "Command", "Option")):
             # A modifier key, so ignore
             rudisha Tupu
 
-        lasivyo event.char na event.char >= ' ':
+        elikiwa event.char na event.char >= ' ':
             # Regular character ukijumuisha a non-length-1 keycode
             self._change_start(self.start + event.char)
             self.lasttypedstart = self.start
@@ -422,7 +422,7 @@ kundi AutoCompleteWindow:
 
     eleza keyrelease_event(self, event):
         ikiwa sio self.is_active():
-            rudisha
+            return
         ikiwa self.widget.index("insert") != \
            self.widget.index("%s+%dc" % (self.startindex, len(self.start))):
             # If we didn't catch an event which moved the insert, close window
@@ -437,7 +437,7 @@ kundi AutoCompleteWindow:
 
     eleza hide_window(self):
         ikiwa sio self.is_active():
-            rudisha
+            return
 
         # unbind events
         self.autocompletewindow.event_delete(HIDE_VIRTUAL_EVENT_NAME,

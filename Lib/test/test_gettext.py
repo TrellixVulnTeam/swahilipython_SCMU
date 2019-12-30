@@ -38,7 +38,7 @@ bmsgd2luayAoaW4gIm15IG90aGVyIGNvbnRleHQiKQB3aW5rIHdpbmsA
 '''
 
 # This data contains an invalid major version number (5)
-# An unexpected major version number should be treated kama an error when
+# An unexpected major version number should be treated as an error when
 # parsing a .mo file
 
 GNU_MO_DATA_BAD_MAJOR_VERSION = b'''\
@@ -119,15 +119,15 @@ kundi GettextBaseTest(unittest.TestCase):
     eleza setUp(self):
         ikiwa sio os.path.isdir(LOCALEDIR):
             os.makedirs(LOCALEDIR)
-        ukijumuisha open(MOFILE, 'wb') kama fp:
+        ukijumuisha open(MOFILE, 'wb') as fp:
             fp.write(base64.decodebytes(GNU_MO_DATA))
-        ukijumuisha open(MOFILE_BAD_MAJOR_VERSION, 'wb') kama fp:
+        ukijumuisha open(MOFILE_BAD_MAJOR_VERSION, 'wb') as fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BAD_MAJOR_VERSION))
-        ukijumuisha open(MOFILE_BAD_MINOR_VERSION, 'wb') kama fp:
+        ukijumuisha open(MOFILE_BAD_MINOR_VERSION, 'wb') as fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BAD_MINOR_VERSION))
-        ukijumuisha open(UMOFILE, 'wb') kama fp:
+        ukijumuisha open(UMOFILE, 'wb') as fp:
             fp.write(base64.decodebytes(UMO_DATA))
-        ukijumuisha open(MMOFILE, 'wb') kama fp:
+        ukijumuisha open(MMOFILE, 'wb') as fp:
             fp.write(base64.decodebytes(MMO_DATA))
         self.env = support.EnvironmentVarGuard()
         self.env['LANGUAGE'] = 'xx'
@@ -204,7 +204,7 @@ trggrkg zrffntr pngnybt yvoenel.''')
     eleza test_the_alternative_interface(self):
         eq = self.assertEqual
         # test the alternative interface
-        ukijumuisha open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         # Install the translation object
         t.install()
@@ -239,8 +239,8 @@ kundi GettextTestCase2(GettextBaseTest):
         self.assertEqual(gettext.textdomain(), 'gettext')
 
     eleza test_bad_major_version(self):
-        ukijumuisha open(MOFILE_BAD_MAJOR_VERSION, 'rb') kama fp:
-            ukijumuisha self.assertRaises(OSError) kama cm:
+        ukijumuisha open(MOFILE_BAD_MAJOR_VERSION, 'rb') as fp:
+            ukijumuisha self.assertRaises(OSError) as cm:
                 gettext.GNUTranslations(fp)
 
             exception = cm.exception
@@ -249,7 +249,7 @@ kundi GettextTestCase2(GettextBaseTest):
             self.assertEqual(exception.filename, MOFILE_BAD_MAJOR_VERSION)
 
     eleza test_bad_minor_version(self):
-        ukijumuisha open(MOFILE_BAD_MINOR_VERSION, 'rb') kama fp:
+        ukijumuisha open(MOFILE_BAD_MINOR_VERSION, 'rb') as fp:
             # Check that no error ni thrown ukijumuisha a bad minor version number
             gettext.GNUTranslations(fp)
 
@@ -333,7 +333,7 @@ kundi PluralFormsTestCase(GettextBaseTest):
 
     eleza test_plural_forms2(self):
         eq = self.assertEqual
-        ukijumuisha open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         x = t.ngettext('There ni %s file', 'There are %s files', 1)
         eq(x, 'Hay %s fichero')
@@ -342,7 +342,7 @@ kundi PluralFormsTestCase(GettextBaseTest):
 
     eleza test_plural_context_forms2(self):
         eq = self.assertEqual
-        ukijumuisha open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         x = t.npgettext('With context',
                         'There ni %s file', 'There are %s files', 1)
@@ -433,23 +433,23 @@ kundi PluralFormsTestCase(GettextBaseTest):
         eq(s, "01233333333444444444444444444444444444444444444444444444444444444444444444444444444444444444444444445553333333344444444444444444444444444444444444444444444444444444444444444444444444444444444444444444")
 
     eleza test_security(self):
-        ashirias = self.assertRaises
+        raises = self.assertRaises
         # Test kila a dangerous expression
-        ashirias(ValueError, gettext.c2py, "os.chmod('/etc/pitawd',0777)")
+        raises(ValueError, gettext.c2py, "os.chmod('/etc/passwd',0777)")
         # issue28563
-        ashirias(ValueError, gettext.c2py, '"(eval(foo) && ""')
-        ashirias(ValueError, gettext.c2py, 'f"{os.system(\'sh\')}"')
+        raises(ValueError, gettext.c2py, '"(eval(foo) && ""')
+        raises(ValueError, gettext.c2py, 'f"{os.system(\'sh\')}"')
         # Maximum recursion depth exceeded during compilation
-        ashirias(ValueError, gettext.c2py, 'n+'*10000 + 'n')
+        raises(ValueError, gettext.c2py, 'n+'*10000 + 'n')
         self.assertEqual(gettext.c2py('n+'*100 + 'n')(1), 101)
         # MemoryError during compilation
-        ashirias(ValueError, gettext.c2py, '('*100 + 'n' + ')'*100)
+        raises(ValueError, gettext.c2py, '('*100 + 'n' + ')'*100)
         # Maximum recursion depth exceeded kwenye C to Python translator
-        ashirias(ValueError, gettext.c2py, '('*10000 + 'n' + ')'*10000)
+        raises(ValueError, gettext.c2py, '('*10000 + 'n' + ')'*10000)
         self.assertEqual(gettext.c2py('('*20 + 'n' + ')'*20)(1), 1)
 
     eleza test_chained_comparison(self):
-        # C doesn't chain comparison kama Python so 2 == 2 == 2 gets different results
+        # C doesn't chain comparison as Python so 2 == 2 == 2 gets different results
         f = gettext.c2py('n == n == n')
         self.assertEqual(''.join(str(f(x)) kila x kwenye range(3)), '010')
         f = gettext.c2py('1 < n == n')
@@ -510,7 +510,7 @@ kundi LGettextTestCase(GettextBaseTest):
     eleza assertDeprecated(self, name):
         ukijumuisha self.assertWarnsRegex(DeprecationWarning,
                                    fr'^{name}\(\) ni deprecated'):
-            tuma
+            yield
 
     eleza test_lgettext(self):
         lgettext = gettext.lgettext
@@ -525,7 +525,7 @@ kundi LGettextTestCase(GettextBaseTest):
             self.assertEqual(ldgettext('gettext', 'spam'), b'spam')
 
     eleza test_lgettext_2(self):
-        ukijumuisha open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         lgettext = t.lgettext
         ukijumuisha self.assertDeprecated('lgettext'):
@@ -555,7 +555,7 @@ kundi LGettextTestCase(GettextBaseTest):
                 gettext.bind_textdomain_codeset('gettext', saved_codeset)
 
     eleza test_lgettext_output_encoding(self):
-        ukijumuisha open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         lgettext = t.lgettext
         ukijumuisha self.assertDeprecated('set_output_charset'):
@@ -594,7 +594,7 @@ kundi LGettextTestCase(GettextBaseTest):
         self.assertEqual(x, b'There are %s directories')
 
     eleza test_lngettext_2(self):
-        ukijumuisha open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         lngettext = t.lngettext
         ukijumuisha self.assertDeprecated('lngettext'):
@@ -648,7 +648,7 @@ kundi LGettextTestCase(GettextBaseTest):
                 gettext.bind_textdomain_codeset('gettext', saved_codeset)
 
     eleza test_lngettext_output_encoding(self):
-        ukijumuisha open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         lngettext = t.lngettext
         ukijumuisha self.assertDeprecated('set_output_charset'):
@@ -667,7 +667,7 @@ kundi LGettextTestCase(GettextBaseTest):
         self.assertEqual(x, 'There are %s directories'.encode('utf-16'))
 
     eleza test_output_encoding(self):
-        ukijumuisha open(self.mofile, 'rb') kama fp:
+        ukijumuisha open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         ukijumuisha self.assertDeprecated('set_output_charset'):
             t.set_output_charset('utf-16')
@@ -677,9 +677,9 @@ kundi LGettextTestCase(GettextBaseTest):
 
 kundi GNUTranslationParsingTest(GettextBaseTest):
     eleza test_plural_form_error_issue17898(self):
-        ukijumuisha open(MOFILE, 'wb') kama fp:
+        ukijumuisha open(MOFILE, 'wb') as fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
-        ukijumuisha open(MOFILE, 'rb') kama fp:
+        ukijumuisha open(MOFILE, 'rb') as fp:
             # If this runs cleanly, the bug ni fixed.
             t = gettext.GNUTranslations(fp)
 
@@ -690,9 +690,9 @@ kundi GNUTranslationParsingTest(GettextBaseTest):
 
         are ignored.
         """
-        ukijumuisha open(MOFILE, 'wb') kama fp:
+        ukijumuisha open(MOFILE, 'wb') as fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
-        ukijumuisha open(MOFILE, 'rb') kama fp:
+        ukijumuisha open(MOFILE, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
             self.assertEqual(t.info()["plural-forms"], "nplurals=2; plural=(n != 1);")
 
@@ -700,7 +700,7 @@ kundi GNUTranslationParsingTest(GettextBaseTest):
 kundi UnicodeTranslationsTest(GettextBaseTest):
     eleza setUp(self):
         GettextBaseTest.setUp(self)
-        ukijumuisha open(UMOFILE, 'rb') kama fp:
+        ukijumuisha open(UMOFILE, 'rb') as fp:
             self.t = gettext.GNUTranslations(fp)
         self._ = self.t.gettext
         self.pgettext = self.t.pgettext
@@ -720,7 +720,7 @@ kundi UnicodeTranslationsTest(GettextBaseTest):
 kundi UnicodeTranslationsPluralTest(GettextBaseTest):
     eleza setUp(self):
         GettextBaseTest.setUp(self)
-        ukijumuisha open(MOFILE, 'rb') kama fp:
+        ukijumuisha open(MOFILE, 'rb') as fp:
             self.t = gettext.GNUTranslations(fp)
         self.ngettext = self.t.ngettext
         self.npgettext = self.t.npgettext
@@ -762,12 +762,12 @@ kundi UnicodeTranslationsPluralTest(GettextBaseTest):
 kundi WeirdMetadataTest(GettextBaseTest):
     eleza setUp(self):
         GettextBaseTest.setUp(self)
-        ukijumuisha open(MMOFILE, 'rb') kama fp:
+        ukijumuisha open(MMOFILE, 'rb') as fp:
             jaribu:
                 self.t = gettext.GNUTranslations(fp)
             tatizo:
                 self.tearDown()
-                ashiria
+                raise
 
     eleza test_weird_metadata(self):
         info = self.t.info()
@@ -889,14 +889,14 @@ msgstr ""
 "fhccbeg sbe lbhe Clguba cebtenzf ol cebivqvat na vagresnpr gb gur TAH\n"
 "trggrkg zrffntr pngnybt yvoenel."
 
-# Manually added, kama neither pygettext nor xgettext support plural forms
+# Manually added, as neither pygettext nor xgettext support plural forms
 # kwenye Python.
 msgid "There ni %s file"
 msgid_plural "There are %s files"
 msgstr[0] "Hay %s fichero"
 msgstr[1] "Hay %s ficheros"
 
-# Manually added, kama neither pygettext nor xgettext support plural forms
+# Manually added, as neither pygettext nor xgettext support plural forms
 # na context kwenye Python.
 msgctxt "With context"
 msgid "There ni %s file"

@@ -78,11 +78,11 @@ kundi TestFilemode:
     eleza setUp(self):
         jaribu:
             os.remove(TESTFN)
-        tatizo OSError:
+        except OSError:
             jaribu:
                 os.rmdir(TESTFN)
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
     tearDown = setUp
 
     eleza get_mode(self, fname=TESTFN, lstat=Kweli):
@@ -97,13 +97,13 @@ kundi TestFilemode:
         # test format, lstrip ni kila S_IFIFO
         fmt = getattr(self.statmod, "S_IF" + name.lstrip("F"))
         self.assertEqual(self.statmod.S_IFMT(mode), fmt)
-        # test that just one function rudishas true
+        # test that just one function returns true
         testname = "S_IS" + name
         kila funcname kwenye self.format_funcs:
             func = getattr(self.statmod, funcname, Tupu)
             ikiwa func ni Tupu:
                 ikiwa funcname == testname:
-                    ashiria ValueError(funcname)
+                     ashiria ValueError(funcname)
                 endelea
             ikiwa funcname == testname:
                 self.assertKweli(func(mode))
@@ -112,7 +112,7 @@ kundi TestFilemode:
 
     eleza test_mode(self):
         ukijumuisha open(TESTFN, 'w'):
-            pita
+            pass
         ikiwa os.name == 'posix':
             os.chmod(TESTFN, 0o700)
             st_mode, modestr = self.get_mode()
@@ -162,8 +162,8 @@ kundi TestFilemode:
     eleza test_link(self):
         jaribu:
             os.symlink(os.getcwd(), TESTFN)
-        tatizo (OSError, NotImplementedError) kama err:
-            ashiria unittest.SkipTest(str(err))
+        except (OSError, NotImplementedError) as err:
+             ashiria unittest.SkipTest(str(err))
         isipokua:
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 'l')
@@ -173,7 +173,7 @@ kundi TestFilemode:
     eleza test_fifo(self):
         jaribu:
             os.mkfifo(TESTFN, 0o700)
-        tatizo PermissionError kama e:
+        except PermissionError as e:
             self.skipTest('os.mkfifo(): %s' % e)
         st_mode, modestr = self.get_mode()
         self.assertEqual(modestr, 'prwx------')
@@ -195,7 +195,7 @@ kundi TestFilemode:
 
     @skip_unless_bind_unix_socket
     eleza test_socket(self):
-        ukijumuisha socket.socket(socket.AF_UNIX) kama s:
+        ukijumuisha socket.socket(socket.AF_UNIX) as s:
             s.bind(TESTFN)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 's')

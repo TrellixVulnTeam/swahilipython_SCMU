@@ -1,5 +1,5 @@
 #
-# iso2022_jp_3.py: Python Unicode Codec for ISO2022_JP_3
+# iso2022_jp_3.py: Python Unicode Codec kila ISO2022_JP_3
 #
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #

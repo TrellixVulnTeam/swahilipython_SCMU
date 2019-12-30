@@ -1,7 +1,7 @@
 """
 IDLE main entry point
 
-Run IDLE kama python -m idlelib
+Run IDLE as python -m idlelib
 """
 agiza idlelib.pyshell
 idlelib.pyshell.main()

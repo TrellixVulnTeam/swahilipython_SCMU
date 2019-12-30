@@ -1,13 +1,13 @@
-"""Tests harness for distutils.versionpredicate.
+"""Tests harness kila distutils.versionpredicate.
 
 """
 
-import distutils.versionpredicate
-import doctest
-from test.support import run_unittest
+agiza distutils.versionpredicate
+agiza doctest
+kutoka test.support agiza run_unittest
 
-def test_suite():
-    return doctest.DocTestSuite(distutils.versionpredicate)
+eleza test_suite():
+    rudisha doctest.DocTestSuite(distutils.versionpredicate)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     run_unittest(test_suite())

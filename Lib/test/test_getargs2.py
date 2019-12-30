@@ -100,7 +100,7 @@ kundi Float:
         rudisha 4.25
 
 kundi FloatSubclass(float):
-    pita
+    pass
 
 kundi FloatSubclass2(float):
     eleza __float__(self):
@@ -124,7 +124,7 @@ kundi Complex:
         rudisha 4.25+0.5j
 
 kundi ComplexSubclass(complex):
-    pita
+    pass
 
 kundi ComplexSubclass2(complex):
     eleza __complex__(self):
@@ -144,16 +144,16 @@ kundi BadComplex3(complex):
 
 
 kundi TupleSubclass(tuple):
-    pita
+    pass
 
 kundi DictSubclass(dict):
-    pita
+    pass
 
 
 kundi Unsigned_TestCase(unittest.TestCase):
     eleza test_b(self):
         kutoka _testcapi agiza getargs_b
-        # b rudishas 'unsigned char', na does range checking (0 ... UCHAR_MAX)
+        # b returns 'unsigned char', na does range checking (0 ... UCHAR_MAX)
         self.assertRaises(TypeError, getargs_b, 3.14)
         self.assertEqual(99, getargs_b(Index()))
         self.assertEqual(0, getargs_b(IndexIntSubclass()))
@@ -179,7 +179,7 @@ kundi Unsigned_TestCase(unittest.TestCase):
 
     eleza test_B(self):
         kutoka _testcapi agiza getargs_B
-        # B rudishas 'unsigned char', no range checking
+        # B returns 'unsigned char', no range checking
         self.assertRaises(TypeError, getargs_B, 3.14)
         self.assertEqual(99, getargs_B(Index()))
         self.assertEqual(0, getargs_B(IndexIntSubclass()))
@@ -205,7 +205,7 @@ kundi Unsigned_TestCase(unittest.TestCase):
 
     eleza test_H(self):
         kutoka _testcapi agiza getargs_H
-        # H rudishas 'unsigned short', no range checking
+        # H returns 'unsigned short', no range checking
         self.assertRaises(TypeError, getargs_H, 3.14)
         self.assertEqual(99, getargs_H(Index()))
         self.assertEqual(0, getargs_H(IndexIntSubclass()))
@@ -232,7 +232,7 @@ kundi Unsigned_TestCase(unittest.TestCase):
 
     eleza test_I(self):
         kutoka _testcapi agiza getargs_I
-        # I rudishas 'unsigned int', no range checking
+        # I returns 'unsigned int', no range checking
         self.assertRaises(TypeError, getargs_I, 3.14)
         self.assertEqual(99, getargs_I(Index()))
         self.assertEqual(0, getargs_I(IndexIntSubclass()))
@@ -259,7 +259,7 @@ kundi Unsigned_TestCase(unittest.TestCase):
 
     eleza test_k(self):
         kutoka _testcapi agiza getargs_k
-        # k rudishas 'unsigned long', no range checking
+        # k returns 'unsigned long', no range checking
         # it does sio accept float, ama instances ukijumuisha __int__
         self.assertRaises(TypeError, getargs_k, 3.14)
         self.assertRaises(TypeError, getargs_k, Index())
@@ -285,7 +285,7 @@ kundi Unsigned_TestCase(unittest.TestCase):
 kundi Signed_TestCase(unittest.TestCase):
     eleza test_h(self):
         kutoka _testcapi agiza getargs_h
-        # h rudishas 'short', na does range checking (SHRT_MIN ... SHRT_MAX)
+        # h returns 'short', na does range checking (SHRT_MIN ... SHRT_MAX)
         self.assertRaises(TypeError, getargs_h, 3.14)
         self.assertEqual(99, getargs_h(Index()))
         self.assertEqual(0, getargs_h(IndexIntSubclass()))
@@ -311,7 +311,7 @@ kundi Signed_TestCase(unittest.TestCase):
 
     eleza test_i(self):
         kutoka _testcapi agiza getargs_i
-        # i rudishas 'int', na does range checking (INT_MIN ... INT_MAX)
+        # i returns 'int', na does range checking (INT_MIN ... INT_MAX)
         self.assertRaises(TypeError, getargs_i, 3.14)
         self.assertEqual(99, getargs_i(Index()))
         self.assertEqual(0, getargs_i(IndexIntSubclass()))
@@ -337,7 +337,7 @@ kundi Signed_TestCase(unittest.TestCase):
 
     eleza test_l(self):
         kutoka _testcapi agiza getargs_l
-        # l rudishas 'long', na does range checking (LONG_MIN ... LONG_MAX)
+        # l returns 'long', na does range checking (LONG_MIN ... LONG_MAX)
         self.assertRaises(TypeError, getargs_l, 3.14)
         self.assertEqual(99, getargs_l(Index()))
         self.assertEqual(0, getargs_l(IndexIntSubclass()))
@@ -363,7 +363,7 @@ kundi Signed_TestCase(unittest.TestCase):
 
     eleza test_n(self):
         kutoka _testcapi agiza getargs_n
-        # n rudishas 'Py_ssize_t', na does range checking
+        # n returns 'Py_ssize_t', na does range checking
         # (PY_SSIZE_T_MIN ... PY_SSIZE_T_MAX)
         self.assertRaises(TypeError, getargs_n, 3.14)
         self.assertEqual(99, getargs_n(Index()))
@@ -390,7 +390,7 @@ kundi Signed_TestCase(unittest.TestCase):
 kundi LongLong_TestCase(unittest.TestCase):
     eleza test_L(self):
         kutoka _testcapi agiza getargs_L
-        # L rudishas 'long long', na does range checking (LLONG_MIN
+        # L returns 'long long', na does range checking (LLONG_MIN
         # ... LLONG_MAX)
         self.assertRaises(TypeError, getargs_L, 3.14)
         self.assertRaises(TypeError, getargs_L, "Hello")
@@ -532,7 +532,7 @@ kundi Float_TestCase(unittest.TestCase):
 kundi Paradox:
     "This statement ni false."
     eleza __bool__(self):
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
 kundi Boolean_TestCase(unittest.TestCase):
     eleza test_p(self):
@@ -599,7 +599,7 @@ kundi Tuple_TestCase(unittest.TestCase):
             eleza __len__(self):
                 rudisha 2
             eleza __getitem__(self, n):
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(TypeError, getargs_tuple, 1, seq())
 
 kundi Keywords_TestCase(unittest.TestCase):
@@ -658,36 +658,36 @@ kundi Keywords_TestCase(unittest.TestCase):
         # required arg missing
         jaribu:
             getargs_keywords(arg1=(1,2))
-        tatizo TypeError kama err:
+        except TypeError as err:
             self.assertEqual(
                 str(err), "function missing required argument 'arg2' (pos 2)")
         isipokua:
-            self.fail('TypeError should have been ashiriad')
+            self.fail('TypeError should have been raised')
 
     eleza test_too_many_args(self):
         jaribu:
             getargs_keywords((1,2),3,(4,(5,6)),(7,8,9),10,111)
-        tatizo TypeError kama err:
+        except TypeError as err:
             self.assertEqual(str(err), "function takes at most 5 arguments (6 given)")
         isipokua:
-            self.fail('TypeError should have been ashiriad')
+            self.fail('TypeError should have been raised')
 
     eleza test_invalid_keyword(self):
         # extraneous keyword arg
         jaribu:
             getargs_keywords((1,2),3,arg5=10,arg666=666)
-        tatizo TypeError kama err:
+        except TypeError as err:
             self.assertEqual(str(err), "'arg666' ni an invalid keyword argument kila this function")
         isipokua:
-            self.fail('TypeError should have been ashiriad')
+            self.fail('TypeError should have been raised')
 
     eleza test_surrogate_keyword(self):
         jaribu:
             getargs_keywords((1,2), 3, (4,(5,6)), (7,8,9), **{'\uDC80': 10})
-        tatizo TypeError kama err:
+        except TypeError as err:
             self.assertEqual(str(err), "'\udc80' ni an invalid keyword argument kila this function")
         isipokua:
-            self.fail('TypeError should have been ashiriad')
+            self.fail('TypeError should have been raised')
 
 kundi KeywordOnly_TestCase(unittest.TestCase):
     eleza test_positional_args(self):
@@ -762,7 +762,7 @@ kundi KeywordOnly_TestCase(unittest.TestCase):
 
 
 kundi PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
-    kutoka _testcapi agiza getargs_positional_only_and_keywords kama getargs
+    kutoka _testcapi agiza getargs_positional_only_and_keywords as getargs
 
     eleza test_positional_args(self):
         # using all possible positional args
@@ -1071,7 +1071,7 @@ kundi SkipitemTest(unittest.TestCase):
         skipitem() kwenye the same file.  (If so, shame on you!)
 
         With a few exceptions**, this function brute-force tests all
-        printable ASCII*** characters (32 to 126 inclusive) kama format units,
+        printable ASCII*** characters (32 to 126 inclusive) as format units,
         checking to see that PyArg_ParseTupleAndKeywords() rudisha consistent
         errors both when the unit ni attempted to be used na when it is
         skipped.  If the format unit doesn't exist, we'll get one of two
@@ -1110,10 +1110,10 @@ kundi SkipitemTest(unittest.TestCase):
                 _testcapi.parse_tuple_and_keywords(tuple_1, dict_b,
                     format, keywords)
                 when_not_skipped = Uongo
-            tatizo SystemError kama e:
+            except SystemError as e:
                 s = "argument 1 (impossible<bad format char>)"
                 when_not_skipped = (str(e) == s)
-            tatizo TypeError:
+            except TypeError:
                 when_not_skipped = Uongo
 
             # test the format unit when skipped
@@ -1122,7 +1122,7 @@ kundi SkipitemTest(unittest.TestCase):
                 _testcapi.parse_tuple_and_keywords(empty_tuple, dict_b,
                     optional_format, keywords)
                 when_skipped = Uongo
-            tatizo SystemError kama e:
+            except SystemError as e:
                 s = "impossible<bad format char>: '{}'".format(format)
                 when_skipped = (str(e) == s)
 

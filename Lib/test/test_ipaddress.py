@@ -36,7 +36,7 @@ kundi BaseTestCase(unittest.TestCase):
 
     @property
     eleza factory(self):
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     @contextlib.contextmanager
     eleza assertCleanError(self, exc_type, details, *args):
@@ -48,7 +48,7 @@ kundi BaseTestCase(unittest.TestCase):
         ikiwa args:
             details = details % args
         cm = self.assertRaisesRegex(exc_type, details)
-        ukijumuisha cm kama exc:
+        ukijumuisha cm as exc:
             tuma exc
         # Ensure we produce clean tracebacks on failure
         ikiwa exc.exception.__context__ ni sio Tupu:
@@ -81,7 +81,7 @@ kundi CommonTestMixin:
 
     eleza test_not_an_index_issue15559(self):
         # Implementing __index__ makes kila a very nasty interaction ukijumuisha the
-        # bytes constructor. Thus, we disallow implicit use kama an integer
+        # bytes constructor. Thus, we disallow implicit use as an integer
         self.assertRaises(TypeError, operator.index, self.factory(1))
         self.assertRaises(TypeError, hex, self.factory(1))
         self.assertRaises(TypeError, bytes, self.factory(1))
@@ -107,23 +107,23 @@ kundi CommonTestMixin_v4(CommonTestMixin):
         self.assertInstancesEqual(3232235521, "192.168.0.1")
 
     eleza test_packed(self):
-        self.assertInstancesEqual(bytes.kutokahex("00000000"), "0.0.0.0")
-        self.assertInstancesEqual(bytes.kutokahex("c0a80001"), "192.168.0.1")
+        self.assertInstancesEqual(bytes.fromhex("00000000"), "0.0.0.0")
+        self.assertInstancesEqual(bytes.fromhex("c0a80001"), "192.168.0.1")
 
     eleza test_negative_ints_rejected(self):
-        msg = "-1 (< 0) ni sio permitted kama an IPv4 address"
+        msg = "-1 (< 0) ni sio permitted as an IPv4 address"
         ukijumuisha self.assertAddressError(re.escape(msg)):
             self.factory(-1)
 
     eleza test_large_ints_rejected(self):
-        msg = "%d (>= 2**32) ni sio permitted kama an IPv4 address"
+        msg = "%d (>= 2**32) ni sio permitted as an IPv4 address"
         ukijumuisha self.assertAddressError(re.escape(msg % 2**32)):
             self.factory(2**32)
 
     eleza test_bad_packed_length(self):
         eleza assertBadLength(length):
             addr = b'\0' * length
-            msg = "%r (len %d != 4) ni sio permitted kama an IPv4 address"
+            msg = "%r (len %d != 4) ni sio permitted as an IPv4 address"
             ukijumuisha self.assertAddressError(re.escape(msg % (addr, length))):
                 self.factory(addr)
 
@@ -142,27 +142,27 @@ kundi CommonTestMixin_v6(CommonTestMixin):
         self.assertInstancesEqual(3232235521, "::c0a8:1")
 
     eleza test_packed(self):
-        addr = b'\0'*12 + bytes.kutokahex("00000000")
+        addr = b'\0'*12 + bytes.fromhex("00000000")
         self.assertInstancesEqual(addr, "::")
-        addr = b'\0'*12 + bytes.kutokahex("c0a80001")
+        addr = b'\0'*12 + bytes.fromhex("c0a80001")
         self.assertInstancesEqual(addr, "::c0a8:1")
-        addr = bytes.kutokahex("c0a80001") + b'\0'*12
+        addr = bytes.fromhex("c0a80001") + b'\0'*12
         self.assertInstancesEqual(addr, "c0a8:1::")
 
     eleza test_negative_ints_rejected(self):
-        msg = "-1 (< 0) ni sio permitted kama an IPv6 address"
+        msg = "-1 (< 0) ni sio permitted as an IPv6 address"
         ukijumuisha self.assertAddressError(re.escape(msg)):
             self.factory(-1)
 
     eleza test_large_ints_rejected(self):
-        msg = "%d (>= 2**128) ni sio permitted kama an IPv6 address"
+        msg = "%d (>= 2**128) ni sio permitted as an IPv6 address"
         ukijumuisha self.assertAddressError(re.escape(msg % 2**128)):
             self.factory(2**128)
 
     eleza test_bad_packed_length(self):
         eleza assertBadLength(length):
             addr = b'\0' * length
-            msg = "%r (len %d != 16) ni sio permitted kama an IPv6 address"
+            msg = "%r (len %d != 16) ni sio permitted as an IPv6 address"
             ukijumuisha self.assertAddressError(re.escape(msg % (addr, length))):
                 self.factory(addr)
                 self.factory(addr)
@@ -174,7 +174,7 @@ kundi CommonTestMixin_v6(CommonTestMixin):
 kundi AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
     factory = ipaddress.IPv4Address
 
-    eleza test_network_pitaed_as_address(self):
+    eleza test_network_passed_as_address(self):
         addr = "127.0.0.1/24"
         ukijumuisha self.assertAddressError("Unexpected '/' kwenye %r", addr):
             ipaddress.IPv4Address(addr)
@@ -261,7 +261,7 @@ kundi AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
 kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     factory = ipaddress.IPv6Address
 
-    eleza test_network_pitaed_as_address(self):
+    eleza test_network_passed_as_address(self):
         addr = "::1/24"
         ukijumuisha self.assertAddressError("Unexpected '/' kwenye %r", addr):
             ipaddress.IPv6Address(addr)
@@ -329,7 +329,7 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     eleza test_bad_address_split_v6_leading_colon(self):
         eleza assertBadSplit(addr):
-            msg = "Leading ':' only permitted kama part of '::' kwenye %r"
+            msg = "Leading ':' only permitted as part of '::' kwenye %r"
             ukijumuisha self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
 
@@ -340,7 +340,7 @@ kundi AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     eleza test_bad_address_split_v6_trailing_colon(self):
         eleza assertBadSplit(addr):
-            msg = "Trailing ':' only permitted kama part of '::' kwenye %r"
+            msg = "Trailing ':' only permitted as part of '::' kwenye %r"
             ukijumuisha self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
 
@@ -437,10 +437,10 @@ kundi NetmaskTestMixin_v4(CommonTestMixin_v4):
             # Generate na re-parse the expanded netmask.
             self.assertEqual(
                 str(self.factory('0.0.0.0/%s' % net.netmask)), net_str)
-            # Zero prefix ni treated kama decimal.
+            # Zero prefix ni treated as decimal.
             self.assertEqual(str(self.factory('0.0.0.0/0%d' % i)), net_str)
             # Generate na re-parse the expanded hostmask.  The ambiguous
-            # cases (/0 na /32) are treated kama netmasks.
+            # cases (/0 na /32) are treated as netmasks.
             ikiwa i kwenye (32, 0):
                 net_str = '0.0.0.0/%d' % (32 - i)
             self.assertEqual(
@@ -576,7 +576,7 @@ kundi NetmaskTestMixin_v6(CommonTestMixin_v6):
             # Generate na re-parse the CIDR format (trivial).
             net_str = '::/%d' % i
             self.assertEqual(str(self.factory(net_str)), net_str)
-            # Zero prefix ni treated kama decimal.
+            # Zero prefix ni treated as decimal.
             self.assertEqual(str(self.factory('::/0%d' % i)), net_str)
 
     eleza test_netmask_errors(self):
@@ -698,7 +698,7 @@ kundi ComparisonTests(unittest.TestCase):
     v6intf2 = ipaddress.IPv6Interface(2)
 
     eleza test_foreign_type_equality(self):
-        # __eq__ should never ashiria TypeError directly
+        # __eq__ should never  ashiria TypeError directly
         other = object()
         kila obj kwenye self.objects:
             self.assertNotEqual(obj, other)
@@ -796,7 +796,7 @@ kundi ComparisonTests(unittest.TestCase):
         self.assertEqual(NotImplemented, ipaddress.get_mixed_type_key(object))
 
     eleza test_incompatible_versions(self):
-        # These should always ashiria TypeError
+        # These should always  ashiria TypeError
         v4addr = ipaddress.ip_address('1.1.1.1')
         v4net = ipaddress.ip_network('1.1.1.1')
         v6addr = ipaddress.ip_address('::1')
@@ -1251,7 +1251,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
                       self.ipv4_network)
         self.assertNotIn(ipaddress.IPv4Interface('1.2.4.1/24'),
                          self.ipv4_network)
-        # We can test addresses na string kama well.
+        # We can test addresses na string as well.
         addr1 = ipaddress.IPv4Address('1.2.3.37')
         self.assertIn(addr1, self.ipv4_network)
         # issue 61, bad network comparison on like-ip'd network objects
@@ -1467,18 +1467,18 @@ kundi IpaddrUnitTest(unittest.TestCase):
                          [ipaddress.ip_network('1::/16'),
                           ipaddress.ip_network('2::/128')])
 
-        # test exception ashiriad when first ni greater than last
+        # test exception raised when first ni greater than last
         self.assertRaises(ValueError, list,
                           summarize(ipaddress.ip_address('1.1.1.0'),
                                     ipaddress.ip_address('1.1.0.0')))
-        # test exception ashiriad when first na last aren't IP addresses
+        # test exception raised when first na last aren't IP addresses
         self.assertRaises(TypeError, list,
                           summarize(ipaddress.ip_network('1.1.1.0'),
                                     ipaddress.ip_network('1.1.0.0')))
         self.assertRaises(TypeError, list,
                           summarize(ipaddress.ip_network('1.1.1.0'),
                                     ipaddress.ip_network('1.1.0.0')))
-        # test exception ashiriad when first na last are sio same version
+        # test exception raised when first na last are sio same version
         self.assertRaises(TypeError, list,
                           summarize(ipaddress.ip_address('::'),
                                     ipaddress.ip_network('1.1.0.0')))
@@ -1553,7 +1553,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         self.assertKweli(ip1._get_networks_key() < ip3._get_networks_key())
 
         # Test comparing different protocols.
-        # Should always ashiria a TypeError.
+        # Should always  ashiria a TypeError.
         self.assertRaises(TypeError,
                           self.ipv4_network.compare_networks,
                           self.ipv6_network)

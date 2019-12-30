@@ -3,11 +3,11 @@
 
 # A grammar to describe tree matching patterns.
 # Not shown here:
-# - 'TOKEN' stands kila any token (leaf node)
-# - 'any' stands kila any node (leaf ama interior)
+# - 'TOKEN' stands for any token (leaf node)
+# - 'any' stands for any node (leaf or interior)
 # With 'any' we can still specify the sub-structure.
 
-# The start symbol ni 'Matcher'.
+# The start symbol is 'Matcher'.
 
 Matcher: Alternatives ENDMARKER
 

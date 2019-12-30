@@ -24,7 +24,7 @@ kundi CalltipWindow(TooltipBase):
 
         text_widget: a Text widget ukijumuisha code kila which call-tips are desired
         """
-        # Note: The Text widget will be accessible kama self.anchor_widget
+        # Note: The Text widget will be accessible as self.anchor_widget
         super(CalltipWindow, self).__init__(text_widget)
 
         self.label = self.text = Tupu
@@ -51,7 +51,7 @@ kundi CalltipWindow(TooltipBase):
         "Reposition the window ikiwa needed."
         curline = int(self.anchor_widget.index("insert").split('.')[0])
         ikiwa curline == self.lastline:
-            rudisha
+            return
         self.lastline = curline
         self.anchor_widget.see("insert")
         super(CalltipWindow, self).position_window()
@@ -67,7 +67,7 @@ kundi CalltipWindow(TooltipBase):
         # Only called kwenye calltip.Calltip, where lines are truncated
         self.text = text
         ikiwa self.tipwindow ama sio self.text:
-            rudisha
+            return
 
         self.anchor_widget.mark_set(MARK_RIGHT, parenright)
         self.parenline, self.parencol = map(
@@ -123,25 +123,25 @@ kundi CalltipWindow(TooltipBase):
     eleza hidetip(self):
         """Hide the call-tip."""
         ikiwa sio self.tipwindow:
-            rudisha
+            return
 
         jaribu:
             self.label.destroy()
-        tatizo TclError:
-            pita
+        except TclError:
+            pass
         self.label = Tupu
 
         self.parenline = self.parencol = self.lastline = Tupu
         jaribu:
             self.anchor_widget.mark_unset(MARK_RIGHT)
-        tatizo TclError:
-            pita
+        except TclError:
+            pass
 
         jaribu:
             self._unbind_events()
-        tatizo (TclError, ValueError):
-            # ValueError may be ashiriad by MultiCall
-            pita
+        except (TclError, ValueError):
+            # ValueError may be raised by MultiCall
+            pass
 
         super(CalltipWindow, self).hidetip()
 

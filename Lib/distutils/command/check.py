@@ -2,131 +2,131 @@
 
 Implements the Distutils 'check' command.
 """
-from distutils.core import Command
-from distutils.errors import DistutilsSetupError
+kutoka distutils.core agiza Command
+kutoka distutils.errors agiza DistutilsSetupError
 
 jaribu:
-    # docutils is installed
-    from docutils.utils import Reporter
-    from docutils.parsers.rst import Parser
-    from docutils import frontend
-    from docutils import nodes
-    from io import StringIO
+    # docutils ni installed
+    kutoka docutils.utils agiza Reporter
+    kutoka docutils.parsers.rst agiza Parser
+    kutoka docutils agiza frontend
+    kutoka docutils agiza nodes
+    kutoka io agiza StringIO
 
-    class SilentReporter(Reporter):
+    kundi SilentReporter(Reporter):
 
-        def __init__(self, source, report_level, halt_level, stream=None,
+        eleza __init__(self, source, report_level, halt_level, stream=Tupu,
                      debug=0, encoding='ascii', error_handler='replace'):
             self.messages = []
             Reporter.__init__(self, source, report_level, halt_level, stream,
                               debug, encoding, error_handler)
 
-        def system_message(self, level, message, *children, **kwargs):
+        eleza system_message(self, level, message, *children, **kwargs):
             self.messages.append((level, message, children, kwargs))
-            return nodes.system_message(message, level=level,
+            rudisha nodes.system_message(message, level=level,
                                         type=self.levels[level],
                                         *children, **kwargs)
 
-    HAS_DOCUTILS = True
-tatizo Exception:
+    HAS_DOCUTILS = Kweli
+except Exception:
     # Catch all exceptions because exceptions besides ImportError probably
     # indicate that docutils ni sio ported to Py3k.
-    HAS_DOCUTILS = False
+    HAS_DOCUTILS = Uongo
 
-class check(Command):
+kundi check(Command):
     """This command checks the meta-data of the package.
     """
     description = ("perform some checks on the package")
     user_options = [('metadata', 'm', 'Verify meta-data'),
                     ('restructuredtext', 'r',
-                     ('Checks if long string meta-data syntax '
+                     ('Checks ikiwa long string meta-data syntax '
                       'are reStructuredText-compliant')),
                     ('strict', 's',
-                     'Will exit with an error if a check fails')]
+                     'Will exit ukijumuisha an error ikiwa a check fails')]
 
     boolean_options = ['metadata', 'restructuredtext', 'strict']
 
-    def initialize_options(self):
-        """Sets default values for options."""
+    eleza initialize_options(self):
+        """Sets default values kila options."""
         self.restructuredtext = 0
         self.metadata = 1
         self.strict = 0
         self._warnings = 0
 
-    def finalize_options(self):
+    eleza finalize_options(self):
         pass
 
-    def warn(self, msg):
+    eleza warn(self, msg):
         """Counts the number of warnings that occurs."""
         self._warnings += 1
-        return Command.warn(self, msg)
+        rudisha Command.warn(self, msg)
 
-    def run(self):
+    eleza run(self):
         """Runs the command."""
         # perform the various tests
-        if self.metadata:
+        ikiwa self.metadata:
             self.check_metadata()
-        if self.restructuredtext:
-            if HAS_DOCUTILS:
+        ikiwa self.restructuredtext:
+            ikiwa HAS_DOCUTILS:
                 self.check_restructuredtext()
-            lasivyo self.strict:
-                ashiria DistutilsSetupError('The docutils package is needed.')
+            elikiwa self.strict:
+                 ashiria DistutilsSetupError('The docutils package ni needed.')
 
-        # let's ashiria an error in strict mode, if we have at least
+        # let's  ashiria an error kwenye strict mode, ikiwa we have at least
         # one warning
-        if self.strict and self._warnings > 0:
-            ashiria DistutilsSetupError('Please correct your package.')
+        ikiwa self.strict na self._warnings > 0:
+             ashiria DistutilsSetupError('Please correct your package.')
 
-    def check_metadata(self):
+    eleza check_metadata(self):
         """Ensures that all required elements of meta-data are supplied.
 
-        name, version, URL, (author and author_email) ama
-        (maintainer and maintainer_email)).
+        name, version, URL, (author na author_email) or
+        (maintainer na maintainer_email)).
 
-        Warns if any are missing.
+        Warns ikiwa any are missing.
         """
         metadata = self.distribution.metadata
 
         missing = []
-        for attr in ('name', 'version', 'url'):
-            if sio (hasattr(metadata, attr) and getattr(metadata, attr)):
+        kila attr kwenye ('name', 'version', 'url'):
+            ikiwa sio (hasattr(metadata, attr) na getattr(metadata, attr)):
                 missing.append(attr)
 
-        if missing:
+        ikiwa missing:
             self.warn("missing required meta-data: %s"  % ', '.join(missing))
-        if metadata.author:
-            if sio metadata.author_email:
-                self.warn("missing meta-data: if 'author' supplied, " +
+        ikiwa metadata.author:
+            ikiwa sio metadata.author_email:
+                self.warn("missing meta-data: ikiwa 'author' supplied, " +
                           "'author_email' must be supplied too")
-        lasivyo metadata.maintainer:
-            if sio metadata.maintainer_email:
-                self.warn("missing meta-data: if 'maintainer' supplied, " +
+        elikiwa metadata.maintainer:
+            ikiwa sio metadata.maintainer_email:
+                self.warn("missing meta-data: ikiwa 'maintainer' supplied, " +
                           "'maintainer_email' must be supplied too")
         isipokua:
-            self.warn("missing meta-data: either (author and author_email) " +
-                      "or (maintainer and maintainer_email) " +
+            self.warn("missing meta-data: either (author na author_email) " +
+                      "or (maintainer na maintainer_email) " +
                       "must be supplied")
 
-    def check_restructuredtext(self):
-        """Checks if the long string fields are reST-compliant."""
+    eleza check_restructuredtext(self):
+        """Checks ikiwa the long string fields are reST-compliant."""
         data = self.distribution.get_long_description()
-        for warning in self._check_rst_data(data):
+        kila warning kwenye self._check_rst_data(data):
             line = warning[-1].get('line')
-            if line is None:
+            ikiwa line ni Tupu:
                 warning = warning[1]
             isipokua:
                 warning = '%s (line %s)' % (warning[1], line)
             self.warn(warning)
 
-    def _check_rst_data(self, data):
+    eleza _check_rst_data(self, data):
         """Returns warnings when the provided data doesn't compile."""
-        # the include and csv_table directives need this to be a path
-        source_path = self.distribution.script_name or 'setup.py'
+        # the include na csv_table directives need this to be a path
+        source_path = self.distribution.script_name ama 'setup.py'
         parser = Parser()
         settings = frontend.OptionParser(components=(Parser,)).get_default_values()
         settings.tab_width = 4
-        settings.pep_references = None
-        settings.rfc_references = None
+        settings.pep_references = Tupu
+        settings.rfc_references = Tupu
         reporter = SilentReporter(source_path,
                           settings.report_level,
                           settings.halt_level,
@@ -139,8 +139,8 @@ class check(Command):
         document.note_source(source_path, -1)
         jaribu:
             parser.parse(data, document)
-        tatizo AttributeError as e:
+        except AttributeError as e:
             reporter.messages.append(
                 (-1, 'Could sio finish the parsing: %s.' % e, '', {}))
 
-        return reporter.messages
+        rudisha reporter.messages

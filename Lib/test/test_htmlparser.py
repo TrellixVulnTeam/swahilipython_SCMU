@@ -150,7 +150,7 @@ text
             ("data", "&#bad;"),
             ("endtag", "p"),
         ])
-        # add the [] kama a workaround to avoid buffering (see #20288)
+        # add the [] as a workaround to avoid buffering (see #20288)
         self._run_check(["<div>&#bad;</div>"], [
             ("starttag", "div", []),
             ("data", "&#bad;"),
@@ -489,7 +489,7 @@ text
                                 [('action', 'bogus|&#()value')])])
 
     eleza test_invalid_end_tags(self):
-        # A collection of broken end tags. <br> ni used kama separator.
+        # A collection of broken end tags. <br> ni used as separator.
         # see http://www.w3.org/TR/html5/tokenization.html#end-tag-open-state
         # na #13993
         html = ('<br></label</p><br></div end tmAd-leaderBoard><br></<h4><br>'
@@ -562,7 +562,7 @@ text
     eleza test_EOF_in_charref(self):
         # see #17802
         # This test checks that the UnboundLocalError reported kwenye the issue
-        # ni sio ashiriad, however I'm sio sure the rudishaed values are correct.
+        # ni sio raised, however I'm sio sure the returned values are correct.
         # Maybe HTMLParser should use self.unescape kila these
         data = [
             ('a&', [('data', 'a&')]),

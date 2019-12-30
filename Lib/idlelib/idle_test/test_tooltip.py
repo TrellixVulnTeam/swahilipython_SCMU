@@ -2,7 +2,7 @@
 
 Coverage ni 100% after excluding 6 lines ukijumuisha "# pragma: no cover".
 They involve TclErrors that either should ama should sio happen kwenye a
-particular situation, na which are 'pita'ed ikiwa they do.
+particular situation, na which are 'pass'ed ikiwa they do.
 """
 
 kutoka idlelib.tooltip agiza TooltipBase, Hovertip

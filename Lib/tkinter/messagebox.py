@@ -1,7 +1,7 @@
 # tk common message boxes
 #
 # this module provides an interface to the native message boxes
-# available in Tk 4.2 and newer.
+# available kwenye Tk 4.2 na newer.
 #
 # written by Fredrik Lundh, May 1997
 #
@@ -22,7 +22,7 @@
 # - type: dialog type; that is, which buttons to display (see below)
 #
 
-from tkinter.commondialog import Dialog
+kutoka tkinter.commondialog agiza Dialog
 
 #
 # constants
@@ -54,7 +54,7 @@ NO = "no"
 #
 # message dialog class
 
-class Message(Dialog):
+kundi Message(Dialog):
     "A message box"
 
     command  = "tk_messageBox"
@@ -63,80 +63,80 @@ class Message(Dialog):
 #
 # convenience stuff
 
-# Rename _icon and _type options to allow overriding them in options
-def _show(title=None, message=None, _icon=None, _type=None, **options):
-    if _icon and "icon" haiko kwenye options:    options["icon"] = _icon
-    if _type and "type" haiko kwenye options:    options["type"] = _type
-    if title:   options["title"] = title
-    if message: options["message"] = message
+# Rename _icon na _type options to allow overriding them kwenye options
+eleza _show(title=Tupu, message=Tupu, _icon=Tupu, _type=Tupu, **options):
+    ikiwa _icon na "icon" sio kwenye options:    options["icon"] = _icon
+    ikiwa _type na "type" sio kwenye options:    options["type"] = _type
+    ikiwa title:   options["title"] = title
+    ikiwa message: options["message"] = message
     res = Message(**options).show()
-    # In some Tcl installations, yes/no is converted into a boolean.
-    if isinstance(res, bool):
-        if res:
-            return YES
-        return NO
+    # In some Tcl installations, yes/no ni converted into a boolean.
+    ikiwa isinstance(res, bool):
+        ikiwa res:
+            rudisha YES
+        rudisha NO
     # In others we get a Tcl_Obj.
-    return str(res)
+    rudisha str(res)
 
 
-def showinfo(title=None, message=None, **options):
+eleza showinfo(title=Tupu, message=Tupu, **options):
     "Show an info message"
-    return _show(title, message, INFO, OK, **options)
+    rudisha _show(title, message, INFO, OK, **options)
 
 
-def showwarning(title=None, message=None, **options):
+eleza showwarning(title=Tupu, message=Tupu, **options):
     "Show a warning message"
-    return _show(title, message, WARNING, OK, **options)
+    rudisha _show(title, message, WARNING, OK, **options)
 
 
-def showerror(title=None, message=None, **options):
+eleza showerror(title=Tupu, message=Tupu, **options):
     "Show an error message"
-    return _show(title, message, ERROR, OK, **options)
+    rudisha _show(title, message, ERROR, OK, **options)
 
 
-def askquestion(title=None, message=None, **options):
+eleza askquestion(title=Tupu, message=Tupu, **options):
     "Ask a question"
-    return _show(title, message, QUESTION, YESNO, **options)
+    rudisha _show(title, message, QUESTION, YESNO, **options)
 
 
-def askokcancel(title=None, message=None, **options):
-    "Ask if operation should proceed; return true if the answer is ok"
+eleza askokcancel(title=Tupu, message=Tupu, **options):
+    "Ask ikiwa operation should proceed; rudisha true ikiwa the answer ni ok"
     s = _show(title, message, QUESTION, OKCANCEL, **options)
-    return s == OK
+    rudisha s == OK
 
 
-def askyesno(title=None, message=None, **options):
-    "Ask a question; return true if the answer is yes"
+eleza askyesno(title=Tupu, message=Tupu, **options):
+    "Ask a question; rudisha true ikiwa the answer ni yes"
     s = _show(title, message, QUESTION, YESNO, **options)
-    return s == YES
+    rudisha s == YES
 
 
-def askyesnocancel(title=None, message=None, **options):
-    "Ask a question; return true if the answer is yes, None if cancelled."
+eleza askyesnocancel(title=Tupu, message=Tupu, **options):
+    "Ask a question; rudisha true ikiwa the answer ni yes, Tupu ikiwa cancelled."
     s = _show(title, message, QUESTION, YESNOCANCEL, **options)
     # s might be a Tcl index object, so convert it to a string
     s = str(s)
-    if s == CANCEL:
-        return None
-    return s == YES
+    ikiwa s == CANCEL:
+        rudisha Tupu
+    rudisha s == YES
 
 
-def askretrycancel(title=None, message=None, **options):
-    "Ask if operation should be retried; return true if the answer is yes"
+eleza askretrycancel(title=Tupu, message=Tupu, **options):
+    "Ask ikiwa operation should be retried; rudisha true ikiwa the answer ni yes"
     s = _show(title, message, WARNING, RETRYCANCEL, **options)
-    return s == RETRY
+    rudisha s == RETRY
 
 
 # --------------------------------------------------------------------
 # test stuff
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
 
-    print("info", showinfo("Spam", "Egg Information"))
-    print("warning", showwarning("Spam", "Egg Warning"))
-    print("error", showerror("Spam", "Egg Alert"))
-    print("question", askquestion("Spam", "Question?"))
-    print("proceed", askokcancel("Spam", "Proceed?"))
-    print("yes/no", askyesno("Spam", "Got it?"))
-    print("yes/no/cancel", askyesnocancel("Spam", "Want it?"))
-    print("try again", askretrycancel("Spam", "Try again?"))
+    andika("info", showinfo("Spam", "Egg Information"))
+    andika("warning", showwarning("Spam", "Egg Warning"))
+    andika("error", showerror("Spam", "Egg Alert"))
+    andika("question", askquestion("Spam", "Question?"))
+    andika("proceed", askokcancel("Spam", "Proceed?"))
+    andika("yes/no", askyesno("Spam", "Got it?"))
+    andika("yes/no/cancel", askyesnocancel("Spam", "Want it?"))
+    andika("try again", askretrycancel("Spam", "Try again?"))

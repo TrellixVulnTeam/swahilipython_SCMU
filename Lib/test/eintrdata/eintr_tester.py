@@ -1,55 +1,55 @@
 """
-This test suite exercises some system calls subject to interruption with EINTR,
-to check that it is actually handled transparently.
-It is intended to be run by the main test suite within a child process, to
-ensure there is no background thread running (so that signals are delivered to
+This test suite exercises some system calls subject to interruption ukijumuisha EINTR,
+to check that it ni actually handled transparently.
+It ni intended to be run by the main test suite within a child process, to
+ensure there ni no background thread running (so that signals are delivered to
 the correct thread).
 Signals are generated in-process using setitimer(ITIMER_REAL), which allows
 sub-second periodicity (contrarily to signal()).
 """
 
-import contextlib
-import faulthandler
-import fcntl
-import os
-import platform
-import select
-import signal
-import socket
-import subprocess
-import sys
-import time
-import unittest
+agiza contextlib
+agiza faulthandler
+agiza fcntl
+agiza os
+agiza platform
+agiza select
+agiza signal
+agiza socket
+agiza subprocess
+agiza sys
+agiza time
+agiza unittest
 
-from test import support
+kutoka test agiza support
 
 @contextlib.contextmanager
-def kill_on_error(proc):
-    """Context manager killing the subprocess if a Python exception is raised."""
-    with proc:
+eleza kill_on_error(proc):
+    """Context manager killing the subprocess ikiwa a Python exception ni raised."""
+    ukijumuisha proc:
         jaribu:
-            yield proc
+            tuma proc
         tatizo:
             proc.kill()
             raise
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class EINTRBaseTest(unittest.TestCase):
-    """ Base class for EINTR tests. """
+kundi EINTRBaseTest(unittest.TestCase):
+    """ Base kundi kila EINTR tests. """
 
-    # delay for initial signal delivery
+    # delay kila initial signal delivery
     signal_delay = 0.1
     # signal delivery periodicity
     signal_period = 0.1
-    # default sleep time for tests - should obviously have:
+    # default sleep time kila tests - should obviously have:
     # sleep_time > signal_period
     sleep_time = 0.2
 
-    def sighandler(self, signum, frame):
+    eleza sighandler(self, signum, frame):
         self.signals += 1
 
-    def setUp(self):
+    eleza setUp(self):
         self.signals = 0
         self.orig_handler = signal.signal(signal.SIGALRM, self.sighandler)
         signal.setitimer(signal.ITIMER_REAL, self.signal_delay,
@@ -57,63 +57,63 @@ class EINTRBaseTest(unittest.TestCase):
 
         # Use faulthandler as watchdog to debug when a test hangs
         # (timeout of 10 minutes)
-        if hasattr(faulthandler, 'dump_traceback_later'):
-            faulthandler.dump_traceback_later(10 * 60, exit=True,
+        ikiwa hasattr(faulthandler, 'dump_traceback_later'):
+            faulthandler.dump_traceback_later(10 * 60, exit=Kweli,
                                               file=sys.__stderr__)
 
     @staticmethod
-    def stop_alarm():
+    eleza stop_alarm():
         signal.setitimer(signal.ITIMER_REAL, 0, 0)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.stop_alarm()
         signal.signal(signal.SIGALRM, self.orig_handler)
-        if hasattr(faulthandler, 'cancel_dump_traceback_later'):
+        ikiwa hasattr(faulthandler, 'cancel_dump_traceback_later'):
             faulthandler.cancel_dump_traceback_later()
 
-    def subprocess(self, *args, **kw):
+    eleza subprocess(self, *args, **kw):
         cmd_args = (sys.executable, '-c') + args
-        return subprocess.Popen(cmd_args, **kw)
+        rudisha subprocess.Popen(cmd_args, **kw)
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class OSEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the os module. """
+kundi OSEINTRTest(EINTRBaseTest):
+    """ EINTR tests kila the os module. """
 
-    def new_sleep_process(self):
-        code = 'import time; time.sleep(%r)' % self.sleep_time
-        return self.subprocess(code)
+    eleza new_sleep_process(self):
+        code = 'agiza time; time.sleep(%r)' % self.sleep_time
+        rudisha self.subprocess(code)
 
-    def _test_wait_multiple(self, wait_func):
+    eleza _test_wait_multiple(self, wait_func):
         num = 3
-        processes = [self.new_sleep_process() for _ in range(num)]
-        for _ in range(num):
+        processes = [self.new_sleep_process() kila _ kwenye range(num)]
+        kila _ kwenye range(num):
             wait_func()
         # Call the Popen method to avoid a ResourceWarning
-        for proc in processes:
+        kila proc kwenye processes:
             proc.wait()
 
-    def test_wait(self):
+    eleza test_wait(self):
         self._test_wait_multiple(os.wait)
 
     @unittest.skipUnless(hasattr(os, 'wait3'), 'requires wait3()')
-    def test_wait3(self):
+    eleza test_wait3(self):
         self._test_wait_multiple(lambda: os.wait3(0))
 
-    def _test_wait_single(self, wait_func):
+    eleza _test_wait_single(self, wait_func):
         proc = self.new_sleep_process()
         wait_func(proc.pid)
         # Call the Popen method to avoid a ResourceWarning
         proc.wait()
 
-    def test_waitpid(self):
+    eleza test_waitpid(self):
         self._test_wait_single(lambda pid: os.waitpid(pid, 0))
 
     @unittest.skipUnless(hasattr(os, 'wait4'), 'requires wait4()')
-    def test_wait4(self):
+    eleza test_wait4(self):
         self._test_wait_single(lambda pid: os.wait4(pid, 0))
 
-    def test_read(self):
+    eleza test_read(self):
         rd, wr = os.pipe()
         self.addCleanup(os.close, rd)
         # wr closed explicitly by parent
@@ -123,35 +123,35 @@ class OSEINTRTest(EINTRBaseTest):
         datas = [b"hello", b"world", b"spam"]
 
         code = '\n'.join((
-            'import os, sys, time',
+            'agiza os, sys, time',
             '',
             'wr = int(sys.argv[1])',
             'datas = %r' % datas,
             'sleep_time = %r' % self.sleep_time,
             '',
-            'for data in datas:',
+            'kila data kwenye datas:',
             '    # let the parent block on read()',
             '    time.sleep(sleep_time)',
             '    os.write(wr, data)',
         ))
 
         proc = self.subprocess(code, str(wr), pass_fds=[wr])
-        with kill_on_error(proc):
+        ukijumuisha kill_on_error(proc):
             os.close(wr)
-            for data in datas:
+            kila data kwenye datas:
                 self.assertEqual(data, os.read(rd, len(data)))
             self.assertEqual(proc.wait(), 0)
 
-    def test_write(self):
+    eleza test_write(self):
         rd, wr = os.pipe()
         self.addCleanup(os.close, wr)
         # rd closed explicitly by parent
 
-        # we must write enough data for the write() to block
+        # we must write enough data kila the write() to block
         data = b"x" * support.PIPE_MAX_SIZE
 
         code = '\n'.join((
-            'import io, os, sys, time',
+            'agiza io, os, sys, time',
             '',
             'rd = int(sys.argv[1])',
             'sleep_time = %r' % self.sleep_time,
@@ -167,13 +167,13 @@ class OSEINTRTest(EINTRBaseTest):
             '    read_data.write(chunk)',
             '',
             'value = read_data.getvalue()',
-            'if value != data:',
-            '    ashiria Exception("read error: %s vs %s bytes"',
+            'ikiwa value != data:',
+            '     ashiria Exception("read error: %s vs %s bytes"',
             '                    % (len(value), data_len))',
         ))
 
         proc = self.subprocess(code, str(rd), pass_fds=[rd])
-        with kill_on_error(proc):
+        ukijumuisha kill_on_error(proc):
             os.close(rd)
             written = 0
             wakati written < len(data):
@@ -182,11 +182,11 @@ class OSEINTRTest(EINTRBaseTest):
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class SocketEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the socket module. """
+kundi SocketEINTRTest(EINTRBaseTest):
+    """ EINTR tests kila the socket module. """
 
     @unittest.skipUnless(hasattr(socket, 'socketpair'), 'needs socketpair()')
-    def _test_recv(self, recv_func):
+    eleza _test_recv(self, recv_func):
         rd, wr = socket.socketpair()
         self.addCleanup(rd.close)
         # wr closed explicitly by parent
@@ -195,7 +195,7 @@ class SocketEINTRTest(EINTRBaseTest):
         datas = [b"x", b"y", b"z"]
 
         code = '\n'.join((
-            'import os, socket, sys, time',
+            'agiza os, socket, sys, time',
             '',
             'fd = int(sys.argv[1])',
             'family = %s' % int(wr.family),
@@ -206,8 +206,8 @@ class SocketEINTRTest(EINTRBaseTest):
             'wr = socket.fromfd(fd, family, sock_type)',
             'os.close(fd)',
             '',
-            'with wr:',
-            '    for data in datas:',
+            'ukijumuisha wr:',
+            '    kila data kwenye datas:',
             '        # let the parent block on recv()',
             '        time.sleep(sleep_time)',
             '        wr.sendall(data)',
@@ -215,29 +215,29 @@ class SocketEINTRTest(EINTRBaseTest):
 
         fd = wr.fileno()
         proc = self.subprocess(code, str(fd), pass_fds=[fd])
-        with kill_on_error(proc):
+        ukijumuisha kill_on_error(proc):
             wr.close()
-            for data in datas:
+            kila data kwenye datas:
                 self.assertEqual(data, recv_func(rd, len(data)))
             self.assertEqual(proc.wait(), 0)
 
-    def test_recv(self):
+    eleza test_recv(self):
         self._test_recv(socket.socket.recv)
 
     @unittest.skipUnless(hasattr(socket.socket, 'recvmsg'), 'needs recvmsg()')
-    def test_recvmsg(self):
+    eleza test_recvmsg(self):
         self._test_recv(lambda sock, data: sock.recvmsg(data)[0])
 
-    def _test_send(self, send_func):
+    eleza _test_send(self, send_func):
         rd, wr = socket.socketpair()
         self.addCleanup(wr.close)
         # rd closed explicitly by parent
 
-        # we must send enough data for the send() to block
+        # we must send enough data kila the send() to block
         data = b"xyz" * (support.SOCK_MAX_SIZE // 3)
 
         code = '\n'.join((
-            'import os, socket, sys, time',
+            'agiza os, socket, sys, time',
             '',
             'fd = int(sys.argv[1])',
             'family = %s' % int(rd.family),
@@ -249,7 +249,7 @@ class SocketEINTRTest(EINTRBaseTest):
             'rd = socket.fromfd(fd, family, sock_type)',
             'os.close(fd)',
             '',
-            'with rd:',
+            'ukijumuisha rd:',
             '    # let the parent block on send()',
             '    time.sleep(sleep_time)',
             '',
@@ -258,39 +258,39 @@ class SocketEINTRTest(EINTRBaseTest):
             '    wakati n < data_len:',
             '        n += rd.recv_into(memoryview(received_data)[n:])',
             '',
-            'if received_data != data:',
-            '    ashiria Exception("recv error: %s vs %s bytes"',
+            'ikiwa received_data != data:',
+            '     ashiria Exception("recv error: %s vs %s bytes"',
             '                    % (len(received_data), data_len))',
         ))
 
         fd = rd.fileno()
         proc = self.subprocess(code, str(fd), pass_fds=[fd])
-        with kill_on_error(proc):
+        ukijumuisha kill_on_error(proc):
             rd.close()
             written = 0
             wakati written < len(data):
                 sent = send_func(wr, memoryview(data)[written:])
-                # sendall() returns None
-                written += len(data) if sent is None isipokua sent
+                # sendall() returns Tupu
+                written += len(data) ikiwa sent ni Tupu isipokua sent
             self.assertEqual(proc.wait(), 0)
 
-    def test_send(self):
+    eleza test_send(self):
         self._test_send(socket.socket.send)
 
-    def test_sendall(self):
+    eleza test_sendall(self):
         self._test_send(socket.socket.sendall)
 
     @unittest.skipUnless(hasattr(socket.socket, 'sendmsg'), 'needs sendmsg()')
-    def test_sendmsg(self):
+    eleza test_sendmsg(self):
         self._test_send(lambda sock, data: sock.sendmsg([data]))
 
-    def test_accept(self):
+    eleza test_accept(self):
         sock = socket.create_server((support.HOST, 0))
         self.addCleanup(sock.close)
         port = sock.getsockname()[1]
 
         code = '\n'.join((
-            'import socket, time',
+            'agiza socket, time',
             '',
             'host = %r' % support.HOST,
             'port = %s' % port,
@@ -298,36 +298,36 @@ class SocketEINTRTest(EINTRBaseTest):
             '',
             '# let parent block on accept()',
             'time.sleep(sleep_time)',
-            'with socket.create_connection((host, port)):',
+            'ukijumuisha socket.create_connection((host, port)):',
             '    time.sleep(sleep_time)',
         ))
 
         proc = self.subprocess(code)
-        with kill_on_error(proc):
+        ukijumuisha kill_on_error(proc):
             client_sock, _ = sock.accept()
             client_sock.close()
             self.assertEqual(proc.wait(), 0)
 
-    # Issue #25122: There is a race condition in the FreeBSD kernel on
-    # handling signals in the FIFO device. Skip the test until the bug is
-    # fixed in the kernel.
+    # Issue #25122: There ni a race condition kwenye the FreeBSD kernel on
+    # handling signals kwenye the FIFO device. Skip the test until the bug is
+    # fixed kwenye the kernel.
     # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=203162
     @support.requires_freebsd_version(10, 3)
     @unittest.skipUnless(hasattr(os, 'mkfifo'), 'needs mkfifo()')
-    def _test_open(self, do_open_close_reader, do_open_close_writer):
+    eleza _test_open(self, do_open_close_reader, do_open_close_writer):
         filename = support.TESTFN
 
-        # Use a fifo: until the child opens it for reading, the parent will
-        # block when trying to open it for writing.
+        # Use a fifo: until the child opens it kila reading, the parent will
+        # block when trying to open it kila writing.
         support.unlink(filename)
         jaribu:
             os.mkfifo(filename)
-        tatizo PermissionError as e:
+        except PermissionError as e:
             self.skipTest('os.mkfifo(): %s' % e)
         self.addCleanup(support.unlink, filename)
 
         code = '\n'.join((
-            'import os, time',
+            'agiza os, time',
             '',
             'path = %a' % filename,
             'sleep_time = %r' % self.sleep_time,
@@ -339,36 +339,36 @@ class SocketEINTRTest(EINTRBaseTest):
         ))
 
         proc = self.subprocess(code)
-        with kill_on_error(proc):
+        ukijumuisha kill_on_error(proc):
             do_open_close_writer(filename)
             self.assertEqual(proc.wait(), 0)
 
-    def python_open(self, path):
+    eleza python_open(self, path):
         fp = open(path, 'w')
         fp.close()
 
     @unittest.skipIf(sys.platform == "darwin",
                      "hangs under macOS; see bpo-25234, bpo-35363")
-    def test_open(self):
+    eleza test_open(self):
         self._test_open("fp = open(path, 'r')\nfp.close()",
                         self.python_open)
 
-    def os_open(self, path):
+    eleza os_open(self, path):
         fd = os.open(path, os.O_WRONLY)
         os.close(fd)
 
     @unittest.skipIf(sys.platform == "darwin",
                      "hangs under macOS; see bpo-25234, bpo-35363")
-    def test_os_open(self):
+    eleza test_os_open(self):
         self._test_open("fd = os.open(path, os.O_RDONLY)\nos.close(fd)",
                         self.os_open)
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class TimeEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the time module. """
+kundi TimeEINTRTest(EINTRBaseTest):
+    """ EINTR tests kila the time module. """
 
-    def test_sleep(self):
+    eleza test_sleep(self):
         t0 = time.monotonic()
         time.sleep(self.sleep_time)
         self.stop_alarm()
@@ -378,21 +378,21 @@ class TimeEINTRTest(EINTRBaseTest):
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
 # bpo-30320: Need pthread_sigmask() to block the signal, otherwise the test
-# is vulnerable to a race condition between the child and the parent processes.
+# ni vulnerable to a race condition between the child na the parent processes.
 @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                      'need signal.pthread_sigmask()')
-class SignalEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the signal module. """
+kundi SignalEINTRTest(EINTRBaseTest):
+    """ EINTR tests kila the signal module. """
 
-    def check_sigwait(self, wait_func):
+    eleza check_sigwait(self, wait_func):
         signum = signal.SIGUSR1
         pid = os.getpid()
 
-        old_handler = signal.signal(signum, lambda *args: None)
+        old_handler = signal.signal(signum, lambda *args: Tupu)
         self.addCleanup(signal.signal, signum, old_handler)
 
         code = '\n'.join((
-            'import os, time',
+            'agiza os, time',
             'pid = %s' % os.getpid(),
             'signum = %s' % int(signum),
             'sleep_time = %r' % self.sleep_time,
@@ -405,7 +405,7 @@ class SignalEINTRTest(EINTRBaseTest):
 
         t0 = time.monotonic()
         proc = self.subprocess(code)
-        with kill_on_error(proc):
+        ukijumuisha kill_on_error(proc):
             wait_func(signum)
             dt = time.monotonic() - t0
 
@@ -413,26 +413,26 @@ class SignalEINTRTest(EINTRBaseTest):
 
     @unittest.skipUnless(hasattr(signal, 'sigwaitinfo'),
                          'need signal.sigwaitinfo()')
-    def test_sigwaitinfo(self):
-        def wait_func(signum):
+    eleza test_sigwaitinfo(self):
+        eleza wait_func(signum):
             signal.sigwaitinfo([signum])
 
         self.check_sigwait(wait_func)
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
                          'need signal.sigwaitinfo()')
-    def test_sigtimedwait(self):
-        def wait_func(signum):
+    eleza test_sigtimedwait(self):
+        eleza wait_func(signum):
             signal.sigtimedwait([signum], 120.0)
 
         self.check_sigwait(wait_func)
 
 
 @unittest.skipUnless(hasattr(signal, "setitimer"), "requires setitimer()")
-class SelectEINTRTest(EINTRBaseTest):
-    """ EINTR tests for the select module. """
+kundi SelectEINTRTest(EINTRBaseTest):
+    """ EINTR tests kila the select module. """
 
-    def test_select(self):
+    eleza test_select(self):
         t0 = time.monotonic()
         select.select([], [], [], self.sleep_time)
         dt = time.monotonic() - t0
@@ -442,7 +442,7 @@ class SelectEINTRTest(EINTRBaseTest):
     @unittest.skipIf(sys.platform == "darwin",
                      "poll may fail on macOS; see issue #28087")
     @unittest.skipUnless(hasattr(select, 'poll'), 'need select.poll')
-    def test_poll(self):
+    eleza test_poll(self):
         poller = select.poll()
 
         t0 = time.monotonic()
@@ -452,7 +452,7 @@ class SelectEINTRTest(EINTRBaseTest):
         self.assertGreaterEqual(dt, self.sleep_time)
 
     @unittest.skipUnless(hasattr(select, 'epoll'), 'need select.epoll')
-    def test_epoll(self):
+    eleza test_epoll(self):
         poller = select.epoll()
         self.addCleanup(poller.close)
 
@@ -463,18 +463,18 @@ class SelectEINTRTest(EINTRBaseTest):
         self.assertGreaterEqual(dt, self.sleep_time)
 
     @unittest.skipUnless(hasattr(select, 'kqueue'), 'need select.kqueue')
-    def test_kqueue(self):
+    eleza test_kqueue(self):
         kqueue = select.kqueue()
         self.addCleanup(kqueue.close)
 
         t0 = time.monotonic()
-        kqueue.control(None, 1, self.sleep_time)
+        kqueue.control(Tupu, 1, self.sleep_time)
         dt = time.monotonic() - t0
         self.stop_alarm()
         self.assertGreaterEqual(dt, self.sleep_time)
 
     @unittest.skipUnless(hasattr(select, 'devpoll'), 'need select.devpoll')
-    def test_devpoll(self):
+    eleza test_devpoll(self):
         poller = select.devpoll()
         self.addCleanup(poller.close)
 
@@ -485,30 +485,30 @@ class SelectEINTRTest(EINTRBaseTest):
         self.assertGreaterEqual(dt, self.sleep_time)
 
 
-class FNTLEINTRTest(EINTRBaseTest):
-    def _lock(self, lock_func, lock_name):
+kundi FNTLEINTRTest(EINTRBaseTest):
+    eleza _lock(self, lock_func, lock_name):
         self.addCleanup(support.unlink, support.TESTFN)
         code = '\n'.join((
-            "import fcntl, time",
-            "with open('%s', 'wb') as f:" % support.TESTFN,
+            "agiza fcntl, time",
+            "ukijumuisha open('%s', 'wb') as f:" % support.TESTFN,
             "   fcntl.%s(f, fcntl.LOCK_EX)" % lock_name,
             "   time.sleep(%s)" % self.sleep_time))
         start_time = time.monotonic()
         proc = self.subprocess(code)
-        with kill_on_error(proc):
-            with open(support.TESTFN, 'wb') as f:
-                wakati True:  # synchronize the subprocess
+        ukijumuisha kill_on_error(proc):
+            ukijumuisha open(support.TESTFN, 'wb') as f:
+                wakati Kweli:  # synchronize the subprocess
                     dt = time.monotonic() - start_time
-                    if dt > 60.0:
-                        ashiria Exception("failed to sync child in %.1f sec" % dt)
+                    ikiwa dt > 60.0:
+                         ashiria Exception("failed to sync child kwenye %.1f sec" % dt)
                     jaribu:
                         lock_func(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
                         lock_func(f, fcntl.LOCK_UN)
                         time.sleep(0.01)
-                    tatizo BlockingIOError:
+                    except BlockingIOError:
                         koma
-                # the child locked the file just a moment ago for 'sleep_time' seconds
-                # that means that the lock below will block for 'sleep_time' minus some
+                # the child locked the file just a moment ago kila 'sleep_time' seconds
+                # that means that the lock below will block kila 'sleep_time' minus some
                 # potential context switch delay
                 lock_func(f, fcntl.LOCK_EX)
                 dt = time.monotonic() - start_time
@@ -517,14 +517,14 @@ class FNTLEINTRTest(EINTRBaseTest):
             proc.wait()
 
     # Issue 35633: See https://bugs.python.org/issue35633#msg333662
-    # skip test rather than accept PermissionError from all platforms
+    # skip test rather than accept PermissionError kutoka all platforms
     @unittest.skipIf(platform.system() == "AIX", "AIX returns PermissionError")
-    def test_lockf(self):
+    eleza test_lockf(self):
         self._lock(fcntl.lockf, "lockf")
 
-    def test_flock(self):
+    eleza test_flock(self):
         self._lock(fcntl.flock, "flock")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

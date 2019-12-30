@@ -1,10 +1,10 @@
-from ctypes import *
-from ctypes.test import need_symbol
-import unittest
+kutoka ctypes agiza *
+kutoka ctypes.test agiza need_symbol
+agiza unittest
 
-class StringBufferTestCase(unittest.TestCase):
+kundi StringBufferTestCase(unittest.TestCase):
 
-    def test_buffer(self):
+    eleza test_buffer(self):
         b = create_string_buffer(32)
         self.assertEqual(len(b), 32)
         self.assertEqual(sizeof(b), 32 * sizeof(c_char))
@@ -23,12 +23,12 @@ class StringBufferTestCase(unittest.TestCase):
 
         self.assertRaises(TypeError, create_string_buffer, "abc")
 
-    def test_buffer_interface(self):
+    eleza test_buffer_interface(self):
         self.assertEqual(len(bytearray(create_string_buffer(0))), 0)
         self.assertEqual(len(bytearray(create_string_buffer(1))), 1)
 
     @need_symbol('c_wchar')
-    def test_unicode_buffer(self):
+    eleza test_unicode_buffer(self):
         b = create_unicode_buffer(32)
         self.assertEqual(len(b), 32)
         self.assertEqual(sizeof(b), 32 * sizeof(c_wchar))
@@ -48,7 +48,7 @@ class StringBufferTestCase(unittest.TestCase):
         self.assertRaises(TypeError, create_unicode_buffer, b"abc")
 
     @need_symbol('c_wchar')
-    def test_unicode_conversion(self):
+    eleza test_unicode_conversion(self):
         b = create_unicode_buffer("abc")
         self.assertEqual(len(b), 4) # trailing nul char
         self.assertEqual(sizeof(b), 4 * sizeof(c_wchar))
@@ -61,13 +61,13 @@ class StringBufferTestCase(unittest.TestCase):
         self.assertEqual(b[::5], "a")
 
     @need_symbol('c_wchar')
-    def test_create_unicode_buffer_non_bmp(self):
-        expected = 5 if sizeof(c_wchar) == 2 isipokua 3
-        for s in '\U00010000\U00100000', '\U00010000\U0010ffff':
+    eleza test_create_unicode_buffer_non_bmp(self):
+        expected = 5 ikiwa sizeof(c_wchar) == 2 isipokua 3
+        kila s kwenye '\U00010000\U00100000', '\U00010000\U0010ffff':
             b = create_unicode_buffer(s)
             self.assertEqual(len(b), expected)
             self.assertEqual(b[-1], '\0')
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

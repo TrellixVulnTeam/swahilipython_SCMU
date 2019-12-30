@@ -1,28 +1,28 @@
-import asyncio
-import decimal
-import unittest
+agiza asyncio
+agiza decimal
+agiza unittest
 
 
-def tearDownModule():
-    asyncio.set_event_loop_policy(None)
+eleza tearDownModule():
+    asyncio.set_event_loop_policy(Tupu)
 
 
-class DecimalContextTest(unittest.TestCase):
+kundi DecimalContextTest(unittest.TestCase):
 
-    def test_asyncio_task_decimal_context(self):
-        async def fractions(t, precision, x, y):
-            with decimal.localcontext() as ctx:
+    eleza test_asyncio_task_decimal_context(self):
+        async eleza fractions(t, precision, x, y):
+            ukijumuisha decimal.localcontext() as ctx:
                 ctx.prec = precision
                 a = decimal.Decimal(x) / decimal.Decimal(y)
                 await asyncio.sleep(t)
                 b = decimal.Decimal(x) / decimal.Decimal(y ** 2)
-                return a, b
+                rudisha a, b
 
-        async def main():
+        async eleza main():
             r1, r2 = await asyncio.gather(
                 fractions(0.1, 3, 1, 3), fractions(0.2, 6, 1, 3))
 
-            return r1, r2
+            rudisha r1, r2
 
         r1, r2 = asyncio.run(main())
 

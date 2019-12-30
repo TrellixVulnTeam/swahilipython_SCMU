@@ -1,34 +1,34 @@
 """distutils.command.config
 
 Implements the Distutils 'config' command, a (mostly) empty command class
-that exists mainly to be sub-classed by specific module distributions na
-applications.  The idea is that wakati every "config" command is different,
-at least they're all named the same, and users always see "config" in the
-list of standard commands.  Also, this is a good place to put common
-configure-like tasks: "try to compile this C code", or "figure out where
+that exists mainly to be sub-classed by specific module distributions and
+applications.  The idea ni that wakati every "config" command ni different,
+at least they're all named the same, na users always see "config" kwenye the
+list of standard commands.  Also, this ni a good place to put common
+configure-like tasks: "try to compile this C code", ama "figure out where
 this header file lives".
 """
 
-import os, re
+agiza os, re
 
-from distutils.core import Command
-from distutils.errors import DistutilsExecError
-from distutils.sysconfig import customize_compiler
-from distutils import log
+kutoka distutils.core agiza Command
+kutoka distutils.errors agiza DistutilsExecError
+kutoka distutils.sysconfig agiza customize_compiler
+kutoka distutils agiza log
 
 LANG_EXT = {"c": ".c", "c++": ".cxx"}
 
-class config(Command):
+kundi config(Command):
 
     description = "prepare to build"
 
     user_options = [
-        ('compiler=', None,
+        ('compiler=', Tupu,
          "specify the compiler type"),
-        ('cc=', None,
+        ('cc=', Tupu,
          "specify the compiler executable"),
         ('include-dirs=', 'I',
-         "list of directories to search for header files"),
+         "list of directories to search kila header files"),
         ('define=', 'D',
          "C preprocessor macros to define"),
         ('undef=', 'U',
@@ -36,11 +36,11 @@ class config(Command):
         ('libraries=', 'l',
          "external C libraries to link with"),
         ('library-dirs=', 'L',
-         "directories to search for external C libraries"),
+         "directories to search kila external C libraries"),
 
-        ('noisy', None,
+        ('noisy', Tupu,
          "show every action (compile, link, run, ...) taken"),
-        ('dump-source', None,
+        ('dump-source', Tupu,
          "dump generated source files before attempting to compile them"),
         ]
 
@@ -48,14 +48,14 @@ class config(Command):
     # The three standard command methods: since the "config" command
     # does nothing by default, these are empty.
 
-    def initialize_options(self):
-        self.compiler = None
-        self.cc = None
-        self.include_dirs = None
-        self.libraries = None
-        self.library_dirs = None
+    eleza initialize_options(self):
+        self.compiler = Tupu
+        self.cc = Tupu
+        self.include_dirs = Tupu
+        self.libraries = Tupu
+        self.library_dirs = Tupu
 
-        # maximal output for now
+        # maximal output kila now
         self.noisy = 1
         self.dump_source = 1
 
@@ -63,76 +63,76 @@ class config(Command):
         # to clean at some point
         self.temp_files = []
 
-    def finalize_options(self):
-        if self.include_dirs is None:
-            self.include_dirs = self.distribution.include_dirs or []
-        lasivyo isinstance(self.include_dirs, str):
+    eleza finalize_options(self):
+        ikiwa self.include_dirs ni Tupu:
+            self.include_dirs = self.distribution.include_dirs ama []
+        elikiwa isinstance(self.include_dirs, str):
             self.include_dirs = self.include_dirs.split(os.pathsep)
 
-        if self.libraries is None:
+        ikiwa self.libraries ni Tupu:
             self.libraries = []
-        lasivyo isinstance(self.libraries, str):
+        elikiwa isinstance(self.libraries, str):
             self.libraries = [self.libraries]
 
-        if self.library_dirs is None:
+        ikiwa self.library_dirs ni Tupu:
             self.library_dirs = []
-        lasivyo isinstance(self.library_dirs, str):
+        elikiwa isinstance(self.library_dirs, str):
             self.library_dirs = self.library_dirs.split(os.pathsep)
 
-    def run(self):
+    eleza run(self):
         pass
 
-    # Utility methods for actual "config" commands.  The interfaces are
+    # Utility methods kila actual "config" commands.  The interfaces are
     # loosely based on Autoconf macros of similar names.  Sub-classes
     # may use these freely.
 
-    def _check_compiler(self):
-        """Check that 'self.compiler' really is a CCompiler object;
-        if not, make it one.
+    eleza _check_compiler(self):
+        """Check that 'self.compiler' really ni a CCompiler object;
+        ikiwa not, make it one.
         """
-        # We do this late, and only on-demand, because this is an expensive
+        # We do this late, na only on-demand, because this ni an expensive
         # import.
-        from distutils.ccompiler import CCompiler, new_compiler
-        if sio isinstance(self.compiler, CCompiler):
+        kutoka distutils.ccompiler agiza CCompiler, new_compiler
+        ikiwa sio isinstance(self.compiler, CCompiler):
             self.compiler = new_compiler(compiler=self.compiler,
                                          dry_run=self.dry_run, force=1)
             customize_compiler(self.compiler)
-            if self.include_dirs:
+            ikiwa self.include_dirs:
                 self.compiler.set_include_dirs(self.include_dirs)
-            if self.libraries:
+            ikiwa self.libraries:
                 self.compiler.set_libraries(self.libraries)
-            if self.library_dirs:
+            ikiwa self.library_dirs:
                 self.compiler.set_library_dirs(self.library_dirs)
 
-    def _gen_temp_sourcefile(self, body, headers, lang):
+    eleza _gen_temp_sourcefile(self, body, headers, lang):
         filename = "_configtest" + LANG_EXT[lang]
-        with open(filename, "w") as file:
-            if headers:
-                for header in headers:
+        ukijumuisha open(filename, "w") as file:
+            ikiwa headers:
+                kila header kwenye headers:
                     file.write("#include <%s>\n" % header)
                 file.write("\n")
             file.write(body)
-            if body[-1] != "\n":
+            ikiwa body[-1] != "\n":
                 file.write("\n")
-        return filename
+        rudisha filename
 
-    def _preprocess(self, body, headers, include_dirs, lang):
+    eleza _preprocess(self, body, headers, include_dirs, lang):
         src = self._gen_temp_sourcefile(body, headers, lang)
         out = "_configtest.i"
         self.temp_files.extend([src, out])
         self.compiler.preprocess(src, out, include_dirs=include_dirs)
-        return (src, out)
+        rudisha (src, out)
 
-    def _compile(self, body, headers, include_dirs, lang):
+    eleza _compile(self, body, headers, include_dirs, lang):
         src = self._gen_temp_sourcefile(body, headers, lang)
-        if self.dump_source:
+        ikiwa self.dump_source:
             dump_file(src, "compiling '%s':" % src)
         (obj,) = self.compiler.object_filenames([src])
         self.temp_files.extend([src, obj])
         self.compiler.compile([src], include_dirs=include_dirs)
-        return (src, obj)
+        rudisha (src, obj)
 
-    def _link(self, body, headers, include_dirs, libraries, library_dirs,
+    eleza _link(self, body, headers, include_dirs, libraries, library_dirs,
               lang):
         (src, obj) = self._compile(body, headers, include_dirs, lang)
         prog = os.path.splitext(os.path.basename(src))[0]
@@ -141,199 +141,199 @@ class config(Command):
                                       library_dirs=library_dirs,
                                       target_lang=lang)
 
-        if self.compiler.exe_extension ni sio None:
+        ikiwa self.compiler.exe_extension ni sio Tupu:
             prog = prog + self.compiler.exe_extension
         self.temp_files.append(prog)
 
-        return (src, obj, prog)
+        rudisha (src, obj, prog)
 
-    def _clean(self, *filenames):
-        if sio filenames:
+    eleza _clean(self, *filenames):
+        ikiwa sio filenames:
             filenames = self.temp_files
             self.temp_files = []
         log.info("removing: %s", ' '.join(filenames))
-        for filename in filenames:
+        kila filename kwenye filenames:
             jaribu:
                 os.remove(filename)
-            tatizo OSError:
+            except OSError:
                 pass
 
 
     # XXX these ignore the dry-run flag: what to do, what to do? even if
     # you want a dry-run build, you still need some sort of configuration
-    # info.  My inclination is to make it up to the real config command to
-    # consult 'dry_run', and assume a default (minimal) configuration if
-    # true.  The problem with trying to do it here is that you'd have to
-    # return either true or false from all the 'try' methods, neither of
-    # which is correct.
+    # info.  My inclination ni to make it up to the real config command to
+    # consult 'dry_run', na assume a default (minimal) configuration if
+    # true.  The problem ukijumuisha trying to do it here ni that you'd have to
+    # rudisha either true ama false kutoka all the 'try' methods, neither of
+    # which ni correct.
 
-    # XXX need access to the header search path and maybe default macros.
+    # XXX need access to the header search path na maybe default macros.
 
-    def try_cpp(self, body=None, headers=None, include_dirs=None, lang="c"):
-        """Construct a source file from 'body' (a string containing lines
-        of C/C++ code) and 'headers' (a list of header files to include)
-        and run it through the preprocessor.  Return true if the
-        preprocessor succeeded, false if there were any errors.
+    eleza try_cpp(self, body=Tupu, headers=Tupu, include_dirs=Tupu, lang="c"):
+        """Construct a source file kutoka 'body' (a string containing lines
+        of C/C++ code) na 'headers' (a list of header files to include)
+        na run it through the preprocessor.  Return true ikiwa the
+        preprocessor succeeded, false ikiwa there were any errors.
         ('body' probably isn't of much use, but what the heck.)
         """
-        from distutils.ccompiler import CompileError
+        kutoka distutils.ccompiler agiza CompileError
         self._check_compiler()
-        ok = True
+        ok = Kweli
         jaribu:
             self._preprocess(body, headers, include_dirs, lang)
-        tatizo CompileError:
-            ok = False
+        except CompileError:
+            ok = Uongo
 
         self._clean()
-        return ok
+        rudisha ok
 
-    def search_cpp(self, pattern, body=None, headers=None, include_dirs=None,
+    eleza search_cpp(self, pattern, body=Tupu, headers=Tupu, include_dirs=Tupu,
                    lang="c"):
         """Construct a source file (just like 'try_cpp()'), run it through
-        the preprocessor, and return true if any line of the output matches
-        'pattern'.  'pattern' should either be a compiled regex object or a
-        string containing a regex.  If both 'body' and 'headers' are None,
+        the preprocessor, na rudisha true ikiwa any line of the output matches
+        'pattern'.  'pattern' should either be a compiled regex object ama a
+        string containing a regex.  If both 'body' na 'headers' are Tupu,
         preprocesses an empty file -- which can be useful to determine the
-        symbols the preprocessor and compiler set by default.
+        symbols the preprocessor na compiler set by default.
         """
         self._check_compiler()
         src, out = self._preprocess(body, headers, include_dirs, lang)
 
-        if isinstance(pattern, str):
+        ikiwa isinstance(pattern, str):
             pattern = re.compile(pattern)
 
-        with open(out) as file:
-            match = False
-            wakati True:
+        ukijumuisha open(out) as file:
+            match = Uongo
+            wakati Kweli:
                 line = file.readline()
-                if line == '':
+                ikiwa line == '':
                     koma
-                if pattern.search(line):
-                    match = True
+                ikiwa pattern.search(line):
+                    match = Kweli
                     koma
 
         self._clean()
-        return match
+        rudisha match
 
-    def try_compile(self, body, headers=None, include_dirs=None, lang="c"):
-        """Try to compile a source file built from 'body' and 'headers'.
+    eleza try_compile(self, body, headers=Tupu, include_dirs=Tupu, lang="c"):
+        """Try to compile a source file built kutoka 'body' na 'headers'.
         Return true on success, false otherwise.
         """
-        from distutils.ccompiler import CompileError
+        kutoka distutils.ccompiler agiza CompileError
         self._check_compiler()
         jaribu:
             self._compile(body, headers, include_dirs, lang)
-            ok = True
-        tatizo CompileError:
-            ok = False
+            ok = Kweli
+        except CompileError:
+            ok = Uongo
 
-        log.info(ok and "success!" or "failure.")
+        log.info(ok na "success!" ama "failure.")
         self._clean()
-        return ok
+        rudisha ok
 
-    def try_link(self, body, headers=None, include_dirs=None, libraries=None,
-                 library_dirs=None, lang="c"):
-        """Try to compile and link a source file, built from 'body' na
+    eleza try_link(self, body, headers=Tupu, include_dirs=Tupu, libraries=Tupu,
+                 library_dirs=Tupu, lang="c"):
+        """Try to compile na link a source file, built kutoka 'body' and
         'headers', to executable form.  Return true on success, false
         otherwise.
         """
-        from distutils.ccompiler import CompileError, LinkError
+        kutoka distutils.ccompiler agiza CompileError, LinkError
         self._check_compiler()
         jaribu:
             self._link(body, headers, include_dirs,
                        libraries, library_dirs, lang)
-            ok = True
-        tatizo (CompileError, LinkError):
-            ok = False
+            ok = Kweli
+        except (CompileError, LinkError):
+            ok = Uongo
 
-        log.info(ok and "success!" or "failure.")
+        log.info(ok na "success!" ama "failure.")
         self._clean()
-        return ok
+        rudisha ok
 
-    def try_run(self, body, headers=None, include_dirs=None, libraries=None,
-                library_dirs=None, lang="c"):
-        """Try to compile, link to an executable, and run a program
-        built from 'body' and 'headers'.  Return true on success, false
+    eleza try_run(self, body, headers=Tupu, include_dirs=Tupu, libraries=Tupu,
+                library_dirs=Tupu, lang="c"):
+        """Try to compile, link to an executable, na run a program
+        built kutoka 'body' na 'headers'.  Return true on success, false
         otherwise.
         """
-        from distutils.ccompiler import CompileError, LinkError
+        kutoka distutils.ccompiler agiza CompileError, LinkError
         self._check_compiler()
         jaribu:
             src, obj, exe = self._link(body, headers, include_dirs,
                                        libraries, library_dirs, lang)
             self.spawn([exe])
-            ok = True
-        tatizo (CompileError, LinkError, DistutilsExecError):
-            ok = False
+            ok = Kweli
+        except (CompileError, LinkError, DistutilsExecError):
+            ok = Uongo
 
-        log.info(ok and "success!" or "failure.")
+        log.info(ok na "success!" ama "failure.")
         self._clean()
-        return ok
+        rudisha ok
 
 
     # -- High-level methods --------------------------------------------
     # (these are the ones that are actually likely to be useful
     # when implementing a real-world config command!)
 
-    def check_func(self, func, headers=None, include_dirs=None,
-                   libraries=None, library_dirs=None, decl=0, call=0):
-        """Determine if function 'func' is available by constructing a
-        source file that refers to 'func', and compiles and links it.
+    eleza check_func(self, func, headers=Tupu, include_dirs=Tupu,
+                   libraries=Tupu, library_dirs=Tupu, decl=0, call=0):
+        """Determine ikiwa function 'func' ni available by constructing a
+        source file that refers to 'func', na compiles na links it.
         If everything succeeds, returns true; otherwise returns false.
 
         The constructed source file starts out by including the header
-        files listed in 'headers'.  If 'decl' is true, it then declares
+        files listed kwenye 'headers'.  If 'decl' ni true, it then declares
         'func' (as "int func()"); you probably shouldn't supply 'headers'
-        and set 'decl' true in the same call, or you might get errors about
-        a conflicting declarations for 'func'.  Finally, the constructed
-        'main()' function either references 'func' or (if 'call' is true)
-        calls it.  'libraries' and 'library_dirs' are used when
+        na set 'decl' true kwenye the same call, ama you might get errors about
+        a conflicting declarations kila 'func'.  Finally, the constructed
+        'main()' function either references 'func' ama (ikiwa 'call' ni true)
+        calls it.  'libraries' na 'library_dirs' are used when
         linking.
         """
         self._check_compiler()
         body = []
-        if decl:
+        ikiwa decl:
             body.append("int %s ();" % func)
         body.append("int main () {")
-        if call:
+        ikiwa call:
             body.append("  %s();" % func)
         isipokua:
             body.append("  %s;" % func)
         body.append("}")
         body = "\n".join(body) + "\n"
 
-        return self.try_link(body, headers, include_dirs,
+        rudisha self.try_link(body, headers, include_dirs,
                              libraries, library_dirs)
 
-    def check_lib(self, library, library_dirs=None, headers=None,
-                  include_dirs=None, other_libraries=[]):
-        """Determine if 'library' is available to be linked against,
+    eleza check_lib(self, library, library_dirs=Tupu, headers=Tupu,
+                  include_dirs=Tupu, other_libraries=[]):
+        """Determine ikiwa 'library' ni available to be linked against,
         without actually checking that any particular symbols are provided
-        by it.  'headers' will be used in constructing the source file to
-        be compiled, but the only effect of this is to check if all the
+        by it.  'headers' will be used kwenye constructing the source file to
+        be compiled, but the only effect of this ni to check ikiwa all the
         header files listed are available.  Any libraries listed in
-        'other_libraries' will be included in the link, in case 'library'
+        'other_libraries' will be included kwenye the link, kwenye case 'library'
         has symbols that depend on other libraries.
         """
         self._check_compiler()
-        return self.try_link("int main (void) { }", headers, include_dirs,
+        rudisha self.try_link("int main (void) { }", headers, include_dirs,
                              [library] + other_libraries, library_dirs)
 
-    def check_header(self, header, include_dirs=None, library_dirs=None,
+    eleza check_header(self, header, include_dirs=Tupu, library_dirs=Tupu,
                      lang="c"):
-        """Determine if the system header file named by 'header_file'
-        exists and can be found by the preprocessor; return true if so,
+        """Determine ikiwa the system header file named by 'header_file'
+        exists na can be found by the preprocessor; rudisha true ikiwa so,
         false otherwise.
         """
-        return self.try_cpp(body="/* No body */", headers=[header],
+        rudisha self.try_cpp(body="/* No body */", headers=[header],
                             include_dirs=include_dirs)
 
-def dump_file(filename, head=None):
+eleza dump_file(filename, head=Tupu):
     """Dumps a file content into log.info.
 
-    If head ni sio None, will be dumped before the file content.
+    If head ni sio Tupu, will be dumped before the file content.
     """
-    if head is None:
+    ikiwa head ni Tupu:
         log.info('%s', filename)
     isipokua:
         log.info(head)

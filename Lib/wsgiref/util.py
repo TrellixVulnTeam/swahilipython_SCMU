@@ -28,7 +28,7 @@ kundi FileWrapper:
         data = self.filelike.read(self.blksize)
         ikiwa data:
             rudisha data
-        ashiria IndexError
+         ashiria IndexError
 
     eleza __iter__(self):
         rudisha self
@@ -37,7 +37,7 @@ kundi FileWrapper:
         data = self.filelike.read(self.blksize)
         ikiwa data:
             rudisha data
-        ashiria StopIteration
+         ashiria StopIteration
 
 eleza guess_scheme(environ):
     """Return a guess kila whether 'wsgi.url_scheme' should be 'http' ama 'https'
@@ -81,13 +81,13 @@ eleza request_uri(environ, include_query=Kweli):
     rudisha url
 
 eleza shift_path_info(environ):
-    """Shift a name kutoka PATH_INFO to SCRIPT_NAME, rudishaing it
+    """Shift a name kutoka PATH_INFO to SCRIPT_NAME, returning it
 
     If there are no remaining path segments kwenye PATH_INFO, rudisha Tupu.
     Note: 'environ' ni modified in-place; use a copy ikiwa you need to keep
     the original PATH_INFO ama SCRIPT_NAME.
 
-    Note: when PATH_INFO ni just a '/', this rudishas '' na appends a trailing
+    Note: when PATH_INFO ni just a '/', this returns '' na appends a trailing
     '/' to SCRIPT_NAME, even though empty path segments are normally ignored,
     na SCRIPT_NAME doesn't normally end kwenye a '/'.  This ni intentional
     behavior, to ensure that an application can tell the difference between
@@ -140,7 +140,7 @@ eleza setup_testing_defaults(environ):
     environ.setdefault('HTTP_HOST',environ['SERVER_NAME'])
     environ.setdefault('REQUEST_METHOD','GET')
 
-    ikiwa 'SCRIPT_NAME' haiko kwenye environ na 'PATH_INFO' haiko kwenye environ:
+    ikiwa 'SCRIPT_NAME' sio kwenye environ na 'PATH_INFO' sio kwenye environ:
         environ.setdefault('SCRIPT_NAME','')
         environ.setdefault('PATH_INFO','/')
 
@@ -156,7 +156,7 @@ eleza setup_testing_defaults(environ):
 
     ikiwa environ['wsgi.url_scheme']=='http':
         environ.setdefault('SERVER_PORT', '80')
-    lasivyo environ['wsgi.url_scheme']=='https':
+    elikiwa environ['wsgi.url_scheme']=='https':
         environ.setdefault('SERVER_PORT', '443')
 
 

@@ -33,7 +33,7 @@ eleza load_tests(loader, tests, ignore):
     #
     # However, doctest can't easily find all docstrings kwenye the module (loading
     # it through import_fresh_module seems to confuse it), so we specifically
-    # create a finder which rudishas the doctests kutoka the merge method.
+    # create a finder which returns the doctests kutoka the merge method.
 
     kundi HeapqMergeDocTestFinder:
         eleza find(self, *args, **kwargs):
@@ -71,8 +71,8 @@ kundi TestHeap:
         jaribu:
             self.assertRaises(TypeError, self.module.heappush, Tupu, Tupu)
             self.assertRaises(TypeError, self.module.heappop, Tupu)
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
 
     eleza check_invariant(self, heap):
         # Check the heap invariant.
@@ -100,12 +100,12 @@ kundi TestHeap:
         self.assertEqual(heap, sorted(data)[-10:])
 
     eleza heapiter(self, heap):
-        # An iterator rudishaing a heap's elements, smallest-first.
+        # An iterator returning a heap's elements, smallest-first.
         jaribu:
             wakati 1:
                 tuma self.module.heappop(heap)
-        tatizo IndexError:
-            pita
+        except IndexError:
+            pass
 
     eleza test_nbest(self):
         # Less-naive "N-best" algorithm, much faster (ikiwa len(data) ni big
@@ -210,7 +210,7 @@ kundi TestHeap:
 
     eleza test_merge_stability(self):
         kundi Int(int):
-            pita
+            pass
         inputs = [[], [], [], []]
         kila i kwenye range(20000):
             stream = random.randrange(4)
@@ -281,9 +281,9 @@ kundi LenOnly:
         rudisha 10
 
 kundi CmpErr:
-    "Dummy element that always ashirias an error during comparison"
+    "Dummy element that always raises an error during comparison"
     eleza __eq__(self, other):
-        ashiria ZeroDivisionError
+         ashiria ZeroDivisionError
     __ne__ = __lt__ = __le__ = __gt__ = __ge__ = __eq__
 
 eleza R(seqn):
@@ -306,7 +306,7 @@ kundi I:
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): ashiria StopIteration
+        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -326,7 +326,7 @@ kundi X:
         self.seqn = seqn
         self.i = 0
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn): ashiria StopIteration
+        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -352,11 +352,11 @@ kundi E:
 kundi S:
     'Test immediate stop'
     eleza __init__(self, seqn):
-        pita
+        pass
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ashiria StopIteration
+         ashiria StopIteration
 
 kutoka itertools agiza chain
 eleza L(seqn):
@@ -421,14 +421,14 @@ kundi TestErrorHandling:
     eleza test_heappush_mutating_heap(self):
         heap = []
         heap.extend(SideEffectLT(i, heap) kila i kwenye range(200))
-        # Python version ashirias IndexError, C version RuntimeError
+        # Python version raises IndexError, C version RuntimeError
         ukijumuisha self.assertRaises((IndexError, RuntimeError)):
             self.module.heappush(heap, SideEffectLT(5, heap))
 
     eleza test_heappop_mutating_heap(self):
         heap = []
         heap.extend(SideEffectLT(i, heap) kila i kwenye range(200))
-        # Python version ashirias IndexError, C version RuntimeError
+        # Python version raises IndexError, C version RuntimeError
         ukijumuisha self.assertRaises((IndexError, RuntimeError)):
             self.module.heappop(heap)
 

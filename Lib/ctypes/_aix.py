@@ -3,181 +3,181 @@ Lib/ctypes.util.find_library() support kila AIX
 Similar approach as done kila Darwin support by using separate files
 but unlike Darwin - no extension such as ctypes.macholib.*
 
-dlopen() is an interface to AIX initAndLoad() - primary documentation at:
+dlopen() ni an interface to AIX initAndLoad() - primary documentation at:
 https://www.ibm.com/support/knowledgecenter/en/ssw_aix_61/com.ibm.aix.basetrf1/dlopen.htm
 https://www.ibm.com/support/knowledgecenter/en/ssw_aix_61/com.ibm.aix.basetrf1/load.htm
 
-AIX supports two styles kila dlopen(): svr4 (System V Release 4) which is common on posix
+AIX supports two styles kila dlopen(): svr4 (System V Release 4) which ni common on posix
 platforms, but also a BSD style - aka SVR3.
 
 From AIX 5.3 Difference Addendum (December 2004)
 2.9 SVR4 linking affinity
 Nowadays, there are two major object file formats used by the operating systems:
-XCOFF: The COFF enhanced by IBM and others. The original COFF (Common
-Object File Format) was the base of SVR3 and BSD 4.2 systems.
-ELF:   Executable and Linking Format that was developed by AT&T and is a
+XCOFF: The COFF enhanced by IBM na others. The original COFF (Common
+Object File Format) was the base of SVR3 na BSD 4.2 systems.
+ELF:   Executable na Linking Format that was developed by AT&T na ni a
 base kila SVR4 UNIX.
 
-While the shared library content is identical on AIX - one is located as a filepath name
-(svr4 style) and the other is located as a member of an archive (and the archive
+While the shared library content ni identical on AIX - one ni located as a filepath name
+(svr4 style) na the other ni located as a member of an archive (and the archive
 is located as a filepath name).
 
-The key difference arises when supporting multiple abi formats (i.e., 32 and 64 bit).
-For svr4 either only one ABI is supported, or there are two directories, or there
-are different file names. The most common solution kila multiple ABI is multiple
+The key difference arises when supporting multiple abi formats (i.e., 32 na 64 bit).
+For svr4 either only one ABI ni supported, ama there are two directories, ama there
+are different file names. The most common solution kila multiple ABI ni multiple
 directories.
 
-For the XCOFF (aka AIX) style - one directory (one archive file) is sufficient
-as multiple shared libraries can be in the archive - even sharing the same name.
-In documentation the archive is also referred to as the "base" and the shared
-library object is referred to as the "member".
+For the XCOFF (aka AIX) style - one directory (one archive file) ni sufficient
+as multiple shared libraries can be kwenye the archive - even sharing the same name.
+In documentation the archive ni also referred to as the "base" na the shared
+library object ni referred to as the "member".
 
 For dlopen() on AIX (read initAndLoad()) the calls are similar.
-Default activity occurs when no path information is provided. When path
-information is provided dlopen() does sio search any other directories.
+Default activity occurs when no path information ni provided. When path
+information ni provided dlopen() does sio search any other directories.
 
-For SVR4 - the shared library name is the name of the file expected: libFOO.so
-For AIX - the shared library is expressed as base(member). The search is kila the
-base (e.g., libFOO.a) and once the base is found the shared library - identified by
-member (e.g., libFOO.so, or shr.o) is located and loaded.
+For SVR4 - the shared library name ni the name of the file expected: libFOO.so
+For AIX - the shared library ni expressed as base(member). The search ni kila the
+base (e.g., libFOO.a) na once the base ni found the shared library - identified by
+member (e.g., libFOO.so, ama shr.o) ni located na loaded.
 
 The mode bit RTLD_MEMBER tells initAndLoad() that it needs to use the AIX (SVR3)
 naming style.
 """
 __author__ = "Michael Felt <aixtools@felt.demon.nl>"
 
-import re
-from os import environ, path
-from sys import executable
-from ctypes import c_void_p, sizeof
-from subprocess import Popen, PIPE, DEVNULL
+agiza re
+kutoka os agiza environ, path
+kutoka sys agiza executable
+kutoka ctypes agiza c_void_p, sizeof
+kutoka subprocess agiza Popen, PIPE, DEVNULL
 
-# Executable bit size - 32 or 64
-# Used to filter the search in an archive by size, e.g., -X64
+# Executable bit size - 32 ama 64
+# Used to filter the search kwenye an archive by size, e.g., -X64
 AIX_ABI = sizeof(c_void_p) * 8
 
 
-from sys import maxsize
-def _last_version(libnames, sep):
-    def _num_version(libname):
+kutoka sys agiza maxsize
+eleza _last_version(libnames, sep):
+    eleza _num_version(libname):
         # "libxyz.so.MAJOR.MINOR" => [MAJOR, MINOR]
         parts = libname.split(sep)
         nums = []
         jaribu:
             wakati parts:
                 nums.insert(0, int(parts.pop()))
-        tatizo ValueError:
+        except ValueError:
             pass
-        return nums or [maxsize]
-    return max(reversed(libnames), key=_num_version)
+        rudisha nums ama [maxsize]
+    rudisha max(reversed(libnames), key=_num_version)
 
-def get_ld_header(p):
+eleza get_ld_header(p):
     # "nested-function, but placed at module level
-    ld_header = None
-    kila line in p.stdout:
-        if line.startswith(('/', './', '../')):
+    ld_header = Tupu
+    kila line kwenye p.stdout:
+        ikiwa line.startswith(('/', './', '../')):
             ld_header = line
-        lasivyo "INDEX" in line:
-            return ld_header.rstrip('\n')
-    return None
+        elikiwa "INDEX" kwenye line:
+            rudisha ld_header.rstrip('\n')
+    rudisha Tupu
 
-def get_ld_header_info(p):
+eleza get_ld_header_info(p):
     # "nested-function, but placed at module level
-    # as an ld_header was found, return known paths, archives and members
-    # these lines start with a digit
+    # as an ld_header was found, rudisha known paths, archives na members
+    # these lines start ukijumuisha a digit
     info = []
-    kila line in p.stdout:
-        if re.match("[0-9]", line):
+    kila line kwenye p.stdout:
+        ikiwa re.match("[0-9]", line):
             info.append(line)
         isipokua:
-            # blank line (separator), consume line and end kila loop
+            # blank line (separator), consume line na end kila loop
             koma
-    return info
+    rudisha info
 
-def get_ld_headers(file):
+eleza get_ld_headers(file):
     """
-    Parse the header of the loader section of executable and archives
+    Parse the header of the loader section of executable na archives
     This function calls /usr/bin/dump -H as a subprocess
-    and returns a list of (ld_header, ld_header_info) tuples.
+    na returns a list of (ld_header, ld_header_info) tuples.
     """
     # get_ld_headers parsing:
-    # 1. Find a line that starts with /, ./, or ../ - set as ld_header
-    # 2. If "INDEX" in occurs in a following line - return ld_header
-    # 3. get info (lines starting with [0-9])
+    # 1. Find a line that starts ukijumuisha /, ./, ama ../ - set as ld_header
+    # 2. If "INDEX" kwenye occurs kwenye a following line - rudisha ld_header
+    # 3. get info (lines starting ukijumuisha [0-9])
     ldr_headers = []
     p = Popen(["/usr/bin/dump", f"-X{AIX_ABI}", "-H", file],
-        universal_newlines=True, stdout=PIPE, stderr=DEVNULL)
+        universal_newlines=Kweli, stdout=PIPE, stderr=DEVNULL)
     # be sure to read to the end-of-file - getting all entries
-    wakati True:
+    wakati Kweli:
         ld_header = get_ld_header(p)
-        if ld_header:
+        ikiwa ld_header:
             ldr_headers.append((ld_header, get_ld_header_info(p)))
         isipokua:
             koma
     p.stdout.close()
     p.wait()
-    return ldr_headers
+    rudisha ldr_headers
 
-def get_shared(ld_headers):
+eleza get_shared(ld_headers):
     """
-    extract the shareable objects from ld_headers
-    character "[" is used to strip off the path information.
-    Note: the "[" and "]" characters that are part of dump -H output
+    extract the shareable objects kutoka ld_headers
+    character "[" ni used to strip off the path information.
+    Note: the "[" na "]" characters that are part of dump -H output
     are sio removed here.
     """
     shared = []
-    kila (line, _) in ld_headers:
+    kila (line, _) kwenye ld_headers:
         # potential member lines contain "["
         # otherwise, no processing needed
-        if "[" in line:
+        ikiwa "[" kwenye line:
             # Strip off trailing colon (:)
             shared.append(line[line.index("["):-1])
-    return shared
+    rudisha shared
 
-def get_one_match(expr, lines):
+eleza get_one_match(expr, lines):
     """
-    Must be only one match, otherwise result is None.
-    When there is a match, strip leading "[" and trailing "]"
+    Must be only one match, otherwise result ni Tupu.
+    When there ni a match, strip leading "[" na trailing "]"
     """
-    # member names in the ld_headers output are between square brackets
+    # member names kwenye the ld_headers output are between square brackets
     expr = rf'\[({expr})\]'
-    matches = list(filter(None, (re.search(expr, line) kila line in lines)))
-    if len(matches) == 1:
-        return matches[0].group(1)
+    matches = list(filter(Tupu, (re.search(expr, line) kila line kwenye lines)))
+    ikiwa len(matches) == 1:
+        rudisha matches[0].group(1)
     isipokua:
-        return None
+        rudisha Tupu
 
-# additional processing to deal with AIX legacy names kila 64-bit members
-def get_legacy(members):
+# additional processing to deal ukijumuisha AIX legacy names kila 64-bit members
+eleza get_legacy(members):
     """
     This routine provides historical aka legacy naming schemes started
-    in AIX4 shared library support kila library members names.
-    e.g., in /usr/lib/libc.a the member name shr.o kila 32-bit binary na
+    kwenye AIX4 shared library support kila library members names.
+    e.g., kwenye /usr/lib/libc.a the member name shr.o kila 32-bit binary and
     shr_64.o kila 64-bit binary.
     """
-    if AIX_ABI == 64:
-        # AIX 64-bit member is one of shr64.o, shr_64.o, or shr4_64.o
+    ikiwa AIX_ABI == 64:
+        # AIX 64-bit member ni one of shr64.o, shr_64.o, ama shr4_64.o
         expr = r'shr4?_?64\.o'
         member = get_one_match(expr, members)
-        if member:
-            return member
+        ikiwa member:
+            rudisha member
     isipokua:
-        # 32-bit legacy names - both shr.o and shr4.o exist.
-        # shr.o is the preffered name so we look kila shr.o first
-        #  i.e., shr4.o is returned only when shr.o does sio exist
-        kila name in ['shr.o', 'shr4.o']:
+        # 32-bit legacy names - both shr.o na shr4.o exist.
+        # shr.o ni the preffered name so we look kila shr.o first
+        #  i.e., shr4.o ni returned only when shr.o does sio exist
+        kila name kwenye ['shr.o', 'shr4.o']:
             member = get_one_match(re.escape(name), members)
-            if member:
-                return member
-    return None
+            ikiwa member:
+                rudisha member
+    rudisha Tupu
 
-def get_version(name, members):
+eleza get_version(name, members):
     """
-    Sort list of members and return highest numbered version - if it exists.
-    This function is called when an unversioned libFOO.a(libFOO.so) has
+    Sort list of members na rudisha highest numbered version - ikiwa it exists.
+    This function ni called when an unversioned libFOO.a(libFOO.so) has
     sio been found.
 
-    Versioning kila the member name is expected to follow
+    Versioning kila the member name ni expected to follow
     GNU LIBTOOL conventions: the highest version (x, then X.y, then X.Y.z)
      * find [libFoo.so.X]
      * find [libFoo.so.X.Y]
@@ -186,146 +186,146 @@ def get_version(name, members):
     Before the GNU convention became the standard scheme regardless of
     binary size AIX packagers used GNU convention "as-is" kila 32-bit
     archive members but used an "distinguishing" name kila 64-bit members.
-    This scheme inserted either 64 or _64 between libFOO and .so
+    This scheme inserted either 64 ama _64 between libFOO na .so
     - generally libFOO_64.so, but occasionally libFOO64.so
     """
     # the expression ending kila versions must start as
     # '.so.[0-9]', i.e., *.so.[at least one digit]
     # wakati multiple, more specific expressions could be specified
-    # to search kila .so.X, .so.X.Y and .so.X.Y.Z
+    # to search kila .so.X, .so.X.Y na .so.X.Y.Z
     # after the first required 'dot' digit
     # any combination of additional 'dot' digits pairs are accepted
     # anything more than libFOO.so.digits.digits.digits
     # should be seen as a member name outside normal expectations
     exprs = [rf'lib{name}\.so\.[0-9]+[0-9.]*',
         rf'lib{name}_?64\.so\.[0-9]+[0-9.]*']
-    kila expr in exprs:
+    kila expr kwenye exprs:
         versions = []
-        kila line in members:
+        kila line kwenye members:
             m = re.search(expr, line)
-            if m:
+            ikiwa m:
                 versions.append(m.group(0))
-        if versions:
-            return _last_version(versions, '.')
-    return None
+        ikiwa versions:
+            rudisha _last_version(versions, '.')
+    rudisha Tupu
 
-def get_member(name, members):
+eleza get_member(name, members):
     """
-    Return an archive member matching the request in name.
-    Name is the library name without any prefix like lib, suffix like .so,
-    or version number.
-    Given a list of members find and return the most appropriate result
-    Priority is given to generic libXXX.so, then a versioned libXXX.so.a.b.c
-    and finally, legacy AIX naming scheme.
+    Return an archive member matching the request kwenye name.
+    Name ni the library name without any prefix like lib, suffix like .so,
+    ama version number.
+    Given a list of members find na rudisha the most appropriate result
+    Priority ni given to generic libXXX.so, then a versioned libXXX.so.a.b.c
+    na finally, legacy AIX naming scheme.
     """
-    # look first kila a generic match - prepend lib and append .so
+    # look first kila a generic match - prepend lib na append .so
     expr = rf'lib{name}\.so'
     member = get_one_match(expr, members)
-    if member:
-        return member
-    lasivyo AIX_ABI == 64:
+    ikiwa member:
+        rudisha member
+    elikiwa AIX_ABI == 64:
         expr = rf'lib{name}64\.so'
         member = get_one_match(expr, members)
-    if member:
-        return member
-    # since an exact match with .so as suffix was sio found
+    ikiwa member:
+        rudisha member
+    # since an exact match ukijumuisha .so as suffix was sio found
     # look kila a versioned name
     # If a versioned name ni sio found, look kila AIX legacy member name
     member = get_version(name, members)
-    if member:
-        return member
+    ikiwa member:
+        rudisha member
     isipokua:
-        return get_legacy(members)
+        rudisha get_legacy(members)
 
-def get_libpaths():
+eleza get_libpaths():
     """
-    On AIX, the buildtime searchpath is stored in the executable.
+    On AIX, the buildtime searchpath ni stored kwenye the executable.
     as "loader header information".
     The command /usr/bin/dump -H extracts this info.
-    Prefix searched libraries with LD_LIBRARY_PATH (preferred),
-    or LIBPATH if defined. These paths are appended to the paths
-    to libraries the python executable is linked with.
+    Prefix searched libraries ukijumuisha LD_LIBRARY_PATH (preferred),
+    ama LIBPATH ikiwa defined. These paths are appended to the paths
+    to libraries the python executable ni linked with.
     This mimics AIX dlopen() behavior.
     """
     libpaths = environ.get("LD_LIBRARY_PATH")
-    if libpaths is None:
+    ikiwa libpaths ni Tupu:
         libpaths = environ.get("LIBPATH")
-    if libpaths is None:
+    ikiwa libpaths ni Tupu:
         libpaths = []
     isipokua:
         libpaths = libpaths.split(":")
     objects = get_ld_headers(executable)
-    kila (_, lines) in objects:
-        kila line in lines:
-            # the second (optional) argument is PATH if it includes a /
+    kila (_, lines) kwenye objects:
+        kila line kwenye lines:
+            # the second (optional) argument ni PATH ikiwa it includes a /
             path = line.split()[1]
-            if "/" in path:
+            ikiwa "/" kwenye path:
                 libpaths.extend(path.split(":"))
-    return libpaths
+    rudisha libpaths
 
-def find_shared(paths, name):
+eleza find_shared(paths, name):
     """
-    paths is a list of directories to search kila an archive.
-    name is the abbreviated name given to find_library().
-    Process: search "paths" kila archive, and if an archive is found
-    return the result of get_member().
-    If an archive ni sio found then return None
+    paths ni a list of directories to search kila an archive.
+    name ni the abbreviated name given to find_library().
+    Process: search "paths" kila archive, na ikiwa an archive ni found
+    rudisha the result of get_member().
+    If an archive ni sio found then rudisha Tupu
     """
-    kila dir in paths:
-        # /lib is a symbolic link to /usr/lib, skip it
-        if dir == "/lib":
+    kila dir kwenye paths:
+        # /lib ni a symbolic link to /usr/lib, skip it
+        ikiwa dir == "/lib":
             endelea
-        # "lib" is prefixed to emulate compiler name resolution,
+        # "lib" ni prefixed to emulate compiler name resolution,
         # e.g., -lc to libc
         base = f'lib{name}.a'
         archive = path.join(dir, base)
-        if path.exists(archive):
+        ikiwa path.exists(archive):
             members = get_shared(get_ld_headers(archive))
             member = get_member(re.escape(name), members)
-            if member != None:
-                return (base, member)
+            ikiwa member != Tupu:
+                rudisha (base, member)
             isipokua:
-                return (None, None)
-    return (None, None)
+                rudisha (Tupu, Tupu)
+    rudisha (Tupu, Tupu)
 
-def find_library(name):
+eleza find_library(name):
     """AIX implementation of ctypes.util.find_library()
     Find an archive member that will dlopen(). If sio available,
-    also search kila a file (or link) with a .so suffix.
+    also search kila a file (or link) ukijumuisha a .so suffix.
 
-    AIX supports two types of schemes that can be used with dlopen().
-    The so-called SystemV Release4 (svr4) format is commonly suffixed
-    with .so wakati the (default) AIX scheme has the library (archive)
-    ending with the suffix .a
-    As an archive has multiple members (e.g., 32-bit and 64-bit) in one file
-    the argument passed to dlopen must include both the library na
-    the member names in a single string.
+    AIX supports two types of schemes that can be used ukijumuisha dlopen().
+    The so-called SystemV Release4 (svr4) format ni commonly suffixed
+    ukijumuisha .so wakati the (default) AIX scheme has the library (archive)
+    ending ukijumuisha the suffix .a
+    As an archive has multiple members (e.g., 32-bit na 64-bit) kwenye one file
+    the argument passed to dlopen must include both the library and
+    the member names kwenye a single string.
 
-    find_library() looks first kila an archive (.a) with a suitable member.
-    If no archive+member pair is found, look kila a .so file.
+    find_library() looks first kila an archive (.a) ukijumuisha a suitable member.
+    If no archive+member pair ni found, look kila a .so file.
     """
 
     libpaths = get_libpaths()
     (base, member) = find_shared(libpaths, name)
-    if base != None:
-        return f"{base}({member})"
+    ikiwa base != Tupu:
+        rudisha f"{base}({member})"
 
-    # To get here, a member in an archive has sio been found
+    # To get here, a member kwenye an archive has sio been found
     # In other words, either:
     # a) a .a file was sio found
     # b) a .a file did sio have a suitable member
     # So, look kila a .so file
     # Check libpaths kila .so file
-    # Note, the installation must prepare a link from a .so
+    # Note, the installation must prepare a link kutoka a .so
     # to a versioned file
-    # This is common practice by GNU libtool on other platforms
+    # This ni common practice by GNU libtool on other platforms
     soname = f"lib{name}.so"
-    kila dir in libpaths:
-        # /lib is a symbolic link to /usr/lib, skip it
-        if dir == "/lib":
+    kila dir kwenye libpaths:
+        # /lib ni a symbolic link to /usr/lib, skip it
+        ikiwa dir == "/lib":
             endelea
         shlib = path.join(dir, soname)
-        if path.exists(shlib):
-            return soname
-    # if we are here, we have sio found anything plausible
-    return None
+        ikiwa path.exists(shlib):
+            rudisha soname
+    # ikiwa we are here, we have sio found anything plausible
+    rudisha Tupu

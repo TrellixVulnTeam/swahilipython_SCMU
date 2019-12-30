@@ -1,6 +1,6 @@
-# This ni a helper module kila test_threaded_agiza.  The test agizas this
+# This ni a helper module kila test_threaded_import.  The test imports this
 # module, na this module tries to run various Python library functions in
-# their own thread, kama a side effect of being imported.  If the spawned
+# their own thread, as a side effect of being imported.  If the spawned
 # thread doesn't complete kwenye TIMEOUT seconds, an "appeared to hang" message
 # ni appended to the module-global `errors` list.  That list remains empty
 # ikiwa (and only if) all functions tested complete.
@@ -14,9 +14,9 @@ agiza os.path
 
 errors = []
 
-# This kundi merely runs a function kwenye its own thread T.  The thread agizaing
+# This kundi merely runs a function kwenye its own thread T.  The thread importing
 # this module holds the agiza lock, so ikiwa the function called by T tries
-# to do its own agizas it will block waiting kila this module's agiza
+# to do its own imports it will block waiting kila this module's import
 # to complete.
 kundi Worker(threading.Thread):
     eleza __init__(self, function, args):

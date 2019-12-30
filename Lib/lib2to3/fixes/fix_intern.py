@@ -5,9 +5,9 @@
 
 intern(s) -> sys.intern(s)"""
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
-kutoka ..fixer_util agiza ImportAndCall, touch_agiza
+kutoka ..fixer_util agiza ImportAndCall, touch_import
 
 
 kundi FixIntern(fixer_base.BaseFix):
@@ -18,7 +18,7 @@ kundi FixIntern(fixer_base.BaseFix):
     power< 'intern'
            trailer< lpar='('
                     ( not(arglist | argument<any '=' any>) obj=any
-                      | obj=arglist<(sio argument<any '=' any>) any ','> )
+                      | obj=arglist<(not argument<any '=' any>) any ','> )
                     rpar=')' >
            after=any*
     >
@@ -32,10 +32,10 @@ kundi FixIntern(fixer_base.BaseFix):
             ikiwa obj:
                 ikiwa obj.type == self.syms.star_expr:
                     rudisha  # Make no change.
-                ikiwa (obj.type == self.syms.argument na
+                ikiwa (obj.type == self.syms.argument and
                     obj.children[0].value == '**'):
                     rudisha  # Make no change.
         names = ('sys', 'intern')
         new = ImportAndCall(node, results, names)
-        touch_agiza(Tupu, 'sys', node)
+        touch_import(Tupu, 'sys', node)
         rudisha new

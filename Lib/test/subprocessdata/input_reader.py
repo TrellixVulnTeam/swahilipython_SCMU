@@ -1,7 +1,7 @@
 """When called as a script, consumes the input"""
 
-import sys
+agiza sys
 
-if __name__ == "__main__":
-    for line in sys.stdin:
+ikiwa __name__ == "__main__":
+    kila line kwenye sys.stdin:
         pass

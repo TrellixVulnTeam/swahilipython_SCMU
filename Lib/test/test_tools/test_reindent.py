@@ -1,7 +1,7 @@
 """Tests kila scripts kwenye the Tools directory.
 
 This file contains regression tests kila some of the scripts found kwenye the
-Tools directory of a Python checkout ama tarball, such kama reindent.py.
+Tools directory of a Python checkout ama tarball, such as reindent.py.
 """
 
 agiza os

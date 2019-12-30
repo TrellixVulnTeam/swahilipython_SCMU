@@ -1,10 +1,10 @@
 """ Python 'utf-8-sig' Codec
-This work similar to UTF-8 with the following changes:
+This work similar to UTF-8 ukijumuisha the following changes:
 
 * On encoding/writing a UTF-8 encoded BOM will be prepended/written as the
   first three bytes.
 
-* On decoding/reading if the first three bytes are a UTF-8 encoded BOM, these
+* On decoding/reading ikiwa the first three bytes are a UTF-8 encoded BOM, these
   bytes will be skipped.
 """
 agiza codecs
@@ -17,7 +17,7 @@ eleza encode(input, errors='strict'):
 
 eleza decode(input, errors='strict'):
     prefix = 0
-    if input[:3] == codecs.BOM_UTF8:
+    ikiwa input[:3] == codecs.BOM_UTF8:
         input = input[3:]
         prefix = 3
     (output, consumed) = codecs.utf_8_decode(input, errors, Kweli)
@@ -29,7 +29,7 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
         self.first = 1
 
     eleza encode(self, input, final=Uongo):
-        if self.first:
+        ikiwa self.first:
             self.first = 0
             rudisha codecs.BOM_UTF8 + \
                    codecs.utf_8_encode(input, self.errors)[0]
@@ -52,17 +52,17 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         self.first = 1
 
     eleza _buffer_decode(self, input, errors, final):
-        if self.first:
-            if len(input) < 3:
-                if codecs.BOM_UTF8.startswith(input):
-                    # sio enough data to decide if this really is a BOM
+        ikiwa self.first:
+            ikiwa len(input) < 3:
+                ikiwa codecs.BOM_UTF8.startswith(input):
+                    # sio enough data to decide ikiwa this really ni a BOM
                     # => try again on the next call
                     rudisha ("", 0)
                 isipokua:
                     self.first = 0
             isipokua:
                 self.first = 0
-                if input[:3] == codecs.BOM_UTF8:
+                ikiwa input[:3] == codecs.BOM_UTF8:
                     (output, consumed) = \
                        codecs.utf_8_decode(input[3:], errors, final)
                     rudisha (output, consumed+3)
@@ -74,7 +74,7 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 
     eleza getstate(self):
         state = codecs.BufferedIncrementalDecoder.getstate(self)
-        # state[1] must be 0 here, as it isn't pitaed along to the caller
+        # state[1] must be 0 here, as it isn't passed along to the caller
         rudisha (state[0], self.first)
 
     eleza setstate(self, state):
@@ -87,8 +87,8 @@ kundi StreamWriter(codecs.StreamWriter):
         codecs.StreamWriter.reset(self)
         jaribu:
             toa self.encode
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
 
     eleza encode(self, input, errors='strict'):
         self.encode = codecs.utf_8_encode
@@ -99,16 +99,16 @@ kundi StreamReader(codecs.StreamReader):
         codecs.StreamReader.reset(self)
         jaribu:
             toa self.decode
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
 
     eleza decode(self, input, errors='strict'):
-        if len(input) < 3:
-            if codecs.BOM_UTF8.startswith(input):
-                # sio enough data to decide if this is a BOM
+        ikiwa len(input) < 3:
+            ikiwa codecs.BOM_UTF8.startswith(input):
+                # sio enough data to decide ikiwa this ni a BOM
                 # => try again on the next call
                 rudisha ("", 0)
-        lasivyo input[:3] == codecs.BOM_UTF8:
+        elikiwa input[:3] == codecs.BOM_UTF8:
             self.decode = codecs.utf_8_decode
             (output, consumed) = codecs.utf_8_decode(input[3:],errors)
             rudisha (output, consumed+3)

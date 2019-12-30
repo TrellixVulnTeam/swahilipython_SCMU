@@ -1,7 +1,7 @@
-""" Python 'mbcs' Codec for Windows
+""" Python 'mbcs' Codec kila Windows
 
 
-Cloned by Mark Hammond (mhammond@skippinet.com.au) from ascii.py,
+Cloned by Mark Hammond (mhammond@skippinet.com.au) kutoka ascii.py,
 which was written by Marc-Andre Lemburg (mal@lemburg.com).
 
 (c) Copyright CNRI, All Rights Reserved. NO WARRANTY.
@@ -9,8 +9,8 @@ which was written by Marc-Andre Lemburg (mal@lemburg.com).
 """
 # Import them explicitly to cause an ImportError
 # on non-Windows systems
-from codecs import mbcs_encode, mbcs_decode
-# for IncrementalDecoder, IncrementalEncoder, ...
+kutoka codecs agiza mbcs_encode, mbcs_decode
+# kila IncrementalDecoder, IncrementalEncoder, ...
 agiza codecs
 
 ### Codec APIs

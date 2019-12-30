@@ -1,4 +1,4 @@
-# This file must be used ukijumuisha "source bin/activate.csh" *kutoka csh*.
+# This file must be used with "source bin/activate.csh" *from csh*.
 # You cannot run it directly.
 # Created by Davide Di Blasi <davidedb@gmail.com>.
 # Ported to Python 3.3 venv by Andrew Svetlov <andrew.svetlov@gmail.com>
@@ -16,15 +16,15 @@ setenv PATH "$VIRTUAL_ENV/__VENV_BIN_NAME__:$PATH"
 
 set _OLD_VIRTUAL_PROMPT="$prompt"
 
-ikiwa (! "$?VIRTUAL_ENV_DISABLE_PROMPT") then
-    ikiwa ("__VENV_NAME__" != "") then
+if (! "$?VIRTUAL_ENV_DISABLE_PROMPT") then
+    if ("__VENV_NAME__" != "") then
         set env_name = "__VENV_NAME__"
-    ama
-        ikiwa (`basename "VIRTUAL_ENV"` == "__") then
-            # special case kila Aspen magic directories
+    else
+        if (`basename "VIRTUAL_ENV"` == "__") then
+            # special case for Aspen magic directories
             # see http://www.zetadev.com/software/aspen/
             set env_name = `basename \`dirname "$VIRTUAL_ENV"\``
-        ama
+        else
             set env_name = `basename "$VIRTUAL_ENV"`
         endif
     endif

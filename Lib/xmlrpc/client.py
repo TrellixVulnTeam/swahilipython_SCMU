@@ -32,7 +32,7 @@
 # 2001-10-01 fl  Use faster escape method (80% dumps speedup)
 # 2001-10-02 fl  More dumps microtuning
 # 2001-10-04 fl  Make sure agiza expat gets a parser (kutoka Guido van Rossum)
-# 2001-10-10 sm  Allow long ints to be pitaed kama ints ikiwa they don't overflow
+# 2001-10-10 sm  Allow long ints to be passed as ints ikiwa they don't overflow
 # 2001-10-17 sm  Test kila int na long overflow (allows use on 64-bit systems)
 # 2001-11-12 fl  Use repr() to marshal doubles (kutoka Paul Felix)
 # 2002-03-17 fl  Avoid buffered read when possible (kutoka James Rucker)
@@ -67,7 +67,7 @@
 # associated documentation, you agree that you have read, understood,
 # na will comply ukijumuisha the following terms na conditions:
 #
-# Permission to use, copy, modify, na distribute this software na
+# Permission to use, copy, modify, na distribute this software and
 # its associated documentation kila any purpose na without fee is
 # hereby granted, provided that the above copyright notice appears in
 # all copies, na that both that copyright notice na this permission
@@ -104,7 +104,7 @@ Exported classes:
   ServerProxy    Represents a logical connection to an XML-RPC server
 
   MultiCall      Executor of boxcared xmlrpc requests
-  DateTime       dateTime wrapper kila an ISO 8601 string ama time tuple ama
+  DateTime       dateTime wrapper kila an ISO 8601 string ama time tuple or
                  localtime integer value to generate a "dateTime.iso8601"
                  XML-RPC value
   Binary         binary data wrapper
@@ -140,7 +140,7 @@ agiza errno
 kutoka io agiza BytesIO
 jaribu:
     agiza gzip
-tatizo ImportError:
+except ImportError:
     gzip = Tupu #python can be built without zlib/gzip support
 
 # --------------------------------------------------------------------
@@ -189,8 +189,8 @@ kundi Error(Exception):
     __str__ = object.__str__
 
 ##
-# Indicates an HTTP-level protocol error.  This ni ashiriad by the HTTP
-# transport layer, ikiwa the server rudishas an error code other than 200
+# Indicates an HTTP-level protocol error.  This ni raised by the HTTP
+# transport layer, ikiwa the server returns an error code other than 200
 # (OK).
 #
 # @param url The target URL.
@@ -214,17 +214,17 @@ kundi ProtocolError(Error):
 
 ##
 # Indicates a broken XML-RPC response package.  This exception is
-# ashiriad by the unmarshalling layer, ikiwa the XML-RPC response is
+# raised by the unmarshalling layer, ikiwa the XML-RPC response is
 # malformed.
 
 kundi ResponseError(Error):
     """Indicates a broken response package."""
-    pita
+    pass
 
 ##
 # Indicates an XML-RPC fault response package.  This exception is
-# ashiriad by the unmarshalling layer, ikiwa the XML-RPC response contains
-# a fault string.  This exception can also be used kama a class, to
+# raised by the unmarshalling layer, ikiwa the XML-RPC response contains
+# a fault string.  This exception can also be used as a class, to
 # generate a fault XML-RPC message.
 #
 # @param faultCode The XML-RPC fault code.
@@ -252,13 +252,13 @@ boolean = Boolean = bool
 # Wrapper kila XML-RPC DateTime values.  This converts a time value to
 # the format used by XML-RPC.
 # <p>
-# The value can be given kama a datetime object, kama a string kwenye the
-# format "yyyymmddThh:mm:ss", kama a 9-item time tuple (as rudishaed by
-# time.localtime()), ama an integer value (as rudishaed by time.time()).
+# The value can be given as a datetime object, as a string kwenye the
+# format "yyyymmddThh:mm:ss", as a 9-item time tuple (as returned by
+# time.localtime()), ama an integer value (as returned by time.time()).
 # The wrapper uses time.localtime() to convert an integer to a time
 # tuple.
 #
-# @param value The time, given kama a datetime object, an ISO 8601 string,
+# @param value The time, given as a datetime object, an ISO 8601 string,
 #              a time tuple, ama an integer time value.
 
 
@@ -267,7 +267,7 @@ _day0 = datetime(1, 1, 1)
 ikiwa _day0.strftime('%Y') == '0001':      # Mac OS X
     eleza _iso8601_format(value):
         rudisha value.strftime("%Y%m%dT%H:%M:%S")
-lasivyo _day0.strftime('%4Y') == '0001':   # Linux
+elikiwa _day0.strftime('%4Y') == '0001':   # Linux
     eleza _iso8601_format(value):
         rudisha value.strftime("%4Y%m%dT%H:%M:%S")
 isipokua:
@@ -288,7 +288,7 @@ eleza _strftime(value):
     rudisha "%04d%02d%02dT%02d:%02d:%02d" % value[:6]
 
 kundi DateTime:
-    """DateTime wrapper kila an ISO 8601 string ama time tuple ama
+    """DateTime wrapper kila an ISO 8601 string ama time tuple or
     localtime integer value to generate 'dateTime.iso8601' XML-RPC
     value.
     """
@@ -303,20 +303,20 @@ kundi DateTime:
         ikiwa isinstance(other, DateTime):
             s = self.value
             o = other.value
-        lasivyo isinstance(other, datetime):
+        elikiwa isinstance(other, datetime):
             s = self.value
             o = _iso8601_format(other)
-        lasivyo isinstance(other, str):
+        elikiwa isinstance(other, str):
             s = self.value
             o = other
-        lasivyo hasattr(other, "timetuple"):
+        elikiwa hasattr(other, "timetuple"):
             s = self.timetuple()
             o = other.timetuple()
         isipokua:
             otype = (hasattr(other, "__class__")
                      na other.__class__.__name__
                      ama type(other))
-            ashiria TypeError("Can't compare %s na %s" %
+             ashiria TypeError("Can't compare %s na %s" %
                             (self.__class__.__name__, otype))
         rudisha s, o
 
@@ -346,7 +346,7 @@ kundi DateTime:
     ##
     # Get date/time value.
     #
-    # @rudisha Date/time value, kama an ISO 8601 string.
+    # @rudisha Date/time value, as an ISO 8601 string.
 
     eleza __str__(self):
         rudisha self.value
@@ -385,7 +385,7 @@ kundi Binary:
             data = b""
         isipokua:
             ikiwa sio isinstance(data, (bytes, bytearray)):
-                ashiria TypeError("expected bytes ama bytearray, sio %s" %
+                 ashiria TypeError("expected bytes ama bytearray, sio %s" %
                                 data.__class__.__name__)
             data = bytes(data)  # Make a copy of the bytes!
         self.data = data
@@ -393,7 +393,7 @@ kundi Binary:
     ##
     # Get buffer contents.
     #
-    # @rudisha Buffer contents, kama an 8-bit string.
+    # @rudisha Buffer contents, as an 8-bit string.
 
     eleza __str__(self):
         rudisha str(self.data, "latin-1")  # XXX encoding?!
@@ -440,8 +440,8 @@ kundi ExpatParser:
     eleza close(self):
         jaribu:
             parser = self._parser
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             toa self._target, self._parser # get rid of circular references
             parser.Parse(b"", Kweli) # end of data
@@ -453,15 +453,15 @@ kundi ExpatParser:
 # XML-RPC marshaller.
 #
 # @param encoding Default encoding kila 8-bit strings.  The default
-#     value ni Tupu (interpreted kama UTF-8).
+#     value ni Tupu (interpreted as UTF-8).
 # @see dumps
 
 kundi Marshaller:
     """Generate an XML-RPC params chunk kutoka a Python data structure.
 
     Create a Marshaller instance kila each set of parameters, na use
-    the "dumps" method to convert your data (represented kama a tuple)
-    to an XML-RPC params chunk.  To write a fault response, pita a
+    the "dumps" method to convert your data (represented as a tuple)
+    to an XML-RPC params chunk.  To write a fault response, pass a
     Fault instance instead.  You may prefer to use the "dumps" module
     function kila this purpose.
     """
@@ -507,24 +507,24 @@ kundi Marshaller:
     eleza __dump(self, value, write):
         jaribu:
             f = self.dispatch[type(value)]
-        tatizo KeyError:
-            # check ikiwa this object can be marshalled kama a structure
+        except KeyError:
+            # check ikiwa this object can be marshalled as a structure
             ikiwa sio hasattr(value, '__dict__'):
-                ashiria TypeError("cannot marshal %s objects" % type(value))
+                 ashiria TypeError("cannot marshal %s objects" % type(value))
             # check ikiwa this kundi ni a sub-kundi of a basic type,
             # because we don't know how to marshal these types
             # (e.g. a string sub-class)
             kila type_ kwenye type(value).__mro__:
                 ikiwa type_ kwenye self.dispatch.keys():
-                    ashiria TypeError("cannot marshal %s objects" % type(value))
-            # XXX(twouters): using "_arbitrary_instance" kama key kama a quick-fix
+                     ashiria TypeError("cannot marshal %s objects" % type(value))
+            # XXX(twouters): using "_arbitrary_instance" as key as a quick-fix
             # kila the p3yk merge, this should probably be fixed more neatly.
             f = self.dispatch["_arbitrary_instance"]
         f(self, value, write)
 
     eleza dump_nil (self, value, write):
         ikiwa sio self.allow_none:
-            ashiria TypeError("cannot marshal Tupu unless allow_none ni enabled")
+             ashiria TypeError("cannot marshal Tupu unless allow_none ni enabled")
         write("<value><nil/></value>")
     dispatch[type(Tupu)] = dump_nil
 
@@ -536,7 +536,7 @@ kundi Marshaller:
 
     eleza dump_long(self, value, write):
         ikiwa value > MAXINT ama value < MININT:
-            ashiria OverflowError("int exceeds XML-RPC limits")
+             ashiria OverflowError("int exceeds XML-RPC limits")
         write("<value><int>")
         write(str(int(value)))
         write("</int></value>\n")
@@ -568,7 +568,7 @@ kundi Marshaller:
     eleza dump_array(self, value, write):
         i = id(value)
         ikiwa i kwenye self.memo:
-            ashiria TypeError("cannot marshal recursive sequences")
+             ashiria TypeError("cannot marshal recursive sequences")
         self.memo[i] = Tupu
         dump = self.__dump
         write("<value><array><data>\n")
@@ -582,14 +582,14 @@ kundi Marshaller:
     eleza dump_struct(self, value, write, escape=escape):
         i = id(value)
         ikiwa i kwenye self.memo:
-            ashiria TypeError("cannot marshal recursive dictionaries")
+             ashiria TypeError("cannot marshal recursive dictionaries")
         self.memo[i] = Tupu
         dump = self.__dump
         write("<value><struct>\n")
         kila k, v kwenye value.items():
             write("<member>\n")
             ikiwa sio isinstance(k, str):
-                ashiria TypeError("dictionary key must be string")
+                 ashiria TypeError("dictionary key must be string")
             write("<name>%s</name>\n" % escape(k))
             dump(v, write)
             write("</member>\n")
@@ -610,11 +610,11 @@ kundi Marshaller:
             value.encode(self)
             toa self.write
         isipokua:
-            # store instance attributes kama a struct (really?)
+            # store instance attributes as a struct (really?)
             self.dump_struct(value.__dict__, write)
     dispatch[DateTime] = dump_instance
     dispatch[Binary] = dump_instance
-    # XXX(twouters): using "_arbitrary_instance" kama key kama a quick-fix
+    # XXX(twouters): using "_arbitrary_instance" as key as a quick-fix
     # kila the p3yk merge, this should probably be fixed more neatly.
     dispatch["_arbitrary_instance"] = dump_instance
 
@@ -650,9 +650,9 @@ kundi Unmarshaller:
     eleza close(self):
         # rudisha response tuple na target method
         ikiwa self._type ni Tupu ama self._marks:
-            ashiria ResponseError()
+             ashiria ResponseError()
         ikiwa self._type == "fault":
-            ashiria Fault(**self._stack[0])
+             ashiria Fault(**self._stack[0])
         rudisha tuple(self._stack)
 
     eleza getmethodname(self):
@@ -672,8 +672,8 @@ kundi Unmarshaller:
         ikiwa tag == "array" ama tag == "struct":
             self._marks.append(len(self._stack))
         self._data = []
-        ikiwa self._value na tag haiko kwenye self.dispatch:
-            ashiria ResponseError("unknown tag %r" % tag)
+        ikiwa self._value na tag sio kwenye self.dispatch:
+             ashiria ResponseError("unknown tag %r" % tag)
         self._value = (tag == "value")
 
     eleza data(self, text):
@@ -683,12 +683,12 @@ kundi Unmarshaller:
         # call the appropriate end tag handler
         jaribu:
             f = self.dispatch[tag]
-        tatizo KeyError:
-            ikiwa ':' haiko kwenye tag:
+        except KeyError:
+            ikiwa ':' sio kwenye tag:
                 rudisha # unknown tag ?
             jaribu:
                 f = self.dispatch[tag.split(':')[-1]]
-            tatizo KeyError:
+            except KeyError:
                 rudisha # unknown tag ?
         rudisha f(self, "".join(self._data))
 
@@ -699,12 +699,12 @@ kundi Unmarshaller:
         # dispatch data
         jaribu:
             f = self.dispatch[tag]
-        tatizo KeyError:
-            ikiwa ':' haiko kwenye tag:
+        except KeyError:
+            ikiwa ':' sio kwenye tag:
                 rudisha # unknown tag ?
             jaribu:
                 f = self.dispatch[tag.split(':')[-1]]
-            tatizo KeyError:
+            except KeyError:
                 rudisha # unknown tag ?
         rudisha f(self, data)
 
@@ -721,10 +721,10 @@ kundi Unmarshaller:
     eleza end_boolean(self, data):
         ikiwa data == "0":
             self.append(Uongo)
-        lasivyo data == "1":
+        elikiwa data == "1":
             self.append(Kweli)
         isipokua:
-            ashiria TypeError("bad boolean value")
+             ashiria TypeError("bad boolean value")
         self._value = 0
     dispatch["boolean"] = end_boolean
 
@@ -794,7 +794,7 @@ kundi Unmarshaller:
 
     eleza end_value(self, data):
         # ikiwa we stumble upon a value element ukijumuisha no internal
-        # elements, treat it kama a string element
+        # elements, treat it as a string element
         ikiwa self._value:
             self.end_string(data)
     dispatch["value"] = end_value
@@ -830,7 +830,7 @@ kundi _MultiCallMethod:
 
 kundi MultiCallIterator:
     """Iterates over the results of a multicall. Exceptions are
-    ashiriad kwenye response to xmlrpc faults."""
+    raised kwenye response to xmlrpc faults."""
 
     eleza __init__(self, results):
         self.results = results
@@ -838,11 +838,11 @@ kundi MultiCallIterator:
     eleza __getitem__(self, i):
         item = self.results[i]
         ikiwa type(item) == type({}):
-            ashiria Fault(item['faultCode'], item['faultString'])
-        lasivyo type(item) == type([]):
+             ashiria Fault(item['faultCode'], item['faultString'])
+        elikiwa type(item) == type([]):
             rudisha item[0]
         isipokua:
-            ashiria ValueError("unexpected type kwenye multicall result")
+             ashiria ValueError("unexpected type kwenye multicall result")
 
 kundi MultiCall:
     """server -> an object used to boxcar method calls
@@ -899,7 +899,7 @@ eleza getparser(use_datetime=Uongo, use_builtin_types=Uongo):
         ikiwa use_builtin_types:
             mkdatetime = _datetime_type
             mkbytes = base64.decodebytes
-        lasivyo use_datetime:
+        elikiwa use_datetime:
             mkdatetime = _datetime_type
             mkbytes = _binary
         isipokua:
@@ -936,7 +936,7 @@ eleza dumps(params, methodname=Tupu, methodresponse=Tupu, encoding=Tupu,
     request (or response, ikiwa the methodresponse option ni used).
 
     In addition to the data object, the following options can be given
-    kama keyword arguments:
+    as keyword arguments:
 
         methodname: the method name kila a methodCall packet
 
@@ -954,7 +954,7 @@ eleza dumps(params, methodname=Tupu, methodresponse=Tupu, encoding=Tupu,
     assert isinstance(params, (tuple, Fault)), "argument must be tuple ama Fault instance"
     ikiwa isinstance(params, Fault):
         methodresponse = 1
-    lasivyo methodresponse na isinstance(params, tuple):
+    elikiwa methodresponse na isinstance(params, tuple):
         assert len(params) == 1, "response tuple must be a singleton"
 
     ikiwa sio encoding:
@@ -982,7 +982,7 @@ eleza dumps(params, methodname=Tupu, methodresponse=Tupu, encoding=Tupu,
             data,
             "</methodCall>\n"
             )
-    lasivyo methodresponse:
+    elikiwa methodresponse:
         # a method response, ama a fault structure
         data = (
             xmlheader,
@@ -991,14 +991,14 @@ eleza dumps(params, methodname=Tupu, methodresponse=Tupu, encoding=Tupu,
             "</methodResponse>\n"
             )
     isipokua:
-        rudisha data # rudisha kama is
+        rudisha data # rudisha as is
     rudisha "".join(data)
 
 ##
 # Convert an XML-RPC packet to a Python object.  If the XML-RPC packet
-# represents a fault condition, this function ashirias a Fault exception.
+# represents a fault condition, this function raises a Fault exception.
 #
-# @param data An XML-RPC packet, given kama an 8-bit string.
+# @param data An XML-RPC packet, given as an 8-bit string.
 # @rudisha A tuple containing the unpacked data, na the method name
 #     (Tupu ikiwa sio present).
 # @see Fault
@@ -1010,7 +1010,7 @@ eleza loads(data, use_datetime=Uongo, use_builtin_types=Uongo):
     name (Tupu ikiwa sio present).
 
     If the XML-RPC packet represents a fault condition, this function
-    ashirias a Fault exception.
+    raises a Fault exception.
     """
     p, u = getparser(use_datetime=use_datetime, use_builtin_types=use_builtin_types)
     p.feed(data)
@@ -1018,9 +1018,9 @@ eleza loads(data, use_datetime=Uongo, use_builtin_types=Uongo):
     rudisha u.close(), u.getmethodname()
 
 ##
-# Encode a string using the gzip content encoding such kama specified by the
+# Encode a string using the gzip content encoding such as specified by the
 # Content-Encoding: gzip
-# kwenye the HTTP header, kama described kwenye RFC 1952
+# kwenye the HTTP header, as described kwenye RFC 1952
 #
 # @param data the unencoded data
 # @rudisha the encoded data
@@ -1028,62 +1028,62 @@ eleza loads(data, use_datetime=Uongo, use_builtin_types=Uongo):
 eleza gzip_encode(data):
     """data -> gzip encoded data
 
-    Encode data using the gzip content encoding kama described kwenye RFC 1952
+    Encode data using the gzip content encoding as described kwenye RFC 1952
     """
     ikiwa sio gzip:
-        ashiria NotImplementedError
+         ashiria NotImplementedError
     f = BytesIO()
-    ukijumuisha gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) kama gzf:
+    ukijumuisha gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) as gzf:
         gzf.write(data)
     rudisha f.getvalue()
 
 ##
-# Decode a string using the gzip content encoding such kama specified by the
+# Decode a string using the gzip content encoding such as specified by the
 # Content-Encoding: gzip
-# kwenye the HTTP header, kama described kwenye RFC 1952
+# kwenye the HTTP header, as described kwenye RFC 1952
 #
 # @param data The encoded data
 # @keyparam max_decode Maximum bytes to decode (20 MiB default), use negative
 #    values kila unlimited decoding
 # @rudisha the unencoded data
-# @ashirias ValueError ikiwa data ni sio correctly coded.
-# @ashirias ValueError ikiwa max gzipped payload length exceeded
+# @raises ValueError ikiwa data ni sio correctly coded.
+# @raises ValueError ikiwa max gzipped payload length exceeded
 
 eleza gzip_decode(data, max_decode=20971520):
     """gzip encoded data -> unencoded data
 
-    Decode data using the gzip content encoding kama described kwenye RFC 1952
+    Decode data using the gzip content encoding as described kwenye RFC 1952
     """
     ikiwa sio gzip:
-        ashiria NotImplementedError
-    ukijumuisha gzip.GzipFile(mode="rb", fileobj=BytesIO(data)) kama gzf:
+         ashiria NotImplementedError
+    ukijumuisha gzip.GzipFile(mode="rb", fileobj=BytesIO(data)) as gzf:
         jaribu:
             ikiwa max_decode < 0: # no limit
                 decoded = gzf.read()
             isipokua:
                 decoded = gzf.read(max_decode + 1)
-        tatizo OSError:
-            ashiria ValueError("invalid data")
+        except OSError:
+             ashiria ValueError("invalid data")
     ikiwa max_decode >= 0 na len(decoded) > max_decode:
-        ashiria ValueError("max gzipped payload length exceeded")
+         ashiria ValueError("max gzipped payload length exceeded")
     rudisha decoded
 
 ##
 # Return a decoded file-like object kila the gzip encoding
-# kama described kwenye RFC 1952.
+# as described kwenye RFC 1952.
 #
 # @param response A stream supporting a read() method
-# @rudisha a file-like object that the decoded data can be read() kutoka
+# @rudisha a file-like object that the decoded data can be read() from
 
 kundi GzipDecodedResponse(gzip.GzipFile ikiwa gzip isipokua object):
     """a file-like object to decode a response encoded ukijumuisha the gzip
-    method, kama described kwenye RFC 1952.
+    method, as described kwenye RFC 1952.
     """
     eleza __init__(self, response):
         #response doesn't support tell() na read(), required by
         #GzipFile
         ikiwa sio gzip:
-            ashiria NotImplementedError
+             ashiria NotImplementedError
         self.io = BytesIO(response.read())
         gzip.GzipFile.__init__(self, mode="rb", fileobj=self.io)
 
@@ -1111,7 +1111,7 @@ kundi _Method:
 ##
 # Standard transport kundi kila XML-RPC over HTTP.
 # <p>
-# You can create custom transports by subclassing this method, na
+# You can create custom transports by subclassing this method, and
 # overriding selected methods.
 
 kundi Transport:
@@ -1151,13 +1151,13 @@ kundi Transport:
         kila i kwenye (0, 1):
             jaribu:
                 rudisha self.single_request(host, handler, request_body, verbose)
-            tatizo http.client.RemoteDisconnected:
+            except http.client.RemoteDisconnected:
                 ikiwa i:
-                    ashiria
-            tatizo OSError kama e:
-                ikiwa i ama e.errno haiko kwenye (errno.ECONNRESET, errno.ECONNABORTED,
+                    raise
+            except OSError as e:
+                ikiwa i ama e.errno sio kwenye (errno.ECONNRESET, errno.ECONNABORTED,
                                         errno.EPIPE):
-                    ashiria
+                    raise
 
     eleza single_request(self, host, handler, request_body, verbose=Uongo):
         # issue XML-RPC request
@@ -1168,19 +1168,19 @@ kundi Transport:
                 self.verbose = verbose
                 rudisha self.parse_response(resp)
 
-        tatizo Fault:
-            ashiria
-        tatizo Exception:
+        except Fault:
+            raise
+        except Exception:
             #All unexpected errors leave connection in
             # a strange state, so we clear it.
             self.close()
-            ashiria
+            raise
 
         #We got an error response.
-        #Discard any response data na ashiria exception
+        #Discard any response data na  ashiria exception
         ikiwa resp.getheader("content-length", ""):
             resp.read()
-        ashiria ProtocolError(
+         ashiria ProtocolError(
             host + handler,
             resp.status, resp.reason,
             dict(resp.getheaders())
@@ -1298,8 +1298,8 @@ kundi Transport:
 
     eleza send_content(self, connection, request_body):
         #optionally encode the request
-        ikiwa (self.encode_threshold ni sio Tupu na
-            self.encode_threshold < len(request_body) na
+        ikiwa (self.encode_threshold ni sio Tupu and
+            self.encode_threshold < len(request_body) and
             gzip):
             connection.putheader("Content-Encoding", "gzip")
             request_body = gzip_encode(request_body)
@@ -1360,7 +1360,7 @@ kundi SafeTransport(Transport):
             rudisha self._connection[1]
 
         ikiwa sio hasattr(http.client, "HTTPSConnection"):
-            ashiria NotImplementedError(
+             ashiria NotImplementedError(
             "your version of http.client doesn't support HTTPS")
         # create a HTTPS connection object kutoka a host descriptor
         # host may be a string, ama a (host, x509-dict) tuple
@@ -1373,7 +1373,7 @@ kundi SafeTransport(Transport):
 # Standard server proxy.  This kundi establishes a virtual connection
 # to an XML-RPC server.
 # <p>
-# This kundi ni available kama ServerProxy na Server.  New code should
+# This kundi ni available as ServerProxy na Server.  New code should
 # use ServerProxy, to avoid confusion.
 #
 # @eleza ServerProxy(uri, **options)
@@ -1399,12 +1399,12 @@ kundi ServerProxy:
     If the target part na the slash preceding it are both omitted,
     "/RPC2" ni assumed.
 
-    The following options can be given kama keyword arguments:
+    The following options can be given as keyword arguments:
 
         transport: a transport factory
         encoding: the request encoding (default ni UTF-8)
 
-    All 8-bit strings pitaed to the server proxy are assumed to use
+    All 8-bit strings passed to the server proxy are assumed to use
     the given encoding.
     """
 
@@ -1415,8 +1415,8 @@ kundi ServerProxy:
 
         # get the url
         type, uri = urllib.parse._splittype(uri)
-        ikiwa type haiko kwenye ("http", "https"):
-            ashiria OSError("unsupported XML-RPC protocol")
+        ikiwa type sio kwenye ("http", "https"):
+             ashiria OSError("unsupported XML-RPC protocol")
         self.__host, self.__handler = urllib.parse._splithost(uri)
         ikiwa sio self.__handler:
             self.__handler = "/RPC2"
@@ -1478,9 +1478,9 @@ kundi ServerProxy:
         """
         ikiwa attr == "close":
             rudisha self.__close
-        lasivyo attr == "transport":
+        elikiwa attr == "transport":
             rudisha self.__transport
-        ashiria AttributeError("Attribute %r sio found" % (attr,))
+         ashiria AttributeError("Attribute %r sio found" % (attr,))
 
     eleza __enter__(self):
         rudisha self
@@ -1504,7 +1504,7 @@ ikiwa __name__ == "__main__":
 
     jaribu:
         andika(server.currentTime.getCurrentTime())
-    tatizo Error kama v:
+    except Error as v:
         andika("ERROR", v)
 
     multi = MultiCall(server)
@@ -1514,5 +1514,5 @@ ikiwa __name__ == "__main__":
     jaribu:
         kila response kwenye multi():
             andika(response)
-    tatizo Error kama v:
+    except Error as v:
         andika("ERROR", v)

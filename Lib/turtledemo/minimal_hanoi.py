@@ -41,11 +41,11 @@ kundi Tower(list):
         d.sety(150)
         rudisha d
 
-eleza hanoi(n, kutoka_, with_, to_):
+eleza hanoi(n, from_, with_, to_):
     ikiwa n > 0:
-        hanoi(n-1, kutoka_, to_, with_)
-        to_.push(kutoka_.pop())
-        hanoi(n-1, with_, kutoka_, to_)
+        hanoi(n-1, from_, to_, with_)
+        to_.push(from_.pop())
+        hanoi(n-1, with_, from_, to_)
 
 eleza play():
     onkey(Tupu,"space")
@@ -54,8 +54,8 @@ eleza play():
         hanoi(6, t1, t2, t3)
         write("press STOP button to exit",
               align="center", font=("Courier", 16, "bold"))
-    tatizo Terminator:
-        pita  # turtledemo user pressed STOP
+    except Terminator:
+        pass  # turtledemo user pressed STOP
 
 eleza main():
     global t1, t2, t3

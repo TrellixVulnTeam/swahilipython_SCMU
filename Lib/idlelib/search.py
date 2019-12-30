@@ -29,7 +29,7 @@ eleza find(text):
 
     Module-level function to access the singleton SearchDialog
     instance na open the dialog.  If text ni selected, it is
-    used kama the search phrase; otherwise, the previous entry
+    used as the search phrase; otherwise, the previous entry
     ni used.  No search ni done ukijumuisha this command.
     """
     pat = text.get("sel.first", "sel.last")
@@ -52,7 +52,7 @@ eleza find_selection(text):
     Module-level function to access the singleton SearchDialog
     instance to search using the selected text.  With a text
     selection, perform the search without displaying the dialog.
-    Without a selection, use the prior entry kama the search phrase
+    Without a selection, use the prior entry as the search phrase
     na don't display the dialog.  If there has been no prior
     search, open the search dialog.
     """
@@ -65,13 +65,13 @@ kundi SearchDialog(SearchDialogBase):
     eleza create_widgets(self):
         "Create the base search dialog na add a button kila Find Next."
         SearchDialogBase.create_widgets(self)
-        # TODO - why ni this here na haiko kwenye a create_command_buttons?
+        # TODO - why ni this here na sio kwenye a create_command_buttons?
         self.make_button("Find Next", self.default_command, isdef=Kweli)
 
     eleza default_command(self, event=Tupu):
-        "Handle the Find Next button kama the default command."
+        "Handle the Find Next button as the default command."
         ikiwa sio self.engine.getprog():
-            rudisha
+            return
         self.find_again(self.text)
 
     eleza find_again(self, text):
@@ -107,8 +107,8 @@ kundi SearchDialog(SearchDialogBase):
                 ikiwa selfirst == first na sellast == last:
                     self.bell()
                     rudisha Uongo
-            tatizo TclError:
-                pita
+            except TclError:
+                pass
             text.tag_remove("sel", "1.0", "end")
             text.tag_add("sel", first, last)
             text.mark_set("insert", self.engine.isback() na first ama last)

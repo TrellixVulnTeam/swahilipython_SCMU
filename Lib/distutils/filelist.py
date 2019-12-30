@@ -1,23 +1,23 @@
 """distutils.filelist
 
-Provides the FileList class, used for poking about the filesystem
+Provides the FileList class, used kila poking about the filesystem
 and building lists of files.
 """
 
-import os, re
-import fnmatch
-import functools
-from distutils.util import convert_path
-from distutils.errors import DistutilsTemplateError, DistutilsInternalError
-from distutils import log
+agiza os, re
+agiza fnmatch
+agiza functools
+kutoka distutils.util agiza convert_path
+kutoka distutils.errors agiza DistutilsTemplateError, DistutilsInternalError
+kutoka distutils agiza log
 
-class FileList:
-    """A list of files built by on exploring the filesystem and filtered by
+kundi FileList:
+    """A list of files built by on exploring the filesystem na filtered by
     applying various patterns to what we find there.
 
     Instance attributes:
       dir
-        directory from which files will be taken -- only used if
+        directory kutoka which files will be taken -- only used if
         'allfiles' sio supplied to constructor
       files
         list of filenames currently being built/filtered/manipulated
@@ -26,302 +26,302 @@ class FileList:
         filtering applied)
     """
 
-    def __init__(self, warn=None, debug_print=None):
-        # ignore argument to FileList, but keep them for backwards
+    eleza __init__(self, warn=Tupu, debug_print=Tupu):
+        # ignore argument to FileList, but keep them kila backwards
         # compatibility
-        self.allfiles = None
+        self.allfiles = Tupu
         self.files = []
 
-    def set_allfiles(self, allfiles):
+    eleza set_allfiles(self, allfiles):
         self.allfiles = allfiles
 
-    def findall(self, dir=os.curdir):
+    eleza findall(self, dir=os.curdir):
         self.allfiles = findall(dir)
 
-    def debug_print(self, msg):
-        """Print 'msg' to stdout if the global DEBUG (taken from the
-        DISTUTILS_DEBUG environment variable) flag is true.
+    eleza debug_andika(self, msg):
+        """Print 'msg' to stdout ikiwa the global DEBUG (taken kutoka the
+        DISTUTILS_DEBUG environment variable) flag ni true.
         """
-        from distutils.debug import DEBUG
-        if DEBUG:
-            print(msg)
+        kutoka distutils.debug agiza DEBUG
+        ikiwa DEBUG:
+            andika(msg)
 
     # -- List-like methods ---------------------------------------------
 
-    def append(self, item):
+    eleza append(self, item):
         self.files.append(item)
 
-    def extend(self, items):
+    eleza extend(self, items):
         self.files.extend(items)
 
-    def sort(self):
+    eleza sort(self):
         # Not a strict lexical sort!
         sortable_files = sorted(map(os.path.split, self.files))
         self.files = []
-        for sort_tuple in sortable_files:
+        kila sort_tuple kwenye sortable_files:
             self.files.append(os.path.join(*sort_tuple))
 
 
     # -- Other miscellaneous utility methods ---------------------------
 
-    def remove_duplicates(self):
+    eleza remove_duplicates(self):
         # Assumes list has been sorted!
-        for i in range(len(self.files) - 1, 0, -1):
-            if self.files[i] == self.files[i - 1]:
+        kila i kwenye range(len(self.files) - 1, 0, -1):
+            ikiwa self.files[i] == self.files[i - 1]:
                 toa self.files[i]
 
 
     # -- "File template" methods ---------------------------------------
 
-    def _parse_template_line(self, line):
+    eleza _parse_template_line(self, line):
         words = line.split()
         action = words[0]
 
-        patterns = dir = dir_pattern = None
+        patterns = dir = dir_pattern = Tupu
 
-        if action in ('include', 'exclude',
+        ikiwa action kwenye ('include', 'exclude',
                       'global-include', 'global-exclude'):
-            if len(words) < 2:
-                ashiria DistutilsTemplateError(
+            ikiwa len(words) < 2:
+                 ashiria DistutilsTemplateError(
                       "'%s' expects <pattern1> <pattern2> ..." % action)
-            patterns = [convert_path(w) for w in words[1:]]
-        lasivyo action in ('recursive-include', 'recursive-exclude'):
-            if len(words) < 3:
-                ashiria DistutilsTemplateError(
+            patterns = [convert_path(w) kila w kwenye words[1:]]
+        elikiwa action kwenye ('recursive-include', 'recursive-exclude'):
+            ikiwa len(words) < 3:
+                 ashiria DistutilsTemplateError(
                       "'%s' expects <dir> <pattern1> <pattern2> ..." % action)
             dir = convert_path(words[1])
-            patterns = [convert_path(w) for w in words[2:]]
-        lasivyo action in ('graft', 'prune'):
-            if len(words) != 2:
-                ashiria DistutilsTemplateError(
+            patterns = [convert_path(w) kila w kwenye words[2:]]
+        elikiwa action kwenye ('graft', 'prune'):
+            ikiwa len(words) != 2:
+                 ashiria DistutilsTemplateError(
                       "'%s' expects a single <dir_pattern>" % action)
             dir_pattern = convert_path(words[1])
         isipokua:
-            ashiria DistutilsTemplateError("unknown action '%s'" % action)
+             ashiria DistutilsTemplateError("unknown action '%s'" % action)
 
-        return (action, patterns, dir, dir_pattern)
+        rudisha (action, patterns, dir, dir_pattern)
 
-    def process_template_line(self, line):
+    eleza process_template_line(self, line):
         # Parse the line: split it up, make sure the right number of words
-        # is there, and return the relevant words.  'action' is always
+        # ni there, na rudisha the relevant words.  'action' ni always
         # defined: it's the first word of the line.  Which of the other
         # three are defined depends on the action; it'll be either
-        # patterns, (dir and patterns), or (dir_pattern).
+        # patterns, (dir na patterns), ama (dir_pattern).
         (action, patterns, dir, dir_pattern) = self._parse_template_line(line)
 
-        # OK, now we know that the action is valid and we have the
-        # right number of words on the line for that action -- so we
-        # can proceed with minimal error-checking.
-        if action == 'include':
-            self.debug_print("include " + ' '.join(patterns))
-            for pattern in patterns:
-                if sio self.include_pattern(pattern, anchor=1):
+        # OK, now we know that the action ni valid na we have the
+        # right number of words on the line kila that action -- so we
+        # can proceed ukijumuisha minimal error-checking.
+        ikiwa action == 'include':
+            self.debug_andika("include " + ' '.join(patterns))
+            kila pattern kwenye patterns:
+                ikiwa sio self.include_pattern(pattern, anchor=1):
                     log.warn("warning: no files found matching '%s'",
                              pattern)
 
-        lasivyo action == 'exclude':
-            self.debug_print("exclude " + ' '.join(patterns))
-            for pattern in patterns:
-                if sio self.exclude_pattern(pattern, anchor=1):
+        elikiwa action == 'exclude':
+            self.debug_andika("exclude " + ' '.join(patterns))
+            kila pattern kwenye patterns:
+                ikiwa sio self.exclude_pattern(pattern, anchor=1):
                     log.warn(("warning: no previously-included files "
                               "found matching '%s'"), pattern)
 
-        lasivyo action == 'global-include':
-            self.debug_print("global-include " + ' '.join(patterns))
-            for pattern in patterns:
-                if sio self.include_pattern(pattern, anchor=0):
+        elikiwa action == 'global-include':
+            self.debug_andika("global-include " + ' '.join(patterns))
+            kila pattern kwenye patterns:
+                ikiwa sio self.include_pattern(pattern, anchor=0):
                     log.warn(("warning: no files found matching '%s' "
-                              "anywhere in distribution"), pattern)
+                              "anywhere kwenye distribution"), pattern)
 
-        lasivyo action == 'global-exclude':
-            self.debug_print("global-exclude " + ' '.join(patterns))
-            for pattern in patterns:
-                if sio self.exclude_pattern(pattern, anchor=0):
+        elikiwa action == 'global-exclude':
+            self.debug_andika("global-exclude " + ' '.join(patterns))
+            kila pattern kwenye patterns:
+                ikiwa sio self.exclude_pattern(pattern, anchor=0):
                     log.warn(("warning: no previously-included files matching "
-                              "'%s' found anywhere in distribution"),
+                              "'%s' found anywhere kwenye distribution"),
                              pattern)
 
-        lasivyo action == 'recursive-include':
-            self.debug_print("recursive-include %s %s" %
+        elikiwa action == 'recursive-include':
+            self.debug_andika("recursive-include %s %s" %
                              (dir, ' '.join(patterns)))
-            for pattern in patterns:
-                if sio self.include_pattern(pattern, prefix=dir):
+            kila pattern kwenye patterns:
+                ikiwa sio self.include_pattern(pattern, prefix=dir):
                     log.warn(("warning: no files found matching '%s' "
                                 "under directory '%s'"),
                              pattern, dir)
 
-        lasivyo action == 'recursive-exclude':
-            self.debug_print("recursive-exclude %s %s" %
+        elikiwa action == 'recursive-exclude':
+            self.debug_andika("recursive-exclude %s %s" %
                              (dir, ' '.join(patterns)))
-            for pattern in patterns:
-                if sio self.exclude_pattern(pattern, prefix=dir):
+            kila pattern kwenye patterns:
+                ikiwa sio self.exclude_pattern(pattern, prefix=dir):
                     log.warn(("warning: no previously-included files matching "
                               "'%s' found under directory '%s'"),
                              pattern, dir)
 
-        lasivyo action == 'graft':
-            self.debug_print("graft " + dir_pattern)
-            if sio self.include_pattern(None, prefix=dir_pattern):
+        elikiwa action == 'graft':
+            self.debug_andika("graft " + dir_pattern)
+            ikiwa sio self.include_pattern(Tupu, prefix=dir_pattern):
                 log.warn("warning: no directories found matching '%s'",
                          dir_pattern)
 
-        lasivyo action == 'prune':
-            self.debug_print("prune " + dir_pattern)
-            if sio self.exclude_pattern(None, prefix=dir_pattern):
+        elikiwa action == 'prune':
+            self.debug_andika("prune " + dir_pattern)
+            ikiwa sio self.exclude_pattern(Tupu, prefix=dir_pattern):
                 log.warn(("no previously-included directories found "
                           "matching '%s'"), dir_pattern)
         isipokua:
-            ashiria DistutilsInternalError(
+             ashiria DistutilsInternalError(
                   "this cannot happen: invalid action '%s'" % action)
 
 
     # -- Filtering/selection methods -----------------------------------
 
-    def include_pattern(self, pattern, anchor=1, prefix=None, is_regex=0):
-        """Select strings (presumably filenames) from 'self.files' that
+    eleza include_pattern(self, pattern, anchor=1, prefix=Tupu, is_regex=0):
+        """Select strings (presumably filenames) kutoka 'self.files' that
         match 'pattern', a Unix-style wildcard (glob) pattern.  Patterns
         are sio quite the same as implemented by the 'fnmatch' module: '*'
-        and '?'  match non-special characters, where "special" is platform-
-        dependent: slash on Unix; colon, slash, and backslash on
-        DOS/Windows; and colon on Mac OS.
+        na '?'  match non-special characters, where "special" ni platform-
+        dependent: slash on Unix; colon, slash, na backslash on
+        DOS/Windows; na colon on Mac OS.
 
-        If 'anchor' is true (the default), then the pattern match is more
+        If 'anchor' ni true (the default), then the pattern match ni more
         stringent: "*.py" will match "foo.py" but sio "foo/bar.py".  If
-        'anchor' is false, both of these will match.
+        'anchor' ni false, both of these will match.
 
-        If 'prefix' is supplied, then only filenames starting with 'prefix'
-        (itself a pattern) and ending with 'pattern', with anything in between
-        them, will match.  'anchor' is ignored in this case.
+        If 'prefix' ni supplied, then only filenames starting ukijumuisha 'prefix'
+        (itself a pattern) na ending ukijumuisha 'pattern', ukijumuisha anything kwenye between
+        them, will match.  'anchor' ni ignored kwenye this case.
 
-        If 'is_regex' is true, 'anchor' and 'prefix' are ignored, na
-        'pattern' is assumed to be either a string containing a regex or a
-        regex object -- no translation is done, the regex is just compiled
-        and used as-is.
+        If 'is_regex' ni true, 'anchor' na 'prefix' are ignored, and
+        'pattern' ni assumed to be either a string containing a regex ama a
+        regex object -- no translation ni done, the regex ni just compiled
+        na used as-is.
 
         Selected strings will be added to self.files.
 
-        Return True if files are found, False otherwise.
+        Return Kweli ikiwa files are found, Uongo otherwise.
         """
         # XXX docstring lying about what the special chars are?
-        files_found = False
+        files_found = Uongo
         pattern_re = translate_pattern(pattern, anchor, prefix, is_regex)
-        self.debug_print("include_pattern: applying regex r'%s'" %
+        self.debug_andika("include_pattern: applying regex r'%s'" %
                          pattern_re.pattern)
 
         # delayed loading of allfiles list
-        if self.allfiles is None:
+        ikiwa self.allfiles ni Tupu:
             self.findall()
 
-        for name in self.allfiles:
-            if pattern_re.search(name):
-                self.debug_print(" adding " + name)
+        kila name kwenye self.allfiles:
+            ikiwa pattern_re.search(name):
+                self.debug_andika(" adding " + name)
                 self.files.append(name)
-                files_found = True
-        return files_found
+                files_found = Kweli
+        rudisha files_found
 
 
-    def exclude_pattern (self, pattern,
-                         anchor=1, prefix=None, is_regex=0):
-        """Remove strings (presumably filenames) from 'files' that match
+    eleza exclude_pattern (self, pattern,
+                         anchor=1, prefix=Tupu, is_regex=0):
+        """Remove strings (presumably filenames) kutoka 'files' that match
         'pattern'.  Other parameters are the same as for
         'include_pattern()', above.
-        The list 'self.files' is modified in place.
-        Return True if files are found, False otherwise.
+        The list 'self.files' ni modified kwenye place.
+        Return Kweli ikiwa files are found, Uongo otherwise.
         """
-        files_found = False
+        files_found = Uongo
         pattern_re = translate_pattern(pattern, anchor, prefix, is_regex)
-        self.debug_print("exclude_pattern: applying regex r'%s'" %
+        self.debug_andika("exclude_pattern: applying regex r'%s'" %
                          pattern_re.pattern)
-        for i in range(len(self.files)-1, -1, -1):
-            if pattern_re.search(self.files[i]):
-                self.debug_print(" removing " + self.files[i])
+        kila i kwenye range(len(self.files)-1, -1, -1):
+            ikiwa pattern_re.search(self.files[i]):
+                self.debug_andika(" removing " + self.files[i])
                 toa self.files[i]
-                files_found = True
-        return files_found
+                files_found = Kweli
+        rudisha files_found
 
 
 # ----------------------------------------------------------------------
 # Utility functions
 
-def _find_all_simple(path):
+eleza _find_all_simple(path):
     """
     Find all files under 'path'
     """
     results = (
         os.path.join(base, file)
-        for base, dirs, files in os.walk(path, followlinks=True)
-        for file in files
+        kila base, dirs, files kwenye os.walk(path, followlinks=Kweli)
+        kila file kwenye files
     )
-    return filter(os.path.isfile, results)
+    rudisha filter(os.path.isfile, results)
 
 
-def findall(dir=os.curdir):
+eleza findall(dir=os.curdir):
     """
-    Find all files under 'dir' and return the list of full filenames.
-    Unless dir is '.', return full filenames with dir prepended.
+    Find all files under 'dir' na rudisha the list of full filenames.
+    Unless dir ni '.', rudisha full filenames ukijumuisha dir prepended.
     """
     files = _find_all_simple(dir)
-    if dir == os.curdir:
+    ikiwa dir == os.curdir:
         make_rel = functools.partial(os.path.relpath, start=dir)
         files = map(make_rel, files)
-    return list(files)
+    rudisha list(files)
 
 
-def glob_to_re(pattern):
+eleza glob_to_re(pattern):
     """Translate a shell-like glob pattern to a regular expression; return
-    a string containing the regex.  Differs from 'fnmatch.translate()' in
+    a string containing the regex.  Differs kutoka 'fnmatch.translate()' in
     that '*' does sio match "special characters" (which are
     platform-specific).
     """
     pattern_re = fnmatch.translate(pattern)
 
-    # '?' and '*' in the glob pattern become '.' and '.*' in the RE, which
-    # IMHO is wrong -- '?' and '*' aren't supposed to match slash in Unix,
-    # and by extension they shouldn't match such "special characters" under
-    # any OS.  So change all non-escaped dots in the RE to match any
-    # character tatizo the special characters (currently: just os.sep).
+    # '?' na '*' kwenye the glob pattern become '.' na '.*' kwenye the RE, which
+    # IMHO ni wrong -- '?' na '*' aren't supposed to match slash kwenye Unix,
+    # na by extension they shouldn't match such "special characters" under
+    # any OS.  So change all non-escaped dots kwenye the RE to match any
+    # character except the special characters (currently: just os.sep).
     sep = os.sep
-    if os.sep == '\\':
+    ikiwa os.sep == '\\':
         # we're using a regex to manipulate a regex, so we need
         # to escape the backslash twice
         sep = r'\\\\'
     escaped = r'\1[^%s]' % sep
     pattern_re = re.sub(r'((?<!\\)(\\\\)*)\.', escaped, pattern_re)
-    return pattern_re
+    rudisha pattern_re
 
 
-def translate_pattern(pattern, anchor=1, prefix=None, is_regex=0):
+eleza translate_pattern(pattern, anchor=1, prefix=Tupu, is_regex=0):
     """Translate a shell-like wildcard pattern to a compiled regular
     expression.  Return the compiled regex.  If 'is_regex' true,
-    then 'pattern' is directly compiled to a regex (if it's a string)
-    or just returned as-is (assumes it's a regex object).
+    then 'pattern' ni directly compiled to a regex (ikiwa it's a string)
+    ama just returned as-is (assumes it's a regex object).
     """
-    if is_regex:
-        if isinstance(pattern, str):
-            return re.compile(pattern)
+    ikiwa is_regex:
+        ikiwa isinstance(pattern, str):
+            rudisha re.compile(pattern)
         isipokua:
-            return pattern
+            rudisha pattern
 
-    # ditch start and end characters
+    # ditch start na end characters
     start, _, end = glob_to_re('_').partition('_')
 
-    if pattern:
+    ikiwa pattern:
         pattern_re = glob_to_re(pattern)
-        assert pattern_re.startswith(start) and pattern_re.endswith(end)
+        assert pattern_re.startswith(start) na pattern_re.endswith(end)
     isipokua:
         pattern_re = ''
 
-    if prefix ni sio None:
+    ikiwa prefix ni sio Tupu:
         prefix_re = glob_to_re(prefix)
-        assert prefix_re.startswith(start) and prefix_re.endswith(end)
+        assert prefix_re.startswith(start) na prefix_re.endswith(end)
         prefix_re = prefix_re[len(start): len(prefix_re) - len(end)]
         sep = os.sep
-        if os.sep == '\\':
+        ikiwa os.sep == '\\':
             sep = r'\\'
         pattern_re = pattern_re[len(start): len(pattern_re) - len(end)]
         pattern_re = r'%s\A%s%s.*%s%s' % (start, prefix_re, sep, pattern_re, end)
     isipokua:                               # no prefix -- respect anchor flag
-        if anchor:
+        ikiwa anchor:
             pattern_re = r'%s\A%s' % (start, pattern_re[len(start):])
 
-    return re.compile(pattern_re)
+    rudisha re.compile(pattern_re)

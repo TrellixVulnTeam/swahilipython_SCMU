@@ -1,40 +1,40 @@
-"""Tests for distutils.spawn."""
-import os
-import stat
-import sys
-import unittest
-from unittest import mock
-from test.support import run_unittest, unix_shell
-from test import support as test_support
+"""Tests kila distutils.spawn."""
+agiza os
+agiza stat
+agiza sys
+agiza unittest
+kutoka unittest agiza mock
+kutoka test.support agiza run_unittest, unix_shell
+kutoka test agiza support as test_support
 
-from distutils.spawn import find_executable
-from distutils.spawn agiza _nt_quote_args
-from distutils.spawn import spawn
-from distutils.errors import DistutilsExecError
-from distutils.tests import support
+kutoka distutils.spawn agiza find_executable
+kutoka distutils.spawn agiza _nt_quote_args
+kutoka distutils.spawn agiza spawn
+kutoka distutils.errors agiza DistutilsExecError
+kutoka distutils.tests agiza support
 
-class SpawnTestCase(support.TempdirManager,
+kundi SpawnTestCase(support.TempdirManager,
                     support.LoggingSilencer,
                     unittest.TestCase):
 
-    def test_nt_quote_args(self):
+    eleza test_nt_quote_args(self):
 
-        for (args, wanted) in ((['with space', 'nospace'],
-                                ['"with space"', 'nospace']),
+        kila (args, wanted) kwenye ((['ukijumuisha space', 'nospace'],
+                                ['"ukijumuisha space"', 'nospace']),
                                (['nochange', 'nospace'],
                                 ['nochange', 'nospace'])):
             res = _nt_quote_args(args)
             self.assertEqual(res, wanted)
 
 
-    @unittest.skipUnless(os.name in ('nt', 'posix'),
-                         'Runs only under posix or nt')
-    def test_spawn(self):
+    @unittest.skipUnless(os.name kwenye ('nt', 'posix'),
+                         'Runs only under posix ama nt')
+    eleza test_spawn(self):
         tmpdir = self.mkdtemp()
 
         # creating something executable
         # through the shell that returns 1
-        if sys.platform != 'win32':
+        ikiwa sys.platform != 'win32':
             exe = os.path.join(tmpdir, 'foo.sh')
             self.write_file(exe, '#!%s\nexit 1' % unix_shell)
         isipokua:
@@ -45,7 +45,7 @@ class SpawnTestCase(support.TempdirManager,
         self.assertRaises(DistutilsExecError, spawn, [exe])
 
         # now something that works
-        if sys.platform != 'win32':
+        ikiwa sys.platform != 'win32':
             exe = os.path.join(tmpdir, 'foo.sh')
             self.write_file(exe, '#!%s\nexit 0' % unix_shell)
         isipokua:
@@ -55,16 +55,16 @@ class SpawnTestCase(support.TempdirManager,
         os.chmod(exe, 0o777)
         spawn([exe])  # should work without any error
 
-    def test_find_executable(self):
-        with test_support.temp_dir() as tmp_dir:
+    eleza test_find_executable(self):
+        ukijumuisha test_support.temp_dir() as tmp_dir:
             # use TESTFN to get a pseudo-unique filename
             program_noeext = test_support.TESTFN
-            # Give the temporary program an ".exe" suffix for all.
-            # It's needed on Windows and sio harmful on other platforms.
+            # Give the temporary program an ".exe" suffix kila all.
+            # It's needed on Windows na sio harmful on other platforms.
             program = program_noeext + ".exe"
 
             filename = os.path.join(tmp_dir, program)
-            with open(filename, "wb"):
+            ukijumuisha open(filename, "wb"):
                 pass
             os.chmod(filename, stat.S_IXUSR)
 
@@ -72,73 +72,73 @@ class SpawnTestCase(support.TempdirManager,
             rv = find_executable(program, path=tmp_dir)
             self.assertEqual(rv, filename)
 
-            if sys.platform == 'win32':
+            ikiwa sys.platform == 'win32':
                 # test without ".exe" extension
                 rv = find_executable(program_noeext, path=tmp_dir)
                 self.assertEqual(rv, filename)
 
-            # test find in the current directory
-            with test_support.change_cwd(tmp_dir):
+            # test find kwenye the current directory
+            ukijumuisha test_support.change_cwd(tmp_dir):
                 rv = find_executable(program)
                 self.assertEqual(rv, program)
 
             # test non-existent program
             dont_exist_program = "dontexist_" + program
             rv = find_executable(dont_exist_program , path=tmp_dir)
-            self.assertIsNone(rv)
+            self.assertIsTupu(rv)
 
-            # PATH='': no match, tatizo in the current directory
-            with test_support.EnvironmentVarGuard() as env:
+            # PATH='': no match, except kwenye the current directory
+            ukijumuisha test_support.EnvironmentVarGuard() as env:
                 env['PATH'] = ''
-                with unittest.mock.patch('distutils.spawn.os.confstr',
-                                         return_value=tmp_dir, create=True), \
+                ukijumuisha unittest.mock.patch('distutils.spawn.os.confstr',
+                                         return_value=tmp_dir, create=Kweli), \
                      unittest.mock.patch('distutils.spawn.os.defpath',
                                          tmp_dir):
                     rv = find_executable(program)
-                    self.assertIsNone(rv)
+                    self.assertIsTupu(rv)
 
-                    # look in current directory
-                    with test_support.change_cwd(tmp_dir):
+                    # look kwenye current directory
+                    ukijumuisha test_support.change_cwd(tmp_dir):
                         rv = find_executable(program)
                         self.assertEqual(rv, program)
 
-            # PATH=':': explicitly looks in the current directory
-            with test_support.EnvironmentVarGuard() as env:
+            # PATH=':': explicitly looks kwenye the current directory
+            ukijumuisha test_support.EnvironmentVarGuard() as env:
                 env['PATH'] = os.pathsep
-                with unittest.mock.patch('distutils.spawn.os.confstr',
-                                         return_value='', create=True), \
+                ukijumuisha unittest.mock.patch('distutils.spawn.os.confstr',
+                                         return_value='', create=Kweli), \
                      unittest.mock.patch('distutils.spawn.os.defpath', ''):
                     rv = find_executable(program)
-                    self.assertIsNone(rv)
+                    self.assertIsTupu(rv)
 
-                    # look in current directory
-                    with test_support.change_cwd(tmp_dir):
+                    # look kwenye current directory
+                    ukijumuisha test_support.change_cwd(tmp_dir):
                         rv = find_executable(program)
                         self.assertEqual(rv, program)
 
-            # missing PATH: test os.confstr("CS_PATH") and os.defpath
-            with test_support.EnvironmentVarGuard() as env:
-                env.pop('PATH', None)
+            # missing PATH: test os.confstr("CS_PATH") na os.defpath
+            ukijumuisha test_support.EnvironmentVarGuard() as env:
+                env.pop('PATH', Tupu)
 
                 # without confstr
-                with unittest.mock.patch('distutils.spawn.os.confstr',
+                ukijumuisha unittest.mock.patch('distutils.spawn.os.confstr',
                                          side_effect=ValueError,
-                                         create=True), \
+                                         create=Kweli), \
                      unittest.mock.patch('distutils.spawn.os.defpath',
                                          tmp_dir):
                     rv = find_executable(program)
                     self.assertEqual(rv, filename)
 
-                # with confstr
-                with unittest.mock.patch('distutils.spawn.os.confstr',
-                                         return_value=tmp_dir, create=True), \
+                # ukijumuisha confstr
+                ukijumuisha unittest.mock.patch('distutils.spawn.os.confstr',
+                                         return_value=tmp_dir, create=Kweli), \
                      unittest.mock.patch('distutils.spawn.os.defpath', ''):
                     rv = find_executable(program)
                     self.assertEqual(rv, filename)
 
 
-def test_suite():
-    return unittest.makeSuite(SpawnTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(SpawnTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

@@ -19,7 +19,7 @@ kundi PlatformTest(unittest.TestCase):
 
     @support.skip_unless_symlink
     eleza test_architecture_via_symlink(self): # issue3762
-        ukijumuisha support.PythonSymlink() kama py:
+        ukijumuisha support.PythonSymlink() as py:
             cmd = "-c", "agiza platform; andika(platform.architecture())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
@@ -167,7 +167,7 @@ kundi PlatformTest(unittest.TestCase):
         # using it, per
         # http://blogs.msdn.com/david.wang/archive/2006/03/26/HOWTO-Detect-Process-Bitness.aspx
         jaribu:
-            ukijumuisha support.EnvironmentVarGuard() kama environ:
+            ukijumuisha support.EnvironmentVarGuard() as environ:
                 ikiwa 'PROCESSOR_ARCHITEW6432' kwenye environ:
                     toa environ['PROCESSOR_ARCHITEW6432']
                 environ['PROCESSOR_ARCHITECTURE'] = 'foo'
@@ -194,7 +194,7 @@ kundi PlatformTest(unittest.TestCase):
 
         ikiwa platform.uname().system == 'Darwin':
             # We are on a macOS system, check that the right version
-            # information ni rudishaed
+            # information ni returned
             output = subprocess.check_output(['sw_vers'], text=Kweli)
             kila line kwenye output.splitlines():
                 ikiwa line.startswith('ProductVersion:'):
@@ -206,7 +206,7 @@ kundi PlatformTest(unittest.TestCase):
             result_list = res[0].split('.')
             expect_list = real_ver.split('.')
             len_diff = len(result_list) - len(expect_list)
-            # On Snow Leopard, sw_vers reports 10.6.0 kama 10.6
+            # On Snow Leopard, sw_vers reports 10.6.0 as 10.6
             ikiwa len_diff > 0:
                 expect_list.extend(['0'] * len_diff)
             self.assertEqual(result_list, expect_list)
@@ -241,12 +241,12 @@ kundi PlatformTest(unittest.TestCase):
             self.assertEqual(sts, 0)
 
     eleza test_libc_ver(self):
-        # check that libc_ver(executable) doesn't ashiria an exception
+        # check that libc_ver(executable) doesn't  ashiria an exception
         ikiwa os.path.isdir(sys.executable) na \
            os.path.exists(sys.executable+'.exe'):
             # Cygwin horror
             executable = sys.executable + '.exe'
-        lasivyo sys.platform == "win32" na sio os.path.exists(sys.executable):
+        elikiwa sys.platform == "win32" na sio os.path.exists(sys.executable):
             # App symlink appears to sio exist, but we want the
             # real executable here anyway
             agiza _winapi
@@ -258,7 +258,7 @@ kundi PlatformTest(unittest.TestCase):
         filename = support.TESTFN
         self.addCleanup(support.unlink, filename)
 
-        ukijumuisha mock.patch('os.confstr', create=Kweli, rudisha_value='mock 1.0'):
+        ukijumuisha mock.patch('os.confstr', create=Kweli, return_value='mock 1.0'):
             # test os.confstr() code path
             self.assertEqual(platform.libc_ver(), ('mock', '1.0'))
 
@@ -270,7 +270,7 @@ kundi PlatformTest(unittest.TestCase):
                 (b'libc_pthread.so.1.2.5', ('libc', '1.2.5_pthread')),
                 (b'', ('', '')),
             ):
-                ukijumuisha open(filename, 'wb') kama fp:
+                ukijumuisha open(filename, 'wb') as fp:
                     fp.write(b'[xxx%sxxx]' % data)
                     fp.flush()
 
@@ -279,9 +279,9 @@ kundi PlatformTest(unittest.TestCase):
                                  expected)
 
         # binary containing multiple versions: get the most recent,
-        # make sure that 1.9 ni seen kama older than 1.23.4
+        # make sure that 1.9 ni seen as older than 1.23.4
         chunksize = 16384
-        ukijumuisha open(filename, 'wb') kama f:
+        ukijumuisha open(filename, 'wb') as f:
             # test match at chunk boundary
             f.write(b'x'*(chunksize - 10))
             f.write(b'GLIBC_1.23.4\0GLIBC_1.9\0GLIBC_1.21\0')
@@ -290,7 +290,7 @@ kundi PlatformTest(unittest.TestCase):
 
     @support.cpython_only
     eleza test__comparable_version(self):
-        kutoka platform agiza _comparable_version kama V
+        kutoka platform agiza _comparable_version as V
         self.assertEqual(V('1.2.3'), V('1.2.3'))
         self.assertLess(V('1.2.3'), V('1.2.10'))
         self.assertEqual(V('1.2.3.4'), V('1_2-3+4'))
@@ -334,20 +334,20 @@ kundi PlatformTest(unittest.TestCase):
                   'root:xnu-4570.71.2~1/RELEASE_X86_64'),
                  'x86_64', 'i386')
         arch = ('64bit', '')
-        ukijumuisha mock.patch.object(platform, 'uname', rudisha_value=uname), \
-             mock.patch.object(platform, 'architecture', rudisha_value=arch):
+        ukijumuisha mock.patch.object(platform, 'uname', return_value=uname), \
+             mock.patch.object(platform, 'architecture', return_value=arch):
             kila mac_ver, expected_terse, expected kwenye [
-                # darwin: mac_ver() rudishas empty strings
+                # darwin: mac_ver() returns empty strings
                 (('', '', ''),
                  'Darwin-17.7.0',
                  'Darwin-17.7.0-x86_64-i386-64bit'),
-                # macOS: mac_ver() rudishas macOS version
+                # macOS: mac_ver() returns macOS version
                 (('10.13.6', ('', '', ''), 'x86_64'),
                  'macOS-10.13.6',
                  'macOS-10.13.6-x86_64-i386-64bit'),
             ]:
                 ukijumuisha mock.patch.object(platform, 'mac_ver',
-                                       rudisha_value=mac_ver):
+                                       return_value=mac_ver):
                     self.clear_caches()
                     self.assertEqual(platform.platform(terse=1), expected_terse)
                     self.assertEqual(platform.platform(), expected)

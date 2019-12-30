@@ -1,40 +1,40 @@
-from ctypes import *
-import unittest
+kutoka ctypes agiza *
+agiza unittest
 
-class X(Structure):
+kundi X(Structure):
     _fields_ = [("a", c_int),
                 ("b", c_int)]
-    new_was_called = False
+    new_was_called = Uongo
 
-    def __new__(cls):
+    eleza __new__(cls):
         result = super().__new__(cls)
-        result.new_was_called = True
-        return result
+        result.new_was_called = Kweli
+        rudisha result
 
-    def __init__(self):
+    eleza __init__(self):
         self.a = 9
         self.b = 12
 
-class Y(Structure):
+kundi Y(Structure):
     _fields_ = [("x", X)]
 
 
-class InitTest(unittest.TestCase):
-    def test_get(self):
+kundi InitTest(unittest.TestCase):
+    eleza test_get(self):
         # make sure the only accessing a nested structure
-        # doesn't call the structure's __new__ and __init__
+        # doesn't call the structure's __new__ na __init__
         y = Y()
         self.assertEqual((y.x.a, y.x.b), (0, 0))
-        self.assertEqual(y.x.new_was_called, False)
+        self.assertEqual(y.x.new_was_called, Uongo)
 
-        # But explicitly creating an X structure calls __new__ and __init__, of course.
+        # But explicitly creating an X structure calls __new__ na __init__, of course.
         x = X()
         self.assertEqual((x.a, x.b), (9, 12))
-        self.assertEqual(x.new_was_called, True)
+        self.assertEqual(x.new_was_called, Kweli)
 
         y.x = x
         self.assertEqual((y.x.a, y.x.b), (9, 12))
-        self.assertEqual(y.x.new_was_called, False)
+        self.assertEqual(y.x.new_was_called, Uongo)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -1,14 +1,14 @@
 """Python 'bz2_codec' Codec - bz2 compression encoding.
 
-This codec de/encodes from bytes to bytes and is therefore usable with
-bytes.transform() and bytes.untransform().
+This codec de/encodes kutoka bytes to bytes na ni therefore usable with
+bytes.transform() na bytes.untransform().
 
-Adapted by Raymond Hettinger from zlib_codec.py which was written
+Adapted by Raymond Hettinger kutoka zlib_codec.py which was written
 by Marc-Andre Lemburg (mal@lemburg.com).
 """
 
 agiza codecs
-import bz2 # this codec needs the optional bz2 module !
+agiza bz2 # this codec needs the optional bz2 module !
 
 ### Codec APIs
 
@@ -33,7 +33,7 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
         self.compressobj = bz2.BZ2Compressor()
 
     eleza encode(self, input, final=Uongo):
-        if final:
+        ikiwa final:
             c = self.compressobj.compress(input)
             rudisha c + self.compressobj.flush()
         isipokua:
@@ -51,7 +51,7 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
     eleza decode(self, input, final=Uongo):
         jaribu:
             rudisha self.decompressobj.decompress(input)
-        tatizo EOFError:
+        except EOFError:
             rudisha ''
 
     eleza reset(self):

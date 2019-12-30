@@ -10,15 +10,15 @@ more-specific event will be called before a less-specific event.
 The recognized sequences are complete one-event sequences (no emacs-style
 Ctrl-X Ctrl-C, no shortcuts like <3>), kila all types of events.
 Key/Button Press/Release events can have modifiers.
-The recognized modifiers are Shift, Control, Option na Command kila Mac, na
+The recognized modifiers are Shift, Control, Option na Command kila Mac, and
 Control, Alt, Shift, Meta/M kila other platforms.
 
 For all events which were handled by MultiCall, a new member ni added to the
-event instance pitaed to the binded functions - mc_type. This ni one of the
-event type constants defined kwenye this module (such kama MC_KEYPRESS).
+event instance passed to the binded functions - mc_type. This ni one of the
+event type constants defined kwenye this module (such as MC_KEYPRESS).
 For Key/Button events (which are handled by MultiCall na may receive
 modifiers), another member ni added - mc_state. This member gives the state
-of the recognized modifiers, kama a combination of the modifier constants
+of the recognized modifiers, as a combination of the modifier constants
 also defined kwenye this module (kila example, MC_SHIFT).
 Using these members ni absolutely portable.
 
@@ -64,7 +64,7 @@ APPLICATION_GONE = "application has been destroyed"
 
 # A binder ni a kundi which binds functions to one type of event. It has two
 # methods: bind na unbind, which get a function na a parsed sequence, as
-# rudishaed by _parse_sequence(). There are two types of binders:
+# returned by _parse_sequence(). There are two types of binders:
 # _SimpleBinder handles event types ukijumuisha no modifiers na no detail.
 # No Python functions are called when no events are binded.
 # _ComplexBinder handles event types ukijumuisha modifiers na a detail.
@@ -86,7 +86,7 @@ kundi _SimpleBinder:
                 wascalled = {}
                 kila i kwenye range(len(l)-1, -1, -1):
                     func = l[i]
-                    ikiwa func haiko kwenye wascalled:
+                    ikiwa func sio kwenye wascalled:
                         wascalled[func] = Kweli
                         r = func(event)
                         ikiwa r:
@@ -106,9 +106,9 @@ kundi _SimpleBinder:
             jaribu:
                 self.widget.unbind(self.widgetinst, self.sequence,
                         self.handlerid)
-            tatizo tkinter.TclError kama e:
+            except tkinter.TclError as e:
                 ikiwa sio APPLICATION_GONE kwenye e.args[0]:
-                    ashiria
+                    raise
 
 # An int kwenye range(1 << len(_modifiers)) represents a combination of modifiers
 # (ikiwa the least significant bit ni on, _modifiers[0] ni on, na so on).
@@ -141,7 +141,7 @@ eleza expand_substates(states):
 
 _state_subsets = expand_substates(_states)
 
-# _state_codes gives kila each state, the portable code to be pitaed kama mc_state
+# _state_codes gives kila each state, the portable code to be passed as mc_state
 _state_codes = []
 kila s kwenye _states:
     r = 0
@@ -171,7 +171,7 @@ kundi _ComplexBinder:
             kila l kwenye lists:
                 kila i kwenye range(len(l)-1, -1, -1):
                     func = l[i]
-                    ikiwa func haiko kwenye wascalled:
+                    ikiwa func sio kwenye wascalled:
                         wascalled[func] = Kweli
                         r = l[i](event)
                         ikiwa r:
@@ -211,7 +211,7 @@ kundi _ComplexBinder:
                                                           seq, handler)))
 
     eleza bind(self, triplet, func):
-        ikiwa triplet[2] haiko kwenye self.bindedfuncs:
+        ikiwa triplet[2] sio kwenye self.bindedfuncs:
             self.bindedfuncs[triplet[2]] = [[] kila s kwenye _states]
             kila s kwenye _states:
                 lists = [ self.bindedfuncs[detail][i]
@@ -239,9 +239,9 @@ kundi _ComplexBinder:
         kila seq, id kwenye self.handlerids:
             jaribu:
                 self.widget.unbind(self.widgetinst, seq, id)
-            tatizo tkinter.TclError kama e:
+            except tkinter.TclError as e:
                 ikiwa sio APPLICATION_GONE kwenye e.args[0]:
-                    ashiria
+                    raise
 
 # define the list of event types to be handled by MultiEvent. the order is
 # compatible ukijumuisha the definition of event type constants.
@@ -266,7 +266,7 @@ _keysym_re = re.compile(r"^\w+$")
 _button_re = re.compile(r"^[1-5]$")
 eleza _parse_sequence(sequence):
     """Get a string which should describe an event sequence. If it is
-    successfully parsed kama one, rudisha a tuple containing the state (as an int),
+    successfully parsed as one, rudisha a tuple containing the state (as an int),
     the event type (as an index of _types), na the detail - Tupu ikiwa none, ama a
     string ikiwa there ni one. If the parsing ni unsuccessful, rudisha Tupu.
     """
@@ -296,7 +296,7 @@ eleza _parse_sequence(sequence):
 
         ikiwa sio words:
             detail = Tupu
-        lasivyo len(words) == 1 na type_re.match(words[0]):
+        elikiwa len(words) == 1 na type_re.match(words[0]):
             detail = words[0]
         isipokua:
             rudisha Tupu
@@ -363,7 +363,7 @@ eleza MultiCallCreator(widget):
         eleza event_add(self, virtual, *sequences):
             #andika("event_add(%s, %s)" % (repr(virtual), repr(sequences)),
             #      file=sys.__stderr__)
-            ikiwa virtual haiko kwenye self.__eventinfo:
+            ikiwa virtual sio kwenye self.__eventinfo:
                 self.__eventinfo[virtual] = [Tupu, []]
 
             func, triplets = self.__eventinfo[virtual]
@@ -378,8 +378,8 @@ eleza MultiCallCreator(widget):
                     triplets.append(triplet)
 
         eleza event_delete(self, virtual, *sequences):
-            ikiwa virtual haiko kwenye self.__eventinfo:
-                rudisha
+            ikiwa virtual sio kwenye self.__eventinfo:
+                return
             func, triplets = self.__eventinfo[virtual]
             kila seq kwenye sequences:
                 triplet = _parse_sequence(seq)
@@ -392,7 +392,7 @@ eleza MultiCallCreator(widget):
                     triplets.remove(triplet)
 
         eleza event_info(self, virtual=Tupu):
-            ikiwa virtual ni Tupu ama virtual haiko kwenye self.__eventinfo:
+            ikiwa virtual ni Tupu ama virtual sio kwenye self.__eventinfo:
                 rudisha widget.event_info(self, virtual)
             isipokua:
                 rudisha tuple(map(_triplet_to_sequence,
@@ -406,9 +406,9 @@ eleza MultiCallCreator(widget):
                     kila triplet kwenye triplets:
                         jaribu:
                             self.__binders[triplet[1]].unbind(triplet, func)
-                        tatizo tkinter.TclError kama e:
+                        except tkinter.TclError as e:
                             ikiwa sio APPLICATION_GONE kwenye e.args[0]:
-                                ashiria
+                                raise
 
     _multicall_dict[widget] = MultiCall
     rudisha MultiCall

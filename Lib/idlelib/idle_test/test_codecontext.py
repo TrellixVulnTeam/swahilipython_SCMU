@@ -28,7 +28,7 @@ kundi C1():
     eleza compare(self):
         ikiwa a > b:
             rudisha a
-        lasivyo a < b:
+        elikiwa a < b:
             rudisha b
         isipokua:
             rudisha Tupu
@@ -126,7 +126,7 @@ kundi CodeContextTest(unittest.TestCase):
     eleza test_del_with_timer(self):
         timer = self.cc.t1 = self.text.after(10000, lambda: Tupu)
         self.cc.__del__()
-        ukijumuisha self.assertRaises(TclError) kama cm:
+        ukijumuisha self.assertRaises(TclError) as cm:
             self.root.tk.call('after', 'info', timer)
         self.assertIn("doesn't exist", str(cm.exception))
 
@@ -187,7 +187,7 @@ kundi CodeContextTest(unittest.TestCase):
         eq(gc(5), ([(2, 0, 'kundi C1():', 'class'),
                     (4, 4, '    eleza __init__(self, a, b):', 'def')], 0))
 
-        # Only one 'def' ni rudishaed, sio both at the same indent level.
+        # Only one 'def' ni returned, sio both at the same indent level.
         eq(gc(10), ([(2, 0, 'kundi C1():', 'class'),
                      (7, 4, '    eleza compare(self):', 'def'),
                      (8, 8, '        ikiwa a > b:', 'if')], 0))
@@ -196,27 +196,27 @@ kundi CodeContextTest(unittest.TestCase):
         eq(gc(11), ([(2, 0, 'kundi C1():', 'class'),
                      (7, 4, '    eleza compare(self):', 'def'),
                      (8, 8, '        ikiwa a > b:', 'if'),
-                     (10, 8, '        lasivyo a < b:', 'elif')], 0))
+                     (10, 8, '        elikiwa a < b:', 'elif')], 0))
 
         # Set stop_line to sio go back to first line kwenye source code.
         # Return includes stop_line.
         eq(gc(11, stopline=2), ([(2, 0, 'kundi C1():', 'class'),
                                  (7, 4, '    eleza compare(self):', 'def'),
                                  (8, 8, '        ikiwa a > b:', 'if'),
-                                 (10, 8, '        lasivyo a < b:', 'elif')], 0))
+                                 (10, 8, '        elikiwa a < b:', 'elif')], 0))
         eq(gc(11, stopline=3), ([(7, 4, '    eleza compare(self):', 'def'),
                                  (8, 8, '        ikiwa a > b:', 'if'),
-                                 (10, 8, '        lasivyo a < b:', 'elif')], 4))
+                                 (10, 8, '        elikiwa a < b:', 'elif')], 4))
         eq(gc(11, stopline=8), ([(8, 8, '        ikiwa a > b:', 'if'),
-                                 (10, 8, '        lasivyo a < b:', 'elif')], 8))
+                                 (10, 8, '        elikiwa a < b:', 'elif')], 8))
 
         # Set stop_indent to test indent level to stop at.
         eq(gc(11, stopindent=4), ([(7, 4, '    eleza compare(self):', 'def'),
                                    (8, 8, '        ikiwa a > b:', 'if'),
-                                   (10, 8, '        lasivyo a < b:', 'elif')], 4))
+                                   (10, 8, '        elikiwa a < b:', 'elif')], 4))
         # Check that the 'if' ni included.
         eq(gc(11, stopindent=8), ([(8, 8, '        ikiwa a > b:', 'if'),
-                                   (10, 8, '        lasivyo a < b:', 'elif')], 8))
+                                   (10, 8, '        elikiwa a < b:', 'elif')], 8))
 
     eleza test_update_code_context(self):
         eq = self.assertEqual
@@ -268,12 +268,12 @@ kundi CodeContextTest(unittest.TestCase):
                      (2, 0, 'kundi C1():', 'class'),
                      (7, 4, '    eleza compare(self):', 'def'),
                      (8, 8, '        ikiwa a > b:', 'if'),
-                     (10, 8, '        lasivyo a < b:', 'elif')])
+                     (10, 8, '        elikiwa a < b:', 'elif')])
         eq(cc.topvisible, 12)
         eq(cc.context.get('1.0', 'end-1c'), 'kundi C1():\n'
                                             '    eleza compare(self):\n'
                                             '        ikiwa a > b:\n'
-                                            '        lasivyo a < b:')
+                                            '        elikiwa a < b:')
 
         # No scroll.  No update, even though context_depth changed.
         cc.update_code_context()
@@ -282,12 +282,12 @@ kundi CodeContextTest(unittest.TestCase):
                      (2, 0, 'kundi C1():', 'class'),
                      (7, 4, '    eleza compare(self):', 'def'),
                      (8, 8, '        ikiwa a > b:', 'if'),
-                     (10, 8, '        lasivyo a < b:', 'elif')])
+                     (10, 8, '        elikiwa a < b:', 'elif')])
         eq(cc.topvisible, 12)
         eq(cc.context.get('1.0', 'end-1c'), 'kundi C1():\n'
                                             '    eleza compare(self):\n'
                                             '        ikiwa a > b:\n'
-                                            '        lasivyo a < b:')
+                                            '        elikiwa a < b:')
 
         # Scroll up.
         cc.text.yview(5)

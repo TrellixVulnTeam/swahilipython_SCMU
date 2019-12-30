@@ -1,4 +1,4 @@
-# Test packages (dotted-name agiza)
+# Test packages (dotted-name import)
 
 agiza sys
 agiza os
@@ -31,11 +31,11 @@ eleza fixdir(lst):
 #
 # agiza package without __init__
 # agiza package ukijumuisha __init__
-# __init__ agizaing submodule
-# __init__ agizaing global module
+# __init__ importing submodule
+# __init__ importing global module
 # __init__ defining variables
-# submodule agizaing other submodule
-# submodule agizaing global module
+# submodule importing other submodule
+# submodule importing global module
 # submodule agiza submodule via global name
 # kutoka package agiza submodule
 # kutoka package agiza subpackage
@@ -83,7 +83,7 @@ kundi TestPkg(unittest.TestCase):
             ikiwa contents ni Tupu:
                 os.mkdir(fullname)
             isipokua:
-                ukijumuisha open(fullname, "w") kama f:
+                ukijumuisha open(fullname, "w") as f:
                     f.write(contents)
                     ikiwa sio contents.endswith('\n'):
                         f.write('\n')
@@ -161,14 +161,14 @@ kundi TestPkg(unittest.TestCase):
 
     eleza test_4(self):
         hier = [
-        ("t4.py", "ashiria RuntimeError('Shouldnt load t4.py')"),
+        ("t4.py", " ashiria RuntimeError('Shouldnt load t4.py')"),
         ("t4", Tupu),
         ("t4 __init__.py", ""),
-        ("t4 sub.py", "ashiria RuntimeError('Shouldnt load sub.py')"),
+        ("t4 sub.py", " ashiria RuntimeError('Shouldnt load sub.py')"),
         ("t4 sub", Tupu),
         ("t4 sub __init__.py", ""),
         ("t4 sub subsub.py",
-         "ashiria RuntimeError('Shouldnt load subsub.py')"),
+         " ashiria RuntimeError('Shouldnt load subsub.py')"),
         ("t4 sub subsub", Tupu),
         ("t4 sub subsub __init__.py", "spam = 1"),
                ]
@@ -242,11 +242,11 @@ kundi TestPkg(unittest.TestCase):
                 ("t7", Tupu),
                 ("t7 __init__.py", ""),
                 ("t7 sub.py",
-                 "ashiria RuntimeError('Shouldnt load sub.py')"),
+                 " ashiria RuntimeError('Shouldnt load sub.py')"),
                 ("t7 sub", Tupu),
                 ("t7 sub __init__.py", ""),
                 ("t7 sub .py",
-                 "ashiria RuntimeError('Shouldnt load subsub.py')"),
+                 " ashiria RuntimeError('Shouldnt load subsub.py')"),
                 ("t7 sub subsub", Tupu),
                 ("t7 sub subsub __init__.py",
                  "spam = 1"),
@@ -255,18 +255,18 @@ kundi TestPkg(unittest.TestCase):
 
 
         t7, sub, subsub = Tupu, Tupu, Tupu
-        agiza t7 kama tas
+        agiza t7 as tas
         self.assertEqual(fixdir(dir(tas)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__'])
         self.assertUongo(t7)
-        kutoka t7 agiza sub kama subpar
+        kutoka t7 agiza sub as subpar
         self.assertEqual(fixdir(dir(subpar)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__'])
         self.assertUongo(t7)
         self.assertUongo(sub)
-        kutoka t7.sub agiza subsub kama subsubsub
+        kutoka t7.sub agiza subsub as subsubsub
         self.assertEqual(fixdir(dir(subsubsub)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__',
@@ -274,7 +274,7 @@ kundi TestPkg(unittest.TestCase):
         self.assertUongo(t7)
         self.assertUongo(sub)
         self.assertUongo(subsub)
-        kutoka t7.sub.subsub agiza spam kama ham
+        kutoka t7.sub.subsub agiza spam as ham
         self.assertEqual(ham, 1)
         self.assertUongo(t7)
         self.assertUongo(sub)

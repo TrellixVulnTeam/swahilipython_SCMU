@@ -1,19 +1,19 @@
-import unittest
-import tkinter
-from tkinter import ttk
-from test.support import requires, run_unittest
-from tkinter.test.support import AbstractTkTest
+agiza unittest
+agiza tkinter
+kutoka tkinter agiza ttk
+kutoka test.support agiza requires, run_unittest
+kutoka tkinter.test.support agiza AbstractTkTest
 
 requires('gui')
 
-class StyleTest(AbstractTkTest, unittest.TestCase):
+kundi StyleTest(AbstractTkTest, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.style = ttk.Style(self.root)
 
 
-    def test_configure(self):
+    eleza test_configure(self):
         style = self.style
         style.configure('TButton', background='yellow')
         self.assertEqual(style.configure('TButton', 'background'),
@@ -21,16 +21,16 @@ class StyleTest(AbstractTkTest, unittest.TestCase):
         self.assertIsInstance(style.configure('TButton'), dict)
 
 
-    def test_map(self):
+    eleza test_map(self):
         style = self.style
         style.map('TButton', background=[('active', 'background', 'blue')])
         self.assertEqual(style.map('TButton', 'background'),
-            [('active', 'background', 'blue')] if self.wantobjects ama
+            [('active', 'background', 'blue')] ikiwa self.wantobjects else
             [('active background', 'blue')])
         self.assertIsInstance(style.map('TButton'), dict)
 
 
-    def test_lookup(self):
+    eleza test_lookup(self):
         style = self.style
         style.configure('TButton', background='yellow')
         style.map('TButton', background=[('active', 'background', 'blue')])
@@ -42,7 +42,7 @@ class StyleTest(AbstractTkTest, unittest.TestCase):
             default='iknewit'), 'iknewit')
 
 
-    def test_layout(self):
+    eleza test_layout(self):
         style = self.style
         self.assertRaises(tkinter.TclError, style.layout, 'NotALayout')
         tv_style = style.layout('Treeview')
@@ -57,7 +57,7 @@ class StyleTest(AbstractTkTest, unittest.TestCase):
         style.layout('Treeview', tv_style)
         self.assertEqual(style.layout('Treeview'), tv_style)
 
-        # should return a list
+        # should rudisha a list
         self.assertIsInstance(style.layout('TButton'), list)
 
         # correct layout, but "option" doesn't exist as option
@@ -65,28 +65,28 @@ class StyleTest(AbstractTkTest, unittest.TestCase):
             [('name', {'option': 'inexistent'})])
 
 
-    def test_theme_use(self):
+    eleza test_theme_use(self):
         self.assertRaises(tkinter.TclError, self.style.theme_use,
             'nonexistingname')
 
         curr_theme = self.style.theme_use()
-        new_theme = None
-        for theme in self.style.theme_names():
-            if theme != curr_theme:
+        new_theme = Tupu
+        kila theme kwenye self.style.theme_names():
+            ikiwa theme != curr_theme:
                 new_theme = theme
                 self.style.theme_use(theme)
                 koma
         isipokua:
-            # just one theme available, can't go on with tests
+            # just one theme available, can't go on ukijumuisha tests
             return
 
-        self.assertFalse(curr_theme == new_theme)
-        self.assertFalse(new_theme != self.style.theme_use())
+        self.assertUongo(curr_theme == new_theme)
+        self.assertUongo(new_theme != self.style.theme_use())
 
         self.style.theme_use(curr_theme)
 
 
 tests_gui = (StyleTest, )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(*tests_gui)

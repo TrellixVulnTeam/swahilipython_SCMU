@@ -12,8 +12,8 @@ Content-Type: multipart/mixed; boundary="1618492860--2051301190--113853680"
 Status: R
 X-UIDL: 319998302
 
-This message is in MIME format which your mailer apparently does sio support.
-You either require a newer version of your software which supports MIME, ama
+This message is in MIME format which your mailer apparently does not support.
+You either require a newer version of your software which supports MIME, or
 a separate MIME decoding utility.  Alternatively, ask the sender of this
 message to resend it in a different format.
 

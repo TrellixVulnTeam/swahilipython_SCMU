@@ -24,7 +24,7 @@ kundi TestContains(unittest.TestCase):
         self.assertIn(1, c)
         self.assertNotIn(0, c)
         self.assertRaises(TypeError, lambda: 1 kwenye a)
-        self.assertRaises(TypeError, lambda: 1 haiko kwenye a)
+        self.assertRaises(TypeError, lambda: 1 sio kwenye a)
 
         # test char kwenye string
         self.assertIn('c', 'abc')
@@ -76,7 +76,7 @@ kundi TestContains(unittest.TestCase):
                 rudisha 28
 
         values = float('nan'), 1, Tupu, 'abc', MyNonReflexive()
-        constructors = list, tuple, dict.kutokakeys, set, frozenset, deque
+        constructors = list, tuple, dict.fromkeys, set, frozenset, deque
         kila constructor kwenye constructors:
             container = constructor(values)
             kila elem kwenye container:
@@ -94,11 +94,11 @@ kundi TestContains(unittest.TestCase):
             """Is sio a container
 
             This kundi ni a perfectly good iterable (as tested by
-            list(bc)), kama well kama inheriting kutoka a perfectly good
+            list(bc)), as well as inheriting kutoka a perfectly good
             container, but __contains__ = Tupu prevents the usual
             fallback to iteration kwenye the container protocol. That
             is, normally, 0 kwenye bc would fall back to the equivalent
-            of any(x==0 kila x kwenye bc), but here it's blocked kutoka
+            of any(x==0 kila x kwenye bc), but here it's blocked from
             doing so.
             """
             eleza __iter__(self):

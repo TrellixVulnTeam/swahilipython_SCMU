@@ -19,14 +19,14 @@ kundi RunTest(unittest.TestCase):
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
         jaribu:
-            ashiria ex2 kutoka ex1
-        tatizo UnhashableException:
+             ashiria ex2 kutoka ex1
+        except UnhashableException:
             jaribu:
-                ashiria ex1
-            tatizo UnhashableException:
-                ukijumuisha captured_stderr() kama output:
+                 ashiria ex1
+            except UnhashableException:
+                ukijumuisha captured_stderr() as output:
                     ukijumuisha mock.patch.object(run,
-                                           'cleanup_traceback') kama ct:
+                                           'cleanup_traceback') as ct:
                         ct.side_effect = lambda t, e: t
                         run.print_exception()
 
@@ -61,7 +61,7 @@ kundi MockShell:
     eleza readline(self):
         rudisha self.lines.pop()
     eleza close(self):
-        pita
+        pass
     eleza reset(self):
         self.written = []
     eleza push(self, lines):
@@ -301,7 +301,7 @@ kundi TestSysRecursionLimitWrappers(unittest.TestCase):
         self.addCleanup(sys.setrecursionlimit, orig_reclimit)
         sys.setrecursionlimit(orig_reclimit + 3)
 
-        # check that the new limit ni rudishaed by sys.getrecursionlimit()
+        # check that the new limit ni returned by sys.getrecursionlimit()
         new_reclimit = sys.getrecursionlimit()
         self.assertEqual(new_reclimit, orig_reclimit + 3)
 

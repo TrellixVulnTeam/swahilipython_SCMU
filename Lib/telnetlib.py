@@ -1,6 +1,6 @@
 r"""TELNET client class.
 
-Based on RFC 854: TELNET Protocol Specification, by J. Postel na
+Based on RFC 854: TELNET Protocol Specification, by J. Postel and
 J. Reynolds
 
 Example:
@@ -17,7 +17,7 @@ guido    Guido van Rossum      pts/2        <Dec  2 11:10> snag.cnri.reston..
 Note that read_all() won't read until eof -- it just reads some data
 -- but it guarantees to read at least one byte unless EOF ni hit.
 
-It ni possible to pita a Telnet object to a selector kwenye order to wait until
+It ni possible to pass a Telnet object to a selector kwenye order to wait until
 more data ni available.  Note that kwenye this case, read_eager() may rudisha b''
 even ikiwa there was data on the socket, because the protocol negotiation may have
 eaten the data.  This ni why EOFError ni needed kwenye some cases to distinguish
@@ -36,7 +36,7 @@ To do:
 agiza sys
 agiza socket
 agiza selectors
-kutoka time agiza monotonic kama _time
+kutoka time agiza monotonic as _time
 
 __all__ = ["Telnet"]
 
@@ -109,7 +109,7 @@ OLD_ENVIRON = bytes([36]) # Old - Environment variables
 AUTHENTICATION = bytes([37]) # Authenticate
 ENCRYPT = bytes([38]) # Encryption option
 NEW_ENVIRON = bytes([39]) # New - Environment variables
-# the following ones come kutoka
+# the following ones come from
 # http://www.iana.org/assignments/telnet-options
 # Unfortunately, that document does sio assign identifiers
 # to all of them, so we are making them up
@@ -145,13 +145,13 @@ kundi Telnet:
     An instance of this kundi represents a connection to a telnet
     server.  The instance ni initially sio connected; the open()
     method must be used to establish a connection.  Alternatively, the
-    host name na optional port number can be pitaed to the
+    host name na optional port number can be passed to the
     constructor, too.
 
     Don't try to reopen an already connected instance.
 
     This kundi has many read_*() methods.  Note that some of them
-    ashiria EOFError when the end of the connection ni read, because
+     ashiria EOFError when the end of the connection ni read, because
     they can rudisha an empty string kila other reasons.  See the
     individual doc strings.
 
@@ -281,7 +281,7 @@ kundi Telnet:
     eleza write(self, buffer):
         """Write a string to the socket, doubling any IAC characters.
 
-        Can block ikiwa the connection ni blocked.  May ashiria
+        Can block ikiwa the connection ni blocked.  May raise
         OSError ikiwa the connection ni closed.
 
         """
@@ -309,7 +309,7 @@ kundi Telnet:
             rudisha buf
         ikiwa timeout ni sio Tupu:
             deadline = _time() + timeout
-        ukijumuisha _TelnetSelector() kama selector:
+        ukijumuisha _TelnetSelector() as selector:
             selector.register(self, selectors.EVENT_READ)
             wakati sio self.eof:
                 ikiwa selector.select(timeout):
@@ -402,7 +402,7 @@ kundi Telnet:
         buf = self.cookedq
         self.cookedq = b''
         ikiwa sio buf na self.eof na sio self.rawq:
-            ashiria EOFError('telnet connection closed')
+             ashiria EOFError('telnet connection closed')
         rudisha buf
 
     eleza read_sb_data(self):
@@ -442,7 +442,7 @@ kundi Telnet:
                         endelea
                     isipokua:
                         self.iacseq += c
-                lasivyo len(self.iacseq) == 1:
+                elikiwa len(self.iacseq) == 1:
                     # 'IAC: IAC CMD [OPTION only kila WILL/WONT/DO/DONT]'
                     ikiwa c kwenye (DO, DONT, WILL, WONT):
                         self.iacseq += c
@@ -455,7 +455,7 @@ kundi Telnet:
                         ikiwa c == SB: # SB ... SE start.
                             self.sb = 1
                             self.sbdataq = b''
-                        lasivyo c == SE:
+                        elikiwa c == SE:
                             self.sb = 0
                             self.sbdataq = self.sbdataq + buf[1]
                             buf[1] = b''
@@ -468,7 +468,7 @@ kundi Telnet:
                             # suboptions. Alas, we should sio get any
                             # unless we did a WILL/DO before.
                             self.msg('IAC %d sio recognized' % ord(c))
-                lasivyo len(self.iacseq) == 2:
+                elikiwa len(self.iacseq) == 2:
                     cmd = self.iacseq[1:2]
                     self.iacseq = b''
                     opt = c
@@ -479,17 +479,17 @@ kundi Telnet:
                             self.option_callback(self.sock, cmd, opt)
                         isipokua:
                             self.sock.sendall(IAC + WONT + opt)
-                    lasivyo cmd kwenye (WILL, WONT):
+                    elikiwa cmd kwenye (WILL, WONT):
                         self.msg('IAC %s %d',
                             cmd == WILL na 'WILL' ama 'WONT', ord(opt))
                         ikiwa self.option_callback:
                             self.option_callback(self.sock, cmd, opt)
                         isipokua:
                             self.sock.sendall(IAC + DONT + opt)
-        tatizo EOFError: # ashiriad by self.rawq_getchar()
+        except EOFError: # raised by self.rawq_getchar()
             self.iacseq = b'' # Reset on EOF
             self.sb = 0
-            pita
+            pass
         self.cookedq = self.cookedq + buf[0]
         self.sbdataq = self.sbdataq + buf[1]
 
@@ -503,7 +503,7 @@ kundi Telnet:
         ikiwa sio self.rawq:
             self.fill_rawq()
             ikiwa self.eof:
-                ashiria EOFError
+                 ashiria EOFError
         c = self.rawq[self.irawq:self.irawq+1]
         self.irawq = self.irawq + 1
         ikiwa self.irawq >= len(self.rawq):
@@ -521,16 +521,16 @@ kundi Telnet:
         ikiwa self.irawq >= len(self.rawq):
             self.rawq = b''
             self.irawq = 0
-        # The buffer size should be fairly small so kama to avoid quadratic
+        # The buffer size should be fairly small so as to avoid quadratic
         # behavior kwenye process_rawq() above
         buf = self.sock.recv(50)
         self.msg("recv %r", buf)
-        self.eof = (sio buf)
+        self.eof = (not buf)
         self.rawq = self.rawq + buf
 
     eleza sock_avail(self):
         """Test whether data ni available on the socket."""
-        ukijumuisha _TelnetSelector() kama selector:
+        ukijumuisha _TelnetSelector() as selector:
             selector.register(self, selectors.EVENT_READ)
             rudisha bool(selector.select(0))
 
@@ -538,8 +538,8 @@ kundi Telnet:
         """Interaction function, emulates a very dumb telnet client."""
         ikiwa sys.platform == "win32":
             self.mt_interact()
-            rudisha
-        ukijumuisha _TelnetSelector() kama selector:
+            return
+        ukijumuisha _TelnetSelector() as selector:
             selector.register(self, selectors.EVENT_READ)
             selector.register(sys.stdin, selectors.EVENT_READ)
 
@@ -548,16 +548,16 @@ kundi Telnet:
                     ikiwa key.fileobj ni self:
                         jaribu:
                             text = self.read_eager()
-                        tatizo EOFError:
+                        except EOFError:
                             andika('*** Connection closed by remote host ***')
-                            rudisha
+                            return
                         ikiwa text:
                             sys.stdout.write(text.decode('ascii'))
                             sys.stdout.flush()
-                    lasivyo key.fileobj ni sys.stdin:
+                    elikiwa key.fileobj ni sys.stdin:
                         line = sys.stdin.readline().encode('ascii')
                         ikiwa sio line:
-                            rudisha
+                            return
                         self.write(line)
 
     eleza mt_interact(self):
@@ -575,9 +575,9 @@ kundi Telnet:
         wakati 1:
             jaribu:
                 data = self.read_eager()
-            tatizo EOFError:
+            except EOFError:
                 andika('*** Connection closed by remote host ***')
-                rudisha
+                return
             ikiwa data:
                 sys.stdout.write(data.decode('ascii'))
             isipokua:
@@ -593,9 +593,9 @@ kundi Telnet:
 
         Return a tuple of three items: the index kwenye the list of the
         first regular expression that matches; the re.Match object
-        rudishaed; na the text read up till na including the match.
+        returned; na the text read up till na including the match.
 
-        If EOF ni read na no text was read, ashiria EOFError.
+        If EOF ni read na no text was read,  ashiria EOFError.
         Otherwise, when nothing matches, rudisha (-1, Tupu, text) where
         text ni the text received so far (may be the empty string ikiwa a
         timeout happened).
@@ -614,7 +614,7 @@ kundi Telnet:
                 list[i] = re.compile(list[i])
         ikiwa timeout ni sio Tupu:
             deadline = _time() + timeout
-        ukijumuisha _TelnetSelector() kama selector:
+        ukijumuisha _TelnetSelector() as selector:
             selector.register(self, selectors.EVENT_READ)
             wakati sio self.eof:
                 self.process_rawq()
@@ -636,7 +636,7 @@ kundi Telnet:
                 self.fill_rawq()
         text = self.read_very_lazy()
         ikiwa sio text na self.eof:
-            ashiria EOFError
+             ashiria EOFError
         rudisha (-1, Tupu, text)
 
     eleza __enter__(self):
@@ -666,9 +666,9 @@ eleza test():
         portstr = sys.argv[2]
         jaribu:
             port = int(portstr)
-        tatizo ValueError:
+        except ValueError:
             port = socket.getservbyname(portstr, 'tcp')
-    ukijumuisha Telnet() kama tn:
+    ukijumuisha Telnet() as tn:
         tn.set_debuglevel(debuglevel)
         tn.open(host, port, timeout=0.5)
         tn.interact()

@@ -91,7 +91,7 @@ name2codepoint = {
     'clubs':    0x2663, # black club suit = shamrock, U+2663 ISOpub
     'cong':     0x2245, # approximately equal to, U+2245 ISOtech
     'copy':     0x00a9, # copyright sign, U+00A9 ISOnum
-    'crarr':    0x21b5, # downwards arrow ukijumuisha corner leftwards = carriage rudisha, U+21B5 NEW
+    'crarr':    0x21b5, # downwards arrow ukijumuisha corner leftwards = carriage return, U+21B5 NEW
     'cup':      0x222a, # union = cup, U+222A ISOtech
     'curren':   0x00a4, # currency sign, U+00A4 ISOnum
     'dArr':     0x21d3, # downwards double arrow, U+21D3 ISOamsa
@@ -164,7 +164,7 @@ name2codepoint = {
     'nbsp':     0x00a0, # no-koma space = non-komaing space, U+00A0 ISOnum
     'ndash':    0x2013, # en dash, U+2013 ISOpub
     'ne':       0x2260, # sio equal to, U+2260 ISOtech
-    'ni':       0x220b, # contains kama member, U+220B ISOtech
+    'ni':       0x220b, # contains as member, U+220B ISOtech
     'not':      0x00ac, # sio sign, U+00AC ISOnum
     'notin':    0x2209, # sio an element of, U+2209 ISOtech
     'nsub':     0x2284, # sio a subset of, U+2284 ISOamsn

@@ -64,7 +64,7 @@ Calculate the standard deviation of sample data:
 >>> stdev([2.5, 3.25, 5.5, 11.25, 11.75])  #doctest: +ELLIPSIS
 4.38961843444...
 
-If you have previously calculated the mean, you can pita it kama the optional
+If you have previously calculated the mean, you can pass it as the optional
 second argument to the four "spread" functions to avoid recalculating it:
 
 >>> data = [1, 2, 2, 4, 4, 4, 5, 6]
@@ -115,7 +115,7 @@ kutoka collections agiza Counter
 # === Exceptions ===
 
 kundi StatisticsError(ValueError):
-    pita
+    pass
 
 
 # === Private utilities ===
@@ -123,11 +123,11 @@ kundi StatisticsError(ValueError):
 eleza _sum(data, start=0):
     """_sum(data [, start]) -> (type, sum, count)
 
-    Return a high-precision sum of the given numeric data kama a fraction,
+    Return a high-precision sum of the given numeric data as a fraction,
     together ukijumuisha the type to be converted to na the count of items.
 
     If optional argument ``start`` ni given, it ni added to the total.
-    If ``data`` ni empty, ``start`` (defaulting to 0) ni rudishaed.
+    If ``data`` ni empty, ``start`` (defaulting to 0) ni returned.
 
 
     Examples
@@ -138,22 +138,22 @@ eleza _sum(data, start=0):
 
     Some sources of round-off error will be avoided:
 
-    # Built-in sum rudishas zero.
+    # Built-in sum returns zero.
     >>> _sum([1e50, 1, -1e50] * 1000)
     (<kundi 'float'>, Fraction(1000, 1), 3000)
 
     Fractions na Decimals are also supported:
 
-    >>> kutoka fractions agiza Fraction kama F
+    >>> kutoka fractions agiza Fraction as F
     >>> _sum([F(2, 3), F(7, 5), F(1, 4), F(5, 6)])
     (<kundi 'fractions.Fraction'>, Fraction(63, 20), 4)
 
-    >>> kutoka decimal agiza Decimal kama D
+    >>> kutoka decimal agiza Decimal as D
     >>> data = [D("0.1375"), D("0.2108"), D("0.3061"), D("0.0419")]
     >>> _sum(data)
     (<kundi 'decimal.Decimal'>, Fraction(6963, 10000), 4)
 
-    Mixed types are currently treated kama an error, tatizo that int is
+    Mixed types are currently treated as an error, except that int is
     allowed.
     """
     count = 0
@@ -162,7 +162,7 @@ eleza _sum(data, start=0):
     partials_get = partials.get
     T = _coerce(int, type(start))
     kila typ, values kwenye groupby(data, type):
-        T = _coerce(T, typ)  # ama ashiria TypeError
+        T = _coerce(T, typ)  # ama  ashiria TypeError
         kila n,d kwenye map(_exact_ratio, values):
             count += 1
             partials[d] = partials_get(d, 0) + n
@@ -181,12 +181,12 @@ eleza _sum(data, start=0):
 eleza _isfinite(x):
     jaribu:
         rudisha x.is_finite()  # Likely a Decimal.
-    tatizo AttributeError:
+    except AttributeError:
         rudisha math.isfinite(x)  # Coerces to float first.
 
 
 eleza _coerce(T, S):
-    """Coerce types T na S to a common type, ama ashiria TypeError.
+    """Coerce types T na S to a common type, ama  ashiria TypeError.
 
     Coercion rules are currently an implementation detail. See the CoerceTest
     test kundi kwenye test_statistics kila details.
@@ -194,8 +194,8 @@ eleza _coerce(T, S):
     # See http://bugs.python.org/issue24068.
     assert T ni sio bool, "initial type T ni bool"
     # If the types are the same, no need to coerce anything. Put this
-    # first, so that the usual case (no coercion needed) happens kama soon
-    # kama possible.
+    # first, so that the usual case (no coercion needed) happens as soon
+    # as possible.
     ikiwa T ni S:  rudisha T
     # Mixed int & other coerce to the other type.
     ikiwa S ni int ama S ni bool:  rudisha T
@@ -213,7 +213,7 @@ eleza _coerce(T, S):
         rudisha T
     # Any other combination ni disallowed.
     msg = "don't know how to coerce %s na %s"
-    ashiria TypeError(msg % (T.__name__, S.__name__))
+     ashiria TypeError(msg % (T.__name__, S.__name__))
 
 
 eleza _exact_ratio(x):
@@ -227,25 +227,25 @@ eleza _exact_ratio(x):
     jaribu:
         # Optimise the common case of floats. We expect that the most often
         # used numeric type will be builtin floats, so try to make this as
-        # fast kama possible.
+        # fast as possible.
         ikiwa type(x) ni float ama type(x) ni Decimal:
             rudisha x.as_integer_ratio()
         jaribu:
             # x may be an int, Fraction, ama Integral ABC.
             rudisha (x.numerator, x.denominator)
-        tatizo AttributeError:
+        except AttributeError:
             jaribu:
                 # x may be a float ama Decimal subclass.
                 rudisha x.as_integer_ratio()
-            tatizo AttributeError:
+            except AttributeError:
                 # Just give up?
-                pita
-    tatizo (OverflowError, ValueError):
+                pass
+    except (OverflowError, ValueError):
         # float NAN ama INF.
         assert sio _isfinite(x)
         rudisha (x, Tupu)
     msg = "can't convert type '{}' to numerator/denominator"
-    ashiria TypeError(msg.format(type(x).__name__))
+     ashiria TypeError(msg.format(type(x).__name__))
 
 
 eleza _convert(value, T):
@@ -259,11 +259,11 @@ eleza _convert(value, T):
     jaribu:
         # FIXME: what do we do ikiwa this overflows?
         rudisha T(value)
-    tatizo TypeError:
+    except TypeError:
         ikiwa issubclass(T, Decimal):
             rudisha T(value.numerator)/T(value.denominator)
         isipokua:
-            ashiria
+            raise
 
 
 eleza _find_lteq(a, x):
@@ -271,7 +271,7 @@ eleza _find_lteq(a, x):
     i = bisect_left(a, x)
     ikiwa i != len(a) na a[i] == x:
         rudisha i
-    ashiria ValueError
+     ashiria ValueError
 
 
 eleza _find_rteq(a, l, x):
@@ -279,14 +279,14 @@ eleza _find_rteq(a, l, x):
     i = bisect_right(a, x, lo=l)
     ikiwa i != (len(a)+1) na a[i-1] == x:
         rudisha i-1
-    ashiria ValueError
+     ashiria ValueError
 
 
 eleza _fail_neg(values, errmsg='negative value'):
     """Iterate over values, failing ikiwa any are less than zero."""
     kila x kwenye values:
         ikiwa x < 0:
-            ashiria StatisticsError(errmsg)
+             ashiria StatisticsError(errmsg)
         tuma x
 
 
@@ -298,21 +298,21 @@ eleza mean(data):
     >>> mean([1, 2, 3, 4, 4])
     2.8
 
-    >>> kutoka fractions agiza Fraction kama F
+    >>> kutoka fractions agiza Fraction as F
     >>> mean([F(3, 7), F(1, 21), F(5, 3), F(1, 3)])
     Fraction(13, 21)
 
-    >>> kutoka decimal agiza Decimal kama D
+    >>> kutoka decimal agiza Decimal as D
     >>> mean([D("0.5"), D("0.75"), D("0.625"), D("0.375")])
     Decimal('0.5625')
 
-    If ``data`` ni empty, StatisticsError will be ashiriad.
+    If ``data`` ni empty, StatisticsError will be raised.
     """
     ikiwa iter(data) ni data:
         data = list(data)
     n = len(data)
     ikiwa n < 1:
-        ashiria StatisticsError('mean requires at least one data point')
+         ashiria StatisticsError('mean requires at least one data point')
     T, total, count = _sum(data)
     assert count == n
     rudisha _convert(total/n, T)
@@ -321,15 +321,15 @@ eleza mean(data):
 eleza fmean(data):
     """Convert data to floats na compute the arithmetic mean.
 
-    This runs faster than the mean() function na it always rudishas a float.
-    If the input dataset ni empty, it ashirias a StatisticsError.
+    This runs faster than the mean() function na it always returns a float.
+    If the input dataset ni empty, it raises a StatisticsError.
 
     >>> fmean([3.5, 4.0, 5.25])
     4.25
     """
     jaribu:
         n = len(data)
-    tatizo TypeError:
+    except TypeError:
         # Handle iterators that do sio define __len__().
         n = 0
         eleza count(iterable):
@@ -341,8 +341,8 @@ eleza fmean(data):
         total = fsum(data)
     jaribu:
         rudisha total / n
-    tatizo ZeroDivisionError:
-        ashiria StatisticsError('fmean requires at least one data point') kutoka Tupu
+    except ZeroDivisionError:
+         ashiria StatisticsError('fmean requires at least one data point') kutoka Tupu
 
 
 eleza geometric_mean(data):
@@ -359,8 +359,8 @@ eleza geometric_mean(data):
     """
     jaribu:
         rudisha exp(fmean(map(log, data)))
-    tatizo ValueError:
-        ashiria StatisticsError('geometric mean requires a non-empty dataset '
+    except ValueError:
+         ashiria StatisticsError('geometric mean requires a non-empty dataset '
                               ' containing positive numbers') kutoka Tupu
 
 
@@ -383,7 +383,7 @@ eleza harmonic_mean(data):
     ni too high.
 
     If ``data`` ni empty, ama any element ni less than zero,
-    ``harmonic_mean`` will ashiria ``StatisticsError``.
+    ``harmonic_mean`` will  ashiria ``StatisticsError``.
     """
     # For a justification kila using harmonic mean kila P/E ratios, see
     # http://fixthepitch.pellucid.com/comps-analysis-the-missing-harmony-of-summary-statistics/
@@ -393,18 +393,18 @@ eleza harmonic_mean(data):
     errmsg = 'harmonic mean does sio support negative values'
     n = len(data)
     ikiwa n < 1:
-        ashiria StatisticsError('harmonic_mean requires at least one data point')
-    lasivyo n == 1:
+         ashiria StatisticsError('harmonic_mean requires at least one data point')
+    elikiwa n == 1:
         x = data[0]
         ikiwa isinstance(x, (numbers.Real, Decimal)):
             ikiwa x < 0:
-                ashiria StatisticsError(errmsg)
+                 ashiria StatisticsError(errmsg)
             rudisha x
         isipokua:
-            ashiria TypeError('unsupported type')
+             ashiria TypeError('unsupported type')
     jaribu:
         T, total, count = _sum(1/x kila x kwenye _fail_neg(data, errmsg))
-    tatizo ZeroDivisionError:
+    except ZeroDivisionError:
         rudisha 0
     assert count == n
     rudisha _convert(n/total, T)
@@ -427,7 +427,7 @@ eleza median(data):
     data = sorted(data)
     n = len(data)
     ikiwa n == 0:
-        ashiria StatisticsError("no median kila empty data")
+         ashiria StatisticsError("no median kila empty data")
     ikiwa n%2 == 1:
         rudisha data[n//2]
     isipokua:
@@ -438,8 +438,8 @@ eleza median(data):
 eleza median_low(data):
     """Return the low median of numeric data.
 
-    When the number of data points ni odd, the middle value ni rudishaed.
-    When it ni even, the smaller of the two middle values ni rudishaed.
+    When the number of data points ni odd, the middle value ni returned.
+    When it ni even, the smaller of the two middle values ni returned.
 
     >>> median_low([1, 3, 5])
     3
@@ -450,7 +450,7 @@ eleza median_low(data):
     data = sorted(data)
     n = len(data)
     ikiwa n == 0:
-        ashiria StatisticsError("no median kila empty data")
+         ashiria StatisticsError("no median kila empty data")
     ikiwa n%2 == 1:
         rudisha data[n//2]
     isipokua:
@@ -460,8 +460,8 @@ eleza median_low(data):
 eleza median_high(data):
     """Return the high median of data.
 
-    When the number of data points ni odd, the middle value ni rudishaed.
-    When it ni even, the larger of the two middle values ni rudishaed.
+    When the number of data points ni odd, the middle value ni returned.
+    When it ni even, the larger of the two middle values ni returned.
 
     >>> median_high([1, 3, 5])
     3
@@ -472,7 +472,7 @@ eleza median_high(data):
     data = sorted(data)
     n = len(data)
     ikiwa n == 0:
-        ashiria StatisticsError("no median kila empty data")
+         ashiria StatisticsError("no median kila empty data")
     rudisha data[n//2]
 
 
@@ -484,13 +484,13 @@ eleza median_grouped(data, interval=1):
     >>> median_grouped([52, 52, 53, 54])
     52.5
 
-    This calculates the median kama the 50th percentile, na should be
+    This calculates the median as the 50th percentile, na should be
     used when your data ni continuous na grouped. In the above example,
     the values 1, 2, 3, etc. actually represent the midpoint of classes
     0.5-1.5, 1.5-2.5, 2.5-3.5, etc. The middle value falls somewhere in
     kundi 3.5-4.5, na interpolation ni used to estimate it.
 
-    Optional argument ``interval`` represents the kundi interval, na
+    Optional argument ``interval`` represents the kundi interval, and
     defaults to 1. Changing the kundi interval naturally will change the
     interpolated 50th percentile value:
 
@@ -505,18 +505,18 @@ eleza median_grouped(data, interval=1):
     data = sorted(data)
     n = len(data)
     ikiwa n == 0:
-        ashiria StatisticsError("no median kila empty data")
-    lasivyo n == 1:
+         ashiria StatisticsError("no median kila empty data")
+    elikiwa n == 1:
         rudisha data[0]
     # Find the value at the midpoint. Remember this corresponds to the
     # centre of the kundi interval.
     x = data[n//2]
     kila obj kwenye (x, interval):
         ikiwa isinstance(obj, (str, bytes)):
-            ashiria TypeError('expected number but got %r' % obj)
+             ashiria TypeError('expected number but got %r' % obj)
     jaribu:
         L = x - interval/2  # The lower limit of the median interval.
-    tatizo TypeError:
+    except TypeError:
         # Mixed type. For now we just coerce to float.
         L = float(x) - float(interval)/2
 
@@ -534,8 +534,8 @@ eleza median_grouped(data, interval=1):
 eleza mode(data):
     """Return the most common data point kutoka discrete ama nominal data.
 
-    ``mode`` assumes discrete data, na rudishas a single value. This ni the
-    standard treatment of the mode kama commonly taught kwenye schools:
+    ``mode`` assumes discrete data, na returns a single value. This ni the
+    standard treatment of the mode as commonly taught kwenye schools:
 
         >>> mode([1, 1, 2, 3, 3, 3, 3, 4])
         3
@@ -551,15 +551,15 @@ eleza mode(data):
         >>> mode(['red', 'red', 'green', 'blue', 'blue'])
         'red'
 
-    If *data* ni empty, ``mode``, ashirias StatisticsError.
+    If *data* ni empty, ``mode``, raises StatisticsError.
 
     """
     data = iter(data)
     pairs = Counter(data).most_common(1)
     jaribu:
         rudisha pairs[0][0]
-    tatizo IndexError:
-        ashiria StatisticsError('no mode kila empty data') kutoka Tupu
+    except IndexError:
+         ashiria StatisticsError('no mode kila empty data') kutoka Tupu
 
 
 eleza multimode(data):
@@ -590,7 +590,7 @@ eleza multimode(data):
 # They are also easy to explain, easy to compute manually, na have
 # straight-forward interpretations that aren't surprising.
 
-# The default method ni known kama "R6", "PERCENTILE.EXC", ama "expected
+# The default method ni known as "R6", "PERCENTILE.EXC", ama "expected
 # value of rank order statistics". The alternative method ni known as
 # "R7", "PERCENTILE.INC", ama "mode of rank order statistics".
 
@@ -599,7 +599,7 @@ eleza multimode(data):
 # reasonable choice.  Consider a random sample of nine values kutoka a
 # population ukijumuisha a uniform distribution kutoka 0.0 to 100.0.  The
 # distribution of the third ranked sample point ni described by
-# betavariate(alpha=3, beta=7) which has mode=0.250, median=0.286, na
+# betavariate(alpha=3, beta=7) which has mode=0.250, median=0.286, and
 # mean=0.300.  Only the latter (which corresponds ukijumuisha R6) gives the
 # desired cut point ukijumuisha 30% of the population falling below that
 # value, making it comparable to a result kutoka an inv_cdf() function.
@@ -629,16 +629,16 @@ eleza quantiles(data, *, n=4, method='exclusive'):
     The *data* can be any iterable containing sample.
     The cut points are linearly interpolated between data points.
 
-    If *method* ni set to *inclusive*, *data* ni treated kama population
-    data.  The minimum value ni treated kama the 0th percentile na the
-    maximum value ni treated kama the 100th percentile.
+    If *method* ni set to *inclusive*, *data* ni treated as population
+    data.  The minimum value ni treated as the 0th percentile na the
+    maximum value ni treated as the 100th percentile.
     """
     ikiwa n < 1:
-        ashiria StatisticsError('n must be at least 1')
+         ashiria StatisticsError('n must be at least 1')
     data = sorted(data)
     ld = len(data)
     ikiwa ld < 2:
-        ashiria StatisticsError('must have at least two data points')
+         ashiria StatisticsError('must have at least two data points')
     ikiwa method == 'inclusive':
         m = ld - 1
         result = []
@@ -658,7 +658,7 @@ eleza quantiles(data, *, n=4, method='exclusive'):
             interpolated = (data[j-1] * (n - delta) + data[j] * delta) / n
             result.append(interpolated)
         rudisha result
-    ashiria ValueError(f'Unknown method: {method!r}')
+     ashiria ValueError(f'Unknown method: {method!r}')
 
 
 # === Measures of spread ===
@@ -668,7 +668,7 @@ eleza quantiles(data, *, n=4, method='exclusive'):
 #     http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
 #
 # Under no circumstances use the so-called "computational formula for
-# variance", kama that ni only suitable kila hand calculations ukijumuisha a small
+# variance", as that ni only suitable kila hand calculations ukijumuisha a small
 # amount of low-precision data. It has terrible numeric properties.
 #
 # See a comparison of three computational methods here:
@@ -677,9 +677,9 @@ eleza quantiles(data, *, n=4, method='exclusive'):
 eleza _ss(data, c=Tupu):
     """Return sum of square deviations of sequence data.
 
-    If ``c`` ni Tupu, the mean ni calculated kwenye one pita, na the deviations
-    kutoka the mean are calculated kwenye a second pita. Otherwise, deviations are
-    calculated kutoka ``c`` kama given. Use the second case ukijumuisha care, kama it can
+    If ``c`` ni Tupu, the mean ni calculated kwenye one pass, na the deviations
+    kutoka the mean are calculated kwenye a second pass. Otherwise, deviations are
+    calculated kutoka ``c`` as given. Use the second case ukijumuisha care, as it can
     lead to garbage results.
     """
     ikiwa c ni Tupu:
@@ -710,7 +710,7 @@ eleza variance(data, xbar=Tupu):
     >>> variance(data)
     1.3720238095238095
 
-    If you have already calculated the mean of your data, you can pita it as
+    If you have already calculated the mean of your data, you can pass it as
     the optional second argument ``xbar`` to avoid recalculating it:
 
     >>> m = mean(data)
@@ -718,16 +718,16 @@ eleza variance(data, xbar=Tupu):
     1.3720238095238095
 
     This function does sio check that ``xbar`` ni actually the mean of
-    ``data``. Giving arbitrary values kila ``xbar`` may lead to invalid ama
+    ``data``. Giving arbitrary values kila ``xbar`` may lead to invalid or
     impossible results.
 
     Decimals na Fractions are supported:
 
-    >>> kutoka decimal agiza Decimal kama D
+    >>> kutoka decimal agiza Decimal as D
     >>> variance([D("27.5"), D("30.25"), D("30.25"), D("34.5"), D("41.75")])
     Decimal('31.01875')
 
-    >>> kutoka fractions agiza Fraction kama F
+    >>> kutoka fractions agiza Fraction as F
     >>> variance([F(1, 6), F(1, 2), F(5, 3)])
     Fraction(67, 108)
 
@@ -736,7 +736,7 @@ eleza variance(data, xbar=Tupu):
         data = list(data)
     n = len(data)
     ikiwa n < 2:
-        ashiria StatisticsError('variance requires at least two data points')
+         ashiria StatisticsError('variance requires at least two data points')
     T, ss = _ss(data, xbar)
     rudisha _convert(ss/(n-1), T)
 
@@ -758,7 +758,7 @@ eleza pvariance(data, mu=Tupu):
     >>> pvariance(data)
     1.25
 
-    If you have already calculated the mean of the data, you can pita it as
+    If you have already calculated the mean of the data, you can pass it as
     the optional second argument to avoid recalculating it:
 
     >>> mu = mean(data)
@@ -767,11 +767,11 @@ eleza pvariance(data, mu=Tupu):
 
     Decimals na Fractions are supported:
 
-    >>> kutoka decimal agiza Decimal kama D
+    >>> kutoka decimal agiza Decimal as D
     >>> pvariance([D("27.5"), D("30.25"), D("30.25"), D("34.5"), D("41.75")])
     Decimal('24.815')
 
-    >>> kutoka fractions agiza Fraction kama F
+    >>> kutoka fractions agiza Fraction as F
     >>> pvariance([F(1, 4), F(5, 4), F(1, 2)])
     Fraction(13, 72)
 
@@ -780,7 +780,7 @@ eleza pvariance(data, mu=Tupu):
         data = list(data)
     n = len(data)
     ikiwa n < 1:
-        ashiria StatisticsError('pvariance requires at least one data point')
+         ashiria StatisticsError('pvariance requires at least one data point')
     T, ss = _ss(data, mu)
     rudisha _convert(ss/n, T)
 
@@ -797,7 +797,7 @@ eleza stdev(data, xbar=Tupu):
     var = variance(data, xbar)
     jaribu:
         rudisha var.sqrt()
-    tatizo AttributeError:
+    except AttributeError:
         rudisha math.sqrt(var)
 
 
@@ -813,7 +813,7 @@ eleza pstdev(data, mu=Tupu):
     var = pvariance(data, mu)
     jaribu:
         rudisha var.sqrt()
-    tatizo AttributeError:
+    except AttributeError:
         rudisha math.sqrt(var)
 
 
@@ -907,12 +907,12 @@ kundi NormalDist:
     eleza __init__(self, mu=0.0, sigma=1.0):
         "NormalDist where mu ni the mean na sigma ni the standard deviation."
         ikiwa sigma < 0.0:
-            ashiria StatisticsError('sigma must be non-negative')
+             ashiria StatisticsError('sigma must be non-negative')
         self._mu = float(mu)
         self._sigma = float(sigma)
 
     @classmethod
-    eleza kutoka_samples(cls, data):
+    eleza from_samples(cls, data):
         "Make a normal distribution instance kutoka sample data."
         ikiwa sio isinstance(data, (list, tuple)):
             data = list(data)
@@ -929,13 +929,13 @@ kundi NormalDist:
         "Probability density function.  P(x <= X < x+dx) / dx"
         variance = self._sigma ** 2.0
         ikiwa sio variance:
-            ashiria StatisticsError('pdf() sio defined when sigma ni zero')
+             ashiria StatisticsError('pdf() sio defined when sigma ni zero')
         rudisha exp((x - self._mu)**2.0 / (-2.0*variance)) / sqrt(tau*variance)
 
     eleza cdf(self, x):
         "Cumulative distribution function.  P(X <= x)"
         ikiwa sio self._sigma:
-            ashiria StatisticsError('cdf() sio defined when sigma ni zero')
+             ashiria StatisticsError('cdf() sio defined when sigma ni zero')
         rudisha 0.5 * (1.0 + erf((x - self._mu) / (self._sigma * sqrt(2.0))))
 
     eleza inv_cdf(self, p):
@@ -949,9 +949,9 @@ kundi NormalDist:
         function.
         """
         ikiwa p <= 0.0 ama p >= 1.0:
-            ashiria StatisticsError('p must be kwenye the range 0.0 < p < 1.0')
+             ashiria StatisticsError('p must be kwenye the range 0.0 < p < 1.0')
         ikiwa self._sigma <= 0.0:
-            ashiria StatisticsError('cdf() sio defined when sigma at ama below zero')
+             ashiria StatisticsError('cdf() sio defined when sigma at ama below zero')
         rudisha _normal_dist_inv_cdf(p, self._mu, self._sigma)
 
     eleza quantiles(self, n=4):
@@ -977,18 +977,18 @@ kundi NormalDist:
             >>> N1.overlap(N2)
             0.8035050657330205
         """
-        # See: "The overlapping coefficient kama a measure of agreement between
+        # See: "The overlapping coefficient as a measure of agreement between
         # probability distributions na point estimation of the overlap of two
         # normal densities" -- Henry F. Inman na Edwin L. Bradley Jr
         # http://dx.doi.org/10.1080/03610928908830127
         ikiwa sio isinstance(other, NormalDist):
-            ashiria TypeError('Expected another NormalDist instance')
+             ashiria TypeError('Expected another NormalDist instance')
         X, Y = self, other
         ikiwa (Y._sigma, Y._mu) < (X._sigma, X._mu):   # sort to assure commutativity
             X, Y = Y, X
         X_var, Y_var = X.variance, Y.variance
         ikiwa sio X_var ama sio Y_var:
-            ashiria StatisticsError('overlap() sio defined when sigma ni zero')
+             ashiria StatisticsError('overlap() sio defined when sigma ni zero')
         dv = Y_var - X_var
         dm = fabs(Y._mu - X._mu)
         ikiwa sio dv:
@@ -1104,8 +1104,8 @@ kundi NormalDist:
 # If available, use C implementation
 jaribu:
     kutoka _statistics agiza _normal_dist_inv_cdf
-tatizo ImportError:
-    pita
+except ImportError:
+    pass
 
 
 ikiwa __name__ == '__main__':
@@ -1132,19 +1132,19 @@ ikiwa __name__ == '__main__':
     kila func kwenye (add, sub):
         andika(f'\nTest {func.__name__} ukijumuisha another NormalDist:')
         andika(func(g1, g2))
-        andika(NormalDist.kutoka_samples(map(func, G1, G2)))
+        andika(NormalDist.from_samples(map(func, G1, G2)))
 
     const = 11
     kila func kwenye (add, sub, mul, truediv):
         andika(f'\nTest {func.__name__} ukijumuisha a constant:')
         andika(func(g1, const))
-        andika(NormalDist.kutoka_samples(map(func, G1, repeat(const))))
+        andika(NormalDist.from_samples(map(func, G1, repeat(const))))
 
     const = 19
     kila func kwenye (add, sub, mul):
         andika(f'\nTest constant ukijumuisha {func.__name__}:')
         andika(func(const, g1))
-        andika(NormalDist.kutoka_samples(map(func, repeat(const), G1)))
+        andika(NormalDist.from_samples(map(func, repeat(const), G1)))
 
     eleza assert_close(G1, G2):
         assert isclose(G1.mean, G1.mean, rel_tol=0.01), (G1, G2)
@@ -1155,23 +1155,23 @@ ikiwa __name__ == '__main__':
     s = 32.75
     n = 100_000
 
-    S = NormalDist.kutoka_samples([x + s kila x kwenye X.samples(n)])
+    S = NormalDist.from_samples([x + s kila x kwenye X.samples(n)])
     assert_close(X + s, S)
 
-    S = NormalDist.kutoka_samples([x - s kila x kwenye X.samples(n)])
+    S = NormalDist.from_samples([x - s kila x kwenye X.samples(n)])
     assert_close(X - s, S)
 
-    S = NormalDist.kutoka_samples([x * s kila x kwenye X.samples(n)])
+    S = NormalDist.from_samples([x * s kila x kwenye X.samples(n)])
     assert_close(X * s, S)
 
-    S = NormalDist.kutoka_samples([x / s kila x kwenye X.samples(n)])
+    S = NormalDist.from_samples([x / s kila x kwenye X.samples(n)])
     assert_close(X / s, S)
 
-    S = NormalDist.kutoka_samples([x + y kila x, y kwenye zip(X.samples(n),
+    S = NormalDist.from_samples([x + y kila x, y kwenye zip(X.samples(n),
                                                        Y.samples(n))])
     assert_close(X + Y, S)
 
-    S = NormalDist.kutoka_samples([x - y kila x, y kwenye zip(X.samples(n),
+    S = NormalDist.from_samples([x - y kila x, y kwenye zip(X.samples(n),
                                                        Y.samples(n))])
     assert_close(X - Y, S)
 

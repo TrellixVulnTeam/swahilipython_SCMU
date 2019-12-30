@@ -1,10 +1,10 @@
 # IDLE reads several config files to determine user preferences.  This
-# file ni the default config file kila idle key binding settings.
-# Where multiple keys are specified kila an action: ikiwa they are separated
+# file is the default config file for idle key binding settings.
+# Where multiple keys are specified for an action: if they are separated
 # by a space (eg. action=<key1> <key2>) then the keys are alternatives, if
-# there ni no space (eg. action=<key1><key2>) then the keys comprise a
+# there is no space (eg. action=<key1><key2>) then the keys comprise a
 # single 'emacs style' multi-keystoke binding. The tk event specifier 'Key'
-# ni used kwenye all cases, kila consistency kwenye auto key conflict checking kwenye the
+# is used in all cases, for consistency in auto key conflict checking in the
 # configuration gui.
 
 [IDLE Classic Windows]
@@ -27,7 +27,7 @@ restart-shell=<Control-Key-F6>
 open-class-browser=<Alt-Key-c> <Meta-Key-c> <Alt-Key-C> <Meta-Key-C>
 open-module=<Alt-Key-m> <Meta-Key-m> <Alt-Key-M> <Meta-Key-M>
 open-new-window=<Control-Key-n> <Control-Key-N>
-open-window-kutoka-file=<Control-Key-o> <Control-Key-O>
+open-window-from-file=<Control-Key-o> <Control-Key-O>
 plain-newline-and-indent=<Control-Key-j> <Control-Key-J>
 print-window=<Control-Key-p> <Control-Key-P>
 redo=<Control-Shift-Key-Z> <Control-Shift-Key-z>
@@ -85,7 +85,7 @@ restart-shell=<Control-Key-F6>
 open-class-browser=<Control-Key-x><Control-Key-b>
 open-module=<Control-Key-x><Control-Key-m>
 open-new-window=<Control-Key-x><Control-Key-n>
-open-window-kutoka-file=<Control-Key-x><Control-Key-f>
+open-window-from-file=<Control-Key-x><Control-Key-f>
 plain-newline-and-indent=<Control-Key-j>
 print-window=<Control-x><Control-Key-p>
 python-docs=<Control-Key-h>
@@ -145,7 +145,7 @@ restart-shell = <Control-Key-F6>
 open-class-browser = <Control-Key-b>
 open-module = <Control-Key-m>
 open-new-window = <Control-Key-n>
-open-window-kutoka-file = <Control-Key-o>
+open-window-from-file = <Control-Key-o>
 plain-newline-and-indent = <Control-Key-j>
 print-window = <Control-Key-p>
 python-context-help = <Shift-Key-F1>
@@ -207,7 +207,7 @@ restart-shell=<Control-Key-F6>
 open-class-browser=<Command-Key-b>
 open-module=<Command-Key-m>
 open-new-window=<Command-Key-n>
-open-window-kutoka-file=<Command-Key-o>
+open-window-from-file=<Command-Key-o>
 plain-newline-and-indent=<Control-Key-j>
 print-window=<Command-Key-p>
 redo=<Shift-Command-Key-Z>
@@ -296,7 +296,7 @@ open-module = <Command-Key-m>
 find-selection = <Shift-Command-Key-F3>
 python-context-help = <Shift-Key-F1>
 save-copy-of-window-as-file = <Option-Command-Key-s>
-open-window-kutoka-file = <Command-Key-o>
+open-window-from-file = <Command-Key-o>
 python-docs = <Key-F1>
 force-open-completions= <Control-Key-space>
 expand-word= <Option-Key-slash>

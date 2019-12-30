@@ -1,8 +1,8 @@
-"""Module for parsing and testing package version predicate strings.
+"""Module kila parsing na testing package version predicate strings.
 """
-import re
-import distutils.version
-import operator
+agiza re
+agiza distutils.version
+agiza operator
 
 
 re_validPackage = re.compile(r"(?i)^\s*([a-z_]\w*(?:\.[a-z_]\w*)*)(.*)",
@@ -14,26 +14,26 @@ re_splitComparison = re.compile(r"^\s*(<=|>=|<|>|!=|==)\s*([^\s,]+)\s*$")
 # (comp) (version)
 
 
-def splitUp(pred):
+eleza splitUp(pred):
     """Parse a single version comparison.
 
     Return (comparison string, StrictVersion)
     """
     res = re_splitComparison.match(pred)
-    if sio res:
-        ashiria ValueError("bad package restriction syntax: %r" % pred)
+    ikiwa sio res:
+         ashiria ValueError("bad package restriction syntax: %r" % pred)
     comp, verStr = res.groups()
-    return (comp, distutils.version.StrictVersion(verStr))
+    rudisha (comp, distutils.version.StrictVersion(verStr))
 
 compmap = {"<": operator.lt, "<=": operator.le, "==": operator.eq,
            ">": operator.gt, ">=": operator.ge, "!=": operator.ne}
 
-class VersionPredicate:
-    """Parse and test package version predicates.
+kundi VersionPredicate:
+    """Parse na test package version predicates.
 
     >>> v = VersionPredicate('pyepat.abc (>1.0, <3333.3a1, !=1555.1b3)')
 
-    The `name` attribute provides the full dotted name that is given::
+    The `name` attribute provides the full dotted name that ni given::
 
     >>> v.name
     'pyepat.abc'
@@ -41,44 +41,44 @@ class VersionPredicate:
     The str() of a `VersionPredicate` provides a normalized
     human-readable version of the expression::
 
-    >>> print(v)
+    >>> andika(v)
     pyepat.abc (> 1.0, < 3333.3a1, != 1555.1b3)
 
-    The `satisfied_by()` method can be used to determine with a given
-    version number is included in the set described by the version
+    The `satisfied_by()` method can be used to determine ukijumuisha a given
+    version number ni included kwenye the set described by the version
     restrictions::
 
     >>> v.satisfied_by('1.1')
-    True
+    Kweli
     >>> v.satisfied_by('1.4')
-    True
+    Kweli
     >>> v.satisfied_by('1.0')
-    False
+    Uongo
     >>> v.satisfied_by('4444.4')
-    False
+    Uongo
     >>> v.satisfied_by('1555.1b3')
-    False
+    Uongo
 
-    `VersionPredicate` is flexible in accepting extra whitespace::
+    `VersionPredicate` ni flexible kwenye accepting extra whitespace::
 
     >>> v = VersionPredicate(' pat( ==  0.1  )  ')
     >>> v.name
     'pat'
     >>> v.satisfied_by('0.1')
-    True
+    Kweli
     >>> v.satisfied_by('0.2')
-    False
+    Uongo
 
-    If any version numbers passed in do sio conform to the
-    restrictions of `StrictVersion`, a `ValueError` is raised::
+    If any version numbers passed kwenye do sio conform to the
+    restrictions of `StrictVersion`, a `ValueError` ni raised::
 
     >>> v = VersionPredicate('p1.p2.p3.p4(>=1.0, <=1.3a1, !=1.2zb3)')
     Traceback (most recent call last):
       ...
     ValueError: invalid version number '1.2zb3'
 
-    It the module or package name given does sio conform to what's
-    allowed as a legal module or package name, `ValueError` is
+    It the module ama package name given does sio conform to what's
+    allowed as a legal module ama package name, `ValueError` is
     raised::
 
     >>> v = VersionPredicate('foo-bar')
@@ -93,7 +93,7 @@ class VersionPredicate:
 
     """
 
-    def __init__(self, versionPredicateStr):
+    eleza __init__(self, versionPredicateStr):
         """Parse a version predicate string.
         """
         # Fields:
@@ -101,66 +101,66 @@ class VersionPredicate:
         #    pred:  list of (comparison string, StrictVersion)
 
         versionPredicateStr = versionPredicateStr.strip()
-        if sio versionPredicateStr:
-            ashiria ValueError("empty package restriction")
+        ikiwa sio versionPredicateStr:
+             ashiria ValueError("empty package restriction")
         match = re_validPackage.match(versionPredicateStr)
-        if sio match:
-            ashiria ValueError("bad package name in %r" % versionPredicateStr)
+        ikiwa sio match:
+             ashiria ValueError("bad package name kwenye %r" % versionPredicateStr)
         self.name, paren = match.groups()
         paren = paren.strip()
-        if paren:
+        ikiwa paren:
             match = re_paren.match(paren)
-            if sio match:
-                ashiria ValueError("expected parenthesized list: %r" % paren)
+            ikiwa sio match:
+                 ashiria ValueError("expected parenthesized list: %r" % paren)
             str = match.groups()[0]
-            self.pred = [splitUp(aPred) for aPred in str.split(",")]
-            if sio self.pred:
-                ashiria ValueError("empty parenthesized list in %r"
+            self.pred = [splitUp(aPred) kila aPred kwenye str.split(",")]
+            ikiwa sio self.pred:
+                 ashiria ValueError("empty parenthesized list kwenye %r"
                                  % versionPredicateStr)
         isipokua:
             self.pred = []
 
-    def __str__(self):
-        if self.pred:
-            seq = [cond + " " + str(ver) for cond, ver in self.pred]
-            return self.name + " (" + ", ".join(seq) + ")"
+    eleza __str__(self):
+        ikiwa self.pred:
+            seq = [cond + " " + str(ver) kila cond, ver kwenye self.pred]
+            rudisha self.name + " (" + ", ".join(seq) + ")"
         isipokua:
-            return self.name
+            rudisha self.name
 
-    def satisfied_by(self, version):
-        """True if version is compatible with all the predicates in self.
+    eleza satisfied_by(self, version):
+        """Kweli ikiwa version ni compatible ukijumuisha all the predicates kwenye self.
         The parameter version must be acceptable to the StrictVersion
-        constructor.  It may be either a string or StrictVersion.
+        constructor.  It may be either a string ama StrictVersion.
         """
-        for cond, ver in self.pred:
-            if sio compmap[cond](version, ver):
-                return False
-        return True
+        kila cond, ver kwenye self.pred:
+            ikiwa sio compmap[cond](version, ver):
+                rudisha Uongo
+        rudisha Kweli
 
 
-_provision_rx = None
+_provision_rx = Tupu
 
-def split_provision(value):
-    """Return the name and optional version number of a provision.
+eleza split_provision(value):
+    """Return the name na optional version number of a provision.
 
-    The version number, if given, will be returned as a `StrictVersion`
-    instance, otherwise it will be `None`.
+    The version number, ikiwa given, will be returned as a `StrictVersion`
+    instance, otherwise it will be `Tupu`.
 
     >>> split_provision('mypkg')
-    ('mypkg', None)
+    ('mypkg', Tupu)
     >>> split_provision(' mypkg( 1.2 ) ')
     ('mypkg', StrictVersion ('1.2'))
     """
     global _provision_rx
-    if _provision_rx is None:
+    ikiwa _provision_rx ni Tupu:
         _provision_rx = re.compile(
             r"([a-zA-Z_]\w*(?:\.[a-zA-Z_]\w*)*)(?:\s*\(\s*([^)\s]+)\s*\))?$",
             re.ASCII)
     value = value.strip()
     m = _provision_rx.match(value)
-    if sio m:
-        ashiria ValueError("illegal provides specification: %r" % value)
-    ver = m.group(2) ama None
-    if ver:
+    ikiwa sio m:
+         ashiria ValueError("illegal provides specification: %r" % value)
+    ver = m.group(2) ama Tupu
+    ikiwa ver:
         ver = distutils.version.StrictVersion(ver)
-    return m.group(1), ver
+    rudisha m.group(1), ver

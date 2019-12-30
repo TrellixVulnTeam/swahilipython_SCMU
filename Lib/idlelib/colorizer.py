@@ -16,7 +16,7 @@ eleza make_pat():
     kw = r"\b" + any("KEYWORD", keyword.kwlist) + r"\b"
     builtinlist = [str(name) kila name kwenye dir(builtins)
                                         ikiwa sio name.startswith('_') na \
-                                        name haiko kwenye keyword.kwlist]
+                                        name sio kwenye keyword.kwlist]
     builtin = r"([^.'\"\\#]\b|^)" + any("BUILTIN", builtinlist) + r"\b"
     comment = any("COMMENT", [r"#[^\n]*"])
     stringprefix = r"(?i:r|u|f|fr|rf|b|br|rb)?"
@@ -109,7 +109,7 @@ kundi ColorDelegator(Delegator):
         "Configure text widget tags ukijumuisha colors kutoka tagdefs."
         kila tag, cnf kwenye self.tagdefs.items():
             self.tag_configure(tag, **cnf)
-        self.tag_ashiria('sel')
+        self.tag_raise('sel')
 
     eleza LoadTagDefs(self):
         "Create dictionary of tag names to text colors."
@@ -146,14 +146,14 @@ kundi ColorDelegator(Delegator):
         self.tag_add("TODO", index1, index2)
         ikiwa self.after_id:
             ikiwa DEBUG: andika("colorizing already scheduled")
-            rudisha
+            return
         ikiwa self.colorizing:
             self.stop_colorizing = Kweli
             ikiwa DEBUG: andika("stop colorizing")
         ikiwa self.allow_colorizing:
             ikiwa DEBUG: andika("schedule colorizing")
             self.after_id = self.after(1, self.recolorize)
-        rudisha
+        return
 
     eleza close(self):
         ikiwa self.after_id:
@@ -201,13 +201,13 @@ kundi ColorDelegator(Delegator):
         self.after_id = Tupu
         ikiwa sio self.delegate:
             ikiwa DEBUG: andika("no delegate")
-            rudisha
+            return
         ikiwa sio self.allow_colorizing:
             ikiwa DEBUG: andika("auto colorizing ni off")
-            rudisha
+            return
         ikiwa self.colorizing:
             ikiwa DEBUG: andika("already colorizing")
-            rudisha
+            return
         jaribu:
             self.stop_colorizing = Uongo
             self.colorizing = Kweli
@@ -250,7 +250,7 @@ kundi ColorDelegator(Delegator):
                 line = self.get(mark, next)
                 ##print head, "get", mark, next, "->", repr(line)
                 ikiwa sio line:
-                    rudisha
+                    return
                 kila tag kwenye self.tagdefs:
                     self.tag_remove(tag, mark, next)
                 chars = chars + line
@@ -286,7 +286,7 @@ kundi ColorDelegator(Delegator):
                 self.update()
                 ikiwa self.stop_colorizing:
                     ikiwa DEBUG: andika("colorizing stopped")
-                    rudisha
+                    return
 
     eleza removecolors(self):
         "Remove all colorizing tags."
@@ -304,7 +304,7 @@ eleza _color_delegator(parent):  # htest #
     top.geometry("700x250+%d+%d" % (x + 20, y + 175))
     source = (
         "ikiwa Kweli: int ('1') # keyword, builtin, string, comment\n"
-        "lasivyo Uongo: andika(0)\n"
+        "elikiwa Uongo: andika(0)\n"
         "isipokua: float(Tupu)\n"
         "ikiwa iF + If + IF: 'keyword matching must respect case'\n"
         "if'': x or''  # valid string-keyword no-space combinations\n"

@@ -6,7 +6,7 @@ which wraps a multiplexer ukijumuisha functionality kila scheduling callbacks,
 immediately ama at a given time kwenye the future.
 
 Whenever a public API takes a callback, subsequent positional
-arguments will be pitaed to the callback if/when it ni called.  This
+arguments will be passed to the callback if/when it ni called.  This
 avoids the proliferation of trivial lambdas implementing closures.
 Keyword arguments kila the callback are sio supported; this ni a
 conscious design decision, leaving the door open kila keyword arguments
@@ -32,7 +32,7 @@ agiza weakref
 
 jaribu:
     agiza ssl
-tatizo ImportError:  # pragma: no cover
+except ImportError:  # pragma: no cover
     ssl = Tupu
 
 kutoka . agiza constants
@@ -63,7 +63,7 @@ _MIN_CANCELLED_TIMER_HANDLES_FRACTION = 0.5
 
 _HAS_IPv6 = hasattr(socket, 'AF_INET6')
 
-# Maximum timeout pitaed to select to avoid OS limitations
+# Maximum timeout passed to select to avoid OS limitations
 MAXIMUM_SELECT_TIMEOUT = 24 * 3600
 
 
@@ -79,7 +79,7 @@ eleza _format_handle(handle):
 eleza _format_pipe(fd):
     ikiwa fd == subprocess.PIPE:
         rudisha '<pipe>'
-    lasivyo fd == subprocess.STDOUT:
+    elikiwa fd == subprocess.STDOUT:
         rudisha '<stdout>'
     isipokua:
         rudisha repr(fd)
@@ -87,43 +87,43 @@ eleza _format_pipe(fd):
 
 eleza _set_reuseport(sock):
     ikiwa sio hasattr(socket, 'SO_REUSEPORT'):
-        ashiria ValueError('reuse_port sio supported by socket module')
+         ashiria ValueError('reuse_port sio supported by socket module')
     isipokua:
         jaribu:
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-        tatizo OSError:
-            ashiria ValueError('reuse_port sio supported by socket module, '
+        except OSError:
+             ashiria ValueError('reuse_port sio supported by socket module, '
                              'SO_REUSEPORT defined but sio implemented.')
 
 
 eleza _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
     # Try to skip getaddrinfo ikiwa "host" ni already an IP. Users might have
-    # handled name resolution kwenye their own code na pita kwenye resolved IPs.
+    # handled name resolution kwenye their own code na pass kwenye resolved IPs.
     ikiwa sio hasattr(socket, 'inet_pton'):
-        rudisha
+        return
 
-    ikiwa proto haiko kwenye {0, socket.IPPROTO_TCP, socket.IPPROTO_UDP} ama \
+    ikiwa proto sio kwenye {0, socket.IPPROTO_TCP, socket.IPPROTO_UDP} ama \
             host ni Tupu:
         rudisha Tupu
 
     ikiwa type == socket.SOCK_STREAM:
         proto = socket.IPPROTO_TCP
-    lasivyo type == socket.SOCK_DGRAM:
+    elikiwa type == socket.SOCK_DGRAM:
         proto = socket.IPPROTO_UDP
     isipokua:
         rudisha Tupu
 
     ikiwa port ni Tupu:
         port = 0
-    lasivyo isinstance(port, bytes) na port == b'':
+    elikiwa isinstance(port, bytes) na port == b'':
         port = 0
-    lasivyo isinstance(port, str) na port == '':
+    elikiwa isinstance(port, str) na port == '':
         port = 0
     isipokua:
         # If port's a service name like "http", don't skip getaddrinfo.
         jaribu:
             port = int(port)
-        tatizo (TypeError, ValueError):
+        except (TypeError, ValueError):
             rudisha Tupu
 
     ikiwa family == socket.AF_UNSPEC:
@@ -148,8 +148,8 @@ eleza _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
                 rudisha af, type, proto, '', (host, port, flowinfo, scopeid)
             isipokua:
                 rudisha af, type, proto, '', (host, port)
-        tatizo OSError:
-            pita
+        except OSError:
+            pass
 
     # "host" ni sio an IP address.
     rudisha Tupu
@@ -161,7 +161,7 @@ eleza _interleave_addrinfos(addrinfos, first_address_family_count=1):
     addrinfos_by_family = collections.OrderedDict()
     kila addr kwenye addrinfos:
         family = addr[0]
-        ikiwa family haiko kwenye addrinfos_by_family:
+        ikiwa family sio kwenye addrinfos_by_family:
             addrinfos_by_family[family] = []
         addrinfos_by_family[family].append(addr)
     addrinfos_lists = list(addrinfos_by_family.values())
@@ -171,7 +171,7 @@ eleza _interleave_addrinfos(addrinfos, first_address_family_count=1):
         reordered.extend(addrinfos_lists[0][:first_address_family_count - 1])
         toa addrinfos_lists[0][:first_address_family_count - 1]
     reordered.extend(
-        a kila a kwenye itertools.chain.kutoka_iterable(
+        a kila a kwenye itertools.chain.from_iterable(
             itertools.zip_longest(*addrinfos_lists)
         ) ikiwa a ni sio Tupu)
     rudisha reordered
@@ -183,25 +183,25 @@ eleza _run_until_complete_cb(fut):
         ikiwa isinstance(exc, (SystemExit, KeyboardInterrupt)):
             # Issue #22429: run_forever() already finished, no need to
             # stop it.
-            rudisha
+            return
     futures._get_loop(fut).stop()
 
 
 ikiwa hasattr(socket, 'TCP_NODELAY'):
     eleza _set_nodelay(sock):
-        ikiwa (sock.family kwenye {socket.AF_INET, socket.AF_INET6} na
-                sock.type == socket.SOCK_STREAM na
+        ikiwa (sock.family kwenye {socket.AF_INET, socket.AF_INET6} and
+                sock.type == socket.SOCK_STREAM and
                 sock.proto == socket.IPPROTO_TCP):
             sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
 isipokua:
     eleza _set_nodelay(sock):
-        pita
+        pass
 
 
 kundi _SendfileFallbackProtocol(protocols.Protocol):
     eleza __init__(self, transp):
         ikiwa sio isinstance(transp, transports._FlowControlMixin):
-            ashiria TypeError("transport should be _FlowControlMixin instance")
+             ashiria TypeError("transport should be _FlowControlMixin instance")
         self._transport = transp
         self._proto = transp.get_protocol()
         self._should_resume_reading = transp.is_reading()
@@ -215,14 +215,14 @@ kundi _SendfileFallbackProtocol(protocols.Protocol):
 
     async eleza drain(self):
         ikiwa self._transport.is_closing():
-            ashiria ConnectionError("Connection closed by peer")
+             ashiria ConnectionError("Connection closed by peer")
         fut = self._write_ready_fut
         ikiwa fut ni Tupu:
-            rudisha
+            return
         await fut
 
     eleza connection_made(self, transport):
-        ashiria RuntimeError("Invalid state: "
+         ashiria RuntimeError("Invalid state: "
                            "connection should have been established already.")
 
     eleza connection_lost(self, exc):
@@ -238,20 +238,20 @@ kundi _SendfileFallbackProtocol(protocols.Protocol):
 
     eleza pause_writing(self):
         ikiwa self._write_ready_fut ni sio Tupu:
-            rudisha
+            return
         self._write_ready_fut = self._transport._loop.create_future()
 
     eleza resume_writing(self):
         ikiwa self._write_ready_fut ni Tupu:
-            rudisha
+            return
         self._write_ready_fut.set_result(Uongo)
         self._write_ready_fut = Tupu
 
     eleza data_received(self, data):
-        ashiria RuntimeError("Invalid state: reading should be paused")
+         ashiria RuntimeError("Invalid state: reading should be paused")
 
     eleza eof_received(self):
-        ashiria RuntimeError("Invalid state: reading should be paused")
+         ashiria RuntimeError("Invalid state: reading should be paused")
 
     async eleza restore(self):
         self._transport.set_protocol(self._proto)
@@ -303,7 +303,7 @@ kundi Server(events.AbstractServer):
 
     eleza _start_serving(self):
         ikiwa self._serving:
-            rudisha
+            return
         self._serving = Kweli
         kila sock kwenye self._sockets:
             sock.listen(self._backlog)
@@ -326,7 +326,7 @@ kundi Server(events.AbstractServer):
     eleza close(self):
         sockets = self._sockets
         ikiwa sockets ni Tupu:
-            rudisha
+            return
         self._sockets = Tupu
 
         kila sock kwenye sockets:
@@ -334,7 +334,7 @@ kundi Server(events.AbstractServer):
 
         self._serving = Uongo
 
-        ikiwa (self._serving_forever_fut ni sio Tupu na
+        ikiwa (self._serving_forever_fut ni sio Tupu and
                 sio self._serving_forever_fut.done()):
             self._serving_forever_fut.cancel()
             self._serving_forever_fut = Tupu
@@ -350,28 +350,28 @@ kundi Server(events.AbstractServer):
 
     async eleza serve_forever(self):
         ikiwa self._serving_forever_fut ni sio Tupu:
-            ashiria RuntimeError(
+             ashiria RuntimeError(
                 f'server {self!r} ni already being awaited on serve_forever()')
         ikiwa self._sockets ni Tupu:
-            ashiria RuntimeError(f'server {self!r} ni closed')
+             ashiria RuntimeError(f'server {self!r} ni closed')
 
         self._start_serving()
         self._serving_forever_fut = self._loop.create_future()
 
         jaribu:
             await self._serving_forever_fut
-        tatizo exceptions.CancelledError:
+        except exceptions.CancelledError:
             jaribu:
                 self.close()
                 await self.wait_closed()
             mwishowe:
-                ashiria
+                raise
         mwishowe:
             self._serving_forever_fut = Tupu
 
     async eleza wait_closed(self):
         ikiwa self._sockets ni Tupu ama self._waiters ni Tupu:
-            rudisha
+            return
         waiter = self._loop.create_future()
         self._waiters.append(waiter)
         await waiter
@@ -444,7 +444,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         must rudisha a Future.
         """
         ikiwa factory ni sio Tupu na sio callable(factory):
-            ashiria TypeError('task factory must be a callable ama Tupu')
+             ashiria TypeError('task factory must be a callable ama Tupu')
         self._task_factory = factory
 
     eleza get_task_factory(self):
@@ -454,7 +454,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
     eleza _make_socket_transport(self, sock, protocol, waiter=Tupu, *,
                                extra=Tupu, server=Tupu):
         """Create socket transport."""
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza _make_ssl_transport(
             self, rawsock, protocol, sslcontext, waiter=Tupu,
@@ -463,28 +463,28 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             ssl_handshake_timeout=Tupu,
             call_connection_made=Kweli):
         """Create SSL transport."""
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza _make_datagram_transport(self, sock, protocol,
                                  address=Tupu, waiter=Tupu, extra=Tupu):
         """Create datagram transport."""
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza _make_read_pipe_transport(self, pipe, protocol, waiter=Tupu,
                                   extra=Tupu):
         """Create read pipe transport."""
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza _make_write_pipe_transport(self, pipe, protocol, waiter=Tupu,
                                    extra=Tupu):
         """Create write pipe transport."""
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     async eleza _make_subprocess_transport(self, protocol, args, shell,
                                          stdin, stdout, stderr, bufsize,
                                          extra=Tupu, **kwargs):
         """Create subprocess transport."""
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza _write_to_self(self):
         """Write a byte to self-pipe, to wake up the event loop.
@@ -493,15 +493,15 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         The subkundi ni responsible kila implementing the self-pipe.
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza _process_events(self, event_list):
         """Process selector events."""
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza _check_closed(self):
         ikiwa self._closed:
-            ashiria RuntimeError('Event loop ni closed')
+             ashiria RuntimeError('Event loop ni closed')
 
     eleza _asyncgen_finalizer_hook(self, agen):
         self._asyncgens.discard(agen)
@@ -524,7 +524,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         ikiwa sio len(self._asyncgens):
             # If Python version ni <3.6 ama we don't have any asynchronous
             # generators alive.
-            rudisha
+            return
 
         closing_agens = list(self._asyncgens)
         self._asyncgens.clear()
@@ -547,9 +547,9 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         """Run until stop() ni called."""
         self._check_closed()
         ikiwa self.is_running():
-            ashiria RuntimeError('This event loop ni already running')
+             ashiria RuntimeError('This event loop ni already running')
         ikiwa events._get_running_loop() ni sio Tupu:
-            ashiria RuntimeError(
+             ashiria RuntimeError(
                 'Cannot run the event loop wakati another loop ni running')
         self._set_coroutine_origin_tracking(self._debug)
         self._thread_id = threading.get_ident()
@@ -579,14 +579,14 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         ukijumuisha the same coroutine twice -- it would wrap it kwenye two
         different Tasks na that can't be good.
 
-        Return the Future's result, ama ashiria its exception.
+        Return the Future's result, ama  ashiria its exception.
         """
         self._check_closed()
 
         new_task = sio futures.isfuture(future)
         future = tasks.ensure_future(future, loop=self)
         ikiwa new_task:
-            # An exception ni ashiriad ikiwa the future didn't complete, so there
+            # An exception ni raised ikiwa the future didn't complete, so there
             # ni no need to log the "destroy pending task" message
             future._log_destroy_pending = Uongo
 
@@ -595,15 +595,15 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             self.run_forever()
         tatizo:
             ikiwa new_task na future.done() na sio future.cancelled():
-                # The coroutine ashiriad a BaseException. Consume the exception
+                # The coroutine raised a BaseException. Consume the exception
                 # to sio log a warning, the caller doesn't have access to the
                 # local task.
                 future.exception()
-            ashiria
+            raise
         mwishowe:
             future.remove_done_callback(_run_until_complete_cb)
         ikiwa sio future.done():
-            ashiria RuntimeError('Event loop stopped before Future completed.')
+             ashiria RuntimeError('Event loop stopped before Future completed.')
 
         rudisha future.result()
 
@@ -624,9 +624,9 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         The event loop must sio be running.
         """
         ikiwa self.is_running():
-            ashiria RuntimeError("Cannot close a running event loop")
+             ashiria RuntimeError("Cannot close a running event loop")
         ikiwa self._closed:
-            rudisha
+            return
         ikiwa self._debug:
             logger.debug("Close %r", self)
         self._closed = Kweli
@@ -673,7 +673,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         are scheduled kila exactly the same time, it undefined which
         will be called first.
 
-        Any positional arguments after the callback will be pitaed to
+        Any positional arguments after the callback will be passed to
         the callback when it ni called.
         """
         timer = self.call_at(self.time() + delay, callback, *args,
@@ -699,13 +699,13 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         rudisha timer
 
     eleza call_soon(self, callback, *args, context=Tupu):
-        """Arrange kila a callback to be called kama soon kama possible.
+        """Arrange kila a callback to be called as soon as possible.
 
-        This operates kama a FIFO queue: callbacks are called kwenye the
+        This operates as a FIFO queue: callbacks are called kwenye the
         order kwenye which they are registered.  Each callback will be
         called exactly once.
 
-        Any positional arguments after the callback will be pitaed to
+        Any positional arguments after the callback will be passed to
         the callback when it ni called.
         """
         self._check_closed()
@@ -718,12 +718,12 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         rudisha handle
 
     eleza _check_callback(self, callback, method):
-        ikiwa (coroutines.iscoroutine(callback) ama
+        ikiwa (coroutines.iscoroutine(callback) or
                 coroutines.iscoroutinefunction(callback)):
-            ashiria TypeError(
+             ashiria TypeError(
                 f"coroutines cannot be used ukijumuisha {method}()")
         ikiwa sio callable(callback):
-            ashiria TypeError(
+             ashiria TypeError(
                 f'a callable object was expected by {method}(), '
                 f'got {callback!r}')
 
@@ -744,10 +744,10 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         responsible kila checking this condition kila performance reasons.
         """
         ikiwa self._thread_id ni Tupu:
-            rudisha
+            return
         thread_id = threading.get_ident()
         ikiwa thread_id != self._thread_id:
-            ashiria RuntimeError(
+             ashiria RuntimeError(
                 "Non-thread-safe operation invoked on an event loop other "
                 "than the current one")
 
@@ -824,21 +824,21 @@ kundi BaseEventLoop(events.AbstractEventLoop):
     async eleza sock_sendfile(self, sock, file, offset=0, count=Tupu,
                             *, fallback=Kweli):
         ikiwa self._debug na sock.gettimeout() != 0:
-            ashiria ValueError("the socket must be non-blocking")
+             ashiria ValueError("the socket must be non-blocking")
         self._check_sendfile_params(sock, file, offset, count)
         jaribu:
             rudisha await self._sock_sendfile_native(sock, file,
                                                     offset, count)
-        tatizo exceptions.SendfileNotAvailableError kama exc:
+        except exceptions.SendfileNotAvailableError as exc:
             ikiwa sio fallback:
-                ashiria
+                raise
         rudisha await self._sock_sendfile_fallback(sock, file,
                                                   offset, count)
 
     async eleza _sock_sendfile_native(self, sock, file, offset, count):
-        # NB: sendfile syscall ni sio supported kila SSL sockets na
+        # NB: sendfile syscall ni sio supported kila SSL sockets and
         # non-mmap files even ikiwa sendfile ni supported by OS
-        ashiria exceptions.SendfileNotAvailableError(
+         ashiria exceptions.SendfileNotAvailableError(
             f"syscall sendfile ni sio available kila socket {sock!r} "
             "and file {file!r} combination")
 
@@ -869,23 +869,23 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                 file.seek(offset + total_sent)
 
     eleza _check_sendfile_params(self, sock, file, offset, count):
-        ikiwa 'b' haiko kwenye getattr(file, 'mode', 'b'):
-            ashiria ValueError("file should be opened kwenye binary mode")
+        ikiwa 'b' sio kwenye getattr(file, 'mode', 'b'):
+             ashiria ValueError("file should be opened kwenye binary mode")
         ikiwa sio sock.type == socket.SOCK_STREAM:
-            ashiria ValueError("only SOCK_STREAM type sockets are supported")
+             ashiria ValueError("only SOCK_STREAM type sockets are supported")
         ikiwa count ni sio Tupu:
             ikiwa sio isinstance(count, int):
-                ashiria TypeError(
+                 ashiria TypeError(
                     "count must be a positive integer (got {!r})".format(count))
             ikiwa count <= 0:
-                ashiria ValueError(
+                 ashiria ValueError(
                     "count must be a positive integer (got {!r})".format(count))
         ikiwa sio isinstance(offset, int):
-            ashiria TypeError(
+             ashiria TypeError(
                 "offset must be a non-negative integer (got {!r})".format(
                     offset))
         ikiwa offset < 0:
-            ashiria ValueError(
+             ashiria ValueError(
                 "offset must be a non-negative integer (got {!r})".format(
                     offset))
 
@@ -903,7 +903,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                     jaribu:
                         sock.bind(laddr)
                         koma
-                    tatizo OSError kama exc:
+                    except OSError as exc:
                         msg = (
                             f'error wakati attempting to bind on '
                             f'address {laddr!r}: '
@@ -912,18 +912,18 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                         exc = OSError(exc.errno, msg)
                         my_exceptions.append(exc)
                 isipokua:  # all bind attempts failed
-                    ashiria my_exceptions.pop()
+                     ashiria my_exceptions.pop()
             await self.sock_connect(sock, address)
             rudisha sock
-        tatizo OSError kama exc:
+        except OSError as exc:
             my_exceptions.append(exc)
             ikiwa sock ni sio Tupu:
                 sock.close()
-            ashiria
+            raise
         tatizo:
             ikiwa sock ni sio Tupu:
                 sock.close()
-            ashiria
+            raise
 
     async eleza create_connection(
             self, protocol_factory, host=Tupu, port=Tupu,
@@ -934,36 +934,36 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             happy_eyeballs_delay=Tupu, interleave=Tupu):
         """Connect to a TCP server.
 
-        Create a streaming transport connection to a given Internet host na
+        Create a streaming transport connection to a given Internet host and
         port: socket family AF_INET ama socket.AF_INET6 depending on host (or
         family ikiwa specified), socket type SOCK_STREAM. protocol_factory must be
-        a callable rudishaing a protocol instance.
+        a callable returning a protocol instance.
 
         This method ni a coroutine which will try to establish the connection
-        kwenye the background.  When successful, the coroutine rudishas a
+        kwenye the background.  When successful, the coroutine returns a
         (transport, protocol) pair.
         """
         ikiwa server_hostname ni sio Tupu na sio ssl:
-            ashiria ValueError('server_hostname ni only meaningful ukijumuisha ssl')
+             ashiria ValueError('server_hostname ni only meaningful ukijumuisha ssl')
 
         ikiwa server_hostname ni Tupu na ssl:
-            # Use host kama default kila server_hostname.  It ni an error
+            # Use host as default kila server_hostname.  It ni an error
             # ikiwa host ni empty ama sio set, e.g. when an
-            # already-connected socket was pitaed ama when only a port
-            # ni given.  To avoid this error, you can pita
-            # server_hostname='' -- this will bypita the hostname
+            # already-connected socket was passed ama when only a port
+            # ni given.  To avoid this error, you can pass
+            # server_hostname='' -- this will bypass the hostname
             # check.  (This also means that ikiwa host ni a numeric
             # IP/IPv6 address, we will attempt to verify that exact
             # address; this will probably fail, but it ni possible to
             # create a certificate kila a specific IP address, so we
             # don't judge it here.)
             ikiwa sio host:
-                ashiria ValueError('You must set server_hostname '
+                 ashiria ValueError('You must set server_hostname '
                                  'when using ssl without a host')
             server_hostname = host
 
         ikiwa ssl_handshake_timeout ni sio Tupu na sio ssl:
-            ashiria ValueError(
+             ashiria ValueError(
                 'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         ikiwa happy_eyeballs_delay ni sio Tupu na interleave ni Tupu:
@@ -972,14 +972,14 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         ikiwa host ni sio Tupu ama port ni sio Tupu:
             ikiwa sock ni sio Tupu:
-                ashiria ValueError(
+                 ashiria ValueError(
                     'host/port na sock can sio be specified at the same time')
 
             infos = await self._ensure_resolved(
                 (host, port), family=family,
                 type=socket.SOCK_STREAM, proto=proto, flags=flags, loop=self)
             ikiwa sio infos:
-                ashiria OSError('getaddrinfo() rudishaed empty list')
+                 ashiria OSError('getaddrinfo() returned empty list')
 
             ikiwa local_addr ni sio Tupu:
                 laddr_infos = await self._ensure_resolved(
@@ -987,7 +987,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                     type=socket.SOCK_STREAM, proto=proto,
                     flags=flags, loop=self)
                 ikiwa sio laddr_infos:
-                    ashiria OSError('getaddrinfo() rudishaed empty list')
+                     ashiria OSError('getaddrinfo() returned empty list')
             isipokua:
                 laddr_infos = Tupu
 
@@ -1002,7 +1002,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                         sock = await self._connect_sock(
                             exceptions, addrinfo, laddr_infos)
                         koma
-                    tatizo OSError:
+                    except OSError:
                         endelea
             isipokua:  # using happy eyeballs
                 sock, _, _ = await staggered.staggered_race(
@@ -1014,29 +1014,29 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             ikiwa sock ni Tupu:
                 exceptions = [exc kila sub kwenye exceptions kila exc kwenye sub]
                 ikiwa len(exceptions) == 1:
-                    ashiria exceptions[0]
+                     ashiria exceptions[0]
                 isipokua:
-                    # If they all have the same str(), ashiria one.
+                    # If they all have the same str(),  ashiria one.
                     motoa = str(exceptions[0])
                     ikiwa all(str(exc) == motoa kila exc kwenye exceptions):
-                        ashiria exceptions[0]
+                         ashiria exceptions[0]
                     # Raise a combined exception so the user can see all
                     # the various error messages.
-                    ashiria OSError('Multiple exceptions: {}'.format(
+                     ashiria OSError('Multiple exceptions: {}'.format(
                         ', '.join(str(exc) kila exc kwenye exceptions)))
 
         isipokua:
             ikiwa sock ni Tupu:
-                ashiria ValueError(
+                 ashiria ValueError(
                     'host na port was sio specified na no sock specified')
             ikiwa sock.type != socket.SOCK_STREAM:
-                # We allow AF_INET, AF_INET6, AF_UNIX kama long kama they
+                # We allow AF_INET, AF_INET6, AF_UNIX as long as they
                 # are SOCK_STREAM.
-                # We support pitaing AF_UNIX sockets even though we have
+                # We support passing AF_UNIX sockets even though we have
                 # a dedicated API kila that: create_unix_connection.
                 # Disallowing AF_UNIX kwenye this method, komas backwards
                 # compatibility.
-                ashiria ValueError(
+                 ashiria ValueError(
                     f'A Stream Socket was expected, got {sock!r}')
 
         transport, protocol = await self._create_connection_transport(
@@ -1072,7 +1072,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             await waiter
         tatizo:
             transport.close()
-            ashiria
+            raise
 
         rudisha transport, protocol
 
@@ -1087,7 +1087,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         file must be a regular file object opened kwenye binary mode.
 
         offset tells kutoka where to start reading the file. If specified,
-        count ni the total number of bytes to transmit kama opposed to
+        count ni the total number of bytes to transmit as opposed to
         sending the file until EOF ni reached. File position ni updated on
         rudisha ama also kwenye case of error kwenye which case file.tell()
         can be used to figure out the number of bytes
@@ -1101,22 +1101,22 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         sendfile syscall na fallback ni Uongo.
         """
         ikiwa transport.is_closing():
-            ashiria RuntimeError("Transport ni closing")
+             ashiria RuntimeError("Transport ni closing")
         mode = getattr(transport, '_sendfile_compatible',
                        constants._SendfileMode.UNSUPPORTED)
         ikiwa mode ni constants._SendfileMode.UNSUPPORTED:
-            ashiria RuntimeError(
+             ashiria RuntimeError(
                 f"sendfile ni sio supported kila transport {transport!r}")
         ikiwa mode ni constants._SendfileMode.TRY_NATIVE:
             jaribu:
                 rudisha await self._sendfile_native(transport, file,
                                                    offset, count)
-            tatizo exceptions.SendfileNotAvailableError kama exc:
+            except exceptions.SendfileNotAvailableError as exc:
                 ikiwa sio fallback:
-                    ashiria
+                    raise
 
         ikiwa sio fallback:
-            ashiria RuntimeError(
+             ashiria RuntimeError(
                 f"fallback ni disabled na native sendfile ni sio "
                 f"supported kila transport {transport!r}")
 
@@ -1124,7 +1124,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                                              offset, count)
 
     async eleza _sendfile_native(self, transp, file, offset, count):
-        ashiria exceptions.SendfileNotAvailableError(
+         ashiria exceptions.SendfileNotAvailableError(
             "sendfile syscall ni sio supported")
 
     async eleza _sendfile_fallback(self, transp, file, offset, count):
@@ -1162,15 +1162,15 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         immediately.
         """
         ikiwa ssl ni Tupu:
-            ashiria RuntimeError('Python ssl module ni sio available')
+             ashiria RuntimeError('Python ssl module ni sio available')
 
         ikiwa sio isinstance(sslcontext, ssl.SSLContext):
-            ashiria TypeError(
+             ashiria TypeError(
                 f'sslcontext ni expected to be an instance of ssl.SSLContext, '
                 f'got {sslcontext!r}')
 
         ikiwa sio getattr(transport, '_start_tls_compatible', Uongo):
-            ashiria TypeError(
+             ashiria TypeError(
                 f'transport {transport!r} ni sio supported by start_tls()')
 
         waiter = self.create_future()
@@ -1190,11 +1190,11 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         jaribu:
             await waiter
-        tatizo BaseException:
+        except BaseException:
             transport.close()
             conmade_cb.cancel()
             resume_cb.cancel()
-            ashiria
+            raise
 
         rudisha ssl_protocol._app_transport
 
@@ -1206,10 +1206,10 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         """Create datagram connection."""
         ikiwa sock ni sio Tupu:
             ikiwa sock.type != socket.SOCK_DGRAM:
-                ashiria ValueError(
+                 ashiria ValueError(
                     f'A UDP Socket was expected, got {sock!r}')
-            ikiwa (local_addr ama remote_addr ama
-                    family ama proto ama flags ama
+            ikiwa (local_addr ama remote_addr or
+                    family ama proto ama flags or
                     reuse_address ama reuse_port ama allow_broadcast):
                 # show the problematic kwargs kwenye exception msg
                 opts = dict(local_addr=local_addr, remote_addr=remote_addr,
@@ -1217,7 +1217,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                             reuse_address=reuse_address, reuse_port=reuse_port,
                             allow_broadcast=allow_broadcast)
                 problems = ', '.join(f'{k}={v}' kila k, v kwenye opts.items() ikiwa v)
-                ashiria ValueError(
+                 ashiria ValueError(
                     f'socket modifier keyword arguments can sio be used '
                     f'when sock ni specified. ({problems})')
             sock.setblocking(Uongo)
@@ -1225,20 +1225,20 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         isipokua:
             ikiwa sio (local_addr ama remote_addr):
                 ikiwa family == 0:
-                    ashiria ValueError('unexpected address family')
+                     ashiria ValueError('unexpected address family')
                 addr_pairs_info = (((family, proto), (Tupu, Tupu)),)
-            lasivyo hasattr(socket, 'AF_UNIX') na family == socket.AF_UNIX:
+            elikiwa hasattr(socket, 'AF_UNIX') na family == socket.AF_UNIX:
                 kila addr kwenye (local_addr, remote_addr):
                     ikiwa addr ni sio Tupu na sio isinstance(addr, str):
-                        ashiria TypeError('string ni expected')
+                         ashiria TypeError('string ni expected')
 
-                ikiwa local_addr na local_addr[0] haiko kwenye (0, '\x00'):
+                ikiwa local_addr na local_addr[0] sio kwenye (0, '\x00'):
                     jaribu:
                         ikiwa stat.S_ISSOCK(os.stat(local_addr).st_mode):
                             os.remove(local_addr)
-                    tatizo FileNotFoundError:
-                        pita
-                    tatizo OSError kama err:
+                    except FileNotFoundError:
+                        pass
+                    except OSError as err:
                         # Directory may have permissions only to create socket.
                         logger.error('Unable to check ama remove stale UNIX '
                                      'socket %r: %r',
@@ -1258,22 +1258,22 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                             addr, family=family, type=socket.SOCK_DGRAM,
                             proto=proto, flags=flags, loop=self)
                         ikiwa sio infos:
-                            ashiria OSError('getaddrinfo() rudishaed empty list')
+                             ashiria OSError('getaddrinfo() returned empty list')
 
                         kila fam, _, pro, _, address kwenye infos:
                             key = (fam, pro)
-                            ikiwa key haiko kwenye addr_infos:
+                            ikiwa key sio kwenye addr_infos:
                                 addr_infos[key] = [Tupu, Tupu]
                             addr_infos[key][idx] = address
 
                 # each addr has to have info kila each (family, proto) pair
                 addr_pairs_info = [
                     (key, addr_pair) kila key, addr_pair kwenye addr_infos.items()
-                    ikiwa sio ((local_addr na addr_pair[0] ni Tupu) ama
+                    ikiwa sio ((local_addr na addr_pair[0] ni Tupu) or
                             (remote_addr na addr_pair[1] ni Tupu))]
 
                 ikiwa sio addr_pairs_info:
-                    ashiria ValueError('can sio get address information')
+                     ashiria ValueError('can sio get address information')
 
             exceptions = []
 
@@ -1303,18 +1303,18 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                         ikiwa sio allow_broadcast:
                             await self.sock_connect(sock, remote_address)
                         r_addr = remote_address
-                tatizo OSError kama exc:
+                except OSError as exc:
                     ikiwa sock ni sio Tupu:
                         sock.close()
                     exceptions.append(exc)
                 tatizo:
                     ikiwa sock ni sio Tupu:
                         sock.close()
-                    ashiria
+                    raise
                 isipokua:
                     koma
             isipokua:
-                ashiria exceptions[0]
+                 ashiria exceptions[0]
 
         protocol = protocol_factory()
         waiter = self.create_future()
@@ -1334,7 +1334,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             await waiter
         tatizo:
             transport.close()
-            ashiria
+            raise
 
         rudisha transport, protocol
 
@@ -1355,7 +1355,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                                             type=socket.SOCK_STREAM,
                                             flags=flags, loop=self)
         ikiwa sio infos:
-            ashiria OSError(f'getaddrinfo({host!r}) rudishaed empty list')
+             ashiria OSError(f'getaddrinfo({host!r}) returned empty list')
         rudisha infos
 
     async eleza create_server(
@@ -1386,15 +1386,15 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         This method ni a coroutine.
         """
         ikiwa isinstance(ssl, bool):
-            ashiria TypeError('ssl argument must be an SSLContext ama Tupu')
+             ashiria TypeError('ssl argument must be an SSLContext ama Tupu')
 
         ikiwa ssl_handshake_timeout ni sio Tupu na ssl ni Tupu:
-            ashiria ValueError(
+             ashiria ValueError(
                 'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         ikiwa host ni sio Tupu ama port ni sio Tupu:
             ikiwa sock ni sio Tupu:
-                ashiria ValueError(
+                 ashiria ValueError(
                     'host/port na sock can sio be specified at the same time')
 
             ikiwa reuse_address ni Tupu:
@@ -1402,7 +1402,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             sockets = []
             ikiwa host == '':
                 hosts = [Tupu]
-            lasivyo (isinstance(host, str) ama
+            elikiwa (isinstance(host, str) or
                   sio isinstance(host, collections.abc.Iterable)):
                 hosts = [host]
             isipokua:
@@ -1412,7 +1412,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                                                   flags=flags)
                   kila host kwenye hosts]
             infos = await tasks.gather(*fs, loop=self)
-            infos = set(itertools.chain.kutoka_iterable(infos))
+            infos = set(itertools.chain.from_iterable(infos))
 
             completed = Uongo
             jaribu:
@@ -1420,7 +1420,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                     af, socktype, proto, canonname, sa = res
                     jaribu:
                         sock = socket.socket(af, socktype, proto)
-                    tatizo socket.error:
+                    except socket.error:
                         # Assume it's a bad family/type/protocol combination.
                         ikiwa self._debug:
                             logger.warning('create_server() failed to create '
@@ -1436,16 +1436,16 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                     # Disable IPv4/IPv6 dual stack support (enabled by
                     # default on Linux) which makes a single socket
                     # listen on both address families.
-                    ikiwa (_HAS_IPv6 na
-                            af == socket.AF_INET6 na
+                    ikiwa (_HAS_IPv6 and
+                            af == socket.AF_INET6 and
                             hasattr(socket, 'IPPROTO_IPV6')):
                         sock.setsockopt(socket.IPPROTO_IPV6,
                                         socket.IPV6_V6ONLY,
                                         Kweli)
                     jaribu:
                         sock.bind(sa)
-                    tatizo OSError kama err:
-                        ashiria OSError(err.errno, 'error wakati attempting '
+                    except OSError as err:
+                         ashiria OSError(err.errno, 'error wakati attempting '
                                       'to bind on address %r: %s'
                                       % (sa, err.strerror.lower())) kutoka Tupu
                 completed = Kweli
@@ -1455,9 +1455,9 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                         sock.close()
         isipokua:
             ikiwa sock ni Tupu:
-                ashiria ValueError('Neither host/port nor sock were specified')
+                 ashiria ValueError('Neither host/port nor sock were specified')
             ikiwa sock.type != socket.SOCK_STREAM:
-                ashiria ValueError(f'A Stream Socket was expected, got {sock!r}')
+                 ashiria ValueError(f'A Stream Socket was expected, got {sock!r}')
             sockets = [sock]
 
         kila sock kwenye sockets:
@@ -1485,13 +1485,13 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         asyncio but that use asyncio to handle connections.
 
         This method ni a coroutine.  When completed, the coroutine
-        rudishas a (transport, protocol) pair.
+        returns a (transport, protocol) pair.
         """
         ikiwa sock.type != socket.SOCK_STREAM:
-            ashiria ValueError(f'A Stream Socket was expected, got {sock!r}')
+             ashiria ValueError(f'A Stream Socket was expected, got {sock!r}')
 
         ikiwa ssl_handshake_timeout ni sio Tupu na sio ssl:
-            ashiria ValueError(
+             ashiria ValueError(
                 'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         transport, protocol = await self._create_connection_transport(
@@ -1513,7 +1513,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             await waiter
         tatizo:
             transport.close()
-            ashiria
+            raise
 
         ikiwa self._debug:
             logger.debug('Read pipe %r connected: (%r, %r)',
@@ -1529,7 +1529,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             await waiter
         tatizo:
             transport.close()
-            ashiria
+            raise
 
         ikiwa self._debug:
             logger.debug('Write pipe %r connected: (%r, %r)',
@@ -1558,25 +1558,25 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                                encoding=Tupu, errors=Tupu, text=Tupu,
                                **kwargs):
         ikiwa sio isinstance(cmd, (bytes, str)):
-            ashiria ValueError("cmd must be a string")
+             ashiria ValueError("cmd must be a string")
         ikiwa universal_newlines:
-            ashiria ValueError("universal_newlines must be Uongo")
+             ashiria ValueError("universal_newlines must be Uongo")
         ikiwa sio shell:
-            ashiria ValueError("shell must be Kweli")
+             ashiria ValueError("shell must be Kweli")
         ikiwa bufsize != 0:
-            ashiria ValueError("bufsize must be 0")
+             ashiria ValueError("bufsize must be 0")
         ikiwa text:
-            ashiria ValueError("text must be Uongo")
+             ashiria ValueError("text must be Uongo")
         ikiwa encoding ni sio Tupu:
-            ashiria ValueError("encoding must be Tupu")
+             ashiria ValueError("encoding must be Tupu")
         ikiwa errors ni sio Tupu:
-            ashiria ValueError("errors must be Tupu")
+             ashiria ValueError("errors must be Tupu")
 
         protocol = protocol_factory()
         debug_log = Tupu
         ikiwa self._debug:
             # don't log parameters: they may contain sensitive information
-            # (pitaword) na may be too long
+            # (password) na may be too long
             debug_log = 'run shell command %r' % cmd
             self._log_subprocess(debug_log, stdin, stdout, stderr)
         transport = await self._make_subprocess_transport(
@@ -1592,24 +1592,24 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                               encoding=Tupu, errors=Tupu, text=Tupu,
                               **kwargs):
         ikiwa universal_newlines:
-            ashiria ValueError("universal_newlines must be Uongo")
+             ashiria ValueError("universal_newlines must be Uongo")
         ikiwa shell:
-            ashiria ValueError("shell must be Uongo")
+             ashiria ValueError("shell must be Uongo")
         ikiwa bufsize != 0:
-            ashiria ValueError("bufsize must be 0")
+             ashiria ValueError("bufsize must be 0")
         ikiwa text:
-            ashiria ValueError("text must be Uongo")
+             ashiria ValueError("text must be Uongo")
         ikiwa encoding ni sio Tupu:
-            ashiria ValueError("encoding must be Tupu")
+             ashiria ValueError("encoding must be Tupu")
         ikiwa errors ni sio Tupu:
-            ashiria ValueError("errors must be Tupu")
+             ashiria ValueError("errors must be Tupu")
 
         popen_args = (program,) + args
         protocol = protocol_factory()
         debug_log = Tupu
         ikiwa self._debug:
             # don't log parameters: they may contain sensitive information
-            # (pitaword) na may be too long
+            # (password) na may be too long
             debug_log = f'execute program {program!r}'
             self._log_subprocess(debug_log, stdin, stdout, stderr)
         transport = await self._make_subprocess_transport(
@@ -1625,7 +1625,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         rudisha self._exception_handler
 
     eleza set_exception_handler(self, handler):
-        """Set handler kama the new event loop exception handler.
+        """Set handler as the new event loop exception handler.
 
         If handler ni Tupu, the default exception handler will
         be set.
@@ -1637,7 +1637,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         documentation kila details about context).
         """
         ikiwa handler ni sio Tupu na sio callable(handler):
-            ashiria TypeError(f'A callable object ama Tupu ni expected, '
+             ashiria TypeError(f'A callable object ama Tupu ni expected, '
                             f'got {handler!r}')
         self._exception_handler = handler
 
@@ -1653,7 +1653,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         stack trace ni also appended showing where the given object
         (e.g. a handle ama future ama task) was created, ikiwa any.
 
-        The context parameter has the same meaning kama in
+        The context parameter has the same meaning as in
         `call_exception_handler()`.
         """
         message = context.get('message')
@@ -1666,8 +1666,8 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         isipokua:
             exc_info = Uongo
 
-        ikiwa ('source_traceback' haiko kwenye context na
-                self._current_handle ni sio Tupu na
+        ikiwa ('source_traceback' sio kwenye context and
+                self._current_handle ni sio Tupu and
                 self._current_handle._source_traceback):
             context['handle_traceback'] = \
                 self._current_handle._source_traceback
@@ -1681,7 +1681,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                 tb = ''.join(traceback.format_list(value))
                 value = 'Object created at (most recent call last):\n'
                 value += tb.rstrip()
-            lasivyo key == 'handle_traceback':
+            elikiwa key == 'handle_traceback':
                 tb = ''.join(traceback.format_list(value))
                 value = 'Handle created at (most recent call last):\n'
                 value += tb.rstrip()
@@ -1716,20 +1716,20 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         ikiwa self._exception_handler ni Tupu:
             jaribu:
                 self.default_exception_handler(context)
-            tatizo (SystemExit, KeyboardInterrupt):
-                ashiria
-            tatizo BaseException:
+            except (SystemExit, KeyboardInterrupt):
+                raise
+            except BaseException:
                 # Second protection layer kila unexpected errors
-                # kwenye the default implementation, kama well kama kila subclassed
+                # kwenye the default implementation, as well as kila subclassed
                 # event loops ukijumuisha overloaded "default_exception_handler".
                 logger.error('Exception kwenye default exception handler',
                              exc_info=Kweli)
         isipokua:
             jaribu:
                 self._exception_handler(self, context)
-            tatizo (SystemExit, KeyboardInterrupt):
-                ashiria
-            tatizo BaseException kama exc:
+            except (SystemExit, KeyboardInterrupt):
+                raise
+            except BaseException as exc:
                 # Exception kwenye the user set custom exception handler.
                 jaribu:
                     # Let's try default handler.
@@ -1738,9 +1738,9 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                         'exception': exc,
                         'context': context,
                     })
-                tatizo (SystemExit, KeyboardInterrupt):
-                    ashiria
-                tatizo BaseException:
+                except (SystemExit, KeyboardInterrupt):
+                    raise
+                except BaseException:
                     # Guard 'default_exception_handler' kwenye case it is
                     # overloaded.
                     logger.error('Exception kwenye default exception handler '
@@ -1752,7 +1752,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         """Add a Handle to _scheduled (TimerHandle) ama _ready."""
         assert isinstance(handle, events.Handle), 'A Handle ni required here'
         ikiwa handle._cancelled:
-            rudisha
+            return
         assert sio isinstance(handle, events.TimerHandle)
         self._ready.append(handle)
 
@@ -1775,7 +1775,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         """
 
         sched_count = len(self._scheduled)
-        ikiwa (sched_count > _MIN_SCHEDULED_TIMER_HANDLES na
+        ikiwa (sched_count > _MIN_SCHEDULED_TIMER_HANDLES and
             self._timer_cancelled_count / sched_count >
                 _MIN_CANCELLED_TIMER_HANDLES_FRACTION):
             # Remove delayed calls that were cancelled ikiwa their number
@@ -1800,7 +1800,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         timeout = Tupu
         ikiwa self._ready ama self._stopping:
             timeout = 0
-        lasivyo self._scheduled:
+        elikiwa self._scheduled:
             # Compute the desired timeout.
             when = self._scheduled[0]._when
             timeout = min(max(0, when - self.time()), MAXIMUM_SELECT_TIMEOUT)
@@ -1846,7 +1846,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
     eleza _set_coroutine_origin_tracking(self, enabled):
         ikiwa bool(enabled) == bool(self._coroutine_origin_tracking_enabled):
-            rudisha
+            return
 
         ikiwa enabled:
             self._coroutine_origin_tracking_saved_depth = (

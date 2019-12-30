@@ -1,9 +1,9 @@
-from ctypes import *
-import unittest
+kutoka ctypes agiza *
+agiza unittest
 
-class VarSizeTest(unittest.TestCase):
-    def test_resize(self):
-        class X(Structure):
+kundi VarSizeTest(unittest.TestCase):
+    eleza test_resize(self):
+        kundi X(Structure):
             _fields_ = [("item", c_int),
                         ("array", c_int * 1)]
 
@@ -13,38 +13,38 @@ class VarSizeTest(unittest.TestCase):
         x.array[0] = 100
         self.assertEqual(sizeof(x), sizeof(c_int) * 2)
 
-        # make room for one additional item
+        # make room kila one additional item
         new_size = sizeof(X) + sizeof(c_int) * 1
         resize(x, new_size)
         self.assertEqual(sizeof(x), new_size)
         self.assertEqual((x.item, x.array[0]), (42, 100))
 
-        # make room for 10 additional items
+        # make room kila 10 additional items
         new_size = sizeof(X) + sizeof(c_int) * 9
         resize(x, new_size)
         self.assertEqual(sizeof(x), new_size)
         self.assertEqual((x.item, x.array[0]), (42, 100))
 
-        # make room for one additional item
+        # make room kila one additional item
         new_size = sizeof(X) + sizeof(c_int) * 1
         resize(x, new_size)
         self.assertEqual(sizeof(x), new_size)
         self.assertEqual((x.item, x.array[0]), (42, 100))
 
-    def test_array_invalid_length(self):
-        # cannot create arrays with non-positive size
+    eleza test_array_invalid_length(self):
+        # cannot create arrays ukijumuisha non-positive size
         self.assertRaises(ValueError, lambda: c_int * -1)
         self.assertRaises(ValueError, lambda: c_int * -3)
 
-    def test_zerosized_array(self):
+    eleza test_zerosized_array(self):
         array = (c_int * 0)()
-        # accessing elements of zero-sized arrays ashiria IndexError
-        self.assertRaises(IndexError, array.__setitem__, 0, None)
+        # accessing elements of zero-sized arrays  ashiria IndexError
+        self.assertRaises(IndexError, array.__setitem__, 0, Tupu)
         self.assertRaises(IndexError, array.__getitem__, 0)
-        self.assertRaises(IndexError, array.__setitem__, 1, None)
+        self.assertRaises(IndexError, array.__setitem__, 1, Tupu)
         self.assertRaises(IndexError, array.__getitem__, 1)
-        self.assertRaises(IndexError, array.__setitem__, -1, None)
+        self.assertRaises(IndexError, array.__setitem__, -1, Tupu)
         self.assertRaises(IndexError, array.__getitem__, -1)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

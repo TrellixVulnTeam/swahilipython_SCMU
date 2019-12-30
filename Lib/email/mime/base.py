@@ -2,27 +2,27 @@
 # Author: Barry Warsaw
 # Contact: email-sig@python.org
 
-"""Base class for MIME specializations."""
+"""Base kundi kila MIME specializations."""
 
 __all__ = ['MIMEBase']
 
-import email.policy
+agiza email.policy
 
-from email import message
+kutoka email agiza message
 
 
 
-class MIMEBase(message.Message):
-    """Base class for MIME specializations."""
+kundi MIMEBase(message.Message):
+    """Base kundi kila MIME specializations."""
 
-    def __init__(self, _maintype, _subtype, *, policy=None, **_params):
-        """This constructor adds a Content-Type: and a MIME-Version: header.
+    eleza __init__(self, _maintype, _subtype, *, policy=Tupu, **_params):
+        """This constructor adds a Content-Type: na a MIME-Version: header.
 
-        The Content-Type: header is taken from the _maintype and _subtype
-        arguments.  Additional parameters for this header are taken from the
+        The Content-Type: header ni taken kutoka the _maintype na _subtype
+        arguments.  Additional parameters kila this header are taken kutoka the
         keyword arguments.
         """
-        if policy is None:
+        ikiwa policy ni Tupu:
             policy = email.policy.compat32
         message.Message.__init__(self, policy=policy)
         ctype = '%s/%s' % (_maintype, _subtype)

@@ -2,7 +2,7 @@
 
 This file contains extremely basic regression tests kila the scripts found in
 the Tools directory of a Python checkout ama tarball which don't have separate
-tests of their own, such kama h2py.py.
+tests of their own, such as h2py.py.
 """
 
 agiza os
@@ -50,7 +50,7 @@ kundi TestSundryScripts(unittest.TestCase):
         kila name kwenye self.windows_only:
             import_tool(name)
 
-    eleza test_analyze_dxp_agiza(self):
+    eleza test_analyze_dxp_import(self):
         ikiwa hasattr(sys, 'getdxp'):
             import_tool('analyze_dxp')
         isipokua:

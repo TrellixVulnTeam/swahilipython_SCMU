@@ -21,14 +21,14 @@ agiza sys
 jaribu:
     agiza ssl
     HAVE_SSL = Kweli
-tatizo ImportError:
+except ImportError:
     HAVE_SSL = Uongo
 
 __all__ = ["POP3","error_proto"]
 
-# Exception ashiriad when an error ama invalid response ni received:
+# Exception raised when an error ama invalid response ni received:
 
-kundi error_proto(Exception): pita
+kundi error_proto(Exception): pass
 
 # Standard Port
 POP3_PORT = 110
@@ -56,7 +56,7 @@ kundi POP3:
 
     Minimal Command Set:
             USER name               user(name)
-            PASS string             pita_(string)
+            PASS string             pass_(string)
             STAT                    stat()
             LIST [msg]              list(msg = Tupu)
             RETR msg                retr(msg)
@@ -130,13 +130,13 @@ kundi POP3:
     eleza _getline(self):
         line = self.file.readline(_MAXLINE + 1)
         ikiwa len(line) > _MAXLINE:
-            ashiria error_proto('line too long')
+             ashiria error_proto('line too long')
 
         ikiwa self._debugging > 1: andika('*get*', repr(line))
-        ikiwa sio line: ashiria error_proto('-ERR EOF')
+        ikiwa sio line:  ashiria error_proto('-ERR EOF')
         octets = len(line)
         # server can send any combination of CR & LF
-        # however, 'readline()' rudishas lines ending kwenye LF
+        # however, 'readline()' returns lines ending kwenye LF
         # so only possibilities are ...LF, ...CRLF, CR...LF
         ikiwa line[-2:] == CRLF:
             rudisha line[:-2], octets
@@ -152,7 +152,7 @@ kundi POP3:
         resp, o = self._getline()
         ikiwa self._debugging > 1: andika('*resp*', repr(resp))
         ikiwa sio resp.startswith(b'+'):
-            ashiria error_proto(resp)
+             ashiria error_proto(resp)
         rudisha resp
 
 
@@ -201,13 +201,13 @@ kundi POP3:
     eleza user(self, user):
         """Send user name, rudisha response
 
-        (should indicate pitaword required).
+        (should indicate password required).
         """
         rudisha self._shortcmd('USER %s' % user)
 
 
-    eleza pita_(self, pswd):
-        """Send pitaword, rudisha response
+    eleza pass_(self, pswd):
+        """Send password, rudisha response
 
         (response includes message count, mailbox size).
 
@@ -291,13 +291,13 @@ kundi POP3:
             ikiwa sock ni sio Tupu:
                 jaribu:
                     sock.shutdown(socket.SHUT_RDWR)
-                tatizo OSError kama exc:
+                except OSError as exc:
                     # The server might already have closed the connection.
                     # On Windows, this may result kwenye WSAEINVAL (error 10022):
                     # An invalid operation was attempted.
                     ikiwa (exc.errno != errno.ENOTCONN
                        na getattr(exc, 'winerror', 0) != 10022):
-                        ashiria
+                        raise
                 mwishowe:
                     sock.close()
 
@@ -313,21 +313,21 @@ kundi POP3:
 
     timestamp = re.compile(br'\+OK.[^<]*(<.*>)')
 
-    eleza apop(self, user, pitaword):
+    eleza apop(self, user, password):
         """Authorisation
 
         - only possible ikiwa server has supplied a timestamp kwenye initial greeting.
 
         Args:
                 user     - mailbox user;
-                pitaword - mailbox pitaword.
+                password - mailbox password.
 
         NB: mailbox ni locked by server kutoka here to 'quit()'
         """
-        secret = bytes(pitaword, self.encoding)
+        secret = bytes(password, self.encoding)
         m = self.timestamp.match(self.welcome)
         ikiwa sio m:
-            ashiria error_proto('-ERR APOP sio supported by server')
+             ashiria error_proto('-ERR APOP sio supported by server')
         agiza hashlib
         digest = m.group(1)+secret
         digest = hashlib.md5(digest).hexdigest()
@@ -362,7 +362,7 @@ kundi POP3:
 
 
     eleza capa(self):
-        """Return server capabilities (RFC 2449) kama a dictionary
+        """Return server capabilities (RFC 2449) as a dictionary
         >>> c=poplib.POP3('localhost')
         >>> c.capa()
         {'IMPLEMENTATION': ['Cyrus', 'POP3', 'server', 'v2.2.12'],
@@ -385,23 +385,23 @@ kundi POP3:
             kila capline kwenye rawcaps:
                 capnm, capargs = _parsecap(capline)
                 caps[capnm] = capargs
-        tatizo error_proto kama _err:
-            ashiria error_proto('-ERR CAPA sio supported by server')
+        except error_proto as _err:
+             ashiria error_proto('-ERR CAPA sio supported by server')
         rudisha caps
 
 
     eleza stls(self, context=Tupu):
-        """Start a TLS session on the active connection kama specified kwenye RFC 2595.
+        """Start a TLS session on the active connection as specified kwenye RFC 2595.
 
                 context - a ssl.SSLContext
         """
         ikiwa sio HAVE_SSL:
-            ashiria error_proto('-ERR TLS support missing')
+             ashiria error_proto('-ERR TLS support missing')
         ikiwa self._tls_established:
-            ashiria error_proto('-ERR TLS session already established')
+             ashiria error_proto('-ERR TLS session already established')
         caps = self.capa()
         ikiwa sio 'STLS' kwenye caps:
-            ashiria error_proto('-ERR STLS sio supported by server')
+             ashiria error_proto('-ERR STLS sio supported by server')
         ikiwa context ni Tupu:
             context = ssl._create_stdlib_context()
         resp = self._shortcmd('STLS')
@@ -432,10 +432,10 @@ ikiwa HAVE_SSL:
         eleza __init__(self, host, port=POP3_SSL_PORT, keyfile=Tupu, certfile=Tupu,
                      timeout=socket._GLOBAL_DEFAULT_TIMEOUT, context=Tupu):
             ikiwa context ni sio Tupu na keyfile ni sio Tupu:
-                ashiria ValueError("context na keyfile arguments are mutually "
+                 ashiria ValueError("context na keyfile arguments are mutually "
                                  "exclusive")
             ikiwa context ni sio Tupu na certfile ni sio Tupu:
-                ashiria ValueError("context na certfile arguments are mutually "
+                 ashiria ValueError("context na certfile arguments are mutually "
                                  "exclusive")
             ikiwa keyfile ni sio Tupu ama certfile ni sio Tupu:
                 agiza warnings
@@ -456,11 +456,11 @@ ikiwa HAVE_SSL:
             rudisha sock
 
         eleza stls(self, keyfile=Tupu, certfile=Tupu, context=Tupu):
-            """The method unconditionally ashirias an exception since the
+            """The method unconditionally raises an exception since the
             STLS command doesn't make any sense on an already established
             SSL/TLS session.
             """
-            ashiria error_proto('-ERR TLS session already established')
+             ashiria error_proto('-ERR TLS session already established')
 
     __all__.append("POP3_SSL")
 
@@ -469,7 +469,7 @@ ikiwa __name__ == "__main__":
     a = POP3(sys.argv[1])
     andika(a.getwelcome())
     a.user(sys.argv[2])
-    a.pita_(sys.argv[3])
+    a.pass_(sys.argv[3])
     a.list()
     (numMsgs, totalSize) = a.stat()
     kila i kwenye range(1, numMsgs + 1):

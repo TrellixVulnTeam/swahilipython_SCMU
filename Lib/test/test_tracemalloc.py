@@ -10,7 +10,7 @@ kutoka test agiza support
 
 jaribu:
     agiza _testcapi
-tatizo ImportError:
+except ImportError:
     _testcapi = Tupu
 
 
@@ -41,7 +41,7 @@ eleza allocate_bytes(size):
 eleza create_snapshots():
     traceback_limit = 2
 
-    # _tracemalloc._get_traces() rudishas a list of (domain, size,
+    # _tracemalloc._get_traces() returns a list of (domain, size,
     # traceback_frames) tuples. traceback_frames ni a tuple of (filename,
     # line_number) tuples.
     raw_traces = [
@@ -269,7 +269,7 @@ kundi TestTracemallocEnabled(unittest.TestCase):
 
         # tracemalloc must be tracing memory allocations to take a snapshot
         tracemalloc.stop()
-        ukijumuisha self.assertRaises(RuntimeError) kama cm:
+        ukijumuisha self.assertRaises(RuntimeError) as cm:
             tracemalloc.take_snapshot()
         self.assertEqual(str(cm.exception),
                          "the tracemalloc module must be tracing memory "
@@ -323,13 +323,13 @@ kundi TestSnapshot(unittest.TestCase):
     eleza test_create_snapshot(self):
         raw_traces = [(0, 5, (('a.py', 2),))]
 
-        ukijumuisha contextlib.ExitStack() kama stack:
+        ukijumuisha contextlib.ExitStack() as stack:
             stack.enter_context(patch.object(tracemalloc, 'is_tracing',
-                                             rudisha_value=Kweli))
+                                             return_value=Kweli))
             stack.enter_context(patch.object(tracemalloc, 'get_traceback_limit',
-                                             rudisha_value=5))
+                                             return_value=5))
             stack.enter_context(patch.object(tracemalloc, '_get_traces',
-                                             rudisha_value=raw_traces))
+                                             return_value=raw_traces))
 
             snapshot = tracemalloc.take_snapshot()
             self.assertEqual(snapshot.traceback_limit, 5)
@@ -644,7 +644,7 @@ kundi TestFilters(unittest.TestCase):
         self.assertEqual(f.lineno, 123)
         self.assertEqual(f.all_frames, Kweli)
 
-        # parameters pitaed by keyword
+        # parameters passed by keyword
         f = tracemalloc.Filter(inclusive=Uongo, filename_pattern="test.py", lineno=123, all_frames=Kweli)
         self.assertEqual(f.inclusive, Uongo)
         self.assertEqual(f.filename_pattern, "test.py")
@@ -785,7 +785,7 @@ kundi TestFilters(unittest.TestCase):
             self.assertUongo(fnmatch(r'a/b\c', r'a\b/c'))
             self.assertUongo(fnmatch(r'a/b/c', r'a\b\c'))
 
-        # kama of 3.5, .pyo ni no longer munged to .py
+        # as of 3.5, .pyo ni no longer munged to .py
         self.assertUongo(fnmatch('a.pyo', 'a.py'))
 
     eleza test_filter_match_trace(self):
@@ -878,13 +878,13 @@ kundi TestCommandLine(unittest.TestCase):
     eleza check_env_var_invalid(self, nframe):
         ukijumuisha support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(
-                '-c', 'pita',
+                '-c', 'pass',
                 PYTHONTRACEMALLOC=str(nframe))
 
         ikiwa b'ValueError: the number of frames must be kwenye range' kwenye stderr:
-            rudisha
+            return
         ikiwa b'PYTHONTRACEMALLOC: invalid number of frames' kwenye stderr:
-            rudisha
+            return
         self.fail(f"unexpected output: {stderr!a}")
 
 
@@ -906,14 +906,14 @@ kundi TestCommandLine(unittest.TestCase):
                 self.assertEqual(stdout, str(nframe).encode('ascii'))
 
     eleza check_sys_xoptions_invalid(self, nframe):
-        args = ('-X', 'tracemalloc=%s' % nframe, '-c', 'pita')
+        args = ('-X', 'tracemalloc=%s' % nframe, '-c', 'pass')
         ukijumuisha support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(*args)
 
         ikiwa b'ValueError: the number of frames must be kwenye range' kwenye stderr:
-            rudisha
+            return
         ikiwa b'-X tracemalloc=NFRAME: invalid number of frames' kwenye stderr:
-            rudisha
+            return
         self.fail(f"unexpected output: {stderr!a}")
 
     eleza test_sys_xoptions_invalid(self):

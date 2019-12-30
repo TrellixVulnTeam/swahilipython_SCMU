@@ -22,7 +22,7 @@ kundi SentinelTest(unittest.TestCase):
         self.assertIs(DEFAULT, sentinel.DEFAULT)
 
     eleza testBases(self):
-        # If this doesn't ashiria an AttributeError then help(mock) ni broken
+        # If this doesn't  ashiria an AttributeError then help(mock) ni broken
         self.assertRaises(AttributeError, lambda: sentinel.__bases__)
 
     eleza testPickle(self):

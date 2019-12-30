@@ -1,13 +1,13 @@
 # dialog.py -- Tkinter interface to the tk_dialog script.
 
-from tkinter import *
-from tkinter agiza _cnfmerge
+kutoka tkinter agiza *
+kutoka tkinter agiza _cnfmerge
 
 DIALOG_ICON = 'questhead'
 
 
-class Dialog(Widget):
-    def __init__(self, master=None, cnf={}, **kw):
+kundi Dialog(Widget):
+    eleza __init__(self, master=Tupu, cnf={}, **kw):
         cnf = _cnfmerge((cnf, kw))
         self.widgetName = '__dialog__'
         Widget._setup(self, master, cnf)
@@ -18,13 +18,13 @@ class Dialog(Widget):
                       cnf['bitmap'], cnf['default'],
                       *cnf['strings']))
         jaribu: Widget.destroy(self)
-        tatizo TclError: pass
+        except TclError: pass
 
-    def destroy(self): pass
+    eleza destroy(self): pass
 
 
-def _test():
-    d = Dialog(None, {'title': 'File Modified',
+eleza _test():
+    d = Dialog(Tupu, {'title': 'File Modified',
                       'text':
                       'File "Python.h" has been modified'
                       ' since the last time it was saved.'
@@ -35,14 +35,14 @@ def _test():
                       'strings': ('Save File',
                                   'Discard Changes',
                                   'Return to Editor')})
-    print(d.num)
+    andika(d.num)
 
 
-if __name__ == '__main__':
-    t = Button(None, {'text': 'Test',
+ikiwa __name__ == '__main__':
+    t = Button(Tupu, {'text': 'Test',
                       'command': _test,
                       Pack: {}})
-    q = Button(None, {'text': 'Quit',
+    q = Button(Tupu, {'text': 'Quit',
                       'command': t.quit,
                       Pack: {}})
     t.mainloop()

@@ -1,12 +1,12 @@
-import unittest
-import ctypes
-from ctypes.test import need_symbol
+agiza unittest
+agiza ctypes
+kutoka ctypes.test agiza need_symbol
 
 agiza _ctypes_test
 
 @need_symbol('c_wchar')
-class UnicodeTestCase(unittest.TestCase):
-    def test_wcslen(self):
+kundi UnicodeTestCase(unittest.TestCase):
+    eleza test_wcslen(self):
         dll = ctypes.CDLL(_ctypes_test.__file__)
         wcslen = dll.my_wcslen
         wcslen.argtypes = [ctypes.c_wchar_p]
@@ -15,7 +15,7 @@ class UnicodeTestCase(unittest.TestCase):
         self.assertEqual(wcslen("ab\u2070"), 3)
         self.assertRaises(ctypes.ArgumentError, wcslen, b"ab\xe4")
 
-    def test_buffers(self):
+    eleza test_buffers(self):
         buf = ctypes.create_unicode_buffer("abc")
         self.assertEqual(len(buf), 3+1)
 
@@ -28,19 +28,19 @@ class UnicodeTestCase(unittest.TestCase):
 
 func = ctypes.CDLL(_ctypes_test.__file__)._testfunc_p_p
 
-class StringTestCase(UnicodeTestCase):
-    def setUp(self):
+kundi StringTestCase(UnicodeTestCase):
+    eleza setUp(self):
         func.argtypes = [ctypes.c_char_p]
         func.restype = ctypes.c_char_p
 
-    def tearDown(self):
-        func.argtypes = None
+    eleza tearDown(self):
+        func.argtypes = Tupu
         func.restype = ctypes.c_int
 
-    def test_func(self):
+    eleza test_func(self):
         self.assertEqual(func(b"abc\xe4"), b"abc\xe4")
 
-    def test_buffers(self):
+    eleza test_buffers(self):
         buf = ctypes.create_string_buffer(b"abc")
         self.assertEqual(len(buf), 3+1)
 
@@ -52,5 +52,5 @@ class StringTestCase(UnicodeTestCase):
         self.assertEqual(buf[6:5:-1], b"")
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

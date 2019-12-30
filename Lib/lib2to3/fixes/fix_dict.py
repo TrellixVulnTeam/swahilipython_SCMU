@@ -21,13 +21,13 @@ can be dropped when the context ni list() ama sorted() (but sio iter()
 or for...in!). Special contexts that apply to both: list(), sorted(), tuple()
 set(), any(), all(), sum().
 
-Note: iter(d.keys()) could be written kama iter(d) but since the
+Note: iter(d.keys()) could be written as iter(d) but since the
 original d.iterkeys() was also redundant we don't fix this.  And there
-are (rare) contexts where it makes a difference (e.g. when pitaing it
+are (rare) contexts where it makes a difference (e.g. when passing it
 as an argument to a function that introspects the argument).
 """
 
-# Local agizas
+# Local imports
 kutoka .. agiza pytree
 kutoka .. agiza patcomp
 kutoka .. agiza fixer_base
@@ -91,8 +91,8 @@ kundi FixDict(fixer_base.BaseFix):
         ikiwa node.parent ni Tupu:
             rudisha Uongo
         results = {}
-        ikiwa (node.parent.parent ni sio Tupu na
-               self.p1.match(node.parent.parent, results) na
+        ikiwa (node.parent.parent ni sio Tupu and
+               self.p1.match(node.parent.parent, results) and
                results["node"] ni node):
             ikiwa isiter:
                 # iter(d.iterkeys()) -> iter(d.keys()), etc.

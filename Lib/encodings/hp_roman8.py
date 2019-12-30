@@ -1,11 +1,11 @@
-""" Python Character Mapping Codec generated from 'hp_roman8.txt' with gencodec.py.
+""" Python Character Mapping Codec generated kutoka 'hp_roman8.txt' ukijumuisha gencodec.py.
 
-    Based on data from ftp://dkuug.dk/i18n/charmaps/HP-ROMAN8 (Keld Simonsen)
+    Based on data kutoka ftp://dkuug.dk/i18n/charmaps/HP-ROMAN8 (Keld Simonsen)
 
     Original source: LaserJet IIP Printer User's Manual HP part no
     33471-90901, Hewlet-Packard, June 1989.
 
-    (Used with permission)
+    (Used ukijumuisha permission)
 
 """#"
 
@@ -30,10 +30,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pita
+    pass
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pita
+    pass
 
 ### encodings module API
 

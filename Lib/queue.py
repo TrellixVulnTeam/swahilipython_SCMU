@@ -3,10 +3,10 @@
 agiza threading
 kutoka collections agiza deque
 kutoka heapq agiza heappush, heappop
-kutoka time agiza monotonic kama time
+kutoka time agiza monotonic as time
 jaribu:
     kutoka _queue agiza SimpleQueue
-tatizo ImportError:
+except ImportError:
     SimpleQueue = Tupu
 
 __all__ = ['Empty', 'Full', 'Queue', 'PriorityQueue', 'LifoQueue', 'SimpleQueue']
@@ -14,14 +14,14 @@ __all__ = ['Empty', 'Full', 'Queue', 'PriorityQueue', 'LifoQueue', 'SimpleQueue'
 
 jaribu:
     kutoka _queue agiza Empty
-tatizo ImportError:
+except ImportError:
     kundi Empty(Exception):
-        'Exception ashiriad by Queue.get(block=0)/get_nowait().'
-        pita
+        'Exception raised by Queue.get(block=0)/get_nowait().'
+        pass
 
 kundi Full(Exception):
-    'Exception ashiriad by Queue.put(block=0)/put_nowait().'
-    pita
+    'Exception raised by Queue.put(block=0)/put_nowait().'
+    pass
 
 
 kundi Queue:
@@ -35,8 +35,8 @@ kundi Queue:
         self._init(maxsize)
 
         # mutex must be held whenever the queue ni mutating.  All methods
-        # that acquire mutex must release it before rudishaing.  mutex
-        # ni shared between the three conditions, so acquiring na
+        # that acquire mutex must release it before returning.  mutex
+        # ni shared between the three conditions, so acquiring and
         # releasing the conditions also acquires na releases mutex.
         self.mutex = threading.Lock()
 
@@ -71,7 +71,7 @@ kundi Queue:
             unfinished = self.unfinished_tasks - 1
             ikiwa unfinished <= 0:
                 ikiwa unfinished < 0:
-                    ashiria ValueError('task_done() called too many times')
+                     ashiria ValueError('task_done() called too many times')
                 self.all_tasks_done.notify_all()
             self.unfinished_tasks = unfinished
 
@@ -89,16 +89,16 @@ kundi Queue:
                 self.all_tasks_done.wait()
 
     eleza qsize(self):
-        '''Return the approximate size of the queue (sio reliable!).'''
+        '''Return the approximate size of the queue (not reliable!).'''
         ukijumuisha self.mutex:
             rudisha self._qsize()
 
     eleza empty(self):
-        '''Return Kweli ikiwa the queue ni empty, Uongo otherwise (sio reliable!).
+        '''Return Kweli ikiwa the queue ni empty, Uongo otherwise (not reliable!).
 
         This method ni likely to be removed at some point.  Use qsize() == 0
-        kama a direct substitute, but be aware that either approach risks a race
-        condition where a queue can grow before the result of empty() ama
+        as a direct substitute, but be aware that either approach risks a race
+        condition where a queue can grow before the result of empty() or
         qsize() can be used.
 
         To create code that needs to wait kila all queued tasks to be
@@ -108,11 +108,11 @@ kundi Queue:
             rudisha sio self._qsize()
 
     eleza full(self):
-        '''Return Kweli ikiwa the queue ni full, Uongo otherwise (sio reliable!).
+        '''Return Kweli ikiwa the queue ni full, Uongo otherwise (not reliable!).
 
         This method ni likely to be removed at some point.  Use qsize() >= n
-        kama a direct substitute, but be aware that either approach risks a race
-        condition where a queue can shrink before the result of full() ama
+        as a direct substitute, but be aware that either approach risks a race
+        condition where a queue can shrink before the result of full() or
         qsize() can be used.
         '''
         ukijumuisha self.mutex:
@@ -123,28 +123,28 @@ kundi Queue:
 
         If optional args 'block' ni true na 'timeout' ni Tupu (the default),
         block ikiwa necessary until a free slot ni available. If 'timeout' is
-        a non-negative number, it blocks at most 'timeout' seconds na ashirias
+        a non-negative number, it blocks at most 'timeout' seconds na raises
         the Full exception ikiwa no free slot was available within that time.
         Otherwise ('block' ni false), put an item on the queue ikiwa a free slot
-        ni immediately available, isipokua ashiria the Full exception ('timeout'
+        ni immediately available, isipokua  ashiria the Full exception ('timeout'
         ni ignored kwenye that case).
         '''
         ukijumuisha self.not_full:
             ikiwa self.maxsize > 0:
                 ikiwa sio block:
                     ikiwa self._qsize() >= self.maxsize:
-                        ashiria Full
-                lasivyo timeout ni Tupu:
+                         ashiria Full
+                elikiwa timeout ni Tupu:
                     wakati self._qsize() >= self.maxsize:
                         self.not_full.wait()
-                lasivyo timeout < 0:
-                    ashiria ValueError("'timeout' must be a non-negative number")
+                elikiwa timeout < 0:
+                     ashiria ValueError("'timeout' must be a non-negative number")
                 isipokua:
                     endtime = time() + timeout
                     wakati self._qsize() >= self.maxsize:
                         remaining = endtime - time()
                         ikiwa remaining <= 0.0:
-                            ashiria Full
+                             ashiria Full
                         self.not_full.wait(remaining)
             self._put(item)
             self.unfinished_tasks += 1
@@ -155,27 +155,27 @@ kundi Queue:
 
         If optional args 'block' ni true na 'timeout' ni Tupu (the default),
         block ikiwa necessary until an item ni available. If 'timeout' is
-        a non-negative number, it blocks at most 'timeout' seconds na ashirias
+        a non-negative number, it blocks at most 'timeout' seconds na raises
         the Empty exception ikiwa no item was available within that time.
         Otherwise ('block' ni false), rudisha an item ikiwa one ni immediately
-        available, isipokua ashiria the Empty exception ('timeout' ni ignored
+        available, isipokua  ashiria the Empty exception ('timeout' ni ignored
         kwenye that case).
         '''
         ukijumuisha self.not_empty:
             ikiwa sio block:
                 ikiwa sio self._qsize():
-                    ashiria Empty
-            lasivyo timeout ni Tupu:
+                     ashiria Empty
+            elikiwa timeout ni Tupu:
                 wakati sio self._qsize():
                     self.not_empty.wait()
-            lasivyo timeout < 0:
-                ashiria ValueError("'timeout' must be a non-negative number")
+            elikiwa timeout < 0:
+                 ashiria ValueError("'timeout' must be a non-negative number")
             isipokua:
                 endtime = time() + timeout
                 wakati sio self._qsize():
                     remaining = endtime - time()
                     ikiwa remaining <= 0.0:
-                        ashiria Empty
+                         ashiria Empty
                     self.not_empty.wait(remaining)
             item = self._get()
             self.not_full.notify()
@@ -185,7 +185,7 @@ kundi Queue:
         '''Put an item into the queue without blocking.
 
         Only enqueue the item ikiwa a free slot ni immediately available.
-        Otherwise ashiria the Full exception.
+        Otherwise  ashiria the Full exception.
         '''
         rudisha self.put(item, block=Uongo)
 
@@ -193,7 +193,7 @@ kundi Queue:
         '''Remove na rudisha an item kutoka the queue without blocking.
 
         Only get an item ikiwa one ni immediately available. Otherwise
-        ashiria the Empty exception.
+         ashiria the Empty exception.
         '''
         rudisha self.get(block=Uongo)
 
@@ -269,7 +269,7 @@ kundi _PySimpleQueue:
     eleza put(self, item, block=Kweli, timeout=Tupu):
         '''Put the item on the queue.
 
-        The optional 'block' na 'timeout' arguments are ignored, kama this method
+        The optional 'block' na 'timeout' arguments are ignored, as this method
         never blocks.  They are provided kila compatibility ukijumuisha the Queue class.
         '''
         self._queue.append(item)
@@ -280,16 +280,16 @@ kundi _PySimpleQueue:
 
         If optional args 'block' ni true na 'timeout' ni Tupu (the default),
         block ikiwa necessary until an item ni available. If 'timeout' is
-        a non-negative number, it blocks at most 'timeout' seconds na ashirias
+        a non-negative number, it blocks at most 'timeout' seconds na raises
         the Empty exception ikiwa no item was available within that time.
         Otherwise ('block' ni false), rudisha an item ikiwa one ni immediately
-        available, isipokua ashiria the Empty exception ('timeout' ni ignored
+        available, isipokua  ashiria the Empty exception ('timeout' ni ignored
         kwenye that case).
         '''
         ikiwa timeout ni sio Tupu na timeout < 0:
-            ashiria ValueError("'timeout' must be a non-negative number")
+             ashiria ValueError("'timeout' must be a non-negative number")
         ikiwa sio self._count.acquire(block, timeout):
-            ashiria Empty
+             ashiria Empty
         rudisha self._queue.popleft()
 
     eleza put_nowait(self, item):
@@ -304,16 +304,16 @@ kundi _PySimpleQueue:
         '''Remove na rudisha an item kutoka the queue without blocking.
 
         Only get an item ikiwa one ni immediately available. Otherwise
-        ashiria the Empty exception.
+         ashiria the Empty exception.
         '''
         rudisha self.get(block=Uongo)
 
     eleza empty(self):
-        '''Return Kweli ikiwa the queue ni empty, Uongo otherwise (sio reliable!).'''
+        '''Return Kweli ikiwa the queue ni empty, Uongo otherwise (not reliable!).'''
         rudisha len(self._queue) == 0
 
     eleza qsize(self):
-        '''Return the approximate size of the queue (sio reliable!).'''
+        '''Return the approximate size of the queue (not reliable!).'''
         rudisha len(self._queue)
 
 

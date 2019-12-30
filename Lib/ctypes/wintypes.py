@@ -1,5 +1,5 @@
 # The most useful windows datatypes
-import ctypes
+agiza ctypes
 
 BYTE = ctypes.c_byte
 WORD = ctypes.c_ushort
@@ -17,10 +17,10 @@ FLOAT = ctypes.c_float
 BOOLEAN = BYTE
 BOOL = ctypes.c_long
 
-class VARIANT_BOOL(ctypes._SimpleCData):
+kundi VARIANT_BOOL(ctypes._SimpleCData):
     _type_ = "v"
-    def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.value)
+    eleza __repr__(self):
+        rudisha "%s(%r)" % (self.__class__.__name__, self.value)
 
 ULONG = ctypes.c_ulong
 LONG = ctypes.c_long
@@ -28,7 +28,7 @@ LONG = ctypes.c_long
 USHORT = ctypes.c_ushort
 SHORT = ctypes.c_short
 
-# in the windows header files, these are structures.
+# kwenye the windows header files, these are structures.
 _LARGE_INTEGER = LARGE_INTEGER = ctypes.c_longlong
 _ULARGE_INTEGER = ULARGE_INTEGER = ctypes.c_ulonglong
 
@@ -37,12 +37,12 @@ LPCWSTR = LPWSTR = ctypes.c_wchar_p
 LPCSTR = LPSTR = ctypes.c_char_p
 LPCVOID = LPVOID = ctypes.c_void_p
 
-# WPARAM is defined as UINT_PTR (unsigned type)
-# LPARAM is defined as LONG_PTR (signed type)
-if ctypes.sizeof(ctypes.c_long) == ctypes.sizeof(ctypes.c_void_p):
+# WPARAM ni defined as UINT_PTR (unsigned type)
+# LPARAM ni defined as LONG_PTR (signed type)
+ikiwa ctypes.sizeof(ctypes.c_long) == ctypes.sizeof(ctypes.c_void_p):
     WPARAM = ctypes.c_ulong
     LPARAM = ctypes.c_long
-lasivyo ctypes.sizeof(ctypes.c_longlong) == ctypes.sizeof(ctypes.c_void_p):
+elikiwa ctypes.sizeof(ctypes.c_longlong) == ctypes.sizeof(ctypes.c_void_p):
     WPARAM = ctypes.c_ulonglong
     LPARAM = ctypes.c_longlong
 
@@ -57,7 +57,7 @@ LCID = DWORD
 
 ################################################################
 # HANDLE types
-HANDLE = ctypes.c_void_p # in the header files: void *
+HANDLE = ctypes.c_void_p # kwenye the header files: void *
 
 HACCEL = HANDLE
 HBITMAP = HANDLE
@@ -94,43 +94,43 @@ SERVICE_STATUS_HANDLE = HANDLE
 ################################################################
 # Some important structure definitions
 
-class RECT(ctypes.Structure):
+kundi RECT(ctypes.Structure):
     _fields_ = [("left", LONG),
                 ("top", LONG),
                 ("right", LONG),
                 ("bottom", LONG)]
 tagRECT = _RECTL = RECTL = RECT
 
-class _SMALL_RECT(ctypes.Structure):
+kundi _SMALL_RECT(ctypes.Structure):
     _fields_ = [('Left', SHORT),
                 ('Top', SHORT),
                 ('Right', SHORT),
                 ('Bottom', SHORT)]
 SMALL_RECT = _SMALL_RECT
 
-class _COORD(ctypes.Structure):
+kundi _COORD(ctypes.Structure):
     _fields_ = [('X', SHORT),
                 ('Y', SHORT)]
 
-class POINT(ctypes.Structure):
+kundi POINT(ctypes.Structure):
     _fields_ = [("x", LONG),
                 ("y", LONG)]
 tagPOINT = _POINTL = POINTL = POINT
 
-class SIZE(ctypes.Structure):
+kundi SIZE(ctypes.Structure):
     _fields_ = [("cx", LONG),
                 ("cy", LONG)]
 tagSIZE = SIZEL = SIZE
 
-def RGB(red, green, blue):
-    return red + (green << 8) + (blue << 16)
+eleza RGB(red, green, blue):
+    rudisha red + (green << 8) + (blue << 16)
 
-class FILETIME(ctypes.Structure):
+kundi FILETIME(ctypes.Structure):
     _fields_ = [("dwLowDateTime", DWORD),
                 ("dwHighDateTime", DWORD)]
 _FILETIME = FILETIME
 
-class MSG(ctypes.Structure):
+kundi MSG(ctypes.Structure):
     _fields_ = [("hWnd", HWND),
                 ("message", UINT),
                 ("wParam", WPARAM),
@@ -140,7 +140,7 @@ class MSG(ctypes.Structure):
 tagMSG = MSG
 MAX_PATH = 260
 
-class WIN32_FIND_DATAA(ctypes.Structure):
+kundi WIN32_FIND_DATAA(ctypes.Structure):
     _fields_ = [("dwFileAttributes", DWORD),
                 ("ftCreationTime", FILETIME),
                 ("ftLastAccessTime", FILETIME),
@@ -152,7 +152,7 @@ class WIN32_FIND_DATAA(ctypes.Structure):
                 ("cFileName", CHAR * MAX_PATH),
                 ("cAlternateFileName", CHAR * 14)]
 
-class WIN32_FIND_DATAW(ctypes.Structure):
+kundi WIN32_FIND_DATAW(ctypes.Structure):
     _fields_ = [("dwFileAttributes", DWORD),
                 ("ftCreationTime", FILETIME),
                 ("ftLastAccessTime", FILETIME),

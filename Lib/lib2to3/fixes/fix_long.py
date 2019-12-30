@@ -4,7 +4,7 @@
 """Fixer that turns 'long' into 'int' everywhere.
 """
 
-# Local agizas
+# Local imports
 kutoka lib2to3 agiza fixer_base
 kutoka lib2to3.fixer_util agiza is_probably_builtin
 

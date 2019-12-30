@@ -1,6 +1,6 @@
 
 #
-# Emulation of has_key() function for platforms that don't use ncurses
+# Emulation of has_key() function kila platforms that don't use ncurses
 #
 
 agiza _curses
@@ -159,34 +159,34 @@ _capability_names = {
     _curses.KEY_UP: 'kcuu1'
     }
 
-def has_key(ch):
-    if isinstance(ch, str):
+eleza has_key(ch):
+    ikiwa isinstance(ch, str):
         ch = ord(ch)
 
-    # Figure out the correct capability name for the keycode.
+    # Figure out the correct capability name kila the keycode.
     capability_name = _capability_names.get(ch)
-    if capability_name is None:
-        return False
+    ikiwa capability_name ni Tupu:
+        rudisha Uongo
 
-    #Check the current terminal description for that capability;
-    #if present, return true, isipokua return false.
-    if _curses.tigetstr( capability_name ):
-        return True
+    #Check the current terminal description kila that capability;
+    #ikiwa present, rudisha true, isipokua rudisha false.
+    ikiwa _curses.tigetstr( capability_name ):
+        rudisha Kweli
     isipokua:
-        return False
+        rudisha Uongo
 
-if __name__ == '__main__':
-    # Compare the output of this implementation and the ncurses has_key,
-    # on platforms where has_key is already available
+ikiwa __name__ == '__main__':
+    # Compare the output of this implementation na the ncurses has_key,
+    # on platforms where has_key ni already available
     jaribu:
         L = []
         _curses.initscr()
-        for key in _capability_names.keys():
+        kila key kwenye _capability_names.keys():
             system = _curses.has_key(key)
             python = has_key(key)
-            if system != python:
-                L.append( 'Mismatch for key %s, system=%i, Python=%i'
+            ikiwa system != python:
+                L.append( 'Mismatch kila key %s, system=%i, Python=%i'
                           % (_curses.keyname( key ), system, python) )
     mwishowe:
         _curses.endwin()
-        for i in L: print(i)
+        kila i kwenye L: andika(i)

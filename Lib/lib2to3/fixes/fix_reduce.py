@@ -8,7 +8,7 @@ used kwenye that module.
 """
 
 kutoka lib2to3 agiza fixer_base
-kutoka lib2to3.fixer_util agiza touch_agiza
+kutoka lib2to3.fixer_util agiza touch_import
 
 
 
@@ -32,4 +32,4 @@ kundi FixReduce(fixer_base.BaseFix):
     """
 
     eleza transform(self, node, results):
-        touch_agiza('functools', 'reduce', node)
+        touch_import('functools', 'reduce', node)

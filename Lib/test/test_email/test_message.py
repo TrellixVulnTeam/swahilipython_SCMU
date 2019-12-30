@@ -1,26 +1,26 @@
-import unittest
-import textwrap
-from email import policy, message_from_string
-from email.message import EmailMessage, MIMEPart
-from test.test_email import TestEmailBase, parameterize
+agiza unittest
+agiza textwrap
+kutoka email agiza policy, message_from_string
+kutoka email.message agiza EmailMessage, MIMEPart
+kutoka test.test_email agiza TestEmailBase, parameterize
 
 
 # Helper.
-def first(iterable):
-    return next(filter(lambda x: x ni sio None, iterable), None)
+eleza first(iterable):
+    rudisha next(filter(lambda x: x ni sio Tupu, iterable), Tupu)
 
 
-class Test(TestEmailBase):
+kundi Test(TestEmailBase):
 
     policy = policy.default
 
-    def test_error_on_setitem_if_max_count_exceeded(self):
+    eleza test_error_on_setitem_if_max_count_exceeded(self):
         m = self._str_msg("")
         m['To'] = 'abc@xyz'
-        with self.assertRaises(ValueError):
+        ukijumuisha self.assertRaises(ValueError):
             m['To'] = 'xyz@abc'
 
-    def test_rfc2043_auto_decoded_and_emailmessage_used(self):
+    eleza test_rfc2043_auto_decoded_and_emailmessage_used(self):
         m = message_from_string(textwrap.dedent("""\
             Subject: Ayons asperges pour le =?utf-8?q?d=C3=A9jeuner?=
             From: =?utf-8?q?Pep=C3=A9?= Le Pew <pepe@example.com>
@@ -36,30 +36,30 @@ class Test(TestEmailBase):
 
 
 @parameterize
-class TestEmailMessageBase:
+kundi TestEmailMessageBase:
 
     policy = policy.default
 
-    # The first argument is a triple (related, html, plain) of indices into the
-    # list returned by 'walk' called on a Message constructed from the third.
+    # The first argument ni a triple (related, html, plain) of indices into the
+    # list returned by 'walk' called on a Message constructed kutoka the third.
     # The indices indicate which part should match the corresponding part-type
-    # when passed to get_body (ie: the "first" part of that type in the
-    # message).  The second argument is a list of indices into the 'walk' list
+    # when passed to get_body (ie: the "first" part of that type kwenye the
+    # message).  The second argument ni a list of indices into the 'walk' list
     # of the attachments that should be returned by a call to
-    # 'iter_attachments'.  The third argument is a list of indices into 'walk'
+    # 'iter_attachments'.  The third argument ni a list of indices into 'walk'
     # that should be returned by a call to 'iter_parts'.  Note that the first
-    # item returned by 'walk' is the Message itself.
+    # item returned by 'walk' ni the Message itself.
 
     message_params = {
 
         'empty_message': (
-            (None, None, 0),
+            (Tupu, Tupu, 0),
             (),
             (),
             ""),
 
         'non_mime_plain': (
-            (None, None, 0),
+            (Tupu, Tupu, 0),
             (),
             (),
             textwrap.dedent("""\
@@ -69,7 +69,7 @@ class TestEmailMessageBase:
                 """)),
 
         'mime_non_text': (
-            (None, None, None),
+            (Tupu, Tupu, Tupu),
             (),
             (),
             textwrap.dedent("""\
@@ -81,7 +81,7 @@ class TestEmailMessageBase:
                 """)),
 
         'plain_html_alternative': (
-            (None, 2, 1),
+            (Tupu, 2, 1),
             (),
             (1, 2),
             textwrap.dedent("""\
@@ -104,7 +104,7 @@ class TestEmailMessageBase:
                 """)),
 
         'plain_html_mixed': (
-            (None, 2, 1),
+            (Tupu, 2, 1),
             (),
             (1, 2),
             textwrap.dedent("""\
@@ -128,7 +128,7 @@ class TestEmailMessageBase:
                 """)),
 
         'plain_html_attachment_mixed': (
-            (None, None, 1),
+            (Tupu, Tupu, 1),
             (2,),
             (1, 2),
             textwrap.dedent("""\
@@ -151,7 +151,7 @@ class TestEmailMessageBase:
                 """)),
 
         'html_text_attachment_mixed': (
-            (None, 2, None),
+            (Tupu, 2, Tupu),
             (1,),
             (1, 2),
             textwrap.dedent("""\
@@ -174,7 +174,7 @@ class TestEmailMessageBase:
                 """)),
 
         'html_text_attachment_inline_mixed': (
-            (None, 2, 1),
+            (Tupu, 2, 1),
             (),
             (1, 2),
             textwrap.dedent("""\
@@ -199,7 +199,7 @@ class TestEmailMessageBase:
 
         # RFC 2387
         'related': (
-            (0, 1, None),
+            (0, 1, Tupu),
             (2,),
             (1, 2),
             textwrap.dedent("""\
@@ -221,11 +221,11 @@ class TestEmailMessageBase:
                 --===--
                 """)),
 
-        # This message structure will probably never be seen in the wild, but
+        # This message structure will probably never be seen kwenye the wild, but
         # it proves we distinguish between text parts based on 'start'.  The
         # content would not, of course, actually work :)
         'related_with_start': (
-            (0, 2, None),
+            (0, 2, Tupu),
             (1,),
             (1, 2),
             textwrap.dedent("""\
@@ -302,7 +302,7 @@ class TestEmailMessageBase:
                 """)),
 
         # This structure suggested by Stephen J. Turnbull...may sio exist/be
-        # supported in the wild, but we want to support it.
+        # supported kwenye the wild, but we want to support it.
         'mixed_related_alternative_plain_html': (
             (1, 4, 3),
             (6, 7),
@@ -353,11 +353,11 @@ class TestEmailMessageBase:
                 --===--
                 """)),
 
-        # Same thing, but proving we only look at the root part, which is the
-        # first one if there isn't any start parameter.  That is, this is a
+        # Same thing, but proving we only look at the root part, which ni the
+        # first one ikiwa there isn't any start parameter.  That is, this ni a
         # broken related.
         'mixed_related_alternative_plain_html_wrong_order': (
-            (1, None, None),
+            (1, Tupu, Tupu),
             (6, 7),
             (1, 6, 7),
             textwrap.dedent("""\
@@ -407,7 +407,7 @@ class TestEmailMessageBase:
                 """)),
 
         'message_rfc822': (
-            (None, None, None),
+            (Tupu, Tupu, Tupu),
             (),
             (),
             textwrap.dedent("""\
@@ -418,11 +418,11 @@ class TestEmailMessageBase:
                 To: bar@example.com
                 From: robot@examp.com
 
-                this is a message body.
+                this ni a message body.
                 """)),
 
         'mixed_text_message_rfc822': (
-            (None, None, 1),
+            (Tupu, Tupu, 1),
             (2,),
             (1, 2),
             textwrap.dedent("""\
@@ -441,17 +441,17 @@ class TestEmailMessageBase:
                 To: bar@example.com
                 From: robot@examp.com
 
-                this is a message body.
+                this ni a message body.
 
                 --===--
                 """)),
 
          }
 
-    def message_as_get_body(self, body_parts, attachments, parts, msg):
+    eleza message_as_get_body(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        expected = [None if n is None isipokua allparts[n] for n in body_parts]
+        expected = [Tupu ikiwa n ni Tupu isipokua allparts[n] kila n kwenye body_parts]
         related = 0; html = 1; plain = 2
         self.assertEqual(m.get_body(), first(expected))
         self.assertEqual(m.get_body(preferencelist=(
@@ -480,27 +480,27 @@ class TestEmailMessageBase:
                                 expected[plain],
                                 expected[related]]))
 
-    def message_as_iter_attachment(self, body_parts, attachments, parts, msg):
+    eleza message_as_iter_attachment(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        attachments = [allparts[n] for n in attachments]
+        attachments = [allparts[n] kila n kwenye attachments]
         self.assertEqual(list(m.iter_attachments()), attachments)
 
-    def message_as_iter_parts(self, body_parts, attachments, parts, msg):
+    eleza message_as_iter_parts(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        parts = [allparts[n] for n in parts]
+        parts = [allparts[n] kila n kwenye parts]
         self.assertEqual(list(m.iter_parts()), parts)
 
-    class _TestContentManager:
-        def get_content(self, msg, *args, **kw):
-            return msg, args, kw
-        def set_content(self, msg, *args, **kw):
+    kundi _TestContentManager:
+        eleza get_content(self, msg, *args, **kw):
+            rudisha msg, args, kw
+        eleza set_content(self, msg, *args, **kw):
             self.msg = msg
             self.args = args
             self.kw = kw
 
-    def test_get_content_with_cm(self):
+    eleza test_get_content_with_cm(self):
         m = self._str_msg('')
         cm = self._TestContentManager()
         self.assertEqual(m.get_content(content_manager=cm), (m, (), {}))
@@ -509,7 +509,7 @@ class TestEmailMessageBase:
         self.assertEqual(args, ('foo',))
         self.assertEqual(kw, dict(bar=1, k=2))
 
-    def test_get_content_default_cm_comes_from_policy(self):
+    eleza test_get_content_default_cm_comes_from_policy(self):
         p = policy.default.clone(content_manager=self._TestContentManager())
         m = self._str_msg('', policy=p)
         self.assertEqual(m.get_content(), (m, (), {}))
@@ -518,7 +518,7 @@ class TestEmailMessageBase:
         self.assertEqual(args, ('foo',))
         self.assertEqual(kw, dict(bar=1, k=2))
 
-    def test_set_content_with_cm(self):
+    eleza test_set_content_with_cm(self):
         m = self._str_msg('')
         cm = self._TestContentManager()
         m.set_content(content_manager=cm)
@@ -530,7 +530,7 @@ class TestEmailMessageBase:
         self.assertEqual(cm.args, ('foo',))
         self.assertEqual(cm.kw, dict(bar=1, k=2))
 
-    def test_set_content_default_cm_comes_from_policy(self):
+    eleza test_set_content_default_cm_comes_from_policy(self):
         cm = self._TestContentManager()
         p = policy.default.clone(content_manager=cm)
         m = self._str_msg('', policy=p)
@@ -543,11 +543,11 @@ class TestEmailMessageBase:
         self.assertEqual(cm.args, ('foo',))
         self.assertEqual(cm.kw, dict(bar=1, k=2))
 
-    # outcome is whether xxx_method should ashiria ValueError error when called
+    # outcome ni whether xxx_method should  ashiria ValueError error when called
     # on multipart/subtype.  Blank outcome means it depends on xxx (add
     # succeeds, make raises).  Note: 'none' means there are content-type
-    # headers but payload is None...this happening in practice would be very
-    # unusual, so treating it as if there were content seems reasonable.
+    # headers but payload ni Tupu...this happening kwenye practice would be very
+    # unusual, so treating it as ikiwa there were content seems reasonable.
     #    method          subtype           outcome
     subtype_params = (
         ('related',      'no_content',     'succeeds'),
@@ -570,62 +570,62 @@ class TestEmailMessageBase:
         ('mixed',        'mixed',          ''),
         )
 
-    def _make_subtype_test_message(self, subtype):
+    eleza _make_subtype_test_message(self, subtype):
         m = self.message()
-        payload = None
+        payload = Tupu
         msg_headers =  [
             ('To', 'foo@bar.com'),
             ('From', 'bar@foo.com'),
             ]
-        if subtype != 'no_content':
+        ikiwa subtype != 'no_content':
             ('content-shadow', 'Logrus'),
         msg_headers.append(('X-Random-Header', 'Corwin'))
-        if subtype == 'text':
+        ikiwa subtype == 'text':
             payload = ''
             msg_headers.append(('Content-Type', 'text/plain'))
             m.set_payload('')
-        lasivyo subtype != 'no_content':
+        elikiwa subtype != 'no_content':
             payload = []
             msg_headers.append(('Content-Type', 'multipart/' + subtype))
         msg_headers.append(('X-Trump', 'Random'))
         m.set_payload(payload)
-        for name, value in msg_headers:
+        kila name, value kwenye msg_headers:
             m[name] = value
-        return m, msg_headers, payload
+        rudisha m, msg_headers, payload
 
-    def _check_disallowed_subtype_raises(self, m, method_name, subtype, method):
-        with self.assertRaises(ValueError) as ar:
+    eleza _check_disallowed_subtype_raises(self, m, method_name, subtype, method):
+        ukijumuisha self.assertRaises(ValueError) as ar:
             getattr(m, method)()
         exc_text = str(ar.exception)
         self.assertIn(subtype, exc_text)
         self.assertIn(method_name, exc_text)
 
-    def _check_make_multipart(self, m, msg_headers, payload):
+    eleza _check_make_multipart(self, m, msg_headers, payload):
         count = 0
-        for name, value in msg_headers:
-            if sio name.lower().startswith('content-'):
+        kila name, value kwenye msg_headers:
+            ikiwa sio name.lower().startswith('content-'):
                 self.assertEqual(m[name], value)
                 count += 1
-        self.assertEqual(len(m), count+1) # +1 for new Content-Type
+        self.assertEqual(len(m), count+1) # +1 kila new Content-Type
         part = next(m.iter_parts())
         count = 0
-        for name, value in msg_headers:
-            if name.lower().startswith('content-'):
+        kila name, value kwenye msg_headers:
+            ikiwa name.lower().startswith('content-'):
                 self.assertEqual(part[name], value)
                 count += 1
         self.assertEqual(len(part), count)
         self.assertEqual(part.get_payload(), payload)
 
-    def subtype_as_make(self, method, subtype, outcome):
+    eleza subtype_as_make(self, method, subtype, outcome):
         m, msg_headers, payload = self._make_subtype_test_message(subtype)
         make_method = 'make_' + method
-        if outcome in ('', 'raises'):
+        ikiwa outcome kwenye ('', 'raises'):
             self._check_disallowed_subtype_raises(m, method, subtype, make_method)
             return
         getattr(m, make_method)()
         self.assertEqual(m.get_content_maintype(), 'multipart')
         self.assertEqual(m.get_content_subtype(), method)
-        if subtype == 'no_content':
+        ikiwa subtype == 'no_content':
             self.assertEqual(len(m.get_payload()), 0)
             self.assertEqual(m.items(),
                              msg_headers + [('Content-Type',
@@ -634,47 +634,47 @@ class TestEmailMessageBase:
             self.assertEqual(len(m.get_payload()), 1)
             self._check_make_multipart(m, msg_headers, payload)
 
-    def subtype_as_make_with_boundary(self, method, subtype, outcome):
-        # Doing all variation is a bit of overkill...
+    eleza subtype_as_make_with_boundary(self, method, subtype, outcome):
+        # Doing all variation ni a bit of overkill...
         m = self.message()
-        if outcome in ('', 'raises'):
+        ikiwa outcome kwenye ('', 'raises'):
             m['Content-Type'] = 'multipart/' + subtype
-            with self.assertRaises(ValueError) as cm:
+            ukijumuisha self.assertRaises(ValueError) as cm:
                 getattr(m, 'make_' + method)()
             return
-        if subtype == 'plain':
+        ikiwa subtype == 'plain':
             m['Content-Type'] = 'text/plain'
-        lasivyo subtype != 'no_content':
+        elikiwa subtype != 'no_content':
             m['Content-Type'] = 'multipart/' + subtype
         getattr(m, 'make_' + method)(boundary="abc")
-        self.assertTrue(m.is_multipart())
+        self.assertKweli(m.is_multipart())
         self.assertEqual(m.get_boundary(), 'abc')
 
-    def test_policy_on_part_made_by_make_comes_from_message(self):
-        for method in ('make_related', 'make_alternative', 'make_mixed'):
+    eleza test_policy_on_part_made_by_make_comes_from_message(self):
+        kila method kwenye ('make_related', 'make_alternative', 'make_mixed'):
             m = self.message(policy=self.policy.clone(content_manager='foo'))
             m['Content-Type'] = 'text/plain'
             getattr(m, method)()
             self.assertEqual(m.get_payload(0).policy.content_manager, 'foo')
 
-    class _TestSetContentManager:
-        def set_content(self, msg, content, *args, **kw):
+    kundi _TestSetContentManager:
+        eleza set_content(self, msg, content, *args, **kw):
             msg['Content-Type'] = 'text/plain'
             msg.set_payload(content)
 
-    def subtype_as_add(self, method, subtype, outcome):
+    eleza subtype_as_add(self, method, subtype, outcome):
         m, msg_headers, payload = self._make_subtype_test_message(subtype)
         cm = self._TestSetContentManager()
-        add_method = 'add_attachment' if method=='mixed' isipokua 'add_' + method
-        if outcome == 'raises':
+        add_method = 'add_attachment' ikiwa method=='mixed' isipokua 'add_' + method
+        ikiwa outcome == 'raises':
             self._check_disallowed_subtype_raises(m, method, subtype, add_method)
             return
         getattr(m, add_method)('test', content_manager=cm)
         self.assertEqual(m.get_content_maintype(), 'multipart')
         self.assertEqual(m.get_content_subtype(), method)
-        if method == subtype or subtype == 'no_content':
+        ikiwa method == subtype ama subtype == 'no_content':
             self.assertEqual(len(m.get_payload()), 1)
-            for name, value in msg_headers:
+            kila name, value kwenye msg_headers:
                 self.assertEqual(m[name], value)
             part = m.get_payload()[0]
         isipokua:
@@ -683,56 +683,56 @@ class TestEmailMessageBase:
             part = m.get_payload()[1]
         self.assertEqual(part.get_content_type(), 'text/plain')
         self.assertEqual(part.get_payload(), 'test')
-        if method=='mixed':
+        ikiwa method=='mixed':
             self.assertEqual(part['Content-Disposition'], 'attachment')
-        lasivyo method=='related':
+        elikiwa method=='related':
             self.assertEqual(part['Content-Disposition'], 'inline')
         isipokua:
             # Otherwise we don't guess.
-            self.assertIsNone(part['Content-Disposition'])
+            self.assertIsTupu(part['Content-Disposition'])
 
-    class _TestSetRaisingContentManager:
-        def set_content(self, msg, content, *args, **kw):
-            ashiria Exception('test')
+    kundi _TestSetRaisingContentManager:
+        eleza set_content(self, msg, content, *args, **kw):
+             ashiria Exception('test')
 
-    def test_default_content_manager_for_add_comes_from_policy(self):
+    eleza test_default_content_manager_for_add_comes_from_policy(self):
         cm = self._TestSetRaisingContentManager()
         m = self.message(policy=self.policy.clone(content_manager=cm))
-        for method in ('add_related', 'add_alternative', 'add_attachment'):
-            with self.assertRaises(Exception) as ar:
+        kila method kwenye ('add_related', 'add_alternative', 'add_attachment'):
+            ukijumuisha self.assertRaises(Exception) as ar:
                 getattr(m, method)('')
             self.assertEqual(str(ar.exception), 'test')
 
-    def message_as_clear(self, body_parts, attachments, parts, msg):
+    eleza message_as_clear(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         m.clear()
         self.assertEqual(len(m), 0)
         self.assertEqual(list(m.items()), [])
-        self.assertIsNone(m.get_payload())
+        self.assertIsTupu(m.get_payload())
         self.assertEqual(list(m.iter_parts()), [])
 
-    def message_as_clear_content(self, body_parts, attachments, parts, msg):
+    eleza message_as_clear_content(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
-        expected_headers = [h for h in m.keys()
-                            if sio h.lower().startswith('content-')]
+        expected_headers = [h kila h kwenye m.keys()
+                            ikiwa sio h.lower().startswith('content-')]
         m.clear_content()
         self.assertEqual(list(m.keys()), expected_headers)
-        self.assertIsNone(m.get_payload())
+        self.assertIsTupu(m.get_payload())
         self.assertEqual(list(m.iter_parts()), [])
 
-    def test_is_attachment(self):
+    eleza test_is_attachment(self):
         m = self._make_message()
-        self.assertFalse(m.is_attachment())
+        self.assertUongo(m.is_attachment())
         m['Content-Disposition'] = 'inline'
-        self.assertFalse(m.is_attachment())
+        self.assertUongo(m.is_attachment())
         m.replace_header('Content-Disposition', 'attachment')
-        self.assertTrue(m.is_attachment())
+        self.assertKweli(m.is_attachment())
         m.replace_header('Content-Disposition', 'AtTachMent')
-        self.assertTrue(m.is_attachment())
+        self.assertKweli(m.is_attachment())
         m.set_param('filename', 'abc.png', 'Content-Disposition')
-        self.assertTrue(m.is_attachment())
+        self.assertKweli(m.is_attachment())
 
-    def test_iter_attachments_mutation(self):
+    eleza test_iter_attachments_mutation(self):
         # We had a bug where iter_attachments was mutating the list.
         m = self._make_message()
         m.set_content('arbitrary text as main part')
@@ -743,53 +743,53 @@ class TestEmailMessageBase:
         self.assertEqual(m.get_payload(), orig)
 
 
-class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
+kundi TestEmailMessage(TestEmailMessageBase, TestEmailBase):
     message = EmailMessage
 
-    def test_set_content_adds_MIME_Version(self):
+    eleza test_set_content_adds_MIME_Version(self):
         m = self._str_msg('')
         cm = self._TestContentManager()
         self.assertNotIn('MIME-Version', m)
         m.set_content(content_manager=cm)
         self.assertEqual(m['MIME-Version'], '1.0')
 
-    class _MIME_Version_adding_CM:
-        def set_content(self, msg, *args, **kw):
+    kundi _MIME_Version_adding_CM:
+        eleza set_content(self, msg, *args, **kw):
             msg['MIME-Version'] = '1.0'
 
-    def test_set_content_does_not_duplicate_MIME_Version(self):
+    eleza test_set_content_does_not_duplicate_MIME_Version(self):
         m = self._str_msg('')
         cm = self._MIME_Version_adding_CM()
         self.assertNotIn('MIME-Version', m)
         m.set_content(content_manager=cm)
         self.assertEqual(m['MIME-Version'], '1.0')
 
-    def test_as_string_uses_max_header_length_by_default(self):
+    eleza test_as_string_uses_max_header_length_by_default(self):
         m = self._str_msg('Subject: long line' + ' ab'*50 + '\n\n')
         self.assertEqual(len(m.as_string().strip().splitlines()), 3)
 
-    def test_as_string_allows_maxheaderlen(self):
+    eleza test_as_string_allows_maxheaderlen(self):
         m = self._str_msg('Subject: long line' + ' ab'*50 + '\n\n')
         self.assertEqual(len(m.as_string(maxheaderlen=0).strip().splitlines()),
                          1)
         self.assertEqual(len(m.as_string(maxheaderlen=34).strip().splitlines()),
                          6)
 
-    def test_str_defaults_to_policy_max_line_length(self):
+    eleza test_str_defaults_to_policy_max_line_length(self):
         m = self._str_msg('Subject: long line' + ' ab'*50 + '\n\n')
         self.assertEqual(len(str(m).strip().splitlines()), 3)
 
-    def test_str_defaults_to_utf8(self):
+    eleza test_str_defaults_to_utf8(self):
         m = EmailMessage()
         m['Subject'] = 'unicöde'
         self.assertEqual(str(m), 'Subject: unicöde\n\n')
 
-    def test_folding_with_utf8_encoding_1(self):
+    eleza test_folding_with_utf8_encoding_1(self):
         # bpo-36520
         #
         # Fold a line that contains UTF-8 words before
-        # and after the whitespace fold point, where the
-        # line length limit is reached within an ASCII
+        # na after the whitespace fold point, where the
+        # line length limit ni reached within an ASCII
         # word.
 
         m = EmailMessage()
@@ -801,12 +801,12 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
                          b' Hello =?utf-8?q?W=C3=B6rld!Hello_W=C3=B6rld!?=\n\n')
 
 
-    def test_folding_with_utf8_encoding_2(self):
+    eleza test_folding_with_utf8_encoding_2(self):
         # bpo-36520
         #
         # Fold a line that contains UTF-8 words before
-        # and after the whitespace fold point, where the
-        # line length limit is reached at the end of an
+        # na after the whitespace fold point, where the
+        # line length limit ni reached at the end of an
         # encoded word.
 
         m = EmailMessage()
@@ -817,12 +817,12 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
                          b'=C3=B6rld!_Hello_W=C3=B6rlds123!?=\n'
                          b' Hello =?utf-8?q?W=C3=B6rld!Hello_W=C3=B6rld!?=\n\n')
 
-    def test_folding_with_utf8_encoding_3(self):
+    eleza test_folding_with_utf8_encoding_3(self):
         # bpo-36520
         #
         # Fold a line that contains UTF-8 words before
-        # and after the whitespace fold point, where the
-        # line length limit is reached at the end of the
+        # na after the whitespace fold point, where the
+        # line length limit ni reached at the end of the
         # first word.
 
         m = EmailMessage()
@@ -833,12 +833,12 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
                          b'=C3=B6rld!-Hello-W=C3=B6rlds123!?=\n'
                          b' Hello =?utf-8?q?W=C3=B6rld!Hello_W=C3=B6rld!?=\n\n')
 
-    def test_folding_with_utf8_encoding_4(self):
+    eleza test_folding_with_utf8_encoding_4(self):
         # bpo-36520
         #
         # Fold a line that contains UTF-8 words before
-        # and after the fold point, where the first
-        # word is UTF-8 and the fold point is within
+        # na after the fold point, where the first
+        # word ni UTF-8 na the fold point ni within
         # the word.
 
         m = EmailMessage()
@@ -849,7 +849,7 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
                          b'=C3=B6rld!-Hello-W=C3=B6rlds123!?=\n'
                          b' =?utf-8?q?-Hello_W=C3=B6rld!Hello_W=C3=B6rld!?=\n\n')
 
-    def test_folding_with_utf8_encoding_5(self):
+    eleza test_folding_with_utf8_encoding_5(self):
         # bpo-36520
         #
         # Fold a line that contains a UTF-8 word after
@@ -863,11 +863,11 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
                          b' 123456789 123456789 123456789\n'
                          b' Hello =?utf-8?q?W=C3=B6rld!?=\n\n')
 
-    def test_folding_with_utf8_encoding_6(self):
+    eleza test_folding_with_utf8_encoding_6(self):
         # bpo-36520
         #
         # Fold a line that contains a UTF-8 word before
-        # the fold point and ASCII words after
+        # the fold point na ASCII words after
 
         m = EmailMessage()
         m['Subject'] = '123456789 123456789 123456789 123456789 Hello Wörld!' \
@@ -879,11 +879,11 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
                          b'123456789 123456789 123456789 123456789 '
                          b'123456789\n\n')
 
-    def test_folding_with_utf8_encoding_7(self):
+    eleza test_folding_with_utf8_encoding_7(self):
         # bpo-36520
         #
         # Fold a line twice that contains UTF-8 words before
-        # and after the first fold point, and ASCII words
+        # na after the first fold point, na ASCII words
         # after the second fold point.
 
         m = EmailMessage()
@@ -896,12 +896,12 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
                          b' 123456789-123456789 123456789 Hello '
                          b'=?utf-8?q?W=C3=B6rld!?= 123456789\n 123456789\n\n')
 
-    def test_folding_with_utf8_encoding_8(self):
+    eleza test_folding_with_utf8_encoding_8(self):
         # bpo-36520
         #
         # Fold a line twice that contains UTF-8 words before
-        # the first fold point, and ASCII words after the
-        # first fold point, and UTF-8 words after the second
+        # the first fold point, na ASCII words after the
+        # first fold point, na UTF-8 words after the second
         # fold point.
 
         m = EmailMessage()
@@ -916,20 +916,20 @@ class TestEmailMessage(TestEmailMessageBase, TestEmailBase):
                          b'123456789-123456789\n 123456789 Hello '
                          b'=?utf-8?q?W=C3=B6rld!?= 123456789 123456789\n\n')
 
-class TestMIMEPart(TestEmailMessageBase, TestEmailBase):
+kundi TestMIMEPart(TestEmailMessageBase, TestEmailBase):
     # Doing the full test run here may seem a bit redundant, since the two
-    # classes are almost identical.  But what if they drift apart?  So we do
+    # classes are almost identical.  But what ikiwa they drift apart?  So we do
     # the full tests so that any future drift doesn't introduce bugs.
     message = MIMEPart
 
-    def test_set_content_does_not_add_MIME_Version(self):
+    eleza test_set_content_does_not_add_MIME_Version(self):
         m = self._str_msg('')
         cm = self._TestContentManager()
         self.assertNotIn('MIME-Version', m)
         m.set_content(content_manager=cm)
         self.assertNotIn('MIME-Version', m)
 
-    def test_string_payload_with_multipart_content_type(self):
+    eleza test_string_payload_with_multipart_content_type(self):
         msg = message_from_string(textwrap.dedent("""\
         Content-Type: multipart/mixed; charset="utf-8"
 
@@ -939,5 +939,5 @@ class TestMIMEPart(TestEmailMessageBase, TestEmailBase):
         self.assertEqual(list(attachments), [])
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

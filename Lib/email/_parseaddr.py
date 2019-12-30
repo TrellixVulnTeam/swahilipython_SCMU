@@ -3,7 +3,7 @@
 
 """Email address parsing code.
 
-Lifted directly from rfc822.py.  This should eventually be rewritten.
+Lifted directly kutoka rfc822.py.  This should eventually be rewritten.
 """
 
 __all__ = [
@@ -13,7 +13,7 @@ __all__ = [
     'quote',
     ]
 
-import time, calendar
+agiza time, calendar
 
 SPACE = ' '
 EMPTYSTRING = ''
@@ -28,13 +28,13 @@ _monthnames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul',
 _daynames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
 # The timezone table does sio include the military time zones defined
-# in RFC822, other than Z.  According to RFC1123, the description in
+# kwenye RFC822, other than Z.  According to RFC1123, the description in
 # RFC822 gets the signs wrong, so we can't rely on any such time
 # zones.  RFC1123 recommends that numeric timezone indicators be used
 # instead of timezone names.
 
 _timezones = {'UT':0, 'UTC':0, 'GMT':0, 'Z':0,
-              'AST': -400, 'ADT': -300,  # Atlantic (used in Canada)
+              'AST': -400, 'ADT': -300,  # Atlantic (used kwenye Canada)
               'EST': -500, 'EDT': -400,  # Eastern
               'CST': -600, 'CDT': -500,  # Central
               'MST': -700, 'MDT': -600,  # Mountain
@@ -42,179 +42,179 @@ _timezones = {'UT':0, 'UTC':0, 'GMT':0, 'Z':0,
               }
 
 
-def parsedate_tz(data):
+eleza parsedate_tz(data):
     """Convert a date string to a time tuple.
 
-    Accounts for military timezones.
+    Accounts kila military timezones.
     """
     res = _parsedate_tz(data)
-    if sio res:
+    ikiwa sio res:
         return
-    if res[9] is None:
+    ikiwa res[9] ni Tupu:
         res[9] = 0
-    return tuple(res)
+    rudisha tuple(res)
 
-def _parsedate_tz(data):
+eleza _parsedate_tz(data):
     """Convert date to extended time tuple.
 
-    The last (additional) element is the time zone offset in seconds, tatizo if
+    The last (additional) element ni the time zone offset kwenye seconds, except if
     the timezone was specified as -0000.  In that case the last element is
-    None.  This indicates a UTC timestamp that explicitly declaims knowledge of
+    Tupu.  This indicates a UTC timestamp that explicitly declaims knowledge of
     the source timezone, as opposed to a +0000 timestamp that indicates the
     source timezone really was UTC.
 
     """
-    if sio data:
+    ikiwa sio data:
         return
     data = data.split()
-    # The FWS after the comma after the day-of-week is optional, so search na
-    # adjust for this.
-    if data[0].endswith(',') ama data[0].lower() in _daynames:
+    # The FWS after the comma after the day-of-week ni optional, so search and
+    # adjust kila this.
+    ikiwa data[0].endswith(',') ama data[0].lower() kwenye _daynames:
         # There's a dayname here. Skip it
         toa data[0]
     isipokua:
         i = data[0].rfind(',')
-        if i >= 0:
+        ikiwa i >= 0:
             data[0] = data[0][i+1:]
-    if len(data) == 3: # RFC 850 date, deprecated
+    ikiwa len(data) == 3: # RFC 850 date, deprecated
         stuff = data[0].split('-')
-        if len(stuff) == 3:
+        ikiwa len(stuff) == 3:
             data = stuff + data[1:]
-    if len(data) == 4:
+    ikiwa len(data) == 4:
         s = data[3]
         i = s.find('+')
-        if i == -1:
+        ikiwa i == -1:
             i = s.find('-')
-        if i > 0:
+        ikiwa i > 0:
             data[3:] = [s[:i], s[i:]]
         isipokua:
             data.append('') # Dummy tz
-    if len(data) < 5:
-        return None
+    ikiwa len(data) < 5:
+        rudisha Tupu
     data = data[:5]
     [dd, mm, yy, tm, tz] = data
     mm = mm.lower()
-    if mm haiko kwenye _monthnames:
+    ikiwa mm sio kwenye _monthnames:
         dd, mm = mm, dd.lower()
-        if mm haiko kwenye _monthnames:
-            return None
+        ikiwa mm sio kwenye _monthnames:
+            rudisha Tupu
     mm = _monthnames.index(mm) + 1
-    if mm > 12:
+    ikiwa mm > 12:
         mm -= 12
-    if dd[-1] == ',':
+    ikiwa dd[-1] == ',':
         dd = dd[:-1]
     i = yy.find(':')
-    if i > 0:
+    ikiwa i > 0:
         yy, tm = tm, yy
-    if yy[-1] == ',':
+    ikiwa yy[-1] == ',':
         yy = yy[:-1]
-    if sio yy[0].isdigit():
+    ikiwa sio yy[0].isdigit():
         yy, tz = tz, yy
-    if tm[-1] == ',':
+    ikiwa tm[-1] == ',':
         tm = tm[:-1]
     tm = tm.split(':')
-    if len(tm) == 2:
+    ikiwa len(tm) == 2:
         [thh, tmm] = tm
         tss = '0'
-    lasivyo len(tm) == 3:
+    elikiwa len(tm) == 3:
         [thh, tmm, tss] = tm
-    lasivyo len(tm) == 1 and '.' in tm[0]:
+    elikiwa len(tm) == 1 na '.' kwenye tm[0]:
         # Some non-compliant MUAs use '.' to separate time elements.
         tm = tm[0].split('.')
-        if len(tm) == 2:
+        ikiwa len(tm) == 2:
             [thh, tmm] = tm
             tss = 0
-        lasivyo len(tm) == 3:
+        elikiwa len(tm) == 3:
             [thh, tmm, tss] = tm
     isipokua:
-        return None
+        rudisha Tupu
     jaribu:
         yy = int(yy)
         dd = int(dd)
         thh = int(thh)
         tmm = int(tmm)
         tss = int(tss)
-    tatizo ValueError:
-        return None
-    # Check for a yy specified in two-digit format, then convert it to the
+    except ValueError:
+        rudisha Tupu
+    # Check kila a yy specified kwenye two-digit format, then convert it to the
     # appropriate four-digit format, according to the POSIX standard. RFC 822
-    # calls for a two-digit yy, but RFC 2822 (which obsoletes RFC 822)
+    # calls kila a two-digit yy, but RFC 2822 (which obsoletes RFC 822)
     # mandates a 4-digit yy. For more information, see the documentation for
     # the time module.
-    if yy < 100:
-        # The year is between 1969 and 1999 (inclusive).
-        if yy > 68:
+    ikiwa yy < 100:
+        # The year ni between 1969 na 1999 (inclusive).
+        ikiwa yy > 68:
             yy += 1900
-        # The year is between 2000 and 2068 (inclusive).
+        # The year ni between 2000 na 2068 (inclusive).
         isipokua:
             yy += 2000
-    tzoffset = None
+    tzoffset = Tupu
     tz = tz.upper()
-    if tz in _timezones:
+    ikiwa tz kwenye _timezones:
         tzoffset = _timezones[tz]
     isipokua:
         jaribu:
             tzoffset = int(tz)
-        tatizo ValueError:
+        except ValueError:
             pass
-        if tzoffset==0 and tz.startswith('-'):
-            tzoffset = None
+        ikiwa tzoffset==0 na tz.startswith('-'):
+            tzoffset = Tupu
     # Convert a timezone offset into seconds ; -0500 -> -18000
-    if tzoffset:
-        if tzoffset < 0:
+    ikiwa tzoffset:
+        ikiwa tzoffset < 0:
             tzsign = -1
             tzoffset = -tzoffset
         isipokua:
             tzsign = 1
         tzoffset = tzsign * ( (tzoffset//100)*3600 + (tzoffset % 100)*60)
-    # Daylight Saving Time flag is set to -1, since DST is unknown.
-    return [yy, mm, dd, thh, tmm, tss, 0, 1, -1, tzoffset]
+    # Daylight Saving Time flag ni set to -1, since DST ni unknown.
+    rudisha [yy, mm, dd, thh, tmm, tss, 0, 1, -1, tzoffset]
 
 
-def parsedate(data):
+eleza parsedate(data):
     """Convert a time string to a time tuple."""
     t = parsedate_tz(data)
-    if isinstance(t, tuple):
-        return t[:9]
+    ikiwa isinstance(t, tuple):
+        rudisha t[:9]
     isipokua:
-        return t
+        rudisha t
 
 
-def mktime_tz(data):
+eleza mktime_tz(data):
     """Turn a 10-tuple as returned by parsedate_tz() into a POSIX timestamp."""
-    if data[9] is None:
-        # No zone info, so localtime is better assumption than GMT
-        return time.mktime(data[:8] + (-1,))
+    ikiwa data[9] ni Tupu:
+        # No zone info, so localtime ni better assumption than GMT
+        rudisha time.mktime(data[:8] + (-1,))
     isipokua:
         t = calendar.timegm(data)
-        return t - data[9]
+        rudisha t - data[9]
 
 
-def quote(str):
-    """Prepare string to be used in a quoted string.
+eleza quote(str):
+    """Prepare string to be used kwenye a quoted string.
 
-    Turns backslash and double quote characters into quoted pairs.  These
+    Turns backslash na double quote characters into quoted pairs.  These
     are the only characters that need to be quoted inside a quoted string.
     Does sio add the surrounding double quotes.
     """
-    return str.replace('\\', '\\\\').replace('"', '\\"')
+    rudisha str.replace('\\', '\\\\').replace('"', '\\"')
 
 
-class AddrlistClass:
-    """Address parser class by Ben Escoto.
+kundi AddrlistClass:
+    """Address parser kundi by Ben Escoto.
 
-    To understand what this class does, it helps to have a copy of RFC 2822 in
+    To understand what this kundi does, it helps to have a copy of RFC 2822 in
     front of you.
 
-    Note: this class interface is deprecated and may be removed in the future.
+    Note: this kundi interface ni deprecated na may be removed kwenye the future.
     Use email.utils.AddressList instead.
     """
 
-    def __init__(self, field):
+    eleza __init__(self, field):
         """Initialize a new instance.
 
-        `field' is an unparsed address header field, containing
-        one or more addresses.
+        `field' ni an unparsed address header field, containing
+        one ama more addresses.
         """
         self.specials = '()<>@,:;.\"[]'
         self.pos = 0
@@ -223,27 +223,27 @@ class AddrlistClass:
         self.FWS = self.LWS + self.CR
         self.atomends = self.specials + self.LWS + self.CR
         # Note that RFC 2822 now specifies `.' as obs-phrase, meaning that it
-        # is obsolete syntax.  RFC 2822 requires that we recognize obsolete
-        # syntax, so allow dots in phrases.
+        # ni obsolete syntax.  RFC 2822 requires that we recognize obsolete
+        # syntax, so allow dots kwenye phrases.
         self.phraseends = self.atomends.replace('.', '')
         self.field = field
         self.commentlist = []
 
-    def gotonext(self):
-        """Skip white space and extract comments."""
+    eleza gotonext(self):
+        """Skip white space na extract comments."""
         wslist = []
         wakati self.pos < len(self.field):
-            if self.field[self.pos] in self.LWS + '\n\r':
-                if self.field[self.pos] haiko kwenye '\n\r':
+            ikiwa self.field[self.pos] kwenye self.LWS + '\n\r':
+                ikiwa self.field[self.pos] sio kwenye '\n\r':
                     wslist.append(self.field[self.pos])
                 self.pos += 1
-            lasivyo self.field[self.pos] == '(':
+            elikiwa self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
             isipokua:
                 koma
-        return EMPTYSTRING.join(wslist)
+        rudisha EMPTYSTRING.join(wslist)
 
-    def getaddrlist(self):
+    eleza getaddrlist(self):
         """Parse all addresses.
 
         Returns a list containing all of the addresses.
@@ -251,13 +251,13 @@ class AddrlistClass:
         result = []
         wakati self.pos < len(self.field):
             ad = self.getaddress()
-            if ad:
+            ikiwa ad:
                 result += ad
             isipokua:
                 result.append(('', ''))
-        return result
+        rudisha result
 
-    def getaddress(self):
+    eleza getaddress(self):
         """Parse the next address."""
         self.commentlist = []
         self.gotonext()
@@ -269,76 +269,76 @@ class AddrlistClass:
         self.gotonext()
         returnlist = []
 
-        if self.pos >= len(self.field):
+        ikiwa self.pos >= len(self.field):
             # Bad email address technically, no domain.
-            if plist:
+            ikiwa plist:
                 returnlist = [(SPACE.join(self.commentlist), plist[0])]
 
-        lasivyo self.field[self.pos] in '.@':
-            # email address is just an addrspec
+        elikiwa self.field[self.pos] kwenye '.@':
+            # email address ni just an addrspec
             # this isn't very efficient since we start over
             self.pos = oldpos
             self.commentlist = oldcl
             addrspec = self.getaddrspec()
             returnlist = [(SPACE.join(self.commentlist), addrspec)]
 
-        lasivyo self.field[self.pos] == ':':
-            # address is a group
+        elikiwa self.field[self.pos] == ':':
+            # address ni a group
             returnlist = []
 
             fieldlen = len(self.field)
             self.pos += 1
             wakati self.pos < len(self.field):
                 self.gotonext()
-                if self.pos < fieldlen and self.field[self.pos] == ';':
+                ikiwa self.pos < fieldlen na self.field[self.pos] == ';':
                     self.pos += 1
                     koma
                 returnlist = returnlist + self.getaddress()
 
-        lasivyo self.field[self.pos] == '<':
-            # Address is a phrase then a route addr
+        elikiwa self.field[self.pos] == '<':
+            # Address ni a phrase then a route addr
             routeaddr = self.getrouteaddr()
 
-            if self.commentlist:
+            ikiwa self.commentlist:
                 returnlist = [(SPACE.join(plist) + ' (' +
                                ' '.join(self.commentlist) + ')', routeaddr)]
             isipokua:
                 returnlist = [(SPACE.join(plist), routeaddr)]
 
         isipokua:
-            if plist:
+            ikiwa plist:
                 returnlist = [(SPACE.join(self.commentlist), plist[0])]
-            lasivyo self.field[self.pos] in self.specials:
+            elikiwa self.field[self.pos] kwenye self.specials:
                 self.pos += 1
 
         self.gotonext()
-        if self.pos < len(self.field) and self.field[self.pos] == ',':
+        ikiwa self.pos < len(self.field) na self.field[self.pos] == ',':
             self.pos += 1
-        return returnlist
+        rudisha returnlist
 
-    def getrouteaddr(self):
+    eleza getrouteaddr(self):
         """Parse a route address (Return-path value).
 
-        This method just skips all the route stuff and returns the addrspec.
+        This method just skips all the route stuff na returns the addrspec.
         """
-        if self.field[self.pos] != '<':
+        ikiwa self.field[self.pos] != '<':
             return
 
-        expectroute = False
+        expectroute = Uongo
         self.pos += 1
         self.gotonext()
         adlist = ''
         wakati self.pos < len(self.field):
-            if expectroute:
+            ikiwa expectroute:
                 self.getdomain()
-                expectroute = False
-            lasivyo self.field[self.pos] == '>':
+                expectroute = Uongo
+            elikiwa self.field[self.pos] == '>':
                 self.pos += 1
                 koma
-            lasivyo self.field[self.pos] == '@':
+            elikiwa self.field[self.pos] == '@':
                 self.pos += 1
-                expectroute = True
-            lasivyo self.field[self.pos] == ':':
+                expectroute = Kweli
+            elikiwa self.field[self.pos] == ':':
                 self.pos += 1
             isipokua:
                 adlist = self.getaddrspec()
@@ -346,204 +346,204 @@ class AddrlistClass:
                 koma
             self.gotonext()
 
-        return adlist
+        rudisha adlist
 
-    def getaddrspec(self):
+    eleza getaddrspec(self):
         """Parse an RFC 2822 addr-spec."""
         aslist = []
 
         self.gotonext()
         wakati self.pos < len(self.field):
-            preserve_ws = True
-            if self.field[self.pos] == '.':
-                if aslist and sio aslist[-1].strip():
+            preserve_ws = Kweli
+            ikiwa self.field[self.pos] == '.':
+                ikiwa aslist na sio aslist[-1].strip():
                     aslist.pop()
                 aslist.append('.')
                 self.pos += 1
-                preserve_ws = False
-            lasivyo self.field[self.pos] == '"':
+                preserve_ws = Uongo
+            elikiwa self.field[self.pos] == '"':
                 aslist.append('"%s"' % quote(self.getquote()))
-            lasivyo self.field[self.pos] in self.atomends:
-                if aslist and sio aslist[-1].strip():
+            elikiwa self.field[self.pos] kwenye self.atomends:
+                ikiwa aslist na sio aslist[-1].strip():
                     aslist.pop()
                 koma
             isipokua:
                 aslist.append(self.getatom())
             ws = self.gotonext()
-            if preserve_ws and ws:
+            ikiwa preserve_ws na ws:
                 aslist.append(ws)
 
-        if self.pos >= len(self.field) ama self.field[self.pos] != '@':
-            return EMPTYSTRING.join(aslist)
+        ikiwa self.pos >= len(self.field) ama self.field[self.pos] != '@':
+            rudisha EMPTYSTRING.join(aslist)
 
         aslist.append('@')
         self.pos += 1
         self.gotonext()
         domain = self.getdomain()
-        if sio domain:
-            # Invalid domain, return an empty address instead of returning a
+        ikiwa sio domain:
+            # Invalid domain, rudisha an empty address instead of returning a
             # local part to denote failed parsing.
-            return EMPTYSTRING
-        return EMPTYSTRING.join(aslist) + domain
+            rudisha EMPTYSTRING
+        rudisha EMPTYSTRING.join(aslist) + domain
 
-    def getdomain(self):
-        """Get the complete domain name from an address."""
+    eleza getdomain(self):
+        """Get the complete domain name kutoka an address."""
         sdlist = []
         wakati self.pos < len(self.field):
-            if self.field[self.pos] in self.LWS:
+            ikiwa self.field[self.pos] kwenye self.LWS:
                 self.pos += 1
-            lasivyo self.field[self.pos] == '(':
+            elikiwa self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
-            lasivyo self.field[self.pos] == '[':
+            elikiwa self.field[self.pos] == '[':
                 sdlist.append(self.getdomainliteral())
-            lasivyo self.field[self.pos] == '.':
+            elikiwa self.field[self.pos] == '.':
                 self.pos += 1
                 sdlist.append('.')
-            lasivyo self.field[self.pos] == '@':
-                # bpo-34155: Don't parse domains with two `@` like
+            elikiwa self.field[self.pos] == '@':
+                # bpo-34155: Don't parse domains ukijumuisha two `@` like
                 # `a@malicious.org@important.com`.
-                return EMPTYSTRING
-            lasivyo self.field[self.pos] in self.atomends:
+                rudisha EMPTYSTRING
+            elikiwa self.field[self.pos] kwenye self.atomends:
                 koma
             isipokua:
                 sdlist.append(self.getatom())
-        return EMPTYSTRING.join(sdlist)
+        rudisha EMPTYSTRING.join(sdlist)
 
-    def getdelimited(self, beginchar, endchars, allowcomments=True):
+    eleza getdelimited(self, beginchar, endchars, allowcomments=Kweli):
         """Parse a header fragment delimited by special characters.
 
-        `beginchar' is the start character for the fragment.
+        `beginchar' ni the start character kila the fragment.
         If self ni sio looking at an instance of `beginchar' then
         getdelimited returns the empty string.
 
-        `endchars' is a sequence of allowable end-delimiting characters.
-        Parsing stops when one of these is encountered.
+        `endchars' ni a sequence of allowable end-delimiting characters.
+        Parsing stops when one of these ni encountered.
 
-        If `allowcomments' is non-zero, embedded RFC 2822 comments are allowed
+        If `allowcomments' ni non-zero, embedded RFC 2822 comments are allowed
         within the parsed fragment.
         """
-        if self.field[self.pos] != beginchar:
-            return ''
+        ikiwa self.field[self.pos] != beginchar:
+            rudisha ''
 
         slist = ['']
-        quote = False
+        quote = Uongo
         self.pos += 1
         wakati self.pos < len(self.field):
-            if quote:
+            ikiwa quote:
                 slist.append(self.field[self.pos])
-                quote = False
-            lasivyo self.field[self.pos] in endchars:
+                quote = Uongo
+            elikiwa self.field[self.pos] kwenye endchars:
                 self.pos += 1
                 koma
-            lasivyo allowcomments and self.field[self.pos] == '(':
+            elikiwa allowcomments na self.field[self.pos] == '(':
                 slist.append(self.getcomment())
-                endelea        # have already advanced pos from getcomment
-            lasivyo self.field[self.pos] == '\\':
-                quote = True
+                endelea        # have already advanced pos kutoka getcomment
+            elikiwa self.field[self.pos] == '\\':
+                quote = Kweli
             isipokua:
                 slist.append(self.field[self.pos])
             self.pos += 1
 
-        return EMPTYSTRING.join(slist)
+        rudisha EMPTYSTRING.join(slist)
 
-    def getquote(self):
-        """Get a quote-delimited fragment from self's field."""
-        return self.getdelimited('"', '"\r', False)
+    eleza getquote(self):
+        """Get a quote-delimited fragment kutoka self's field."""
+        rudisha self.getdelimited('"', '"\r', Uongo)
 
-    def getcomment(self):
-        """Get a parenthesis-delimited fragment from self's field."""
-        return self.getdelimited('(', ')\r', True)
+    eleza getcomment(self):
+        """Get a parenthesis-delimited fragment kutoka self's field."""
+        rudisha self.getdelimited('(', ')\r', Kweli)
 
-    def getdomainliteral(self):
+    eleza getdomainliteral(self):
         """Parse an RFC 2822 domain-literal."""
-        return '[%s]' % self.getdelimited('[', ']\r', False)
+        rudisha '[%s]' % self.getdelimited('[', ']\r', Uongo)
 
-    def getatom(self, atomends=None):
+    eleza getatom(self, atomends=Tupu):
         """Parse an RFC 2822 atom.
 
         Optional atomends specifies a different set of end token delimiters
-        (the default is to use self.atomends).  This is used e.g. in
+        (the default ni to use self.atomends).  This ni used e.g. in
         getphraselist() since phrase endings must sio include the `.' (which
-        is legal in phrases)."""
+        ni legal kwenye phrases)."""
         atomlist = ['']
-        if atomends is None:
+        ikiwa atomends ni Tupu:
             atomends = self.atomends
 
         wakati self.pos < len(self.field):
-            if self.field[self.pos] in atomends:
+            ikiwa self.field[self.pos] kwenye atomends:
                 koma
             isipokua:
                 atomlist.append(self.field[self.pos])
             self.pos += 1
 
-        return EMPTYSTRING.join(atomlist)
+        rudisha EMPTYSTRING.join(atomlist)
 
-    def getphraselist(self):
+    eleza getphraselist(self):
         """Parse a sequence of RFC 2822 phrases.
 
-        A phrase is a sequence of words, which are in turn either RFC 2822
-        atoms or quoted-strings.  Phrases are canonicalized by squeezing all
+        A phrase ni a sequence of words, which are kwenye turn either RFC 2822
+        atoms ama quoted-strings.  Phrases are canonicalized by squeezing all
         runs of continuous whitespace into one space.
         """
         plist = []
 
         wakati self.pos < len(self.field):
-            if self.field[self.pos] in self.FWS:
+            ikiwa self.field[self.pos] kwenye self.FWS:
                 self.pos += 1
-            lasivyo self.field[self.pos] == '"':
+            elikiwa self.field[self.pos] == '"':
                 plist.append(self.getquote())
-            lasivyo self.field[self.pos] == '(':
+            elikiwa self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
-            lasivyo self.field[self.pos] in self.phraseends:
+            elikiwa self.field[self.pos] kwenye self.phraseends:
                 koma
             isipokua:
                 plist.append(self.getatom(self.phraseends))
 
-        return plist
+        rudisha plist
 
-class AddressList(AddrlistClass):
+kundi AddressList(AddrlistClass):
     """An AddressList encapsulates a list of parsed RFC 2822 addresses."""
-    def __init__(self, field):
+    eleza __init__(self, field):
         AddrlistClass.__init__(self, field)
-        if field:
+        ikiwa field:
             self.addresslist = self.getaddrlist()
         isipokua:
             self.addresslist = []
 
-    def __len__(self):
-        return len(self.addresslist)
+    eleza __len__(self):
+        rudisha len(self.addresslist)
 
-    def __add__(self, other):
+    eleza __add__(self, other):
         # Set union
-        newaddr = AddressList(None)
+        newaddr = AddressList(Tupu)
         newaddr.addresslist = self.addresslist[:]
-        for x in other.addresslist:
-            if sio x in self.addresslist:
+        kila x kwenye other.addresslist:
+            ikiwa sio x kwenye self.addresslist:
                 newaddr.addresslist.append(x)
-        return newaddr
+        rudisha newaddr
 
-    def __iadd__(self, other):
+    eleza __iadd__(self, other):
         # Set union, in-place
-        for x in other.addresslist:
-            if sio x in self.addresslist:
+        kila x kwenye other.addresslist:
+            ikiwa sio x kwenye self.addresslist:
                 self.addresslist.append(x)
-        return self
+        rudisha self
 
-    def __sub__(self, other):
+    eleza __sub__(self, other):
         # Set difference
-        newaddr = AddressList(None)
-        for x in self.addresslist:
-            if sio x in other.addresslist:
+        newaddr = AddressList(Tupu)
+        kila x kwenye self.addresslist:
+            ikiwa sio x kwenye other.addresslist:
                 newaddr.addresslist.append(x)
-        return newaddr
+        rudisha newaddr
 
-    def __isub__(self, other):
+    eleza __isub__(self, other):
         # Set difference, in-place
-        for x in other.addresslist:
-            if x in self.addresslist:
+        kila x kwenye other.addresslist:
+            ikiwa x kwenye self.addresslist:
                 self.addresslist.remove(x)
-        return self
+        rudisha self
 
-    def __getitem__(self, index):
-        # Make indexing, slices, and 'in' work
-        return self.addresslist[index]
+    eleza __getitem__(self, index):
+        # Make indexing, slices, na 'in' work
+        rudisha self.addresslist[index]

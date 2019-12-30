@@ -9,27 +9,27 @@ The open file pointer must have methods read(), seek(), na close().
 When the setpos() na rewind() methods are sio used, the seek()
 method ni sio  necessary.
 
-This rudishas an instance of a kundi ukijumuisha the following public methods:
-      getnchannels()  -- rudishas number of audio channels (1 for
+This returns an instance of a kundi ukijumuisha the following public methods:
+      getnchannels()  -- returns number of audio channels (1 for
                          mono, 2 kila stereo)
-      getsampwidth()  -- rudishas sample width kwenye bytes
-      getframerate()  -- rudishas sampling frequency
-      getnframes()    -- rudishas number of audio frames
-      getcomptype()   -- rudishas compression type ('NONE' kila linear samples)
-      getcompname()   -- rudishas human-readable version of
+      getsampwidth()  -- returns sample width kwenye bytes
+      getframerate()  -- returns sampling frequency
+      getnframes()    -- returns number of audio frames
+      getcomptype()   -- returns compression type ('NONE' kila linear samples)
+      getcompname()   -- returns human-readable version of
                          compression type ('not compressed' linear samples)
-      getparams()     -- rudishas a namedtuple consisting of all of the
+      getparams()     -- returns a namedtuple consisting of all of the
                          above kwenye the above order
-      getmarkers()    -- rudishas Tupu (kila compatibility ukijumuisha the
+      getmarkers()    -- returns Tupu (kila compatibility ukijumuisha the
                          aifc module)
-      getmark(id)     -- ashirias an error since the mark does not
+      getmark(id)     -- raises an error since the mark does not
                          exist (kila compatibility ukijumuisha the aifc module)
-      readframes(n)   -- rudishas at most n frames of audio
+      readframes(n)   -- returns at most n frames of audio
       rewind()        -- rewind to the beginning of the audio stream
       setpos(pos)     -- seek to the specified position
       tell()          -- rudisha the current position
       close()         -- close the instance (make it unusable)
-The position rudishaed by tell() na the position given to setpos()
+The position returned by tell() na the position given to setpos()
 are compatible na have nothing to do ukijumuisha the actual position kwenye the
 file.
 The close() method ni called automatically when the kundi instance
@@ -38,10 +38,10 @@ is destroyed.
 Writing WAVE files:
       f = wave.open(file, 'w')
 where file ni either the name of a file ama an open file pointer.
-The open file pointer must have methods write(), tell(), seek(), na
+The open file pointer must have methods write(), tell(), seek(), and
 close().
 
-This rudishas an instance of a kundi ukijumuisha the following public methods:
+This returns an instance of a kundi ukijumuisha the following public methods:
       setnchannels(n) -- set the number of channels
       setsampwidth(n) -- set the sample width
       setframerate(n) -- set the frame rate
@@ -59,13 +59,13 @@ This rudishas an instance of a kundi ukijumuisha the following public methods:
                       -- write audio frames na patch up the file header
       close()         -- patch up the file header na close the
                          output file
-You should set the parameters before the first writeframesraw ama
+You should set the parameters before the first writeframesraw or
 writeframes.  The total number of frames does sio need to be set,
 but when it ni set to the correct value, the header does sio have to
 be patched up.
 It ni best to first set all parameters, perhaps possibly the
 compression type, na then write audio frames using writeframesraw.
-When all frames have been written, either call writeframes(b'') ama
+When all frames have been written, either call writeframes(b'') or
 close() to patch up the sizes kwenye the header.
 The close() method ni called automatically when the kundi instance
 is destroyed.
@@ -76,7 +76,7 @@ agiza builtins
 __all__ = ["open", "openfp", "Error", "Wave_read", "Wave_write"]
 
 kundi Error(Exception):
-    pita
+    pass
 
 WAVE_FORMAT_PCM = 0x0001
 
@@ -128,31 +128,31 @@ kundi Wave_read:
         self._soundpos = 0
         self._file = Chunk(file, bigendian = 0)
         ikiwa self._file.getname() != b'RIFF':
-            ashiria Error('file does sio start ukijumuisha RIFF id')
+             ashiria Error('file does sio start ukijumuisha RIFF id')
         ikiwa self._file.read(4) != b'WAVE':
-            ashiria Error('not a WAVE file')
+             ashiria Error('not a WAVE file')
         self._fmt_chunk_read = 0
         self._data_chunk = Tupu
         wakati 1:
             self._data_seek_needed = 1
             jaribu:
                 chunk = Chunk(self._file, bigendian = 0)
-            tatizo EOFError:
+            except EOFError:
                 koma
             chunkname = chunk.getname()
             ikiwa chunkname == b'fmt ':
                 self._read_fmt_chunk(chunk)
                 self._fmt_chunk_read = 1
-            lasivyo chunkname == b'data':
+            elikiwa chunkname == b'data':
                 ikiwa sio self._fmt_chunk_read:
-                    ashiria Error('data chunk before fmt chunk')
+                     ashiria Error('data chunk before fmt chunk')
                 self._data_chunk = chunk
                 self._nframes = chunk.chunksize // self._framesize
                 self._data_seek_needed = 0
                 koma
             chunk.skip()
         ikiwa sio self._fmt_chunk_read ama sio self._data_chunk:
-            ashiria Error('fmt chunk and/or data chunk missing')
+             ashiria Error('fmt chunk and/or data chunk missing')
 
     eleza __init__(self, f):
         self._i_opened_the_file = Tupu
@@ -165,7 +165,7 @@ kundi Wave_read:
         tatizo:
             ikiwa self._i_opened_the_file:
                 f.close()
-            ashiria
+            raise
 
     eleza __del__(self):
         self.close()
@@ -223,11 +223,11 @@ kundi Wave_read:
         rudisha Tupu
 
     eleza getmark(self, id):
-        ashiria Error('no marks')
+         ashiria Error('no marks')
 
     eleza setpos(self, pos):
         ikiwa pos < 0 ama pos > self._nframes:
-            ashiria Error('position haiko kwenye range')
+             ashiria Error('position sio kwenye range')
         self._soundpos = pos
         self._data_seek_needed = 1
 
@@ -254,21 +254,21 @@ kundi Wave_read:
 
     eleza _read_fmt_chunk(self, chunk):
         jaribu:
-            wFormatTag, self._nchannels, self._framerate, dwAvgBytesPerSec, wBlockAlign = struct.unpack_kutoka('<HHLLH', chunk.read(14))
-        tatizo struct.error:
-            ashiria EOFError kutoka Tupu
+            wFormatTag, self._nchannels, self._framerate, dwAvgBytesPerSec, wBlockAlign = struct.unpack_from('<HHLLH', chunk.read(14))
+        except struct.error:
+             ashiria EOFError kutoka Tupu
         ikiwa wFormatTag == WAVE_FORMAT_PCM:
             jaribu:
-                sampwidth = struct.unpack_kutoka('<H', chunk.read(2))[0]
-            tatizo struct.error:
-                ashiria EOFError kutoka Tupu
+                sampwidth = struct.unpack_from('<H', chunk.read(2))[0]
+            except struct.error:
+                 ashiria EOFError kutoka Tupu
             self._sampwidth = (sampwidth + 7) // 8
             ikiwa sio self._sampwidth:
-                ashiria Error('bad sample width')
+                 ashiria Error('bad sample width')
         isipokua:
-            ashiria Error('unknown format: %r' % (wFormatTag,))
+             ashiria Error('unknown format: %r' % (wFormatTag,))
         ikiwa sio self._nchannels:
-            ashiria Error('bad # of channels')
+             ashiria Error('bad # of channels')
         self._framesize = self._nchannels * self._sampwidth
         self._comptype = 'NONE'
         self._compname = 'not compressed'
@@ -309,7 +309,7 @@ kundi Wave_write:
         tatizo:
             ikiwa self._i_opened_the_file:
                 f.close()
-            ashiria
+            raise
 
     eleza initfp(self, file):
         self._file = file
@@ -337,43 +337,43 @@ kundi Wave_write:
     #
     eleza setnchannels(self, nchannels):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+             ashiria Error('cannot change parameters after starting to write')
         ikiwa nchannels < 1:
-            ashiria Error('bad # of channels')
+             ashiria Error('bad # of channels')
         self._nchannels = nchannels
 
     eleza getnchannels(self):
         ikiwa sio self._nchannels:
-            ashiria Error('number of channels sio set')
+             ashiria Error('number of channels sio set')
         rudisha self._nchannels
 
     eleza setsampwidth(self, sampwidth):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+             ashiria Error('cannot change parameters after starting to write')
         ikiwa sampwidth < 1 ama sampwidth > 4:
-            ashiria Error('bad sample width')
+             ashiria Error('bad sample width')
         self._sampwidth = sampwidth
 
     eleza getsampwidth(self):
         ikiwa sio self._sampwidth:
-            ashiria Error('sample width sio set')
+             ashiria Error('sample width sio set')
         rudisha self._sampwidth
 
     eleza setframerate(self, framerate):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+             ashiria Error('cannot change parameters after starting to write')
         ikiwa framerate <= 0:
-            ashiria Error('bad frame rate')
+             ashiria Error('bad frame rate')
         self._framerate = int(round(framerate))
 
     eleza getframerate(self):
         ikiwa sio self._framerate:
-            ashiria Error('frame rate sio set')
+             ashiria Error('frame rate sio set')
         rudisha self._framerate
 
     eleza setnframes(self, nframes):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+             ashiria Error('cannot change parameters after starting to write')
         self._nframes = nframes
 
     eleza getnframes(self):
@@ -381,9 +381,9 @@ kundi Wave_write:
 
     eleza setcomptype(self, comptype, compname):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
-        ikiwa comptype haiko kwenye ('NONE',):
-            ashiria Error('unsupported compression type')
+             ashiria Error('cannot change parameters after starting to write')
+        ikiwa comptype sio kwenye ('NONE',):
+             ashiria Error('unsupported compression type')
         self._comptype = comptype
         self._compname = compname
 
@@ -396,7 +396,7 @@ kundi Wave_write:
     eleza setparams(self, params):
         nchannels, sampwidth, framerate, nframes, comptype, compname = params
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+             ashiria Error('cannot change parameters after starting to write')
         self.setnchannels(nchannels)
         self.setsampwidth(sampwidth)
         self.setframerate(framerate)
@@ -405,15 +405,15 @@ kundi Wave_write:
 
     eleza getparams(self):
         ikiwa sio self._nchannels ama sio self._sampwidth ama sio self._framerate:
-            ashiria Error('not all parameters set')
+             ashiria Error('not all parameters set')
         rudisha _wave_params(self._nchannels, self._sampwidth, self._framerate,
               self._nframes, self._comptype, self._compname)
 
     eleza setmark(self, id, pos, name):
-        ashiria Error('setmark() sio supported')
+         ashiria Error('setmark() sio supported')
 
     eleza getmark(self, id):
-        ashiria Error('no marks')
+         ashiria Error('no marks')
 
     eleza getmarkers(self):
         rudisha Tupu
@@ -460,11 +460,11 @@ kundi Wave_write:
     eleza _ensure_header_written(self, datasize):
         ikiwa sio self._headerwritten:
             ikiwa sio self._nchannels:
-                ashiria Error('# channels sio specified')
+                 ashiria Error('# channels sio specified')
             ikiwa sio self._sampwidth:
-                ashiria Error('sample width sio specified')
+                 ashiria Error('sample width sio specified')
             ikiwa sio self._framerate:
-                ashiria Error('sampling rate sio specified')
+                 ashiria Error('sampling rate sio specified')
             self._write_header(datasize)
 
     eleza _write_header(self, initlength):
@@ -475,7 +475,7 @@ kundi Wave_write:
         self._datalength = self._nframes * self._nchannels * self._sampwidth
         jaribu:
             self._form_length_pos = self._file.tell()
-        tatizo (AttributeError, OSError):
+        except (AttributeError, OSError):
             self._form_length_pos = Tupu
         self._file.write(struct.pack('<L4s4sLHHLLHH4s',
             36 + self._datalength, b'WAVE', b'fmt ', 16,
@@ -491,7 +491,7 @@ kundi Wave_write:
     eleza _patchheader(self):
         assert self._headerwritten
         ikiwa self._datawritten == self._datalength:
-            rudisha
+            return
         curpos = self._file.tell()
         self._file.seek(self._form_length_pos, 0)
         self._file.write(struct.pack('<L', 36 + self._datawritten))
@@ -508,10 +508,10 @@ eleza open(f, mode=Tupu):
             mode = 'rb'
     ikiwa mode kwenye ('r', 'rb'):
         rudisha Wave_read(f)
-    lasivyo mode kwenye ('w', 'wb'):
+    elikiwa mode kwenye ('w', 'wb'):
         rudisha Wave_write(f)
     isipokua:
-        ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")
+         ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")
 
 eleza openfp(f, mode=Tupu):
     warnings.warn("wave.openfp ni deprecated since Python 3.7. "

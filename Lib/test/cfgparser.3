@@ -1,64 +1,64 @@
-  # INI ukijumuisha kama many tricky parts kama possible
-  # Most of them could sio be used before 3.2
+  # INI with as many tricky parts as possible
+  # Most of them could not be used before 3.2
      
-  # This will be parsed ukijumuisha the following options
+  # This will be parsed with the following options
     # delimiters = {'='}
     # comment_prefixes = {'#'}
-    # allow_no_value = Kweli
+    # allow_no_value = True
 
 [DEFAULT]
 go = %(interpolate)s
 
 [strange]
-  values = that are indented # na end ukijumuisha hash comments
-  other = that do endelea
-    kwenye     # na still have
+  values = that are indented # and end with hash comments
+  other = that do continue
+    in     # and still have
     other  # comments mixed
-    lines  # ukijumuisha the values
+    lines  # with the values
 
 
 
 
 
 [corruption]
-  value = that ni 
+  value = that is 
 
 
     actually still here
 
 
-      na holds all these weird newlines
+      and holds all these weird newlines
 
 
-        # but sio kila the lines that are comments
+        # but not for the lines that are comments
         nor the indentation
 
   another value = # empty string
-  yet another # Tupu!
+  yet another # None!
 
-  [yeah, sections can be indented kama well]
-  na that does sio mean = anything
-  are they subsections = Uongo
-  ikiwa you want subsections = use XML
+  [yeah, sections can be indented as well]
+  and that does not mean = anything
+  are they subsections = False
+  if you want subsections = use XML
   lets use some Unicode = 片仮名
 
   [another one!]
- even ikiwa values are indented like this = seriously
+ even if values are indented like this = seriously
 yes, this still applies to = section "another one!"
-this too = are there people ukijumuisha configurations broken kama this? 
- beware, this ni going to be a continuation
+this too = are there people with configurations broken as this? 
+ beware, this is going to be a continuation
  of the value for
  key "this too"
- even ikiwa it has a = character
- this ni still the continuation
+ even if it has a = character
+ this is still the continuation
  your editor probably highlights it wrong
  but that's life
-# let's set this value so there ni no error
-# when getting all items kila this section:
+# let's set this value so there is no error
+# when getting all items for this section:
 interpolate = anything will do
 
 [no values here]
-# but there's this `go` kwenye DEFAULT
+# but there's this `go` in DEFAULT
 
     [tricky interpolation]
       interpolate = do this

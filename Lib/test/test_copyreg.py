@@ -4,11 +4,11 @@ agiza unittest
 kutoka test.pickletester agiza ExtensionSaver
 
 kundi C:
-    pita
+    pass
 
 
 kundi WithoutSlots(object):
-    pita
+    pass
 
 kundi WithWeakref(object):
     __slots__ = ('__weakref__',)
@@ -78,7 +78,7 @@ kundi CopyRegTestCase(unittest.TestCase):
             self.assertRaises(ValueError, copyreg.remove_extension,
                               mod, func[1:], code)
             # Can't remove one that isn't registered at all.
-            ikiwa code + 1 haiko kwenye copyreg._inverted_regisjaribu:
+            ikiwa code + 1 sio kwenye copyreg._inverted_regisjaribu:
                 self.assertRaises(ValueError, copyreg.remove_extension,
                                   mod[1:], func[1:], code + 1)
 

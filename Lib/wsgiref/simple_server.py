@@ -1,7 +1,7 @@
 """BaseHTTPServer that implements the Python WSGI protocol (PEP 3333)
 
 This ni both an example of how WSGI can be implemented, na a basis kila running
-simple web applications on a local machine, such kama might be done when testing
+simple web applications on a local machine, such as might be done when testing
 or debugging an application.  It has sio been reviewed kila security issues,
 however, na we strongly recommend that you use a "real" web server for
 production use.
@@ -121,10 +121,10 @@ kundi WSGIRequestHandler(BaseHTTPRequestHandler):
             self.request_version = ''
             self.command = ''
             self.send_error(414)
-            rudisha
+            return
 
         ikiwa sio self.parse_request(): # An error code has been sent, just exit
-            rudisha
+            return
 
         handler = ServerHandler(
             self.rfile, self.wfile, self.get_stderr(), self.get_environ(),
@@ -157,7 +157,7 @@ eleza make_server(
 
 
 ikiwa __name__ == '__main__':
-    ukijumuisha make_server('', 8000, demo_app) kama httpd:
+    ukijumuisha make_server('', 8000, demo_app) as httpd:
         sa = httpd.socket.getsockname()
         andika("Serving HTTP on", sa[0], "port", sa[1], "...")
         agiza webbrowser

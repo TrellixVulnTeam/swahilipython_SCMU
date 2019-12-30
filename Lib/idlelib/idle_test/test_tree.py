@@ -40,7 +40,7 @@ kundi TestScrollEvent(unittest.TestCase):
                 self.assertTupleEqual(widget.expected, args)
         # Fake event class
         kundi _Event:
-            pita
+            pass
         #        (type, delta, num, amount)
         tests = ((EventType.MouseWheel, 120, -1, -5),
                  (EventType.MouseWheel, -120, -1, 5),

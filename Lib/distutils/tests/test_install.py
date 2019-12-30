@@ -1,38 +1,38 @@
-"""Tests for distutils.command.install."""
+"""Tests kila distutils.command.install."""
 
-import os
-import sys
-import unittest
-import site
+agiza os
+agiza sys
+agiza unittest
+agiza site
 
-from test.support import captured_stdout, run_unittest
+kutoka test.support agiza captured_stdout, run_unittest
 
-from distutils import sysconfig
-from distutils.command.install import install
-from distutils.command import install as install_module
-from distutils.command.build_ext import build_ext
-from distutils.command.install import INSTALL_SCHEMES
-from distutils.core import Distribution
-from distutils.errors import DistutilsOptionError
-from distutils.extension import Extension
+kutoka distutils agiza sysconfig
+kutoka distutils.command.install agiza install
+kutoka distutils.command agiza install as install_module
+kutoka distutils.command.build_ext agiza build_ext
+kutoka distutils.command.install agiza INSTALL_SCHEMES
+kutoka distutils.core agiza Distribution
+kutoka distutils.errors agiza DistutilsOptionError
+kutoka distutils.extension agiza Extension
 
-from distutils.tests import support
-from test import support as test_support
-
-
-def _make_ext_name(modname):
-    return modname + sysconfig.get_config_var('EXT_SUFFIX')
+kutoka distutils.tests agiza support
+kutoka test agiza support as test_support
 
 
-class InstallTestCase(support.TempdirManager,
+eleza _make_ext_name(modname):
+    rudisha modname + sysconfig.get_config_var('EXT_SUFFIX')
+
+
+kundi InstallTestCase(support.TempdirManager,
                       support.EnvironGuard,
                       support.LoggingSilencer,
                       unittest.TestCase):
 
-    def test_home_installation_scheme(self):
+    eleza test_home_installation_scheme(self):
         # This ensure two things:
         # - that --home generates the desired set of directory names
-        # - test --home is supported on all platforms
+        # - test --home ni supported on all platforms
         builddir = self.mkdtemp()
         destination = os.path.join(builddir, "installation")
 
@@ -51,7 +51,7 @@ class InstallTestCase(support.TempdirManager,
         self.assertEqual(cmd.install_base, destination)
         self.assertEqual(cmd.install_platbase, destination)
 
-        def check_path(got, expected):
+        eleza check_path(got, expected):
             got = os.path.normpath(got)
             expected = os.path.normpath(expected)
             self.assertEqual(got, expected)
@@ -65,9 +65,9 @@ class InstallTestCase(support.TempdirManager,
         check_path(cmd.install_scripts, os.path.join(destination, "bin"))
         check_path(cmd.install_data, destination)
 
-    def test_user_site(self):
-        # test install with --user
-        # preparing the environment for the test
+    eleza test_user_site(self):
+        # test install ukijumuisha --user
+        # preparing the environment kila the test
         self.old_user_base = site.USER_BASE
         self.old_user_site = site.USER_SITE
         self.tmpdir = self.mkdtemp()
@@ -78,12 +78,12 @@ class InstallTestCase(support.TempdirManager,
         install_module.USER_BASE = self.user_base
         install_module.USER_SITE = self.user_site
 
-        def _expanduser(path):
-            return self.tmpdir
+        eleza _expanduser(path):
+            rudisha self.tmpdir
         self.old_expand = os.path.expanduser
         os.path.expanduser = _expanduser
 
-        def cleanup():
+        eleza cleanup():
             site.USER_BASE = self.old_user_base
             site.USER_SITE = self.old_user_site
             install_module.USER_BASE = self.old_user_base
@@ -92,35 +92,35 @@ class InstallTestCase(support.TempdirManager,
 
         self.addCleanup(cleanup)
 
-        for key in ('nt_user', 'unix_user'):
+        kila key kwenye ('nt_user', 'unix_user'):
             self.assertIn(key, INSTALL_SCHEMES)
 
         dist = Distribution({'name': 'xx'})
         cmd = install(dist)
 
-        # making sure the user option is there
-        options = [name for name, short, lable in
+        # making sure the user option ni there
+        options = [name kila name, short, lable in
                    cmd.user_options]
         self.assertIn('user', options)
 
         # setting a value
         cmd.user = 1
 
-        # user base and site shouldn't be created yet
-        self.assertFalse(os.path.exists(self.user_base))
-        self.assertFalse(os.path.exists(self.user_site))
+        # user base na site shouldn't be created yet
+        self.assertUongo(os.path.exists(self.user_base))
+        self.assertUongo(os.path.exists(self.user_site))
 
         # let's run finalize
         cmd.ensure_finalized()
 
         # now they should
-        self.assertTrue(os.path.exists(self.user_base))
-        self.assertTrue(os.path.exists(self.user_site))
+        self.assertKweli(os.path.exists(self.user_base))
+        self.assertKweli(os.path.exists(self.user_site))
 
         self.assertIn('userbase', cmd.config_vars)
         self.assertIn('usersite', cmd.config_vars)
 
-    def test_handle_extra_path(self):
+    eleza test_handle_extra_path(self):
         dist = Distribution({'name': 'xx', 'extra_path': 'path,dirs'})
         cmd = install(dist)
 
@@ -138,44 +138,44 @@ class InstallTestCase(support.TempdirManager,
         self.assertEqual(cmd.path_file, 'path')
 
         # none
-        dist.extra_path = cmd.extra_path = None
+        dist.extra_path = cmd.extra_path = Tupu
         cmd.handle_extra_path()
-        self.assertEqual(cmd.extra_path, None)
+        self.assertEqual(cmd.extra_path, Tupu)
         self.assertEqual(cmd.extra_dirs, '')
-        self.assertEqual(cmd.path_file, None)
+        self.assertEqual(cmd.path_file, Tupu)
 
         # three elements (no way !)
         cmd.extra_path = 'path,dirs,again'
         self.assertRaises(DistutilsOptionError, cmd.handle_extra_path)
 
-    def test_finalize_options(self):
+    eleza test_finalize_options(self):
         dist = Distribution({'name': 'xx'})
         cmd = install(dist)
 
-        # must supply either prefix/exec-prefix/home ama
+        # must supply either prefix/exec-prefix/home or
         # install-base/install-platbase -- sio both
         cmd.prefix = 'prefix'
         cmd.install_base = 'base'
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)
 
-        # must supply either home or prefix/exec-prefix -- sio both
-        cmd.install_base = None
+        # must supply either home ama prefix/exec-prefix -- sio both
+        cmd.install_base = Tupu
         cmd.home = 'home'
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)
 
-        # can't combine user with prefix/exec_prefix/home ama
+        # can't combine user ukijumuisha prefix/exec_prefix/home or
         # install_(plat)base
-        cmd.prefix = None
+        cmd.prefix = Tupu
         cmd.user = 'user'
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)
 
-    def test_record(self):
+    eleza test_record(self):
         install_dir = self.mkdtemp()
         project_dir, dist = self.create_dist(py_modules=['hello'],
                                              scripts=['sayhi'])
         os.chdir(project_dir)
-        self.write_file('hello.py', "def main(): print('o hai')")
-        self.write_file('sayhi', 'from hello import main; main()')
+        self.write_file('hello.py', "eleza main(): andika('o hai')")
+        self.write_file('sayhi', 'kutoka hello agiza main; main()')
 
         cmd = install(dist)
         dist.command_obj['install'] = cmd
@@ -190,15 +190,15 @@ class InstallTestCase(support.TempdirManager,
         mwishowe:
             f.close()
 
-        found = [os.path.basename(line) for line in content.splitlines()]
+        found = [os.path.basename(line) kila line kwenye content.splitlines()]
         expected = ['hello.py', 'hello.%s.pyc' % sys.implementation.cache_tag,
                     'sayhi',
                     'UNKNOWN-0.0.0-py%s.%s.egg-info' % sys.version_info[:2]]
         self.assertEqual(found, expected)
 
-    def test_record_extensions(self):
+    eleza test_record_extensions(self):
         cmd = test_support.missing_compiler_executable()
-        if cmd ni sio None:
+        ikiwa cmd ni sio Tupu:
             self.skipTest('The %r command ni sio found' % cmd)
         install_dir = self.mkdtemp()
         project_dir, dist = self.create_dist(ext_modules=[
@@ -224,25 +224,25 @@ class InstallTestCase(support.TempdirManager,
         mwishowe:
             f.close()
 
-        found = [os.path.basename(line) for line in content.splitlines()]
+        found = [os.path.basename(line) kila line kwenye content.splitlines()]
         expected = [_make_ext_name('xx'),
                     'UNKNOWN-0.0.0-py%s.%s.egg-info' % sys.version_info[:2]]
         self.assertEqual(found, expected)
 
-    def test_debug_mode(self):
-        # this covers the code called when DEBUG is set
+    eleza test_debug_mode(self):
+        # this covers the code called when DEBUG ni set
         old_logs_len = len(self.logs)
-        install_module.DEBUG = True
+        install_module.DEBUG = Kweli
         jaribu:
-            with captured_stdout():
+            ukijumuisha captured_stdout():
                 self.test_record()
         mwishowe:
-            install_module.DEBUG = False
+            install_module.DEBUG = Uongo
         self.assertGreater(len(self.logs), old_logs_len)
 
 
-def test_suite():
-    return unittest.makeSuite(InstallTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(InstallTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

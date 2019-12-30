@@ -1,14 +1,14 @@
-"""This will be the home for the policy that hooks in the new
+"""This will be the home kila the policy that hooks kwenye the new
 code that adds all the email6 features.
 """
 
-import re
-import sys
-from email._policybase import Policy, Compat32, compat32, _extend_docstrings
-from email.utils agiza _has_surrogates
-from email.headerregistry import HeaderRegistry as HeaderRegistry
-from email.contentmanager import raw_data_manager
-from email.message import EmailMessage
+agiza re
+agiza sys
+kutoka email._policybase agiza Policy, Compat32, compat32, _extend_docstrings
+kutoka email.utils agiza _has_surrogates
+kutoka email.headerregistry agiza HeaderRegistry as HeaderRegistry
+kutoka email.contentmanager agiza raw_data_manager
+kutoka email.message agiza EmailMessage
 
 __all__ = [
     'Compat32',
@@ -24,32 +24,32 @@ __all__ = [
 linesep_splitter = re.compile(r'\n|\r')
 
 @_extend_docstrings
-class EmailPolicy(Policy):
+kundi EmailPolicy(Policy):
 
     """+
     PROVISIONAL
 
     The API extensions enabled by this policy are currently provisional.
-    Refer to the documentation for details.
+    Refer to the documentation kila details.
 
-    This policy adds new header parsing and folding algorithms.  Instead of
-    simple strings, headers are custom objects with custom attributes
+    This policy adds new header parsing na folding algorithms.  Instead of
+    simple strings, headers are custom objects ukijumuisha custom attributes
     depending on the type of the field.  The folding algorithm fully
-    implements RFCs 2047 and 5322.
+    implements RFCs 2047 na 5322.
 
     In addition to the settable attributes listed above that apply to
     all Policies, this policy adds the following additional attributes:
 
-    utf8                -- if False (the default) message headers will be
+    utf8                -- ikiwa Uongo (the default) message headers will be
                            serialized as ASCII, using encoded words to encode
-                           any non-ASCII characters in the source strings.  If
-                           True, the message headers will be serialized using
-                           utf8 and will sio contain encoded words (see RFC
-                           6532 for more on this serialization format).
+                           any non-ASCII characters kwenye the source strings.  If
+                           Kweli, the message headers will be serialized using
+                           utf8 na will sio contain encoded words (see RFC
+                           6532 kila more on this serialization format).
 
-    refold_source       -- if the value for a header in the Message object
-                           came from the parsing of some source, this attribute
-                           indicates whether or sio a generator should refold
+    refold_source       -- ikiwa the value kila a header kwenye the Message object
+                           came kutoka the parsing of some source, this attribute
+                           indicates whether ama sio a generator should refold
                            that value when transforming the message back into
                            stream form.  The possible values are:
 
@@ -59,25 +59,25 @@ class EmailPolicy(Policy):
                                     refolded
                            all  -- all values are refolded.
 
-                           The default is 'long'.
+                           The default ni 'long'.
 
-    header_factory      -- a callable that takes two arguments, 'name' na
-                           'value', where 'name' is a header field name na
-                           'value' is an unfolded header field value, na
+    header_factory      -- a callable that takes two arguments, 'name' and
+                           'value', where 'name' ni a header field name and
+                           'value' ni an unfolded header field value, and
                            returns a string-like object that represents that
-                           header.  A default header_factory is provided that
+                           header.  A default header_factory ni provided that
                            understands some of the RFC5322 header field types.
-                           (Currently address fields and date fields have
+                           (Currently address fields na date fields have
                            special treatment, wakati all other fields are
                            treated as unstructured.  This list will be
-                           completed before the extension is marked stable.)
+                           completed before the extension ni marked stable.)
 
-    content_manager     -- an object with at least two methods: get_content
-                           and set_content.  When the get_content ama
-                           set_content method of a Message object is called,
+    content_manager     -- an object ukijumuisha at least two methods: get_content
+                           na set_content.  When the get_content or
+                           set_content method of a Message object ni called,
                            it calls the corresponding method of this object,
                            passing it the message object as its first argument,
-                           and any arguments or keywords that were passed to
+                           na any arguments ama keywords that were passed to
                            it as additional arguments.  The default
                            content_manager is
                            :data:`~email.contentmanager.raw_data_manager`.
@@ -85,140 +85,140 @@ class EmailPolicy(Policy):
     """
 
     message_factory = EmailMessage
-    utf8 = False
+    utf8 = Uongo
     refold_source = 'long'
     header_factory = HeaderRegistry()
     content_manager = raw_data_manager
 
-    def __init__(self, **kw):
+    eleza __init__(self, **kw):
         # Ensure that each new instance gets a unique header factory
         # (as opposed to clones, which share the factory).
-        if 'header_factory' haiko kwenye kw:
+        ikiwa 'header_factory' sio kwenye kw:
             object.__setattr__(self, 'header_factory', HeaderRegistry())
         super().__init__(**kw)
 
-    def header_max_count(self, name):
+    eleza header_max_count(self, name):
         """+
-        The implementation for this class returns the max_count attribute from
-        the specialized header class that would be used to construct a header
+        The implementation kila this kundi returns the max_count attribute from
+        the specialized header kundi that would be used to construct a header
         of type 'name'.
         """
-        return self.header_factory[name].max_count
+        rudisha self.header_factory[name].max_count
 
-    # The logic of the next three methods is chosen such that it is possible to
-    # switch a Message object between a Compat32 policy and a policy derived
-    # from this class and have the results stay consistent.  This allows a
-    # Message object constructed with this policy to be passed to a library
-    # that only handles Compat32 objects, or to receive such an object na
+    # The logic of the next three methods ni chosen such that it ni possible to
+    # switch a Message object between a Compat32 policy na a policy derived
+    # kutoka this kundi na have the results stay consistent.  This allows a
+    # Message object constructed ukijumuisha this policy to be passed to a library
+    # that only handles Compat32 objects, ama to receive such an object and
     # convert it to use the newer style by just changing its policy.  It is
     # also chosen because it postpones the relatively expensive full rfc5322
-    # parse until as late as possible when parsing from source, since in many
+    # parse until as late as possible when parsing kutoka source, since kwenye many
     # applications only a few headers will actually be inspected.
 
-    def header_source_parse(self, sourcelines):
+    eleza header_source_parse(self, sourcelines):
         """+
-        The name is parsed as everything up to the ':' and returned unmodified.
-        The value is determined by stripping leading whitespace off the
-        remainder of the first line, joining all subsequent lines together, na
-        stripping any trailing carriage return or linefeed characters.  (This
-        is the same as Compat32).
+        The name ni parsed as everything up to the ':' na returned unmodified.
+        The value ni determined by stripping leading whitespace off the
+        remainder of the first line, joining all subsequent lines together, and
+        stripping any trailing carriage rudisha ama linefeed characters.  (This
+        ni the same as Compat32).
 
         """
         name, value = sourcelines[0].split(':', 1)
         value = value.lstrip(' \t') + ''.join(sourcelines[1:])
-        return (name, value.rstrip('\r\n'))
+        rudisha (name, value.rstrip('\r\n'))
 
-    def header_store_parse(self, name, value):
+    eleza header_store_parse(self, name, value):
         """+
-        The name is returned unchanged.  If the input value has a 'name'
-        attribute and it matches the name ignoring case, the value is returned
-        unchanged.  Otherwise the name and value are passed to header_factory
-        method, and the resulting custom header object is returned as the
-        value.  In this case a ValueError is raised if the input value contains
-        CR or LF characters.
+        The name ni returned unchanged.  If the input value has a 'name'
+        attribute na it matches the name ignoring case, the value ni returned
+        unchanged.  Otherwise the name na value are passed to header_factory
+        method, na the resulting custom header object ni returned as the
+        value.  In this case a ValueError ni raised ikiwa the input value contains
+        CR ama LF characters.
 
         """
-        if hasattr(value, 'name') and value.name.lower() == name.lower():
-            return (name, value)
-        if isinstance(value, str) and len(value.splitlines())>1:
+        ikiwa hasattr(value, 'name') na value.name.lower() == name.lower():
+            rudisha (name, value)
+        ikiwa isinstance(value, str) na len(value.splitlines())>1:
             # XXX this error message isn't quite right when we use splitlines
             # (see issue 22233), but I'm sio sure what should happen here.
-            ashiria ValueError("Header values may sio contain linefeed "
-                             "or carriage return characters")
-        return (name, self.header_factory(name, value))
+             ashiria ValueError("Header values may sio contain linefeed "
+                             "or carriage rudisha characters")
+        rudisha (name, self.header_factory(name, value))
 
-    def header_fetch_parse(self, name, value):
+    eleza header_fetch_parse(self, name, value):
         """+
-        If the value has a 'name' attribute, it is returned to unmodified.
-        Otherwise the name and the value with any linesep characters removed
-        are passed to the header_factory method, and the resulting custom
-        header object is returned.  Any surrogateescaped bytes get turned
+        If the value has a 'name' attribute, it ni returned to unmodified.
+        Otherwise the name na the value ukijumuisha any linesep characters removed
+        are passed to the header_factory method, na the resulting custom
+        header object ni returned.  Any surrogateescaped bytes get turned
         into the unicode unknown-character glyph.
 
         """
-        if hasattr(value, 'name'):
-            return value
-        # We can't use splitlines here because it splits on more than \r and \n.
+        ikiwa hasattr(value, 'name'):
+            rudisha value
+        # We can't use splitlines here because it splits on more than \r na \n.
         value = ''.join(linesep_splitter.split(value))
-        return self.header_factory(name, value)
+        rudisha self.header_factory(name, value)
 
-    def fold(self, name, value):
+    eleza fold(self, name, value):
         """+
-        Header folding is controlled by the refold_source policy setting.  A
-        value is considered to be a 'source value' if and only if it does not
-        have a 'name' attribute (having a 'name' attribute means it is a header
+        Header folding ni controlled by the refold_source policy setting.  A
+        value ni considered to be a 'source value' ikiwa na only ikiwa it does not
+        have a 'name' attribute (having a 'name' attribute means it ni a header
         object of some sort).  If a source value needs to be refolded according
-        to the policy, it is converted into a custom header object by passing
-        the name and the value with any linesep characters removed to the
-        header_factory method.  Folding of a custom header object is done by
-        calling its fold method with the current policy.
+        to the policy, it ni converted into a custom header object by passing
+        the name na the value ukijumuisha any linesep characters removed to the
+        header_factory method.  Folding of a custom header object ni done by
+        calling its fold method ukijumuisha the current policy.
 
         Source values are split into lines using splitlines.  If the value is
-        sio to be refolded, the lines are rejoined using the linesep from the
-        policy and returned.  The exception is lines containing non-ascii
-        binary data.  In that case the value is refolded regardless of the
+        sio to be refolded, the lines are rejoined using the linesep kutoka the
+        policy na returned.  The exception ni lines containing non-ascii
+        binary data.  In that case the value ni refolded regardless of the
         refold_source setting, which causes the binary data to be CTE encoded
         using the unknown-8bit charset.
 
         """
-        return self._fold(name, value, refold_binary=True)
+        rudisha self._fold(name, value, refold_binary=Kweli)
 
-    def fold_binary(self, name, value):
+    eleza fold_binary(self, name, value):
         """+
-        The same as fold if cte_type is 7bit, tatizo that the returned value is
+        The same as fold ikiwa cte_type ni 7bit, except that the returned value is
         bytes.
 
-        If cte_type is 8bit, non-ASCII binary data is converted back into
-        bytes.  Headers with binary data are sio refolded, regardless of the
-        refold_header setting, since there is no way to know whether the binary
-        data consists of single byte characters or multibyte characters.
+        If cte_type ni 8bit, non-ASCII binary data ni converted back into
+        bytes.  Headers ukijumuisha binary data are sio refolded, regardless of the
+        refold_header setting, since there ni no way to know whether the binary
+        data consists of single byte characters ama multibyte characters.
 
-        If utf8 is true, headers are encoded to utf8, otherwise to ascii with
+        If utf8 ni true, headers are encoded to utf8, otherwise to ascii with
         non-ASCII unicode rendered as encoded words.
 
         """
         folded = self._fold(name, value, refold_binary=self.cte_type=='7bit')
-        charset = 'utf8' if self.utf8 isipokua 'ascii'
-        return folded.encode(charset, 'surrogateescape')
+        charset = 'utf8' ikiwa self.utf8 isipokua 'ascii'
+        rudisha folded.encode(charset, 'surrogateescape')
 
-    def _fold(self, name, value, refold_binary=False):
-        if hasattr(value, 'name'):
-            return value.fold(policy=self)
-        maxlen = self.max_line_length if self.max_line_length isipokua sys.maxsize
+    eleza _fold(self, name, value, refold_binary=Uongo):
+        ikiwa hasattr(value, 'name'):
+            rudisha value.fold(policy=self)
+        maxlen = self.max_line_length ikiwa self.max_line_length isipokua sys.maxsize
         lines = value.splitlines()
-        refold = (self.refold_source == 'all' ama
-                  self.refold_source == 'long' na
-                    (lines and len(lines[0])+len(name)+2 > maxlen ama
-                     any(len(x) > maxlen for x in lines[1:])))
-        if refold or refold_binary and _has_surrogates(value):
-            return self.header_factory(name, ''.join(lines)).fold(policy=self)
-        return name + ': ' + self.linesep.join(lines) + self.linesep
+        refold = (self.refold_source == 'all' or
+                  self.refold_source == 'long' and
+                    (lines na len(lines[0])+len(name)+2 > maxlen or
+                     any(len(x) > maxlen kila x kwenye lines[1:])))
+        ikiwa refold ama refold_binary na _has_surrogates(value):
+            rudisha self.header_factory(name, ''.join(lines)).fold(policy=self)
+        rudisha name + ': ' + self.linesep.join(lines) + self.linesep
 
 
 default = EmailPolicy()
-# Make the default policy use the class default header_factory
+# Make the default policy use the kundi default header_factory
 toa default.header_factory
-strict = default.clone(raise_on_defect=True)
+strict = default.clone(raise_on_defect=Kweli)
 SMTP = default.clone(linesep='\r\n')
-HTTP = default.clone(linesep='\r\n', max_line_length=None)
-SMTPUTF8 = SMTP.clone(utf8=True)
+HTTP = default.clone(linesep='\r\n', max_line_length=Tupu)
+SMTPUTF8 = SMTP.clone(utf8=Kweli)

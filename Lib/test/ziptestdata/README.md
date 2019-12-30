@@ -1,6 +1,6 @@
 # Test data for `test_zipfile`
 
-The test executables in this directory are created manually from header.sh na
+The test executables in this directory are created manually from header.sh and
 the `testdata_module_inside_zip.py` file.  You must have infozip's zip utility
 installed (`apt install zip` on Debian).
 
@@ -8,7 +8,7 @@ installed (`apt install zip` on Debian).
 
 These are used to test executable files with an appended zipfile, in a scenario
 where the executable is _not_ a Python interpreter itself so our automatic
-zipimport machinery (that'd look for `__main__.py`) ni sio being used.
+zipimport machinery (that'd look for `__main__.py`) is not being used.
 
 ## Updating the test executables
 

@@ -10,7 +10,7 @@ internationalized, to the local language na cultural habits.
 
 """
 
-# This module represents the integration of work, contributions, feedback, na
+# This module represents the integration of work, contributions, feedback, and
 # suggestions kutoka the following people:
 #
 # Martin von Loewis, who wrote the initial implementation of the underlying
@@ -91,7 +91,7 @@ eleza _tokenize(plural):
             endelea
         value = mo.group(kind)
         ikiwa kind == 'INVALID':
-            ashiria ValueError('invalid token kwenye plural form: %s' % value)
+             ashiria ValueError('invalid token kwenye plural form: %s' % value)
         tuma value
     tuma ''
 
@@ -123,14 +123,14 @@ eleza _parse(tokens, priority=-1):
         sub, nexttok = _parse(tokens)
         result = '%s(%s)' % (result, sub)
         ikiwa nexttok != ')':
-            ashiria ValueError('unbalanced parenthesis kwenye plural form')
-    lasivyo nexttok == 'n':
+             ashiria ValueError('unbalanced parenthesis kwenye plural form')
+    elikiwa nexttok == 'n':
         result = '%s%s' % (result, nexttok)
     isipokua:
         jaribu:
             value = int(nexttok, 10)
-        tatizo ValueError:
-            ashiria _error(nexttok) kutoka Tupu
+        except ValueError:
+             ashiria _error(nexttok) kutoka Tupu
         result = '%s%d' % (result, value)
     nexttok = next(tokens)
 
@@ -153,7 +153,7 @@ eleza _parse(tokens, priority=-1):
     ikiwa nexttok == '?' na priority <= 0:
         if_true, nexttok = _parse(tokens, 0)
         ikiwa nexttok != ':':
-            ashiria _error(nexttok)
+             ashiria _error(nexttok)
         if_false, nexttok = _parse(tokens)
         result = '%s ikiwa %s isipokua %s' % (if_true, result, if_false)
         ikiwa priority == 0:
@@ -164,8 +164,8 @@ eleza _parse(tokens, priority=-1):
 eleza _as_int(n):
     jaribu:
         i = round(n)
-    tatizo TypeError:
-        ashiria TypeError('Plural value must be an integer, got %s' %
+    except TypeError:
+         ashiria TypeError('Plural value must be an integer, got %s' %
                         (n.__class__.__name__,)) kutoka Tupu
     agiza warnings
     warnings.warn('Plural value must be an integer, got %s' %
@@ -174,16 +174,16 @@ eleza _as_int(n):
     rudisha n
 
 eleza c2py(plural):
-    """Gets a C expression kama used kwenye PO files kila plural forms na rudishas a
+    """Gets a C expression as used kwenye PO files kila plural forms na returns a
     Python function that implements an equivalent expression.
     """
 
     ikiwa len(plural) > 1000:
-        ashiria ValueError('plural form expression ni too long')
+         ashiria ValueError('plural form expression ni too long')
     jaribu:
         result, nexttok = _parse(_tokenize(plural))
         ikiwa nexttok:
-            ashiria _error(nexttok)
+             ashiria _error(nexttok)
 
         depth = 0
         kila c kwenye result:
@@ -192,8 +192,8 @@ eleza c2py(plural):
                 ikiwa depth > 20:
                     # Python compiler limit ni about 90.
                     # The most complex example has 2.
-                    ashiria ValueError('plural form expression ni too complex')
-            lasivyo c == ')':
+                     ashiria ValueError('plural form expression ni too complex')
+            elikiwa c == ')':
                 depth -= 1
 
         ns = {'_as_int': _as_int}
@@ -204,9 +204,9 @@ eleza c2py(plural):
                 rudisha int(%s)
             ''' % result, ns)
         rudisha ns['func']
-    tatizo RecursionError:
-        # Recursion error can be ashiriad kwenye _parse() ama exec().
-        ashiria ValueError('plural form expression ni too complex')
+    except RecursionError:
+        # Recursion error can be raised kwenye _parse() ama exec().
+         ashiria ValueError('plural form expression ni too complex')
 
 
 eleza _expand_lang(loc):
@@ -261,7 +261,7 @@ kundi NullTranslations:
             self._parse(fp)
 
     eleza _parse(self, fp):
-        pita
+        pass
 
     eleza add_fallback(self, fallback):
         ikiwa self._fallback:
@@ -386,16 +386,16 @@ kundi GNUTranslations(NullTranslations):
         ikiwa magic == self.LE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('<4I', buf[4:20])
             ii = '<II'
-        lasivyo magic == self.BE_MAGIC:
+        elikiwa magic == self.BE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('>4I', buf[4:20])
             ii = '>II'
         isipokua:
-            ashiria OSError(0, 'Bad magic number', filename)
+             ashiria OSError(0, 'Bad magic number', filename)
 
         major_version, minor_version = self._get_versions(version)
 
-        ikiwa major_version haiko kwenye self.VERSIONS:
-            ashiria OSError(0, 'Bad version number ' + str(major_version), filename)
+        ikiwa major_version sio kwenye self.VERSIONS:
+             ashiria OSError(0, 'Bad version number ' + str(major_version), filename)
 
         # Now put all messages kutoka the .mo file buffer into the catalog
         # dictionary.
@@ -408,7 +408,7 @@ kundi GNUTranslations(NullTranslations):
                 msg = buf[moff:mend]
                 tmsg = buf[toff:tend]
             isipokua:
-                ashiria OSError(0, 'File ni corrupt', filename)
+                 ashiria OSError(0, 'File ni corrupt', filename)
             # See ikiwa we're looking at GNU .mo conventions kila metadata
             ikiwa mlen == 0:
                 # Catalog description
@@ -427,11 +427,11 @@ kundi GNUTranslations(NullTranslations):
                         v = v.strip()
                         self._info[k] = v
                         lastk = k
-                    lasivyo lastk:
+                    elikiwa lastk:
                         self._info[lastk] += '\n' + item
                     ikiwa k == 'content-type':
                         self._charset = v.split('charset=')[1]
-                    lasivyo k == 'plural-forms':
+                    elikiwa k == 'plural-forms':
                         v = v.split(';')
                         plural = v[1].split('plural=')[1]
                         self.plural = c2py(plural)
@@ -478,7 +478,7 @@ kundi GNUTranslations(NullTranslations):
                       DeprecationWarning, 2)
         jaribu:
             tmsg = self._catalog[(msgid1, self.plural(n))]
-        tatizo KeyError:
+        except KeyError:
             ikiwa self._fallback:
                 rudisha self._fallback.lngettext(msgid1, msgid2, n)
             ikiwa n == 1:
@@ -501,7 +501,7 @@ kundi GNUTranslations(NullTranslations):
     eleza ngettext(self, msgid1, msgid2, n):
         jaribu:
             tmsg = self._catalog[(msgid1, self.plural(n))]
-        tatizo KeyError:
+        except KeyError:
             ikiwa self._fallback:
                 rudisha self._fallback.ngettext(msgid1, msgid2, n)
             ikiwa n == 1:
@@ -524,7 +524,7 @@ kundi GNUTranslations(NullTranslations):
         ctxt_msg_id = self.CONTEXT % (context, msgid1)
         jaribu:
             tmsg = self._catalog[ctxt_msg_id, self.plural(n)]
-        tatizo KeyError:
+        except KeyError:
             ikiwa self._fallback:
                 rudisha self._fallback.npgettext(context, msgid1, msgid2, n)
             ikiwa n == 1:
@@ -546,13 +546,13 @@ eleza find(domain, localedir=Tupu, languages=Tupu, all=Uongo):
             ikiwa val:
                 languages = val.split(':')
                 koma
-        ikiwa 'C' haiko kwenye languages:
+        ikiwa 'C' sio kwenye languages:
             languages.append('C')
     # now normalize na expand the languages
     nelangs = []
     kila lang kwenye languages:
         kila nelang kwenye _expand_lang(lang):
-            ikiwa nelang haiko kwenye nelangs:
+            ikiwa nelang sio kwenye nelangs:
                 nelangs.append(nelang)
     # select a language
     ikiwa all:
@@ -585,7 +585,7 @@ eleza translation(domain, localedir=Tupu, languages=Tupu,
         ikiwa fallback:
             rudisha NullTranslations()
         kutoka errno agiza ENOENT
-        ashiria FileNotFoundError(ENOENT,
+         ashiria FileNotFoundError(ENOENT,
                                 'No translation file found kila domain', domain)
     # Avoid opening, reading, na parsing the .mo file after it's been done
     # once.
@@ -594,9 +594,9 @@ eleza translation(domain, localedir=Tupu, languages=Tupu,
         key = (class_, os.path.abspath(mofile))
         t = _translations.get(key)
         ikiwa t ni Tupu:
-            ukijumuisha open(mofile, 'rb') kama fp:
+            ukijumuisha open(mofile, 'rb') as fp:
                 t = _translations.setdefault(key, class_(fp))
-        # Copy the translation object to allow setting fallbacks na
+        # Copy the translation object to allow setting fallbacks and
         # output charset. All other instance data ni shared ukijumuisha the
         # cached object.
         # Delay copy agiza kila speeding up gettext agiza when .mo files
@@ -660,7 +660,7 @@ eleza bind_textdomain_codeset(domain, codeset=Tupu):
 eleza dgettext(domain, message):
     jaribu:
         t = translation(domain, _localedirs.get(domain, Tupu))
-    tatizo OSError:
+    except OSError:
         rudisha message
     rudisha t.gettext(message)
 
@@ -674,7 +674,7 @@ eleza ldgettext(domain, message):
             warnings.filterwarnings('ignore', r'.*\bparameter codeset\b.*',
                                     DeprecationWarning)
             t = translation(domain, _localedirs.get(domain, Tupu), codeset=codeset)
-    tatizo OSError:
+    except OSError:
         rudisha message.encode(codeset ama locale.getpreferredencoding())
     ukijumuisha warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\blgettext\b.*',
@@ -684,7 +684,7 @@ eleza ldgettext(domain, message):
 eleza dngettext(domain, msgid1, msgid2, n):
     jaribu:
         t = translation(domain, _localedirs.get(domain, Tupu))
-    tatizo OSError:
+    except OSError:
         ikiwa n == 1:
             rudisha msgid1
         isipokua:
@@ -701,7 +701,7 @@ eleza ldngettext(domain, msgid1, msgid2, n):
             warnings.filterwarnings('ignore', r'.*\bparameter codeset\b.*',
                                     DeprecationWarning)
             t = translation(domain, _localedirs.get(domain, Tupu), codeset=codeset)
-    tatizo OSError:
+    except OSError:
         ikiwa n == 1:
             tmsg = msgid1
         isipokua:
@@ -716,7 +716,7 @@ eleza ldngettext(domain, msgid1, msgid2, n):
 eleza dpgettext(domain, context, message):
     jaribu:
         t = translation(domain, _localedirs.get(domain, Tupu))
-    tatizo OSError:
+    except OSError:
         rudisha message
     rudisha t.pgettext(context, message)
 
@@ -724,7 +724,7 @@ eleza dpgettext(domain, context, message):
 eleza dnpgettext(domain, context, msgid1, msgid2, n):
     jaribu:
         t = translation(domain, _localedirs.get(domain, Tupu))
-    tatizo OSError:
+    except OSError:
         ikiwa n == 1:
             rudisha msgid1
         isipokua:

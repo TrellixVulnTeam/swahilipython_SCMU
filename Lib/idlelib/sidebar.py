@@ -1,10 +1,10 @@
-"""Line numbering implementation kila IDLE kama an extension.
+"""Line numbering implementation kila IDLE as an extension.
 Includes BaseSideBar which can be extended kila other sidebar based extensions
 """
 agiza functools
 agiza itertools
 
-agiza tkinter kama tk
+agiza tkinter as tk
 kutoka idlelib.config agiza idleConf
 kutoka idlelib.delegator agiza Delegator
 
@@ -20,12 +20,12 @@ eleza get_widget_padding(widget):
     manager = widget.winfo_manager()
     ikiwa manager == 'pack':
         info = widget.pack_info()
-    lasivyo manager == 'grid':
+    elikiwa manager == 'grid':
         info = widget.grid_info()
     isipokua:
-        ashiria ValueError(f"Unsupported geometry manager: {manager}")
+         ashiria ValueError(f"Unsupported geometry manager: {manager}")
 
-    # All values are pitaed through getint(), since some
+    # All values are passed through getint(), since some
     # values may be pixel objects, which can't simply be added to ints.
     padx = sum(map(widget.tk.getint, [
         info['padx'],
@@ -181,7 +181,7 @@ kundi LineNumbers(BaseSideBar):
         self.sidebar_text.bind('<MouseWheel>', self.redirect_mousewheel_event)
 
         # Redirect mouse button events to the main editor text widget,
-        # tatizo kila the left mouse button (1).
+        # except kila the left mouse button (1).
         #
         # Note: X-11 sends Button-4 na Button-5 events kila the scroll wheel.
         eleza bind_mouse_event(event_name, target_event_name):
@@ -209,8 +209,8 @@ kundi LineNumbers(BaseSideBar):
         # began.
         start_line = Tupu
         # These are set by b1_motion_handler() na read by selection_handler().
-        # last_y ni pitaed this way since the mouse Y-coordinate ni not
-        # available on selection event objects.  last_yview ni pitaed this way
+        # last_y ni passed this way since the mouse Y-coordinate ni not
+        # available on selection event objects.  last_yview ni passed this way
         # to recognize scrolling wakati the mouse isn't moving.
         last_y = last_yview = Tupu
 
@@ -249,8 +249,8 @@ kundi LineNumbers(BaseSideBar):
         # Special handling of dragging ukijumuisha mouse button 1.  In "normal" text
         # widgets this selects text, but the line numbers text widget has
         # selection disabled.  Still, dragging triggers some selection-related
-        # functionality under the hood.  Specifically, dragging to above ama
-        # below the text widget triggers scrolling, kwenye a way that bypitaes the
+        # functionality under the hood.  Specifically, dragging to above or
+        # below the text widget triggers scrolling, kwenye a way that bypasses the
         # other scrolling synchronization mechanisms.i
         eleza b1_drag_handler(event, *args):
             nonlocal last_y
@@ -269,7 +269,7 @@ kundi LineNumbers(BaseSideBar):
         eleza selection_handler(event):
             ikiwa last_yview ni Tupu:
                 # This logic ni only needed wakati dragging.
-                rudisha
+                return
             yview = self.sidebar_text.yview()
             ikiwa yview != last_yview:
                 self.text.yview_moveto(yview[0])
@@ -286,10 +286,10 @@ kundi LineNumbers(BaseSideBar):
         """
         Perform the following action:
         Each line sidebar_text contains the linenumber kila that line
-        Synchronize ukijumuisha editwin.text so that both sidebar_text na
+        Synchronize ukijumuisha editwin.text so that both sidebar_text and
         editwin.text contain the same number of lines"""
         ikiwa end == self.prev_end:
-            rudisha
+            return
 
         width_difference = len(str(end)) - len(str(self.prev_end))
         ikiwa width_difference:

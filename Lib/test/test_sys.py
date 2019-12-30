@@ -26,7 +26,7 @@ kundi DisplayHookTest(unittest.TestCase):
     eleza test_original_displayhook(self):
         dh = sys.__displayhook__
 
-        ukijumuisha support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() as out:
             dh(42)
 
         self.assertEqual(out.getvalue(), "42\n")
@@ -34,11 +34,11 @@ kundi DisplayHookTest(unittest.TestCase):
 
         toa builtins._
 
-        ukijumuisha support.captured_stdout() kama out:
+        ukijumuisha support.captured_stdout() as out:
             dh(Tupu)
 
         self.assertEqual(out.getvalue(), "")
-        self.assertKweli(sio hasattr(builtins, "_"))
+        self.assertKweli(not hasattr(builtins, "_"))
 
         # sys.displayhook() requires arguments
         self.assertRaises(TypeError, dh)
@@ -61,7 +61,7 @@ kundi DisplayHookTest(unittest.TestCase):
 
     eleza test_custom_displayhook(self):
         eleza baddisplayhook(obj):
-            ashiria ValueError
+             ashiria ValueError
 
         ukijumuisha support.swap_attr(sys, 'displayhook', baddisplayhook):
             code = compile("42", "<string>", "single")
@@ -72,9 +72,9 @@ kundi ExceptHookTest(unittest.TestCase):
 
     eleza test_original_excepthook(self):
         jaribu:
-            ashiria ValueError(42)
-        tatizo ValueError kama exc:
-            ukijumuisha support.captured_stderr() kama err:
+             ashiria ValueError(42)
+        except ValueError as exc:
+            ukijumuisha support.captured_stderr() as err:
                 sys.__excepthook__(*sys.exc_info())
 
         self.assertKweli(err.getvalue().endswith("ValueError: 42\n"))
@@ -88,9 +88,9 @@ kundi ExceptHookTest(unittest.TestCase):
             warnings.simplefilter('ignore', BytesWarning)
 
             jaribu:
-                ashiria SyntaxError("msg", (b"bytes_filename", 123, 0, "text"))
-            tatizo SyntaxError kama exc:
-                ukijumuisha support.captured_stderr() kama err:
+                 ashiria SyntaxError("msg", (b"bytes_filename", 123, 0, "text"))
+            except SyntaxError as exc:
+                ukijumuisha support.captured_stderr() as err:
                     sys.__excepthook__(*sys.exc_info())
 
         err = err.getvalue()
@@ -99,7 +99,7 @@ kundi ExceptHookTest(unittest.TestCase):
         self.assertKweli(err.endswith("SyntaxError: msg\n"))
 
     eleza test_excepthook(self):
-        ukijumuisha test.support.captured_output("stderr") kama stderr:
+        ukijumuisha test.support.captured_output("stderr") as stderr:
             sys.excepthook(1, '1', 1)
         self.assertKweli("TypeError: print_exception(): Exception expected kila " \
                          "value, str found" kwenye stderr.getvalue())
@@ -118,7 +118,7 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertRaises(TypeError, sys.exit, 42, 42)
 
         # call without argument
-        ukijumuisha self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) as cm:
             sys.exit()
         self.assertIsTupu(cm.exception.code)
 
@@ -128,28 +128,28 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertEqual(err, b'')
 
         # call ukijumuisha integer argument
-        ukijumuisha self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) as cm:
             sys.exit(42)
         self.assertEqual(cm.exception.code, 42)
 
         # call ukijumuisha tuple argument ukijumuisha one entry
         # entry will be unpacked
-        ukijumuisha self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) as cm:
             sys.exit((42,))
         self.assertEqual(cm.exception.code, 42)
 
         # call ukijumuisha string argument
-        ukijumuisha self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) as cm:
             sys.exit("exit")
         self.assertEqual(cm.exception.code, "exit")
 
         # call ukijumuisha tuple argument ukijumuisha two entries
-        ukijumuisha self.assertRaises(SystemExit) kama cm:
+        ukijumuisha self.assertRaises(SystemExit) as cm:
             sys.exit((17, 23))
         self.assertEqual(cm.exception.code, (17, 23))
 
         # test that the exit machinery handles SystemExits properly
-        rc, out, err = assert_python_failure('-c', 'ashiria SystemExit(47)')
+        rc, out, err = assert_python_failure('-c', ' ashiria SystemExit(47)')
         self.assertEqual(rc, 47)
         self.assertEqual(out, b'')
         self.assertEqual(err, b'')
@@ -181,7 +181,7 @@ kundi SysModuleTest(unittest.TestCase):
 
     eleza test_getdefaultencoding(self):
         self.assertRaises(TypeError, sys.getdefaultencoding, 42)
-        # can't check more than the type, kama the user might have changed it
+        # can't check more than the type, as the user might have changed it
         self.assertIsInstance(sys.getdefaultencoding(), str)
 
     # testing sys.settrace() ni done kwenye test_sys_settrace.py
@@ -231,7 +231,7 @@ kundi SysModuleTest(unittest.TestCase):
             kila depth kwenye (10, 25, 50, 75, 100, 250, 1000):
                 jaribu:
                     sys.setrecursionlimit(depth)
-                tatizo RecursionError:
+                except RecursionError:
                     # Issue #25274: The recursion limit ni too low at the
                     # current recursion depth
                     endelea
@@ -255,7 +255,7 @@ kundi SysModuleTest(unittest.TestCase):
         eleza set_recursion_limit_at_depth(depth, limit):
             recursion_depth = get_recursion_depth()
             ikiwa recursion_depth >= depth:
-                ukijumuisha self.assertRaises(RecursionError) kama cm:
+                ukijumuisha self.assertRaises(RecursionError) as cm:
                     sys.setrecursionlimit(limit)
                 self.assertRegex(str(cm.exception),
                                  "cannot set the recursion limit to [0-9]+ "
@@ -287,7 +287,7 @@ kundi SysModuleTest(unittest.TestCase):
             eleza f():
                 jaribu:
                     f()
-                tatizo RecursionError:
+                except RecursionError:
                     f()
 
             sys.setrecursionlimit(%d)
@@ -348,7 +348,7 @@ kundi SysModuleTest(unittest.TestCase):
 
     @test.support.refcount_test
     eleza test_refcount(self):
-        # n here must be a global kwenye order kila this test to pita while
+        # n here must be a global kwenye order kila this test to pass while
         # tracing ukijumuisha a python function.  Tracing calls PyFrame_FastToLocals
         # which will add a copy of any locals to the frame object, causing
         # the reference count to increase by 2 instead of 1.
@@ -378,7 +378,7 @@ kundi SysModuleTest(unittest.TestCase):
 
         # Spawn a thread that blocks at a known place.  Then the main
         # thread does sys._current_frames(), na verifies that the frames
-        # rudishaed make sense.
+        # returned make sense.
         entered_g = threading.Event()
         leave_g = threading.Event()
         thread_info = []  # the thread's id
@@ -476,7 +476,7 @@ kundi SysModuleTest(unittest.TestCase):
 
             ikiwa algo == 1:
                 self.assertEqual(sys.hash_info.algorithm, "siphash24")
-            lasivyo algo == 2:
+            elikiwa algo == 2:
                 self.assertEqual(sys.hash_info.algorithm, "fnv")
             isipokua:
                 self.assertIn(sys.hash_info.algorithm, {"fnv", "siphash24"})
@@ -524,7 +524,7 @@ kundi SysModuleTest(unittest.TestCase):
         self.assertIn(info.lock, ('semaphore', 'mutex+cond', Tupu))
 
     eleza test_43581(self):
-        # Can't use sys.stdout, kama this ni a StringIO object when
+        # Can't use sys.stdout, as this ni a StringIO object when
         # the test runs under regrtest.
         self.assertEqual(sys.__stdout__.encoding, sys.__stderr__.encoding)
 
@@ -564,7 +564,7 @@ kundi SysModuleTest(unittest.TestCase):
 
         self.assertIn(sys.flags.utf8_mode, {0, 1, 2})
 
-    eleza assert_ashiria_on_new_sys_type(self, sys_attr):
+    eleza assert_raise_on_new_sys_type(self, sys_attr):
         # Users are intentionally prevented kutoka creating new instances of
         # sys.flags, sys.version_info, na sys.getwindowsversion.
         attr_type = type(sys_attr)
@@ -574,15 +574,15 @@ kundi SysModuleTest(unittest.TestCase):
             attr_type.__new__(attr_type)
 
     eleza test_sys_flags_no_instantiation(self):
-        self.assert_ashiria_on_new_sys_type(sys.flags)
+        self.assert_raise_on_new_sys_type(sys.flags)
 
     eleza test_sys_version_info_no_instantiation(self):
-        self.assert_ashiria_on_new_sys_type(sys.version_info)
+        self.assert_raise_on_new_sys_type(sys.version_info)
 
     eleza test_sys_getwindowsversion_no_instantiation(self):
         # Skip ikiwa sio being run on Windows.
         test.support.get_attribute(sys, "getwindowsversion")
-        self.assert_ashiria_on_new_sys_type(sys.getwindowsversion())
+        self.assert_raise_on_new_sys_type(sys.getwindowsversion())
 
     @test.support.cpython_only
     eleza test_clear_type_cache(self):
@@ -591,7 +591,7 @@ kundi SysModuleTest(unittest.TestCase):
     eleza test_ioencoding(self):
         env = dict(os.environ)
 
-        # Test character: cent sign, encoded kama 0x4A (ASCII J) kwenye CP424,
+        # Test character: cent sign, encoded as 0x4A (ASCII J) kwenye CP424,
         # sio representable kwenye ASCII.
 
         env["PYTHONIOENCODING"] = "cp424"
@@ -792,12 +792,12 @@ kundi SysModuleTest(unittest.TestCase):
     eleza test_getallocatedblocks(self):
         jaribu:
             agiza _testcapi
-        tatizo ImportError:
+        except ImportError:
             with_pymalloc = support.with_pymalloc()
         isipokua:
             jaribu:
                 alloc_name = _testcapi.pymem_getallocatorsname()
-            tatizo RuntimeError kama exc:
+            except RuntimeError as exc:
                 # "cannot get allocators name" (ex: tracemalloc ni used)
                 with_pymalloc = Kweli
             isipokua:
@@ -818,9 +818,9 @@ kundi SysModuleTest(unittest.TestCase):
             # multiple buffer objects would exceed the sharing of references,
             # it ni unlikely to happen kwenye a normal test run.
             self.assertLess(a, sys.gettotalrefcount())
-        tatizo AttributeError:
+        except AttributeError:
             # gettotalrefcount() sio available
-            pita
+            pass
         gc.collect()
         b = sys.getallocatedblocks()
         self.assertLessEqual(b, a)
@@ -942,7 +942,7 @@ kundi UnraisableHookTest(unittest.TestCase):
             ukijumuisha self.subTest(err_msg=err_msg):
                 obj = "an object"
 
-                ukijumuisha test.support.captured_output("stderr") kama stderr:
+                ukijumuisha test.support.captured_output("stderr") as stderr:
                     ukijumuisha test.support.swap_attr(sys, 'unraisablehook',
                                                 sys.__unraisablehook__):
                         self.write_unraisable_exc(ValueError(42), err_msg, obj)
@@ -961,22 +961,22 @@ kundi UnraisableHookTest(unittest.TestCase):
             eleza __del__(self):
                 exc = ValueError("toa ni broken")
                 # The following line ni included kwenye the traceback report:
-                ashiria exc
+                 ashiria exc
 
         kundi BrokenStrException(Exception):
             eleza __str__(self):
-                ashiria Exception("str() ni broken")
+                 ashiria Exception("str() ni broken")
 
         kundi BrokenExceptionDel:
             eleza __del__(self):
                 exc = BrokenStrException()
                 # The following line ni included kwenye the traceback report:
-                ashiria exc
+                 ashiria exc
 
         kila test_kundi kwenye (BrokenDel, BrokenExceptionDel):
             ukijumuisha self.subTest(test_class):
                 obj = test_class()
-                ukijumuisha test.support.captured_stderr() kama stderr, \
+                ukijumuisha test.support.captured_stderr() as stderr, \
                      test.support.swap_attr(sys, 'unraisablehook',
                                             sys.__unraisablehook__):
                     # Trigger obj.__del__()
@@ -986,7 +986,7 @@ kundi UnraisableHookTest(unittest.TestCase):
                 self.assertIn("Exception ignored", report)
                 self.assertIn(test_class.__del__.__qualname__, report)
                 self.assertIn("test_sys.py", report)
-                self.assertIn("ashiria exc", report)
+                self.assertIn(" ashiria exc", report)
                 ikiwa test_kundi ni BrokenExceptionDel:
                     self.assertIn("BrokenStrException", report)
                     self.assertIn("<exception str() failed>", report)
@@ -1026,9 +1026,9 @@ kundi UnraisableHookTest(unittest.TestCase):
 
     eleza test_custom_unraisablehook_fail(self):
         eleza hook_func(*args):
-            ashiria Exception("hook_func failed")
+             ashiria Exception("hook_func failed")
 
-        ukijumuisha test.support.captured_output("stderr") kama stderr:
+        ukijumuisha test.support.captured_output("stderr") as stderr:
             ukijumuisha test.support.swap_attr(sys, 'unraisablehook', hook_func):
                 self.write_unraisable_exc(ValueError(42),
                                           "custom hook fail", Tupu)
@@ -1064,7 +1064,7 @@ kundi SizeofTest(unittest.TestCase):
     eleza test_errors(self):
         kundi BadSizeof:
             eleza __sizeof__(self):
-                ashiria ValueError
+                 ashiria ValueError
         self.assertRaises(ValueError, sys.getsizeof, BadSizeof())
 
         kundi InvalidSizeof:
@@ -1173,7 +1173,7 @@ kundi SizeofTest(unittest.TestCase):
         # dictionary-itemiterator
         check(iter({}.items()), size('P2nPn'))
         # dictproxy
-        kundi C(object): pita
+        kundi C(object): pass
         check(C.__dict__, size('P'))
         # BaseException
         check(BaseException(), size('5Pb'))
@@ -1207,15 +1207,15 @@ kundi SizeofTest(unittest.TestCase):
                   ncells + nfrees - 1
         check(x, vsize('5P2c4P3ic' + CO_MAXBLOCKS*'3i' + 'P' + extras*'P'))
         # function
-        eleza func(): pita
+        eleza func(): pass
         check(func, size('13P'))
         kundi c():
             @staticmethod
             eleza foo():
-                pita
+                pass
             @classmethod
             eleza bar(cls):
-                pita
+                pass
             # staticmethod
             check(foo, size('PP'))
             # classmethod
@@ -1316,7 +1316,7 @@ kundi SizeofTest(unittest.TestCase):
                   '10P'                 # PySequenceMethods
                   '2P'                  # PyBufferProcs
                   '4P')
-        kundi newstyleclass(object): pita
+        kundi newstyleclass(object): pass
         # Separate block kila PyDictKeysObject ukijumuisha 8 keys na 5 entries
         check(newstyleclass, s + calcsize("2nP2n0P") + 8 + 5*calcsize("n2P"))
         # dict ukijumuisha shared keys
@@ -1329,7 +1329,7 @@ kundi SizeofTest(unittest.TestCase):
         check(newstyleclass().__dict__, size('nQ2P') + 10*self.P)
         # unicode
         # each tuple contains a string na its expected character size
-        # don't put any static strings here, kama they may contain
+        # don't put any static strings here, as they may contain
         # wchar_t ama UTF-8 representations
         samples = ['1'*100, '\xff'*50,
                    '\u0100'*40, '\uffff'*100,
@@ -1341,9 +1341,9 @@ kundi SizeofTest(unittest.TestCase):
             maxchar = ord(max(s))
             ikiwa maxchar < 128:
                 L = size(asciifields) + len(s) + 1
-            lasivyo maxchar < 256:
+            elikiwa maxchar < 256:
                 L = size(compactfields) + len(s) + 1
-            lasivyo maxchar < 65536:
+            elikiwa maxchar < 65536:
                 L = size(compactfields) + 2*(len(s) + 1)
             isipokua:
                 L = size(compactfields) + 4*(len(s) + 1)
@@ -1352,7 +1352,7 @@ kundi SizeofTest(unittest.TestCase):
         s = chr(0x4000)   # 4 bytes canonical representation
         check(s, size(compactfields) + 4)
         # compile() will trigger the generation of the UTF-8
-        # representation kama a side effect
+        # representation as a side effect
         compile(s, "<stdin>", "eval")
         check(s, size(compactfields) + 4 + 4)
         # TODO: add check that forces the presence of wchar_t representation
@@ -1404,8 +1404,8 @@ kundi SizeofTest(unittest.TestCase):
         agiza _ast
         check(_ast.AST(), size('P'))
         jaribu:
-            ashiria TypeError
-        tatizo TypeError:
+             ashiria TypeError
+        except TypeError:
             tb = sys.exc_info()[2]
             # traceback
             ikiwa tb ni sio Tupu:

@@ -1,2 +1,2 @@
 eleza parrot():
-    pita
+    pass

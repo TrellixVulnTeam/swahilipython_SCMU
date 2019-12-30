@@ -84,7 +84,7 @@ kundi GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('--abc', '')])
         self.assertEqual(args, [])
 
-        # Much like the preceding, tatizo ukijumuisha a non-alpha character ("-") in
+        # Much like the preceding, except ukijumuisha a non-alpha character ("-") in
         # option name that precedes "="; failed in
         # http://python.org/sf/126863
         opts, args = getopt.do_longs([], 'foo=42', ['foo-bar', 'foo=',], [])
@@ -121,7 +121,7 @@ kundi GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('-a', ''), ('-b', '1'),
                                 ('--alpha', ''), ('--beta', '2')])
 
-        # recognize "-" kama an argument
+        # recognize "-" as an argument
         opts, args = getopt.gnu_getopt(['-a', '-', '-b', '-'], 'ab:', [])
         self.assertEqual(args, ['-'])
         self.assertEqual(opts, [('-a', ''), ('-b', '-')])

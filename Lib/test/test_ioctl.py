@@ -8,29 +8,29 @@ get_attribute(termios, 'TIOCGPGRP') #Can't run tests without this feature
 
 jaribu:
     tty = open("/dev/tty", "rb")
-tatizo OSError:
-    ashiria unittest.SkipTest("Unable to open /dev/tty")
+except OSError:
+     ashiria unittest.SkipTest("Unable to open /dev/tty")
 isipokua:
     ukijumuisha tty:
         # Skip ikiwa another process ni kwenye foreground
         r = fcntl.ioctl(tty, termios.TIOCGPGRP, "    ")
     rpgrp = struct.unpack("i", r)[0]
-    ikiwa rpgrp haiko kwenye (os.getpgrp(), os.getsid(0)):
-        ashiria unittest.SkipTest("Neither the process group nor the session "
+    ikiwa rpgrp sio kwenye (os.getpgrp(), os.getsid(0)):
+         ashiria unittest.SkipTest("Neither the process group nor the session "
                                 "are attached to /dev/tty")
     toa tty, r, rpgrp
 
 jaribu:
     agiza pty
-tatizo ImportError:
+except ImportError:
     pty = Tupu
 
 kundi IoctlTests(unittest.TestCase):
     eleza test_ioctl(self):
-        # If this process has been put into the background, TIOCGPGRP rudishas
+        # If this process has been put into the background, TIOCGPGRP returns
         # the session ID instead of the process group id.
         ids = (os.getpgrp(), os.getsid(0))
-        ukijumuisha open("/dev/tty", "rb") kama tty:
+        ukijumuisha open("/dev/tty", "rb") as tty:
             r = fcntl.ioctl(tty, termios.TIOCGPGRP, "    ")
             rpgrp = struct.unpack("i", r)[0]
             self.assertIn(rpgrp, ids)
@@ -47,7 +47,7 @@ kundi IoctlTests(unittest.TestCase):
             self.assertEqual(len(buf) * intsize, nbytes)   # sanity check
         isipokua:
             buf.append(fill)
-        ukijumuisha open("/dev/tty", "rb") kama tty:
+        ukijumuisha open("/dev/tty", "rb") as tty:
             r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, 1)
         rpgrp = buf[0]
         self.assertEqual(r, 0)
@@ -67,7 +67,7 @@ kundi IoctlTests(unittest.TestCase):
 
     eleza test_ioctl_signed_unsigned_code_param(self):
         ikiwa sio pty:
-            ashiria unittest.SkipTest('pty module required')
+             ashiria unittest.SkipTest('pty module required')
         mfd, sfd = pty.openpty()
         jaribu:
             ikiwa termios.TIOCSWINSZ < 0:

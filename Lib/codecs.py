@@ -14,8 +14,8 @@ agiza sys
 
 jaribu:
     kutoka _codecs agiza *
-tatizo ImportError kama why:
-    ashiria SystemError('Failed to load the builtin codecs: %s' % why)
+except ImportError as why:
+     ashiria SystemError('Failed to load the builtin codecs: %s' % why)
 
 __all__ = ["register", "lookup", "open", "EncodedFile", "BOM", "BOM_BE",
            "BOM_LE", "BOM32_BE", "BOM32_LE", "BOM64_BE", "BOM64_LE",
@@ -119,7 +119,7 @@ kundi Codec:
         handling schemes by providing the errors argument. These
         string values are predefined:
 
-         'strict' - ashiria a ValueError error (or a subclass)
+         'strict' -  ashiria a ValueError error (or a subclass)
          'ignore' - ignore the character na endelea ukijumuisha the next
          'replace' - replace ukijumuisha a suitable replacement character;
                     Python will use the official U+FFFD REPLACEMENT
@@ -137,7 +137,7 @@ kundi Codec:
     """
     eleza encode(self, input, errors='strict'):
 
-        """ Encodes the object input na rudishas a tuple (output
+        """ Encodes the object input na returns a tuple (output
             object, length consumed).
 
             errors defines the error handling to apply. It defaults to
@@ -147,16 +147,16 @@ kundi Codec:
             StreamWriter kila codecs which have to keep state kwenye order to
             make encoding efficient.
 
-            The encoder must be able to handle zero length input na
+            The encoder must be able to handle zero length input and
             rudisha an empty object of the output object type kwenye this
             situation.
 
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza decode(self, input, errors='strict'):
 
-        """ Decodes the object input na rudishas a tuple (output
+        """ Decodes the object input na returns a tuple (output
             object, length consumed).
 
             input must be an object which provides the bf_getreadbuf
@@ -170,17 +170,17 @@ kundi Codec:
             StreamReader kila codecs which have to keep state kwenye order to
             make decoding efficient.
 
-            The decoder must be able to handle zero length input na
+            The decoder must be able to handle zero length input and
             rudisha an empty object of the output object type kwenye this
             situation.
 
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
 kundi IncrementalEncoder(object):
     """
     An IncrementalEncoder encodes an input kwenye multiple steps. The input can
-    be pitaed piece by piece to the encode() method. The IncrementalEncoder
+    be passed piece by piece to the encode() method. The IncrementalEncoder
     remembers the state of the encoding process between calls to encode().
     """
     eleza __init__(self, errors='strict'):
@@ -196,9 +196,9 @@ kundi IncrementalEncoder(object):
 
     eleza encode(self, input, final=Uongo):
         """
-        Encodes input na rudishas the resulting object.
+        Encodes input na returns the resulting object.
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza reset(self):
         """
@@ -214,12 +214,12 @@ kundi IncrementalEncoder(object):
     eleza setstate(self, state):
         """
         Set the current state of the encoder. state must have been
-        rudishaed by getstate().
+        returned by getstate().
         """
 
 kundi BufferedIncrementalEncoder(IncrementalEncoder):
     """
-    This subkundi of IncrementalEncoder can be used kama the basekundi kila an
+    This subkundi of IncrementalEncoder can be used as the basekundi kila an
     incremental encoder ikiwa the encoder must keep some of the output kwenye a
     buffer between calls to encode().
     """
@@ -231,7 +231,7 @@ kundi BufferedIncrementalEncoder(IncrementalEncoder):
     eleza _buffer_encode(self, input, errors, final):
         # Overwrite this method kwenye subclasses: It must encode input
         # na rudisha an (output, length consumed) tuple
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza encode(self, input, final=Uongo):
         # encode input (taking the buffer into account)
@@ -254,7 +254,7 @@ kundi BufferedIncrementalEncoder(IncrementalEncoder):
 kundi IncrementalDecoder(object):
     """
     An IncrementalDecoder decodes an input kwenye multiple steps. The input can
-    be pitaed piece by piece to the decode() method. The IncrementalDecoder
+    be passed piece by piece to the decode() method. The IncrementalDecoder
     remembers the state of the decoding process between calls to decode().
     """
     eleza __init__(self, errors='strict'):
@@ -269,9 +269,9 @@ kundi IncrementalDecoder(object):
 
     eleza decode(self, input, final=Uongo):
         """
-        Decode input na rudishas the resulting object.
+        Decode input na returns the resulting object.
         """
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza reset(self):
         """
@@ -284,7 +284,7 @@ kundi IncrementalDecoder(object):
 
         This must be a (buffered_input, additional_state_info) tuple.
         buffered_input must be a bytes object containing bytes that
-        were pitaed to decode() that have sio yet been converted.
+        were passed to decode() that have sio yet been converted.
         additional_state_info must be a non-negative integer
         representing the state of the decoder WITHOUT yet having
         processed the contents of buffered_input.  In the initial state
@@ -296,13 +296,13 @@ kundi IncrementalDecoder(object):
         """
         Set the current state of the decoder.
 
-        state must have been rudishaed by getstate().  The effect of
+        state must have been returned by getstate().  The effect of
         setstate((b"", 0)) must be equivalent to reset().
         """
 
 kundi BufferedIncrementalDecoder(IncrementalDecoder):
     """
-    This subkundi of IncrementalDecoder can be used kama the basekundi kila an
+    This subkundi of IncrementalDecoder can be used as the basekundi kila an
     incremental decoder ikiwa the decoder must be able to handle incomplete
     byte sequences.
     """
@@ -314,7 +314,7 @@ kundi BufferedIncrementalDecoder(IncrementalDecoder):
     eleza _buffer_decode(self, input, errors, final):
         # Overwrite this method kwenye subclasses: It must decode input
         # na rudisha an (output, length consumed) tuple
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza decode(self, input, final=Uongo):
         # decode input (taking the buffer into account)
@@ -355,7 +355,7 @@ kundi StreamWriter(Codec):
             schemes by providing the errors keyword argument. These
             parameters are predefined:
 
-             'strict' - ashiria a ValueError (or a subclass)
+             'strict' -  ashiria a ValueError (or a subclass)
              'ignore' - ignore the character na endelea ukijumuisha the next
              'replace'- replace ukijumuisha a suitable replacement character
              'xmlcharrefreplace' - Replace ukijumuisha the appropriate XML
@@ -394,7 +394,7 @@ kundi StreamWriter(Codec):
             stream to recover state.
 
         """
-        pita
+        pass
 
     eleza seek(self, offset, whence=0):
         self.stream.seek(offset, whence)
@@ -430,7 +430,7 @@ kundi StreamReader(Codec):
             schemes by providing the errors keyword argument. These
             parameters are predefined:
 
-             'strict' - ashiria a ValueError (or a subclass)
+             'strict' -  ashiria a ValueError (or a subclass)
              'ignore' - ignore the character na endelea ukijumuisha the next
              'replace'- replace ukijumuisha a suitable replacement character
              'backslashreplace' - Replace ukijumuisha backslashed escape sequences;
@@ -446,31 +446,31 @@ kundi StreamReader(Codec):
         self.linebuffer = Tupu
 
     eleza decode(self, input, errors='strict'):
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza read(self, size=-1, chars=-1, firstline=Uongo):
 
-        """ Decodes data kutoka the stream self.stream na rudishas the
+        """ Decodes data kutoka the stream self.stream na returns the
             resulting object.
 
             chars indicates the number of decoded code points ama bytes to
-            rudisha. read() will never rudisha more data than requested,
+            return. read() will never rudisha more data than requested,
             but it might rudisha less, ikiwa there ni sio enough available.
 
             size indicates the approximate maximum number of decoded
             bytes ama code points to read kila decoding. The decoder
-            can modify this setting kama appropriate. The default value
-            -1 indicates to read na decode kama much kama possible.  size
+            can modify this setting as appropriate. The default value
+            -1 indicates to read na decode as much as possible.  size
             ni intended to prevent having to decode huge files kwenye one
             step.
 
             If firstline ni true, na a UnicodeDecodeError happens
             after the first line terminator kwenye the input only the first line
-            will be rudishaed, the rest of the input will be kept until the
+            will be returned, the rest of the input will be kept until the
             next call to read().
 
             The method should use a greedy read strategy, meaning that
-            it should read kama much data kama ni allowed within the
+            it should read as much data as ni allowed within the
             definition of the encoding na the given size, e.g.  if
             optional encoding endings ama state markers are available
             on the stream, these should be read too.
@@ -502,15 +502,15 @@ kundi StreamReader(Codec):
                 koma
             jaribu:
                 newchars, decodedbytes = self.decode(data, self.errors)
-            tatizo UnicodeDecodeError kama exc:
+            except UnicodeDecodeError as exc:
                 ikiwa firstline:
                     newchars, decodedbytes = \
                         self.decode(data[:exc.start], self.errors)
                     lines = newchars.splitlines(keepends=Kweli)
                     ikiwa len(lines)<=1:
-                        ashiria
+                        raise
                 isipokua:
-                    ashiria
+                    raise
             # keep undecoded bytes until the next call
             self.bytebuffer = data[decodedbytes:]
             # put new characters kwenye the character buffer
@@ -533,11 +533,11 @@ kundi StreamReader(Codec):
         """ Read one line kutoka the input stream na rudisha the
             decoded data.
 
-            size, ikiwa given, ni pitaed kama size argument to the
+            size, ikiwa given, ni passed as size argument to the
             read() method.
 
         """
-        # If we have lines cached kutoka an earlier read, rudisha
+        # If we have lines cached kutoka an earlier read, return
         # them unconditionally
         ikiwa self.linebuffer:
             line = self.linebuffer[0]
@@ -569,7 +569,7 @@ kundi StreamReader(Codec):
             ikiwa lines:
                 ikiwa len(lines) > 1:
                     # More than one line result; the first line ni a full line
-                    # to rudisha
+                    # to return
                     line = lines[0]
                     toa lines[0]
                     ikiwa len(lines) > 1:
@@ -606,7 +606,7 @@ kundi StreamReader(Codec):
     eleza readlines(self, sizehint=Tupu, keepends=Kweli):
 
         """ Read all lines available on the input stream
-            na rudisha them kama a list.
+            na rudisha them as a list.
 
             Line komas are implemented using the codec's decoder
             method na are included kwenye the list entries.
@@ -645,7 +645,7 @@ kundi StreamReader(Codec):
         line = self.readline()
         ikiwa line:
             rudisha line
-        ashiria StopIteration
+         ashiria StopIteration
 
     eleza __iter__(self):
         rudisha self
@@ -671,7 +671,7 @@ kundi StreamReaderWriter:
         work kwenye both read na write modes.
 
         The design ni such that one can use the factory functions
-        rudishaed by the codec.lookup() function to construct the
+        returned by the codec.lookup() function to construct the
         instance.
 
     """
@@ -687,7 +687,7 @@ kundi StreamReaderWriter:
             Reader, Writer must be factory functions ama classes
             providing the StreamReader, StreamWriter interface resp.
 
-            Error handling ni done kwenye the same way kama defined kila the
+            Error handling ni done kwenye the same way as defined kila the
             StreamWriter/Readers.
 
         """
@@ -756,7 +756,7 @@ kundi StreamRecoder:
 
     """ StreamRecoder instances translate data kutoka one encoding to another.
 
-        They use the complete set of APIs rudishaed by the
+        They use the complete set of APIs returned by the
         codecs.lookup() function to implement their task.
 
         Data written to the StreamRecoder ni first decoded into an
@@ -765,7 +765,7 @@ kundi StreamRecoder:
         Writer class.
 
         In the other direction, data ni read kutoka the underlying stream using
-        a Reader instance na then encoded na rudishaed to the caller.
+        a Reader instance na then encoded na returned to the caller.
 
     """
     # Optional attributes set by the file wrappers below
@@ -785,11 +785,11 @@ kundi StreamRecoder:
 
             stream must be a file-like object.
 
-            encode na decode must adhere to the Codec interface; Reader na
+            encode na decode must adhere to the Codec interface; Reader and
             Writer must be factory functions ama classes providing the
             StreamReader na StreamWriter interfaces resp.
 
-            Error handling ni done kwenye the same way kama defined kila the
+            Error handling ni done kwenye the same way as defined kila the
             StreamWriter/Readers.
 
         """
@@ -849,7 +849,7 @@ kundi StreamRecoder:
 
     eleza seek(self, offset, whence=0):
         # Seeks must be propagated to both the readers na writers
-        # kama they might need to reset their internal buffers.
+        # as they might need to reset their internal buffers.
         self.reader.seek(offset, whence)
         self.writer.seek(offset, whence)
 
@@ -870,13 +870,13 @@ kundi StreamRecoder:
 
 eleza open(filename, mode='r', encoding=Tupu, errors='strict', buffering=-1):
 
-    """ Open an encoded file using the given mode na rudisha
+    """ Open an encoded file using the given mode na return
         a wrapped version providing transparent encoding/decoding.
 
         Note: The wrapped version will only accept the object format
         defined by the codecs, i.e. Unicode objects kila most builtin
         codecs. Output ni also codec dependent na will usually be
-        Unicode kama well.
+        Unicode as well.
 
         Underlying encoded files are always opened kwenye binary mode.
         The default file mode ni 'r', meaning to open the file kwenye read mode.
@@ -885,21 +885,21 @@ eleza open(filename, mode='r', encoding=Tupu, errors='strict', buffering=-1):
         file.
 
         errors may be given to define the error handling. It defaults
-        to 'strict' which causes ValueErrors to be ashiriad kwenye case an
+        to 'strict' which causes ValueErrors to be raised kwenye case an
         encoding error occurs.
 
-        buffering has the same meaning kama kila the builtin open() API.
+        buffering has the same meaning as kila the builtin open() API.
         It defaults to -1 which means that the default buffer size will
         be used.
 
-        The rudishaed wrapped file object provides an extra attribute
+        The returned wrapped file object provides an extra attribute
         .encoding which allows querying the used encoding. This
         attribute ni only available ikiwa an encoding was specified as
         parameter.
 
     """
     ikiwa encoding ni sio Tupu na \
-       'b' haiko kwenye mode:
+       'b' sio kwenye mode:
         # Force opening of the file kwenye binary mode
         mode = mode + 'b'
     file = builtins.open(filename, mode, buffering)
@@ -922,15 +922,15 @@ eleza EncodedFile(file, data_encoding, file_encoding=Tupu, errors='strict'):
         will usually be Unicode but depends on the specified codecs.
 
         Bytes read kutoka the file are decoded using file_encoding na then
-        pitaed back to the caller encoded using data_encoding.
+        passed back to the caller encoded using data_encoding.
 
         If file_encoding ni sio given, it defaults to data_encoding.
 
         errors may be given to define the error handling. It defaults
-        to 'strict' which causes ValueErrors to be ashiriad kwenye case an
+        to 'strict' which causes ValueErrors to be raised kwenye case an
         encoding error occurs.
 
-        The rudishaed wrapped file object provides two extra attributes
+        The returned wrapped file object provides two extra attributes
         .data_encoding na .file_encoding which reflect the given
         parameters of the same name. The attributes can be used for
         introspection by Python programs.
@@ -951,7 +951,7 @@ eleza EncodedFile(file, data_encoding, file_encoding=Tupu, errors='strict'):
 
 eleza getencoder(encoding):
 
-    """ Lookup up the codec kila the given encoding na rudisha
+    """ Lookup up the codec kila the given encoding na return
         its encoder function.
 
         Raises a LookupError kwenye case the encoding cannot be found.
@@ -961,7 +961,7 @@ eleza getencoder(encoding):
 
 eleza getdecoder(encoding):
 
-    """ Lookup up the codec kila the given encoding na rudisha
+    """ Lookup up the codec kila the given encoding na return
         its decoder function.
 
         Raises a LookupError kwenye case the encoding cannot be found.
@@ -971,7 +971,7 @@ eleza getdecoder(encoding):
 
 eleza getincrementalencoder(encoding):
 
-    """ Lookup up the codec kila the given encoding na rudisha
+    """ Lookup up the codec kila the given encoding na return
         its IncrementalEncoder kundi ama factory function.
 
         Raises a LookupError kwenye case the encoding cannot be found
@@ -980,12 +980,12 @@ eleza getincrementalencoder(encoding):
     """
     encoder = lookup(encoding).incrementalencoder
     ikiwa encoder ni Tupu:
-        ashiria LookupError(encoding)
+         ashiria LookupError(encoding)
     rudisha encoder
 
 eleza getincrementaldecoder(encoding):
 
-    """ Lookup up the codec kila the given encoding na rudisha
+    """ Lookup up the codec kila the given encoding na return
         its IncrementalDecoder kundi ama factory function.
 
         Raises a LookupError kwenye case the encoding cannot be found
@@ -994,12 +994,12 @@ eleza getincrementaldecoder(encoding):
     """
     decoder = lookup(encoding).incrementaldecoder
     ikiwa decoder ni Tupu:
-        ashiria LookupError(encoding)
+         ashiria LookupError(encoding)
     rudisha decoder
 
 eleza getreader(encoding):
 
-    """ Lookup up the codec kila the given encoding na rudisha
+    """ Lookup up the codec kila the given encoding na return
         its StreamReader kundi ama factory function.
 
         Raises a LookupError kwenye case the encoding cannot be found.
@@ -1009,7 +1009,7 @@ eleza getreader(encoding):
 
 eleza getwriter(encoding):
 
-    """ Lookup up the codec kila the given encoding na rudisha
+    """ Lookup up the codec kila the given encoding na return
         its StreamWriter kundi ama factory function.
 
         Raises a LookupError kwenye case the encoding cannot be found.
@@ -1023,7 +1023,7 @@ eleza iterencode(iterator, encoding, errors='strict', **kwargs):
 
     Encodes the input strings kutoka the iterator using an IncrementalEncoder.
 
-    errors na kwargs are pitaed through to the IncrementalEncoder
+    errors na kwargs are passed through to the IncrementalEncoder
     constructor.
     """
     encoder = getincrementalencoder(encoding)(errors, **kwargs)
@@ -1041,7 +1041,7 @@ eleza iterdecode(iterator, encoding, errors='strict', **kwargs):
 
     Decodes the input strings kutoka the iterator using an IncrementalDecoder.
 
-    errors na kwargs are pitaed through to the IncrementalDecoder
+    errors na kwargs are passed through to the IncrementalDecoder
     constructor.
     """
     decoder = getincrementaldecoder(encoding)(errors, **kwargs)
@@ -1095,7 +1095,7 @@ jaribu:
     xmlcharrefreplace_errors = lookup_error("xmlcharrefreplace")
     backslashreplace_errors = lookup_error("backslashreplace")
     namereplace_errors = lookup_error("namereplace")
-tatizo LookupError:
+except LookupError:
     # In --disable-unicode builds, these error handler are missing
     strict_errors = Tupu
     ignore_errors = Tupu

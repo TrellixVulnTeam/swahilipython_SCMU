@@ -249,7 +249,7 @@ kundi ShlexTest(unittest.TestCase):
         self.assertEqual(ref, result, "While splitting '%s' [ws=Kweli]" % ss)
 
     eleza testTokenTypes(self):
-        """Test that tokens are split ukijumuisha types kama expected."""
+        """Test that tokens are split ukijumuisha types as expected."""
         kila source, expected kwenye (
                                 ('a && b || c',
                                  [('a', 'a'), ('&&', 'c'), ('b', 'a'),
@@ -275,7 +275,7 @@ kundi ShlexTest(unittest.TestCase):
         self.assertEqual(list(s), ['a', '_', 'b', '__', 'c'])
 
     eleza testPunctuationWithWhitespaceSplit(self):
-        """Test that ukijumuisha whitespace_split, behaviour ni kama expected"""
+        """Test that ukijumuisha whitespace_split, behaviour ni as expected"""
         s = shlex.shlex('a  && b  ||  c', punctuation_chars='&')
         # whitespace_split ni Uongo, so splitting will be based on
         # punctuation_chars
@@ -309,7 +309,7 @@ kundi ShlexTest(unittest.TestCase):
     eleza testUnicodeHandling(self):
         """Test punctuation_chars na whitespace_split handle unicode."""
         ss = "\u2119\u01b4\u2602\u210c\u00f8\u1f24"
-        # Should be parsed kama one complete token (whitespace_split=Kweli).
+        # Should be parsed as one complete token (whitespace_split=Kweli).
         ref = ['\u2119\u01b4\u2602\u210c\u00f8\u1f24']
         s = shlex.shlex(ss, punctuation_chars=Kweli)
         s.whitespace_split = Kweli

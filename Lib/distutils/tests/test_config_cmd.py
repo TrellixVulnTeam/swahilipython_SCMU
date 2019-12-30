@@ -1,32 +1,32 @@
-"""Tests for distutils.command.config."""
-import unittest
-import os
-import sys
-from test.support import run_unittest, missing_compiler_executable
+"""Tests kila distutils.command.config."""
+agiza unittest
+agiza os
+agiza sys
+kutoka test.support agiza run_unittest, missing_compiler_executable
 
-from distutils.command.config import dump_file, config
-from distutils.tests import support
-from distutils import log
+kutoka distutils.command.config agiza dump_file, config
+kutoka distutils.tests agiza support
+kutoka distutils agiza log
 
-class ConfigTestCase(support.LoggingSilencer,
+kundi ConfigTestCase(support.LoggingSilencer,
                      support.TempdirManager,
                      unittest.TestCase):
 
-    def _info(self, msg, *args):
-        for line in msg.splitlines():
+    eleza _info(self, msg, *args):
+        kila line kwenye msg.splitlines():
             self._logs.append(line)
 
-    def setUp(self):
+    eleza setUp(self):
         super(ConfigTestCase, self).setUp()
         self._logs = []
         self.old_log = log.info
         log.info = self._info
 
-    def tearDown(self):
+    eleza tearDown(self):
         log.info = self.old_log
         super(ConfigTestCase, self).tearDown()
 
-    def test_dump_file(self):
+    eleza test_dump_file(self):
         this_file = os.path.splitext(__file__)[0] + '.py'
         f = open(this_file)
         jaribu:
@@ -38,18 +38,18 @@ class ConfigTestCase(support.LoggingSilencer,
         self.assertEqual(len(self._logs), numlines+1)
 
     @unittest.skipIf(sys.platform == 'win32', "can't test on Windows")
-    def test_search_cpp(self):
-        import shutil
+    eleza test_search_cpp(self):
+        agiza shutil
         cmd = missing_compiler_executable(['preprocessor'])
-        if cmd ni sio None:
+        ikiwa cmd ni sio Tupu:
             self.skipTest('The %r command ni sio found' % cmd)
         pkg_dir, dist = self.create_dist()
         cmd = config(dist)
         cmd._check_compiler()
         compiler = cmd.compiler
         is_xlc = shutil.which(compiler.preprocessor[0]).startswith("/usr/vac")
-        if is_xlc:
-            self.skipTest('xlc: The -E option overrides the -P, -o, and -qsyntaxonly options')
+        ikiwa is_xlc:
+            self.skipTest('xlc: The -E option overrides the -P, -o, na -qsyntaxonly options')
 
         # simple pattern searches
         match = cmd.search_cpp(pattern='xxx', body='/* xxx */')
@@ -58,7 +58,7 @@ class ConfigTestCase(support.LoggingSilencer,
         match = cmd.search_cpp(pattern='_configtest', body='/* xxx */')
         self.assertEqual(match, 1)
 
-    def test_finalize_options(self):
+    eleza test_finalize_options(self):
         # finalize_options does a bit of transformation
         # on options
         pkg_dir, dist = self.create_dist()
@@ -72,7 +72,7 @@ class ConfigTestCase(support.LoggingSilencer,
         self.assertEqual(cmd.libraries, ['one'])
         self.assertEqual(cmd.library_dirs, ['three', 'four'])
 
-    def test_clean(self):
+    eleza test_clean(self):
         # _clean removes files
         tmp_dir = self.mkdtemp()
         f1 = os.path.join(tmp_dir, 'one')
@@ -81,18 +81,18 @@ class ConfigTestCase(support.LoggingSilencer,
         self.write_file(f1, 'xxx')
         self.write_file(f2, 'xxx')
 
-        for f in (f1, f2):
-            self.assertTrue(os.path.exists(f))
+        kila f kwenye (f1, f2):
+            self.assertKweli(os.path.exists(f))
 
         pkg_dir, dist = self.create_dist()
         cmd = config(dist)
         cmd._clean(f1, f2)
 
-        for f in (f1, f2):
-            self.assertFalse(os.path.exists(f))
+        kila f kwenye (f1, f2):
+            self.assertUongo(os.path.exists(f))
 
-def test_suite():
-    return unittest.makeSuite(ConfigTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(ConfigTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

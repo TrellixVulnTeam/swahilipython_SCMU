@@ -1,6 +1,6 @@
 """Python version compatibility support kila minidom.
 
-This module contains internal implementation details na
+This module contains internal implementation details and
 should sio be imported; use xml.dom.minidom instead.
 """
 
@@ -17,7 +17,7 @@ should sio be imported; use xml.dom.minidom instead.
 #
 #   defproperty   -- function used kwenye conjunction ukijumuisha GetattrMagic;
 #                    using these together ni needed to make them work
-#                    kama efficiently kama possible kwenye both Python 2.2+
+#                    as efficiently as possible kwenye both Python 2.2+
 #                    na older versions.  For example:
 #
 #                        kundi MyClass(GetattrMagic):
@@ -32,7 +32,7 @@ should sio be imported; use xml.dom.minidom instead.
 #                    needing to override __getattr__().  It will only
 #                    work kila read-only attributes.
 #
-#                    For older versions of Python, inheriting kutoka
+#                    For older versions of Python, inheriting from
 #                    GetattrMagic will use the traditional
 #                    __getattr__() hackery to achieve the same effect,
 #                    but less efficiently.
@@ -58,7 +58,7 @@ kundi NodeList(list):
         rudisha len(self)
 
     eleza _set_length(self, value):
-        ashiria xml.dom.NoModificationAllowedErr(
+         ashiria xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute 'length'")
 
     length = property(_get_length, _set_length,
@@ -91,7 +91,7 @@ kundi EmptyNodeList(tuple):
         rudisha 0
 
     eleza _set_length(self, value):
-        ashiria xml.dom.NoModificationAllowedErr(
+         ashiria xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute 'length'")
 
     length = property(_get_length, _set_length,
@@ -101,7 +101,7 @@ kundi EmptyNodeList(tuple):
 eleza defproperty(klass, name, doc):
     get = getattr(klass, ("_get_" + name))
     eleza set(self, value, name=name):
-        ashiria xml.dom.NoModificationAllowedErr(
+         ashiria xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute " + repr(name))
     assert sio hasattr(klass, "_set_" + name), \
            "expected sio to find _set_" + name

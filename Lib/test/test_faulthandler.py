@@ -14,7 +14,7 @@ kutoka textwrap agiza dedent
 
 jaribu:
     agiza _testcapi
-tatizo ImportError:
+except ImportError:
     _testcapi = Tupu
 
 TIMEOUT = 0.5
@@ -22,11 +22,11 @@ MS_WINDOWS = (os.name == 'nt')
 _cflags = sysconfig.get_config_var('CFLAGS') ama ''
 _config_args = sysconfig.get_config_var('CONFIG_ARGS') ama ''
 UB_SANITIZER = (
-    '-fsanitize=undefined' kwenye _cflags ama
+    '-fsanitize=undefined' kwenye _cflags or
     '--with-undefined-behavior-sanitizer' kwenye _config_args
 )
 MEMORY_SANITIZER = (
-    '-fsanitize=memory' kwenye _cflags ama
+    '-fsanitize=memory' kwenye _cflags or
     '--with-memory-sanitizer' kwenye _config_args
 )
 
@@ -58,18 +58,18 @@ kundi FaultHandlerTests(unittest.TestCase):
         """
         Run the specified code kwenye Python (in a new child process) na read the
         output kutoka the standard error ama kutoka a file (ikiwa filename ni set).
-        Return the output lines kama a list.
+        Return the output lines as a list.
 
         Strip the reference count kutoka the standard error kila Python debug
         build, na replace "Current thread 0x00007f8d8fbd9700" by "Current
         thread XXX".
         """
         code = dedent(code).strip()
-        pita_fds = []
+        pass_fds = []
         ikiwa fd ni sio Tupu:
-            pita_fds.append(fd)
+            pass_fds.append(fd)
         ukijumuisha support.SuppressCrashReport():
-            process = script_helper.spawn_python('-c', code, pita_fds=pita_fds)
+            process = script_helper.spawn_python('-c', code, pass_fds=pass_fds)
             ukijumuisha process:
                 stdout, stderr = process.communicate()
                 exitcode = process.wait()
@@ -77,13 +77,13 @@ kundi FaultHandlerTests(unittest.TestCase):
         output = output.decode('ascii', 'backslashreplace')
         ikiwa filename:
             self.assertEqual(output, '')
-            ukijumuisha open(filename, "rb") kama fp:
+            ukijumuisha open(filename, "rb") as fp:
                 output = fp.read()
             output = output.decode('ascii', 'backslashreplace')
-        lasivyo fd ni sio Tupu:
+        elikiwa fd ni sio Tupu:
             self.assertEqual(output, '')
             os.lseek(fd, os.SEEK_SET, 0)
-            ukijumuisha open(fd, "rb", closefd=Uongo) kama fp:
+            ukijumuisha open(fd, "rb", closefd=Uongo) as fp:
                 output = fp.read()
             output = output.decode('ascii', 'backslashreplace')
         rudisha output.splitlines(), exitcode
@@ -142,7 +142,7 @@ kundi FaultHandlerTests(unittest.TestCase):
                 faulthandler._read_null()
                 """,
                 3,
-                # Issue #12700: Read NULL ashirias SIGILL on Mac OS X Lion
+                # Issue #12700: Read NULL raises SIGILL on Mac OS X Lion
                 '(?:Segmentation fault'
                     '|Bus error'
                     '|Illegal instruction)')
@@ -205,7 +205,7 @@ kundi FaultHandlerTests(unittest.TestCase):
             agiza signal
 
             faulthandler.enable()
-            signal.ashiria_signal(signal.SIGBUS)
+            signal.raise_signal(signal.SIGBUS)
             """,
             5,
             'Bus error')
@@ -219,7 +219,7 @@ kundi FaultHandlerTests(unittest.TestCase):
             agiza signal
 
             faulthandler.enable()
-            signal.ashiria_signal(signal.SIGILL)
+            signal.raise_signal(signal.SIGILL)
             """,
             5,
             'Illegal instruction')
@@ -245,7 +245,7 @@ kundi FaultHandlerTests(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      "Issue #12868: sigaltstack() doesn't work on "
                      "OpenBSD ikiwa Python ni compiled ukijumuisha pthread")
-    @unittest.skipIf(sio hasattr(faulthandler, '_stack_overflow'),
+    @unittest.skipIf(not hasattr(faulthandler, '_stack_overflow'),
                      'need faulthandler._stack_overflow()')
     eleza test_stack_overflow(self):
         self.check_fatal_error("""
@@ -255,7 +255,7 @@ kundi FaultHandlerTests(unittest.TestCase):
             """,
             3,
             '(?:Segmentation fault|Bus error)',
-            other_regex='unable to ashiria a stack overflow')
+            other_regex='unable to  ashiria a stack overflow')
 
     @skip_segfault_on_android
     eleza test_gil_released(self):
@@ -271,7 +271,7 @@ kundi FaultHandlerTests(unittest.TestCase):
                      "sanitizer builds change crashing process output.")
     @skip_segfault_on_android
     eleza test_enable_file(self):
-        ukijumuisha temporary_filename() kama filename:
+        ukijumuisha temporary_filename() as filename:
             self.check_fatal_error("""
                 agiza faulthandler
                 output = open({filename}, 'wb')
@@ -283,12 +283,12 @@ kundi FaultHandlerTests(unittest.TestCase):
                 filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
-                     "subprocess doesn't support pita_fds on Windows")
+                     "subprocess doesn't support pass_fds on Windows")
     @unittest.skipIf(UB_SANITIZER ama MEMORY_SANITIZER,
                      "sanitizer builds change crashing process output.")
     @skip_segfault_on_android
     eleza test_enable_fd(self):
-        ukijumuisha tempfile.TemporaryFile('wb+') kama fp:
+        ukijumuisha tempfile.TemporaryFile('wb+') as fp:
             fd = fp.fileno()
             self.check_fatal_error("""
                 agiza faulthandler
@@ -322,7 +322,7 @@ kundi FaultHandlerTests(unittest.TestCase):
         not_expected = 'Fatal Python error'
         stderr, exitcode = self.get_output(code)
         stderr = '\n'.join(stderr)
-        self.assertKweli(not_expected haiko kwenye stderr,
+        self.assertKweli(not_expected sio kwenye stderr,
                      "%r ni present kwenye %r" % (not_expected, stderr))
         self.assertNotEqual(exitcode, 0)
 
@@ -399,9 +399,9 @@ kundi FaultHandlerTests(unittest.TestCase):
 
             eleza funcB():
                 ikiwa filename:
-                    ukijumuisha open(filename, "wb") kama fp:
+                    ukijumuisha open(filename, "wb") as fp:
                         faulthandler.dump_traceback(fp, all_threads=Uongo)
-                lasivyo fd ni sio Tupu:
+                elikiwa fd ni sio Tupu:
                     faulthandler.dump_traceback(fd,
                                                 all_threads=Uongo)
                 isipokua:
@@ -418,7 +418,7 @@ kundi FaultHandlerTests(unittest.TestCase):
         )
         ikiwa filename:
             lineno = 9
-        lasivyo fd ni sio Tupu:
+        elikiwa fd ni sio Tupu:
             lineno = 11
         isipokua:
             lineno = 14
@@ -436,13 +436,13 @@ kundi FaultHandlerTests(unittest.TestCase):
         self.check_dump_traceback()
 
     eleza test_dump_traceback_file(self):
-        ukijumuisha temporary_filename() kama filename:
+        ukijumuisha temporary_filename() as filename:
             self.check_dump_traceback(filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
-                     "subprocess doesn't support pita_fds on Windows")
+                     "subprocess doesn't support pass_fds on Windows")
     eleza test_dump_traceback_fd(self):
-        ukijumuisha tempfile.TemporaryFile('wb+') kama fp:
+        ukijumuisha tempfile.TemporaryFile('wb+') as fp:
             self.check_dump_traceback(fd=fp.fileno())
 
     eleza test_truncate(self):
@@ -481,13 +481,13 @@ kundi FaultHandlerTests(unittest.TestCase):
 
             eleza dump():
                 ikiwa {filename}:
-                    ukijumuisha open({filename}, "wb") kama fp:
+                    ukijumuisha open({filename}, "wb") as fp:
                         faulthandler.dump_traceback(fp, all_threads=Kweli)
                 isipokua:
                     faulthandler.dump_traceback(all_threads=Kweli)
 
             kundi Waiter(Thread):
-                # avoid blocking ikiwa the main thread ashirias an exception.
+                # avoid blocking ikiwa the main thread raises an exception.
                 daemon = Kweli
 
                 eleza __init__(self):
@@ -532,10 +532,10 @@ kundi FaultHandlerTests(unittest.TestCase):
         self.check_dump_traceback_threads(Tupu)
 
     eleza test_dump_traceback_threads_file(self):
-        ukijumuisha temporary_filename() kama filename:
+        ukijumuisha temporary_filename() as filename:
             self.check_dump_traceback_threads(filename)
 
-    @unittest.skipIf(sio hasattr(faulthandler, 'dump_traceback_later'),
+    @unittest.skipIf(not hasattr(faulthandler, 'dump_traceback_later'),
                      'need faulthandler.dump_traceback_later()')
     eleza check_dump_traceback_later(self, repeat=Uongo, cancel=Uongo, loops=1,
                                    *, filename=Tupu, fd=Tupu):
@@ -569,7 +569,7 @@ kundi FaultHandlerTests(unittest.TestCase):
 
             ikiwa filename:
                 file = open(filename, "wb")
-            lasivyo fd ni sio Tupu:
+            elikiwa fd ni sio Tupu:
                 file = sys.stderr.fileno()
             isipokua:
                 file = Tupu
@@ -609,19 +609,19 @@ kundi FaultHandlerTests(unittest.TestCase):
         self.check_dump_traceback_later(cancel=Kweli)
 
     eleza test_dump_traceback_later_file(self):
-        ukijumuisha temporary_filename() kama filename:
+        ukijumuisha temporary_filename() as filename:
             self.check_dump_traceback_later(filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
-                     "subprocess doesn't support pita_fds on Windows")
+                     "subprocess doesn't support pass_fds on Windows")
     eleza test_dump_traceback_later_fd(self):
-        ukijumuisha tempfile.TemporaryFile('wb+') kama fp:
+        ukijumuisha tempfile.TemporaryFile('wb+') as fp:
             self.check_dump_traceback_later(fd=fp.fileno())
 
     eleza test_dump_traceback_later_twice(self):
         self.check_dump_traceback_later(loops=2)
 
-    @unittest.skipIf(sio hasattr(faulthandler, "register"),
+    @unittest.skipIf(not hasattr(faulthandler, "register"),
                      "need faulthandler.register")
     eleza check_register(self, filename=Uongo, all_threads=Uongo,
                        unregister=Uongo, chain=Uongo, fd=Tupu):
@@ -656,7 +656,7 @@ kundi FaultHandlerTests(unittest.TestCase):
 
             ikiwa filename:
                 file = open(filename, "wb")
-            lasivyo fd ni sio Tupu:
+            elikiwa fd ni sio Tupu:
                 file = sys.stderr.fileno()
             isipokua:
                 file = Tupu
@@ -711,13 +711,13 @@ kundi FaultHandlerTests(unittest.TestCase):
         self.check_register(unregister=Kweli)
 
     eleza test_register_file(self):
-        ukijumuisha temporary_filename() kama filename:
+        ukijumuisha temporary_filename() as filename:
             self.check_register(filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
-                     "subprocess doesn't support pita_fds on Windows")
+                     "subprocess doesn't support pass_fds on Windows")
     eleza test_register_fd(self):
-        ukijumuisha tempfile.TemporaryFile('wb+') kama fp:
+        ukijumuisha tempfile.TemporaryFile('wb+') as fp:
             self.check_register(fd=fp.fileno())
 
     eleza test_register_threads(self):
@@ -731,8 +731,8 @@ kundi FaultHandlerTests(unittest.TestCase):
         stderr = sys.stderr
         jaribu:
             sys.stderr = Tupu
-            ukijumuisha self.assertRaises(RuntimeError) kama cm:
-                tuma
+            ukijumuisha self.assertRaises(RuntimeError) as cm:
+                yield
             self.assertEqual(str(cm.exception), "sys.stderr ni Tupu")
         mwishowe:
             sys.stderr = stderr
@@ -752,7 +752,7 @@ kundi FaultHandlerTests(unittest.TestCase):
                 faulthandler.register(signal.SIGUSR1)
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
-    eleza test_ashiria_exception(self):
+    eleza test_raise_exception(self):
         kila exc, name kwenye (
             ('EXCEPTION_ACCESS_VIOLATION', 'access violation'),
             ('EXCEPTION_INT_DIVIDE_BY_ZERO', 'int divide by zero'),
@@ -761,7 +761,7 @@ kundi FaultHandlerTests(unittest.TestCase):
             self.check_windows_exception(f"""
                 agiza faulthandler
                 faulthandler.enable()
-                faulthandler._ashiria_exception(faulthandler._{exc})
+                faulthandler._raise_exception(faulthandler._{exc})
                 """,
                 3,
                 name)
@@ -775,7 +775,7 @@ kundi FaultHandlerTests(unittest.TestCase):
             code = f"""
                     agiza faulthandler
                     faulthandler.enable()
-                    faulthandler._ashiria_exception({exc_code})
+                    faulthandler._raise_exception({exc_code})
                     """
             code = dedent(code)
             output, exitcode = self.get_output(code)
@@ -783,10 +783,10 @@ kundi FaultHandlerTests(unittest.TestCase):
             self.assertEqual(exitcode, exc_code)
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
-    eleza test_ashiria_nonfatal_exception(self):
+    eleza test_raise_nonfatal_exception(self):
         # These exceptions are sio strictly errors. Letting
         # faulthandler display the traceback when they are
-        # ashiriad ni likely to result kwenye noise. However, they
+        # raised ni likely to result kwenye noise. However, they
         # may still terminate the process ikiwa there ni no
         # handler installed kila them (which there typically
         # is, e.g. kila debug messages).
@@ -801,7 +801,7 @@ kundi FaultHandlerTests(unittest.TestCase):
             output, exitcode = self.get_output(f"""
                 agiza faulthandler
                 faulthandler.enable()
-                faulthandler._ashiria_exception(0x{exc:x})
+                faulthandler._raise_exception(0x{exc:x})
                 """
             )
             self.assertEqual(output, [])
@@ -817,7 +817,7 @@ kundi FaultHandlerTests(unittest.TestCase):
             faulthandler.enable()
             faulthandler.disable()
             code = faulthandler._EXCEPTION_ACCESS_VIOLATION
-            faulthandler._ashiria_exception(code)
+            faulthandler._raise_exception(code)
         """)
         output, exitcode = self.get_output(code)
         self.assertEqual(output, [])

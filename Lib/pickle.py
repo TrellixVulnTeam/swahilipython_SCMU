@@ -43,7 +43,7 @@ jaribu:
     kutoka _pickle agiza PickleBuffer
     __all__.append("PickleBuffer")
     _HAVE_PICKLE_BUFFER = Kweli
-tatizo ImportError:
+except ImportError:
     _HAVE_PICKLE_BUFFER = Uongo
 
 
@@ -72,28 +72,28 @@ DEFAULT_PROTOCOL = 4
 
 kundi PickleError(Exception):
     """A common base kundi kila the other pickling exceptions."""
-    pita
+    pass
 
 kundi PicklingError(PickleError):
-    """This exception ni ashiriad when an unpicklable object ni pitaed to the
+    """This exception ni raised when an unpicklable object ni passed to the
     dump() method.
 
     """
-    pita
+    pass
 
 kundi UnpicklingError(PickleError):
-    """This exception ni ashiriad when there ni a problem unpickling an object,
-    such kama a security violation.
+    """This exception ni raised when there ni a problem unpickling an object,
+    such as a security violation.
 
-    Note that other exceptions may also be ashiriad during unpickling, including
+    Note that other exceptions may also be raised during unpickling, including
     (but sio necessarily limited to) AttributeError, EOFError, ImportError,
     na IndexError.
 
     """
-    pita
+    pass
 
-# An instance of _Stop ni ashiriad by Unpickler.load_stop() kwenye response to
-# the STOP opcode, pitaing the object that ni the result of unpickling.
+# An instance of _Stop ni raised by Unpickler.load_stop() kwenye response to
+# the STOP opcode, passing the object that ni the result of unpickling.
 kundi _Stop(Exception):
     eleza __init__(self, value):
         self.value = value
@@ -101,7 +101,7 @@ kundi _Stop(Exception):
 # Jython has PyStringMap; it's a dict subkundi ukijumuisha string keys
 jaribu:
     kutoka org.python.core agiza PyStringMap
-tatizo ImportError:
+except ImportError:
     PyStringMap = Tupu
 
 # Pickle opcodes.  See pickletools.py kila extensive docs.  The listing
@@ -184,7 +184,7 @@ EMPTY_SET        = b'\x8f'  # push empty set on the stack
 ADDITEMS         = b'\x90'  # modify set by adding topmost stack items
 FROZENSET        = b'\x91'  # build frozenset kutoka topmost stack items
 NEWOBJ_EX        = b'\x92'  # like NEWOBJ but work ukijumuisha keyword only arguments
-STACK_GLOBAL     = b'\x93'  # same kama GLOBAL but using names on the stacks
+STACK_GLOBAL     = b'\x93'  # same as GLOBAL but using names on the stacks
 MEMOIZE          = b'\x94'  # store top of the stack kwenye memo
 FRAME            = b'\x95'  # indicate the beginning of a new frame
 
@@ -252,7 +252,7 @@ kundi _Framer:
 
         # Perform direct write of the header na payload of the large binary
         # object. Be careful sio to concatenate the header na the payload
-        # prior to calling 'write' kama we do sio want to allocate a large
+        # prior to calling 'write' as we do sio want to allocate a large
         # temporary bytes object.
         # We intentionally do sio insert a protocol 4 frame opcode to make
         # it possible to optimize file.read calls kwenye the loader.
@@ -276,7 +276,7 @@ kundi _Unframer:
                 buf[:] = self.file_read(n)
                 rudisha n
             ikiwa n < len(buf):
-                ashiria UnpicklingError(
+                 ashiria UnpicklingError(
                     "pickle exhausted before end of frame")
             rudisha n
         isipokua:
@@ -291,7 +291,7 @@ kundi _Unframer:
                 self.current_frame = Tupu
                 rudisha self.file_read(n)
             ikiwa len(data) < n:
-                ashiria UnpicklingError(
+                 ashiria UnpicklingError(
                     "pickle exhausted before end of frame")
             rudisha data
         isipokua:
@@ -304,7 +304,7 @@ kundi _Unframer:
                 self.current_frame = Tupu
                 rudisha self.file_readline()
             ikiwa data[-1] != b'\n'[0]:
-                ashiria UnpicklingError(
+                 ashiria UnpicklingError(
                     "pickle exhausted before end of frame")
             rudisha data
         isipokua:
@@ -312,7 +312,7 @@ kundi _Unframer:
 
     eleza load_frame(self, frame_size):
         ikiwa self.current_frame na self.current_frame.read() != b'':
-            ashiria UnpicklingError(
+             ashiria UnpicklingError(
                 "beginning of a new frame before end of current frame")
         self.current_frame = io.BytesIO(self.file_read(frame_size))
 
@@ -322,13 +322,13 @@ kundi _Unframer:
 eleza _getattribute(obj, name):
     kila subpath kwenye name.split('.'):
         ikiwa subpath == '<locals>':
-            ashiria AttributeError("Can't get local attribute {!r} on {!r}"
+             ashiria AttributeError("Can't get local attribute {!r} on {!r}"
                                  .format(name, obj))
         jaribu:
             parent = obj
             obj = getattr(obj, subpath)
-        tatizo AttributeError:
-            ashiria AttributeError("Can't get attribute {!r} on {!r}"
+        except AttributeError:
+             ashiria AttributeError("Can't get attribute {!r} on {!r}"
                                  .format(name, obj)) kutoka Tupu
     rudisha obj, parent
 
@@ -338,20 +338,20 @@ eleza whichmodule(obj, name):
     ikiwa module_name ni sio Tupu:
         rudisha module_name
     # Protect the iteration by using a list copy of sys.modules against dynamic
-    # modules that trigger agizas of other modules upon calls to getattr.
+    # modules that trigger imports of other modules upon calls to getattr.
     kila module_name, module kwenye list(sys.modules.items()):
         ikiwa module_name == '__main__' ama module ni Tupu:
             endelea
         jaribu:
             ikiwa _getattribute(module, name)[0] ni obj:
                 rudisha module_name
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
     rudisha '__main__'
 
 eleza encode_long(x):
     r"""Encode a long to a two's complement little-endian binary string.
-    Note that 0 ni a special case, rudishaing an empty string, to save a
+    Note that 0 ni a special case, returning an empty string, to save a
     byte kwenye the LONG1 pickling context.
 
     >>> encode_long(0)
@@ -397,14 +397,14 @@ eleza decode_long(data):
     >>> decode_long(b"\x7f")
     127
     """
-    rudisha int.kutoka_bytes(data, byteorder='little', signed=Kweli)
+    rudisha int.from_bytes(data, byteorder='little', signed=Kweli)
 
 
 # Pickling machinery
 
 kundi _Pickler:
 
-    eleza __init__(self, file, protocol=Tupu, *, fix_agizas=Kweli,
+    eleza __init__(self, file, protocol=Tupu, *, fix_imports=Kweli,
                  buffer_callback=Tupu):
         """This takes a binary file kila writing a pickle data stream.
 
@@ -423,17 +423,17 @@ kundi _Pickler:
         binary writing, an io.BytesIO instance, ama any other custom
         object that meets this interface.
 
-        If *fix_agizas* ni Kweli na *protocol* ni less than 3, pickle
+        If *fix_imports* ni Kweli na *protocol* ni less than 3, pickle
         will try to map the new Python 3 names to the old module names
         used kwenye Python 2, so that the pickle data stream ni readable
         ukijumuisha Python 2.
 
         If *buffer_callback* ni Tupu (the default), buffer views are
-        serialized into *file* kama part of the pickle stream.
+        serialized into *file* as part of the pickle stream.
 
         If *buffer_callback* ni sio Tupu, then it can be called any number
-        of times ukijumuisha a buffer view.  If the callback rudishas a false value
-        (such kama Tupu), the given buffer ni out-of-band; otherwise the
+        of times ukijumuisha a buffer view.  If the callback returns a false value
+        (such as Tupu), the given buffer ni out-of-band; otherwise the
         buffer ni serialized in-band, i.e. inside the pickle stream.
 
         It ni an error ikiwa *buffer_callback* ni sio Tupu na *protocol*
@@ -443,15 +443,15 @@ kundi _Pickler:
             protocol = DEFAULT_PROTOCOL
         ikiwa protocol < 0:
             protocol = HIGHEST_PROTOCOL
-        lasivyo sio 0 <= protocol <= HIGHEST_PROTOCOL:
-            ashiria ValueError("pickle protocol must be <= %d" % HIGHEST_PROTOCOL)
+        elikiwa sio 0 <= protocol <= HIGHEST_PROTOCOL:
+             ashiria ValueError("pickle protocol must be <= %d" % HIGHEST_PROTOCOL)
         ikiwa buffer_callback ni sio Tupu na protocol < 5:
-            ashiria ValueError("buffer_callback needs protocol >= 5")
+             ashiria ValueError("buffer_callback needs protocol >= 5")
         self._buffer_callback = buffer_callback
         jaribu:
             self._file_write = file.write
-        tatizo AttributeError:
-            ashiria TypeError("file must have a 'write' attribute")
+        except AttributeError:
+             ashiria TypeError("file must have a 'write' attribute")
         self.framer = _Framer(self._file_write)
         self.write = self.framer.write
         self._write_large_bytes = self.framer.write_large_bytes
@@ -459,7 +459,7 @@ kundi _Pickler:
         self.proto = int(protocol)
         self.bin = protocol >= 1
         self.fast = 0
-        self.fix_agizas = fix_agizas na protocol < 3
+        self.fix_imports = fix_imports na protocol < 3
 
     eleza clear_memo(self):
         """Clears the pickler's "memo".
@@ -476,7 +476,7 @@ kundi _Pickler:
         # Check whether Pickler was initialized correctly. This is
         # only needed to mimic the behavior of _pickle.Pickler.dump().
         ikiwa sio hasattr(self, "_file_write"):
-            ashiria PicklingError("Pickler.__init__() was sio called by "
+             ashiria PicklingError("Pickler.__init__() was sio called by "
                                 "%s.__init__()" % (self.__class__.__name__,))
         ikiwa self.proto >= 2:
             self.write(PROTO + pack("<B", self.proto))
@@ -496,14 +496,14 @@ kundi _Pickler:
         # Pickler memo so that transient objects are kept alive during
         # pickling.
 
-        # The use of the Unpickler memo length kama the memo key ni just a
+        # The use of the Unpickler memo length as the memo key ni just a
         # convention.  The only requirement ni that the memo values be unique.
         # But there appears no advantage to any other scheme, na this
-        # scheme allows the Unpickler memo to be implemented kama a plain (but
+        # scheme allows the Unpickler memo to be implemented as a plain (but
         # growable) array, indexed by memo key.
         ikiwa self.fast:
-            rudisha
-        assert id(obj) haiko kwenye self.memo
+            return
+        assert id(obj) sio kwenye self.memo
         idx = len(self.memo)
         self.write(self.put(idx))
         self.memo[id(obj)] = idx, obj
@@ -512,7 +512,7 @@ kundi _Pickler:
     eleza put(self, idx):
         ikiwa self.proto >= 4:
             rudisha MEMOIZE
-        lasivyo self.bin:
+        elikiwa self.bin:
             ikiwa idx < 256:
                 rudisha BINPUT + pack("<B", idx)
             isipokua:
@@ -537,13 +537,13 @@ kundi _Pickler:
         pid = self.persistent_id(obj)
         ikiwa pid ni sio Tupu na save_persistent_id:
             self.save_pers(pid)
-            rudisha
+            return
 
         # Check the memo
         x = self.memo.get(id(obj))
         ikiwa x ni sio Tupu:
             self.write(self.get(x[0]))
-            rudisha
+            return
 
         rv = NotImplemented
         reduce = getattr(self, "reducer_override", Tupu)
@@ -556,19 +556,19 @@ kundi _Pickler:
             f = self.dispatch.get(t)
             ikiwa f ni sio Tupu:
                 f(self, obj)  # Call unbound method ukijumuisha explicit self
-                rudisha
+                return
 
-            # Check private dispatch table ikiwa any, ama ama
+            # Check private dispatch table ikiwa any, ama else
             # copyreg.dispatch_table
             reduce = getattr(self, 'dispatch_table', dispatch_table).get(t)
             ikiwa reduce ni sio Tupu:
                 rv = reduce(obj)
             isipokua:
-                # Check kila a kundi ukijumuisha a custom metaclass; treat kama regular
+                # Check kila a kundi ukijumuisha a custom metaclass; treat as regular
                 # class
                 ikiwa issubclass(t, type):
                     self.save_global(obj)
-                    rudisha
+                    return
 
                 # Check kila a __reduce_ex__ method, fall back to __reduce__
                 reduce = getattr(obj, "__reduce_ex__", Tupu)
@@ -579,22 +579,22 @@ kundi _Pickler:
                     ikiwa reduce ni sio Tupu:
                         rv = reduce()
                     isipokua:
-                        ashiria PicklingError("Can't pickle %r object: %r" %
+                         ashiria PicklingError("Can't pickle %r object: %r" %
                                             (t.__name__, obj))
 
-        # Check kila string rudishaed by reduce(), meaning "save kama global"
+        # Check kila string returned by reduce(), meaning "save as global"
         ikiwa isinstance(rv, str):
             self.save_global(obj, rv)
-            rudisha
+            return
 
-        # Assert that reduce() rudishaed a tuple
+        # Assert that reduce() returned a tuple
         ikiwa sio isinstance(rv, tuple):
-            ashiria PicklingError("%s must rudisha string ama tuple" % reduce)
+             ashiria PicklingError("%s must rudisha string ama tuple" % reduce)
 
-        # Assert that it rudishaed an appropriately sized tuple
+        # Assert that it returned an appropriately sized tuple
         l = len(rv)
         ikiwa sio (2 <= l <= 6):
-            ashiria PicklingError("Tuple rudishaed by %s must have "
+             ashiria PicklingError("Tuple returned by %s must have "
                                 "two to six elements" % reduce)
 
         # Save the reduce() output na finally memoize the object
@@ -612,8 +612,8 @@ kundi _Pickler:
         isipokua:
             jaribu:
                 self.write(PERSID + str(pid).encode("ascii") + b'\n')
-            tatizo UnicodeEncodeError:
-                ashiria PicklingError(
+            except UnicodeEncodeError:
+                 ashiria PicklingError(
                     "persistent IDs kwenye protocol 0 must be ASCII strings")
 
     eleza save_reduce(self, func, args, state=Tupu, listitems=Tupu,
@@ -621,9 +621,9 @@ kundi _Pickler:
         # This API ni called by some subclasses
 
         ikiwa sio isinstance(args, tuple):
-            ashiria PicklingError("args kutoka save_reduce() must be a tuple")
+             ashiria PicklingError("args kutoka save_reduce() must be a tuple")
         ikiwa sio callable(func):
-            ashiria PicklingError("func kutoka save_reduce() must be callable")
+             ashiria PicklingError("func kutoka save_reduce() must be callable")
 
         save = self.save
         write = self.write
@@ -632,10 +632,10 @@ kundi _Pickler:
         ikiwa self.proto >= 2 na func_name == "__newobj_ex__":
             cls, args, kwargs = args
             ikiwa sio hasattr(cls, "__new__"):
-                ashiria PicklingError("args[0] kutoka {} args has no __new__"
+                 ashiria PicklingError("args[0] kutoka {} args has no __new__"
                                     .format(func_name))
             ikiwa obj ni sio Tupu na cls ni sio obj.__class__:
-                ashiria PicklingError("args[0] kutoka {} args has the wrong class"
+                 ashiria PicklingError("args[0] kutoka {} args has the wrong class"
                                     .format(func_name))
             ikiwa self.proto >= 4:
                 save(cls)
@@ -647,14 +647,14 @@ kundi _Pickler:
                 save(func)
                 save(())
                 write(REDUCE)
-        lasivyo self.proto >= 2 na func_name == "__newobj__":
+        elikiwa self.proto >= 2 na func_name == "__newobj__":
             # A __reduce__ implementation can direct protocol 2 ama newer to
             # use the more efficient NEWOBJ opcode, wakati still
             # allowing protocol 0 na 1 to work normally.  For this to
-            # work, the function rudishaed by __reduce__ should be
+            # work, the function returned by __reduce__ should be
             # called __newobj__, na its first argument should be a
             # class.  The implementation kila __newobj__
-            # should be kama follows, although pickle has no way to
+            # should be as follows, although pickle has no way to
             # verify this:
             #
             # eleza __newobj__(cls, *args):
@@ -664,7 +664,7 @@ kundi _Pickler:
             # wakati protocol 2 (and above) will pickle a reference to
             # cls, the remaining args tuple, na the NEWOBJ code,
             # which calls cls.__new__(cls, *args) at unpickling time
-            # (see load_newobj below).  If __reduce__ rudishas a
+            # (see load_newobj below).  If __reduce__ returns a
             # three-tuple, the state kutoka the third tuple item will be
             # pickled regardless of the protocol, calling __setstate__
             # at unpickling time (see load_build below).
@@ -676,10 +676,10 @@ kundi _Pickler:
             # Python 2.2).
             cls = args[0]
             ikiwa sio hasattr(cls, "__new__"):
-                ashiria PicklingError(
+                 ashiria PicklingError(
                     "args[0] kutoka __newobj__ args has no __new__")
             ikiwa obj ni sio Tupu na cls ni sio obj.__class__:
-                ashiria PicklingError(
+                 ashiria PicklingError(
                     "args[0] kutoka __newobj__ args has the wrong class")
             args = args[1:]
             save(cls)
@@ -700,7 +700,7 @@ kundi _Pickler:
                 self.memoize(obj)
 
         # More new special cases (that work ukijumuisha older protocols as
-        # well): when __reduce__ rudishas a tuple ukijumuisha 4 ama 5 items,
+        # well): when __reduce__ returns a tuple ukijumuisha 4 ama 5 items,
         # the 4th na 5th item should be iterators that provide list
         # items na dict items (as (key, value) tuples), ama Tupu.
 
@@ -720,14 +720,14 @@ kundi _Pickler:
                 # First, push state_setter na its tuple of expected arguments
                 # (obj, state) onto the stack.
                 save(state_setter)
-                save(obj)  # simple BINGET opcode kama obj ni already memoized.
+                save(obj)  # simple BINGET opcode as obj ni already memoized.
                 save(state)
                 write(TUPLE2)
                 # Trigger a state_setter(obj, state) function call.
                 write(REDUCE)
                 # The purpose of state_setter ni to carry-out an
                 # inplace modification of obj. We do sio care about what the
-                # method might rudisha, so its output ni eventually removed kutoka
+                # method might return, so its output ni eventually removed from
                 # the stack.
                 write(POP)
 
@@ -755,14 +755,14 @@ kundi _Pickler:
             ikiwa obj >= 0:
                 ikiwa obj <= 0xff:
                     self.write(BININT1 + pack("<B", obj))
-                    rudisha
+                    return
                 ikiwa obj <= 0xffff:
                     self.write(BININT2 + pack("<H", obj))
-                    rudisha
+                    return
             # Next check kila 4-byte signed ints:
             ikiwa -0x80000000 <= obj <= 0x7fffffff:
                 self.write(BININT + pack("<i", obj))
-                rudisha
+                return
         ikiwa self.proto >= 2:
             encoded = encode_long(obj)
             n = len(encoded)
@@ -770,7 +770,7 @@ kundi _Pickler:
                 self.write(LONG1 + pack("<B", n) + encoded)
             isipokua:
                 self.write(LONG4 + pack("<i", n) + encoded)
-            rudisha
+            return
         ikiwa -0x80000000 <= obj <= 0x7fffffff:
             self.write(INT + repr(obj).encode("ascii") + b'\n')
         isipokua:
@@ -791,13 +791,13 @@ kundi _Pickler:
             isipokua:
                 self.save_reduce(codecs.encode,
                                  (str(obj, 'latin1'), 'latin1'), obj=obj)
-            rudisha
+            return
         n = len(obj)
         ikiwa n <= 0xff:
             self.write(SHORT_BINBYTES + pack("<B", n) + obj)
-        lasivyo n > 0xffffffff na self.proto >= 4:
+        elikiwa n > 0xffffffff na self.proto >= 4:
             self._write_large_bytes(BINBYTES8 + pack("<Q", n), obj)
-        lasivyo n >= self.framer._FRAME_SIZE_TARGET:
+        elikiwa n >= self.framer._FRAME_SIZE_TARGET:
             self._write_large_bytes(BINBYTES + pack("<I", n), obj)
         isipokua:
             self.write(BINBYTES + pack("<I", n) + obj)
@@ -810,7 +810,7 @@ kundi _Pickler:
                 self.save_reduce(bytearray, (), obj=obj)
             isipokua:
                 self.save_reduce(bytearray, (bytes(obj),), obj=obj)
-            rudisha
+            return
         n = len(obj)
         ikiwa n >= self.framer._FRAME_SIZE_TARGET:
             self._write_large_bytes(BYTEARRAY8 + pack("<Q", n), obj)
@@ -821,11 +821,11 @@ kundi _Pickler:
     ikiwa _HAVE_PICKLE_BUFFER:
         eleza save_picklebuffer(self, obj):
             ikiwa self.proto < 5:
-                ashiria PicklingError("PickleBuffer can only pickled ukijumuisha "
+                 ashiria PicklingError("PickleBuffer can only pickled ukijumuisha "
                                     "protocol >= 5")
-            ukijumuisha obj.raw() kama m:
+            ukijumuisha obj.raw() as m:
                 ikiwa sio m.contiguous:
-                    ashiria PicklingError("PickleBuffer can sio be pickled when "
+                     ashiria PicklingError("PickleBuffer can sio be pickled when "
                                         "pointing to a non-contiguous buffer")
                 in_band = Kweli
                 ikiwa self._buffer_callback ni sio Tupu:
@@ -847,13 +847,13 @@ kundi _Pickler:
 
     eleza save_str(self, obj):
         ikiwa self.bin:
-            encoded = obj.encode('utf-8', 'surrogatepita')
+            encoded = obj.encode('utf-8', 'surrogatepass')
             n = len(encoded)
             ikiwa n <= 0xff na self.proto >= 4:
                 self.write(SHORT_BINUNICODE + pack("<B", n) + encoded)
-            lasivyo n > 0xffffffff na self.proto >= 4:
+            elikiwa n > 0xffffffff na self.proto >= 4:
                 self._write_large_bytes(BINUNICODE8 + pack("<Q", n), encoded)
-            lasivyo n >= self.framer._FRAME_SIZE_TARGET:
+            elikiwa n >= self.framer._FRAME_SIZE_TARGET:
                 self._write_large_bytes(BINUNICODE + pack("<I", n), encoded)
             isipokua:
                 self.write(BINUNICODE + pack("<I", n) + encoded)
@@ -874,7 +874,7 @@ kundi _Pickler:
                 self.write(EMPTY_TUPLE)
             isipokua:
                 self.write(MARK + TUPLE)
-            rudisha
+            return
 
         n = len(obj)
         save = self.save
@@ -882,14 +882,14 @@ kundi _Pickler:
         ikiwa n <= 3 na self.proto >= 2:
             kila element kwenye obj:
                 save(element)
-            # Subtle.  Same kama kwenye the big comment below.
+            # Subtle.  Same as kwenye the big comment below.
             ikiwa id(obj) kwenye memo:
                 get = self.get(memo[id(obj)][0])
                 self.write(POP * n + get)
             isipokua:
                 self.write(_tuplesize2code[n])
                 self.memoize(obj)
-            rudisha
+            return
 
         # proto 0 ama proto 1 na tuple isn't empty, ama proto > 1 na tuple
         # has more than 3 elements.
@@ -899,10 +899,10 @@ kundi _Pickler:
             save(element)
 
         ikiwa id(obj) kwenye memo:
-            # Subtle.  d was haiko kwenye memo when we entered save_tuple(), so
+            # Subtle.  d was sio kwenye memo when we entered save_tuple(), so
             # the process of saving the tuple's elements must have saved
             # the tuple itself:  the tuple ni recursive.  The proper action
-            # now ni to throw away everything we put on the stack, na
+            # now ni to throw away everything we put on the stack, and
             # simply GET the tuple (it's already constructed).  This check
             # could have been done kwenye the "kila element" loop instead, but
             # recursive tuples are a rare thing.
@@ -911,7 +911,7 @@ kundi _Pickler:
                 write(POP_MARK + get)
             isipokua:   # proto 0 -- POP_MARK sio available
                 write(POP * (n+1) + get)
-            rudisha
+            return
 
         # No recursion.
         write(TUPLE)
@@ -941,7 +941,7 @@ kundi _Pickler:
             kila x kwenye items:
                 save(x)
                 write(APPEND)
-            rudisha
+            return
 
         it = iter(items)
         wakati Kweli:
@@ -952,12 +952,12 @@ kundi _Pickler:
                 kila x kwenye tmp:
                     save(x)
                 write(APPENDS)
-            lasivyo n:
+            elikiwa n:
                 save(tmp[0])
                 write(APPEND)
             # isipokua tmp ni empty, na we're done
             ikiwa n < self._BATCHSIZE:
-                rudisha
+                return
 
     eleza save_dict(self, obj):
         ikiwa self.bin:
@@ -982,7 +982,7 @@ kundi _Pickler:
                 save(k)
                 save(v)
                 write(SETITEM)
-            rudisha
+            return
 
         it = iter(items)
         wakati Kweli:
@@ -994,14 +994,14 @@ kundi _Pickler:
                     save(k)
                     save(v)
                 write(SETITEMS)
-            lasivyo n:
+            elikiwa n:
                 k, v = tmp[0]
                 save(k)
                 save(v)
                 write(SETITEM)
             # isipokua tmp ni empty, na we're done
             ikiwa n < self._BATCHSIZE:
-                rudisha
+                return
 
     eleza save_set(self, obj):
         save = self.save
@@ -1009,7 +1009,7 @@ kundi _Pickler:
 
         ikiwa self.proto < 4:
             self.save_reduce(set, (list(obj),), obj=obj)
-            rudisha
+            return
 
         write(EMPTY_SET)
         self.memoize(obj)
@@ -1024,7 +1024,7 @@ kundi _Pickler:
                     save(item)
                 write(ADDITEMS)
             ikiwa n < self._BATCHSIZE:
-                rudisha
+                return
     dispatch[set] = save_set
 
     eleza save_frozenset(self, obj):
@@ -1033,7 +1033,7 @@ kundi _Pickler:
 
         ikiwa self.proto < 4:
             self.save_reduce(frozenset, (list(obj),), obj=obj)
-            rudisha
+            return
 
         write(MARK)
         kila item kwenye obj:
@@ -1044,7 +1044,7 @@ kundi _Pickler:
             # recursive. In this case, throw away everything we put on the
             # stack, na fetch the object back kutoka the memo.
             write(POP_MARK + self.get(self.memo[id(obj)][0]))
-            rudisha
+            return
 
         write(FROZENSET)
         self.memoize(obj)
@@ -1064,14 +1064,14 @@ kundi _Pickler:
             __import__(module_name, level=0)
             module = sys.modules[module_name]
             obj2, parent = _getattribute(module, name)
-        tatizo (ImportError, KeyError, AttributeError):
-            ashiria PicklingError(
-                "Can't pickle %r: it's sio found kama %s.%s" %
+        except (ImportError, KeyError, AttributeError):
+             ashiria PicklingError(
+                "Can't pickle %r: it's sio found as %s.%s" %
                 (obj, module_name, name)) kutoka Tupu
         isipokua:
             ikiwa obj2 ni sio obj:
-                ashiria PicklingError(
-                    "Can't pickle %r: it's sio the same object kama %s.%s" %
+                 ashiria PicklingError(
+                    "Can't pickle %r: it's sio the same object as %s.%s" %
                     (obj, module_name, name))
 
         ikiwa self.proto >= 2:
@@ -1080,11 +1080,11 @@ kundi _Pickler:
                 assert code > 0
                 ikiwa code <= 0xff:
                     write(EXT1 + pack("<B", code))
-                lasivyo code <= 0xffff:
+                elikiwa code <= 0xffff:
                     write(EXT2 + pack("<H", code))
                 isipokua:
                     write(EXT4 + pack("<i", code))
-                rudisha
+                return
         lastname = name.rpartition('.')[2]
         ikiwa parent ni module:
             name = lastname
@@ -1093,24 +1093,24 @@ kundi _Pickler:
             self.save(module_name)
             self.save(name)
             write(STACK_GLOBAL)
-        lasivyo parent ni sio module:
+        elikiwa parent ni sio module:
             self.save_reduce(getattr, (parent, lastname))
-        lasivyo self.proto >= 3:
+        elikiwa self.proto >= 3:
             write(GLOBAL + bytes(module_name, "utf-8") + b'\n' +
                   bytes(name, "utf-8") + b'\n')
         isipokua:
-            ikiwa self.fix_agizas:
+            ikiwa self.fix_imports:
                 r_name_mapping = _compat_pickle.REVERSE_NAME_MAPPING
                 r_import_mapping = _compat_pickle.REVERSE_IMPORT_MAPPING
                 ikiwa (module_name, name) kwenye r_name_mapping:
                     module_name, name = r_name_mapping[(module_name, name)]
-                lasivyo module_name kwenye r_import_mapping:
+                elikiwa module_name kwenye r_import_mapping:
                     module_name = r_import_mapping[module_name]
             jaribu:
                 write(GLOBAL + bytes(module_name, "ascii") + b'\n' +
                       bytes(name, "ascii") + b'\n')
-            tatizo UnicodeEncodeError:
-                ashiria PicklingError(
+            except UnicodeEncodeError:
+                 ashiria PicklingError(
                     "can't pickle global identifier '%s.%s' using "
                     "pickle protocol %i" % (module, name, self.proto)) kutoka Tupu
 
@@ -1119,9 +1119,9 @@ kundi _Pickler:
     eleza save_type(self, obj):
         ikiwa obj ni type(Tupu):
             rudisha self.save_reduce(type, (Tupu,), obj=obj)
-        lasivyo obj ni type(NotImplemented):
+        elikiwa obj ni type(NotImplemented):
             rudisha self.save_reduce(type, (NotImplemented,), obj=obj)
-        lasivyo obj ni type(...):
+        elikiwa obj ni type(...):
             rudisha self.save_reduce(type, (...,), obj=obj)
         rudisha self.save_global(obj)
 
@@ -1133,7 +1133,7 @@ kundi _Pickler:
 
 kundi _Unpickler:
 
-    eleza __init__(self, file, *, fix_agizas=Kweli,
+    eleza __init__(self, file, *, fix_imports=Kweli,
                  encoding="ASCII", errors="strict", buffers=Tupu):
         """This takes a binary file kila reading a pickle data stream.
 
@@ -1163,14 +1163,14 @@ kundi _Unpickler:
         It ni an error kila *buffers* to be Tupu ikiwa the pickle stream
         was produced ukijumuisha a non-Tupu *buffer_callback*.
 
-        Other optional arguments are *fix_agizas*, *encoding* na
+        Other optional arguments are *fix_imports*, *encoding* and
         *errors*, which are used to control compatibility support for
-        pickle stream generated by Python 2.  If *fix_agizas* ni Kweli,
+        pickle stream generated by Python 2.  If *fix_imports* ni Kweli,
         pickle will try to map the old Python 2 names to the new names
         used kwenye Python 3.  The *encoding* na *errors* tell pickle how
         to decode 8-bit string instances pickled by Python 2; these
         default to 'ASCII' na 'strict', respectively. *encoding* can be
-        'bytes' to read theses 8-bit string instances kama bytes objects.
+        'bytes' to read theses 8-bit string instances as bytes objects.
         """
         self._buffers = iter(buffers) ikiwa buffers ni sio Tupu isipokua Tupu
         self._file_readline = file.readline
@@ -1179,7 +1179,7 @@ kundi _Unpickler:
         self.encoding = encoding
         self.errors = errors
         self.proto = 0
-        self.fix_agizas = fix_agizas
+        self.fix_imports = fix_imports
 
     eleza load(self):
         """Read a pickled object representation kutoka the open file.
@@ -1189,7 +1189,7 @@ kundi _Unpickler:
         # Check whether Unpickler was initialized correctly. This is
         # only needed to mimic the behavior of _pickle.Unpickler.dump().
         ikiwa sio hasattr(self, "_file_read"):
-            ashiria UnpicklingError("Unpickler.__init__() was sio called by "
+             ashiria UnpicklingError("Unpickler.__init__() was sio called by "
                                   "%s.__init__()" % (self.__class__.__name__,))
         self._unframer = _Unframer(self._file_read, self._file_readline)
         self.read = self._unframer.read
@@ -1205,10 +1205,10 @@ kundi _Unpickler:
             wakati Kweli:
                 key = read(1)
                 ikiwa sio key:
-                    ashiria EOFError
+                     ashiria EOFError
                 assert isinstance(key, bytes_types)
                 dispatch[key[0]](self)
-        tatizo _Stop kama stopinst:
+        except _Stop as stopinst:
             rudisha stopinst.value
 
     # Return a list of items pushed kwenye the stack after last MARK instruction.
@@ -1219,29 +1219,29 @@ kundi _Unpickler:
         rudisha items
 
     eleza persistent_load(self, pid):
-        ashiria UnpicklingError("unsupported persistent id encountered")
+         ashiria UnpicklingError("unsupported persistent id encountered")
 
     dispatch = {}
 
     eleza load_proto(self):
         proto = self.read(1)[0]
         ikiwa sio 0 <= proto <= HIGHEST_PROTOCOL:
-            ashiria ValueError("unsupported pickle protocol: %d" % proto)
+             ashiria ValueError("unsupported pickle protocol: %d" % proto)
         self.proto = proto
     dispatch[PROTO[0]] = load_proto
 
     eleza load_frame(self):
         frame_size, = unpack('<Q', self.read(8))
         ikiwa frame_size > sys.maxsize:
-            ashiria ValueError("frame size > sys.maxsize: %d" % frame_size)
+             ashiria ValueError("frame size > sys.maxsize: %d" % frame_size)
         self._unframer.load_frame(frame_size)
     dispatch[FRAME[0]] = load_frame
 
     eleza load_persid(self):
         jaribu:
             pid = self.readline()[:-1].decode("ascii")
-        tatizo UnicodeDecodeError:
-            ashiria UnpicklingError(
+        except UnicodeDecodeError:
+             ashiria UnpicklingError(
                 "persistent IDs kwenye protocol 0 must be ASCII strings")
         self.append(self.persistent_load(pid))
     dispatch[PERSID[0]] = load_persid
@@ -1267,7 +1267,7 @@ kundi _Unpickler:
         data = self.readline()
         ikiwa data == FALSE[1:]:
             val = Uongo
-        lasivyo data == TRUE[1:]:
+        elikiwa data == TRUE[1:]:
             val = Kweli
         isipokua:
             val = int(data, 0)
@@ -1303,7 +1303,7 @@ kundi _Unpickler:
         n, = unpack('<i', self.read(4))
         ikiwa n < 0:
             # Corrupt ama hostile pickle -- we never write one like this
-            ashiria UnpicklingError("LONG pickle has negative byte count")
+             ashiria UnpicklingError("LONG pickle has negative byte count")
         data = self.read(n)
         self.append(decode_long(data))
     dispatch[LONG4[0]] = load_long4
@@ -1331,7 +1331,7 @@ kundi _Unpickler:
         ikiwa len(data) >= 2 na data[0] == data[-1] na data[0] kwenye b'"\'':
             data = data[1:-1]
         isipokua:
-            ashiria UnpicklingError("the STRING opcode argument must be quoted")
+             ashiria UnpicklingError("the STRING opcode argument must be quoted")
         self.append(self._decode_string(codecs.escape_decode(data)[0]))
     dispatch[STRING[0]] = load_string
 
@@ -1339,7 +1339,7 @@ kundi _Unpickler:
         # Deprecated BINSTRING uses signed 32-bit length
         len, = unpack('<i', self.read(4))
         ikiwa len < 0:
-            ashiria UnpicklingError("BINSTRING pickle has negative byte count")
+             ashiria UnpicklingError("BINSTRING pickle has negative byte count")
         data = self.read(len)
         self.append(self._decode_string(data))
     dispatch[BINSTRING[0]] = load_binstring
@@ -1347,7 +1347,7 @@ kundi _Unpickler:
     eleza load_binbytes(self):
         len, = unpack('<I', self.read(4))
         ikiwa len > maxsize:
-            ashiria UnpicklingError("BINBYTES exceeds system's maximum size "
+             ashiria UnpicklingError("BINBYTES exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
         self.append(self.read(len))
     dispatch[BINBYTES[0]] = load_binbytes
@@ -1359,23 +1359,23 @@ kundi _Unpickler:
     eleza load_binunicode(self):
         len, = unpack('<I', self.read(4))
         ikiwa len > maxsize:
-            ashiria UnpicklingError("BINUNICODE exceeds system's maximum size "
+             ashiria UnpicklingError("BINUNICODE exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
-        self.append(str(self.read(len), 'utf-8', 'surrogatepita'))
+        self.append(str(self.read(len), 'utf-8', 'surrogatepass'))
     dispatch[BINUNICODE[0]] = load_binunicode
 
     eleza load_binunicode8(self):
         len, = unpack('<Q', self.read(8))
         ikiwa len > maxsize:
-            ashiria UnpicklingError("BINUNICODE8 exceeds system's maximum size "
+             ashiria UnpicklingError("BINUNICODE8 exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
-        self.append(str(self.read(len), 'utf-8', 'surrogatepita'))
+        self.append(str(self.read(len), 'utf-8', 'surrogatepass'))
     dispatch[BINUNICODE8[0]] = load_binunicode8
 
     eleza load_binbytes8(self):
         len, = unpack('<Q', self.read(8))
         ikiwa len > maxsize:
-            ashiria UnpicklingError("BINBYTES8 exceeds system's maximum size "
+             ashiria UnpicklingError("BINBYTES8 exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
         self.append(self.read(len))
     dispatch[BINBYTES8[0]] = load_binbytes8
@@ -1383,7 +1383,7 @@ kundi _Unpickler:
     eleza load_bytearray8(self):
         len, = unpack('<Q', self.read(8))
         ikiwa len > maxsize:
-            ashiria UnpicklingError("BYTEARRAY8 exceeds system's maximum size "
+             ashiria UnpicklingError("BYTEARRAY8 exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
         b = bytearray(len)
         self.readinto(b)
@@ -1392,18 +1392,18 @@ kundi _Unpickler:
 
     eleza load_next_buffer(self):
         ikiwa self._buffers ni Tupu:
-            ashiria UnpicklingError("pickle stream refers to out-of-band data "
+             ashiria UnpicklingError("pickle stream refers to out-of-band data "
                                   "but no *buffers* argument was given")
         jaribu:
             buf = next(self._buffers)
-        tatizo StopIteration:
-            ashiria UnpicklingError("not enough out-of-band buffers")
+        except StopIteration:
+             ashiria UnpicklingError("not enough out-of-band buffers")
         self.append(buf)
     dispatch[NEXT_BUFFER[0]] = load_next_buffer
 
     eleza load_readonly_buffer(self):
         buf = self.stack[-1]
-        ukijumuisha memoryview(buf) kama m:
+        ukijumuisha memoryview(buf) as m:
             ikiwa sio m.readonly:
                 self.stack[-1] = m.toreadonly()
     dispatch[READONLY_BUFFER[0]] = load_readonly_buffer
@@ -1421,7 +1421,7 @@ kundi _Unpickler:
 
     eleza load_short_binunicode(self):
         len = self.read(1)[0]
-        self.append(str(self.read(len), 'utf-8', 'surrogatepita'))
+        self.append(str(self.read(len), 'utf-8', 'surrogatepass'))
     dispatch[SHORT_BINUNICODE[0]] = load_short_binunicode
 
     eleza load_tuple(self):
@@ -1480,12 +1480,12 @@ kundi _Unpickler:
     # klass ni the kundi to instantiate, na k points to the topmost mark
     # object, following which are the arguments kila klass.__init__.
     eleza _instantiate(self, klass, args):
-        ikiwa (args ama sio isinstance(klass, type) ama
+        ikiwa (args ama sio isinstance(klass, type) or
             hasattr(klass, "__getinitargs__")):
             jaribu:
                 value = klass(*args)
-            tatizo TypeError kama err:
-                ashiria TypeError("in constructor kila %s: %s" %
+            except TypeError as err:
+                 ashiria TypeError("in constructor kila %s: %s" %
                                 (klass.__name__, str(err)), sys.exc_info()[2])
         isipokua:
             value = klass.__new__(klass)
@@ -1531,7 +1531,7 @@ kundi _Unpickler:
         name = self.stack.pop()
         module = self.stack.pop()
         ikiwa type(name) ni sio str ama type(module) ni sio str:
-            ashiria UnpicklingError("STACK_GLOBAL requires str")
+             ashiria UnpicklingError("STACK_GLOBAL requires str")
         self.append(self.find_class(module, name))
     dispatch[STACK_GLOBAL[0]] = load_stack_global
 
@@ -1555,13 +1555,13 @@ kundi _Unpickler:
         obj = _extension_cache.get(code, nil)
         ikiwa obj ni sio nil:
             self.append(obj)
-            rudisha
+            return
         key = _inverted_registry.get(code)
         ikiwa sio key:
             ikiwa code <= 0: # note that 0 ni forbidden
                 # Corrupt ama hostile pickle.
-                ashiria UnpicklingError("EXT specifies code <= 0")
-            ashiria ValueError("unregistered extension code %d" % code)
+                 ashiria UnpicklingError("EXT specifies code <= 0")
+             ashiria ValueError("unregistered extension code %d" % code)
         obj = self.find_class(*key)
         _extension_cache[code] = obj
         self.append(obj)
@@ -1569,10 +1569,10 @@ kundi _Unpickler:
     eleza find_class(self, module, name):
         # Subclasses may override this.
         sys.audit('pickle.find_class', module, name)
-        ikiwa self.proto < 3 na self.fix_agizas:
+        ikiwa self.proto < 3 na self.fix_imports:
             ikiwa (module, name) kwenye _compat_pickle.NAME_MAPPING:
                 module, name = _compat_pickle.NAME_MAPPING[(module, name)]
-            lasivyo module kwenye _compat_pickle.IMPORT_MAPPING:
+            elikiwa module kwenye _compat_pickle.IMPORT_MAPPING:
                 module = _compat_pickle.IMPORT_MAPPING[module]
         __import__(module, level=0)
         ikiwa self.proto >= 4:
@@ -1620,21 +1620,21 @@ kundi _Unpickler:
     eleza load_put(self):
         i = int(self.readline()[:-1])
         ikiwa i < 0:
-            ashiria ValueError("negative PUT argument")
+             ashiria ValueError("negative PUT argument")
         self.memo[i] = self.stack[-1]
     dispatch[PUT[0]] = load_put
 
-    eleza load_binput(self):
+    eleza load_buliza(self):
         i = self.read(1)[0]
         ikiwa i < 0:
-            ashiria ValueError("negative BINPUT argument")
+             ashiria ValueError("negative BINPUT argument")
         self.memo[i] = self.stack[-1]
     dispatch[BINPUT[0]] = load_binput
 
-    eleza load_long_binput(self):
+    eleza load_long_buliza(self):
         i, = unpack('<I', self.read(4))
         ikiwa i > maxsize:
-            ashiria ValueError("negative LONG_BINPUT argument")
+             ashiria ValueError("negative LONG_BINPUT argument")
         self.memo[i] = self.stack[-1]
     dispatch[LONG_BINPUT[0]] = load_long_binput
 
@@ -1655,11 +1655,11 @@ kundi _Unpickler:
         list_obj = self.stack[-1]
         jaribu:
             extend = list_obj.extend
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             extend(items)
-            rudisha
+            return
         # Even ikiwa the PEP 307 requires extend() na append() methods,
         # fall back on append() ikiwa the object has no extend() method
         # kila backward compatibility.
@@ -1701,7 +1701,7 @@ kundi _Unpickler:
         setstate = getattr(inst, "__setstate__", Tupu)
         ikiwa setstate ni sio Tupu:
             setstate(state)
-            rudisha
+            return
         slotstate = Tupu
         ikiwa isinstance(state, tuple) na len(state) == 2:
             state, slotstate = state
@@ -1726,35 +1726,35 @@ kundi _Unpickler:
 
     eleza load_stop(self):
         value = self.stack.pop()
-        ashiria _Stop(value)
+         ashiria _Stop(value)
     dispatch[STOP[0]] = load_stop
 
 
 # Shorthands
 
-eleza _dump(obj, file, protocol=Tupu, *, fix_agizas=Kweli, buffer_callback=Tupu):
-    _Pickler(file, protocol, fix_agizas=fix_agizas,
+eleza _dump(obj, file, protocol=Tupu, *, fix_imports=Kweli, buffer_callback=Tupu):
+    _Pickler(file, protocol, fix_imports=fix_imports,
              buffer_callback=buffer_callback).dump(obj)
 
-eleza _dumps(obj, protocol=Tupu, *, fix_agizas=Kweli, buffer_callback=Tupu):
+eleza _dumps(obj, protocol=Tupu, *, fix_imports=Kweli, buffer_callback=Tupu):
     f = io.BytesIO()
-    _Pickler(f, protocol, fix_agizas=fix_agizas,
+    _Pickler(f, protocol, fix_imports=fix_imports,
              buffer_callback=buffer_callback).dump(obj)
     res = f.getvalue()
     assert isinstance(res, bytes_types)
     rudisha res
 
-eleza _load(file, *, fix_agizas=Kweli, encoding="ASCII", errors="strict",
+eleza _load(file, *, fix_imports=Kweli, encoding="ASCII", errors="strict",
           buffers=Tupu):
-    rudisha _Unpickler(file, fix_agizas=fix_agizas, buffers=buffers,
+    rudisha _Unpickler(file, fix_imports=fix_imports, buffers=buffers,
                      encoding=encoding, errors=errors).load()
 
-eleza _loads(s, *, fix_agizas=Kweli, encoding="ASCII", errors="strict",
+eleza _loads(s, *, fix_imports=Kweli, encoding="ASCII", errors="strict",
            buffers=Tupu):
     ikiwa isinstance(s, str):
-        ashiria TypeError("Can't load pickle kutoka unicode string")
+         ashiria TypeError("Can't load pickle kutoka unicode string")
     file = io.BytesIO(s)
-    rudisha _Unpickler(file, fix_agizas=fix_agizas, buffers=buffers,
+    rudisha _Unpickler(file, fix_imports=fix_imports, buffers=buffers,
                       encoding=encoding, errors=errors).load()
 
 # Use the faster _pickle ikiwa possible
@@ -1770,7 +1770,7 @@ jaribu:
         load,
         loads
     )
-tatizo ImportError:
+except ImportError:
     Pickler, Unpickler = _Pickler, _Unpickler
     dump, dumps, load, loads = _dump, _dumps, _load, _loads
 

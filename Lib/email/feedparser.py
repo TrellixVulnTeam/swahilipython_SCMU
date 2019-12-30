@@ -1,19 +1,19 @@
 # Copyright (C) 2004-2006 Python Software Foundation
-# Authors: Baxter, Wouters and Warsaw
+# Authors: Baxter, Wouters na Warsaw
 # Contact: email-sig@python.org
 
 """FeedParser - An email feed parser.
 
-The feed parser implements an interface for incrementally parsing an email
-message, line by line.  This has advantages for certain applications, such as
+The feed parser implements an interface kila incrementally parsing an email
+message, line by line.  This has advantages kila certain applications, such as
 those reading email messages off a socket.
 
-FeedParser.feed() is the primary interface for pushing new data into the
-parser.  It returns when there's nothing more it can do with the available
+FeedParser.feed() ni the primary interface kila pushing new data into the
+parser.  It returns when there's nothing more it can do ukijumuisha the available
 data.  When you have no more data to push into the parser, call .close().
-This completes the parsing and returns the root message object.
+This completes the parsing na returns the root message object.
 
-The other advantage of this parser is that it will never ashiria a parsing
+The other advantage of this parser ni that it will never  ashiria a parsing
 exception.  Instead, when it finds something unexpected, it adds a 'defect' to
 the current message.  Defects are just instances that live on the message
 object's .defects attribute.
@@ -21,19 +21,19 @@ object's .defects attribute.
 
 __all__ = ['FeedParser', 'BytesFeedParser']
 
-import re
+agiza re
 
-from email import errors
-from email._policybase import compat32
-from collections import deque
-from io import StringIO
+kutoka email agiza errors
+kutoka email._policybase agiza compat32
+kutoka collections agiza deque
+kutoka io agiza StringIO
 
 NLCRE = re.compile(r'\r\n|\r|\n')
 NLCRE_bol = re.compile(r'(\r\n|\r|\n)')
 NLCRE_eol = re.compile(r'(\r\n|\r|\n)\Z')
 NLCRE_crack = re.compile(r'(\r\n|\r|\n)')
-# RFC 2822 $3.6.8 Optional fields.  ftext is %d33-57 / %d59-126, Any character
-# tatizo controls, SP, and ":".
+# RFC 2822 $3.6.8 Optional fields.  ftext ni %d33-57 / %d59-126, Any character
+# except controls, SP, na ":".
 headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 EMPTYSTRING = ''
 NL = '\n'
@@ -42,67 +42,67 @@ NeedMoreData = object()
 
 
 
-class BufferedSubFile(object):
+kundi BufferedSubFile(object):
     """A file-ish object that can have new data loaded into it.
 
-    You can also push and pop line-matching predicates onto a stack.  When the
+    You can also push na pop line-matching predicates onto a stack.  When the
     current predicate matches the current line, a false EOF response
-    (i.e. empty string) is returned instead.  This lets the parser adhere to a
+    (i.e. empty string) ni returned instead.  This lets the parser adhere to a
     simple abstraction -- it parses until EOF closes the current message.
     """
-    def __init__(self):
+    eleza __init__(self):
         # Text stream of the last partial line pushed into this object.
-        # See issue 22233 for why this is a text stream and sio a list.
+        # See issue 22233 kila why this ni a text stream na sio a list.
         self._partial = StringIO(newline='')
         # A deque of full, pushed lines
         self._lines = deque()
         # The stack of false-EOF checking predicates.
         self._eofstack = []
-        # A flag indicating whether the file has been closed or not.
-        self._closed = False
+        # A flag indicating whether the file has been closed ama not.
+        self._closed = Uongo
 
-    def push_eof_matcher(self, pred):
+    eleza push_eof_matcher(self, pred):
         self._eofstack.append(pred)
 
-    def pop_eof_matcher(self):
-        return self._eofstack.pop()
+    eleza pop_eof_matcher(self):
+        rudisha self._eofstack.pop()
 
-    def close(self):
+    eleza close(self):
         # Don't forget any trailing partial line.
         self._partial.seek(0)
         self.pushlines(self._partial.readlines())
         self._partial.seek(0)
         self._partial.truncate()
-        self._closed = True
+        self._closed = Kweli
 
-    def readline(self):
-        if sio self._lines:
-            if self._closed:
-                return ''
-            return NeedMoreData
-        # Pop the line off the stack and see if it matches the current
+    eleza readline(self):
+        ikiwa sio self._lines:
+            ikiwa self._closed:
+                rudisha ''
+            rudisha NeedMoreData
+        # Pop the line off the stack na see ikiwa it matches the current
         # false-EOF predicate.
         line = self._lines.popleft()
         # RFC 2046, section 5.1.2 requires us to recognize outer level
         # boundaries at any level of inner nesting.  Do this, but be sure it's
-        # in the order of most to least nested.
-        for ateof in reversed(self._eofstack):
-            if ateof(line):
+        # kwenye the order of most to least nested.
+        kila ateof kwenye reversed(self._eofstack):
+            ikiwa ateof(line):
                 # We're at the false EOF.  But push the last line back first.
                 self._lines.appendleft(line)
-                return ''
-        return line
+                rudisha ''
+        rudisha line
 
-    def unreadline(self, line):
+    eleza unreadline(self, line):
         # Let the consumer push a line back into the buffer.
         assert line ni sio NeedMoreData
         self._lines.appendleft(line)
 
-    def push(self, data):
+    eleza push(self, data):
         """Push some new data into this object."""
         self._partial.write(data)
-        if '\n' haiko kwenye data and '\r' haiko kwenye data:
-            # No new complete lines, wait for more.
+        ikiwa '\n' sio kwenye data na '\r' sio kwenye data:
+            # No new complete lines, wait kila more.
             return
 
         # Crack into lines, preserving the linesep characters.
@@ -111,33 +111,33 @@ class BufferedSubFile(object):
         self._partial.seek(0)
         self._partial.truncate()
 
-        # If the last element of the list does sio end in a newline, then treat
-        # it as a partial line.  We only check for '\n' here because a line
-        # ending with '\r' might be a line that was split in the middle of a
-        # '\r\n' sequence (see bugs 1555570 and 1721862).
-        if sio parts[-1].endswith('\n'):
+        # If the last element of the list does sio end kwenye a newline, then treat
+        # it as a partial line.  We only check kila '\n' here because a line
+        # ending ukijumuisha '\r' might be a line that was split kwenye the middle of a
+        # '\r\n' sequence (see bugs 1555570 na 1721862).
+        ikiwa sio parts[-1].endswith('\n'):
             self._partial.write(parts.pop())
         self.pushlines(parts)
 
-    def pushlines(self, lines):
+    eleza pushlines(self, lines):
         self._lines.extend(lines)
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def __next__(self):
+    eleza __next__(self):
         line = self.readline()
-        if line == '':
-            ashiria StopIteration
-        return line
+        ikiwa line == '':
+             ashiria StopIteration
+        rudisha line
 
 
 
-class FeedParser:
+kundi FeedParser:
     """A feed-style parser of email."""
 
-    def __init__(self, _factory=None, *, policy=compat32):
-        """_factory is called with no arguments to create a new message obj
+    eleza __init__(self, _factory=Tupu, *, policy=compat32):
+        """_factory ni called ukijumuisha no arguments to create a new message obj
 
         The policy keyword specifies a policy object that controls a number of
         aspects of the parser's operation.  The default policy maintains
@@ -145,10 +145,10 @@ class FeedParser:
 
         """
         self.policy = policy
-        self._old_style_factory = False
-        if _factory is None:
-            if policy.message_factory is None:
-                from email.message import Message
+        self._old_style_factory = Uongo
+        ikiwa _factory ni Tupu:
+            ikiwa policy.message_factory ni Tupu:
+                kutoka email.message agiza Message
                 self._factory = Message
             isipokua:
                 self._factory = policy.message_factory
@@ -156,172 +156,172 @@ class FeedParser:
             self._factory = _factory
             jaribu:
                 _factory(policy=self.policy)
-            tatizo TypeError:
-                # Assume this is an old-style factory
-                self._old_style_factory = True
+            except TypeError:
+                # Assume this ni an old-style factory
+                self._old_style_factory = Kweli
         self._input = BufferedSubFile()
         self._msgstack = []
         self._parse = self._parsegen().__next__
-        self._cur = None
-        self._last = None
-        self._headersonly = False
+        self._cur = Tupu
+        self._last = Tupu
+        self._headersonly = Uongo
 
-    # Non-public interface for supporting Parser's headersonly flag
-    def _set_headersonly(self):
-        self._headersonly = True
+    # Non-public interface kila supporting Parser's headersonly flag
+    eleza _set_headersonly(self):
+        self._headersonly = Kweli
 
-    def feed(self, data):
+    eleza feed(self, data):
         """Push more data into the parser."""
         self._input.push(data)
         self._call_parse()
 
-    def _call_parse(self):
+    eleza _call_parse(self):
         jaribu:
             self._parse()
-        tatizo StopIteration:
+        except StopIteration:
             pass
 
-    def close(self):
-        """Parse all remaining data and return the root message object."""
+    eleza close(self):
+        """Parse all remaining data na rudisha the root message object."""
         self._input.close()
         self._call_parse()
         root = self._pop_message()
         assert sio self._msgstack
-        # Look for final set of defects
-        if root.get_content_maintype() == 'multipart' \
-               and sio root.is_multipart():
+        # Look kila final set of defects
+        ikiwa root.get_content_maintype() == 'multipart' \
+               na sio root.is_multipart():
             defect = errors.MultipartInvariantViolationDefect()
             self.policy.handle_defect(root, defect)
-        return root
+        rudisha root
 
-    def _new_message(self):
-        if self._old_style_factory:
+    eleza _new_message(self):
+        ikiwa self._old_style_factory:
             msg = self._factory()
         isipokua:
             msg = self._factory(policy=self.policy)
-        if self._cur and self._cur.get_content_type() == 'multipart/digest':
+        ikiwa self._cur na self._cur.get_content_type() == 'multipart/digest':
             msg.set_default_type('message/rfc822')
-        if self._msgstack:
+        ikiwa self._msgstack:
             self._msgstack[-1].attach(msg)
         self._msgstack.append(msg)
         self._cur = msg
         self._last = msg
 
-    def _pop_message(self):
+    eleza _pop_message(self):
         retval = self._msgstack.pop()
-        if self._msgstack:
+        ikiwa self._msgstack:
             self._cur = self._msgstack[-1]
         isipokua:
-            self._cur = None
-        return retval
+            self._cur = Tupu
+        rudisha retval
 
-    def _parsegen(self):
-        # Create a new message and start by parsing headers.
+    eleza _parsegen(self):
+        # Create a new message na start by parsing headers.
         self._new_message()
         headers = []
-        # Collect the headers, searching for a line that doesn't match the RFC
-        # 2822 header or continuation pattern (including an empty line).
-        for line in self._input:
-            if line is NeedMoreData:
-                yield NeedMoreData
+        # Collect the headers, searching kila a line that doesn't match the RFC
+        # 2822 header ama continuation pattern (including an empty line).
+        kila line kwenye self._input:
+            ikiwa line ni NeedMoreData:
+                tuma NeedMoreData
                 endelea
-            if sio headerRE.match(line):
+            ikiwa sio headerRE.match(line):
                 # If we saw the RFC defined header/body separator
                 # (i.e. newline), just throw it away. Otherwise the line is
                 # part of the body so push it back.
-                if sio NLCRE.match(line):
+                ikiwa sio NLCRE.match(line):
                     defect = errors.MissingHeaderBodySeparatorDefect()
                     self.policy.handle_defect(self._cur, defect)
                     self._input.unreadline(line)
                 koma
             headers.append(line)
-        # Done with the headers, so parse them and figure out what we're
-        # supposed to see in the body of the message.
+        # Done ukijumuisha the headers, so parse them na figure out what we're
+        # supposed to see kwenye the body of the message.
         self._parse_headers(headers)
-        # Headers-only parsing is a backwards compatibility hack, which was
-        # necessary in the older parser, which could ashiria errors.  All
-        # remaining lines in the input are thrown into the message body.
-        if self._headersonly:
+        # Headers-only parsing ni a backwards compatibility hack, which was
+        # necessary kwenye the older parser, which could  ashiria errors.  All
+        # remaining lines kwenye the input are thrown into the message body.
+        ikiwa self._headersonly:
             lines = []
-            wakati True:
+            wakati Kweli:
                 line = self._input.readline()
-                if line is NeedMoreData:
-                    yield NeedMoreData
+                ikiwa line ni NeedMoreData:
+                    tuma NeedMoreData
                     endelea
-                if line == '':
+                ikiwa line == '':
                     koma
                 lines.append(line)
             self._cur.set_payload(EMPTYSTRING.join(lines))
             return
-        if self._cur.get_content_type() == 'message/delivery-status':
+        ikiwa self._cur.get_content_type() == 'message/delivery-status':
             # message/delivery-status contains blocks of headers separated by
             # a blank line.  We'll represent each header block as a separate
-            # nested message object, but the processing is a bit different
-            # than standard message/* types because there is no body for the
+            # nested message object, but the processing ni a bit different
+            # than standard message/* types because there ni no body kila the
             # nested messages.  A blank line separates the subparts.
-            wakati True:
+            wakati Kweli:
                 self._input.push_eof_matcher(NLCRE.match)
-                for retval in self._parsegen():
-                    if retval is NeedMoreData:
-                        yield NeedMoreData
+                kila retval kwenye self._parsegen():
+                    ikiwa retval ni NeedMoreData:
+                        tuma NeedMoreData
                         endelea
                     koma
                 msg = self._pop_message()
-                # We need to pop the EOF matcher in order to tell if we're at
+                # We need to pop the EOF matcher kwenye order to tell ikiwa we're at
                 # the end of the current file, sio the end of the last block
                 # of message headers.
                 self._input.pop_eof_matcher()
-                # The input stream must be sitting at the newline or at the
-                # EOF.  We want to see if we're at the end of this subpart, so
+                # The input stream must be sitting at the newline ama at the
+                # EOF.  We want to see ikiwa we're at the end of this subpart, so
                 # first consume the blank line, then test the next line to see
-                # if we're at this subpart's EOF.
-                wakati True:
+                # ikiwa we're at this subpart's EOF.
+                wakati Kweli:
                     line = self._input.readline()
-                    if line is NeedMoreData:
-                        yield NeedMoreData
+                    ikiwa line ni NeedMoreData:
+                        tuma NeedMoreData
                         endelea
                     koma
-                wakati True:
+                wakati Kweli:
                     line = self._input.readline()
-                    if line is NeedMoreData:
-                        yield NeedMoreData
+                    ikiwa line ni NeedMoreData:
+                        tuma NeedMoreData
                         endelea
                     koma
-                if line == '':
+                ikiwa line == '':
                     koma
-                # Not at EOF so this is a line we're going to need.
+                # Not at EOF so this ni a line we're going to need.
                 self._input.unreadline(line)
             return
-        if self._cur.get_content_maintype() == 'message':
+        ikiwa self._cur.get_content_maintype() == 'message':
             # The message claims to be a message/* type, then what follows is
             # another RFC 2822 message.
-            for retval in self._parsegen():
-                if retval is NeedMoreData:
-                    yield NeedMoreData
+            kila retval kwenye self._parsegen():
+                ikiwa retval ni NeedMoreData:
+                    tuma NeedMoreData
                     endelea
                 koma
             self._pop_message()
             return
-        if self._cur.get_content_maintype() == 'multipart':
+        ikiwa self._cur.get_content_maintype() == 'multipart':
             boundary = self._cur.get_boundary()
-            if boundary is None:
+            ikiwa boundary ni Tupu:
                 # The message /claims/ to be a multipart but it has not
                 # defined a boundary.  That's a problem which we'll handle by
-                # reading everything until the EOF and marking the message as
+                # reading everything until the EOF na marking the message as
                 # defective.
                 defect = errors.NoBoundaryInMultipartDefect()
                 self.policy.handle_defect(self._cur, defect)
                 lines = []
-                for line in self._input:
-                    if line is NeedMoreData:
-                        yield NeedMoreData
+                kila line kwenye self._input:
+                    ikiwa line ni NeedMoreData:
+                        tuma NeedMoreData
                         endelea
                     lines.append(line)
                 self._cur.set_payload(EMPTYSTRING.join(lines))
                 return
             # Make sure a valid content type was specified per RFC 2045:6.4.
-            if (str(self._cur.get('content-transfer-encoding', '8bit')).lower()
-                    haiko kwenye ('7bit', '8bit', 'binary')):
+            ikiwa (str(self._cur.get('content-transfer-encoding', '8bit')).lower()
+                    sio kwenye ('7bit', '8bit', 'binary')):
                 defect = errors.InvalidMultipartContentTransferEncodingDefect()
                 self.policy.handle_defect(self._cur, defect)
             # Create a line match predicate which matches the inter-part
@@ -332,205 +332,205 @@ class FeedParser:
             boundaryre = re.compile(
                 '(?P<sep>' + re.escape(separator) +
                 r')(?P<end>--)?(?P<ws>[ \t]*)(?P<linesep>\r\n|\r|\n)?$')
-            capturing_preamble = True
+            capturing_preamble = Kweli
             preamble = []
-            linesep = False
-            close_boundary_seen = False
-            wakati True:
+            linesep = Uongo
+            close_boundary_seen = Uongo
+            wakati Kweli:
                 line = self._input.readline()
-                if line is NeedMoreData:
-                    yield NeedMoreData
+                ikiwa line ni NeedMoreData:
+                    tuma NeedMoreData
                     endelea
-                if line == '':
+                ikiwa line == '':
                     koma
                 mo = boundaryre.match(line)
-                if mo:
+                ikiwa mo:
                     # If we're looking at the end boundary, we're done with
                     # this multipart.  If there was a newline at the end of
                     # the closing boundary, then we need to initialize the
-                    # epilogue with the empty string (see below).
-                    if mo.group('end'):
-                        close_boundary_seen = True
+                    # epilogue ukijumuisha the empty string (see below).
+                    ikiwa mo.group('end'):
+                        close_boundary_seen = Kweli
                         linesep = mo.group('linesep')
                         koma
-                    # We saw an inter-part boundary.  Were we in the preamble?
-                    if capturing_preamble:
-                        if preamble:
+                    # We saw an inter-part boundary.  Were we kwenye the preamble?
+                    ikiwa capturing_preamble:
+                        ikiwa preamble:
                             # According to RFC 2046, the last newline belongs
                             # to the boundary.
                             lastline = preamble[-1]
                             eolmo = NLCRE_eol.search(lastline)
-                            if eolmo:
+                            ikiwa eolmo:
                                 preamble[-1] = lastline[:-len(eolmo.group(0))]
                             self._cur.preamble = EMPTYSTRING.join(preamble)
-                        capturing_preamble = False
+                        capturing_preamble = Uongo
                         self._input.unreadline(line)
                         endelea
                     # We saw a boundary separating two parts.  Consume any
                     # multiple boundary lines that may be following.  Our
                     # interpretation of RFC 2046 BNF grammar does sio produce
                     # body parts within such double boundaries.
-                    wakati True:
+                    wakati Kweli:
                         line = self._input.readline()
-                        if line is NeedMoreData:
-                            yield NeedMoreData
+                        ikiwa line ni NeedMoreData:
+                            tuma NeedMoreData
                             endelea
                         mo = boundaryre.match(line)
-                        if sio mo:
+                        ikiwa sio mo:
                             self._input.unreadline(line)
                             koma
                     # Recurse to parse this subpart; the input stream points
                     # at the subpart's first line.
                     self._input.push_eof_matcher(boundaryre.match)
-                    for retval in self._parsegen():
-                        if retval is NeedMoreData:
-                            yield NeedMoreData
+                    kila retval kwenye self._parsegen():
+                        ikiwa retval ni NeedMoreData:
+                            tuma NeedMoreData
                             endelea
                         koma
                     # Because of RFC 2046, the newline preceding the boundary
                     # separator actually belongs to the boundary, sio the
-                    # previous subpart's payload (or epilogue if the previous
-                    # part is a multipart).
-                    if self._last.get_content_maintype() == 'multipart':
+                    # previous subpart's payload (or epilogue ikiwa the previous
+                    # part ni a multipart).
+                    ikiwa self._last.get_content_maintype() == 'multipart':
                         epilogue = self._last.epilogue
-                        if epilogue == '':
-                            self._last.epilogue = None
-                        lasivyo epilogue ni sio None:
+                        ikiwa epilogue == '':
+                            self._last.epilogue = Tupu
+                        elikiwa epilogue ni sio Tupu:
                             mo = NLCRE_eol.search(epilogue)
-                            if mo:
+                            ikiwa mo:
                                 end = len(mo.group(0))
                                 self._last.epilogue = epilogue[:-end]
                     isipokua:
                         payload = self._last._payload
-                        if isinstance(payload, str):
+                        ikiwa isinstance(payload, str):
                             mo = NLCRE_eol.search(payload)
-                            if mo:
+                            ikiwa mo:
                                 payload = payload[:-len(mo.group(0))]
                                 self._last._payload = payload
                     self._input.pop_eof_matcher()
                     self._pop_message()
-                    # Set the multipart up for newline cleansing, which will
-                    # happen if we're in a nested multipart.
+                    # Set the multipart up kila newline cleansing, which will
+                    # happen ikiwa we're kwenye a nested multipart.
                     self._last = self._cur
                 isipokua:
-                    # I think we must be in the preamble
+                    # I think we must be kwenye the preamble
                     assert capturing_preamble
                     preamble.append(line)
-            # We've seen either the EOF or the end boundary.  If we're still
+            # We've seen either the EOF ama the end boundary.  If we're still
             # capturing the preamble, we never saw the start boundary.  Note
-            # that as a defect and store the captured text as the payload.
-            if capturing_preamble:
+            # that as a defect na store the captured text as the payload.
+            ikiwa capturing_preamble:
                 defect = errors.StartBoundaryNotFoundDefect()
                 self.policy.handle_defect(self._cur, defect)
                 self._cur.set_payload(EMPTYSTRING.join(preamble))
                 epilogue = []
-                for line in self._input:
-                    if line is NeedMoreData:
-                        yield NeedMoreData
+                kila line kwenye self._input:
+                    ikiwa line ni NeedMoreData:
+                        tuma NeedMoreData
                         endelea
                 self._cur.epilogue = EMPTYSTRING.join(epilogue)
                 return
             # If we're sio processing the preamble, then we might have seen
-            # EOF without seeing that end boundary...that is also a defect.
-            if sio close_boundary_seen:
+            # EOF without seeing that end boundary...that ni also a defect.
+            ikiwa sio close_boundary_seen:
                 defect = errors.CloseBoundaryNotFoundDefect()
                 self.policy.handle_defect(self._cur, defect)
                 return
-            # Everything from here to the EOF is epilogue.  If the end boundary
-            # ended in a newline, we'll need to make sure the epilogue isn't
-            # None
-            if linesep:
+            # Everything kutoka here to the EOF ni epilogue.  If the end boundary
+            # ended kwenye a newline, we'll need to make sure the epilogue isn't
+            # Tupu
+            ikiwa linesep:
                 epilogue = ['']
             isipokua:
                 epilogue = []
-            for line in self._input:
-                if line is NeedMoreData:
-                    yield NeedMoreData
+            kila line kwenye self._input:
+                ikiwa line ni NeedMoreData:
+                    tuma NeedMoreData
                     endelea
                 epilogue.append(line)
             # Any CRLF at the front of the epilogue ni sio technically part of
-            # the epilogue.  Also, watch out for an empty string epilogue,
+            # the epilogue.  Also, watch out kila an empty string epilogue,
             # which means a single newline.
-            if epilogue:
+            ikiwa epilogue:
                 firstline = epilogue[0]
                 bolmo = NLCRE_bol.match(firstline)
-                if bolmo:
+                ikiwa bolmo:
                     epilogue[0] = firstline[len(bolmo.group(0)):]
             self._cur.epilogue = EMPTYSTRING.join(epilogue)
             return
         # Otherwise, it's some non-multipart type, so the entire rest of the
         # file contents becomes the payload.
         lines = []
-        for line in self._input:
-            if line is NeedMoreData:
-                yield NeedMoreData
+        kila line kwenye self._input:
+            ikiwa line ni NeedMoreData:
+                tuma NeedMoreData
                 endelea
             lines.append(line)
         self._cur.set_payload(EMPTYSTRING.join(lines))
 
-    def _parse_headers(self, lines):
-        # Passed a list of lines that make up the headers for the current msg
+    eleza _parse_headers(self, lines):
+        # Passed a list of lines that make up the headers kila the current msg
         lastheader = ''
         lastvalue = []
-        for lineno, line in enumerate(lines):
-            # Check for continuation
-            if line[0] in ' \t':
-                if sio lastheader:
+        kila lineno, line kwenye enumerate(lines):
+            # Check kila continuation
+            ikiwa line[0] kwenye ' \t':
+                ikiwa sio lastheader:
                     # The first line of the headers was a continuation.  This
-                    # is illegal, so let's note the defect, store the illegal
-                    # line, and ignore it for purposes of headers.
+                    # ni illegal, so let's note the defect, store the illegal
+                    # line, na ignore it kila purposes of headers.
                     defect = errors.FirstHeaderLineIsContinuationDefect(line)
                     self.policy.handle_defect(self._cur, defect)
                     endelea
                 lastvalue.append(line)
                 endelea
-            if lastheader:
+            ikiwa lastheader:
                 self._cur.set_raw(*self.policy.header_source_parse(lastvalue))
                 lastheader, lastvalue = '', []
-            # Check for envelope header, i.e. unix-from
-            if line.startswith('From '):
-                if lineno == 0:
+            # Check kila envelope header, i.e. unix-from
+            ikiwa line.startswith('From '):
+                ikiwa lineno == 0:
                     # Strip off the trailing newline
                     mo = NLCRE_eol.search(line)
-                    if mo:
+                    ikiwa mo:
                         line = line[:-len(mo.group(0))]
                     self._cur.set_unixfrom(line)
                     endelea
-                lasivyo lineno == len(lines) - 1:
-                    # Something looking like a unix-from at the end - it's
+                elikiwa lineno == len(lines) - 1:
+                    # Something looking like a unix-kutoka at the end - it's
                     # probably the first line of the body, so push back the
-                    # line and stop.
+                    # line na stop.
                     self._input.unreadline(line)
                     return
                 isipokua:
-                    # Weirdly placed unix-from line.  Note this as a defect
-                    # and ignore it.
+                    # Weirdly placed unix-kutoka line.  Note this as a defect
+                    # na ignore it.
                     defect = errors.MisplacedEnvelopeHeaderDefect(line)
                     self._cur.defects.append(defect)
                     endelea
-            # Split the line on the colon separating field name from value.
-            # There will always be a colon, because if there wasn't the part of
+            # Split the line on the colon separating field name kutoka value.
+            # There will always be a colon, because ikiwa there wasn't the part of
             # the parser that calls us would have started parsing the body.
             i = line.find(':')
 
-            # If the colon is on the start of the line the header is clearly
+            # If the colon ni on the start of the line the header ni clearly
             # malformed, but we might be able to salvage the rest of the
             # message. Track the error but keep going.
-            if i == 0:
+            ikiwa i == 0:
                 defect = errors.InvalidHeaderDefect("Missing header name.")
                 self._cur.defects.append(defect)
                 endelea
 
-            assert i>0, "_parse_headers fed line with no : and no leading WS"
+            assert i>0, "_parse_headers fed line ukijumuisha no : na no leading WS"
             lastheader = line[:i]
             lastvalue = [line]
-        # Done with all the lines, so handle the last header.
-        if lastheader:
+        # Done ukijumuisha all the lines, so handle the last header.
+        ikiwa lastheader:
             self._cur.set_raw(*self.policy.header_source_parse(lastvalue))
 
 
-class BytesFeedParser(FeedParser):
+kundi BytesFeedParser(FeedParser):
     """Like FeedParser, but feed accepts bytes."""
 
-    def feed(self, data):
+    eleza feed(self, data):
         super().feed(data.decode('ascii', 'surrogateescape'))

@@ -41,7 +41,7 @@ kundi TempFile:
 
     eleza setUp(self):
         super().setUp()
-        ukijumuisha tempfile.NamedTemporaryFile(delete=Uongo) kama fp:
+        ukijumuisha tempfile.NamedTemporaryFile(delete=Uongo) as fp:
             self.file_name = fp.name
             fp.write(self.file_byte_string)
         self.addCleanup(support.unlink, self.file_name)
@@ -55,7 +55,7 @@ kundi GetLineTestsGoodData(TempFile):
         super().setUp()
 
     eleza test_getline(self):
-        ukijumuisha tokenize.open(self.file_name) kama fp:
+        ukijumuisha tokenize.open(self.file_name) as fp:
             kila index, line kwenye enumerate(fp):
                 ikiwa sio line.endswith('\n'):
                     line += '\n'
@@ -105,7 +105,7 @@ kundi LineCacheTests(unittest.TestCase):
         self.assertEqual(getline(FILENAME, 2**15), EMPTY)
         self.assertEqual(getline(FILENAME, -1), EMPTY)
 
-        # Float values currently ashiria TypeError, should it?
+        # Float values currently  ashiria TypeError, should it?
         self.assertRaises(TypeError, getline, FILENAME, 1.1)
 
         # Bad filenames should rudisha an empty string
@@ -115,17 +115,17 @@ kundi LineCacheTests(unittest.TestCase):
         # Check module loading
         kila entry kwenye MODULES:
             filename = os.path.join(MODULE_PATH, entry) + '.py'
-            ukijumuisha open(filename) kama file:
+            ukijumuisha open(filename) as file:
                 kila index, line kwenye enumerate(file):
                     self.assertEqual(line, getline(filename, index + 1))
 
-        # Check that bogus data isn't rudishaed (issue #1309567)
+        # Check that bogus data isn't returned (issue #1309567)
         empty = linecache.getlines('a/b/c/__init__.py')
         self.assertEqual(empty, [])
 
     eleza test_no_ending_newline(self):
         self.addCleanup(support.unlink, support.TESTFN)
-        ukijumuisha open(support.TESTFN, "w") kama fp:
+        ukijumuisha open(support.TESTFN, "w") as fp:
             fp.write(SOURCE_3)
         lines = linecache.getlines(support.TESTFN)
         self.assertEqual(lines, ["\n", "eleza f():\n", "    rudisha 3\n"])
@@ -139,7 +139,7 @@ kundi LineCacheTests(unittest.TestCase):
 
         # Are all files cached?
         self.assertNotEqual(cached, [])
-        cached_empty = [fn kila fn kwenye cached ikiwa fn haiko kwenye linecache.cache]
+        cached_empty = [fn kila fn kwenye cached ikiwa fn sio kwenye linecache.cache]
         self.assertEqual(cached_empty, [])
 
         # Can we clear the cache?
@@ -152,18 +152,18 @@ kundi LineCacheTests(unittest.TestCase):
         # Create a source file na cache its contents
         source_name = support.TESTFN + '.py'
         self.addCleanup(support.unlink, source_name)
-        ukijumuisha open(source_name, 'w') kama source:
+        ukijumuisha open(source_name, 'w') as source:
             source.write(SOURCE_1)
         getline(source_name, 1)
 
         # Keep a copy of the old contents
         source_list = []
-        ukijumuisha open(source_name) kama source:
+        ukijumuisha open(source_name) as source:
             kila index, line kwenye enumerate(source):
                 self.assertEqual(line, getline(source_name, index + 1))
                 source_list.append(line)
 
-        ukijumuisha open(source_name, 'w') kama source:
+        ukijumuisha open(source_name, 'w') as source:
             source.write(SOURCE_2)
 
         # Try to update a bogus cache entry
@@ -175,7 +175,7 @@ kundi LineCacheTests(unittest.TestCase):
 
         # Update the cache na check whether it matches the new source file
         linecache.checkcache(source_name)
-        ukijumuisha open(source_name) kama source:
+        ukijumuisha open(source_name) as source:
             kila index, line kwenye enumerate(source):
                 self.assertEqual(line, getline(source_name, index + 1))
                 source_list.append(line)
@@ -225,14 +225,14 @@ kundi LineCacheTests(unittest.TestCase):
     eleza test_memoryerror(self):
         lines = linecache.getlines(FILENAME)
         self.assertKweli(lines)
-        eleza ashiria_memoryerror(*args, **kwargs):
-            ashiria MemoryError
-        ukijumuisha support.swap_attr(linecache, 'updatecache', ashiria_memoryerror):
+        eleza raise_memoryerror(*args, **kwargs):
+             ashiria MemoryError
+        ukijumuisha support.swap_attr(linecache, 'updatecache', raise_memoryerror):
             lines2 = linecache.getlines(FILENAME)
         self.assertEqual(lines2, lines)
 
         linecache.clearcache()
-        ukijumuisha support.swap_attr(linecache, 'updatecache', ashiria_memoryerror):
+        ukijumuisha support.swap_attr(linecache, 'updatecache', raise_memoryerror):
             lines3 = linecache.getlines(FILENAME)
         self.assertEqual(lines3, [])
         self.assertEqual(linecache.getlines(FILENAME), lines)

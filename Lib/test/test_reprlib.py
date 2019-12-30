@@ -11,7 +11,7 @@ agiza importlib.util
 agiza unittest
 
 kutoka test.support agiza create_empty_file, verbose
-kutoka reprlib agiza repr kama r # Don't shadow builtin repr
+kutoka reprlib agiza repr as r # Don't shadow builtin repr
 kutoka reprlib agiza Repr
 kutoka reprlib agiza recursive_repr
 
@@ -62,21 +62,21 @@ kundi ReprTests(unittest.TestCase):
         eq(r((1, 2, 3, 4, 5, 6)), "(1, 2, 3, 4, 5, 6)")
         eq(r((1, 2, 3, 4, 5, 6, 7)), "(1, 2, 3, 4, 5, 6, ...)")
 
-        # Lists give up after 6 kama well
+        # Lists give up after 6 as well
         eq(r([]), "[]")
         eq(r([1]), "[1]")
         eq(r([1, 2, 3]), "[1, 2, 3]")
         eq(r([1, 2, 3, 4, 5, 6]), "[1, 2, 3, 4, 5, 6]")
         eq(r([1, 2, 3, 4, 5, 6, 7]), "[1, 2, 3, 4, 5, 6, ...]")
 
-        # Sets give up after 6 kama well
+        # Sets give up after 6 as well
         eq(r(set([])), "set()")
         eq(r(set([1])), "{1}")
         eq(r(set([1, 2, 3])), "{1, 2, 3}")
         eq(r(set([1, 2, 3, 4, 5, 6])), "{1, 2, 3, 4, 5, 6}")
         eq(r(set([1, 2, 3, 4, 5, 6, 7])), "{1, 2, 3, 4, 5, 6, ...}")
 
-        # Frozensets give up after 6 kama well
+        # Frozensets give up after 6 as well
         eq(r(frozenset([])), "frozenset()")
         eq(r(frozenset([1])), "frozenset({1})")
         eq(r(frozenset([1, 2, 3])), "frozenset({1, 2, 3})")
@@ -200,7 +200,7 @@ kundi ReprTests(unittest.TestCase):
         # XXX slot descriptors
         # static na kundi methods
         kundi C:
-            eleza foo(cls): pita
+            eleza foo(cls): pass
         x = staticmethod(C.foo)
         self.assertKweli(repr(x).startswith('<staticmethod object at 0x'))
         x = classmethod(C.foo)
@@ -217,7 +217,7 @@ kundi ReprTests(unittest.TestCase):
         r(z)
 
 eleza write_file(path, text):
-    ukijumuisha open(path, 'w', encoding='ASCII') kama fp:
+    ukijumuisha open(path, 'w', encoding='ASCII') as fp:
         fp.write(text)
 
 kundi LongReprTest(unittest.TestCase):
@@ -270,7 +270,7 @@ kundi LongReprTest(unittest.TestCase):
             # (see http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx#maxpath)
             self.skipTest("test paths too long (%d characters) kila Windows' 260 character limit"
                           % cached_path_len)
-        lasivyo os.name == 'nt' na verbose:
+        elikiwa os.name == 'nt' na verbose:
             andika("cached_path_len =", cached_path_len)
 
     eleza test_module(self):
@@ -288,7 +288,7 @@ kundi LongReprTest(unittest.TestCase):
         eq = self.assertEqual
         write_file(os.path.join(self.subpkgname, 'foo.py'), '''\
 kundi foo(object):
-    pita
+    pass
 ''')
         importlib.invalidate_caches()
         kutoka areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation agiza foo
@@ -299,13 +299,13 @@ kundi foo(object):
     eleza test_object(self):
         # XXX Test the repr of a type ukijumuisha a really long tp_name but ukijumuisha no
         # tp_repr.  WIBNI we had ::Inline? :)
-        pita
+        pass
 
     eleza test_class(self):
         self._check_path_limitations('bar')
         write_file(os.path.join(self.subpkgname, 'bar.py'), '''\
 kundi bar:
-    pita
+    pass
 ''')
         importlib.invalidate_caches()
         kutoka areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation agiza bar
@@ -316,7 +316,7 @@ kundi bar:
         self._check_path_limitations('baz')
         write_file(os.path.join(self.subpkgname, 'baz.py'), '''\
 kundi baz:
-    pita
+    pass
 ''')
         importlib.invalidate_caches()
         kutoka areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation agiza baz
@@ -329,7 +329,7 @@ kundi baz:
         eq = self.assertEqual
         write_file(os.path.join(self.subpkgname, 'qux.py'), '''\
 kundi aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:
-    eleza amethod(self): pita
+    eleza amethod(self): pass
 ''')
         importlib.invalidate_caches()
         kutoka areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation agiza qux
@@ -346,7 +346,7 @@ kundi aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     @unittest.skip('needs a built-in function ukijumuisha a really long name')
     eleza test_builtin_function(self):
         # XXX test built-in functions na methods ukijumuisha really long names
-        pita
+        pass
 
 kundi ClassWithRepr:
     eleza __init__(self, s):
@@ -357,7 +357,7 @@ kundi ClassWithRepr:
 
 kundi ClassWithFailingRepr:
     eleza __repr__(self):
-        ashiria Exception("This should be caught by Repr.repr_instance")
+         ashiria Exception("This should be caught by Repr.repr_instance")
 
 kundi MyContainer:
     'Helper kundi kila TestRecursiveRepr'
@@ -377,7 +377,7 @@ kundi MyContainer2(MyContainer):
 kundi MyContainer3:
     eleza __repr__(self):
         'Test document content'
-        pita
+        pass
     wrapped = __repr__
     wrapper = recursive_repr()(wrapped)
 
@@ -395,7 +395,7 @@ kundi TestRecursiveRepr(unittest.TestCase):
         self.assertEqual(repr(m), '<a, b, c, d, e, +++, x, +++>')
 
     eleza test_assigned_attributes(self):
-        kutoka functools agiza WRAPPER_ASSIGNMENTS kama assigned
+        kutoka functools agiza WRAPPER_ASSIGNMENTS as assigned
         wrapped = MyContainer3.wrapped
         wrapper = MyContainer3.wrapper
         kila name kwenye assigned:

@@ -8,7 +8,7 @@ eleza f_bad_ann():
 
 kundi C_OK:
     eleza __init__(self, x: int) -> Tupu:
-        self.x: no_such_name = x  # This one ni OK kama proposed by Guido
+        self.x: no_such_name = x  # This one ni OK as proposed by Guido
 
 kundi D_bad_ann:
     eleza __init__(self, x: int) -> Tupu:

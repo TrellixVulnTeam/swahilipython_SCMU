@@ -19,8 +19,8 @@ kundi BaseLocalizedTest(unittest.TestCase):
                 # The locale test work fine on OSX 10.6, I (ronaldoussoren)
                 # haven't had time yet to verify ikiwa tests work on OSX 10.5
                 # (10.4 ni known to be bad)
-                ashiria unittest.SkipTest("Locale support on MacOSX ni minimal")
-        lasivyo sys.platform.startswith("win"):
+                 ashiria unittest.SkipTest("Locale support on MacOSX ni minimal")
+        elikiwa sys.platform.startswith("win"):
             tlocs = ("En", "English")
         isipokua:
             tlocs = ("en_US.UTF-8", "en_US.ISO8859-1",
@@ -30,11 +30,11 @@ kundi BaseLocalizedTest(unittest.TestCase):
             kila tloc kwenye tlocs:
                 jaribu:
                     locale.setlocale(locale.LC_NUMERIC, tloc)
-                tatizo locale.Error:
+                except locale.Error:
                     endelea
                 koma
             isipokua:
-                ashiria unittest.SkipTest("Test locale sio supported "
+                 ashiria unittest.SkipTest("Test locale sio supported "
                                         "(tried %s)" % (', '.join(tlocs)))
             cls.enUS_locale = tloc
         mwishowe:
@@ -109,7 +109,7 @@ kundi EnUSCookedTest(BaseCookedTest):
 
 
 kundi FrFRCookedTest(BaseCookedTest):
-    # A cooked "fr_FR" locale ukijumuisha a space character kama decimal separator
+    # A cooked "fr_FR" locale ukijumuisha a space character as decimal separator
     # na a non-ASCII currency symbol.
 
     cooked_values = {
@@ -363,11 +363,11 @@ kundi TestEnUSCollation(BaseLocalizedTest, TestCollation):
 
     eleza setUp(self):
         enc = codecs.lookup(locale.getpreferredencoding(Uongo) ama 'ascii').name
-        ikiwa enc haiko kwenye ('utf-8', 'iso8859-1', 'cp1252'):
-            ashiria unittest.SkipTest('encoding sio suitable')
-        ikiwa enc != 'iso8859-1' na (sys.platform == 'darwin' ama is_android ama
+        ikiwa enc sio kwenye ('utf-8', 'iso8859-1', 'cp1252'):
+             ashiria unittest.SkipTest('encoding sio suitable')
+        ikiwa enc != 'iso8859-1' na (sys.platform == 'darwin' ama is_android or
                                    sys.platform.startswith('freebsd')):
-            ashiria unittest.SkipTest('wcscoll/wcsxfrm have known bugs')
+             ashiria unittest.SkipTest('wcscoll/wcsxfrm have known bugs')
         BaseLocalizedTest.setUp(self)
 
     @unittest.skipIf(sys.platform.startswith('aix'),
@@ -523,7 +523,7 @@ kundi TestMiscellaneous(unittest.TestCase):
             kila k kwenye orig_env:
                 os.environ[k] = orig_env[k]
 
-            ikiwa 'LC_CTYPE' haiko kwenye orig_env:
+            ikiwa 'LC_CTYPE' sio kwenye orig_env:
                 toa os.environ['LC_CTYPE']
 
             ikiwa orig_getlocale ni sio Tupu:
@@ -558,7 +558,7 @@ kundi TestMiscellaneous(unittest.TestCase):
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, oldlocale)
         jaribu:
             locale.setlocale(locale.LC_CTYPE, 'tr_TR')
-        tatizo locale.Error:
+        except locale.Error:
             # Unsupported locale on this system
             self.skipTest('test needs Turkish locale')
         loc = locale.getlocale(locale.LC_CTYPE)

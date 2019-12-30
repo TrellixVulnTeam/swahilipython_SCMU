@@ -20,10 +20,10 @@ kundi Codec(codecs.Codec):
         rudisha codecs.charmap_decode(input,errors,decoding_map)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pita
+    pass
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pita
+    pass
 
 ### encodings module API
 

@@ -9,7 +9,7 @@ exec() function.
 exec code kwenye ns1, ns2 -> exec(code, ns1, ns2)
 """
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Comma, Name, Call
 
@@ -20,7 +20,7 @@ kundi FixExec(fixer_base.BaseFix):
     PATTERN = """
     exec_stmt< 'exec' a=any 'in' b=any [',' c=any] >
     |
-    exec_stmt< 'exec' (sio atom<'(' [any] ')'>) a=any >
+    exec_stmt< 'exec' (not atom<'(' [any] ')'>) a=any >
     """
 
     eleza transform(self, node, results):

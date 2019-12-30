@@ -31,7 +31,7 @@ kundi Headers:
     eleza __init__(self, headers=Tupu):
         headers = headers ikiwa headers ni sio Tupu isipokua []
         ikiwa type(headers) ni sio list:
-            ashiria TypeError("Headers must be a list of name/value tuples")
+             ashiria TypeError("Headers must be a list of name/value tuples")
         self._headers = headers
         ikiwa __debug__:
             kila k, v kwenye headers:
@@ -42,7 +42,7 @@ kundi Headers:
         """Convert/check value type."""
         ikiwa type(value) ni str:
             rudisha value
-        ashiria AssertionError("Header names/values must be"
+         ashiria AssertionError("Header names/values must be"
             " of type str (got {0})".format(repr(value)))
 
     eleza __len__(self):
@@ -58,7 +58,7 @@ kundi Headers:
     eleza __delitem__(self,name):
         """Delete all occurrences of a header, ikiwa present.
 
-        Does *not* ashiria an exception ikiwa the header ni missing.
+        Does *not*  ashiria an exception ikiwa the header ni missing.
         """
         name = self._convert_string_type(name.lower())
         self._headers[:] = [kv kila kv kwenye self._headers ikiwa kv[0].lower() != name]
@@ -69,7 +69,7 @@ kundi Headers:
         Return Tupu ikiwa the header ni missing instead of raising an exception.
 
         Note that ikiwa the header appeared multiple times, the first exactly which
-        occurrence gets rudishaed ni undefined.  Use getall() to get all
+        occurrence gets returned ni undefined.  Use getall() to get all
         the values matching a header field name.
         """
         rudisha self.get(name)
@@ -85,7 +85,7 @@ kundi Headers:
         These will be sorted kwenye the order they appeared kwenye the original header
         list ama were added to this instance, na may contain duplicates.  Any
         fields deleted na re-inserted are always appended to the header list.
-        If no fields exist ukijumuisha the given name, rudishas an empty list.
+        If no fields exist ukijumuisha the given name, returns an empty list.
         """
         name = self._convert_string_type(name.lower())
         rudisha [kv[1] kila kv kwenye self._headers ikiwa kv[0].lower()==name]
@@ -134,7 +134,7 @@ kundi Headers:
         rudisha "%s(%r)" % (self.__class__.__name__, self._headers)
 
     eleza __str__(self):
-        """str() rudishas the formatted headers, complete ukijumuisha end line,
+        """str() returns the formatted headers, complete ukijumuisha end line,
         suitable kila direct HTTP transmission."""
         rudisha '\r\n'.join(["%s: %s" % kv kila kv kwenye self._headers]+['',''])
 
@@ -159,7 +159,7 @@ kundi Headers:
 
         _name ni the header field to add.  keyword arguments can be used to set
         additional parameters kila the header field, ukijumuisha underscores converted
-        to dashes.  Normally the parameter will be added kama key="value" unless
+        to dashes.  Normally the parameter will be added as key="value" unless
         value ni Tupu, kwenye which case only the key will be added.
 
         Example:

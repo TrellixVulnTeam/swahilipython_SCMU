@@ -25,8 +25,8 @@ kutoka test.test_py_compile agiza SourceDateEpochTestMeta
 
 kundi SimpleTest(abc.LoaderTests):
 
-    """Should have no issue agizaing a source module [basic]. And ikiwa there is
-    a syntax error, it should ashiria a SyntaxError [syntax error].
+    """Should have no issue importing a source module [basic]. And ikiwa there is
+    a syntax error, it should  ashiria a SyntaxError [syntax error].
 
     """
 
@@ -44,15 +44,15 @@ kundi SimpleTest(abc.LoaderTests):
         self.addCleanup(unload, 'blah')
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
-            module = loader.load_module()  # Should sio ashiria an exception.
+            module = loader.load_module()  # Should sio  ashiria an exception.
 
     eleza test_get_filename_API(self):
         # If fullname ni sio set then assume self.path ni desired.
         kundi Tester(self.abc.FileLoader):
-            eleza get_code(self, _): pita
-            eleza get_source(self, _): pita
-            eleza is_package(self, _): pita
-            eleza module_repr(self, _): pita
+            eleza get_code(self, _): pass
+            eleza get_source(self, _): pass
+            eleza is_package(self, _): pass
+            eleza module_repr(self, _): pass
 
         path = 'some_path'
         name = 'some_name'
@@ -73,7 +73,7 @@ kundi SimpleTest(abc.LoaderTests):
 
     # [basic]
     eleza test_module(self):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             loader = self.machinery.SourceFileLoader('_temp', mapping['_temp'])
             ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
@@ -85,7 +85,7 @@ kundi SimpleTest(abc.LoaderTests):
                 self.assertEqual(getattr(module, attr), value)
 
     eleza test_package(self):
-        ukijumuisha util.create_modules('_pkg.__init__') kama mapping:
+        ukijumuisha util.create_modules('_pkg.__init__') as mapping:
             loader = self.machinery.SourceFileLoader('_pkg',
                                                  mapping['_pkg.__init__'])
             ukijumuisha warnings.catch_warnings():
@@ -117,20 +117,20 @@ kundi SimpleTest(abc.LoaderTests):
         rudisha lambda name: fxn(name) + 1
 
     eleza test_module_reuse(self):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             loader = self.machinery.SourceFileLoader('_temp', mapping['_temp'])
             ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = loader.load_module('_temp')
             module_id = id(module)
             module_dict_id = id(module.__dict__)
-            ukijumuisha open(mapping['_temp'], 'w') kama file:
+            ukijumuisha open(mapping['_temp'], 'w') as file:
                 file.write("testing_var = 42\n")
             ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = loader.load_module('_temp')
             self.assertIn('testing_var', module.__dict__,
-                         "'testing_var' haiko kwenye "
+                         "'testing_var' sio kwenye "
                             "{0}".format(list(module.__dict__.keys())))
             self.assertEqual(module, sys.modules['_temp'])
             self.assertEqual(id(module), module_id)
@@ -141,11 +141,11 @@ kundi SimpleTest(abc.LoaderTests):
         attributes = ('__file__', '__path__', '__package__')
         value = '<test>'
         name = '_temp'
-        ukijumuisha util.create_modules(name) kama mapping:
+        ukijumuisha util.create_modules(name) as mapping:
             orig_module = types.ModuleType(name)
             kila attr kwenye attributes:
                 setattr(orig_module, attr, value)
-            ukijumuisha open(mapping[name], 'w') kama file:
+            ukijumuisha open(mapping[name], 'w') as file:
                 file.write('+++ bad syntax +++')
             loader = self.machinery.SourceFileLoader('_temp', mapping['_temp'])
             ukijumuisha self.assertRaises(SyntaxError):
@@ -161,8 +161,8 @@ kundi SimpleTest(abc.LoaderTests):
 
     # [syntax error]
     eleza test_bad_syntax(self):
-        ukijumuisha util.create_modules('_temp') kama mapping:
-            ukijumuisha open(mapping['_temp'], 'w') kama file:
+        ukijumuisha util.create_modules('_temp') as mapping:
+            ukijumuisha open(mapping['_temp'], 'w') as file:
                 file.write('=')
             loader = self.machinery.SourceFileLoader('_temp', mapping['_temp'])
             ukijumuisha self.assertRaises(SyntaxError):
@@ -175,7 +175,7 @@ kundi SimpleTest(abc.LoaderTests):
         # Loading a module found kutoka an empty string entry on sys.path should
         # sio only work, but keep all attributes relative.
         file_path = '_temp.py'
-        ukijumuisha open(file_path, 'w') kama file:
+        ukijumuisha open(file_path, 'w') as file:
             file.write("# test file kila importlib")
         jaribu:
             ukijumuisha util.uncache('_temp'):
@@ -195,19 +195,19 @@ kundi SimpleTest(abc.LoaderTests):
     @util.writes_bytecode_files
     eleza test_timestamp_overflow(self):
         # When a modification timestamp ni larger than 2**32, it should be
-        # truncated rather than ashiria an OverflowError.
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        # truncated rather than  ashiria an OverflowError.
+        ukijumuisha util.create_modules('_temp') as mapping:
             source = mapping['_temp']
             compiled = self.util.cache_from_source(source)
-            ukijumuisha open(source, 'w') kama f:
+            ukijumuisha open(source, 'w') as f:
                 f.write("x = 5")
             jaribu:
                 os.utime(source, (2 ** 33 - 5, 2 ** 33 - 5))
-            tatizo OverflowError:
+            except OverflowError:
                 self.skipTest("cannot set modification time to large integer")
-            tatizo OSError kama e:
+            except OSError as e:
                 ikiwa e.errno != getattr(errno, 'EOVERFLOW', Tupu):
-                    ashiria
+                    raise
                 self.skipTest("cannot set modification time to large integer ({})".format(e))
             loader = self.machinery.SourceFileLoader('_temp', mapping['_temp'])
             # PEP 451
@@ -240,10 +240,10 @@ kundi SimpleTest(abc.LoaderTests):
 
     @util.writes_bytecode_files
     eleza test_checked_hash_based_pyc(self):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             source = mapping['_temp']
             pyc = self.util.cache_from_source(source)
-            ukijumuisha open(source, 'wb') kama fp:
+            ukijumuisha open(source, 'wb') as fp:
                 fp.write(b'state = "old"')
             os.utime(source, (50, 50))
             py_compile.compile(
@@ -255,15 +255,15 @@ kundi SimpleTest(abc.LoaderTests):
             mod.__spec__ = self.util.spec_from_loader('_temp', loader)
             loader.exec_module(mod)
             self.assertEqual(mod.state, 'old')
-            # Write a new source ukijumuisha the same mtime na size kama before.
-            ukijumuisha open(source, 'wb') kama fp:
+            # Write a new source ukijumuisha the same mtime na size as before.
+            ukijumuisha open(source, 'wb') as fp:
                 fp.write(b'state = "new"')
             os.utime(source, (50, 50))
             loader.exec_module(mod)
             self.assertEqual(mod.state, 'new')
-            ukijumuisha open(pyc, 'rb') kama fp:
+            ukijumuisha open(pyc, 'rb') as fp:
                 data = fp.read()
-            self.assertEqual(int.kutoka_bytes(data[4:8], 'little'), 0b11)
+            self.assertEqual(int.from_bytes(data[4:8], 'little'), 0b11)
             self.assertEqual(
                 self.util.source_hash(b'state = "new"'),
                 data[8:16],
@@ -271,11 +271,11 @@ kundi SimpleTest(abc.LoaderTests):
 
     @util.writes_bytecode_files
     eleza test_overridden_checked_hash_based_pyc(self):
-        ukijumuisha util.create_modules('_temp') kama mapping, \
+        ukijumuisha util.create_modules('_temp') as mapping, \
              unittest.mock.patch('_imp.check_hash_based_pycs', 'never'):
             source = mapping['_temp']
             pyc = self.util.cache_from_source(source)
-            ukijumuisha open(source, 'wb') kama fp:
+            ukijumuisha open(source, 'wb') as fp:
                 fp.write(b'state = "old"')
             os.utime(source, (50, 50))
             py_compile.compile(
@@ -287,8 +287,8 @@ kundi SimpleTest(abc.LoaderTests):
             mod.__spec__ = self.util.spec_from_loader('_temp', loader)
             loader.exec_module(mod)
             self.assertEqual(mod.state, 'old')
-            # Write a new source ukijumuisha the same mtime na size kama before.
-            ukijumuisha open(source, 'wb') kama fp:
+            # Write a new source ukijumuisha the same mtime na size as before.
+            ukijumuisha open(source, 'wb') as fp:
                 fp.write(b'state = "new"')
             os.utime(source, (50, 50))
             loader.exec_module(mod)
@@ -296,10 +296,10 @@ kundi SimpleTest(abc.LoaderTests):
 
     @util.writes_bytecode_files
     eleza test_unchecked_hash_based_pyc(self):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             source = mapping['_temp']
             pyc = self.util.cache_from_source(source)
-            ukijumuisha open(source, 'wb') kama fp:
+            ukijumuisha open(source, 'wb') as fp:
                 fp.write(b'state = "old"')
             os.utime(source, (50, 50))
             py_compile.compile(
@@ -312,13 +312,13 @@ kundi SimpleTest(abc.LoaderTests):
             loader.exec_module(mod)
             self.assertEqual(mod.state, 'old')
             # Update the source file, which should be ignored.
-            ukijumuisha open(source, 'wb') kama fp:
+            ukijumuisha open(source, 'wb') as fp:
                 fp.write(b'state = "new"')
             loader.exec_module(mod)
             self.assertEqual(mod.state, 'old')
-            ukijumuisha open(pyc, 'rb') kama fp:
+            ukijumuisha open(pyc, 'rb') as fp:
                 data = fp.read()
-            self.assertEqual(int.kutoka_bytes(data[4:8], 'little'), 0b1)
+            self.assertEqual(int.from_bytes(data[4:8], 'little'), 0b1)
             self.assertEqual(
                 self.util.source_hash(b'state = "old"'),
                 data[8:16],
@@ -326,11 +326,11 @@ kundi SimpleTest(abc.LoaderTests):
 
     @util.writes_bytecode_files
     eleza test_overridden_unchecked_hash_based_pyc(self):
-        ukijumuisha util.create_modules('_temp') kama mapping, \
+        ukijumuisha util.create_modules('_temp') as mapping, \
              unittest.mock.patch('_imp.check_hash_based_pycs', 'always'):
             source = mapping['_temp']
             pyc = self.util.cache_from_source(source)
-            ukijumuisha open(source, 'wb') kama fp:
+            ukijumuisha open(source, 'wb') as fp:
                 fp.write(b'state = "old"')
             os.utime(source, (50, 50))
             py_compile.compile(
@@ -343,13 +343,13 @@ kundi SimpleTest(abc.LoaderTests):
             loader.exec_module(mod)
             self.assertEqual(mod.state, 'old')
             # Update the source file, which should be ignored.
-            ukijumuisha open(source, 'wb') kama fp:
+            ukijumuisha open(source, 'wb') as fp:
                 fp.write(b'state = "new"')
             loader.exec_module(mod)
             self.assertEqual(mod.state, 'new')
-            ukijumuisha open(pyc, 'rb') kama fp:
+            ukijumuisha open(pyc, 'rb') as fp:
                 data = fp.read()
-            self.assertEqual(int.kutoka_bytes(data[4:8], 'little'), 0b1)
+            self.assertEqual(int.from_bytes(data[4:8], 'little'), 0b1)
             self.assertEqual(
                 self.util.source_hash(b'state = "new"'),
                 data[8:16],
@@ -364,30 +364,30 @@ kundi SimpleTest(abc.LoaderTests):
 
 kundi SourceDateEpochTestMeta(SourceDateEpochTestMeta,
                               type(Source_SimpleTest)):
-    pita
+    pass
 
 
 kundi SourceDateEpoch_SimpleTest(Source_SimpleTest,
                                  metaclass=SourceDateEpochTestMeta,
                                  source_date_epoch=Kweli):
-    pita
+    pass
 
 
 kundi BadBytecodeTest:
 
     eleza import_(self, file, module_name):
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza manipulate_bytecode(self,
                             name, mapping, manipulator, *,
                             del_source=Uongo,
                             invalidation_mode=py_compile.PycInvalidationMode.TIMESTAMP):
-        """Manipulate the bytecode of a module by pitaing it into a callable
-        that rudishas what to use kama the new bytecode."""
+        """Manipulate the bytecode of a module by passing it into a callable
+        that returns what to use as the new bytecode."""
         jaribu:
             toa sys.modules['_temp']
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
         py_compile.compile(mapping[name], invalidation_mode=invalidation_mode)
         ikiwa sio del_source:
             bytecode_path = self.util.cache_from_source(mapping[name])
@@ -395,16 +395,16 @@ kundi BadBytecodeTest:
             os.unlink(mapping[name])
             bytecode_path = make_legacy_pyc(mapping[name])
         ikiwa manipulator:
-            ukijumuisha open(bytecode_path, 'rb') kama file:
+            ukijumuisha open(bytecode_path, 'rb') as file:
                 bc = file.read()
                 new_bc = manipulator(bc)
-            ukijumuisha open(bytecode_path, 'wb') kama file:
+            ukijumuisha open(bytecode_path, 'wb') as file:
                 ikiwa new_bc ni sio Tupu:
                     file.write(new_bc)
         rudisha bytecode_path
 
     eleza _test_empty_file(self, test, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: b'',
                                                 del_source=del_source)
@@ -413,29 +413,29 @@ kundi BadBytecodeTest:
     @util.writes_bytecode_files
     eleza _test_partial_magic(self, test, *, del_source=Uongo):
         # When their are less than 4 bytes to a .pyc, regenerate it if
-        # possible, isipokua ashiria ImportError.
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        # possible, isipokua  ashiria ImportError.
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:3],
                                                 del_source=del_source)
             test('_temp', mapping, bc_path)
 
     eleza _test_magic_only(self, test, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:4],
                                                 del_source=del_source)
             test('_temp', mapping, bc_path)
 
     eleza _test_partial_flags(self, test, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                lambda bc: bc[:7],
                                                del_source=del_source)
             test('_temp', mapping, bc_path)
 
     eleza _test_partial_hash(self, test, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode(
                 '_temp',
                 mapping,
@@ -444,7 +444,7 @@ kundi BadBytecodeTest:
                 invalidation_mode=py_compile.PycInvalidationMode.CHECKED_HASH,
             )
             test('_temp', mapping, bc_path)
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode(
                 '_temp',
                 mapping,
@@ -455,21 +455,21 @@ kundi BadBytecodeTest:
             test('_temp', mapping, bc_path)
 
     eleza _test_partial_timestamp(self, test, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:11],
                                                 del_source=del_source)
             test('_temp', mapping, bc_path)
 
     eleza _test_partial_size(self, test, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:15],
                                                 del_source=del_source)
             test('_temp', mapping, bc_path)
 
     eleza _test_no_marshal(self, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:16],
                                                 del_source=del_source)
@@ -478,18 +478,18 @@ kundi BadBytecodeTest:
                 self.import_(file_path, '_temp')
 
     eleza _test_non_code_marshal(self, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bytecode_path = self.manipulate_bytecode('_temp', mapping,
                                     lambda bc: bc[:16] + marshal.dumps(b'abcd'),
                                     del_source=del_source)
             file_path = mapping['_temp'] ikiwa sio del_source isipokua bytecode_path
-            ukijumuisha self.assertRaises(ImportError) kama cm:
+            ukijumuisha self.assertRaises(ImportError) as cm:
                 self.import_(file_path, '_temp')
             self.assertEqual(cm.exception.name, '_temp')
             self.assertEqual(cm.exception.path, bytecode_path)
 
     eleza _test_bad_marshal(self, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bytecode_path = self.manipulate_bytecode('_temp', mapping,
                                                 lambda bc: bc[:16] + b'<test>',
                                                 del_source=del_source)
@@ -498,7 +498,7 @@ kundi BadBytecodeTest:
                 self.import_(file_path, '_temp')
 
     eleza _test_bad_magic(self, test, *, del_source=Uongo):
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             bc_path = self.manipulate_bytecode('_temp', mapping,
                                     lambda bc: b'\x00\x00\x00\x00' + bc[4:])
             test('_temp', mapping, bc_path)
@@ -531,11 +531,11 @@ kundi SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     eleza test_empty_file(self):
-        # When a .pyc ni empty, regenerate it ikiwa possible, isipokua ashiria
+        # When a .pyc ni empty, regenerate it ikiwa possible, isipokua raise
         # ImportError.
         eleza test(name, mapping, bytecode_path):
             self.import_(mapping[name], name)
-            ukijumuisha open(bytecode_path, 'rb') kama file:
+            ukijumuisha open(bytecode_path, 'rb') as file:
                 self.assertGreater(len(file.read()), 16)
 
         self._test_empty_file(test)
@@ -543,7 +543,7 @@ kundi SourceLoaderBadBytecodeTest:
     eleza test_partial_magic(self):
         eleza test(name, mapping, bytecode_path):
             self.import_(mapping[name], name)
-            ukijumuisha open(bytecode_path, 'rb') kama file:
+            ukijumuisha open(bytecode_path, 'rb') as file:
                 self.assertGreater(len(file.read()), 16)
 
         self._test_partial_magic(test)
@@ -551,10 +551,10 @@ kundi SourceLoaderBadBytecodeTest:
     @util.writes_bytecode_files
     eleza test_magic_only(self):
         # When there ni only the magic number, regenerate the .pyc ikiwa possible,
-        # isipokua ashiria EOFError.
+        # isipokua  ashiria EOFError.
         eleza test(name, mapping, bytecode_path):
             self.import_(mapping[name], name)
-            ukijumuisha open(bytecode_path, 'rb') kama file:
+            ukijumuisha open(bytecode_path, 'rb') as file:
                 self.assertGreater(len(file.read()), 16)
 
         self._test_magic_only(test)
@@ -565,7 +565,7 @@ kundi SourceLoaderBadBytecodeTest:
         # regenerated.
         eleza test(name, mapping, bytecode_path):
             self.import_(mapping[name], name)
-            ukijumuisha open(bytecode_path, 'rb') kama bytecode_file:
+            ukijumuisha open(bytecode_path, 'rb') as bytecode_file:
                 self.assertEqual(bytecode_file.read(4),
                                  self.util.MAGIC_NUMBER)
 
@@ -573,49 +573,49 @@ kundi SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     eleza test_partial_timestamp(self):
-        # When the timestamp ni partial, regenerate the .pyc, ama
-        # ashiria EOFError.
+        # When the timestamp ni partial, regenerate the .pyc, else
+        #  ashiria EOFError.
         eleza test(name, mapping, bc_path):
             self.import_(mapping[name], name)
-            ukijumuisha open(bc_path, 'rb') kama file:
+            ukijumuisha open(bc_path, 'rb') as file:
                 self.assertGreater(len(file.read()), 16)
 
         self._test_partial_timestamp(test)
 
     @util.writes_bytecode_files
     eleza test_partial_flags(self):
-        # When the flags ni partial, regenerate the .pyc, isipokua ashiria EOFError.
+        # When the flags ni partial, regenerate the .pyc, isipokua  ashiria EOFError.
         eleza test(name, mapping, bc_path):
             self.import_(mapping[name], name)
-            ukijumuisha open(bc_path, 'rb') kama file:
+            ukijumuisha open(bc_path, 'rb') as file:
                 self.assertGreater(len(file.read()), 16)
 
         self._test_partial_flags(test)
 
     @util.writes_bytecode_files
     eleza test_partial_hash(self):
-        # When the hash ni partial, regenerate the .pyc, isipokua ashiria EOFError.
+        # When the hash ni partial, regenerate the .pyc, isipokua  ashiria EOFError.
         eleza test(name, mapping, bc_path):
             self.import_(mapping[name], name)
-            ukijumuisha open(bc_path, 'rb') kama file:
+            ukijumuisha open(bc_path, 'rb') as file:
                 self.assertGreater(len(file.read()), 16)
 
         self._test_partial_hash(test)
 
     @util.writes_bytecode_files
     eleza test_partial_size(self):
-        # When the size ni partial, regenerate the .pyc, ama
-        # ashiria EOFError.
+        # When the size ni partial, regenerate the .pyc, else
+        #  ashiria EOFError.
         eleza test(name, mapping, bc_path):
             self.import_(mapping[name], name)
-            ukijumuisha open(bc_path, 'rb') kama file:
+            ukijumuisha open(bc_path, 'rb') as file:
                 self.assertGreater(len(file.read()), 16)
 
         self._test_partial_size(test)
 
     @util.writes_bytecode_files
     eleza test_no_marshal(self):
-        # When there ni only the magic number na timestamp, ashiria EOFError.
+        # When there ni only the magic number na timestamp,  ashiria EOFError.
         self._test_no_marshal()
 
     @util.writes_bytecode_files
@@ -626,7 +626,7 @@ kundi SourceLoaderBadBytecodeTest:
     # [bad marshal]
     @util.writes_bytecode_files
     eleza test_bad_marshal(self):
-        # Bad marshal data should ashiria a ValueError.
+        # Bad marshal data should  ashiria a ValueError.
         self._test_bad_marshal()
 
     # [bad timestamp]
@@ -636,16 +636,16 @@ kundi SourceLoaderBadBytecodeTest:
         # When the timestamp ni older than the source, bytecode should be
         # regenerated.
         zeros = b'\x00\x00\x00\x00'
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             py_compile.compile(mapping['_temp'])
             bytecode_path = self.util.cache_from_source(mapping['_temp'])
-            ukijumuisha open(bytecode_path, 'r+b') kama bytecode_file:
+            ukijumuisha open(bytecode_path, 'r+b') as bytecode_file:
                 bytecode_file.seek(8)
                 bytecode_file.write(zeros)
             self.import_(mapping['_temp'], '_temp')
             source_mtime = os.path.getmtime(mapping['_temp'])
             source_timestamp = self.importlib._pack_uint32(source_mtime)
-            ukijumuisha open(bytecode_path, 'rb') kama bytecode_file:
+            ukijumuisha open(bytecode_path, 'rb') as bytecode_file:
                 bytecode_file.seek(8)
                 self.assertEqual(bytecode_file.read(4), source_timestamp)
 
@@ -653,18 +653,18 @@ kundi SourceLoaderBadBytecodeTest:
     @util.writes_bytecode_files
     eleza test_read_only_bytecode(self):
         # When bytecode ni read-only but should be rewritten, fail silently.
-        ukijumuisha util.create_modules('_temp') kama mapping:
+        ukijumuisha util.create_modules('_temp') as mapping:
             # Create bytecode that will need to be re-created.
             py_compile.compile(mapping['_temp'])
             bytecode_path = self.util.cache_from_source(mapping['_temp'])
-            ukijumuisha open(bytecode_path, 'r+b') kama bytecode_file:
+            ukijumuisha open(bytecode_path, 'r+b') as bytecode_file:
                 bytecode_file.seek(0)
                 bytecode_file.write(b'\x00\x00\x00\x00')
             # Make the bytecode read-only.
             os.chmod(bytecode_path,
                         stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
             jaribu:
-                # Should sio ashiria OSError!
+                # Should sio  ashiria OSError!
                 self.import_(mapping['_temp'], '_temp')
             mwishowe:
                 # Make writable kila eventual clean-up.
@@ -673,7 +673,7 @@ kundi SourceLoaderBadBytecodeTest:
 
 kundi SourceLoaderBadBytecodeTestPEP451(
         SourceLoaderBadBytecodeTest, BadBytecodeTestPEP451):
-    pita
+    pass
 
 
 (Frozen_SourceBadBytecodePEP451,
@@ -685,7 +685,7 @@ kundi SourceLoaderBadBytecodeTestPEP451(
 
 kundi SourceLoaderBadBytecodeTestPEP302(
         SourceLoaderBadBytecodeTest, BadBytecodeTestPEP302):
-    pita
+    pass
 
 
 (Frozen_SourceBadBytecodePEP302,
@@ -703,7 +703,7 @@ kundi SourcelessLoaderBadBytecodeTest:
 
     eleza test_empty_file(self):
         eleza test(name, mapping, bytecode_path):
-            ukijumuisha self.assertRaises(ImportError) kama cm:
+            ukijumuisha self.assertRaises(ImportError) as cm:
                 self.import_(bytecode_path, name)
             self.assertEqual(cm.exception.name, name)
             self.assertEqual(cm.exception.path, bytecode_path)
@@ -712,7 +712,7 @@ kundi SourcelessLoaderBadBytecodeTest:
 
     eleza test_partial_magic(self):
         eleza test(name, mapping, bytecode_path):
-            ukijumuisha self.assertRaises(ImportError) kama cm:
+            ukijumuisha self.assertRaises(ImportError) as cm:
                 self.import_(bytecode_path, name)
             self.assertEqual(cm.exception.name, name)
             self.assertEqual(cm.exception.path, bytecode_path)
@@ -727,7 +727,7 @@ kundi SourcelessLoaderBadBytecodeTest:
 
     eleza test_bad_magic(self):
         eleza test(name, mapping, bytecode_path):
-            ukijumuisha self.assertRaises(ImportError) kama cm:
+            ukijumuisha self.assertRaises(ImportError) as cm:
                 self.import_(bytecode_path, name)
             self.assertEqual(cm.exception.name, name)
             self.assertEqual(cm.exception.path, bytecode_path)
@@ -771,7 +771,7 @@ kundi SourcelessLoaderBadBytecodeTest:
 
 kundi SourcelessLoaderBadBytecodeTestPEP451(SourcelessLoaderBadBytecodeTest,
         BadBytecodeTestPEP451):
-    pita
+    pass
 
 
 (Frozen_SourcelessBadBytecodePEP451,
@@ -783,7 +783,7 @@ kundi SourcelessLoaderBadBytecodeTestPEP451(SourcelessLoaderBadBytecodeTest,
 
 kundi SourcelessLoaderBadBytecodeTestPEP302(SourcelessLoaderBadBytecodeTest,
         BadBytecodeTestPEP302):
-    pita
+    pass
 
 
 (Frozen_SourcelessBadBytecodePEP302,

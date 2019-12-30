@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here ni sio    --
+-- particular, achieving the same results as the tests here is not    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are sio exhaustive.                   --
+-- or specification.  The tests are not exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -315,7 +315,7 @@ mulx321 multiply 9 900000000000000000000   -> 8.10000000E+21  Rounded
 mulx322 multiply 9 9000000000000000000000   -> 8.10000000E+22  Rounded
 mulx323 multiply 9 90000000000000000000000   -> 8.10000000E+23  Rounded
 
--- fastpath komaers
+-- fastpath breakers
 precision:   29
 mulx330 multiply 1.491824697641270317824852952837224 1.105170918075647624811707826490246514675628614562883537345747603 -> 1.6487212707001281468486507878 Inexact Rounded
 precision:   55
@@ -567,7 +567,7 @@ precision: 999
 mulx784 multiply 1e-600000000 1e-400000997 -> 1E-1000000997 Subnormal
 mulx785 multiply 1e-600000000 1e-400000998 -> 0E-1000000997 Underflow Subnormal Inexact Rounded Clamped
 
--- following testcases [through mulx800] sio yet run against code
+-- following testcases [through mulx800] not yet run against code
 precision: 9999
 mulx786 multiply 1e-600000000 1e-400009997 -> 1E-1000009997 Subnormal
 mulx787 multiply 1e-600000000 1e-400009998 -> 0E-1000009997 Underflow Subnormal Inexact Rounded Clamped

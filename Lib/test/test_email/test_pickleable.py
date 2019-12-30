@@ -1,50 +1,50 @@
-import unittest
-import textwrap
-import copy
-import pickle
-import email
-import email.message
-from email import policy
-from email.headerregistry import HeaderRegistry
-from test.test_email import TestEmailBase, parameterize
+agiza unittest
+agiza textwrap
+agiza copy
+agiza pickle
+agiza email
+agiza email.message
+kutoka email agiza policy
+kutoka email.headerregistry agiza HeaderRegistry
+kutoka test.test_email agiza TestEmailBase, parameterize
 
 
 @parameterize
-class TestPickleCopyHeader(TestEmailBase):
+kundi TestPickleCopyHeader(TestEmailBase):
 
     header_factory = HeaderRegistry()
 
-    unstructured = header_factory('subject', 'this is a test')
+    unstructured = header_factory('subject', 'this ni a test')
 
     header_params = {
-        'subject': ('subject', 'this is a test'),
+        'subject': ('subject', 'this ni a test'),
         'from':    ('from',    'frodo@mordor.net'),
         'to':      ('to',      'a: k@b.com, y@z.com;, j@f.com'),
         'date':    ('date',    'Tue, 29 May 2012 09:24:26 +1000'),
         }
 
-    def header_as_deepcopy(self, name, value):
+    eleza header_as_deepcopy(self, name, value):
         header = self.header_factory(name, value)
         h = copy.deepcopy(header)
         self.assertEqual(str(h), str(header))
 
-    def header_as_pickle(self, name, value):
+    eleza header_as_pickle(self, name, value):
         header = self.header_factory(name, value)
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             p = pickle.dumps(header, proto)
             h = pickle.loads(p)
             self.assertEqual(str(h), str(header))
 
 
 @parameterize
-class TestPickleCopyMessage(TestEmailBase):
+kundi TestPickleCopyMessage(TestEmailBase):
 
     # Message objects are a sequence, so we have to make them a one-tuple in
     # msg_params so they get passed to the parameterized test method as a
     # single argument instead of as a list of headers.
     msg_params = {}
 
-    # Note: there will be no custom header objects in the parsed message.
+    # Note: there will be no custom header objects kwenye the parsed message.
     msg_params['parsed'] = (email.message_from_string(textwrap.dedent("""\
         Date: Tue, 29 May 2012 09:24:26 +1000
         From: frodo@mordor.net
@@ -61,16 +61,16 @@ class TestPickleCopyMessage(TestEmailBase):
     msg_params['created'][0]['Subject'] = 'help'
     msg_params['created'][0].set_payload('I think I forgot the ring.')
 
-    def msg_as_deepcopy(self, msg):
+    eleza msg_as_deepcopy(self, msg):
         msg2 = copy.deepcopy(msg)
         self.assertEqual(msg2.as_string(), msg.as_string())
 
-    def msg_as_pickle(self, msg):
-        for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+    eleza msg_as_pickle(self, msg):
+        kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             p = pickle.dumps(msg, proto)
             msg2 = pickle.loads(p)
             self.assertEqual(msg2.as_string(), msg.as_string())
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

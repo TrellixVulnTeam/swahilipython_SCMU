@@ -1,5 +1,5 @@
 """Generate cryptographically strong pseudo-random numbers suitable for
-managing secrets such kama account authentication, tokens, na similar.
+managing secrets such as account authentication, tokens, na similar.
 
 See PEP 506 kila more information.
 https://www.python.org/dev/peps/pep-0506/
@@ -27,7 +27,7 @@ choice = _sysrand.choice
 eleza randbelow(exclusive_upper_bound):
     """Return a random int kwenye the range [0, n)."""
     ikiwa exclusive_upper_bound <= 0:
-        ashiria ValueError("Upper bound must be positive.")
+         ashiria ValueError("Upper bound must be positive.")
     rudisha _sysrand._randbelow(exclusive_upper_bound)
 
 DEFAULT_ENTROPY = 32  # number of bytes to rudisha by default

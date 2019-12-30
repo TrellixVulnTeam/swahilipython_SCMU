@@ -24,7 +24,7 @@ eleza restore_traceback():
 
 kundi Test_TestResult(unittest.TestCase):
     # Note: there are sio separate tests kila TestResult.wasSuccessful(),
-    # TestResult.errors, TestResult.failures, TestResult.testsRun ama
+    # TestResult.errors, TestResult.failures, TestResult.testsRun or
     # TestResult.shouldStop because these only have meaning kwenye terms of
     # other TestResult methods.
     #
@@ -58,7 +58,7 @@ kundi Test_TestResult(unittest.TestCase):
     eleza test_startTest(self):
         kundi Foo(unittest.TestCase):
             eleza test_1(self):
-                pita
+                pass
 
         test = Foo('test_1')
 
@@ -79,7 +79,7 @@ kundi Test_TestResult(unittest.TestCase):
     eleza test_stopTest(self):
         kundi Foo(unittest.TestCase):
             eleza test_1(self):
-                pita
+                pass
 
         test = Foo('test_1')
 
@@ -95,7 +95,7 @@ kundi Test_TestResult(unittest.TestCase):
 
         result.stopTest(test)
 
-        # Same tests kama above; make sure nothing has changed
+        # Same tests as above; make sure nothing has changed
         self.assertKweli(result.wasSuccessful())
         self.assertEqual(len(result.errors), 0)
         self.assertEqual(len(result.failures), 0)
@@ -112,17 +112,17 @@ kundi Test_TestResult(unittest.TestCase):
     # ...
     # "Called when the test case test succeeds"
     # ...
-    # "wasSuccessful() - Returns Kweli ikiwa all tests run so far have pitaed,
-    # otherwise rudishas Uongo"
+    # "wasSuccessful() - Returns Kweli ikiwa all tests run so far have passed,
+    # otherwise returns Uongo"
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
-    # "errors - A list containing 2-tuples of TestCase instances na
-    # formatted tracebacks. Each tuple represents a test which ashiriad an
+    # "errors - A list containing 2-tuples of TestCase instances and
+    # formatted tracebacks. Each tuple represents a test which raised an
     # unexpected exception. Contains formatted
     # tracebacks instead of sys.exc_info() results."
     # ...
-    # "failures - A list containing 2-tuples of TestCase instances na
+    # "failures - A list containing 2-tuples of TestCase instances and
     # formatted tracebacks. Each tuple represents a test where a failure was
     # explicitly signalled using the TestCase.fail*() ama TestCase.assert*()
     # methods. Contains formatted tracebacks instead
@@ -130,7 +130,7 @@ kundi Test_TestResult(unittest.TestCase):
     eleza test_addSuccess(self):
         kundi Foo(unittest.TestCase):
             eleza test_1(self):
-                pita
+                pass
 
         test = Foo('test_1')
 
@@ -149,19 +149,19 @@ kundi Test_TestResult(unittest.TestCase):
     # "addFailure(test, err)"
     # ...
     # "Called when the test case test signals a failure. err ni a tuple of
-    # the form rudishaed by sys.exc_info(): (type, value, traceback)"
+    # the form returned by sys.exc_info(): (type, value, traceback)"
     # ...
-    # "wasSuccessful() - Returns Kweli ikiwa all tests run so far have pitaed,
-    # otherwise rudishas Uongo"
+    # "wasSuccessful() - Returns Kweli ikiwa all tests run so far have passed,
+    # otherwise returns Uongo"
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
-    # "errors - A list containing 2-tuples of TestCase instances na
-    # formatted tracebacks. Each tuple represents a test which ashiriad an
+    # "errors - A list containing 2-tuples of TestCase instances and
+    # formatted tracebacks. Each tuple represents a test which raised an
     # unexpected exception. Contains formatted
     # tracebacks instead of sys.exc_info() results."
     # ...
-    # "failures - A list containing 2-tuples of TestCase instances na
+    # "failures - A list containing 2-tuples of TestCase instances and
     # formatted tracebacks. Each tuple represents a test where a failure was
     # explicitly signalled using the TestCase.fail*() ama TestCase.assert*()
     # methods. Contains formatted tracebacks instead
@@ -169,7 +169,7 @@ kundi Test_TestResult(unittest.TestCase):
     eleza test_addFailure(self):
         kundi Foo(unittest.TestCase):
             eleza test_1(self):
-                pita
+                pass
 
         test = Foo('test_1')
         jaribu:
@@ -195,21 +195,21 @@ kundi Test_TestResult(unittest.TestCase):
 
     # "addError(test, err)"
     # ...
-    # "Called when the test case test ashirias an unexpected exception err
-    # ni a tuple of the form rudishaed by sys.exc_info():
+    # "Called when the test case test raises an unexpected exception err
+    # ni a tuple of the form returned by sys.exc_info():
     # (type, value, traceback)"
     # ...
-    # "wasSuccessful() - Returns Kweli ikiwa all tests run so far have pitaed,
-    # otherwise rudishas Uongo"
+    # "wasSuccessful() - Returns Kweli ikiwa all tests run so far have passed,
+    # otherwise returns Uongo"
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
-    # "errors - A list containing 2-tuples of TestCase instances na
-    # formatted tracebacks. Each tuple represents a test which ashiriad an
+    # "errors - A list containing 2-tuples of TestCase instances and
+    # formatted tracebacks. Each tuple represents a test which raised an
     # unexpected exception. Contains formatted
     # tracebacks instead of sys.exc_info() results."
     # ...
-    # "failures - A list containing 2-tuples of TestCase instances na
+    # "failures - A list containing 2-tuples of TestCase instances and
     # formatted tracebacks. Each tuple represents a test where a failure was
     # explicitly signalled using the TestCase.fail*() ama TestCase.assert*()
     # methods. Contains formatted tracebacks instead
@@ -217,11 +217,11 @@ kundi Test_TestResult(unittest.TestCase):
     eleza test_addError(self):
         kundi Foo(unittest.TestCase):
             eleza test_1(self):
-                pita
+                pass
 
         test = Foo('test_1')
         jaribu:
-            ashiria TypeError()
+             ashiria TypeError()
         tatizo:
             exc_info_tuple = sys.exc_info()
 
@@ -268,7 +268,7 @@ kundi Test_TestResult(unittest.TestCase):
                     subtest = self._subtest
                     jaribu:
                         1/0
-                    tatizo ZeroDivisionError:
+                    except ZeroDivisionError:
                         exc_info_tuple = sys.exc_info()
                     # Register an error by hand (to check the API)
                     result.addSubTest(test, subtest, exc_info_tuple)
@@ -470,39 +470,39 @@ kundi Test_OldTestResult(unittest.TestCase):
                 self.skipTest('foobar')
             @unittest.expectedFailure
             eleza testExpectedFail(self):
-                ashiria TypeError
+                 ashiria TypeError
             @unittest.expectedFailure
             eleza testUnexpectedSuccess(self):
-                pita
+                pass
 
-        kila test_name, should_pita kwenye (('testSkip', Kweli),
+        kila test_name, should_pass kwenye (('testSkip', Kweli),
                                        ('testExpectedFail', Kweli),
                                        ('testUnexpectedSuccess', Uongo)):
             test = Test(test_name)
-            self.assertOldResultWarning(test, int(sio should_pita))
+            self.assertOldResultWarning(test, int(not should_pass))
 
     eleza testOldTestTesultSetup(self):
         kundi Test(unittest.TestCase):
             eleza setUp(self):
                 self.skipTest('no reason')
             eleza testFoo(self):
-                pita
+                pass
         self.assertOldResultWarning(Test('testFoo'), 0)
 
     eleza testOldTestResultClass(self):
         @unittest.skip('no reason')
         kundi Test(unittest.TestCase):
             eleza testFoo(self):
-                pita
+                pass
         self.assertOldResultWarning(Test('testFoo'), 0)
 
     eleza testOldResultWithRunner(self):
         kundi Test(unittest.TestCase):
             eleza testFoo(self):
-                pita
+                pass
         runner = unittest.TextTestRunner(resultclass=OldResult,
                                           stream=io.StringIO())
-        # This will ashiria an exception ikiwa TextTestRunner can't handle old
+        # This will  ashiria an exception ikiwa TextTestRunner can't handle old
         # test result objects
         runner.run(Test('testFoo'))
 
@@ -642,7 +642,7 @@ kundi TestOutputBuffering(unittest.TestCase):
             eleza setUpClass(cls):
                 1/0
             eleza test_foo(self):
-                pita
+                pass
         suite = unittest.TestSuite([Foo('test_foo')])
         suite(result)
         self.assertEqual(len(result.errors), 1)
@@ -656,7 +656,7 @@ kundi TestOutputBuffering(unittest.TestCase):
             eleza tearDownClass(cls):
                 1/0
             eleza test_foo(self):
-                pita
+                pass
         suite = unittest.TestSuite([Foo('test_foo')])
         suite(result)
         self.assertEqual(len(result.errors), 1)
@@ -667,7 +667,7 @@ kundi TestOutputBuffering(unittest.TestCase):
 
         kundi Foo(unittest.TestCase):
             eleza test_foo(self):
-                pita
+                pass
         kundi Module(object):
             @staticmethod
             eleza setUpModule():
@@ -686,7 +686,7 @@ kundi TestOutputBuffering(unittest.TestCase):
 
         kundi Foo(unittest.TestCase):
             eleza test_foo(self):
-                pita
+                pass
         kundi Module(object):
             @staticmethod
             eleza tearDownModule():

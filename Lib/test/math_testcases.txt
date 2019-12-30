@@ -1,4 +1,4 @@
--- Testcases kila functions kwenye math.
+-- Testcases for functions in math.
 --
 -- Each line takes the form:
 --
@@ -6,45 +6,45 @@
 --
 -- where:
 --
---   <testid> ni a short name identifying the test,
+--   <testid> is a short name identifying the test,
 --
---   <function> ni the function to be tested (exp, cos, asinh, ...),
+--   <function> is the function to be tested (exp, cos, asinh, ...),
 --
---   <input_value> ni a string representing a floating-point value
+--   <input_value> is a string representing a floating-point value
 --
---   <output_value> ni the expected (ideal) output value, again
---     represented kama a string.
+--   <output_value> is the expected (ideal) output value, again
+--     represented as a string.
 --
---   <flags> ni a list of the floating-point flags required by C99
+--   <flags> is a list of the floating-point flags required by C99
 --
 -- The possible flags are:
 --
---   divide-by-zero : ashiriad when a finite input gives a
+--   divide-by-zero : raised when a finite input gives a
 --     mathematically infinite result.
 --
---   overflow : ashiriad when a finite input gives a finite result that
---     ni too large to fit kwenye the usual range of an IEEE 754 double.
+--   overflow : raised when a finite input gives a finite result that
+--     is too large to fit in the usual range of an IEEE 754 double.
 --
---   invalid : ashiriad kila invalid inputs (e.g., sqrt(-1))
+--   invalid : raised for invalid inputs (e.g., sqrt(-1))
 --
 --   ignore-sign : indicates that the sign of the result is
---     unspecified; e.g., ikiwa the result ni given kama inf,
---     then both -inf na inf should be accepted kama correct.
+--     unspecified; e.g., if the result is given as inf,
+--     then both -inf and inf should be accepted as correct.
 --
--- Flags may appear kwenye any order.
+-- Flags may appear in any order.
 --
--- Lines beginning ukijumuisha '--' (like this one) start a comment, na are
--- ignored.  Blank lines, ama lines containing only whitespace, are also
+-- Lines beginning with '--' (like this one) start a comment, and are
+-- ignored.  Blank lines, or lines containing only whitespace, are also
 -- ignored.
 
--- Many of the values below were computed ukijumuisha the help of
--- version 2.4 of the MPFR library kila multiple-precision
--- floating-point computations ukijumuisha correct rounding.  All output
--- values kwenye this file are (modulo yet-to-be-discovered bugs)
--- correctly rounded, provided that each input na output decimal
--- floating-point value below ni interpreted kama a representation of
+-- Many of the values below were computed with the help of
+-- version 2.4 of the MPFR library for multiple-precision
+-- floating-point computations with correct rounding.  All output
+-- values in this file are (modulo yet-to-be-discovered bugs)
+-- correctly rounded, provided that each input and output decimal
+-- floating-point value below is interpreted as a representation of
 -- the corresponding nearest IEEE 754 double-precision value.  See the
--- MPFR homepage at http://www.mpfr.org kila more information about the
+-- MPFR homepage at http://www.mpfr.org for more information about the
 -- MPFR project.
 
 
@@ -84,7 +84,7 @@ erf0041 erf 1e16 -> 1.0
 erf0042 erf -1e150 -> -1.0
 erf0043 erf 1.7e308 -> 1.0
 
--- Issue 8986: inputs x ukijumuisha exp(-x*x) near the underflow threshold
+-- Issue 8986: inputs x with exp(-x*x) near the underflow threshold
 -- incorrectly signalled overflow on some platforms.
 erf0100 erf 26.2 -> 1.0
 erf0101 erf 26.4 -> 1.0
@@ -134,7 +134,7 @@ erfc0033 erfc -4 -> 1.9999999845827421
 erfc0034 erfc -5 -> 1.9999999999984626
 erfc0035 erfc -6 -> 2.0
 
--- kama x -> infinity, erfc(x) behaves like exp(-x*x)/x/sqrt(pi)
+-- as x -> infinity, erfc(x) behaves like exp(-x*x)/x/sqrt(pi)
 erfc0040 erfc 20 -> 5.3958656116079012e-176
 erfc0041 erfc 25 -> 8.3001725711965228e-274
 erfc0042 erfc 27 -> 5.2370464393526292e-319
@@ -146,7 +146,7 @@ erfc0051 erfc 1e16 -> 0.0
 erfc0052 erfc -1e150 -> 2.0
 erfc0053 erfc 1.7e308 -> 0.0
 
--- Issue 8986: inputs x ukijumuisha exp(-x*x) near the underflow threshold
+-- Issue 8986: inputs x with exp(-x*x) near the underflow threshold
 -- incorrectly signalled overflow on some platforms.
 erfc0100 erfc 26.2 -> 1.6432507924389461e-300
 erfc0101 erfc 26.4 -> 4.4017768588035426e-305
@@ -247,7 +247,7 @@ lgam0106 lgamma 2.55998332785163e305 -> 1.7976931348623099e+308
 lgam0107 lgamma 2.55998332785164e305 -> inf overflow
 lgam0108 lgamma 1.7e308 -> inf overflow
 
--- inputs kila which gamma(x) ni tiny
+-- inputs for which gamma(x) is tiny
 lgam0120 lgamma -100.5 -> -364.90096830942736
 lgam0121 lgamma -160.5 -> -656.88005261126432
 lgam0122 lgamma -170.5 -> -707.99843314507882
@@ -266,7 +266,7 @@ lgam0151 lgamma 1.0000000000000002 -> -1.2816762426960008e-16
 lgam0152 lgamma 1.9999999999999998 -> -9.3876980655431170e-17
 lgam0153 lgamma 2.0000000000000004 -> 1.8775396131086244e-16
 
--- ... na negative argument
+-- ... and negative argument
 lgam0160 lgamma -2.7476826467 -> -5.2477408147689136e-11
 lgam0161 lgamma -2.457024738 -> 3.3464637541912932e-10
 
@@ -349,7 +349,7 @@ gam0104 gamma 172 -> inf        overflow
 gam0105 gamma 2000 -> inf       overflow
 gam0106 gamma 1.7e308 -> inf    overflow
 
--- inputs kila which gamma(x) ni tiny
+-- inputs for which gamma(x) is tiny
 gam0120 gamma -100.5 -> -3.3536908198076787e-159
 gam0121 gamma -160.5 -> -5.2555464470078293e-286
 gam0122 gamma -170.5 -> -3.3127395215386074e-308
@@ -364,14 +364,14 @@ gam0130 gamma -1000.5 -> -0.0
 gam0131 gamma -1000000000.3 -> -0.0
 gam0132 gamma -4503599627370495.5 -> 0.0
 
--- inputs that cause problems kila the standard reflection formula,
--- thanks to loss of accuracy kwenye 1-x
+-- inputs that cause problems for the standard reflection formula,
+-- thanks to loss of accuracy in 1-x
 gam0140 gamma -63.349078729022985 -> 4.1777971677761880e-88
 gam0141 gamma -127.45117632943295 -> 1.1831110896236810e-214
 
 
 -----------------------------------------------------------
--- log1p: log(1 + x), without precision loss kila small x --
+-- log1p: log(1 + x), without precision loss for small x --
 -----------------------------------------------------------
 
 -- special values
@@ -404,7 +404,7 @@ log1p0122 log1p -1e-300 -> -1e-300
 log1p0123 log1p -1e-150 -> -1e-150
 log1p0124 log1p -1e-20 -> -1e-20
 
--- some (mostly) random small na moderate-sized values
+-- some (mostly) random small and moderate-sized values
 log1p0200 log1p -0.89156889782277482 -> -2.2216403106762863
 log1p0201 log1p -0.23858496047770464 -> -0.27257668276980057
 log1p0202 log1p -0.011641726191307515 -> -0.011710021654495657
@@ -435,7 +435,7 @@ log1p0301 log1p 1.0000000000000001e+300 -> 690.77552789821368
 log1p0302 log1p 1.0000000000000001e+70 -> 161.18095650958321
 log1p0303 log1p 10000000000.000000 -> 23.025850930040455
 
--- other values transferred kutoka testLog1p kwenye test_math
+-- other values transferred from testLog1p in test_math
 log1p0400 log1p -0.63212055882855767 -> -1.0000000000000000
 log1p0401 log1p 1.7182818284590451 -> 1.0000000000000000
 log1p0402 log1p 1.0000000000000000 -> 0.69314718055994529
@@ -443,7 +443,7 @@ log1p0403 log1p 1.2379400392853803e+27 -> 62.383246250395075
 
 
 -----------------------------------------------------------
--- expm1: exp(x) - 1, without precision loss kila small x --
+-- expm1: exp(x) - 1, without precision loss for small x --
 -----------------------------------------------------------
 
 -- special values
@@ -453,7 +453,7 @@ expm10002 expm1 inf -> inf
 expm10003 expm1 -inf -> -1.0
 expm10004 expm1 nan -> nan
 
--- expm1(x) ~ x kila tiny x
+-- expm1(x) ~ x for tiny x
 expm10010 expm1 5e-324 -> 5e-324
 expm10011 expm1 1e-320 -> 1e-320
 expm10012 expm1 1e-300 -> 1e-300
@@ -495,8 +495,8 @@ expm10201 expm1 -37.0 -> -0.99999999999999989
 expm10200 expm1 -38.0 -> -1.0
 expm10210 expm1 -710.0 -> -1.0
 -- the formula expm1(x) = 2 * sinh(x/2) * exp(x/2) doesn't work so
--- well when exp(x/2) ni subnormal ama underflows to zero; check we're
--- sio using it!
+-- well when exp(x/2) is subnormal or underflows to zero; check we're
+-- not using it!
 expm10211 expm1 -1420.0 -> -1.0
 expm10212 expm1 -1450.0 -> -1.0
 expm10213 expm1 -1500.0 -> -1.0
@@ -506,7 +506,7 @@ expm10215 expm1 -1.79e308 -> -1.0
 -- extreme positive values
 expm10300 expm1 300 -> 1.9424263952412558e+130
 expm10301 expm1 700 -> 1.0142320547350045e+304
--- the next test (expm10302) ni disabled because it causes failure on
+-- the next test (expm10302) is disabled because it causes failure on
 -- OS X 10.4/Intel: apparently all values over 709.78 produce an
 -- overflow on that platform.  See issue #7575.
 -- expm10302 expm1 709.78271289328393 -> 1.7976931346824240e+308

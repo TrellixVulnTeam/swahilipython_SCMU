@@ -2,7 +2,7 @@
 up 2to3's matching process. After the tree patterns are reduced to
 their rarest linear path, a linear Aho-Corasick automaton is
 created. The linear automaton traverses the linear paths kutoka the
-leaves to the root of the AST na rudishas a set of nodes kila further
+leaves to the root of the AST na returns a set of nodes kila further
 matching. This reduces significantly the number of candidate nodes."""
 
 __author__ = "George Boutsioukis <gboutsioukis@gmail.com>"
@@ -66,7 +66,7 @@ kundi BottomMatcher(object):
         isipokua:
             #single token
             #not last
-            ikiwa pattern[0] haiko kwenye start.transition_table:
+            ikiwa pattern[0] sio kwenye start.transition_table:
                 #transition did sio exist, create new
                 next_node = BMNode()
                 start.transition_table[pattern[0]] = next_node
@@ -83,9 +83,9 @@ kundi BottomMatcher(object):
     eleza run(self, leaves):
         """The main interface ukijumuisha the bottom matcher. The tree is
         traversed kutoka the bottom using the constructed
-        automaton. Nodes are only checked once kama the tree is
+        automaton. Nodes are only checked once as the tree is
         retraversed. When the automaton fails, we give it one more
-        shot(in case the above tree matches kama a whole ukijumuisha the
+        shot(in case the above tree matches as a whole ukijumuisha the
         rejected leaf), then we koma kila the next leaf. There ni the
         special case of multiple arguments(see code comments) where we
         recheck the nodes
@@ -94,7 +94,7 @@ kundi BottomMatcher(object):
            The leaves of the AST tree to be matched
 
         Returns:
-           A dictionary of node matches ukijumuisha fixers kama the keys
+           A dictionary of node matches ukijumuisha fixers as the keys
         """
         current_ac_node = self.root
         results = defaultdict(list)
@@ -156,7 +156,7 @@ eleza type_repr(type_num):
     global _type_reprs
     ikiwa sio _type_reprs:
         kutoka .pygram agiza python_symbols
-        # printing tokens ni possible but sio kama useful
+        # printing tokens ni possible but sio as useful
         # kutoka .pgen2 agiza token // token.__dict__.items():
         kila name, val kwenye python_symbols.__dict__.items():
             ikiwa type(val) == int: _type_reprs[val] = name

@@ -1,90 +1,90 @@
-import os
-import signal
-import socket
-import sys
-import time
-import threading
-import unittest
-from unittest import mock
+agiza os
+agiza signal
+agiza socket
+agiza sys
+agiza time
+agiza threading
+agiza unittest
+kutoka unittest agiza mock
 
-if sys.platform != 'win32':
-    ashiria unittest.SkipTest('Windows only')
+ikiwa sys.platform != 'win32':
+     ashiria unittest.SkipTest('Windows only')
 
 agiza _overlapped
 agiza _winapi
 
-import asyncio
-from asyncio import windows_events
-from test.test_asyncio import utils as test_utils
+agiza asyncio
+kutoka asyncio agiza windows_events
+kutoka test.test_asyncio agiza utils as test_utils
 
 
-def tearDownModule():
-    asyncio.set_event_loop_policy(None)
+eleza tearDownModule():
+    asyncio.set_event_loop_policy(Tupu)
 
 
-class UpperProto(asyncio.Protocol):
-    def __init__(self):
+kundi UpperProto(asyncio.Protocol):
+    eleza __init__(self):
         self.buf = []
 
-    def connection_made(self, trans):
+    eleza connection_made(self, trans):
         self.trans = trans
 
-    def data_received(self, data):
+    eleza data_received(self, data):
         self.buf.append(data)
-        if b'\n' in data:
+        ikiwa b'\n' kwenye data:
             self.trans.write(b''.join(self.buf).upper())
             self.trans.close()
 
 
-class ProactorLoopCtrlC(test_utils.TestCase):
+kundi ProactorLoopCtrlC(test_utils.TestCase):
 
-    def test_ctrl_c(self):
+    eleza test_ctrl_c(self):
 
-        def SIGINT_after_delay():
+        eleza SIGINT_after_delay():
             time.sleep(0.1)
             signal.raise_signal(signal.SIGINT)
 
         thread = threading.Thread(target=SIGINT_after_delay)
         loop = asyncio.get_event_loop()
         jaribu:
-            # only start the loop once the event loop is running
+            # only start the loop once the event loop ni running
             loop.call_soon(thread.start)
             loop.run_forever()
             self.fail("should sio fall through 'run_forever'")
-        tatizo KeyboardInterrupt:
+        except KeyboardInterrupt:
             pass
         mwishowe:
             self.close_loop(loop)
         thread.join()
 
 
-class ProactorMultithreading(test_utils.TestCase):
-    def test_run_from_nonmain_thread(self):
-        finished = False
+kundi ProactorMultithreading(test_utils.TestCase):
+    eleza test_run_from_nonmain_thread(self):
+        finished = Uongo
 
-        async def coro():
+        async eleza coro():
             await asyncio.sleep(0)
 
-        def func():
+        eleza func():
             nonlocal finished
             loop = asyncio.new_event_loop()
             loop.run_until_complete(coro())
-            finished = True
+            finished = Kweli
 
         thread = threading.Thread(target=func)
         thread.start()
         thread.join()
-        self.assertTrue(finished)
+        self.assertKweli(finished)
 
 
-class ProactorTests(test_utils.TestCase):
+kundi ProactorTests(test_utils.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.loop = asyncio.ProactorEventLoop()
         self.set_event_loop(self.loop)
 
-    def test_close(self):
+    eleza test_close(self):
         a, b = socket.socketpair()
         trans = self.loop._make_socket_transport(a, asyncio.Protocol())
         f = asyncio.ensure_future(self.loop.sock_recv(b, 100), loop=self.loop)
@@ -93,21 +93,21 @@ class ProactorTests(test_utils.TestCase):
         self.assertEqual(f.result(), b'')
         b.close()
 
-    def test_double_bind(self):
+    eleza test_double_bind(self):
         ADDRESS = r'\\.\pipe\test_double_bind-%s' % os.getpid()
         server1 = windows_events.PipeServer(ADDRESS)
-        with self.assertRaises(PermissionError):
+        ukijumuisha self.assertRaises(PermissionError):
             windows_events.PipeServer(ADDRESS)
         server1.close()
 
-    def test_pipe(self):
+    eleza test_pipe(self):
         res = self.loop.run_until_complete(self._test_pipe())
         self.assertEqual(res, 'done')
 
-    async def _test_pipe(self):
+    async eleza _test_pipe(self):
         ADDRESS = r'\\.\pipe\_test_pipe-%s' % os.getpid()
 
-        with self.assertRaises(FileNotFoundError):
+        ukijumuisha self.assertRaises(FileNotFoundError):
             await self.loop.create_pipe_connection(
                 asyncio.Protocol, ADDRESS)
 
@@ -116,7 +116,7 @@ class ProactorTests(test_utils.TestCase):
         self.assertIsInstance(server, windows_events.PipeServer)
 
         clients = []
-        for i in range(5):
+        kila i kwenye range(5):
             stream_reader = asyncio.StreamReader(loop=self.loop)
             protocol = asyncio.StreamReaderProtocol(stream_reader,
                                                     loop=self.loop)
@@ -126,82 +126,82 @@ class ProactorTests(test_utils.TestCase):
             self.assertEqual(protocol, proto)
             clients.append((stream_reader, trans))
 
-        for i, (r, w) in enumerate(clients):
+        kila i, (r, w) kwenye enumerate(clients):
             w.write('lower-{}\n'.format(i).encode())
 
-        for i, (r, w) in enumerate(clients):
+        kila i, (r, w) kwenye enumerate(clients):
             response = await r.readline()
             self.assertEqual(response, 'LOWER-{}\n'.format(i).encode())
             w.close()
 
         server.close()
 
-        with self.assertRaises(FileNotFoundError):
+        ukijumuisha self.assertRaises(FileNotFoundError):
             await self.loop.create_pipe_connection(
                 asyncio.Protocol, ADDRESS)
 
-        return 'done'
+        rudisha 'done'
 
-    def test_connect_pipe_cancel(self):
+    eleza test_connect_pipe_cancel(self):
         exc = OSError()
         exc.winerror = _overlapped.ERROR_PIPE_BUSY
-        with mock.patch.object(_overlapped, 'ConnectPipe',
+        ukijumuisha mock.patch.object(_overlapped, 'ConnectPipe',
                                side_effect=exc) as connect:
             coro = self.loop._proactor.connect_pipe('pipe_address')
             task = self.loop.create_task(coro)
 
             # check that it's possible to cancel connect_pipe()
             task.cancel()
-            with self.assertRaises(asyncio.CancelledError):
+            ukijumuisha self.assertRaises(asyncio.CancelledError):
                 self.loop.run_until_complete(task)
 
-    def test_wait_for_handle(self):
-        event = _overlapped.CreateEvent(None, True, False, None)
+    eleza test_wait_for_handle(self):
+        event = _overlapped.CreateEvent(Tupu, Kweli, Uongo, Tupu)
         self.addCleanup(_winapi.CloseHandle, event)
 
-        # Wait for unset event with 0.5s timeout;
-        # result should be False at timeout
+        # Wait kila unset event ukijumuisha 0.5s timeout;
+        # result should be Uongo at timeout
         fut = self.loop._proactor.wait_for_handle(event, 0.5)
         start = self.loop.time()
         done = self.loop.run_until_complete(fut)
         elapsed = self.loop.time() - start
 
-        self.assertEqual(done, False)
-        self.assertFalse(fut.result())
+        self.assertEqual(done, Uongo)
+        self.assertUongo(fut.result())
         # bpo-31008: Tolerate only 450 ms (at least 500 ms expected),
         # because of bad clock resolution on Windows
-        self.assertTrue(0.45 <= elapsed <= 0.9, elapsed)
+        self.assertKweli(0.45 <= elapsed <= 0.9, elapsed)
 
         _overlapped.SetEvent(event)
 
-        # Wait for set event;
-        # result should be True immediately
+        # Wait kila set event;
+        # result should be Kweli immediately
         fut = self.loop._proactor.wait_for_handle(event, 10)
         start = self.loop.time()
         done = self.loop.run_until_complete(fut)
         elapsed = self.loop.time() - start
 
-        self.assertEqual(done, True)
-        self.assertTrue(fut.result())
-        self.assertTrue(0 <= elapsed < 0.3, elapsed)
+        self.assertEqual(done, Kweli)
+        self.assertKweli(fut.result())
+        self.assertKweli(0 <= elapsed < 0.3, elapsed)
 
         # asyncio issue #195: cancelling a done _WaitHandleFuture
         # must sio crash
         fut.cancel()
 
-    def test_wait_for_handle_cancel(self):
-        event = _overlapped.CreateEvent(None, True, False, None)
+    eleza test_wait_for_handle_cancel(self):
+        event = _overlapped.CreateEvent(Tupu, Kweli, Uongo, Tupu)
         self.addCleanup(_winapi.CloseHandle, event)
 
-        # Wait for unset event with a cancelled future;
+        # Wait kila unset event ukijumuisha a cancelled future;
         # CancelledError should be raised immediately
         fut = self.loop._proactor.wait_for_handle(event, 10)
         fut.cancel()
         start = self.loop.time()
-        with self.assertRaises(asyncio.CancelledError):
+        ukijumuisha self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(fut)
         elapsed = self.loop.time() - start
-        self.assertTrue(0 <= elapsed < 0.1, elapsed)
+        self.assertKweli(0 <= elapsed < 0.1, elapsed)
 
         # asyncio issue #195: cancelling a _WaitHandleFuture twice
         # must sio crash
@@ -210,10 +210,10 @@ class ProactorTests(test_utils.TestCase):
         fut.cancel()
 
 
-class WinPolicyTests(test_utils.TestCase):
+kundi WinPolicyTests(test_utils.TestCase):
 
-    def test_selector_win_policy(self):
-        async def main():
+    eleza test_selector_win_policy(self):
+        async eleza main():
             self.assertIsInstance(
                 asyncio.get_running_loop(),
                 asyncio.SelectorEventLoop)
@@ -226,8 +226,8 @@ class WinPolicyTests(test_utils.TestCase):
         mwishowe:
             asyncio.set_event_loop_policy(old_policy)
 
-    def test_proactor_win_policy(self):
-        async def main():
+    eleza test_proactor_win_policy(self):
+        async eleza main():
             self.assertIsInstance(
                 asyncio.get_running_loop(),
                 asyncio.ProactorEventLoop)
@@ -241,5 +241,5 @@ class WinPolicyTests(test_utils.TestCase):
             asyncio.set_event_loop_policy(old_policy)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

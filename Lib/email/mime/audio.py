@@ -6,11 +6,11 @@
 
 __all__ = ['MIMEAudio']
 
-import sndhdr
+agiza sndhdr
 
-from io import BytesIO
-from email import encoders
-from email.mime.nonmultipart import MIMENonMultipart
+kutoka io agiza BytesIO
+kutoka email agiza encoders
+kutoka email.mime.nonmultipart agiza MIMENonMultipart
 
 
 
@@ -20,54 +20,54 @@ _sndhdr_MIMEmap = {'au'  : 'basic',
                    'aifc':'x-aiff',
                    }
 
-# There are others in sndhdr that don't have MIME types. :(
+# There are others kwenye sndhdr that don't have MIME types. :(
 # Additional ones to be added to sndhdr? midi, mp3, realaudio, wma??
-def _whatsnd(data):
+eleza _whatsnd(data):
     """Try to identify a sound file type.
 
-    sndhdr.what() has a pretty cruddy interface, unfortunately.  This is why
+    sndhdr.what() has a pretty cruddy interface, unfortunately.  This ni why
     we re-do it here.  It would be easier to reverse engineer the Unix 'file'
-    command and use the standard 'magic' file, as shipped with a modern Unix.
+    command na use the standard 'magic' file, as shipped ukijumuisha a modern Unix.
     """
     hdr = data[:512]
     fakefile = BytesIO(hdr)
-    for testfn in sndhdr.tests:
+    kila testfn kwenye sndhdr.tests:
         res = testfn(hdr, fakefile)
-        if res ni sio None:
-            return _sndhdr_MIMEmap.get(res[0])
-    return None
+        ikiwa res ni sio Tupu:
+            rudisha _sndhdr_MIMEmap.get(res[0])
+    rudisha Tupu
 
 
 
-class MIMEAudio(MIMENonMultipart):
-    """Class for generating audio/* MIME documents."""
+kundi MIMEAudio(MIMENonMultipart):
+    """Class kila generating audio/* MIME documents."""
 
-    def __init__(self, _audiodata, _subtype=None,
-                 _encoder=encoders.encode_base64, *, policy=None, **_params):
+    eleza __init__(self, _audiodata, _subtype=Tupu,
+                 _encoder=encoders.encode_base64, *, policy=Tupu, **_params):
         """Create an audio/* type MIME document.
 
-        _audiodata is a string containing the raw audio data.  If this data
+        _audiodata ni a string containing the raw audio data.  If this data
         can be decoded by the standard Python `sndhdr' module, then the
-        subtype will be automatically included in the Content-Type header.
+        subtype will be automatically included kwenye the Content-Type header.
         Otherwise, you can specify  the specific audio subtype via the
-        _subtype parameter.  If _subtype ni sio given, and no subtype can be
-        guessed, a TypeError is raised.
+        _subtype parameter.  If _subtype ni sio given, na no subtype can be
+        guessed, a TypeError ni raised.
 
-        _encoder is a function which will perform the actual encoding for
-        transport of the image data.  It takes one argument, which is this
-        Image instance.  It should use get_payload() and set_payload() to
+        _encoder ni a function which will perform the actual encoding for
+        transport of the image data.  It takes one argument, which ni this
+        Image instance.  It should use get_payload() na set_payload() to
         change the payload to the encoded form.  It should also add any
-        Content-Transfer-Encoding or other headers to the message as
-        necessary.  The default encoding is Base64.
+        Content-Transfer-Encoding ama other headers to the message as
+        necessary.  The default encoding ni Base64.
 
         Any additional keyword arguments are passed to the base class
         constructor, which turns them into parameters on the Content-Type
         header.
         """
-        if _subtype is None:
+        ikiwa _subtype ni Tupu:
             _subtype = _whatsnd(_audiodata)
-        if _subtype is None:
-            ashiria TypeError('Could sio find audio MIME subtype')
+        ikiwa _subtype ni Tupu:
+             ashiria TypeError('Could sio find audio MIME subtype')
         MIMENonMultipart.__init__(self, 'audio', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_audiodata)

@@ -34,11 +34,11 @@ kwlist = [
     'except',
     'finally',
     'for',
-    'kutoka',
+    'from',
     'kutoka',
     'global',
     'if',
-    'agiza',
+    'import',
     'agiza',
     'in',
     'is',
@@ -46,13 +46,13 @@ kwlist = [
     'nonlocal',
     'not',
     'or',
-    'pita',
-    'ashiria',
-    'rudisha',
+    'pass',
+    'raise',
+    'return',
     'try',
     'while',
     'with',
-    'tuma'
+    'yield'
 ]
 
 iskeyword = frozenset(kwlist).__contains__

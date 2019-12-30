@@ -13,11 +13,11 @@ _FINISHED = 'FINISHED'
 eleza isfuture(obj):
     """Check kila a Future.
 
-    This rudishas Kweli when obj ni a Future instance ama ni advertising
-    itself kama duck-type compatible by setting _asyncio_future_blocking.
+    This returns Kweli when obj ni a Future instance ama ni advertising
+    itself as duck-type compatible by setting _asyncio_future_blocking.
     See comment kwenye Future kila more details.
     """
-    rudisha (hasattr(obj.__class__, '_asyncio_future_blocking') na
+    rudisha (hasattr(obj.__class__, '_asyncio_future_blocking') and
             obj._asyncio_future_blocking ni sio Tupu)
 
 
@@ -32,9 +32,9 @@ eleza _format_callbacks(cb):
 
     ikiwa size == 1:
         cb = format_cb(cb[0][0])
-    lasivyo size == 2:
+    elikiwa size == 2:
         cb = '{}, {}'.format(format_cb(cb[0][0]), format_cb(cb[1][0]))
-    lasivyo size > 2:
+    elikiwa size > 2:
         cb = '{}, <{} more>, {}'.format(format_cb(cb[0][0]),
                                         size - 2,
                                         format_cb(cb[-1][0]))

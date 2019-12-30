@@ -7,7 +7,7 @@ sys.exc_traceback -> sys.exc_info()[2]
 
 # By Jeff Balogh na Benjamin Peterson
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Attr, Call, Name, Number, Subscript, Node, syms
 

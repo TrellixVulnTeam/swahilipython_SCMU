@@ -27,10 +27,10 @@ kundi UserStringTest(
             realresult
         )
 
-    eleza checkashirias(self, exc, obj, methodname, *args):
+    eleza checkraises(self, exc, obj, methodname, *args):
         obj = self.fixtype(obj)
         # we don't fix the arguments, because UserString can't cope ukijumuisha it
-        ukijumuisha self.assertRaises(exc) kama cm:
+        ukijumuisha self.assertRaises(exc) as cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
 
@@ -41,7 +41,7 @@ kundi UserStringTest(
 
     eleza test_rmod(self):
         kundi ustr2(UserString):
-            pita
+            pass
 
         kundi ustr3(ustr2):
             eleza __rmod__(self, other):
@@ -56,14 +56,14 @@ kundi UserStringTest(
         # Check that encoding defaults to utf-8
         self.checkequal(b'\xf0\xa3\x91\x96', '\U00023456', 'encode')
         # Check that errors defaults to 'strict'
-        self.checkashirias(UnicodeError, '\ud800', 'encode')
+        self.checkraises(UnicodeError, '\ud800', 'encode')
 
     eleza test_encode_explicit_none_args(self):
         self.checkequal(b'hello', 'hello', 'encode', Tupu, Tupu)
         # Check that encoding defaults to utf-8
         self.checkequal(b'\xf0\xa3\x91\x96', '\U00023456', 'encode', Tupu, Tupu)
         # Check that errors defaults to 'strict'
-        self.checkashirias(UnicodeError, '\ud800', 'encode', Tupu, Tupu)
+        self.checkraises(UnicodeError, '\ud800', 'encode', Tupu, Tupu)
 
 
 ikiwa __name__ == "__main__":

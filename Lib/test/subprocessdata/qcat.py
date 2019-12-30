@@ -1,7 +1,7 @@
-"""When ran as a script, simulates cat with no arguments."""
+"""When ran as a script, simulates cat ukijumuisha no arguments."""
 
-import sys
+agiza sys
 
-if __name__ == "__main__":
-    for line in sys.stdin:
+ikiwa __name__ == "__main__":
+    kila line kwenye sys.stdin:
         sys.stdout.write(line)

@@ -1,106 +1,106 @@
-import unittest
-import tkinter
-from tkinter import font
-from test.support import requires, run_unittest, gc_collect
-from tkinter.test.support import AbstractTkTest
+agiza unittest
+agiza tkinter
+kutoka tkinter agiza font
+kutoka test.support agiza requires, run_unittest, gc_collect
+kutoka tkinter.test.support agiza AbstractTkTest
 
 requires('gui')
 
 fontname = "TkDefaultFont"
 
-class FontTest(AbstractTkTest, unittest.TestCase):
+kundi FontTest(AbstractTkTest, unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         AbstractTkTest.setUpClass.__func__(cls)
         jaribu:
-            cls.font = font.Font(root=cls.root, name=fontname, exists=True)
-        tatizo tkinter.TclError:
-            cls.font = font.Font(root=cls.root, name=fontname, exists=False)
+            cls.font = font.Font(root=cls.root, name=fontname, exists=Kweli)
+        except tkinter.TclError:
+            cls.font = font.Font(root=cls.root, name=fontname, exists=Uongo)
 
-    def test_configure(self):
+    eleza test_configure(self):
         options = self.font.configure()
         self.assertGreaterEqual(set(options),
             {'family', 'size', 'weight', 'slant', 'underline', 'overstrike'})
-        for key in options:
+        kila key kwenye options:
             self.assertEqual(self.font.cget(key), options[key])
             self.assertEqual(self.font[key], options[key])
-        for key in 'family', 'weight', 'slant':
+        kila key kwenye 'family', 'weight', 'slant':
             self.assertIsInstance(options[key], str)
             self.assertIsInstance(self.font.cget(key), str)
             self.assertIsInstance(self.font[key], str)
-        sizetype = int if self.wantobjects isipokua str
-        for key in 'size', 'underline', 'overstrike':
+        sizetype = int ikiwa self.wantobjects isipokua str
+        kila key kwenye 'size', 'underline', 'overstrike':
             self.assertIsInstance(options[key], sizetype)
             self.assertIsInstance(self.font.cget(key), sizetype)
             self.assertIsInstance(self.font[key], sizetype)
 
-    def test_unicode_family(self):
+    eleza test_unicode_family(self):
         family = 'MS \u30b4\u30b7\u30c3\u30af'
         jaribu:
-            f = font.Font(root=self.root, family=family, exists=True)
-        tatizo tkinter.TclError:
-            f = font.Font(root=self.root, family=family, exists=False)
+            f = font.Font(root=self.root, family=family, exists=Kweli)
+        except tkinter.TclError:
+            f = font.Font(root=self.root, family=family, exists=Uongo)
         self.assertEqual(f.cget('family'), family)
         toa f
         gc_collect()
 
-    def test_actual(self):
+    eleza test_actual(self):
         options = self.font.actual()
         self.assertGreaterEqual(set(options),
             {'family', 'size', 'weight', 'slant', 'underline', 'overstrike'})
-        for key in options:
+        kila key kwenye options:
             self.assertEqual(self.font.actual(key), options[key])
-        for key in 'family', 'weight', 'slant':
+        kila key kwenye 'family', 'weight', 'slant':
             self.assertIsInstance(options[key], str)
             self.assertIsInstance(self.font.actual(key), str)
-        sizetype = int if self.wantobjects isipokua str
-        for key in 'size', 'underline', 'overstrike':
+        sizetype = int ikiwa self.wantobjects isipokua str
+        kila key kwenye 'size', 'underline', 'overstrike':
             self.assertIsInstance(options[key], sizetype)
             self.assertIsInstance(self.font.actual(key), sizetype)
 
-    def test_name(self):
+    eleza test_name(self):
         self.assertEqual(self.font.name, fontname)
         self.assertEqual(str(self.font), fontname)
 
-    def test_eq(self):
-        font1 = font.Font(root=self.root, name=fontname, exists=True)
-        font2 = font.Font(root=self.root, name=fontname, exists=True)
+    eleza test_eq(self):
+        font1 = font.Font(root=self.root, name=fontname, exists=Kweli)
+        font2 = font.Font(root=self.root, name=fontname, exists=Kweli)
         self.assertIsNot(font1, font2)
         self.assertEqual(font1, font2)
         self.assertNotEqual(font1, font1.copy())
         self.assertNotEqual(font1, 0)
 
-    def test_measure(self):
+    eleza test_measure(self):
         self.assertIsInstance(self.font.measure('abc'), int)
 
-    def test_metrics(self):
+    eleza test_metrics(self):
         metrics = self.font.metrics()
         self.assertGreaterEqual(set(metrics),
             {'ascent', 'descent', 'linespace', 'fixed'})
-        for key in metrics:
+        kila key kwenye metrics:
             self.assertEqual(self.font.metrics(key), metrics[key])
             self.assertIsInstance(metrics[key], int)
             self.assertIsInstance(self.font.metrics(key), int)
 
-    def test_families(self):
+    eleza test_families(self):
         families = font.families(self.root)
         self.assertIsInstance(families, tuple)
-        self.assertTrue(families)
-        for family in families:
+        self.assertKweli(families)
+        kila family kwenye families:
             self.assertIsInstance(family, str)
-            self.assertTrue(family)
+            self.assertKweli(family)
 
-    def test_names(self):
+    eleza test_names(self):
         names = font.names(self.root)
         self.assertIsInstance(names, tuple)
-        self.assertTrue(names)
-        for name in names:
+        self.assertKweli(names)
+        kila name kwenye names:
             self.assertIsInstance(name, str)
-            self.assertTrue(name)
+            self.assertKweli(name)
         self.assertIn(fontname, names)
 
 tests_gui = (FontTest, )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(*tests_gui)

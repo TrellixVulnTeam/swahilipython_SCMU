@@ -8,7 +8,7 @@ kutoka unittest agiza mock
 
 jaribu:
     agiza posix
-tatizo ImportError:
+except ImportError:
     posix = Tupu
 
 
@@ -19,7 +19,7 @@ ABSTFN = abspath(support.TESTFN)
 
 eleza skip_if_ABSTFN_contains_backslash(test):
     """
-    On Windows, posixpath.abspath still rudishas paths ukijumuisha backslashes
+    On Windows, posixpath.abspath still returns paths ukijumuisha backslashes
     instead of posix forward slashes. If this ni the case, several tests
     fail, so skip them.
     """
@@ -30,8 +30,8 @@ eleza skip_if_ABSTFN_contains_backslash(test):
 eleza safe_rmdir(dirname):
     jaribu:
         os.rmdir(dirname)
-    tatizo OSError:
-        pita
+    except OSError:
+        pass
 
 kundi PosixPathTest(unittest.TestCase):
 
@@ -155,7 +155,7 @@ kundi PosixPathTest(unittest.TestCase):
         self.assertIs(posixpath.islink(support.TESTFN + "1"), Uongo)
         self.assertIs(posixpath.lexists(support.TESTFN + "2"), Uongo)
 
-        ukijumuisha open(support.TESTFN + "1", "wb") kama f:
+        ukijumuisha open(support.TESTFN + "1", "wb") as f:
             f.write(b"foo")
         self.assertIs(posixpath.islink(support.TESTFN + "1"), Uongo)
 
@@ -229,7 +229,7 @@ kundi PosixPathTest(unittest.TestCase):
             ikiwa path.startswith(ABSTFN) na path != ABSTFN:
                 # ismount tries to read something inside the ABSTFN directory;
                 # simulate this being forbidden (no read permission).
-                ashiria OSError("Fake [Errno 13] Permission denied")
+                 ashiria OSError("Fake [Errno 13] Permission denied")
             ikiwa path == ABSTFN:
                 st_dev = 1
                 st_ino = 1
@@ -245,7 +245,7 @@ kundi PosixPathTest(unittest.TestCase):
         self.assertEqual(posixpath.expanduser(b"foo"), b"foo")
 
     eleza test_expanduser_home_envvar(self):
-        ukijumuisha support.EnvironmentVarGuard() kama env:
+        ukijumuisha support.EnvironmentVarGuard() as env:
             env['HOME'] = '/home/victor'
             self.assertEqual(posixpath.expanduser("~"), "/home/victor")
 
@@ -281,8 +281,8 @@ kundi PosixPathTest(unittest.TestCase):
         self.assertIsInstance(posixpath.expanduser(b"~root/"), bytes)
         self.assertIsInstance(posixpath.expanduser(b"~foo/"), bytes)
 
-        ukijumuisha support.EnvironmentVarGuard() kama env:
-            # expanduser should fall back to using the pitaword database
+        ukijumuisha support.EnvironmentVarGuard() as env:
+            # expanduser should fall back to using the password database
             toa env['HOME']
 
             home = pwd.getpwuid(os.getuid()).pw_dir
@@ -292,7 +292,7 @@ kundi PosixPathTest(unittest.TestCase):
 
             # bpo-10496: If the HOME environment variable ni sio set na the
             # user (current identifier ama name kwenye the path) doesn't exist in
-            # the pitaword database (pwd.getuid() ama pwd.getpwnam() fail),
+            # the password database (pwd.getuid() ama pwd.getpwnam() fail),
             # expanduser() must rudisha the path unchanged.
             ukijumuisha mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \
                  mock.patch.object(pwd, 'getpwnam', side_effect=KeyError):
@@ -391,7 +391,7 @@ kundi PosixPathTest(unittest.TestCase):
                        basename(ABSTFN) + "c", ABSTFN+"c")
             self.assertEqual(realpath(ABSTFN+"c"), ABSTFN+"c")
 
-            # Test using relative path kama well.
+            # Test using relative path as well.
             ukijumuisha support.change_cwd(dirname(ABSTFN)):
                 self.assertEqual(realpath(basename(ABSTFN)), ABSTFN)
         mwishowe:
@@ -429,7 +429,7 @@ kundi PosixPathTest(unittest.TestCase):
             os.symlink('.', ABSTFN + '/0')
             self.assertEqual(realpath(ABSTFN + '/%d' % depth), ABSTFN)
 
-            # Test using relative path kama well.
+            # Test using relative path as well.
             ukijumuisha support.change_cwd(ABSTFN):
                 self.assertEqual(realpath('%d' % depth), ABSTFN)
         mwishowe:
@@ -442,7 +442,7 @@ kundi PosixPathTest(unittest.TestCase):
     @skip_if_ABSTFN_contains_backslash
     eleza test_realpath_resolve_parents(self):
         # We also need to resolve any symlinks kwenye the parents of a relative
-        # path pitaed to realpath. E.g.: current working directory is
+        # path passed to realpath. E.g.: current working directory is
         # /usr/doc ukijumuisha 'doc' being a symlink to /usr/share/doc. We call
         # realpath("a"). This should rudisha /usr/share/doc/a/.
         jaribu:
@@ -630,7 +630,7 @@ kundi PathLikeTests(unittest.TestCase):
         self.file_name = support.TESTFN.lower()
         self.file_path = FakePath(support.TESTFN)
         self.addCleanup(support.unlink, self.file_name)
-        ukijumuisha open(self.file_name, 'xb', 0) kama file:
+        ukijumuisha open(self.file_name, 'xb', 0) as file:
             file.write(b"test_posixpath.PathLikeTests")
 
     eleza assertPathEqual(self, func):

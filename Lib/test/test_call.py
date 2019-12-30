@@ -3,7 +3,7 @@ agiza unittest
 kutoka test.support agiza cpython_only
 jaribu:
     agiza _testcapi
-tatizo ImportError:
+except ImportError:
     _testcapi = Tupu
 agiza struct
 agiza collections
@@ -14,7 +14,7 @@ agiza gc
 kundi FunctionCalls(unittest.TestCase):
 
     eleza test_kwargs_order(self):
-        # bpo-34320:  **kwargs should preserve order of pitaed OrderedDict
+        # bpo-34320:  **kwargs should preserve order of passed OrderedDict
         od = collections.OrderedDict([('a', 1), ('b', 2)])
         od.move_to_end('a')
         expected = list(od.items())
@@ -46,8 +46,8 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_varargs0_ext(self):
         jaribu:
             {}.__contains__(*())
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
 
     eleza test_varargs1_ext(self):
         {}.__contains__(*(0,))
@@ -55,10 +55,10 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_varargs2_ext(self):
         jaribu:
             {}.__contains__(*(1, 2))
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            ashiria RuntimeError
+             ashiria RuntimeError
 
     eleza test_varargs1_kw(self):
         self.assertRaises(TypeError, {}.__contains__, x=2)
@@ -81,26 +81,26 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_oldargs0_1_ext(self):
         jaribu:
             {}.keys(*(0,))
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            ashiria RuntimeError
+             ashiria RuntimeError
 
     eleza test_oldargs0_2_ext(self):
         jaribu:
             {}.keys(*(1, 2))
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            ashiria RuntimeError
+             ashiria RuntimeError
 
     eleza test_oldargs0_0_kw(self):
         jaribu:
             {}.keys(x=2)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            ashiria RuntimeError
+             ashiria RuntimeError
 
     eleza test_oldargs0_1_kw(self):
         self.assertRaises(TypeError, {}.keys, x=2)
@@ -120,10 +120,10 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_oldargs1_0_ext(self):
         jaribu:
             [].count(*())
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            ashiria RuntimeError
+             ashiria RuntimeError
 
     eleza test_oldargs1_1_ext(self):
         [].count(*(1,))
@@ -131,10 +131,10 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_oldargs1_2_ext(self):
         jaribu:
             [].count(*(1, 2))
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            ashiria RuntimeError
+             ashiria RuntimeError
 
     eleza test_oldargs1_0_kw(self):
         self.assertRaises(TypeError, [].count, x=2)
@@ -158,8 +158,8 @@ kundi CFunctionCallsErrorMessages(unittest.TestCase):
         self.assertRaisesRegex(TypeError, msg, {}.__contains__, 0, 1)
 
     eleza test_varargs3(self):
-        msg = r"^kutoka_bytes\(\) takes exactly 2 positional arguments \(3 given\)"
-        self.assertRaisesRegex(TypeError, msg, int.kutoka_bytes, b'a', 'little', Uongo)
+        msg = r"^from_bytes\(\) takes exactly 2 positional arguments \(3 given\)"
+        self.assertRaisesRegex(TypeError, msg, int.from_bytes, b'a', 'little', Uongo)
 
     eleza test_varargs1min(self):
         msg = r"get expected at least 1 argument, got 0"
@@ -357,7 +357,7 @@ kundi FastCallTests(unittest.TestCase):
         (divmod, (1000, 33), (30, 10)),
 
         # C type static method: METH_FASTCALL | METH_CLASS
-        (int.kutoka_bytes, (b'\x01\x00', 'little'), 1),
+        (int.from_bytes, (b'\x01\x00', 'little'), 1),
 
         # bpo-30524: Test that calling a C type static method ukijumuisha no argument
         # doesn't crash (ignore the result): METH_FASTCALL | METH_CLASS
@@ -380,13 +380,13 @@ kundi FastCallTests(unittest.TestCase):
         (max, ([],), {'default': 9}, 9),
 
         # C type static method: METH_FASTCALL | METH_CLASS
-        (int.kutoka_bytes, (b'\x01\x00',), {'byteorder': 'little'}, 1),
-        (int.kutoka_bytes, (), {'bytes': b'\x01\x00', 'byteorder': 'little'}, 1),
+        (int.from_bytes, (b'\x01\x00',), {'byteorder': 'little'}, 1),
+        (int.from_bytes, (), {'bytes': b'\x01\x00', 'byteorder': 'little'}, 1),
     )
 
     eleza check_result(self, result, expected):
         ikiwa expected ni IGNORE_RESULT:
-            rudisha
+            return
         self.assertEqual(result, expected)
 
     eleza test_fastcall(self):
@@ -471,9 +471,9 @@ kundi FastCallTests(unittest.TestCase):
                 rudisha 0
         x = IntWithDict(dont_inherit=IntWithDict())
         # We test the argument handling of "compile" here, the compilation
-        # itself ni sio relevant. When we pita flags=x below, x.__index__() is
+        # itself ni sio relevant. When we pass flags=x below, x.__index__() is
         # called, which changes the keywords dict.
-        compile("pita", "", "exec", x, **x.kwargs)
+        compile("pass", "", "exec", x, **x.kwargs)
 
 
 Py_TPFLAGS_HAVE_VECTORCALL = 1 << 11
@@ -508,7 +508,7 @@ kundi TestPEP590(unittest.TestCase):
 
         # Heap type should sio inherit Py_TPFLAGS_METHOD_DESCRIPTOR
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
-            pita
+            pass
         self.assertUongo(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
     eleza test_vectorcall_flag(self):
@@ -519,14 +519,14 @@ kundi TestPEP590(unittest.TestCase):
 
         # Heap type should sio inherit Py_TPFLAGS_HAVE_VECTORCALL
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
-            pita
+            pass
         self.assertUongo(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
     eleza test_vectorcall_override(self):
         # Check that tp_call can correctly override vectorcall.
-        # MethodDescriptorNopGet implements tp_call but it inherits kutoka
+        # MethodDescriptorNopGet implements tp_call but it inherits from
         # MethodDescriptorBase, which implements vectorcall. Since
-        # MethodDescriptorNopGet rudishas the args tuple when called, we check
+        # MethodDescriptorNopGet returns the args tuple when called, we check
         # additionally that no new tuple ni created kila this call.
         args = tuple(range(5))
         f = _testcapi.MethodDescriptorNopGet()
@@ -538,7 +538,7 @@ kundi TestPEP590(unittest.TestCase):
         #   (only kila objects that support vectorcall directly)
         # 2. normal call
         # 3. vectorcall using _PyObject_Vectorcall()
-        # 4. call kama bound method
+        # 4. call as bound method
         # 5. call using functools.partial
 
         # A list of (function, args, kwargs, result) calls to test
@@ -571,7 +571,7 @@ kundi TestPEP590(unittest.TestCase):
         # but do support all other ways of calling).
 
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
-            pita
+            pass
 
         kundi MethodDescriptorOverridden(_testcapi.MethodDescriptorBase):
             eleza __call__(self, n):

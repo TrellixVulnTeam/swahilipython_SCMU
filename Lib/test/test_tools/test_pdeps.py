@@ -16,10 +16,10 @@ kundi PdepsTests(unittest.TestCase):
         self.pdeps = import_tool('pdeps')
 
     eleza test_process_errors(self):
-        # Issue #14492: m_agiza.match(line) can be Tupu.
-        ukijumuisha tempfile.TemporaryDirectory() kama tmpdir:
+        # Issue #14492: m_import.match(line) can be Tupu.
+        ukijumuisha tempfile.TemporaryDirectory() as tmpdir:
             fn = os.path.join(tmpdir, 'foo')
-            ukijumuisha open(fn, 'w') kama stream:
+            ukijumuisha open(fn, 'w') as stream:
                 stream.write("#!/this/will/fail")
             self.pdeps.process(fn, {})
 

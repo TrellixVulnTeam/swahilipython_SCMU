@@ -1,11 +1,11 @@
-import unittest
-from ctypes import *
-from ctypes.test import need_symbol
+agiza unittest
+kutoka ctypes agiza *
+kutoka ctypes.test agiza need_symbol
 
 agiza _ctypes_test
 
-class SlicesTestCase(unittest.TestCase):
-    def test_getslice_cint(self):
+kundi SlicesTestCase(unittest.TestCase):
+    eleza test_getslice_cint(self):
         a = (c_int * 100)(*range(1100, 1200))
         b = list(range(1100, 1200))
         self.assertEqual(a[0:2], b[0:2])
@@ -26,7 +26,7 @@ class SlicesTestCase(unittest.TestCase):
         self.assertEqual(a[0:5:], list(range(5, 10)))
         self.assertEqual(a[4::-1], list(range(9, 4, -1)))
 
-    def test_setslice_cint(self):
+    eleza test_setslice_cint(self):
         a = (c_int * 100)(*range(1100, 1200))
         b = list(range(1100, 1200))
 
@@ -46,7 +46,7 @@ class SlicesTestCase(unittest.TestCase):
         b[33::-3] = range(12)
         self.assertEqual(a[:], b)
 
-        from operator import setitem
+        kutoka operator agiza setitem
 
         # TypeError: int expected instead of str instance
         self.assertRaises(TypeError, setitem, a, slice(0, 5), "abcde")
@@ -59,12 +59,12 @@ class SlicesTestCase(unittest.TestCase):
         # ValueError: Can only assign sequence of same size
         self.assertRaises(ValueError, setitem, a, slice(0, 5), range(32))
 
-    def test_char_ptr(self):
+    eleza test_char_ptr(self):
         s = b"abcdefghijklmnopqrstuvwxyz"
 
         dll = CDLL(_ctypes_test.__file__)
         dll.my_strdup.restype = POINTER(c_char)
-        dll.my_free.restype = None
+        dll.my_free.restype = Tupu
         res = dll.my_strdup(s)
         self.assertEqual(res[:len(s)], s)
         self.assertEqual(res[:3], s[:3])
@@ -73,15 +73,15 @@ class SlicesTestCase(unittest.TestCase):
         self.assertEqual(res[len(s)-1:5:-7], s[:5:-7])
         self.assertEqual(res[0:-1:-1], s[0::-1])
 
-        import operator
+        agiza operator
         self.assertRaises(ValueError, operator.getitem,
-                          res, slice(None, None, None))
+                          res, slice(Tupu, Tupu, Tupu))
         self.assertRaises(ValueError, operator.getitem,
-                          res, slice(0, None, None))
+                          res, slice(0, Tupu, Tupu))
         self.assertRaises(ValueError, operator.getitem,
-                          res, slice(None, 5, -1))
+                          res, slice(Tupu, 5, -1))
         self.assertRaises(ValueError, operator.getitem,
-                          res, slice(-5, None, None))
+                          res, slice(-5, Tupu, Tupu))
 
         self.assertRaises(TypeError, operator.setitem,
                           res, slice(0, 5), "abcde")
@@ -93,18 +93,18 @@ class SlicesTestCase(unittest.TestCase):
         self.assertEqual(res[:len(s):], list(range(ord("a"), ord("z")+1)))
         dll.my_free(res)
 
-    def test_char_ptr_with_free(self):
+    eleza test_char_ptr_with_free(self):
         dll = CDLL(_ctypes_test.__file__)
         s = b"abcdefghijklmnopqrstuvwxyz"
 
-        class allocated_c_char_p(c_char_p):
+        kundi allocated_c_char_p(c_char_p):
             pass
 
-        dll.my_free.restype = None
-        def errcheck(result, func, args):
+        dll.my_free.restype = Tupu
+        eleza errcheck(result, func, args):
             retval = result.value
             dll.my_free(result)
-            return retval
+            rudisha retval
 
         dll.my_strdup.restype = allocated_c_char_p
         dll.my_strdup.errcheck = errcheck
@@ -115,7 +115,7 @@ class SlicesTestCase(unittest.TestCase):
             toa dll.my_strdup.errcheck
 
 
-    def test_char_array(self):
+    eleza test_char_array(self):
         s = b"abcdefghijklmnopqrstuvwxyz\0"
 
         p = (c_char * 27)(*s)
@@ -127,29 +127,29 @@ class SlicesTestCase(unittest.TestCase):
 
 
     @need_symbol('c_wchar')
-    def test_wchar_ptr(self):
+    eleza test_wchar_ptr(self):
         s = "abcdefghijklmnopqrstuvwxyz\0"
 
         dll = CDLL(_ctypes_test.__file__)
         dll.my_wcsdup.restype = POINTER(c_wchar)
         dll.my_wcsdup.argtypes = POINTER(c_wchar),
-        dll.my_free.restype = None
+        dll.my_free.restype = Tupu
         res = dll.my_wcsdup(s[:-1])
         self.assertEqual(res[:len(s)], s)
         self.assertEqual(res[:len(s):], s)
         self.assertEqual(res[len(s)-1:-1:-1], s[::-1])
         self.assertEqual(res[len(s)-1:5:-7], s[:5:-7])
 
-        import operator
+        agiza operator
         self.assertRaises(TypeError, operator.setitem,
                           res, slice(0, 5), "abcde")
         dll.my_free(res)
 
-        if sizeof(c_wchar) == sizeof(c_short):
+        ikiwa sizeof(c_wchar) == sizeof(c_short):
             dll.my_wcsdup.restype = POINTER(c_short)
-        lasivyo sizeof(c_wchar) == sizeof(c_int):
+        elikiwa sizeof(c_wchar) == sizeof(c_int):
             dll.my_wcsdup.restype = POINTER(c_int)
-        lasivyo sizeof(c_wchar) == sizeof(c_long):
+        elikiwa sizeof(c_wchar) == sizeof(c_long):
             dll.my_wcsdup.restype = POINTER(c_long)
         isipokua:
             self.skipTest('Pointers to c_wchar are sio supported')
@@ -163,5 +163,5 @@ class SlicesTestCase(unittest.TestCase):
 
 ################################################################
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

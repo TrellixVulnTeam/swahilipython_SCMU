@@ -22,9 +22,9 @@ kundi FormatParagraph:
     Known problems ukijumuisha comment reformatting:
     * If there ni a selection marked, na the first line of the
       selection ni sio complete, the block will probably sio be detected
-      kama comments, na will have the normal "text formatting" rules
+      as comments, na will have the normal "text formatting" rules
       applied.
-    * If a comment block has leading whitespace that mixes tabs na
+    * If a comment block has leading whitespace that mixes tabs and
       spaces, they will sio be considered part of the same block.
     * Fancy comments, like this bulleted list, aren't handled :-)
     """
@@ -83,13 +83,13 @@ FormatParagraph.reload()
 eleza find_paragraph(text, mark):
     """Returns the start/stop indices enclosing the paragraph that mark ni in.
 
-    Also rudishas the comment format string, ikiwa any, na paragraph of text
+    Also returns the comment format string, ikiwa any, na paragraph of text
     between the start/stop indices.
     """
     lineno, col = map(int, mark.split("."))
     line = text.get("%d.0" % lineno, "%d.end" % lineno)
 
-    # Look kila start of next paragraph ikiwa the index pitaed kwenye ni a blank line
+    # Look kila start of next paragraph ikiwa the index passed kwenye ni a blank line
     wakati text.compare("%d.0" % lineno, "<", "end") na is_all_white(line):
         lineno = lineno + 1
         line = text.get("%d.0" % lineno, "%d.end" % lineno)
@@ -149,7 +149,7 @@ eleza reformat_paragraph(data, limit):
                 partial = partial + " "
         i = i+1
     new.append(partial.rstrip())
-    # XXX Should reformat remaining paragraphs kama well
+    # XXX Should reformat remaining paragraphs as well
     new.extend(lines[i:])
     rudisha "\n".join(new)
 
@@ -188,7 +188,7 @@ eleza get_comment_header(line):
     """Return string ukijumuisha leading whitespace na '#' kutoka line ama ''.
 
     A null rudisha indicates that the line ni sio a comment line. A non-
-    null rudisha, such kama '    #', will be used to find the other lines of
+    null return, such as '    #', will be used to find the other lines of
     a comment block ukijumuisha the same  indent.
     """
     m = re.match(r"^([ \t]*#*)", line)
@@ -196,14 +196,14 @@ eleza get_comment_header(line):
     rudisha m.group(1)
 
 
-# Copied kutoka editor.py; agizaing it would cause an agiza cycle.
+# Copied kutoka editor.py; importing it would cause an agiza cycle.
 _line_indent_re = re.compile(r'[ \t]*')
 
 eleza get_line_indent(line, tabwidth):
-    """Return a line's indentation kama (# chars, effective # of spaces).
+    """Return a line's indentation as (# chars, effective # of spaces).
 
     The effective # of spaces ni the length after properly "expanding"
-    the tabs into spaces, kama done by str.expandtabs(tabwidth).
+    the tabs into spaces, as done by str.expandtabs(tabwidth).
     """
     m = _line_indent_re.match(line)
     rudisha m.end(), len(m.group().expandtabs(tabwidth))
@@ -252,7 +252,7 @@ kundi FormatRegion:
         newchars = "\n".join(lines)
         ikiwa newchars == chars:
             text.bell()
-            rudisha
+            return
         text.tag_remove("sel", "1.0", "end")
         text.mark_set("insert", head)
         text.undo_block_start()
@@ -301,7 +301,7 @@ kundi FormatRegion:
         """Uncomment each line kwenye region.
 
         Remove ## ama # kwenye the first positions of a line.  If the comment
-        ni haiko kwenye the beginning position, this command will have no effect.
+        ni sio kwenye the beginning position, this command will have no effect.
         """
         head, tail, chars, lines = self.get_region()
         kila pos kwenye range(len(lines)):
@@ -310,7 +310,7 @@ kundi FormatRegion:
                 endelea
             ikiwa line[:2] == '##':
                 line = line[2:]
-            lasivyo line[:1] == '#':
+            elikiwa line[:1] == '#':
                 line = line[1:]
             lines[pos] = line
         self.set_region(head, tail, chars, lines)
@@ -321,7 +321,7 @@ kundi FormatRegion:
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
         ikiwa tabwidth ni Tupu:
-            rudisha
+            return
         kila pos kwenye range(len(lines)):
             line = lines[pos]
             ikiwa line:
@@ -336,7 +336,7 @@ kundi FormatRegion:
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
         ikiwa tabwidth ni Tupu:
-            rudisha
+            return
         kila pos kwenye range(len(lines)):
             lines[pos] = lines[pos].expandtabs(tabwidth)
         self.set_region(head, tail, chars, lines)
@@ -404,7 +404,7 @@ kundi Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
             txt = text.get('%i.0' % cur, '%i.end' % cur)
             raw = len(txt)
             cut = len(txt.rstrip())
-            # Since text.delete() marks file kama changed, even ikiwa not,
+            # Since text.delete() marks file as changed, even ikiwa not,
             # only call it when needed to actually delete something.
             ikiwa cut < raw:
                 text.delete('%i.%i' % (cur, cut), '%i.end' % cur)

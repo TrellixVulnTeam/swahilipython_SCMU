@@ -18,7 +18,7 @@ eleza requires_load_dynamic(meth):
     """Decorator to skip a test ikiwa sio running under CPython ama lacking
     imp.load_dynamic()."""
     meth = support.cpython_only(meth)
-    rudisha unittest.skipIf(sio hasattr(imp, 'load_dynamic'),
+    rudisha unittest.skipIf(not hasattr(imp, 'load_dynamic'),
                            'imp.load_dynamic() required')(meth)
 
 
@@ -50,10 +50,10 @@ kundi LockTests(unittest.TestCase):
         ikiwa sio lock_held_at_start:
             jaribu:
                 imp.release_lock()
-            tatizo RuntimeError:
-                pita
+            except RuntimeError:
+                pass
             isipokua:
-                self.fail("release_lock() without lock should ashiria "
+                self.fail("release_lock() without lock should  ashiria "
                             "RuntimeError")
 
 kundi ImportTests(unittest.TestCase):
@@ -70,7 +70,7 @@ kundi ImportTests(unittest.TestCase):
 
     eleza test_find_module_encoding(self):
         kila mod, encoding, _ kwenye self.test_strings:
-            ukijumuisha imp.find_module('module_' + mod, self.test_path)[0] kama fd:
+            ukijumuisha imp.find_module('module_' + mod, self.test_path)[0] as fd:
                 self.assertEqual(fd.encoding, encoding)
 
         path = [os.path.dirname(__file__)]
@@ -100,7 +100,7 @@ kundi ImportTests(unittest.TestCase):
         temp_mod_name = 'test_imp_helper'
         sys.path.insert(0, '.')
         jaribu:
-            ukijumuisha open(temp_mod_name + '.py', 'w') kama file:
+            ukijumuisha open(temp_mod_name + '.py', 'w') as file:
                 file.write("# coding: cp1252\nu = 'test.test_imp'\n")
             file, filename, info = imp.find_module(temp_mod_name)
             file.close()
@@ -145,17 +145,17 @@ kundi ImportTests(unittest.TestCase):
             special_char = known_locales.get(fs_encoding)
 
         ikiwa sio special_char:
-            self.skipTest("can't run this test ukijumuisha %s kama filesystem encoding"
+            self.skipTest("can't run this test ukijumuisha %s as filesystem encoding"
                           % fs_encoding)
         decoded_char = special_char.decode(fs_encoding)
         temp_mod_name = 'test_imp_helper_' + decoded_char
         test_package_name = 'test_imp_helper_package_' + decoded_char
         init_file_name = os.path.join(test_package_name, '__init__.py')
         jaribu:
-            # ikiwa the curdir ni haiko kwenye sys.path the test fails when run with
+            # ikiwa the curdir ni sio kwenye sys.path the test fails when run with
             # ./python ./Lib/test/regrtest.py test_imp
             sys.path.insert(0, os.curdir)
-            ukijumuisha open(temp_mod_name + '.py', 'w') kama file:
+            ukijumuisha open(temp_mod_name + '.py', 'w') as file:
                 file.write('a = 1\n')
             file, filename, info = imp.find_module(temp_mod_name)
             ukijumuisha file:
@@ -183,7 +183,7 @@ kundi ImportTests(unittest.TestCase):
 
             ikiwa sio os.path.exists(test_package_name):
                 os.mkdir(test_package_name)
-            ukijumuisha open(init_file_name, 'w') kama file:
+            ukijumuisha open(init_file_name, 'w') as file:
                 file.write('b = 2\n')
             ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore')
@@ -206,7 +206,7 @@ kundi ImportTests(unittest.TestCase):
         # Verify that the imp module can correctly load na find .py files
         # XXX (ncoghlan): It would be nice to use support.CleanImport
         # here, but that komas because the os module registers some
-        # handlers kwenye copy_reg on agiza. Since CleanImport doesn't
+        # handlers kwenye copy_reg on import. Since CleanImport doesn't
         # revert that registration, the module ni left kwenye a broken
         # state after reversion. Reinitialising the module contents
         # na just reverting os.environ to its previous state ni an OK
@@ -236,15 +236,15 @@ kundi ImportTests(unittest.TestCase):
     @requires_load_dynamic
     eleza test_issue16421_multiple_modules_in_one_dll(self):
         # Issue 16421: loading several modules kutoka the same compiled file fails
-        m = '_testagizamultiple'
+        m = '_testimportmultiple'
         fileobj, pathname, description = imp.find_module(m)
         fileobj.close()
         mod0 = imp.load_dynamic(m, pathname)
-        mod1 = imp.load_dynamic('_testagizamultiple_foo', pathname)
-        mod2 = imp.load_dynamic('_testagizamultiple_bar', pathname)
+        mod1 = imp.load_dynamic('_testimportmultiple_foo', pathname)
+        mod2 = imp.load_dynamic('_testimportmultiple_bar', pathname)
         self.assertEqual(mod0.__name__, m)
-        self.assertEqual(mod1.__name__, '_testagizamultiple_foo')
-        self.assertEqual(mod2.__name__, '_testagizamultiple_bar')
+        self.assertEqual(mod1.__name__, '_testimportmultiple_foo')
+        self.assertEqual(mod2.__name__, '_testimportmultiple_bar')
         ukijumuisha self.assertRaises(ImportError):
             imp.load_dynamic('nonexistent', pathname)
 
@@ -255,7 +255,7 @@ kundi ImportTests(unittest.TestCase):
         # attributes on agiza failures of extensions on Windows.
         path = 'bogus file path'
         name = 'extension'
-        ukijumuisha self.assertRaises(ImportError) kama err:
+        ukijumuisha self.assertRaises(ImportError) as err:
             imp.load_dynamic(name, path)
         self.assertIn(path, err.exception.path)
         self.assertEqual(name, err.exception.name)
@@ -265,7 +265,7 @@ kundi ImportTests(unittest.TestCase):
         # When loading an extension module na the file ni Tupu, open one
         # on the behalf of imp.load_dynamic().
         # Issue #15902
-        name = '_testagizamultiple'
+        name = '_testimportmultiple'
         found = imp.find_module(name)
         ikiwa found[0] ni sio Tupu:
             found[0].close()
@@ -278,8 +278,8 @@ kundi ImportTests(unittest.TestCase):
         name = 'test.imp_dummy'
         jaribu:
             toa sys.modules[name]
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
         jaribu:
             module = importlib.import_module(name)
             spec = importlib.util.find_spec('_testmultiphase')
@@ -293,8 +293,8 @@ kundi ImportTests(unittest.TestCase):
         mwishowe:
             jaribu:
                 toa sys.modules[name]
-            tatizo KeyError:
-                pita
+            except KeyError:
+                pass
 
     @unittest.skipIf(sys.dont_write_bytecode,
         "test meaningful only when writing bytecode")
@@ -334,8 +334,8 @@ kundi ImportTests(unittest.TestCase):
 
     eleza test_issue_35321(self):
         # Both _frozen_importlib na _frozen_importlib_external
-        # should have a spec origin of "frozen" na
-        # no need to clean up agizas kwenye this case.
+        # should have a spec origin of "frozen" and
+        # no need to clean up imports kwenye this case.
 
         agiza _frozen_importlib_external
         self.assertEqual(_frozen_importlib_external.__spec__.origin, "frozen")
@@ -365,11 +365,11 @@ kundi ImportTests(unittest.TestCase):
     eleza test_find_and_load_checked_pyc(self):
         # issue 34056
         ukijumuisha support.temp_cwd():
-            ukijumuisha open('mymod.py', 'wb') kama fp:
+            ukijumuisha open('mymod.py', 'wb') as fp:
                 fp.write(b'x = 42\n')
             py_compile.compile(
                 'mymod.py',
-                doashiria=Kweli,
+                doraise=Kweli,
                 invalidation_mode=py_compile.PycInvalidationMode.CHECKED_HASH,
             )
             file, path, description = imp.find_module('mymod', path=['.'])
@@ -385,7 +385,7 @@ kundi ReloadTests(unittest.TestCase):
     eleza test_source(self):
         # XXX (ncoghlan): It would be nice to use test.support.CleanImport
         # here, but that komas because the os module registers some
-        # handlers kwenye copy_reg on agiza. Since CleanImport doesn't
+        # handlers kwenye copy_reg on import. Since CleanImport doesn't
         # revert that registration, the module ni left kwenye a broken
         # state after reversion. Reinitialising the module contents
         # na just reverting os.environ to its previous state ni an OK

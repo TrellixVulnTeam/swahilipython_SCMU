@@ -10,7 +10,7 @@
 # AB (info@pythonware.com).
 #
 # Portions of this engine have been developed kwenye cooperation with
-# CNRI.  Hewlett-Packard provided funding kila 1.6 integration na
+# CNRI.  Hewlett-Packard provided funding kila 1.6 integration and
 # other compatibility work.
 #
 
@@ -18,7 +18,7 @@ r"""Support kila regular expressions (RE).
 
 This module provides regular expression matching operations similar to
 those found kwenye Perl.  It supports both 8-bit na Unicode strings; both
-the pattern na the strings being processed can contain null bytes na
+the pattern na the strings being processed can contain null bytes and
 characters outside the US ASCII range.
 
 Regular expressions can contain both special na ordinary characters.
@@ -27,12 +27,12 @@ regular expressions; they simply match themselves.  You can
 concatenate ordinary characters, so last matches the string 'last'.
 
 The special characters are:
-    "."      Matches any character tatizo a newline.
+    "."      Matches any character except a newline.
     "^"      Matches the start of the string.
     "$"      Matches the end of the string ama just before the newline at
              the end of the string.
     "*"      Matches 0 ama more (greedy) repetitions of the preceding RE.
-             Greedy means that it will match kama many repetitions kama possible.
+             Greedy means that it will match as many repetitions as possible.
     "+"      Matches 1 ama more (greedy) repetitions of the preceding RE.
     "?"      Matches 0 ama 1 (greedy) of the preceding RE.
     *?,+?,?? Non-greedy versions of the previous three special characters.
@@ -40,7 +40,7 @@ The special characters are:
     {m,n}?   Non-greedy version of the above.
     "\\"     Either escapes special characters ama signals a special sequence.
     []       Indicates a set of characters.
-             A "^" kama the first character indicates a complementing set.
+             A "^" as the first character indicates a complementing set.
     "|"      A|B, creates an RE that will match either A ama B.
     (...)    Matches the RE inside the parentheses.
              The contents can be retrieved ama matched later kwenye the string.
@@ -80,7 +80,7 @@ resulting RE will match the second character.
              range of Unicode alphanumeric characters (letters plus digits
              plus underscore).
              With LOCALE, it will match the set [0-9_] plus characters defined
-             kama letters kila the current locale.
+             as letters kila the current locale.
     \W       Matches the complement of \w.
     \\       Matches a literal backslash.
 
@@ -89,15 +89,15 @@ This module exports the following functions:
     fullmatch Match a regular expression pattern to all of a string.
     search    Search a string kila the presence of a pattern.
     sub       Substitute occurrences of a pattern found kwenye a string.
-    subn      Same kama sub, but also rudisha the number of substitutions made.
+    subn      Same as sub, but also rudisha the number of substitutions made.
     split     Split a string by the occurrences of a pattern.
     findall   Find all occurrences of a pattern kwenye a string.
-    finditer  Return an iterator tumaing a Match object kila each match.
+    finditer  Return an iterator yielding a Match object kila each match.
     compile   Compile a pattern into a Pattern object.
     purge     Clear the regular expression cache.
     escape    Backslash all non-alphanumerics kwenye a string.
 
-Some of the functions kwenye this module takes flags kama optional parameters:
+Some of the functions kwenye this module takes flags as optional parameters:
     A  ASCII       For string patterns, make \w, \W, \b, \B, \d, \D
                    match the corresponding ASCII character categories
                    (rather than the whole Unicode categories, which ni the
@@ -107,9 +107,9 @@ Some of the functions kwenye this module takes flags kama optional parameters:
     I  IGNORECASE  Perform case-insensitive matching.
     L  LOCALE      Make \w, \W, \b, \B, dependent on the current locale.
     M  MULTILINE   "^" matches the beginning of lines (after a newline)
-                   kama well kama the string.
-                   "$" matches the end of lines (before a newline) kama well
-                   kama the end of the string.
+                   as well as the string.
+                   "$" matches the end of lines (before a newline) as well
+                   as the end of the string.
     S  DOTALL      "." matches any character at all, including the newline.
     X  VERBOSE     Ignore whitespace na comments kila nicer looking RE's.
     U  UNICODE     For compatibility only. Ignored kila string patterns (it
@@ -125,7 +125,7 @@ agiza sre_parse
 agiza functools
 jaribu:
     agiza _locale
-tatizo ImportError:
+except ImportError:
     _locale = Tupu
 
 
@@ -184,17 +184,17 @@ error = sre_compile.error
 # public interface
 
 eleza match(pattern, string, flags=0):
-    """Try to apply the pattern at the start of the string, rudishaing
+    """Try to apply the pattern at the start of the string, returning
     a Match object, ama Tupu ikiwa no match was found."""
     rudisha _compile(pattern, flags).match(string)
 
 eleza fullmatch(pattern, string, flags=0):
-    """Try to apply the pattern to all of the string, rudishaing
+    """Try to apply the pattern to all of the string, returning
     a Match object, ama Tupu ikiwa no match was found."""
     rudisha _compile(pattern, flags).fullmatch(string)
 
 eleza search(pattern, string, flags=0):
-    """Scan through string looking kila a match to the pattern, rudishaing
+    """Scan through string looking kila a match to the pattern, returning
     a Match object, ama Tupu ikiwa no match was found."""
     rudisha _compile(pattern, flags).search(string)
 
@@ -203,7 +203,7 @@ eleza sub(pattern, repl, string, count=0, flags=0):
     non-overlapping occurrences of the pattern kwenye string by the
     replacement repl.  repl can be either a string ama a callable;
     ikiwa a string, backslash escapes kwenye it are processed.  If it is
-    a callable, it's pitaed the Match object na must rudisha
+    a callable, it's passed the Match object na must return
     a replacement string to be used."""
     rudisha _compile(pattern, flags).sub(repl, string, count)
 
@@ -214,24 +214,24 @@ eleza subn(pattern, repl, string, count=0, flags=0):
     string by the replacement repl.  number ni the number of
     substitutions that were made. repl can be either a string ama a
     callable; ikiwa a string, backslash escapes kwenye it are processed.
-    If it ni a callable, it's pitaed the Match object na must
+    If it ni a callable, it's passed the Match object na must
     rudisha a replacement string to be used."""
     rudisha _compile(pattern, flags).subn(repl, string, count)
 
 eleza split(pattern, string, maxsplit=0, flags=0):
     """Split the source string by the occurrences of the pattern,
-    rudishaing a list containing the resulting substrings.  If
+    returning a list containing the resulting substrings.  If
     capturing parentheses are used kwenye pattern, then the text of all
-    groups kwenye the pattern are also rudishaed kama part of the resulting
+    groups kwenye the pattern are also returned as part of the resulting
     list.  If maxsplit ni nonzero, at most maxsplit splits occur,
-    na the remainder of the string ni rudishaed kama the final element
+    na the remainder of the string ni returned as the final element
     of the list."""
     rudisha _compile(pattern, flags).split(string, maxsplit)
 
 eleza findall(pattern, string, flags=0):
     """Return a list of all non-overlapping matches kwenye the string.
 
-    If one ama more capturing groups are present kwenye the pattern, rudisha
+    If one ama more capturing groups are present kwenye the pattern, return
     a list of groups; this will be a list of tuples ikiwa the pattern
     has more than one group.
 
@@ -240,13 +240,13 @@ eleza findall(pattern, string, flags=0):
 
 eleza finditer(pattern, string, flags=0):
     """Return an iterator over all non-overlapping matches kwenye the
-    string.  For each match, the iterator rudishas a Match object.
+    string.  For each match, the iterator returns a Match object.
 
     Empty matches are included kwenye the result."""
     rudisha _compile(pattern, flags).finditer(string)
 
 eleza compile(pattern, flags=0):
-    "Compile a regular expression pattern, rudishaing a Pattern object."
+    "Compile a regular expression pattern, returning a Pattern object."
     rudisha _compile(pattern, flags)
 
 eleza purge():
@@ -255,7 +255,7 @@ eleza purge():
     _compile_repl.cache_clear()
 
 eleza template(pattern, flags=0):
-    "Compile a template pattern, rudishaing a Pattern object"
+    "Compile a template pattern, returning a Pattern object"
     rudisha _compile(pattern, flags|T)
 
 # SPECIAL_CHARS
@@ -290,23 +290,23 @@ eleza _compile(pattern, flags):
         flags = flags.value
     jaribu:
         rudisha _cache[type(pattern), pattern, flags]
-    tatizo KeyError:
-        pita
+    except KeyError:
+        pass
     ikiwa isinstance(pattern, Pattern):
         ikiwa flags:
-            ashiria ValueError(
+             ashiria ValueError(
                 "cannot process flags argument ukijumuisha a compiled pattern")
         rudisha pattern
     ikiwa sio sre_compile.isstring(pattern):
-        ashiria TypeError("first argument must be string ama compiled pattern")
+         ashiria TypeError("first argument must be string ama compiled pattern")
     p = sre_compile.compile(pattern, flags)
     ikiwa sio (flags & DEBUG):
         ikiwa len(_cache) >= _MAXCACHE:
             # Drop the oldest item
             jaribu:
                 toa _cache[next(iter(_cache))]
-            tatizo (StopIteration, RuntimeError, KeyError):
-                pita
+            except (StopIteration, RuntimeError, KeyError):
+                pass
         _cache[type(pattern), pattern, flags] = p
     rudisha p
 

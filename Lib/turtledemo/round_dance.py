@@ -17,7 +17,7 @@ enhance the attractiveness of the example?
 Press any key to stop the animation.
 
 Technically: demonstrates use of compound
-shapes, transformation of shapes kama well as
+shapes, transformation of shapes as well as
 cloning turtles. The animation is
 controlled through update().
 """

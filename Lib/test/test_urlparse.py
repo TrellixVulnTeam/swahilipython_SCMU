@@ -105,11 +105,11 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(result3.query,    result.query)
         self.assertEqual(result3.fragment, result.fragment)
         self.assertEqual(result3.username, result.username)
-        self.assertEqual(result3.pitaword, result.pitaword)
+        self.assertEqual(result3.password, result.password)
         self.assertEqual(result3.hostname, result.hostname)
         self.assertEqual(result3.port,     result.port)
 
-        # check the roundtrip using urlsplit() kama well
+        # check the roundtrip using urlsplit() as well
         result = urllib.parse.urlsplit(url)
         self.assertEqual(result, split)
         t = (result.scheme, result.netloc, result.path,
@@ -129,7 +129,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(result3.query,    result.query)
         self.assertEqual(result3.fragment, result.fragment)
         self.assertEqual(result3.username, result.username)
-        self.assertEqual(result3.pitaword, result.pitaword)
+        self.assertEqual(result3.password, result.password)
         self.assertEqual(result3.hostname, result.hostname)
         self.assertEqual(result3.port,     result.port)
 
@@ -188,7 +188,7 @@ kundi UrlParseTestCase(unittest.TestCase):
             self.checkRoundtrips(url, parsed, split)
 
     eleza test_http_roundtrips(self):
-        # urllib.parse.urlsplit treats 'http:' kama an optimized special case,
+        # urllib.parse.urlsplit treats 'http:' as an optimized special case,
         # so we test both 'http:' na 'https:' kwenye all the following.
         # Three cheers kila white box knowledge!
         str_cases = [
@@ -540,7 +540,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.query, "")
         self.assertEqual(p.fragment, "frag")
         self.assertEqual(p.username, Tupu)
-        self.assertEqual(p.pitaword, Tupu)
+        self.assertEqual(p.password, Tupu)
         self.assertEqual(p.hostname, "www.python.org")
         self.assertEqual(p.port, Tupu)
         # geturl() won't rudisha exactly the original URL kwenye this case
@@ -556,14 +556,14 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.query, "query=yes")
         self.assertEqual(p.fragment, "frag")
         self.assertEqual(p.username, "User")
-        self.assertEqual(p.pitaword, "Pass")
+        self.assertEqual(p.password, "Pass")
         self.assertEqual(p.hostname, "www.python.org")
         self.assertEqual(p.port, 80)
         self.assertEqual(p.geturl(), url)
 
         # Addressing issue1698, which suggests Username can contain
         # "@" characters.  Though sio RFC compliant, many ftp sites allow
-        # na request email addresses kama usernames.
+        # na request email addresses as usernames.
 
         url = "http://User@example.com:Pass@www.python.org:080/doc/?query=yes#frag"
         p = urllib.parse.urlsplit(url)
@@ -573,7 +573,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.query, "query=yes")
         self.assertEqual(p.fragment, "frag")
         self.assertEqual(p.username, "User@example.com")
-        self.assertEqual(p.pitaword, "Pass")
+        self.assertEqual(p.password, "Pass")
         self.assertEqual(p.hostname, "www.python.org")
         self.assertEqual(p.port, 80)
         self.assertEqual(p.geturl(), url)
@@ -587,7 +587,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.query, b"")
         self.assertEqual(p.fragment, b"frag")
         self.assertEqual(p.username, Tupu)
-        self.assertEqual(p.pitaword, Tupu)
+        self.assertEqual(p.password, Tupu)
         self.assertEqual(p.hostname, b"www.python.org")
         self.assertEqual(p.port, Tupu)
         self.assertEqual(p.geturl()[4:], url[4:])
@@ -600,7 +600,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.query, b"query=yes")
         self.assertEqual(p.fragment, b"frag")
         self.assertEqual(p.username, b"User")
-        self.assertEqual(p.pitaword, b"Pass")
+        self.assertEqual(p.password, b"Pass")
         self.assertEqual(p.hostname, b"www.python.org")
         self.assertEqual(p.port, 80)
         self.assertEqual(p.geturl(), url)
@@ -613,12 +613,12 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p.query, b"query=yes")
         self.assertEqual(p.fragment, b"frag")
         self.assertEqual(p.username, b"User@example.com")
-        self.assertEqual(p.pitaword, b"Pass")
+        self.assertEqual(p.password, b"Pass")
         self.assertEqual(p.hostname, b"www.python.org")
         self.assertEqual(p.port, 80)
         self.assertEqual(p.geturl(), url)
 
-        # Verify an illegal port ashirias ValueError
+        # Verify an illegal port raises ValueError
         url = b"HTTP://WWW.PYTHON.ORG:65536/doc/#frag"
         p = urllib.parse.urlsplit(url)
         ukijumuisha self.assertRaisesRegex(ValueError, "out of range"):
@@ -650,7 +650,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         p = urllib.parse.urlsplit(uri)
         self.assertEqual(p.netloc, "")
         self.assertEqual(p.username, Tupu)
-        self.assertEqual(p.pitaword, Tupu)
+        self.assertEqual(p.password, Tupu)
         self.assertEqual(p.hostname, Tupu)
         self.assertEqual(p.port, Tupu)
         self.assertEqual(p.geturl(), uri)
@@ -658,7 +658,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         p = urllib.parse.urlparse(uri)
         self.assertEqual(p.netloc, "")
         self.assertEqual(p.username, Tupu)
-        self.assertEqual(p.pitaword, Tupu)
+        self.assertEqual(p.password, Tupu)
         self.assertEqual(p.hostname, Tupu)
         self.assertEqual(p.port, Tupu)
         self.assertEqual(p.geturl(), uri)
@@ -668,7 +668,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         p = urllib.parse.urlsplit(uri)
         self.assertEqual(p.netloc, b"")
         self.assertEqual(p.username, Tupu)
-        self.assertEqual(p.pitaword, Tupu)
+        self.assertEqual(p.password, Tupu)
         self.assertEqual(p.hostname, Tupu)
         self.assertEqual(p.port, Tupu)
         self.assertEqual(p.geturl(), uri)
@@ -676,7 +676,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         p = urllib.parse.urlparse(uri)
         self.assertEqual(p.netloc, b"")
         self.assertEqual(p.username, Tupu)
-        self.assertEqual(p.pitaword, Tupu)
+        self.assertEqual(p.password, Tupu)
         self.assertEqual(p.hostname, Tupu)
         self.assertEqual(p.port, Tupu)
         self.assertEqual(p.geturl(), uri)
@@ -692,7 +692,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         # Test urlparse without scheme
         # Issue 754016: urlparse goes wrong ukijumuisha IP:port without scheme
         # RFC 1808 specifies that netloc should start ukijumuisha //, urlparse expects
-        # the same, otherwise it classifies the portion of url kama path.
+        # the same, otherwise it classifies the portion of url as path.
         self.assertEqual(urllib.parse.urlparse("path"),
                 ('','','path','','',''))
         self.assertEqual(urllib.parse.urlparse("//www.python.org:80"),
@@ -715,7 +715,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(urllib.parse.urlparse("https:"),('https','','','','',''))
         self.assertEqual(urllib.parse.urlparse("http://www.python.org:80"),
                 ('http','www.python.org:80','','','',''))
-        # As usual, need to check bytes input kama well
+        # As usual, need to check bytes input as well
         self.assertEqual(urllib.parse.urlparse(b"path:80"),
                 (b'',b'',b'path:80',b'',b'',b''))
         self.assertEqual(urllib.parse.urlparse(b"http:"),(b'http',b'',b'',b'',b'',b''))
@@ -946,7 +946,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         self.assertEqual(p2.path, '+31641044153')
 
     eleza test_port_casting_failure_message(self):
-        message = "Port could sio be cast to integer value kama 'oracle'"
+        message = "Port could sio be cast to integer value as 'oracle'"
         p1 = urllib.parse.urlparse('http://Server=sde; Service=sde:oracle')
         ukijumuisha self.assertRaisesRegex(ValueError, message):
             p1.port
@@ -983,7 +983,7 @@ kundi UrlParseTestCase(unittest.TestCase):
     eleza test_all(self):
         expected = []
         undocumented = {
-            'splitattr', 'splithost', 'splitnport', 'splitpitawd',
+            'splitattr', 'splithost', 'splitnport', 'splitpasswd',
             'splitport', 'splitquery', 'splittag', 'splittype', 'splituser',
             'splitvalue',
             'Quoter', 'ResultBase', 'clear_cache', 'to_bytes', 'unwrap',
@@ -1005,7 +1005,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         denorm_chars = [
             c kila c kwenye map(chr, range(128, sys.maxunicode))
             ikiwa (hex_chars & set(unicodedata.decomposition(c).split()))
-            na c haiko kwenye illegal_chars
+            na c sio kwenye illegal_chars
         ]
         # Sanity check that we found at least one such character
         self.assertIn('\u2100', denorm_chars)
@@ -1054,7 +1054,7 @@ kundi Utility_Tests(unittest.TestCase):
         self.assertEqual(splithost('//127.0.0.1:80#@host.com'),
                          ('127.0.0.1:80', '/#@host.com'))
 
-        # Empty host ni rudishaed kama empty string.
+        # Empty host ni returned as empty string.
         self.assertEqual(splithost("///file"),
                          ('', '/file'))
 
@@ -1079,23 +1079,23 @@ kundi Utility_Tests(unittest.TestCase):
         self.assertEqual(splituser('User@example.com:Pass@www.python.org:080'),
                          ('User@example.com:Pass', 'www.python.org:080'))
 
-    eleza test_splitpitawd(self):
-        # Some of the pitaword examples are sio sensible, but it ni added to
+    eleza test_splitpasswd(self):
+        # Some of the password examples are sio sensible, but it ni added to
         # confirming to RFC2617 na addressing issue4675.
-        splitpitawd = urllib.parse._splitpitawd
-        self.assertEqual(splitpitawd('user:ab'), ('user', 'ab'))
-        self.assertEqual(splitpitawd('user:a\nb'), ('user', 'a\nb'))
-        self.assertEqual(splitpitawd('user:a\tb'), ('user', 'a\tb'))
-        self.assertEqual(splitpitawd('user:a\rb'), ('user', 'a\rb'))
-        self.assertEqual(splitpitawd('user:a\fb'), ('user', 'a\fb'))
-        self.assertEqual(splitpitawd('user:a\vb'), ('user', 'a\vb'))
-        self.assertEqual(splitpitawd('user:a:b'), ('user', 'a:b'))
-        self.assertEqual(splitpitawd('user:a b'), ('user', 'a b'))
-        self.assertEqual(splitpitawd('user 2:ab'), ('user 2', 'ab'))
-        self.assertEqual(splitpitawd('user+1:a+b'), ('user+1', 'a+b'))
-        self.assertEqual(splitpitawd('user:'), ('user', ''))
-        self.assertEqual(splitpitawd('user'), ('user', Tupu))
-        self.assertEqual(splitpitawd(':ab'), ('', 'ab'))
+        splitpasswd = urllib.parse._splitpasswd
+        self.assertEqual(splitpasswd('user:ab'), ('user', 'ab'))
+        self.assertEqual(splitpasswd('user:a\nb'), ('user', 'a\nb'))
+        self.assertEqual(splitpasswd('user:a\tb'), ('user', 'a\tb'))
+        self.assertEqual(splitpasswd('user:a\rb'), ('user', 'a\rb'))
+        self.assertEqual(splitpasswd('user:a\fb'), ('user', 'a\fb'))
+        self.assertEqual(splitpasswd('user:a\vb'), ('user', 'a\vb'))
+        self.assertEqual(splitpasswd('user:a:b'), ('user', 'a:b'))
+        self.assertEqual(splitpasswd('user:a b'), ('user', 'a b'))
+        self.assertEqual(splitpasswd('user 2:ab'), ('user 2', 'ab'))
+        self.assertEqual(splitpasswd('user+1:a+b'), ('user+1', 'a+b'))
+        self.assertEqual(splitpasswd('user:'), ('user', ''))
+        self.assertEqual(splitpasswd('user'), ('user', Tupu))
+        self.assertEqual(splitpasswd(':ab'), ('', 'ab'))
 
     eleza test_splitport(self):
         splitport = urllib.parse._splitport
@@ -1179,80 +1179,80 @@ kundi Utility_Tests(unittest.TestCase):
 kundi DeprecationTest(unittest.TestCase):
 
     eleza test_splittype_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splittype('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splittype() ni deprecated kama of 3.8, '
+                         'urllib.parse.splittype() ni deprecated as of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     eleza test_splithost_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splithost('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splithost() ni deprecated kama of 3.8, '
+                         'urllib.parse.splithost() ni deprecated as of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     eleza test_splituser_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splituser('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splituser() ni deprecated kama of 3.8, '
+                         'urllib.parse.splituser() ni deprecated as of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
-    eleza test_splitpitawd_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
-            urllib.parse.splitpitawd('')
+    eleza test_splitpasswd_deprecation(self):
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
+            urllib.parse.splitpasswd('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitpitawd() ni deprecated kama of 3.8, '
+                         'urllib.parse.splitpasswd() ni deprecated as of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     eleza test_splitport_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splitport('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitport() ni deprecated kama of 3.8, '
+                         'urllib.parse.splitport() ni deprecated as of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     eleza test_splitnport_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splitnport('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitnport() ni deprecated kama of 3.8, '
+                         'urllib.parse.splitnport() ni deprecated as of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     eleza test_splitquery_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splitquery('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitquery() ni deprecated kama of 3.8, '
+                         'urllib.parse.splitquery() ni deprecated as of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     eleza test_splittag_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splittag('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splittag() ni deprecated kama of 3.8, '
+                         'urllib.parse.splittag() ni deprecated as of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     eleza test_splitattr_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splitattr('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitattr() ni deprecated kama of 3.8, '
+                         'urllib.parse.splitattr() ni deprecated as of 3.8, '
                          'use urllib.parse.urlparse() instead')
 
     eleza test_splitvalue_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.splitvalue('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.splitvalue() ni deprecated kama of 3.8, '
+                         'urllib.parse.splitvalue() ni deprecated as of 3.8, '
                          'use urllib.parse.parse_qsl() instead')
 
     eleza test_to_bytes_deprecation(self):
-        ukijumuisha self.assertWarns(DeprecationWarning) kama cm:
+        ukijumuisha self.assertWarns(DeprecationWarning) as cm:
             urllib.parse.to_bytes('')
         self.assertEqual(str(cm.warning),
-                         'urllib.parse.to_bytes() ni deprecated kama of 3.8')
+                         'urllib.parse.to_bytes() ni deprecated as of 3.8')
 
 
 ikiwa __name__ == "__main__":

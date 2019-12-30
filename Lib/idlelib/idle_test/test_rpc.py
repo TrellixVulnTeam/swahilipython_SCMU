@@ -20,8 +20,8 @@ kundi CodePicklerTest(unittest.TestCase):
                       rpc.CodePickler.dispatch_table)
 
     eleza test_dumps(self):
-        eleza f(): pita
-        # The main test here ni that pickling code does sio ashiria.
+        eleza f(): pass
+        # The main test here ni that pickling code does sio raise.
         self.assertIn(b'test_rpc.py', rpc.dumps(f.__code__))
 
 

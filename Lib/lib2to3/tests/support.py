@@ -1,15 +1,15 @@
 """Support code kila test_*.py files"""
 # Author: Collin Winter
 
-# Python agizas
+# Python imports
 agiza unittest
 agiza os
 agiza os.path
 kutoka textwrap agiza dedent
 
-# Local agizas
+# Local imports
 kutoka lib2to3 agiza pytree, refactor
-kutoka lib2to3.pgen2 agiza driver kama pgen2_driver
+kutoka lib2to3.pgen2 agiza driver as pgen2_driver
 
 test_dir = os.path.dirname(__file__)
 proj_dir = os.path.normpath(os.path.join(test_dir, ".."))
@@ -40,7 +40,7 @@ eleza get_refactorer(fixer_pkg="lib2to3", fixers=Tupu, options=Tupu):
 
     fixers ni a list of fixers kila the RefactoringTool to use. By default
     "lib2to3.fixes.*" ni used. options ni an optional dictionary of options to
-    be pitaed to the RefactoringTool.
+    be passed to the RefactoringTool.
     """
     ikiwa fixers ni sio Tupu:
         fixers = [fixer_pkg + ".fixes.fix_" + fix kila fix kwenye fixers]

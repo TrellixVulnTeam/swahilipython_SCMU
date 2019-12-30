@@ -35,62 +35,62 @@ kundi FutureTest(unittest.TestCase):
             kutoka test agiza test_future3
 
     eleza test_badfuture3(self):
-        ukijumuisha self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future3
         self.check_syntax_error(cm.exception, "badsyntax_future3", 3)
 
     eleza test_badfuture4(self):
-        ukijumuisha self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future4
         self.check_syntax_error(cm.exception, "badsyntax_future4", 3)
 
     eleza test_badfuture5(self):
-        ukijumuisha self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future5
         self.check_syntax_error(cm.exception, "badsyntax_future5", 4)
 
     eleza test_badfuture6(self):
-        ukijumuisha self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future6
         self.check_syntax_error(cm.exception, "badsyntax_future6", 3)
 
     eleza test_badfuture7(self):
-        ukijumuisha self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future7
         self.check_syntax_error(cm.exception, "badsyntax_future7", 3, 53)
 
     eleza test_badfuture8(self):
-        ukijumuisha self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future8
         self.check_syntax_error(cm.exception, "badsyntax_future8", 3)
 
     eleza test_badfuture9(self):
-        ukijumuisha self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future9
         self.check_syntax_error(cm.exception, "badsyntax_future9", 3)
 
     eleza test_badfuture10(self):
-        ukijumuisha self.assertRaises(SyntaxError) kama cm:
+        ukijumuisha self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future10
         self.check_syntax_error(cm.exception, "badsyntax_future10", 3)
 
     eleza test_parserhack(self):
-        # test that the parser.c::future_hack function works kama expected
-        # Note: although this test must pita, it's sio testing the original
-        #       bug kama of 2.6 since the ukijumuisha statement ni sio optional na
+        # test that the parser.c::future_hack function works as expected
+        # Note: although this test must pass, it's sio testing the original
+        #       bug as of 2.6 since the ukijumuisha statement ni sio optional and
         #       the parser hack disabled. If a new keyword ni introduced in
-        #       2.6, change this to refer to the new future agiza.
+        #       2.6, change this to refer to the new future import.
         jaribu:
             exec("kutoka __future__ agiza print_function; print 0")
-        tatizo SyntaxError:
-            pita
+        except SyntaxError:
+            pass
         isipokua:
             self.fail("syntax error didn't occur")
 
         jaribu:
             exec("kutoka __future__ agiza (print_function); print 0")
-        tatizo SyntaxError:
-            pita
+        except SyntaxError:
+            pass
         isipokua:
             self.fail("syntax error didn't occur")
 
@@ -119,7 +119,7 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
     eleza getActual(self, annotation):
         scope = {}
         exec(self.template.format(ann=annotation), {}, scope)
-        func_ret_ann = scope['f'].__annotations__['rudisha']
+        func_ret_ann = scope['f'].__annotations__['return']
         func_arg_ann = scope['g'].__annotations__['arg']
         var_ann1 = scope['__annotations__']['var']
         var_ann2 = scope['__annotations__']['var2']
@@ -176,7 +176,7 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
         eq('++value')
         eq('-1')
         eq('~int na sio v1 ^ 123 + v2 | Kweli')
-        eq('a + (sio b)')
+        eq('a + (not b)')
         eq('lambda: Tupu')
         eq('lambda arg: Tupu')
         eq('lambda a=Kweli: a')
@@ -271,7 +271,7 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
         eq("f'{x!r}'")
         eq("f'{x!a}'")
         eq('(tuma kutoka outside_of_generator)')
-        eq('(tuma)')
+        eq('(yield)')
         eq('(tuma a + b)')
         eq('await some.complicated[0].call(with_args=Kweli ama 1 ni sio 1)')
         eq('[x kila x kwenye (a ikiwa b isipokua c)]')

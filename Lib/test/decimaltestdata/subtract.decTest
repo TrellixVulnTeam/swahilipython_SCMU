@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here ni sio    --
+-- particular, achieving the same results as the tests here is not    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are sio exhaustive.                   --
+-- or specification.  The tests are not exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -82,7 +82,7 @@ subx061 subtract '700'    '10000e+9' -> '-1.00000000E+13' Inexact Rounded
 subx062 subtract '7000'    '10000e+9' -> '-9.99999999E+12' Inexact Rounded
 subx063 subtract '70000'    '10000e+9' -> '-9.99999993E+12' Rounded
 subx064 subtract '700000'    '10000e+9' -> '-9.99999930E+12' Rounded
-  -- symmejaribu:
+  -- symmetry:
 subx065 subtract '10000e+9'    '70' -> '1.00000000E+13' Inexact Rounded
 subx066 subtract '10000e+9'    '700' -> '1.00000000E+13' Inexact Rounded
 subx067 subtract '10000e+9'    '7000' -> '9.99999999E+12' Inexact Rounded
@@ -271,7 +271,7 @@ subx332 subtract '7000'  '10000e+9' -> '-9.99999999E+12' Inexact Rounded
 subx333 subtract '70000'  '10000e+9' -> '-9.99999993E+12' Rounded
 subx334 subtract '700000'  '10000e+9' -> '-9.99999930E+12' Rounded
 subx335 subtract '7000000'  '10000e+9' -> '-9.99999300E+12' Rounded
--- symmejaribu:
+-- symmetry:
 subx340 subtract '10000e+9'  '70' -> '1.00000000E+13' Inexact Rounded
 subx341 subtract '10000e+9'  '700' -> '1.00000000E+13' Inexact Rounded
 subx342 subtract '10000e+9'  '7000' -> '9.99999999E+12' Inexact Rounded

@@ -58,7 +58,7 @@ kundi StringprepTests(unittest.TestCase):
         self.assertKweli(in_table_c8("\u0340"))
         self.assertUongo(in_table_c8("\u0342"))
 
-        # C.9 ni haiko kwenye the bmp
+        # C.9 ni sio kwenye the bmp
         # self.assertKweli(in_table_c9(u"\U000E0001"))
         # self.assertUongo(in_table_c8(u"\U000E0002"))
 

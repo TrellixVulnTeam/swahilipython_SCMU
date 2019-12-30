@@ -1,22 +1,22 @@
 "Test searchengine, coverage 99%."
 
-kutoka idlelib agiza searchengine kama se
+kutoka idlelib agiza searchengine as se
 agiza unittest
 # kutoka test.support agiza requires
 kutoka tkinter agiza  BooleanVar, StringVar, TclError  # ,Tk, Text
-agiza tkinter.messagebox kama tkMessageBox
+agiza tkinter.messagebox as tkMessageBox
 kutoka idlelib.idle_test.mock_tk agiza Var, Mbox
-kutoka idlelib.idle_test.mock_tk agiza Text kama mockText
+kutoka idlelib.idle_test.mock_tk agiza Text as mockText
 agiza re
 
 # With mock replacements, the module does sio use any gui widgets.
 # The use of tk.Text ni avoided (kila now, until mock Text ni improved)
-# by patching instances ukijumuisha an index function rudishaing what ni needed.
+# by patching instances ukijumuisha an index function returning what ni needed.
 # This works because mock Text.get does sio use .index.
-# The tkinter agizas are used to restore searchengine.
+# The tkinter imports are used to restore searchengine.
 
 eleza setUpModule():
-    # Replace s-e module tkinter agizas other than non-gui TclError.
+    # Replace s-e module tkinter imports other than non-gui TclError.
     se.BooleanVar = Var
     se.StringVar = Var
     se.tkMessageBox = Mbox
@@ -29,10 +29,10 @@ eleza tearDownModule():
 
 
 kundi Mock:
-    eleza __init__(self, *args, **kwargs): pita
+    eleza __init__(self, *args, **kwargs): pass
 
 kundi GetTest(unittest.TestCase):
-    # SearchEngine.get rudishas singleton created & saved on first call.
+    # SearchEngine.get returns singleton created & saved on first call.
     eleza test_get(self):
         saved_Engine = se.SearchEngine
         se.SearchEngine = Mock  # monkey-patch class
@@ -77,14 +77,14 @@ kundi GetSelectionTest(unittest.TestCase):
             # select entire text, cursor irrelevant
             ikiwa s == 'sel.first': rudisha '1.0'
             ikiwa s == 'sel.last': rudisha '1.12'
-            ashiria TclError
+             ashiria TclError
         text.index = sel  # replaces .tag_add('sel', '1.0, '1.12')
         self.assertEqual(se.get_selection(text), ('1.0', '1.12'))
 
         eleza mark(s):
             # no selection, cursor after 'Hello'
             ikiwa s == 'insert': rudisha '1.5'
-            ashiria TclError
+             ashiria TclError
         text.index = mark  # replaces .mark_set('insert', '1.5')
         self.assertEqual(se.get_selection(text), ('1.5', '1.5'))
 
@@ -237,7 +237,7 @@ kundi SearchTest(unittest.TestCase):
         eleza mark(s):
             # no selection, cursor after 'Hello'
             ikiwa s == 'insert': rudisha '1.5'
-            ashiria TclError
+             ashiria TclError
         text.index = mark
         Equal(search(text, pat), ('f', (text, pat, 1, 5, Kweli, Uongo)))
         engine.wrapvar.set(Uongo)
@@ -250,7 +250,7 @@ kundi SearchTest(unittest.TestCase):
         eleza sel(s):
             ikiwa s == 'sel.first': rudisha '2.10'
             ikiwa s == 'sel.last': rudisha '2.16'
-            ashiria TclError
+             ashiria TclError
         text.index = sel
         Equal(search(text, pat), ('f', (text, pat, 2, 16, Kweli, Uongo)))
         Equal(search(text, pat, Kweli), ('f', (text, pat, 2, 10, Kweli, Kweli)))
@@ -282,7 +282,7 @@ kundi ForwardBackwardTest(unittest.TestCase):
         cls.text.insert('1.0', test_text)
         cls.pat = re.compile('target')
         cls.res = (2, (10, 16))  # line, slice indexes of 'target'
-        cls.failpat = re.compile('xyz')  # haiko kwenye text
+        cls.failpat = re.compile('xyz')  # sio kwenye text
         cls.emptypat = re.compile(r'\w*')  # empty match possible
 
     eleza make_search(self, func):
@@ -306,7 +306,7 @@ kundi ForwardBackwardTest(unittest.TestCase):
         Equal(forward(self.emptypat, 2,  9, Kweli, ok=Kweli), (2, (9, 9)))
         #Equal(forward(self.emptypat, 2, 9, Kweli), self.res)
         # While the initial empty match ni correctly ignored, skipping
-        # the rest of the line na rudishaing (3, (0,4)) seems buggy - tjr.
+        # the rest of the line na returning (3, (0,4)) seems buggy - tjr.
         Equal(forward(self.emptypat, 2, 10, Kweli), self.res)
 
     eleza test_search_backward(self):

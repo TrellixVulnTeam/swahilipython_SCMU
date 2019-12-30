@@ -1,24 +1,24 @@
-"""Tests for distutils.file_util."""
-import unittest
-import os
-import errno
-from unittest.mock import patch
+"""Tests kila distutils.file_util."""
+agiza unittest
+agiza os
+agiza errno
+kutoka unittest.mock agiza patch
 
-from distutils.file_util import move_file, copy_file
-from distutils import log
-from distutils.tests import support
-from distutils.errors import DistutilsFileError
-from test.support import run_unittest, unlink
+kutoka distutils.file_util agiza move_file, copy_file
+kutoka distutils agiza log
+kutoka distutils.tests agiza support
+kutoka distutils.errors agiza DistutilsFileError
+kutoka test.support agiza run_unittest, unlink
 
-class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
+kundi FileUtilTestCase(support.TempdirManager, unittest.TestCase):
 
-    def _log(self, msg, *args):
-        if len(args) > 0:
+    eleza _log(self, msg, *args):
+        ikiwa len(args) > 0:
             self._logs.append(msg % args)
         isipokua:
             self._logs.append(msg)
 
-    def setUp(self):
+    eleza setUp(self):
         super(FileUtilTestCase, self).setUp()
         self._logs = []
         self.old_log = log.info
@@ -28,11 +28,11 @@ class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
         self.target = os.path.join(tmp_dir, 'f2')
         self.target_dir = os.path.join(tmp_dir, 'd1')
 
-    def tearDown(self):
+    eleza tearDown(self):
         log.info = self.old_log
         super(FileUtilTestCase, self).tearDown()
 
-    def test_move_file_verbosity(self):
+    eleza test_move_file_verbosity(self):
         f = open(self.source, 'w')
         jaribu:
             f.write('some content')
@@ -54,37 +54,37 @@ class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
         move_file(self.target, self.source, verbose=0)
 
         self._logs = []
-        # now the target is a dir
+        # now the target ni a dir
         os.mkdir(self.target_dir)
         move_file(self.source, self.target_dir, verbose=1)
         wanted = ['moving %s -> %s' % (self.source, self.target_dir)]
         self.assertEqual(self._logs, wanted)
 
-    def test_move_file_exception_unpacking_rename(self):
+    eleza test_move_file_exception_unpacking_rename(self):
         # see issue 22182
-        with patch("os.rename", side_effect=OSError("wrong", 1)), \
+        ukijumuisha patch("os.rename", side_effect=OSError("wrong", 1)), \
              self.assertRaises(DistutilsFileError):
-            with open(self.source, 'w') as fobj:
+            ukijumuisha open(self.source, 'w') as fobj:
                 fobj.write('spam eggs')
             move_file(self.source, self.target, verbose=0)
 
-    def test_move_file_exception_unpacking_unlink(self):
+    eleza test_move_file_exception_unpacking_unlink(self):
         # see issue 22182
-        with patch("os.rename", side_effect=OSError(errno.EXDEV, "wrong")), \
+        ukijumuisha patch("os.rename", side_effect=OSError(errno.EXDEV, "wrong")), \
              patch("os.unlink", side_effect=OSError("wrong", 1)), \
              self.assertRaises(DistutilsFileError):
-            with open(self.source, 'w') as fobj:
+            ukijumuisha open(self.source, 'w') as fobj:
                 fobj.write('spam eggs')
             move_file(self.source, self.target, verbose=0)
 
-    def test_copy_file_hard_link(self):
-        with open(self.source, 'w') as f:
+    eleza test_copy_file_hard_link(self):
+        ukijumuisha open(self.source, 'w') as f:
             f.write('some content')
         # Check first that copy_file() will sio fall back on copying the file
         # instead of creating the hard link.
         jaribu:
             os.link(self.source, self.target)
-        tatizo OSError as e:
+        except OSError as e:
             self.skipTest('os.link: %s' % e)
         isipokua:
             unlink(self.target)
@@ -92,31 +92,31 @@ class FileUtilTestCase(support.TempdirManager, unittest.TestCase):
         copy_file(self.source, self.target, link='hard')
         st2 = os.stat(self.source)
         st3 = os.stat(self.target)
-        self.assertTrue(os.path.samestat(st, st2), (st, st2))
-        self.assertTrue(os.path.samestat(st2, st3), (st2, st3))
-        with open(self.source, 'r') as f:
+        self.assertKweli(os.path.samestat(st, st2), (st, st2))
+        self.assertKweli(os.path.samestat(st2, st3), (st2, st3))
+        ukijumuisha open(self.source, 'r') as f:
             self.assertEqual(f.read(), 'some content')
 
-    def test_copy_file_hard_link_failure(self):
+    eleza test_copy_file_hard_link_failure(self):
         # If hard linking fails, copy_file() falls back on copying file
         # (some special filesystems don't support hard linking even under
         #  Unix, see issue #8876).
-        with open(self.source, 'w') as f:
+        ukijumuisha open(self.source, 'w') as f:
             f.write('some content')
         st = os.stat(self.source)
-        with patch("os.link", side_effect=OSError(0, "linking unsupported")):
+        ukijumuisha patch("os.link", side_effect=OSError(0, "linking unsupported")):
             copy_file(self.source, self.target, link='hard')
         st2 = os.stat(self.source)
         st3 = os.stat(self.target)
-        self.assertTrue(os.path.samestat(st, st2), (st, st2))
-        self.assertFalse(os.path.samestat(st2, st3), (st2, st3))
-        for fn in (self.source, self.target):
-            with open(fn, 'r') as f:
+        self.assertKweli(os.path.samestat(st, st2), (st, st2))
+        self.assertUongo(os.path.samestat(st2, st3), (st2, st3))
+        kila fn kwenye (self.source, self.target):
+            ukijumuisha open(fn, 'r') as f:
                 self.assertEqual(f.read(), 'some content')
 
 
-def test_suite():
-    return unittest.makeSuite(FileUtilTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(FileUtilTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

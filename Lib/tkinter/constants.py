@@ -1,10 +1,10 @@
-# Symbolic constants for Tk
+# Symbolic constants kila Tk
 
 # Booleans
 NO=FALSE=OFF=0
 YES=TRUE=ON=1
 
-# -anchor and -sticky
+# -anchor na -sticky
 N='n'
 S='s'
 W='w'
@@ -56,7 +56,7 @@ BASELINE='baseline'
 INSIDE='inside'
 OUTSIDE='outside'
 
-# Special tags, marks and insert positions
+# Special tags, marks na insert positions
 SEL='sel'
 SEL_FIRST='sel.first'
 SEL_LAST='sel.last'
@@ -66,7 +66,7 @@ CURRENT='current'
 ANCHOR='anchor'
 ALL='all' # e.g. Canvas.delete(ALL)
 
-# Text widget and button states
+# Text widget na button states
 NORMAL='normal'
 DISABLED='disabled'
 ACTIVE='active'
@@ -80,14 +80,14 @@ COMMAND='command'
 RADIOBUTTON='radiobutton'
 SEPARATOR='separator'
 
-# Selection modes for list boxes
+# Selection modes kila list boxes
 SINGLE='single'
 BROWSE='browse'
 MULTIPLE='multiple'
 EXTENDED='extended'
 
-# Activestyle for list boxes
-# NONE='none' is also valid
+# Activestyle kila list boxes
+# NONE='none' ni also valid
 DOTBOX='dotbox'
 UNDERLINE='underline'
 

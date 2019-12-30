@@ -30,19 +30,19 @@ py_hashlib = import_fresh_module('hashlib', blocked=['_hashlib'])
 
 jaribu:
     kutoka _hashlib agiza HASH
-tatizo ImportError:
+except ImportError:
     HASH = Tupu
 
 jaribu:
     agiza _blake2
-tatizo ImportError:
+except ImportError:
     _blake2 = Tupu
 
 requires_blake2 = unittest.skipUnless(_blake2, 'requires _blake2')
 
 jaribu:
     agiza _sha3
-tatizo ImportError:
+except ImportError:
     _sha3 = Tupu
 
 requires_sha3 = unittest.skipUnless(_sha3, 'requires _sha3')
@@ -63,15 +63,15 @@ eleza read_vectors(hash_name):
     url = URL.format(hash_name)
     jaribu:
         testdata = support.open_urlresource(url)
-    tatizo (OSError, HTTPException):
-        ashiria unittest.SkipTest("Could sio retrieve {}".format(url))
+    except (OSError, HTTPException):
+         ashiria unittest.SkipTest("Could sio retrieve {}".format(url))
     ukijumuisha testdata:
         kila line kwenye testdata:
             line = line.strip()
             ikiwa line.startswith('#') ama sio line:
                 endelea
             parts = line.split(',')
-            parts[0] = bytes.kutokahex(parts[0])
+            parts[0] = bytes.fromhex(parts[0])
             tuma parts
 
 
@@ -92,8 +92,8 @@ kundi HashLibTestCase(unittest.TestCase):
         """Import a module na rudisha a reference to it ama Tupu on failure."""
         jaribu:
             rudisha importlib.import_module(module_name)
-        tatizo ModuleNotFoundError kama error:
-            ikiwa self._warn_on_extension_agiza:
+        except ModuleNotFoundError as error:
+            ikiwa self._warn_on_extension_import:
                 warnings.warn('Did a C extension fail to compile? %s' % error)
         rudisha Tupu
 
@@ -132,9 +132,9 @@ kundi HashLibTestCase(unittest.TestCase):
                 ikiwa constructor:
                     jaribu:
                         constructor()
-                    tatizo ValueError:
+                    except ValueError:
                         # default constructor blocked by crypto policy
-                        pita
+                        pass
                     isipokua:
                         constructors.add(constructor)
 
@@ -174,7 +174,7 @@ kundi HashLibTestCase(unittest.TestCase):
     @property
     eleza hash_constructors(self):
         constructors = self.constructors_to_test.values()
-        rudisha itertools.chain.kutoka_iterable(constructors)
+        rudisha itertools.chain.from_iterable(constructors)
 
     @support.refcount_test
     @unittest.skipIf(c_hashlib ni Tupu, 'Require _hashlib module')
@@ -219,7 +219,7 @@ kundi HashLibTestCase(unittest.TestCase):
         self.assertRaises(ValueError, get_builtin_constructor, 'test')
         jaribu:
             agiza _md5
-        tatizo ImportError:
+        except ImportError:
             self.skipTest("_md5 module sio available")
         # This forces an ImportError kila "agiza _md5" statements
         sys.modules['_md5'] = Tupu
@@ -252,7 +252,7 @@ kundi HashLibTestCase(unittest.TestCase):
         large_sizes = (2**29, 2**32-10, 2**32+10, 2**61, 2**64-10, 2**64+10)
         kila cons kwenye self.hash_constructors:
             h = cons()
-            ikiwa h.name haiko kwenye self.shakes:
+            ikiwa h.name sio kwenye self.shakes:
                 endelea
             kila digest kwenye h.digest, h.hexdigest:
                 self.assertRaises(ValueError, digest, -10)
@@ -313,18 +313,18 @@ kundi HashLibTestCase(unittest.TestCase):
             computed = m.hexdigest() ikiwa sio shake isipokua m.hexdigest(length)
             self.assertEqual(
                     computed, hexdigest,
-                    "Hash algorithm %s constructed using %s rudishaed hexdigest"
+                    "Hash algorithm %s constructed using %s returned hexdigest"
                     " %r kila %d byte input data that should have hashed to %r."
                     % (name, hash_object_constructor,
                        computed, len(data), hexdigest))
             computed = m.digest() ikiwa sio shake isipokua m.digest(length)
-            digest = bytes.kutokahex(hexdigest)
+            digest = bytes.fromhex(hexdigest)
             self.assertEqual(computed, digest)
             ikiwa sio shake:
                 self.assertEqual(len(digest), m.digest_size)
 
     eleza check_no_unicode(self, algorithm_name):
-        # Unicode objects are sio allowed kama input.
+        # Unicode objects are sio allowed as input.
         constructors = self.constructors_to_test[algorithm_name]
         kila hash_object_constructor kwenye constructors:
             self.assertRaises(TypeError, hash_object_constructor, 'spam')
@@ -684,7 +684,7 @@ kundi HashLibTestCase(unittest.TestCase):
     @requires_blake2
     eleza test_blake2b_vectors(self):
         kila msg, key, md kwenye read_vectors('blake2b'):
-            key = bytes.kutokahex(key)
+            key = bytes.fromhex(key)
             self.check('blake2b', msg, md, key=key)
 
     @requires_blake2
@@ -727,7 +727,7 @@ kundi HashLibTestCase(unittest.TestCase):
     @requires_blake2
     eleza test_blake2s_vectors(self):
         kila msg, key, md kwenye read_vectors('blake2s'):
-            key = bytes.kutokahex(key)
+            key = bytes.fromhex(key)
             self.check('blake2s', msg, md, key=key)
 
     @requires_sha3
@@ -826,7 +826,7 @@ kundi HashLibTestCase(unittest.TestCase):
         #
         # If the internal locks are working to prevent multiple
         # updates on the same object kutoka running at once, the resulting
-        # hash will be the same kama doing it single threaded upfront.
+        # hash will be the same as doing it single threaded upfront.
         hasher = hashlib.sha1()
         num_threads = 5
         smallest_data = b'swineflu'
@@ -859,89 +859,89 @@ kundi HashLibTestCase(unittest.TestCase):
 kundi KDFTests(unittest.TestCase):
 
     pbkdf2_test_vectors = [
-        (b'pitaword', b'salt', 1, Tupu),
-        (b'pitaword', b'salt', 2, Tupu),
-        (b'pitaword', b'salt', 4096, Tupu),
+        (b'password', b'salt', 1, Tupu),
+        (b'password', b'salt', 2, Tupu),
+        (b'password', b'salt', 4096, Tupu),
         # too slow, it takes over a minute on a fast CPU.
-        #(b'pitaword', b'salt', 16777216, Tupu),
-        (b'pitawordPASSWORDpitaword', b'saltSALTsaltSALTsaltSALTsaltSALTsalt',
+        #(b'password', b'salt', 16777216, Tupu),
+        (b'passwordPASSWORDpassword', b'saltSALTsaltSALTsaltSALTsaltSALTsalt',
          4096, -1),
-        (b'pita\0word', b'sa\0lt', 4096, 16),
+        (b'pass\0word', b'sa\0lt', 4096, 16),
     ]
 
     scrypt_test_vectors = [
         (b'', b'', 16, 1, 1, unhexlify('77d6576238657b203b19ca42c18a0497f16b4844e3074ae8dfdffa3fede21442fcd0069ded0948f8326a753a0fc81f17e8d3e0fb2e0d3628cf35e20c38d18906')),
-        (b'pitaword', b'NaCl', 1024, 8, 16, unhexlify('fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640')),
+        (b'password', b'NaCl', 1024, 8, 16, unhexlify('fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640')),
         (b'pleaseletmein', b'SodiumChloride', 16384, 8, 1, unhexlify('7023bdcb3afd7348461c06cd81fd38ebfda8fbba904f8e3ea9b543f6545da1f2d5432955613f0fcf62d49705242a9af9e61e85dc0d651e40dfcf017b45575887')),
    ]
 
     pbkdf2_results = {
         "sha1": [
             # official test vectors kutoka RFC 6070
-            (bytes.kutokahex('0c60c80f961f0e71f3a9b524af6012062fe037a6'), Tupu),
-            (bytes.kutokahex('ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957'), Tupu),
-            (bytes.kutokahex('4b007901b765489abead49d926f721d065a429c1'), Tupu),
-            #(bytes.kutokahex('eefe3d61cd4da4e4e9945b3d6ba2158c2634e984'), Tupu),
-            (bytes.kutokahex('3d2eec4fe41c849b80c8d83662c0e44a8b291a964c'
+            (bytes.fromhex('0c60c80f961f0e71f3a9b524af6012062fe037a6'), Tupu),
+            (bytes.fromhex('ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957'), Tupu),
+            (bytes.fromhex('4b007901b765489abead49d926f721d065a429c1'), Tupu),
+            #(bytes.fromhex('eefe3d61cd4da4e4e9945b3d6ba2158c2634e984'), Tupu),
+            (bytes.fromhex('3d2eec4fe41c849b80c8d83662c0e44a8b291a964c'
                            'f2f07038'), 25),
-            (bytes.kutokahex('56fa6aa75548099dcc37d7f03425e0c3'), Tupu),],
+            (bytes.fromhex('56fa6aa75548099dcc37d7f03425e0c3'), Tupu),],
         "sha256": [
-            (bytes.kutokahex('120fb6cffcf8b32c43e7225256c4f837'
+            (bytes.fromhex('120fb6cffcf8b32c43e7225256c4f837'
                            'a86548c92ccc35480805987cb70be17b'), Tupu),
-            (bytes.kutokahex('ae4d0c95af6b46d32d0adff928f06dd0'
+            (bytes.fromhex('ae4d0c95af6b46d32d0adff928f06dd0'
                            '2a303f8ef3c251dfd6e2d85a95474c43'), Tupu),
-            (bytes.kutokahex('c5e478d59288c841aa530db6845c4c8d'
+            (bytes.fromhex('c5e478d59288c841aa530db6845c4c8d'
                            '962893a001ce4e11a4963873aa98134a'), Tupu),
-            #(bytes.kutokahex('cf81c66fe8cfc04d1f31ecb65dab4089'
+            #(bytes.fromhex('cf81c66fe8cfc04d1f31ecb65dab4089'
             #               'f7f179e89b3b0bcb17ad10e3ac6eba46'), Tupu),
-            (bytes.kutokahex('348c89dbcbd32b2f32d814b8116e84cf2b17'
+            (bytes.fromhex('348c89dbcbd32b2f32d814b8116e84cf2b17'
                            '347ebc1800181c4e2a1fb8dd53e1c635518c7dac47e9'), 40),
-            (bytes.kutokahex('89b69d0516f829893c696226650a8687'), Tupu),],
+            (bytes.fromhex('89b69d0516f829893c696226650a8687'), Tupu),],
         "sha512": [
-            (bytes.kutokahex('867f70cf1ade02cff3752599a3a53dc4af34c7a669815ae5'
+            (bytes.fromhex('867f70cf1ade02cff3752599a3a53dc4af34c7a669815ae5'
                            'd513554e1c8cf252c02d470a285a0501bad999bfe943c08f'
                            '050235d7d68b1da55e63f73b60a57fce'), Tupu),
-            (bytes.kutokahex('e1d9c16aa681708a45f5c7c4e215ceb66e011a2e9f004071'
+            (bytes.fromhex('e1d9c16aa681708a45f5c7c4e215ceb66e011a2e9f004071'
                            '3f18aefdb866d53cf76cab2868a39b9f7840edce4fef5a82'
                            'be67335c77a6068e04112754f27ccf4e'), Tupu),
-            (bytes.kutokahex('d197b1b33db0143e018b12f3d1d1479e6cdebdcc97c5c0f8'
+            (bytes.fromhex('d197b1b33db0143e018b12f3d1d1479e6cdebdcc97c5c0f8'
                            '7f6902e072f457b5143f30602641b3d55cd335988cb36b84'
                            '376060ecd532e039b742a239434af2d5'), Tupu),
-            (bytes.kutokahex('8c0511f4c6e597c6ac6315d8f0362e225f3c501495ba23b8'
+            (bytes.fromhex('8c0511f4c6e597c6ac6315d8f0362e225f3c501495ba23b8'
                            '68c005174dc4ee71115b59f9e60cd9532fa33e0f75aefe30'
                            '225c583a186cd82bd4daea9724a3d3b8'), 64),
-            (bytes.kutokahex('9d9e9c4cd21fe4be24d5b8244c759665'), Tupu),],
+            (bytes.fromhex('9d9e9c4cd21fe4be24d5b8244c759665'), Tupu),],
     }
 
     eleza _test_pbkdf2_hmac(self, pbkdf2):
         kila digest_name, results kwenye self.pbkdf2_results.items():
             kila i, vector kwenye enumerate(self.pbkdf2_test_vectors):
-                pitaword, salt, rounds, dklen = vector
+                password, salt, rounds, dklen = vector
                 expected, overwrite_dklen = results[i]
                 ikiwa overwrite_dklen:
                     dklen = overwrite_dklen
-                out = pbkdf2(digest_name, pitaword, salt, rounds, dklen)
+                out = pbkdf2(digest_name, password, salt, rounds, dklen)
                 self.assertEqual(out, expected,
-                                 (digest_name, pitaword, salt, rounds, dklen))
-                out = pbkdf2(digest_name, memoryview(pitaword),
+                                 (digest_name, password, salt, rounds, dklen))
+                out = pbkdf2(digest_name, memoryview(password),
                              memoryview(salt), rounds, dklen)
-                out = pbkdf2(digest_name, bytearray(pitaword),
+                out = pbkdf2(digest_name, bytearray(password),
                              bytearray(salt), rounds, dklen)
                 self.assertEqual(out, expected)
                 ikiwa dklen ni Tupu:
-                    out = pbkdf2(digest_name, pitaword, salt, rounds)
+                    out = pbkdf2(digest_name, password, salt, rounds)
                     self.assertEqual(out, expected,
-                                     (digest_name, pitaword, salt, rounds))
+                                     (digest_name, password, salt, rounds))
 
-        self.assertRaises(TypeError, pbkdf2, b'sha1', b'pita', b'salt', 1)
-        self.assertRaises(TypeError, pbkdf2, 'sha1', 'pita', 'salt', 1)
-        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', 0)
-        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', -1)
-        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', 1, 0)
-        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', 1, -1)
+        self.assertRaises(TypeError, pbkdf2, b'sha1', b'pass', b'salt', 1)
+        self.assertRaises(TypeError, pbkdf2, 'sha1', 'pass', 'salt', 1)
+        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pass', b'salt', 0)
+        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pass', b'salt', -1)
+        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pass', b'salt', 1, 0)
+        self.assertRaises(ValueError, pbkdf2, 'sha1', b'pass', b'salt', 1, -1)
         ukijumuisha self.assertRaisesRegex(ValueError, 'unsupported hash type'):
-            pbkdf2('unknown', b'pita', b'salt', 1)
-        out = pbkdf2(hash_name='sha1', pitaword=b'pitaword', salt=b'salt',
+            pbkdf2('unknown', b'pass', b'salt', 1)
+        out = pbkdf2(hash_name='sha1', password=b'password', salt=b'salt',
             iterations=1, dklen=Tupu)
         self.assertEqual(out, self.pbkdf2_results['sha1'][0][0])
 
@@ -957,40 +957,40 @@ kundi KDFTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(c_hashlib, 'scrypt'),
                      '   test requires OpenSSL > 1.1')
     eleza test_scrypt(self):
-        kila pitaword, salt, n, r, p, expected kwenye self.scrypt_test_vectors:
-            result = hashlib.scrypt(pitaword, salt=salt, n=n, r=r, p=p)
+        kila password, salt, n, r, p, expected kwenye self.scrypt_test_vectors:
+            result = hashlib.scrypt(password, salt=salt, n=n, r=r, p=p)
             self.assertEqual(result, expected)
 
         # this values should work
-        hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1)
-        # pitaword na salt must be bytes-like
+        hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=1)
+        # password na salt must be bytes-like
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt('pitaword', salt=b'salt', n=2, r=8, p=1)
+            hashlib.scrypt('password', salt=b'salt', n=2, r=8, p=1)
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt(b'pitaword', salt='salt', n=2, r=8, p=1)
+            hashlib.scrypt(b'password', salt='salt', n=2, r=8, p=1)
         # require keyword args
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt(b'pitaword')
+            hashlib.scrypt(b'password')
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt(b'pitaword', b'salt')
+            hashlib.scrypt(b'password', b'salt')
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt(b'pitaword', 2, 8, 1, salt=b'salt')
+            hashlib.scrypt(b'password', 2, 8, 1, salt=b'salt')
         kila n kwenye [-1, 0, 1, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=n, r=8, p=1)
+                hashlib.scrypt(b'password', salt=b'salt', n=n, r=8, p=1)
         kila r kwenye [-1, 0, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=r, p=1)
+                hashlib.scrypt(b'password', salt=b'salt', n=2, r=r, p=1)
         kila p kwenye [-1, 0, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=p)
+                hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=p)
         kila maxmem kwenye [-1, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1,
+                hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=1,
                                maxmem=maxmem)
         kila dklen kwenye [-1, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1,
+                hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=1,
                                dklen=dklen)
 
     eleza test_normalized_name(self):

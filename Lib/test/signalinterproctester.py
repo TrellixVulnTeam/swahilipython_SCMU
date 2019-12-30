@@ -7,7 +7,7 @@ agiza unittest
 
 
 kundi SIGUSR1Exception(Exception):
-    pita
+    pass
 
 
 kundi InterProcessSignalTests(unittest.TestCase):
@@ -19,7 +19,7 @@ kundi InterProcessSignalTests(unittest.TestCase):
 
     eleza sigusr1_handler(self, signum, frame):
         self.got_signals['SIGUSR1'] += 1
-        ashiria SIGUSR1Exception
+         ashiria SIGUSR1Exception
 
     eleza wait_signal(self, child, signame):
         ikiwa child ni sio Tupu:
@@ -32,7 +32,7 @@ kundi InterProcessSignalTests(unittest.TestCase):
 
         wakati time.monotonic() < deadline:
             ikiwa self.got_signals[signame]:
-                rudisha
+                return
             signal.pause()
 
         self.fail('signal %s sio received after %s seconds'
@@ -54,18 +54,18 @@ kundi InterProcessSignalTests(unittest.TestCase):
         # Let the sub-processes know who to send signals to.
         pid = str(os.getpid())
 
-        ukijumuisha self.subprocess_send_signal(pid, "SIGHUP") kama child:
+        ukijumuisha self.subprocess_send_signal(pid, "SIGHUP") as child:
             self.wait_signal(child, 'SIGHUP')
         self.assertEqual(self.got_signals, {'SIGHUP': 1, 'SIGUSR1': 0,
                                             'SIGALRM': 0})
 
         ukijumuisha self.assertRaises(SIGUSR1Exception):
-            ukijumuisha self.subprocess_send_signal(pid, "SIGUSR1") kama child:
+            ukijumuisha self.subprocess_send_signal(pid, "SIGUSR1") as child:
                 self.wait_signal(child, 'SIGUSR1')
         self.assertEqual(self.got_signals, {'SIGHUP': 1, 'SIGUSR1': 1,
                                             'SIGALRM': 0})
 
-        ukijumuisha self.subprocess_send_signal(pid, "SIGUSR2") kama child:
+        ukijumuisha self.subprocess_send_signal(pid, "SIGUSR2") as child:
             # Nothing should happen: SIGUSR2 ni ignored
             child.wait()
 

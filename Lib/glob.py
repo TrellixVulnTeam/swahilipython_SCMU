@@ -15,20 +15,20 @@ eleza glob(pathname, *, recursive=Uongo):
     dot are special cases that are sio matched by '*' na '?'
     patterns.
 
-    If recursive ni true, the pattern '**' will match any files na
+    If recursive ni true, the pattern '**' will match any files and
     zero ama more directories na subdirectories.
     """
     rudisha list(iglob(pathname, recursive=recursive))
 
 eleza iglob(pathname, *, recursive=Uongo):
-    """Return an iterator which tumas the paths matching a pathname pattern.
+    """Return an iterator which yields the paths matching a pathname pattern.
 
     The pattern may contain simple shell-style wildcards a la
     fnmatch. However, unlike fnmatch, filenames starting ukijumuisha a
     dot are special cases that are sio matched by '*' na '?'
     patterns.
 
-    If recursive ni true, the pattern '**' will match any files na
+    If recursive ni true, the pattern '**' will match any files and
     zero ama more directories na subdirectories.
     """
     it = _iglob(pathname, recursive, Uongo)
@@ -49,14 +49,14 @@ eleza _iglob(pathname, recursive, dironly):
             # Patterns ending ukijumuisha a slash should match only directories
             ikiwa os.path.isdir(dirname):
                 tuma pathname
-        rudisha
+        return
     ikiwa sio dirname:
         ikiwa recursive na _isrecursive(basename):
             tuma kutoka _glob2(dirname, basename, dironly)
         isipokua:
             tuma kutoka _glob1(dirname, basename, dironly)
-        rudisha
-    # `os.path.split()` rudishas the argument itself kama a dirname ikiwa it ni a
+        return
+    # `os.path.split()` returns the argument itself as a dirname ikiwa it ni a
     # drive ama UNC path.  Prevent an infinite recursion ikiwa a drive ama UNC path
     # contains magic characters (i.e. r'\\?\C:').
     ikiwa dirname != pathname na has_magic(dirname):
@@ -86,7 +86,7 @@ eleza _glob1(dirname, pattern, dironly):
 
 eleza _glob0(dirname, basename, dironly):
     ikiwa sio basename:
-        # `os.path.split()` rudishas an empty basename kila paths ending ukijumuisha a
+        # `os.path.split()` returns an empty basename kila paths ending ukijumuisha a
         # directory separator.  'q*x/' should match only directories.
         ikiwa os.path.isdir(dirname):
             rudisha [basename]
@@ -103,7 +103,7 @@ eleza glob0(dirname, pattern):
 eleza glob1(dirname, pattern):
     rudisha _glob1(dirname, pattern, Uongo)
 
-# This helper function recursively tumas relative pathnames inside a literal
+# This helper function recursively yields relative pathnames inside a literal
 # directory.
 
 eleza _glob2(dirname, pattern, dironly):
@@ -111,8 +111,8 @@ eleza _glob2(dirname, pattern, dironly):
     tuma pattern[:0]
     tuma kutoka _rlistdir(dirname, dironly)
 
-# If dironly ni false, tumas all file names inside a directory.
-# If dironly ni true, tumas only directory names.
+# If dironly ni false, yields all file names inside a directory.
+# If dironly ni true, yields only directory names.
 eleza _iterdir(dirname, dironly):
     ikiwa sio dirname:
         ikiwa isinstance(dirname, bytes):
@@ -120,17 +120,17 @@ eleza _iterdir(dirname, dironly):
         isipokua:
             dirname = os.curdir
     jaribu:
-        ukijumuisha os.scandir(dirname) kama it:
+        ukijumuisha os.scandir(dirname) as it:
             kila entry kwenye it:
                 jaribu:
                     ikiwa sio dironly ama entry.is_dir():
                         tuma entry.name
-                tatizo OSError:
-                    pita
-    tatizo OSError:
-        rudisha
+                except OSError:
+                    pass
+    except OSError:
+        return
 
-# Recursively tumas relative pathnames inside a literal directory.
+# Recursively yields relative pathnames inside a literal directory.
 eleza _rlistdir(dirname, dironly):
     names = list(_iterdir(dirname, dironly))
     kila x kwenye names:

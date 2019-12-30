@@ -9,14 +9,14 @@ Object types:
 
 Exceptions:
 
-  SSLError -- exception ashiriad kila I/O errors
+  SSLError -- exception raised kila I/O errors
 
 Functions:
 
   cert_time_to_seconds -- convert time string used kila certificate
                           notBefore na notAfter functions to integer
                           seconds past the Epoch (the time values
-                          rudishaed kutoka time.time())
+                          returned kutoka time.time())
 
   fetch_server_certificate (HOST, PORT) -- fetch the certificate provided
                           by the server running on HOST at port PORT.  No
@@ -43,7 +43,7 @@ CERT_NONE - no certificates kutoka the other side are required (or will
 CERT_OPTIONAL - certificates are sio required, but ikiwa provided will be
                 validated, na ikiwa validation fails, the connection will
                 also fail
-CERT_REQUIRED - certificates are required, na will be validated, na
+CERT_REQUIRED - certificates are required, na will be validated, and
                 ikiwa validation fails, the connection will also fail
 
 The following constants identify various SSL protocol variants:
@@ -58,7 +58,7 @@ PROTOCOL_TLSv1
 PROTOCOL_TLSv1_1
 PROTOCOL_TLSv1_2
 
-The following constants identify various SSL alert message descriptions kama per
+The following constants identify various SSL alert message descriptions as per
 http://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-6
 
 ALERT_DESCRIPTION_CLOSE_NOTIFY
@@ -93,7 +93,7 @@ ALERT_DESCRIPTION_UNKNOWN_PSK_IDENTITY
 agiza sys
 agiza os
 kutoka collections agiza namedtuple
-kutoka enum agiza Enum kama _Enum, IntEnum kama _IntEnum, IntFlag kama _IntFlag
+kutoka enum agiza Enum as _Enum, IntEnum as _IntEnum, IntFlag as _IntFlag
 
 agiza _ssl             # ikiwa we can't agiza it, let the error propagate
 
@@ -103,13 +103,13 @@ kutoka _ssl agiza (
     SSLError, SSLZeroReturnError, SSLWantReadError, SSLWantWriteError,
     SSLSyscallError, SSLEOFError, SSLCertVerificationError
     )
-kutoka _ssl agiza txt2obj kama _txt2obj, nid2obj kama _nid2obj
+kutoka _ssl agiza txt2obj as _txt2obj, nid2obj as _nid2obj
 kutoka _ssl agiza RAND_status, RAND_add, RAND_bytes, RAND_pseudo_bytes
 jaribu:
     kutoka _ssl agiza RAND_egd
-tatizo ImportError:
+except ImportError:
     # LibreSSL does sio provide RAND_egd
-    pita
+    pass
 
 
 kutoka _ssl agiza (
@@ -254,7 +254,7 @@ ikiwa sys.platform == "win32":
 
 kutoka socket agiza socket, AF_INET, SOCK_STREAM, create_connection
 kutoka socket agiza SOL_SOCKET, SO_TYPE
-agiza socket kama _socket
+agiza socket as _socket
 agiza base64        # kila DER-to-PEM translation
 agiza errno
 agiza warnings
@@ -276,10 +276,10 @@ eleza _dnsname_match(dn, hostname):
     """Matching according to RFC 6125, section 6.4.3
 
     - Hostnames are compared lower case.
-    - For IDNA, both dn na hostname must be encoded kama IDN A-label (ACE).
+    - For IDNA, both dn na hostname must be encoded as IDN A-label (ACE).
     - Partial wildcards like 'www*.example.org', multiple wildcards, sole
       wildcard ama wildcards kwenye labels other then the left-most label are not
-      supported na a CertificateError ni ashiriad.
+      supported na a CertificateError ni raised.
     - A wildcard must match at least one character.
     """
     ikiwa sio dn:
@@ -291,26 +291,26 @@ eleza _dnsname_match(dn, hostname):
         rudisha dn.lower() == hostname.lower()
 
     ikiwa wildcards > 1:
-        ashiria CertificateError(
+         ashiria CertificateError(
             "too many wildcards kwenye certificate DNS name: {!r}.".format(dn))
 
     dn_leftmost, sep, dn_remainder = dn.partition('.')
 
     ikiwa '*' kwenye dn_remainder:
         # Only match wildcard kwenye leftmost segment.
-        ashiria CertificateError(
+         ashiria CertificateError(
             "wildcard can only be present kwenye the leftmost label: "
             "{!r}.".format(dn))
 
     ikiwa sio sep:
         # no right side
-        ashiria CertificateError(
+         ashiria CertificateError(
             "sole wildcard without additional labels are sio support: "
             "{!r}.".format(dn))
 
     ikiwa dn_leftmost != '*':
         # no partial wildcard matching
-        ashiria CertificateError(
+         ashiria CertificateError(
             "partial wildcards kwenye leftmost label are sio supported: "
             "{!r}.".format(dn))
 
@@ -331,29 +331,29 @@ eleza _inet_paton(ipname):
     # data like '127.0.0.1 whatever'.
     jaribu:
         addr = _socket.inet_aton(ipname)
-    tatizo OSError:
+    except OSError:
         # sio an IPv4 address
-        pita
+        pass
     isipokua:
         ikiwa _socket.inet_ntoa(addr) == ipname:
             # only accept injective ipnames
             rudisha addr
         isipokua:
             # refuse kila short IPv4 notation na additional trailing data
-            ashiria ValueError(
+             ashiria ValueError(
                 "{!r} ni sio a quad-dotted IPv4 address.".format(ipname)
             )
 
     jaribu:
         rudisha _socket.inet_pton(_socket.AF_INET6, ipname)
-    tatizo OSError:
-        ashiria ValueError("{!r} ni neither an IPv4 nor an IP6 "
+    except OSError:
+         ashiria ValueError("{!r} ni neither an IPv4 nor an IP6 "
                          "address.".format(ipname))
-    tatizo AttributeError:
+    except AttributeError:
         # AF_INET6 sio available
-        pita
+        pass
 
-    ashiria ValueError("{!r} ni sio an IPv4 address.".format(ipname))
+     ashiria ValueError("{!r} ni sio an IPv4 address.".format(ipname))
 
 
 eleza _ipaddress_match(cert_ipaddress, host_ip):
@@ -369,7 +369,7 @@ eleza _ipaddress_match(cert_ipaddress, host_ip):
 
 
 eleza match_hostname(cert, hostname):
-    """Verify that *cert* (in decoded format kama rudishaed by
+    """Verify that *cert* (in decoded format as returned by
     SSLSocket.getpeercert()) matches the *hostname*.  RFC 2818 na RFC 6125
     rules are followed.
 
@@ -378,16 +378,16 @@ eleza match_hostname(cert, hostname):
     IPv6 addresses are supported on platforms ukijumuisha IPv6 support (AF_INET6
     na inet_pton).
 
-    CertificateError ni ashiriad on failure. On success, the function
-    rudishas nothing.
+    CertificateError ni raised on failure. On success, the function
+    returns nothing.
     """
     ikiwa sio cert:
-        ashiria ValueError("empty ama no certificate, match_hostname needs a "
+         ashiria ValueError("empty ama no certificate, match_hostname needs a "
                          "SSL socket ama SSL context ukijumuisha either "
                          "CERT_OPTIONAL ama CERT_REQUIRED")
     jaribu:
         host_ip = _inet_paton(hostname)
-    tatizo ValueError:
+    except ValueError:
         # Not an IP address (common case)
         host_ip = Tupu
     dnsnames = []
@@ -395,11 +395,11 @@ eleza match_hostname(cert, hostname):
     kila key, value kwenye san:
         ikiwa key == 'DNS':
             ikiwa host_ip ni Tupu na _dnsname_match(value, hostname):
-                rudisha
+                return
             dnsnames.append(value)
-        lasivyo key == 'IP Address':
+        elikiwa key == 'IP Address':
             ikiwa host_ip ni sio Tupu na _ipaddress_match(value, host_ip):
-                rudisha
+                return
             dnsnames.append(value)
     ikiwa sio dnsnames:
         # The subject ni only checked when there ni no dNSName entry
@@ -410,18 +410,18 @@ eleza match_hostname(cert, hostname):
                 # must be used.
                 ikiwa key == 'commonName':
                     ikiwa _dnsname_match(value, hostname):
-                        rudisha
+                        return
                     dnsnames.append(value)
     ikiwa len(dnsnames) > 1:
-        ashiria CertificateError("hostname %r "
+         ashiria CertificateError("hostname %r "
             "doesn't match either of %s"
             % (hostname, ', '.join(map(repr, dnsnames))))
-    lasivyo len(dnsnames) == 1:
-        ashiria CertificateError("hostname %r "
+    elikiwa len(dnsnames) == 1:
+         ashiria CertificateError("hostname %r "
             "doesn't match %r"
             % (hostname, dnsnames[0]))
     isipokua:
-        ashiria CertificateError("no appropriate commonName ama "
+         ashiria CertificateError("no appropriate commonName ama "
             "subjectAltName fields were found")
 
 
@@ -452,13 +452,13 @@ kundi _ASN1Object(namedtuple("_ASN1Object", "nid shortname longname oid")):
         rudisha super().__new__(cls, *_txt2obj(oid, name=Uongo))
 
     @classmethod
-    eleza kutokanid(cls, nid):
+    eleza fromnid(cls, nid):
         """Create _ASN1Object kutoka OpenSSL numeric ID
         """
         rudisha super().__new__(cls, *_nid2obj(nid))
 
     @classmethod
-    eleza kutokaname(cls, name):
+    eleza fromname(cls, name):
         """Create _ASN1Object kutoka short name, long name ama OID
         """
         rudisha super().__new__(cls, *_txt2obj(name, name=Kweli))
@@ -472,8 +472,8 @@ kundi Purpose(_ASN1Object, _Enum):
 
 
 kundi SSLContext(_SSLContext):
-    """An SSLContext holds various SSL-related configuration options na
-    data, such kama certificates na possibly a private key."""
+    """An SSLContext holds various SSL-related configuration options and
+    data, such as certificates na possibly a private key."""
     _windows_cert_stores = ("CA", "ROOT")
 
     sslsocket_kundi = Tupu  # SSLSocket ni assigned later.
@@ -486,7 +486,7 @@ kundi SSLContext(_SSLContext):
     eleza _encode_hostname(self, hostname):
         ikiwa hostname ni Tupu:
             rudisha Tupu
-        lasivyo isinstance(hostname, str):
+        elikiwa isinstance(hostname, str):
             rudisha hostname.encode('idna').decode('ascii')
         isipokua:
             rudisha hostname.decode('ascii')
@@ -522,7 +522,7 @@ kundi SSLContext(_SSLContext):
         kila protocol kwenye npn_protocols:
             b = bytes(protocol, 'ascii')
             ikiwa len(b) == 0 ama len(b) > 255:
-                ashiria SSLError('NPN protocols must be 1 to 255 kwenye length')
+                 ashiria SSLError('NPN protocols must be 1 to 255 kwenye length')
             protos.append(len(b))
             protos.extend(b)
 
@@ -533,7 +533,7 @@ kundi SSLContext(_SSLContext):
             self.sni_callback = Tupu
         isipokua:
             ikiwa sio callable(server_name_callback):
-                ashiria TypeError("not a callable object")
+                 ashiria TypeError("not a callable object")
 
             eleza shim_cb(sslobj, servername, sslctx):
                 servername = self._encode_hostname(servername)
@@ -546,7 +546,7 @@ kundi SSLContext(_SSLContext):
         kila protocol kwenye alpn_protocols:
             b = bytes(protocol, 'ascii')
             ikiwa len(b) == 0 ama len(b) > 255:
-                ashiria SSLError('ALPN protocols must be 1 to 255 kwenye length')
+                 ashiria SSLError('ALPN protocols must be 1 to 255 kwenye length')
             protos.append(len(b))
             protos.extend(b)
 
@@ -560,7 +560,7 @@ kundi SSLContext(_SSLContext):
                 ikiwa encoding == "x509_asn":
                     ikiwa trust ni Kweli ama purpose.oid kwenye trust:
                         certs.extend(cert)
-        tatizo PermissionError:
+        except PermissionError:
             warnings.warn("unable to enumerate Windows certificate store")
         ikiwa certs:
             self.load_verify_locations(cadata=certs)
@@ -568,7 +568,7 @@ kundi SSLContext(_SSLContext):
 
     eleza load_default_certs(self, purpose=Purpose.SERVER_AUTH):
         ikiwa sio isinstance(purpose, _ASN1Object):
-            ashiria TypeError(purpose)
+             ashiria TypeError(purpose)
         ikiwa sys.platform == "win32":
             kila storename kwenye self._windows_cert_stores:
                 self._load_windows_store_certs(storename, purpose)
@@ -626,12 +626,12 @@ kundi SSLContext(_SSLContext):
         connections. The callback ni called kila any TLS protocol message
         (header, handshake, alert, na more), but sio kila application data.
         Due to technical  limitations, the callback can't be used to filter
-        traffic ama to abort a connection. Any exception ashiriad kwenye the
+        traffic ama to abort a connection. Any exception raised kwenye the
         callback ni delayed until the handshake, read, ama write operation
         has been performed.
 
         eleza msg_cb(conn, direction, version, content_type, msg_type, data):
-            pita
+            pass
 
         conn
             :class:`SSLSocket` ama :class:`SSLObject` instance
@@ -649,7 +649,7 @@ kundi SSLContext(_SSLContext):
             message, a :class:`_TLSMessageType` enum member kila other
             messages, ama int kila unsupported message types.
         data
-            Raw, decrypted message content kama bytes
+            Raw, decrypted message content as bytes
         """
         inner = super()._msg_callback
         ikiwa inner ni sio Tupu:
@@ -661,32 +661,32 @@ kundi SSLContext(_SSLContext):
     eleza _msg_callback(self, callback):
         ikiwa callback ni Tupu:
             super(SSLContext, SSLContext)._msg_callback.__set__(self, Tupu)
-            rudisha
+            return
 
         ikiwa sio hasattr(callback, '__call__'):
-            ashiria TypeError(f"{callback} ni sio callable.")
+             ashiria TypeError(f"{callback} ni sio callable.")
 
         eleza inner(conn, direction, version, content_type, msg_type, data):
             jaribu:
                 version = TLSVersion(version)
-            tatizo ValueError:
-                pita
+            except ValueError:
+                pass
 
             jaribu:
                 content_type = _TLSContentType(content_type)
-            tatizo ValueError:
-                pita
+            except ValueError:
+                pass
 
             ikiwa content_type == _TLSContentType.HEADER:
                 msg_enum = _TLSContentType
-            lasivyo content_type == _TLSContentType.ALERT:
+            elikiwa content_type == _TLSContentType.ALERT:
                 msg_enum = _TLSAlertType
             isipokua:
                 msg_enum = _TLSMessageType
             jaribu:
                 msg_type = msg_enum(msg_type)
-            tatizo ValueError:
-                pita
+            except ValueError:
+                pass
 
             rudisha callback(conn, direction, version,
                             content_type, msg_type, data)
@@ -712,7 +712,7 @@ kundi SSLContext(_SSLContext):
         value = super().verify_mode
         jaribu:
             rudisha VerifyMode(value)
-        tatizo ValueError:
+        except ValueError:
             rudisha value
 
     @verify_mode.setter
@@ -729,7 +729,7 @@ eleza create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=Tupu,
           compatibility na security.
     """
     ikiwa sio isinstance(purpose, _ASN1Object):
-        ashiria TypeError(purpose)
+         ashiria TypeError(purpose)
 
     # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
     # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE na OP_SINGLE_ECDH_USE
@@ -743,7 +743,7 @@ eleza create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=Tupu,
 
     ikiwa cafile ama capath ama cadata:
         context.load_verify_locations(cafile, capath, cadata)
-    lasivyo context.verify_mode != CERT_NONE:
+    elikiwa context.verify_mode != CERT_NONE:
         # no explicit cafile, capath ama cadata but the verify mode is
         # CERT_OPTIONAL ama CERT_REQUIRED. Let's try to load default system
         # root CA certificates kila the given purpose. This may fail silently.
@@ -767,7 +767,7 @@ eleza _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
     compatibility.
     """
     ikiwa sio isinstance(purpose, _ASN1Object):
-        ashiria TypeError(purpose)
+         ashiria TypeError(purpose)
 
     # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
     # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE na OP_SINGLE_ECDH_USE
@@ -782,14 +782,14 @@ eleza _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
         context.check_hostname = Kweli
 
     ikiwa keyfile na sio certfile:
-        ashiria ValueError("certfile must be specified")
+         ashiria ValueError("certfile must be specified")
     ikiwa certfile ama keyfile:
         context.load_cert_chain(certfile, keyfile)
 
     # load CA root certs
     ikiwa cafile ama capath ama cadata:
         context.load_verify_locations(cafile, capath, cadata)
-    lasivyo context.verify_mode != CERT_NONE:
+    elikiwa context.verify_mode != CERT_NONE:
         # no explicit cafile, capath ama cadata but the verify mode is
         # CERT_OPTIONAL ama CERT_REQUIRED. Let's try to load default system
         # root CA certificates kila the given purpose. This may fail silently.
@@ -801,7 +801,7 @@ eleza _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
             context.keylog_filename = keylogfile
     rudisha context
 
-# Used by http.client ikiwa no context ni explicitly pitaed.
+# Used by http.client ikiwa no context ni explicitly passed.
 _create_default_https_context = create_default_context
 
 
@@ -815,19 +815,19 @@ kundi SSLObject:
     but does sio provide any network IO itself. IO needs to be performed
     through separate "BIO" objects which are OpenSSL's IO abstraction layer.
 
-    This kundi does sio have a public constructor. Instances are rudishaed by
+    This kundi does sio have a public constructor. Instances are returned by
     ``SSLContext.wrap_bio``. This kundi ni typically used by framework authors
     that want to implement asynchronous IO kila SSL through memory buffers.
 
     When compared to ``SSLSocket``, this object lacks the following features:
 
-     * Any form of network IO, including methods such kama ``recv`` na ``send``.
+     * Any form of network IO, including methods such as ``recv`` na ``send``.
      * The ``do_handshake_on_connect`` na ``suppress_ragged_eofs`` machinery.
     """
     eleza __init__(self, *args, **kwargs):
-        ashiria TypeError(
+         ashiria TypeError(
             f"{self.__class__.__name__} does sio have a public "
-            f"constructor. Instances are rudishaed by SSLContext.wrap_bio()."
+            f"constructor. Instances are returned by SSLContext.wrap_bio()."
         )
 
     @classmethod
@@ -906,26 +906,26 @@ kundi SSLObject:
         rudisha self._sslobj.getpeercert(binary_form)
 
     eleza selected_npn_protocol(self):
-        """Return the currently selected NPN protocol kama a string, ama ``Tupu``
+        """Return the currently selected NPN protocol as a string, ama ``Tupu``
         ikiwa a next protocol was sio negotiated ama ikiwa NPN ni sio supported by one
         of the peers."""
         ikiwa _ssl.HAS_NPN:
             rudisha self._sslobj.selected_npn_protocol()
 
     eleza selected_alpn_protocol(self):
-        """Return the currently selected ALPN protocol kama a string, ama ``Tupu``
+        """Return the currently selected ALPN protocol as a string, ama ``Tupu``
         ikiwa a next protocol was sio negotiated ama ikiwa ALPN ni sio supported by one
         of the peers."""
         ikiwa _ssl.HAS_ALPN:
             rudisha self._sslobj.selected_alpn_protocol()
 
     eleza cipher(self):
-        """Return the currently selected cipher kama a 3-tuple ``(name,
+        """Return the currently selected cipher as a 3-tuple ``(name,
         ssl_version, secret_bits)``."""
         rudisha self._sslobj.cipher()
 
     eleza shared_ciphers(self):
-        """Return a list of ciphers shared by the client during the handshake ama
+        """Return a list of ciphers shared by the client during the handshake or
         Tupu ikiwa this ni sio a valid server connection.
         """
         rudisha self._sslobj.shared_ciphers()
@@ -970,13 +970,13 @@ eleza _sslcopydoc(func):
 
 kundi SSLSocket(socket):
     """This kundi implements a subtype of socket.socket that wraps
-    the underlying OS socket kwenye an SSL context when necessary, na
+    the underlying OS socket kwenye an SSL context when necessary, and
     provides read na write methods over that channel. """
 
     eleza __init__(self, *args, **kwargs):
-        ashiria TypeError(
+         ashiria TypeError(
             f"{self.__class__.__name__} does sio have a public "
-            f"constructor. Instances are rudishaed by "
+            f"constructor. Instances are returned by "
             f"SSLContext.wrap_socket()."
         )
 
@@ -985,16 +985,16 @@ kundi SSLSocket(socket):
                 suppress_ragged_eofs=Kweli, server_hostname=Tupu,
                 context=Tupu, session=Tupu):
         ikiwa sock.getsockopt(SOL_SOCKET, SO_TYPE) != SOCK_STREAM:
-            ashiria NotImplementedError("only stream sockets are supported")
+             ashiria NotImplementedError("only stream sockets are supported")
         ikiwa server_side:
             ikiwa server_hostname:
-                ashiria ValueError("server_hostname can only be specified "
+                 ashiria ValueError("server_hostname can only be specified "
                                  "in client mode")
             ikiwa session ni sio Tupu:
-                ashiria ValueError("session can only be specified kwenye "
+                 ashiria ValueError("session can only be specified kwenye "
                                  "client mode")
         ikiwa context.check_hostname na sio server_hostname:
-            ashiria ValueError("check_hostname requires server_hostname")
+             ashiria ValueError("check_hostname requires server_hostname")
 
         kwargs = dict(
             family=sock.family, type=sock.type, proto=sock.proto,
@@ -1017,9 +1017,9 @@ kundi SSLSocket(socket):
         # See ikiwa we are connected
         jaribu:
             self.getpeername()
-        tatizo OSError kama e:
+        except OSError as e:
             ikiwa e.errno != errno.ENOTCONN:
-                ashiria
+                raise
             connected = Uongo
         isipokua:
             connected = Kweli
@@ -1036,11 +1036,11 @@ kundi SSLSocket(socket):
                     timeout = self.gettimeout()
                     ikiwa timeout == 0.0:
                         # non-blocking
-                        ashiria ValueError("do_handshake_on_connect should sio be specified kila non-blocking sockets")
+                         ashiria ValueError("do_handshake_on_connect should sio be specified kila non-blocking sockets")
                     self.do_handshake()
-            tatizo (OSError, ValueError):
+            except (OSError, ValueError):
                 self.close()
-                ashiria
+                raise
         rudisha self
 
     @property
@@ -1072,18 +1072,18 @@ kundi SSLSocket(socket):
             rudisha self._sslobj.session_reused
 
     eleza dup(self):
-        ashiria NotImplementedError("Can't dup() %s instances" %
+         ashiria NotImplementedError("Can't dup() %s instances" %
                                   self.__class__.__name__)
 
     eleza _checkClosed(self, msg=Tupu):
-        # ashiria an exception here ikiwa you wish to check kila spurious closes
-        pita
+        #  ashiria an exception here ikiwa you wish to check kila spurious closes
+        pass
 
     eleza _check_connected(self):
         ikiwa sio self._connected:
-            # getpeername() will ashiria ENOTCONN ikiwa the socket ni really
+            # getpeername() will  ashiria ENOTCONN ikiwa the socket ni really
             # sio connected; note that we can be connected even without
-            # _connected being set, e.g. ikiwa connect() first rudishaed
+            # _connected being set, e.g. ikiwa connect() first returned
             # EAGAIN.
             self.getpeername()
 
@@ -1093,20 +1093,20 @@ kundi SSLSocket(socket):
 
         self._checkClosed()
         ikiwa self._sslobj ni Tupu:
-            ashiria ValueError("Read on closed ama unwrapped SSL socket.")
+             ashiria ValueError("Read on closed ama unwrapped SSL socket.")
         jaribu:
             ikiwa buffer ni sio Tupu:
                 rudisha self._sslobj.read(len, buffer)
             isipokua:
                 rudisha self._sslobj.read(len)
-        tatizo SSLError kama x:
+        except SSLError as x:
             ikiwa x.args[0] == SSL_ERROR_EOF na self.suppress_ragged_eofs:
                 ikiwa buffer ni sio Tupu:
                     rudisha 0
                 isipokua:
                     rudisha b''
             isipokua:
-                ashiria
+                raise
 
     eleza write(self, data):
         """Write DATA to the underlying SSL channel.  Returns
@@ -1114,7 +1114,7 @@ kundi SSLSocket(socket):
 
         self._checkClosed()
         ikiwa self._sslobj ni Tupu:
-            ashiria ValueError("Write on closed ama unwrapped SSL socket.")
+             ashiria ValueError("Write on closed ama unwrapped SSL socket.")
         rudisha self._sslobj.write(data)
 
     @_sslcopydoc
@@ -1167,7 +1167,7 @@ kundi SSLSocket(socket):
         self._checkClosed()
         ikiwa self._sslobj ni sio Tupu:
             ikiwa flags != 0:
-                ashiria ValueError(
+                 ashiria ValueError(
                     "non-zero flags sio allowed kwenye calls to send() on %s" %
                     self.__class__)
             rudisha self._sslobj.write(data)
@@ -1177,9 +1177,9 @@ kundi SSLSocket(socket):
     eleza sendto(self, data, flags_or_addr, addr=Tupu):
         self._checkClosed()
         ikiwa self._sslobj ni sio Tupu:
-            ashiria ValueError("sendto sio allowed on instances of %s" %
+             ashiria ValueError("sendto sio allowed on instances of %s" %
                              self.__class__)
-        lasivyo addr ni Tupu:
+        elikiwa addr ni Tupu:
             rudisha super().sendto(data, flags_or_addr)
         isipokua:
             rudisha super().sendto(data, flags_or_addr, addr)
@@ -1187,18 +1187,18 @@ kundi SSLSocket(socket):
     eleza sendmsg(self, *args, **kwargs):
         # Ensure programs don't send data unencrypted ikiwa they try to
         # use this method.
-        ashiria NotImplementedError("sendmsg sio allowed on instances of %s" %
+         ashiria NotImplementedError("sendmsg sio allowed on instances of %s" %
                                   self.__class__)
 
     eleza sendall(self, data, flags=0):
         self._checkClosed()
         ikiwa self._sslobj ni sio Tupu:
             ikiwa flags != 0:
-                ashiria ValueError(
+                 ashiria ValueError(
                     "non-zero flags sio allowed kwenye calls to sendall() on %s" %
                     self.__class__)
             count = 0
-            ukijumuisha memoryview(data) kama view, view.cast("B") kama byte_view:
+            ukijumuisha memoryview(data) as view, view.cast("B") as byte_view:
                 amount = len(byte_view)
                 wakati count < amount:
                     v = self.send(byte_view[count:])
@@ -1220,7 +1220,7 @@ kundi SSLSocket(socket):
         self._checkClosed()
         ikiwa self._sslobj ni sio Tupu:
             ikiwa flags != 0:
-                ashiria ValueError(
+                 ashiria ValueError(
                     "non-zero flags sio allowed kwenye calls to recv() on %s" %
                     self.__class__)
             rudisha self.read(buflen)
@@ -1231,39 +1231,39 @@ kundi SSLSocket(socket):
         self._checkClosed()
         ikiwa buffer na (nbytes ni Tupu):
             nbytes = len(buffer)
-        lasivyo nbytes ni Tupu:
+        elikiwa nbytes ni Tupu:
             nbytes = 1024
         ikiwa self._sslobj ni sio Tupu:
             ikiwa flags != 0:
-                ashiria ValueError(
+                 ashiria ValueError(
                   "non-zero flags sio allowed kwenye calls to recv_into() on %s" %
                   self.__class__)
             rudisha self.read(nbytes, buffer)
         isipokua:
             rudisha super().recv_into(buffer, nbytes, flags)
 
-    eleza recvkutoka(self, buflen=1024, flags=0):
+    eleza recvfrom(self, buflen=1024, flags=0):
         self._checkClosed()
         ikiwa self._sslobj ni sio Tupu:
-            ashiria ValueError("recvkutoka sio allowed on instances of %s" %
+             ashiria ValueError("recvkutoka sio allowed on instances of %s" %
                              self.__class__)
         isipokua:
-            rudisha super().recvkutoka(buflen, flags)
+            rudisha super().recvfrom(buflen, flags)
 
-    eleza recvkutoka_into(self, buffer, nbytes=Tupu, flags=0):
+    eleza recvfrom_into(self, buffer, nbytes=Tupu, flags=0):
         self._checkClosed()
         ikiwa self._sslobj ni sio Tupu:
-            ashiria ValueError("recvkutoka_into sio allowed on instances of %s" %
+             ashiria ValueError("recvfrom_into sio allowed on instances of %s" %
                              self.__class__)
         isipokua:
-            rudisha super().recvkutoka_into(buffer, nbytes, flags)
+            rudisha super().recvfrom_into(buffer, nbytes, flags)
 
     eleza recvmsg(self, *args, **kwargs):
-        ashiria NotImplementedError("recvmsg sio allowed on instances of %s" %
+         ashiria NotImplementedError("recvmsg sio allowed on instances of %s" %
                                   self.__class__)
 
     eleza recvmsg_into(self, *args, **kwargs):
-        ashiria NotImplementedError("recvmsg_into sio allowed on instances of "
+         ashiria NotImplementedError("recvmsg_into sio allowed on instances of "
                                   "%s" % self.__class__)
 
     @_sslcopydoc
@@ -1286,14 +1286,14 @@ kundi SSLSocket(socket):
             self._sslobj = Tupu
             rudisha s
         isipokua:
-            ashiria ValueError("No SSL wrapper around " + str(self))
+             ashiria ValueError("No SSL wrapper around " + str(self))
 
     @_sslcopydoc
     eleza verify_client_post_handshake(self):
         ikiwa self._sslobj:
             rudisha self._sslobj.verify_client_post_handshake()
         isipokua:
-            ashiria ValueError("No SSL wrapper around " + str(self))
+             ashiria ValueError("No SSL wrapper around " + str(self))
 
     eleza _real_close(self):
         self._sslobj = Tupu
@@ -1312,11 +1312,11 @@ kundi SSLSocket(socket):
 
     eleza _real_connect(self, addr, connect_ex):
         ikiwa self.server_side:
-            ashiria ValueError("can't connect kwenye server-side mode")
+             ashiria ValueError("can't connect kwenye server-side mode")
         # Here we assume that the socket ni client-side, na not
         # connected at the time of the call.  We connect it, then wrap it.
         ikiwa self._connected ama self._sslobj ni sio Tupu:
-            ashiria ValueError("attempt to connect already-connected SSLSocket!")
+             ashiria ValueError("attempt to connect already-connected SSLSocket!")
         self._sslobj = self.context._wrap_socket(
             self, Uongo, self.server_hostname,
             owner=self, session=self._session
@@ -1332,9 +1332,9 @@ kundi SSLSocket(socket):
                 ikiwa self.do_handshake_on_connect:
                     self.do_handshake()
             rudisha rc
-        tatizo (OSError, ValueError):
+        except (OSError, ValueError):
             self._sslobj = Tupu
-            ashiria
+            raise
 
     eleza connect(self, addr):
         """Connects to remote ADDR, na then wraps the connection in
@@ -1347,7 +1347,7 @@ kundi SSLSocket(socket):
         rudisha self._real_connect(addr, Kweli)
 
     eleza accept(self):
-        """Accepts a new connection kutoka a remote client, na rudishas
+        """Accepts a new connection kutoka a remote client, na returns
         a tuple containing that new connection wrapped ukijumuisha a server-side
         SSL channel, na the address of the remote client."""
 
@@ -1363,8 +1363,8 @@ kundi SSLSocket(socket):
         ikiwa self._sslobj ni sio Tupu:
             rudisha self._sslobj.get_channel_binding(cb_type)
         isipokua:
-            ikiwa cb_type haiko kwenye CHANNEL_BINDING_TYPES:
-                ashiria ValueError(
+            ikiwa cb_type sio kwenye CHANNEL_BINDING_TYPES:
+                 ashiria ValueError(
                     "{0} channel binding type sio implemented".format(cb_type)
                 )
             rudisha Tupu
@@ -1390,10 +1390,10 @@ eleza wrap_socket(sock, keyfile=Tupu, certfile=Tupu,
                 ciphers=Tupu):
 
     ikiwa server_side na sio certfile:
-        ashiria ValueError("certfile must be specified kila server-side "
+         ashiria ValueError("certfile must be specified kila server-side "
                          "operations")
     ikiwa keyfile na sio certfile:
-        ashiria ValueError("certfile must be specified")
+         ashiria ValueError("certfile must be specified")
     context = SSLContext(ssl_version)
     context.verify_mode = cert_reqs
     ikiwa ca_certs:
@@ -1418,7 +1418,7 @@ eleza cert_time_to_seconds(cert_time):
     "notBefore" ama "notAfter" dates must use UTC (RFC 5280).
 
     Month ni one of: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
-    UTC should be specified kama GMT (see ASN1_TIME_andika())
+    UTC should be specified as GMT (see ASN1_TIME_andika())
     """
     kutoka time agiza strptime
     kutoka calendar agiza timegm
@@ -1430,22 +1430,22 @@ eleza cert_time_to_seconds(cert_time):
     time_format = ' %d %H:%M:%S %Y GMT' # NOTE: no month, fixed GMT
     jaribu:
         month_number = months.index(cert_time[:3].title()) + 1
-    tatizo ValueError:
-        ashiria ValueError('time data %r does sio match '
+    except ValueError:
+         ashiria ValueError('time data %r does sio match '
                          'format "%%b%s"' % (cert_time, time_format))
     isipokua:
         # found valid month
         tt = strptime(cert_time[3:], time_format)
         # rudisha an integer, the previous mktime()-based implementation
-        # rudishaed a float (fractional seconds are always zero here).
+        # returned a float (fractional seconds are always zero here).
         rudisha timegm((tt[0], month_number) + tt[2:6])
 
 PEM_HEADER = "-----BEGIN CERTIFICATE-----"
 PEM_FOOTER = "-----END CERTIFICATE-----"
 
 eleza DER_cert_to_PEM_cert(der_cert_bytes):
-    """Takes a certificate kwenye binary DER format na rudishas the
-    PEM version of it kama a string."""
+    """Takes a certificate kwenye binary DER format na returns the
+    PEM version of it as a string."""
 
     f = str(base64.standard_b64encode(der_cert_bytes), 'ASCII', 'strict')
     ss = [PEM_HEADER]
@@ -1454,21 +1454,21 @@ eleza DER_cert_to_PEM_cert(der_cert_bytes):
     rudisha '\n'.join(ss)
 
 eleza PEM_cert_to_DER_cert(pem_cert_string):
-    """Takes a certificate kwenye ASCII PEM format na rudishas the
-    DER-encoded version of it kama a byte sequence"""
+    """Takes a certificate kwenye ASCII PEM format na returns the
+    DER-encoded version of it as a byte sequence"""
 
     ikiwa sio pem_cert_string.startswith(PEM_HEADER):
-        ashiria ValueError("Invalid PEM encoding; must start ukijumuisha %s"
+         ashiria ValueError("Invalid PEM encoding; must start ukijumuisha %s"
                          % PEM_HEADER)
     ikiwa sio pem_cert_string.strip().endswith(PEM_FOOTER):
-        ashiria ValueError("Invalid PEM encoding; must end ukijumuisha %s"
+         ashiria ValueError("Invalid PEM encoding; must end ukijumuisha %s"
                          % PEM_FOOTER)
     d = pem_cert_string.strip()[len(PEM_HEADER):-len(PEM_FOOTER)]
     rudisha base64.decodebytes(d.encode('ASCII', 'strict'))
 
 eleza get_server_certificate(addr, ssl_version=PROTOCOL_TLS, ca_certs=Tupu):
     """Retrieve the certificate kutoka the server at the specified address,
-    na rudisha it kama a PEM-encoded string.
+    na rudisha it as a PEM-encoded string.
     If 'ca_certs' ni specified, validate the server cert against it.
     If 'ssl_version' ni specified, use it kwenye the connection attempt."""
 
@@ -1480,8 +1480,8 @@ eleza get_server_certificate(addr, ssl_version=PROTOCOL_TLS, ca_certs=Tupu):
     context = _create_stdlib_context(ssl_version,
                                      cert_reqs=cert_reqs,
                                      cafile=ca_certs)
-    ukijumuisha  create_connection(addr) kama sock:
-        ukijumuisha context.wrap_socket(sock) kama sslsock:
+    ukijumuisha  create_connection(addr) as sock:
+        ukijumuisha context.wrap_socket(sock) as sslsock:
             dercert = sslsock.getpeercert(Kweli)
     rudisha DER_cert_to_PEM_cert(dercert)
 

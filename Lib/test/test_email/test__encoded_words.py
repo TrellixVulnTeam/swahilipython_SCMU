@@ -1,5 +1,5 @@
 agiza unittest
-kutoka email agiza _encoded_words kama _ew
+kutoka email agiza _encoded_words as _ew
 kutoka email agiza errors
 kutoka test.test_email agiza TestEmailBase
 
@@ -51,7 +51,7 @@ kundi TestDecodeB(TestEmailBase):
 
 kundi TestDecode(TestEmailBase):
 
-    eleza test_wrong_format_input_ashirias(self):
+    eleza test_wrong_format_input_raises(self):
         ukijumuisha self.assertRaises(ValueError):
             _ew.decode('=?badone?=')
         ukijumuisha self.assertRaises(ValueError):

@@ -1,4 +1,4 @@
--- 'f' code formatting, ukijumuisha explicit precision (>= 0).  Output always
+-- 'f' code formatting, with explicit precision (>= 0).  Output always
 -- has the given number of places after the point;  zeros are added if
 -- necessary to make this true.
 
@@ -58,7 +58,7 @@
 %.2f 1234567.8912 -> 1234567.89
 
 -- alternate form always includes a decimal point.  This only
--- makes a difference when the precision ni 0.
+-- makes a difference when the precision is 0.
 %#.0f 0 -> 0.
 %#.1f 0 -> 0.0
 %#.0f 1.5 -> 2.
@@ -68,7 +68,7 @@
 %#.1f 1.4 -> 1.4
 %#.2f 0.375 -> 0.38
 
--- ikiwa precision ni omitted it defaults to 6
+-- if precision is omitted it defaults to 6
 %f 0 -> 0.000000
 %f 1230000 -> 1230000.000000
 %f 1234567 -> 1234567.000000
@@ -81,7 +81,7 @@
 %f 0.0000005001 -> 0.000001
 %f 0.0000004999 -> 0.000000
 
--- 'e' code formatting ukijumuisha explicit precision (>= 0). Output should
+-- 'e' code formatting with explicit precision (>= 0). Output should
 -- always have exactly the number of places after the point that were
 -- requested.
 
@@ -92,7 +92,7 @@
 %.10e 0 -> 0.0000000000e+00
 %.50e 0 -> 0.00000000000000000000000000000000000000000000000000e+00
 
--- precision 0.  no decimal point kwenye the output
+-- precision 0.  no decimal point in the output
 %.0e 0.01 -> 1e-02
 %.0e 0.1 -> 1e-01
 %.0e 1 -> 1e+00
@@ -165,7 +165,7 @@
 %e 1.1 -> 1.100000e+00
 
 -- alternate form always contains a decimal point.  This only makes
--- a difference when precision ni 0.
+-- a difference when precision is 0.
 
 %#.0e 0.01 -> 1.e-02
 %#.0e 0.1 -> 1.e-01
@@ -214,9 +214,9 @@
 %.50g 0 -> 0
 %.100g 0 -> 0
 
--- precision 0 doesn't make a lot of sense kila the 'g' code (what does
--- it mean to have no significant digits?); kwenye practice, it's interpreted
--- kama identical to precision 1
+-- precision 0 doesn't make a lot of sense for the 'g' code (what does
+-- it mean to have no significant digits?); in practice, it's interpreted
+-- as identical to precision 1
 %.0g 1000 -> 1e+03
 %.0g 100 -> 1e+02
 %.0g 10 -> 1e+01
@@ -279,12 +279,12 @@
 %.2g 0.000123 -> 0.00012
 %.2g 0.0000123 -> 1.2e-05
 
--- bad cases kutoka http://bugs.python.org/issue9980
+-- bad cases from http://bugs.python.org/issue9980
 %.12g 38210.0 -> 38210
 %.12g 37210.0 -> 37210
 %.12g 36210.0 -> 36210
 
--- alternate g formatting:  always include decimal point na
+-- alternate g formatting:  always include decimal point and
 -- exactly <precision> significant digits.
 %#.0g 0 -> 0.
 %#.1g 0 -> 0.
@@ -319,8 +319,8 @@
 %#.5g 234.56 -> 234.56
 %#.6g 234.56 -> 234.560
 
--- repr formatting.  Result always includes decimal point na at
--- least one digit after the point, ama an exponent.
+-- repr formatting.  Result always includes decimal point and at
+-- least one digit after the point, or an exponent.
 %r 0 -> 0.0
 %r 1 -> 1.0
 
@@ -340,7 +340,7 @@
 %r 1e16 -> 1e+16
 %r 1e17 -> 1e+17
 
--- kama do values < 1e-4
+-- as do values < 1e-4
 %r 1e-3 -> 0.001
 %r 1.001e-4 -> 0.0001001
 %r 1.0000000000000001e-4 -> 0.0001

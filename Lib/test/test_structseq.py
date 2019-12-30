@@ -69,11 +69,11 @@ kundi StructSeqTest(unittest.TestCase):
         t1 = time.gmtime()
         t2 = type(t1)(t1)
         self.assertEqual(t1, t2)
-        self.assertKweli(sio (t1 < t2))
+        self.assertKweli(not (t1 < t2))
         self.assertKweli(t1 <= t2)
-        self.assertKweli(sio (t1 > t2))
+        self.assertKweli(not (t1 > t2))
         self.assertKweli(t1 >= t2)
-        self.assertKweli(sio (t1 != t2))
+        self.assertKweli(not (t1 != t2))
 
     eleza test_fields(self):
         t = time.gmtime()
@@ -95,12 +95,12 @@ kundi StructSeqTest(unittest.TestCase):
 
     eleza test_eviltuple(self):
         kundi Exc(Exception):
-            pita
+            pass
 
         # Devious code could crash structseqs' constructors
         kundi C:
             eleza __getitem__(self, i):
-                ashiria Exc
+                 ashiria Exc
             eleza __len__(self):
                 rudisha 9
 

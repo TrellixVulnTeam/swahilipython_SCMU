@@ -20,28 +20,28 @@ kundi TestCgitb(unittest.TestCase):
 
     eleza test_html(self):
         jaribu:
-            ashiria ValueError("Hello World")
-        tatizo ValueError kama err:
+             ashiria ValueError("Hello World")
+        except ValueError as err:
             # If the html was templated we could do a bit more here.
-            # At least check that we get details on what we just ashiriad.
+            # At least check that we get details on what we just raised.
             html = cgitb.html(sys.exc_info())
             self.assertIn("ValueError", html)
             self.assertIn(str(err), html)
 
     eleza test_text(self):
         jaribu:
-            ashiria ValueError("Hello World")
-        tatizo ValueError kama err:
+             ashiria ValueError("Hello World")
+        except ValueError as err:
             text = cgitb.text(sys.exc_info())
             self.assertIn("ValueError", text)
             self.assertIn("Hello World", text)
 
     eleza test_syshook_no_logdir_default_format(self):
-        ukijumuisha temp_dir() kama tracedir:
+        ukijumuisha temp_dir() as tracedir:
             rc, out, err = assert_python_failure(
                   '-c',
                   ('agiza cgitb; cgitb.enable(logdir=%s); '
-                   'ashiria ValueError("Hello World")') % repr(tracedir))
+                   ' ashiria ValueError("Hello World")') % repr(tracedir))
         out = out.decode(sys.getfilesystemencoding())
         self.assertIn("ValueError", out)
         self.assertIn("Hello World", out)
@@ -52,11 +52,11 @@ kundi TestCgitb(unittest.TestCase):
 
     eleza test_syshook_no_logdir_text_format(self):
         # Issue 12890: we were emitting the <p> tag kwenye text mode.
-        ukijumuisha temp_dir() kama tracedir:
+        ukijumuisha temp_dir() as tracedir:
             rc, out, err = assert_python_failure(
                   '-c',
                   ('agiza cgitb; cgitb.enable(format="text", logdir=%s); '
-                   'ashiria ValueError("Hello World")') % repr(tracedir))
+                   ' ashiria ValueError("Hello World")') % repr(tracedir))
         out = out.decode(sys.getfilesystemencoding())
         self.assertIn("ValueError", out)
         self.assertIn("Hello World", out)

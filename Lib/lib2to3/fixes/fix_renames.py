@@ -4,9 +4,9 @@ Fixes:
   * sys.maxint -> sys.maxsize
 """
 # Author: Christian Heimes
-# based on Collin Winter's fix_agiza
+# based on Collin Winter's fix_import
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name, attr_chain
 
@@ -26,11 +26,11 @@ eleza build_pattern():
             #bare.add(module)
             #bare.add(old_attr)
             #tuma """
-            #      import_name< 'agiza' (module=%r
+            #      import_name< 'import' (module=%r
             #          | dotted_as_names< any* module=%r any* >) >
             #      """ % (module, module)
             tuma """
-                  import_kutoka< 'kutoka' module_name=%r 'agiza'
+                  import_from< 'from' module_name=%r 'import'
                       ( attr_name=%r | import_as_name< attr_name=%r 'as' any >) >
                   """ % (module, old_attr, old_attr)
             tuma """

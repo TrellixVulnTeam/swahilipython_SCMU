@@ -51,12 +51,12 @@ eleza int_to_float(n):
     # Reduce to the case where n ni positive.
     ikiwa n == 0:
         rudisha 0.0
-    lasivyo n < 0:
+    elikiwa n < 0:
         rudisha -int_to_float(-n)
 
     # Convert n to a 'floating-point' number q * 2**shift, where q ni an
     # integer ukijumuisha 'PRECISION' significant bits.  When shifting n to create q,
-    # the least significant bit of q ni treated kama 'sticky'.  That is, the
+    # the least significant bit of q ni treated as 'sticky'.  That is, the
     # least significant bit of q ni set ikiwa either the corresponding bit of n
     # was already set, ama any one of the bits of n lost kwenye the shift was set.
     shift = n.bit_length() - PRECISION
@@ -68,7 +68,7 @@ eleza int_to_float(n):
 
     # Detect overflow.
     ikiwa shift + (q == Q_MAX) > SHIFT_MAX:
-        ashiria OverflowError("integer too large to convert to float")
+         ashiria OverflowError("integer too large to convert to float")
 
     # Checks: q ni exactly representable, na q**2**shift doesn't overflow.
     assert q % 4 == 0 na q // 4 <= 2**(sys.float_info.mant_dig)
@@ -76,7 +76,7 @@ eleza int_to_float(n):
 
     # Some circularity here, since float(q) ni doing an int-to-float
     # conversion.  But here q ni of bounded size, na ni exactly representable
-    # kama a float.  In a low-level C-like language, this operation would be a
+    # as a float.  In a low-level C-like language, this operation would be a
     # simple cast (e.g., kutoka unsigned long long to double).
     rudisha math.ldexp(float(q), shift)
 
@@ -89,9 +89,9 @@ eleza truediv(a, b):
 
     # exceptions:  division by zero, overflow
     ikiwa sio b:
-        ashiria ZeroDivisionError("division by zero")
+         ashiria ZeroDivisionError("division by zero")
     ikiwa a >= DBL_MIN_OVERFLOW * b:
-        ashiria OverflowError("int/int too large to represent kama a float")
+         ashiria OverflowError("int/int too large to represent as a float")
 
    # find integer d satisfying 2**(d - 1) <= a/b < 2**d
     d = a.bit_length() - b.bit_length()
@@ -159,8 +159,8 @@ kundi LongTest(unittest.TestCase):
             q2, r2 = x//y, x%y
             pab, pba = x*y, y*x
             eq(pab, pba, "multiplication does sio commute")
-            eq(q, q2, "divmod rudishas different quotient than /")
-            eq(r, r2, "divmod rudishas different mod than %")
+            eq(q, q2, "divmod returns different quotient than /")
+            eq(r, r2, "divmod returns different mod than %")
             eq(x, q*y + r, "x != q*y + r after divmod")
             ikiwa y > 0:
                 self.assertKweli(0 <= r < y, "bad mod kutoka divmod")
@@ -336,8 +336,8 @@ kundi LongTest(unittest.TestCase):
                         vv = -v
                     jaribu:
                         self.assertEqual(int(ss), vv)
-                    tatizo ValueError:
-                        pita
+                    except ValueError:
+                        pass
 
         # trailing L should no longer be accepted...
         self.assertRaises(ValueError, int, '123L')
@@ -399,12 +399,12 @@ kundi LongTest(unittest.TestCase):
         # that of the pure Python version above.
         jaribu:
             actual = float(n)
-        tatizo OverflowError:
+        except OverflowError:
             actual = 'overflow'
 
         jaribu:
             expected = int_to_float(n)
-        tatizo OverflowError:
+        except OverflowError:
             expected = 'overflow'
 
         msg = ("Error kwenye conversion of integer {} to float.  "
@@ -501,13 +501,13 @@ kundi LongTest(unittest.TestCase):
                      "1. ** huge", "huge ** 1.", "1. ** mhuge", "mhuge ** 1.",
                      "math.sin(huge)", "math.sin(mhuge)",
                      "math.sqrt(huge)", "math.sqrt(mhuge)", # should do better
-                     # math.floor() of an int rudishas an int now
+                     # math.floor() of an int returns an int now
                      ##"math.floor(huge)", "math.floor(mhuge)",
                      ]:
 
             self.assertRaises(OverflowError, eval, test, namespace)
 
-        # XXX Perhaps float(shuge) can ashiria OverflowError on some box?
+        # XXX Perhaps float(shuge) can  ashiria OverflowError on some box?
         # The comparison should not.
         self.assertNotEqual(float(shuge), int(shuge),
             "float(shuge) should sio equal int(shuge)")
@@ -543,7 +543,7 @@ kundi LongTest(unittest.TestCase):
                 ikiwa isinstance(value, int):
                     self.n = value
                     self.d = 1
-                lasivyo isinstance(value, float):
+                elikiwa isinstance(value, float):
                     # Convert to exact rational equivalent.
                     f, e = math.frexp(abs(value))
                     assert f == 0 ama 0.5 <= f < 1.0
@@ -577,7 +577,7 @@ kundi LongTest(unittest.TestCase):
                     self.d = d
                     assert float(n) / float(d) == value
                 isipokua:
-                    ashiria TypeError("can't deal ukijumuisha %r" % value)
+                     ashiria TypeError("can't deal ukijumuisha %r" % value)
 
             eleza _cmp__(self, other):
                 ikiwa sio isinstance(other, Rat):
@@ -596,8 +596,8 @@ kundi LongTest(unittest.TestCase):
                 rudisha self._cmp__(other) < 0
 
         cases = [0, 0.001, 0.99, 1.0, 1.5, 1e20, 1e200]
-        # 2**48 ni an agizaant boundary kwenye the internals.  2**53 ni an
-        # agizaant boundary kila IEEE double precision.
+        # 2**48 ni an important boundary kwenye the internals.  2**53 ni an
+        # important boundary kila IEEE double precision.
         kila t kwenye 2.0**48, 2.0**50, 2.0**53:
             cases.extend([t - 1.0, t - 0.3, t, t + 0.3, t + 1.0,
                           int(t-1), int(t), int(t+1)])
@@ -690,7 +690,7 @@ kundi LongTest(unittest.TestCase):
         # make sure these are errors
         self.assertRaises(ValueError, format, 3, "1.3")  # precision disallowed
         self.assertRaises(ValueError, format, 3, "_c")   # underscore,
-        self.assertRaises(ValueError, format, 3, ",c")   # comma, na
+        self.assertRaises(ValueError, format, 3, ",c")   # comma, and
         self.assertRaises(ValueError, format, 3, "+c")   # sign sio allowed
                                                          # ukijumuisha 'c'
 
@@ -797,25 +797,25 @@ kundi LongTest(unittest.TestCase):
         rounded division.  b should be nonzero."""
 
         # skip check kila small a na b: kwenye this case, the current
-        # implementation converts the arguments to float directly na
+        # implementation converts the arguments to float directly and
         # then applies a float division.  This can give doubly-rounded
         # results on x87-using machines (particularly 32-bit Linux).
         ikiwa skip_small na max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
-            rudisha
+            return
 
         jaribu:
             # use repr so that we can distinguish between -0.0 na 0.0
             expected = repr(truediv(a, b))
-        tatizo OverflowError:
+        except OverflowError:
             expected = 'overflow'
-        tatizo ZeroDivisionError:
+        except ZeroDivisionError:
             expected = 'zerodivision'
 
         jaribu:
             got = repr(a / b)
-        tatizo OverflowError:
+        except OverflowError:
             got = 'overflow'
-        tatizo ZeroDivisionError:
+        except ZeroDivisionError:
             got = 'zerodivision'
 
         self.assertEqual(expected, got, "Incorrectly rounded division {}/{}: "
@@ -936,7 +936,7 @@ kundi LongTest(unittest.TestCase):
     eleza test_huge_lshift_of_zero(self):
         # Shouldn't try to allocate memory kila a huge shift. See issue #27870.
         # Other implementations may have a different boundary kila overflow,
-        # ama sio ashiria at all.
+        # ama sio  ashiria at all.
         self.assertEqual(0 << sys.maxsize, 0)
         self.assertEqual(0 << (sys.maxsize + 1), 0)
 
@@ -980,7 +980,7 @@ kundi LongTest(unittest.TestCase):
             k = x.bit_length()
             # Check equivalence ukijumuisha Python version
             self.assertEqual(k, len(bin(x).lstrip('-0b')))
-            # Behaviour kama specified kwenye the docs
+            # Behaviour as specified kwenye the docs
             ikiwa x != 0:
                 self.assertKweli(2**(k-1) <= abs(x) < 2**k)
             isipokua:
@@ -1089,8 +1089,8 @@ kundi LongTest(unittest.TestCase):
                     self.assertEqual(
                         test.to_bytes(len(expected), byteorder, signed=signed),
                         expected)
-                tatizo Exception kama err:
-                    ashiria AssertionError(
+                except Exception as err:
+                     ashiria AssertionError(
                         "failed to convert {0} ukijumuisha byteorder={1} na signed={2}"
                         .format(test, byteorder, signed)) kutoka err
 
@@ -1186,10 +1186,10 @@ kundi LongTest(unittest.TestCase):
             kila test, expected kwenye tests.items():
                 jaribu:
                     self.assertEqual(
-                        int.kutoka_bytes(test, byteorder, signed=signed),
+                        int.from_bytes(test, byteorder, signed=signed),
                         expected)
-                tatizo Exception kama err:
-                    ashiria AssertionError(
+                except Exception as err:
+                     ashiria AssertionError(
                         "failed to convert {0} ukijumuisha byteorder={1!r} na signed={2}"
                         .format(test, byteorder, signed)) kutoka err
 
@@ -1278,47 +1278,47 @@ kundi LongTest(unittest.TestCase):
         check(tests4, 'little', signed=Uongo)
 
         kundi myint(int):
-            pita
+            pass
 
-        self.assertIs(type(myint.kutoka_bytes(b'\x00', 'big')), myint)
-        self.assertEqual(myint.kutoka_bytes(b'\x01', 'big'), 1)
+        self.assertIs(type(myint.from_bytes(b'\x00', 'big')), myint)
+        self.assertEqual(myint.from_bytes(b'\x01', 'big'), 1)
         self.assertIs(
-            type(myint.kutoka_bytes(b'\x00', 'big', signed=Uongo)), myint)
-        self.assertEqual(myint.kutoka_bytes(b'\x01', 'big', signed=Uongo), 1)
-        self.assertIs(type(myint.kutoka_bytes(b'\x00', 'little')), myint)
-        self.assertEqual(myint.kutoka_bytes(b'\x01', 'little'), 1)
-        self.assertIs(type(myint.kutoka_bytes(
+            type(myint.from_bytes(b'\x00', 'big', signed=Uongo)), myint)
+        self.assertEqual(myint.from_bytes(b'\x01', 'big', signed=Uongo), 1)
+        self.assertIs(type(myint.from_bytes(b'\x00', 'little')), myint)
+        self.assertEqual(myint.from_bytes(b'\x01', 'little'), 1)
+        self.assertIs(type(myint.from_bytes(
             b'\x00', 'little', signed=Uongo)), myint)
-        self.assertEqual(myint.kutoka_bytes(b'\x01', 'little', signed=Uongo), 1)
+        self.assertEqual(myint.from_bytes(b'\x01', 'little', signed=Uongo), 1)
         self.assertEqual(
-            int.kutoka_bytes([255, 0, 0], 'big', signed=Kweli), -65536)
+            int.from_bytes([255, 0, 0], 'big', signed=Kweli), -65536)
         self.assertEqual(
-            int.kutoka_bytes((255, 0, 0), 'big', signed=Kweli), -65536)
-        self.assertEqual(int.kutoka_bytes(
+            int.from_bytes((255, 0, 0), 'big', signed=Kweli), -65536)
+        self.assertEqual(int.from_bytes(
             bytearray(b'\xff\x00\x00'), 'big', signed=Kweli), -65536)
-        self.assertEqual(int.kutoka_bytes(
+        self.assertEqual(int.from_bytes(
             bytearray(b'\xff\x00\x00'), 'big', signed=Kweli), -65536)
-        self.assertEqual(int.kutoka_bytes(
+        self.assertEqual(int.from_bytes(
             array.array('B', b'\xff\x00\x00'), 'big', signed=Kweli), -65536)
-        self.assertEqual(int.kutoka_bytes(
+        self.assertEqual(int.from_bytes(
             memoryview(b'\xff\x00\x00'), 'big', signed=Kweli), -65536)
-        self.assertRaises(ValueError, int.kutoka_bytes, [256], 'big')
-        self.assertRaises(ValueError, int.kutoka_bytes, [0], 'big\x00')
-        self.assertRaises(ValueError, int.kutoka_bytes, [0], 'little\x00')
-        self.assertRaises(TypeError, int.kutoka_bytes, "", 'big')
-        self.assertRaises(TypeError, int.kutoka_bytes, "\x00", 'big')
-        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big')
-        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big', Kweli)
-        self.assertRaises(TypeError, myint.kutoka_bytes, "", 'big')
-        self.assertRaises(TypeError, myint.kutoka_bytes, "\x00", 'big')
-        self.assertRaises(TypeError, myint.kutoka_bytes, 0, 'big')
-        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big', Kweli)
+        self.assertRaises(ValueError, int.from_bytes, [256], 'big')
+        self.assertRaises(ValueError, int.from_bytes, [0], 'big\x00')
+        self.assertRaises(ValueError, int.from_bytes, [0], 'little\x00')
+        self.assertRaises(TypeError, int.from_bytes, "", 'big')
+        self.assertRaises(TypeError, int.from_bytes, "\x00", 'big')
+        self.assertRaises(TypeError, int.from_bytes, 0, 'big')
+        self.assertRaises(TypeError, int.from_bytes, 0, 'big', Kweli)
+        self.assertRaises(TypeError, myint.from_bytes, "", 'big')
+        self.assertRaises(TypeError, myint.from_bytes, "\x00", 'big')
+        self.assertRaises(TypeError, myint.from_bytes, 0, 'big')
+        self.assertRaises(TypeError, int.from_bytes, 0, 'big', Kweli)
 
         kundi myint2(int):
             eleza __new__(cls, value):
                 rudisha int.__new__(cls, value + 1)
 
-        i = myint2.kutoka_bytes(b'\x01', 'big')
+        i = myint2.from_bytes(b'\x01', 'big')
         self.assertIs(type(i), myint2)
         self.assertEqual(i, 2)
 
@@ -1326,7 +1326,7 @@ kundi LongTest(unittest.TestCase):
             eleza __init__(self, value):
                 self.foo = 'bar'
 
-        i = myint3.kutoka_bytes(b'\x01', 'big')
+        i = myint3.from_bytes(b'\x01', 'big')
         self.assertIs(type(i), myint3)
         self.assertEqual(i, 1)
         self.assertEqual(getattr(i, 'foo', 'none'), 'bar')
@@ -1354,7 +1354,7 @@ kundi LongTest(unittest.TestCase):
 
     eleza test_as_integer_ratio(self):
         kundi myint(int):
-            pita
+            pass
         tests = [10, 0, -10, 1, sys.maxsize + 1, Kweli, Uongo, myint(42)]
         kila value kwenye tests:
             numerator, denominator = value.as_integer_ratio()

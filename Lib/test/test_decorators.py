@@ -29,7 +29,7 @@ eleza dbcheck(exprstr, globals=Tupu, locals=Tupu):
         expr = compile(exprstr, "dbcheck-%s" % func.__name__, "eval")
         eleza check(*args, **kwds):
             ikiwa sio eval(expr, globals, locals):
-                ashiria DbcheckError(exprstr, func, args, kwds)
+                 ashiria DbcheckError(exprstr, func, args, kwds)
             rudisha func(*args, **kwds)
         rudisha check
     rudisha decorate
@@ -55,11 +55,11 @@ eleza memoize(func):
     eleza call(*args):
         jaribu:
             rudisha saved[args]
-        tatizo KeyError:
+        except KeyError:
             res = func(*args)
             saved[args] = res
             rudisha res
-        tatizo TypeError:
+        except TypeError:
             # Unhashable argument
             rudisha func(*args)
     call.__name__ = func.__name__
@@ -90,7 +90,7 @@ kundi TestDecorators(unittest.TestCase):
         self.assertEqual(foo.author, 'Cleese')
 
     eleza test_argforms(self):
-        # A few tests of argument pitaing, kama we use restricted form
+        # A few tests of argument passing, as we use restricted form
         # of expressions kila decorators.
 
         eleza noteargs(*args, **kwds):
@@ -113,7 +113,7 @@ kundi TestDecorators(unittest.TestCase):
                                      dict(eric='idle', john='cleese')))
 
         @noteargs(1, 2,)
-        eleza f3(): pita
+        eleza f3(): pass
         self.assertEqual(f3.dbval, ((1, 2), {}))
 
     eleza test_dbcheck(self):
@@ -157,25 +157,25 @@ kundi TestDecorators(unittest.TestCase):
             # Sanity check: ni expr ni a valid expression by itself?
             compile(expr, "testexpr", "exec")
 
-            codestr = "@%s\neleza f(): pita" % expr
+            codestr = "@%s\neleza f(): pass" % expr
             self.assertRaises(SyntaxError, compile, codestr, "test", "exec")
 
         # You can't put multiple decorators on a single line:
         #
         self.assertRaises(SyntaxError, compile,
-                          "@f1 @f2\neleza f(): pita", "test", "exec")
+                          "@f1 @f2\neleza f(): pass", "test", "exec")
 
         # Test runtime errors
 
         eleza unimp(func):
-            ashiria NotImplementedError
+             ashiria NotImplementedError
         context = dict(nullval=Tupu, unimp=unimp)
 
         kila expr, exc kwenye [ ("undef", NameError),
                            ("nullval", TypeError),
                            ("nullval.attr", AttributeError),
                            ("unimp", NotImplementedError)]:
-            codestr = "@%s\neleza f(): pita\nassert f() ni Tupu" % expr
+            codestr = "@%s\neleza f(): pass\nassert f() ni Tupu" % expr
             code = compile(codestr, "test", "exec")
             self.assertRaises(exc, eval, code, context)
 
@@ -193,8 +193,8 @@ kundi TestDecorators(unittest.TestCase):
         # Test that decorators are applied kwenye the proper order to the function
         # they are decorating.
         eleza callnum(num):
-            """Decorator factory that rudishas a decorator that replaces the
-            pitaed-in function ukijumuisha one that rudishas the value of 'num'"""
+            """Decorator factory that returns a decorator that replaces the
+            passed-in function ukijumuisha one that returns the value of 'num'"""
             eleza deco(func):
                 rudisha lambda: num
             rudisha deco
@@ -206,7 +206,7 @@ kundi TestDecorators(unittest.TestCase):
 
     eleza test_eval_order(self):
         # Evaluating a decorated function involves four steps kila each
-        # decorator-maker (the function that rudishas a decorator):
+        # decorator-maker (the function that returns a decorator):
         #
         #    1: Evaluate the decorator-maker name
         #    2: Evaluate the decorator-maker arguments (ikiwa any)
@@ -234,7 +234,7 @@ kundi TestDecorators(unittest.TestCase):
             eleza __getattr__(self, fname):
                 ikiwa fname == 'make_decorator':
                     opname, res = ('evalname', make_decorator)
-                lasivyo fname == 'arg':
+                elikiwa fname == 'arg':
                     opname, res = ('evalargs', str(self.index))
                 isipokua:
                     assert Uongo, "Unknown attrname %s" % fname
@@ -272,7 +272,7 @@ kundi TestClassDecorators(unittest.TestCase):
             x.extra = 'Hello'
             rudisha x
         @plain
-        kundi C(object): pita
+        kundi C(object): pass
         self.assertEqual(C.extra, 'Hello')
 
     eleza test_double(self):
@@ -285,7 +285,7 @@ kundi TestClassDecorators(unittest.TestCase):
 
         @add_five
         @ten
-        kundi C(object): pita
+        kundi C(object): pass
         self.assertEqual(C.extra, 15)
 
     eleza test_order(self):
@@ -297,7 +297,7 @@ kundi TestClassDecorators(unittest.TestCase):
             rudisha x
         @applied_second
         @applied_first
-        kundi C(object): pita
+        kundi C(object): pass
         self.assertEqual(C.extra, 'second')
 
 ikiwa __name__ == "__main__":

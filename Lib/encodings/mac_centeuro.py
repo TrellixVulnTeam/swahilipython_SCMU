@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec mac_centeuro generated from 'MAPPINGS/VENDORS/APPLE/CENTEURO.TXT' with gencodec.py.
+""" Python Character Mapping Codec mac_centeuro generated kutoka 'MAPPINGS/VENDORS/APPLE/CENTEURO.TXT' ukijumuisha gencodec.py.
 
 """#"
 
@@ -23,10 +23,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pita
+    pass
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pita
+    pass
 
 ### encodings module API
 

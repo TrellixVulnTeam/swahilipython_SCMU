@@ -124,7 +124,7 @@ eleza __ge__(self, *args):
 method_template = """\
 @trackCall
 eleza __%s__(self, *args):
-    pita
+    pass
 """
 
 d = {}
@@ -273,13 +273,13 @@ kundi ClassTests(unittest.TestCase):
 
         # List/dict operations
 
-        kundi Empty: pita
+        kundi Empty: pass
 
         jaribu:
             1 kwenye Empty()
-            self.fail('failed, should have ashiriad TypeError')
-        tatizo TypeError:
-            pita
+            self.fail('failed, should have raised TypeError')
+        except TypeError:
+            pass
 
         callLst[:] = []
         1 kwenye testme
@@ -424,11 +424,11 @@ kundi ClassTests(unittest.TestCase):
 
             @trackCall
             eleza __setattr__(self, *args):
-                pita
+                pass
 
             @trackCall
             eleza __delattr__(self, *args):
-                pita
+                pass
 
         testme = ExtraTests()
 
@@ -480,9 +480,9 @@ kundi ClassTests(unittest.TestCase):
         #  no __hash__
 
         kundi C0:
-            pita
+            pass
 
-        hash(C0()) # This should work; the next two should ashiria TypeError
+        hash(C0()) # This should work; the next two should  ashiria TypeError
 
         kundi C2:
             eleza __eq__(self, other): rudisha 1
@@ -494,28 +494,28 @@ kundi ClassTests(unittest.TestCase):
         # Test kila SF bug 532646
 
         kundi A:
-            pita
+            pass
         A.__call__ = A()
         a = A()
 
         jaribu:
             a() # This should sio segfault
-        tatizo RecursionError:
-            pita
+        except RecursionError:
+            pass
         isipokua:
-            self.fail("Failed to ashiria RecursionError")
+            self.fail("Failed to  ashiria RecursionError")
 
     eleza testForExceptionsRaisedInInstanceGetattr2(self):
-        # Tests kila exceptions ashiriad kwenye instance_getattr2().
+        # Tests kila exceptions raised kwenye instance_getattr2().
 
         eleza booh(self):
-            ashiria AttributeError("booh")
+             ashiria AttributeError("booh")
 
         kundi A:
             a = property(booh)
         jaribu:
             A().a # Raised AttributeError: A instance has no attribute 'a'
-        tatizo AttributeError kama x:
+        except AttributeError as x:
             ikiwa str(x) != "booh":
                 self.fail("attribute error kila A().a got masked: %s" % x)
 
@@ -526,11 +526,11 @@ kundi ClassTests(unittest.TestCase):
         kundi I:
             __init__ = property(booh)
         jaribu:
-            # In debug mode, printed XXX undetected error na
-            #  ashirias AttributeError
+            # In debug mode, printed XXX undetected error and
+            #  raises AttributeError
             I()
-        tatizo AttributeError kama x:
-            pita
+        except AttributeError as x:
+            pass
         isipokua:
             self.fail("attribute error kila I.__init__ got masked")
 
@@ -550,15 +550,15 @@ kundi ClassTests(unittest.TestCase):
             eleza __init__(self, x):
                 self.x = x
             eleza f(self):
-                pita
+                pass
             eleza g(self):
-                pita
+                pass
             eleza __eq__(self, other):
                 rudisha Kweli
             eleza __hash__(self):
-                ashiria TypeError
+                 ashiria TypeError
         kundi B(A):
-            pita
+            pass
 
         a1 = A(1)
         a2 = A(1)
@@ -587,7 +587,7 @@ kundi ClassTests(unittest.TestCase):
     eleza testSetattrWrapperNameIntern(self):
         # Issue #25794: __setattr__ should intern the attribute name
         kundi A:
-            pita
+            pass
 
         eleza add(self, other):
             rudisha 'summa'
@@ -606,7 +606,7 @@ kundi ClassTests(unittest.TestCase):
 
     eleza testSetattrNonStringName(self):
         kundi A:
-            pita
+            pass
 
         ukijumuisha self.assertRaises(TypeError):
             type.__setattr__(A, b'x', Tupu)
@@ -616,7 +616,7 @@ kundi ClassTests(unittest.TestCase):
 
         # Class without any method overrides
         kundi C:
-            pita
+            pass
 
         error_msg = r'C.__init__\(\) takes exactly one argument \(the instance to initialize\)'
 

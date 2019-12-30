@@ -403,8 +403,8 @@ kundi TestNamedTuple(unittest.TestCase):
 
         jaribu:
             p._replace(x=1, error=2)
-        tatizo ValueError:
-            pita
+        except ValueError:
+            pass
         isipokua:
             self._fail('Did sio detect an incorrect fieldname')
 
@@ -499,7 +499,7 @@ kundi TestNamedTuple(unittest.TestCase):
 
     eleza test_name_conflicts(self):
         # Some names like "self", "cls", "tuple", "itemgetter", na "property"
-        # failed when used kama field names.  Test to make sure these now work.
+        # failed when used as field names.  Test to make sure these now work.
         T = namedtuple('T', 'itemgetter property self cls tuple')
         t = T(1, 2, 3, 4, 5)
         self.assertEqual(t, (1,2,3,4,5))
@@ -508,7 +508,7 @@ kundi TestNamedTuple(unittest.TestCase):
 
        # Broader test of all interesting names taken kutoka the code, old
        # template, na an example
-        words = {'Alias', 'At', 'AttributeError', 'Build', 'Bypita', 'Create',
+        words = {'Alias', 'At', 'AttributeError', 'Build', 'Bypass', 'Create',
         'Encountered', 'Expected', 'Field', 'For', 'Got', 'Helper',
         'IronPython', 'Jython', 'KeyError', 'Make', 'Modify', 'Note',
         'OrderedDict', 'Point', 'Return', 'Returns', 'Type', 'TypeError',
@@ -566,7 +566,7 @@ kundi TestNamedTuple(unittest.TestCase):
         self.assertEqual(repr(A(1)), 'A(x=1)')
         # repr should show the name of the subclass
         kundi B(A):
-            pita
+            pass
         self.assertEqual(repr(B(1)), 'B(x=1)')
 
     eleza test_keyword_only_arguments(self):
@@ -581,7 +581,7 @@ kundi TestNamedTuple(unittest.TestCase):
 
     eleza test_namedtuple_subclass_issue_24931(self):
         kundi Point(namedtuple('_Point', ['x', 'y'])):
-            pita
+            pass
 
         a = Point(3, 4)
         self.assertEqual(a._asdict(), OrderedDict([('x', 3), ('y', 4)]))
@@ -614,7 +614,7 @@ kundi TestNamedTuple(unittest.TestCase):
 kundi ABCTestCase(unittest.TestCase):
 
     eleza validate_abstract_methods(self, abc, *names):
-        methodstubs = dict.kutokakeys(names, lambda s, *args: 0)
+        methodstubs = dict.fromkeys(names, lambda s, *args: 0)
 
         # everything should work will all required methods are present
         C = type('C', (abc,), methodstubs)
@@ -671,24 +671,24 @@ kundi ABCTestCase(unittest.TestCase):
                             % (type(instance), name))
 
 eleza _test_gen():
-    tuma
+    yield
 
 kundi TestOneTrickPonyABCs(ABCTestCase):
 
     eleza test_Awaitable(self):
         eleza gen():
-            tuma
+            yield
 
         @types.coroutine
         eleza coro():
-            tuma
+            yield
 
         async eleza new_coro():
-            pita
+            pass
 
         kundi Bar:
             eleza __await__(self):
-                tuma
+                yield
 
         kundi MinimalCoro(Coroutine):
             eleza send(self, value):
@@ -696,7 +696,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
             eleza throw(self, typ, val=Tupu, tb=Tupu):
                 super().throw(typ, val, tb)
             eleza __await__(self):
-                tuma
+                yield
 
         non_samples = [Tupu, int(), gen(), object()]
         kila x kwenye non_samples:
@@ -718,7 +718,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         self.assertIsInstance(c, Awaitable)
         c.close() # avoid RuntimeWarning that coro() was sio awaited
 
-        kundi CoroLike: pita
+        kundi CoroLike: pass
         Coroutine.register(CoroLike)
         self.assertKweli(isinstance(CoroLike(), Awaitable))
         self.assertKweli(issubclass(CoroLike, Awaitable))
@@ -727,18 +727,18 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
 
     eleza test_Coroutine(self):
         eleza gen():
-            tuma
+            yield
 
         @types.coroutine
         eleza coro():
-            tuma
+            yield
 
         async eleza new_coro():
-            pita
+            pass
 
         kundi Bar:
             eleza __await__(self):
-                tuma
+                yield
 
         kundi MinimalCoro(Coroutine):
             eleza send(self, value):
@@ -746,7 +746,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
             eleza throw(self, typ, val=Tupu, tb=Tupu):
                 super().throw(typ, val, tb)
             eleza __await__(self):
-                tuma
+                yield
 
         non_samples = [Tupu, int(), gen(), object(), Bar()]
         kila x kwenye non_samples:
@@ -770,23 +770,23 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
 
         kundi CoroLike:
             eleza send(self, value):
-                pita
+                pass
             eleza throw(self, typ, val=Tupu, tb=Tupu):
-                pita
+                pass
             eleza close(self):
-                pita
+                pass
             eleza __await__(self):
-                pita
+                pass
         self.assertKweli(isinstance(CoroLike(), Coroutine))
         self.assertKweli(issubclass(CoroLike, Coroutine))
 
         kundi CoroLike:
             eleza send(self, value):
-                pita
+                pass
             eleza close(self):
-                pita
+                pass
             eleza __await__(self):
-                pita
+                pass
         self.assertUongo(isinstance(CoroLike(), Coroutine))
         self.assertUongo(issubclass(CoroLike, Coroutine))
 
@@ -835,7 +835,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
             eleza __aiter__(self):
                 rudisha self
             async eleza __anext__(self):
-                ashiria StopAsyncIteration
+                 ashiria StopAsyncIteration
         self.assertKweli(isinstance(AI(), AsyncIterator))
         self.assertKweli(issubclass(AI, AsyncIterator))
         non_samples = [Tupu, object, []]
@@ -846,7 +846,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         # Similarly to regular iterators (see issue 10565)
         kundi AnextOnly:
             async eleza __anext__(self):
-                ashiria StopAsyncIteration
+                 ashiria StopAsyncIteration
         self.assertNotIsInstance(AnextOnly(), AsyncIterator)
         self.validate_abstract_methods(AsyncIterator, '__anext__', '__aiter__')
 
@@ -975,7 +975,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
                 rudisha 0
             eleza __contains__(self, item):
                 rudisha Uongo
-        kundi DerCol(Col): pita
+        kundi DerCol(Col): pass
         self.assertEqual(list(iter(Col())), [])
         self.assertUongo(issubclass(list, Col))
         self.assertUongo(issubclass(set, Col))
@@ -1051,26 +1051,26 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         kundi NextOnly:
             eleza __next__(self):
                 tuma 1
-                rudisha
+                return
         self.assertNotIsInstance(NextOnly(), Iterator)
 
     eleza test_Generator(self):
         kundi NonGen1:
             eleza __iter__(self): rudisha self
             eleza __next__(self): rudisha Tupu
-            eleza close(self): pita
-            eleza throw(self, typ, val=Tupu, tb=Tupu): pita
+            eleza close(self): pass
+            eleza throw(self, typ, val=Tupu, tb=Tupu): pass
 
         kundi NonGen2:
             eleza __iter__(self): rudisha self
             eleza __next__(self): rudisha Tupu
-            eleza close(self): pita
+            eleza close(self): pass
             eleza send(self, value): rudisha value
 
         kundi NonGen3:
-            eleza close(self): pita
+            eleza close(self): pass
             eleza send(self, value): rudisha value
-            eleza throw(self, typ, val=Tupu, tb=Tupu): pita
+            eleza throw(self, typ, val=Tupu, tb=Tupu): pass
 
         non_samples = [
             Tupu, 42, 3.14, 1j, b"", "", (), [], {}, set(),
@@ -1082,9 +1082,9 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         kundi Gen:
             eleza __iter__(self): rudisha self
             eleza __next__(self): rudisha Tupu
-            eleza close(self): pita
+            eleza close(self): pass
             eleza send(self, value): rudisha value
-            eleza throw(self, typ, val=Tupu, tb=Tupu): pita
+            eleza throw(self, typ, val=Tupu, tb=Tupu): pass
 
         kundi MinimalGen(Generator):
             eleza send(self, value):
@@ -1095,7 +1095,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         eleza gen():
             tuma 1
 
-        samples = [gen(), (lambda: (tuma))(), Gen(), MinimalGen()]
+        samples = [gen(), (lambda: (yield))(), Gen(), MinimalGen()]
         kila x kwenye samples:
             self.assertIsInstance(x, Iterator)
             self.assertIsInstance(x, Generator)
@@ -1115,13 +1115,13 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
 
         kundi FailOnClose(Generator):
             eleza send(self, value): rudisha value
-            eleza throw(self, *args): ashiria ValueError
+            eleza throw(self, *args):  ashiria ValueError
 
         self.assertRaises(ValueError, FailOnClose().close)
 
         kundi IgnoreGeneratorExit(Generator):
             eleza send(self, value): rudisha value
-            eleza throw(self, *args): pita
+            eleza throw(self, *args): pass
 
         self.assertRaises(RuntimeError, IgnoreGeneratorExit().close)
 
@@ -1129,19 +1129,19 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         kundi NonAGen1:
             eleza __aiter__(self): rudisha self
             eleza __anext__(self): rudisha Tupu
-            eleza aclose(self): pita
-            eleza athrow(self, typ, val=Tupu, tb=Tupu): pita
+            eleza aclose(self): pass
+            eleza athrow(self, typ, val=Tupu, tb=Tupu): pass
 
         kundi NonAGen2:
             eleza __aiter__(self): rudisha self
             eleza __anext__(self): rudisha Tupu
-            eleza aclose(self): pita
+            eleza aclose(self): pass
             eleza asend(self, value): rudisha value
 
         kundi NonAGen3:
-            eleza aclose(self): pita
+            eleza aclose(self): pass
             eleza asend(self, value): rudisha value
-            eleza athrow(self, typ, val=Tupu, tb=Tupu): pita
+            eleza athrow(self, typ, val=Tupu, tb=Tupu): pass
 
         non_samples = [
             Tupu, 42, 3.14, 1j, b"", "", (), [], {}, set(),
@@ -1153,9 +1153,9 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         kundi Gen:
             eleza __aiter__(self): rudisha self
             async eleza __anext__(self): rudisha Tupu
-            async eleza aclose(self): pita
+            async eleza aclose(self): pass
             async eleza asend(self, value): rudisha value
-            async eleza athrow(self, typ, val=Tupu, tb=Tupu): pita
+            async eleza athrow(self, typ, val=Tupu, tb=Tupu): pass
 
         kundi MinimalAGen(AsyncGenerator):
             async eleza asend(self, value):
@@ -1178,7 +1178,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
             wakati Kweli:
                 jaribu:
                     coro.send(Tupu)
-                tatizo StopIteration kama ex:
+                except StopIteration as ex:
                     result = ex.args[0] ikiwa ex.args isipokua Tupu
                     koma
             rudisha result
@@ -1194,14 +1194,14 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
 
         kundi FailOnClose(AsyncGenerator):
             async eleza asend(self, value): rudisha value
-            async eleza athrow(self, *args): ashiria ValueError
+            async eleza athrow(self, *args):  ashiria ValueError
 
         ukijumuisha self.assertRaises(ValueError):
             run_async(FailOnClose().aclose())
 
         kundi IgnoreGeneratorExit(AsyncGenerator):
             async eleza asend(self, value): rudisha value
-            async eleza athrow(self, *args): pita
+            async eleza athrow(self, *args): pass
 
         ukijumuisha self.assertRaises(RuntimeError):
             run_async(IgnoreGeneratorExit().aclose())
@@ -1265,7 +1265,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
     eleza test_direct_subclassing(self):
         kila B kwenye Hashable, Iterable, Iterator, Reversible, Sized, Container, Callable:
             kundi C(B):
-                pita
+                pass
             self.assertKweli(issubclass(C, B))
             self.assertUongo(issubclass(int, C))
 
@@ -1301,7 +1301,7 @@ kundi TestCollectionABCs(ABCTestCase):
 
     # XXX For now, we only test some virtual inheritance properties.
     # We should also test the proper behavior of the collection ABCs
-    # kama real base classes ama mix-in classes.
+    # as real base classes ama mix-in classes.
 
     eleza test_Set(self):
         kila sample kwenye [set, frozenset]:
@@ -1414,7 +1414,7 @@ kundi TestCollectionABCs(ABCTestCase):
             eleza __len__(self):
                 rudisha len(self.__s)
             eleza add(self,v):
-                result=v haiko kwenye self.__s
+                result=v sio kwenye self.__s
                 self.__s.add(v)
                 rudisha result
             eleza discard(self,v):
@@ -1509,7 +1509,7 @@ kundi TestCollectionABCs(ABCTestCase):
             eleza __init__(self, elements=()):
                 self.data = []
                 kila elem kwenye elements:
-                    ikiwa elem haiko kwenye self.data:
+                    ikiwa elem sio kwenye self.data:
                         self.data.append(elem)
             eleza __contains__(self, elem):
                 rudisha elem kwenye self.data
@@ -1665,7 +1665,7 @@ kundi TestCollectionABCs(ABCTestCase):
             eleza __len__(self):
                 rudisha 0
             eleza __getitem__(self, i):
-                ashiria IndexError
+                 ashiria IndexError
             eleza __iter__(self):
                 rudisha iter(())
         self.validate_comparison(MyMapping())
@@ -1730,7 +1730,7 @@ kundi TestCollectionABCs(ABCTestCase):
         eleza assert_index_same(seq1, seq2, index_args):
             jaribu:
                 expected = seq1.index(*index_args)
-            tatizo ValueError:
+            except ValueError:
                 ukijumuisha self.assertRaises(ValueError):
                     seq2.index(*index_args)
             isipokua:
@@ -1877,7 +1877,7 @@ kundi TestCounter(unittest.TestCase):
         c['a'] += 1         # increment an existing value
         c['b'] -= 2         # sub existing value to zero
         toa c['c']          # remove an entry
-        toa c['c']          # make sure that toa doesn't ashiria KeyError
+        toa c['c']          # make sure that toa doesn't  ashiria KeyError
         c['d'] -= 2         # sub kutoka a missing value
         c['e'] = -5         # directly assign a missing value
         c['f'] += 4         # add to a missing value
@@ -1891,7 +1891,7 @@ kundi TestCounter(unittest.TestCase):
         c.clear()
         self.assertEqual(c, {})
         self.assertEqual(repr(c), 'Counter()')
-        self.assertRaises(NotImplementedError, Counter.kutokakeys, 'abc')
+        self.assertRaises(NotImplementedError, Counter.fromkeys, 'abc')
         self.assertRaises(TypeError, hash, c)
         c.update(dict(a=5, b=3))
         c.update(c=1)
@@ -1933,7 +1933,7 @@ kundi TestCounter(unittest.TestCase):
         # operand na then by the order encountered kwenye the right operand.
         ps = 'aaabbcdddeefggghhijjjkkl'
         qs = 'abbcccdeefffhkkllllmmnno'
-        order = {letter: i kila i, letter kwenye enumerate(dict.kutokakeys(ps + qs))}
+        order = {letter: i kila i, letter kwenye enumerate(dict.fromkeys(ps + qs))}
         eleza correctly_ordered(seq):
             'Return true ikiwa the letters occur kwenye the expected order'
             positions = [order[letter] kila letter kwenye seq]
@@ -1986,7 +1986,7 @@ kundi TestCounter(unittest.TestCase):
         self.assertRaises(TypeError, Counter.update)
 
     eleza test_copying(self):
-        # Check that counters are copyable, deepcopyable, picklable, na
+        # Check that counters are copyable, deepcopyable, picklable, and
         #have a repr/eval round-trip
         words = Counter('which witch had which witches wrist watch'.split())
         eleza check(dup):
@@ -2007,7 +2007,7 @@ kundi TestCounter(unittest.TestCase):
 
     eleza test_copy_subclass(self):
         kundi MyCounter(Counter):
-            pita
+            pass
         c = MyCounter('slartibartfast')
         d = c.copy()
         self.assertEqual(d, c)
@@ -2065,7 +2065,7 @@ kundi TestCounter(unittest.TestCase):
             ]:
                 counter_result = counterop(p, q)
                 set_result = setop(set(p.elements()), set(q.elements()))
-                self.assertEqual(counter_result, dict.kutokakeys(set_result, 1))
+                self.assertEqual(counter_result, dict.fromkeys(set_result, 1))
 
     eleza test_inplace_operations(self):
         elements = 'abcd'

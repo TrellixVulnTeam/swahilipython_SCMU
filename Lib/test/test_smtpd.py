@@ -12,25 +12,25 @@ kundi DummyServer(smtpd.SMTPServer):
         smtpd.SMTPServer.__init__(self, *args, **kwargs)
         self.messages = []
         ikiwa self._decode_data:
-            self.rudisha_status = 'rudisha status'
+            self.return_status = 'rudisha status'
         isipokua:
-            self.rudisha_status = b'rudisha status'
+            self.return_status = b'rudisha status'
 
-    eleza process_message(self, peer, mailkutoka, rcpttos, data, **kw):
-        self.messages.append((peer, mailkutoka, rcpttos, data))
-        ikiwa data == self.rudisha_status:
+    eleza process_message(self, peer, mailfrom, rcpttos, data, **kw):
+        self.messages.append((peer, mailfrom, rcpttos, data))
+        ikiwa data == self.return_status:
             rudisha '250 Okish'
         ikiwa 'mail_options' kwenye kw na 'SMTPUTF8' kwenye kw['mail_options']:
             rudisha '250 SMTPUTF8 message okish'
 
 
 kundi DummyDispatcherBroken(Exception):
-    pita
+    pass
 
 
 kundi BrokenDummyServer(DummyServer):
     eleza listen(self, num):
-        ashiria DummyDispatcherBroken()
+         ashiria DummyDispatcherBroken()
 
 
 kundi SMTPDServerTest(unittest.TestCase):
@@ -53,7 +53,7 @@ kundi SMTPDServerTest(unittest.TestCase):
         write_line(b'DATA')
         self.assertRaises(NotImplementedError, write_line, b'spam\r\n.\r\n')
 
-    eleza test_decode_data_and_enable_SMTPUTF8_ashirias(self):
+    eleza test_decode_data_and_enable_SMTPUTF8_raises(self):
         self.assertRaises(
             ValueError,
             smtpd.SMTPServer,
@@ -91,7 +91,7 @@ kundi DebuggingServerTest(unittest.TestCase):
                                        decode_data=Kweli)
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr, decode_data=Kweli)
-        ukijumuisha support.captured_stdout() kama s:
+        ukijumuisha support.captured_stdout() as s:
             self.send_data(channel, b'From: test\n\nhello\n')
         stdout = s.getvalue()
         self.assertEqual(stdout, textwrap.dedent("""\
@@ -107,7 +107,7 @@ kundi DebuggingServerTest(unittest.TestCase):
         server = smtpd.DebuggingServer((support.HOST, 0), ('b', 0))
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr)
-        ukijumuisha support.captured_stdout() kama s:
+        ukijumuisha support.captured_stdout() as s:
             self.send_data(channel, b'From: test\n\nh\xc3\xa9llo\xff\n')
         stdout = s.getvalue()
         self.assertEqual(stdout, textwrap.dedent("""\
@@ -124,7 +124,7 @@ kundi DebuggingServerTest(unittest.TestCase):
                                        enable_SMTPUTF8=Kweli)
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr, enable_SMTPUTF8=Kweli)
-        ukijumuisha support.captured_stdout() kama s:
+        ukijumuisha support.captured_stdout() as s:
             self.send_data(channel, b'From: test\n\nh\xc3\xa9llo\xff\n')
         stdout = s.getvalue()
         self.assertEqual(stdout, textwrap.dedent("""\
@@ -141,7 +141,7 @@ kundi DebuggingServerTest(unittest.TestCase):
                                        enable_SMTPUTF8=Kweli)
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr, enable_SMTPUTF8=Kweli)
-        ukijumuisha support.captured_stdout() kama s:
+        ukijumuisha support.captured_stdout() as s:
             self.send_data(channel, b'From: test\n\nh\xc3\xa9llo\xff\n',
                            enable_SMTPUTF8=Kweli)
         stdout = s.getvalue()
@@ -201,7 +201,7 @@ kundi TestRcptOptionParsing(unittest.TestCase):
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr)
         self.write_line(channel, b'EHLO example')
-        self.write_line(channel, b'MAIL kutoka: <foo@example.com> size=20')
+        self.write_line(channel, b'MAIL from: <foo@example.com> size=20')
         self.write_line(channel, b'RCPT to: <foo@example.com> foo=bar')
         self.assertEqual(channel.socket.last, self.error_response)
 
@@ -210,7 +210,7 @@ kundi TestRcptOptionParsing(unittest.TestCase):
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr)
         self.write_line(channel, b'EHLO example')
-        self.write_line(channel, b'MAIL kutoka: <foo@example.com> size=20')
+        self.write_line(channel, b'MAIL from: <foo@example.com> size=20')
         self.write_line(channel, b'RCPT to: <foo@example.com>')
         self.assertEqual(channel.socket.last, b'250 OK\r\n')
 
@@ -239,14 +239,14 @@ kundi TestMailOptionParsing(unittest.TestCase):
         channel = smtpd.SMTPChannel(server, conn, addr, decode_data=Kweli)
         self.write_line(channel, b'EHLO example')
         kila line kwenye [
-            b'MAIL kutoka: <foo@example.com> size=20 SMTPUTF8',
-            b'MAIL kutoka: <foo@example.com> size=20 SMTPUTF8 BODY=8BITMIME',
-            b'MAIL kutoka: <foo@example.com> size=20 BODY=UNKNOWN',
-            b'MAIL kutoka: <foo@example.com> size=20 body=8bitmime',
+            b'MAIL from: <foo@example.com> size=20 SMTPUTF8',
+            b'MAIL from: <foo@example.com> size=20 SMTPUTF8 BODY=8BITMIME',
+            b'MAIL from: <foo@example.com> size=20 BODY=UNKNOWN',
+            b'MAIL from: <foo@example.com> size=20 body=8bitmime',
         ]:
             self.write_line(channel, line)
             self.assertEqual(channel.socket.last, self.error_response)
-        self.write_line(channel, b'MAIL kutoka: <foo@example.com> size=20')
+        self.write_line(channel, b'MAIL from: <foo@example.com> size=20')
         self.assertEqual(channel.socket.last, b'250 OK\r\n')
 
     eleza test_with_decode_data_false(self):
@@ -255,19 +255,19 @@ kundi TestMailOptionParsing(unittest.TestCase):
         channel = smtpd.SMTPChannel(server, conn, addr)
         self.write_line(channel, b'EHLO example')
         kila line kwenye [
-            b'MAIL kutoka: <foo@example.com> size=20 SMTPUTF8',
-            b'MAIL kutoka: <foo@example.com> size=20 SMTPUTF8 BODY=8BITMIME',
+            b'MAIL from: <foo@example.com> size=20 SMTPUTF8',
+            b'MAIL from: <foo@example.com> size=20 SMTPUTF8 BODY=8BITMIME',
         ]:
             self.write_line(channel, line)
             self.assertEqual(channel.socket.last, self.error_response)
         self.write_line(
             channel,
-            b'MAIL kutoka: <foo@example.com> size=20 SMTPUTF8 BODY=UNKNOWN')
+            b'MAIL from: <foo@example.com> size=20 SMTPUTF8 BODY=UNKNOWN')
         self.assertEqual(
             channel.socket.last,
             b'501 Error: BODY can only be one of 7BIT, 8BITMIME\r\n')
         self.write_line(
-            channel, b'MAIL kutoka: <foo@example.com> size=20 body=8bitmime')
+            channel, b'MAIL from: <foo@example.com> size=20 body=8bitmime')
         self.assertEqual(channel.socket.last, b'250 OK\r\n')
 
     eleza test_with_enable_smtputf8_true(self):
@@ -277,7 +277,7 @@ kundi TestMailOptionParsing(unittest.TestCase):
         self.write_line(channel, b'EHLO example')
         self.write_line(
             channel,
-            b'MAIL kutoka: <foo@example.com> size=20 body=8bitmime smtputf8')
+            b'MAIL from: <foo@example.com> size=20 body=8bitmime smtputf8')
         self.assertEqual(channel.socket.last, b'250 OK\r\n')
 
 
@@ -306,7 +306,7 @@ kundi SMTPDChannelTest(unittest.TestCase):
             DummyDispatcherBroken, BrokenDummyServer,
             (support.HOST, 0), ('b', 0), decode_data=Kweli)
 
-    eleza test_decode_data_and_enable_SMTPUTF8_ashirias(self):
+    eleza test_decode_data_and_enable_SMTPUTF8_raises(self):
         self.assertRaises(
             ValueError, smtpd.SMTPChannel,
             self.server, self.channel.conn, self.channel.addr,
@@ -384,19 +384,19 @@ kundi SMTPDChannelTest(unittest.TestCase):
     eleza test_HELO_parameter_rejected_when_extensions_not_enabled(self):
         self.extended_smtp = Uongo
         self.write_line(b'HELO example')
-        self.write_line(b'MAIL kutoka:<foo@example.com> SIZE=1234')
+        self.write_line(b'MAIL from:<foo@example.com> SIZE=1234')
         self.assertEqual(self.channel.socket.last,
                          b'501 Syntax: MAIL FROM: <address>\r\n')
 
     eleza test_MAIL_allows_space_after_colon(self):
         self.write_line(b'HELO example')
-        self.write_line(b'MAIL kutoka:   <foo@example.com>')
+        self.write_line(b'MAIL from:   <foo@example.com>')
         self.assertEqual(self.channel.socket.last,
                          b'250 OK\r\n')
 
     eleza test_extended_MAIL_allows_space_after_colon(self):
         self.write_line(b'EHLO example')
-        self.write_line(b'MAIL kutoka:   <foo@example.com> size=20')
+        self.write_line(b'MAIL from:   <foo@example.com> size=20')
         self.assertEqual(self.channel.socket.last,
                          b'250 OK\r\n')
 
@@ -435,7 +435,7 @@ kundi SMTPDChannelTest(unittest.TestCase):
 
     eleza test_command_too_long(self):
         self.write_line(b'HELO example')
-        self.write_line(b'MAIL kutoka: ' +
+        self.write_line(b'MAIL from: ' +
                         b'a' * self.channel.command_size_limit +
                         b'@example')
         self.assertEqual(self.channel.socket.last,
@@ -443,13 +443,13 @@ kundi SMTPDChannelTest(unittest.TestCase):
 
     eleza test_MAIL_command_limit_extended_with_SIZE(self):
         self.write_line(b'EHLO example')
-        fill_len = self.channel.command_size_limit - len('MAIL kutoka:<@example>')
-        self.write_line(b'MAIL kutoka:<' +
+        fill_len = self.channel.command_size_limit - len('MAIL from:<@example>')
+        self.write_line(b'MAIL from:<' +
                         b'a' * fill_len +
                         b'@example> SIZE=1234')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
 
-        self.write_line(b'MAIL kutoka:<' +
+        self.write_line(b'MAIL from:<' +
                         b'a' * (fill_len + 26) +
                         b'@example> SIZE=1234')
         self.assertEqual(self.channel.socket.last,
@@ -458,7 +458,7 @@ kundi SMTPDChannelTest(unittest.TestCase):
     eleza test_MAIL_command_rejects_SMTPUTF8_by_default(self):
         self.write_line(b'EHLO example')
         self.write_line(
-            b'MAIL kutoka: <naive@example.com> BODY=8BITMIME SMTPUTF8')
+            b'MAIL from: <naive@example.com> BODY=8BITMIME SMTPUTF8')
         self.assertEqual(self.channel.socket.last[0:1], b'5')
 
     eleza test_data_longer_than_default_data_size_limit(self):
@@ -523,48 +523,48 @@ kundi SMTPDChannelTest(unittest.TestCase):
 
     eleza test_MAIL_missing_address(self):
         self.write_line(b'HELO example')
-        self.write_line(b'MAIL kutoka:')
+        self.write_line(b'MAIL from:')
         self.assertEqual(self.channel.socket.last,
             b'501 Syntax: MAIL FROM: <address>\r\n')
 
     eleza test_MAIL_chevrons(self):
         self.write_line(b'HELO example')
-        self.write_line(b'MAIL kutoka:<eggs@example>')
+        self.write_line(b'MAIL from:<eggs@example>')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
 
     eleza test_MAIL_empty_chevrons(self):
         self.write_line(b'EHLO example')
-        self.write_line(b'MAIL kutoka:<>')
+        self.write_line(b'MAIL from:<>')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
 
     eleza test_MAIL_quoted_localpart(self):
         self.write_line(b'EHLO example')
-        self.write_line(b'MAIL kutoka: <"Fred Blogs"@example.com>')
+        self.write_line(b'MAIL from: <"Fred Blogs"@example.com>')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
-        self.assertEqual(self.channel.mailkutoka, '"Fred Blogs"@example.com')
+        self.assertEqual(self.channel.mailfrom, '"Fred Blogs"@example.com')
 
     eleza test_MAIL_quoted_localpart_no_angles(self):
         self.write_line(b'EHLO example')
-        self.write_line(b'MAIL kutoka: "Fred Blogs"@example.com')
+        self.write_line(b'MAIL from: "Fred Blogs"@example.com')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
-        self.assertEqual(self.channel.mailkutoka, '"Fred Blogs"@example.com')
+        self.assertEqual(self.channel.mailfrom, '"Fred Blogs"@example.com')
 
     eleza test_MAIL_quoted_localpart_with_size(self):
         self.write_line(b'EHLO example')
-        self.write_line(b'MAIL kutoka: <"Fred Blogs"@example.com> SIZE=1000')
+        self.write_line(b'MAIL from: <"Fred Blogs"@example.com> SIZE=1000')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
-        self.assertEqual(self.channel.mailkutoka, '"Fred Blogs"@example.com')
+        self.assertEqual(self.channel.mailfrom, '"Fred Blogs"@example.com')
 
     eleza test_MAIL_quoted_localpart_with_size_no_angles(self):
         self.write_line(b'EHLO example')
-        self.write_line(b'MAIL kutoka: "Fred Blogs"@example.com SIZE=1000')
+        self.write_line(b'MAIL from: "Fred Blogs"@example.com SIZE=1000')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
-        self.assertEqual(self.channel.mailkutoka, '"Fred Blogs"@example.com')
+        self.assertEqual(self.channel.mailfrom, '"Fred Blogs"@example.com')
 
     eleza test_nested_MAIL(self):
         self.write_line(b'HELO example')
-        self.write_line(b'MAIL kutoka:eggs@example')
-        self.write_line(b'MAIL kutoka:spam@example')
+        self.write_line(b'MAIL from:eggs@example')
+        self.write_line(b'MAIL from:spam@example')
         self.assertEqual(self.channel.socket.last,
             b'503 Error: nested MAIL command\r\n')
 
@@ -585,7 +585,7 @@ kundi SMTPDChannelTest(unittest.TestCase):
             b'502 EXPN sio implemented\r\n')
 
     eleza test_no_HELO_MAIL(self):
-        self.write_line(b'MAIL kutoka:<foo@example.com>')
+        self.write_line(b'MAIL from:<foo@example.com>')
         self.assertEqual(self.channel.socket.last,
                          b'503 Error: send HELO first\r\n')
 
@@ -730,7 +730,7 @@ kundi SMTPDChannelTest(unittest.TestCase):
         ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__greeting = 'spam'
         ukijumuisha support.check_warnings(('', DeprecationWarning)):
-            spam = self.channel._SMTPChannel__mailkutoka
+            spam = self.channel._SMTPChannel__mailfrom
         ukijumuisha support.check_warnings(('', DeprecationWarning)):
             self.channel._SMTPChannel__mailkutoka = 'spam'
         ukijumuisha support.check_warnings(('', DeprecationWarning)):
@@ -934,7 +934,7 @@ kundi SMTPDChannelTestWithEnableSMTPUTF8Kweli(unittest.TestCase):
     eleza test_MAIL_command_accepts_SMTPUTF8_when_announced(self):
         self.write_line(b'EHLO example')
         self.write_line(
-            'MAIL kutoka: <naïve@example.com> BODY=8BITMIME SMTPUTF8'.encode(
+            'MAIL from: <naïve@example.com> BODY=8BITMIME SMTPUTF8'.encode(
                 'utf-8')
         )
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
@@ -942,7 +942,7 @@ kundi SMTPDChannelTestWithEnableSMTPUTF8Kweli(unittest.TestCase):
     eleza test_process_smtputf8_message(self):
         self.write_line(b'EHLO example')
         kila mail_parameters kwenye [b'', b'BODY=8BITMIME SMTPUTF8']:
-            self.write_line(b'MAIL kutoka: <a@example> ' + mail_parameters)
+            self.write_line(b'MAIL from: <a@example> ' + mail_parameters)
             self.assertEqual(self.channel.socket.last[0:3], b'250')
             self.write_line(b'rcpt to:<b@example.com>')
             self.assertEqual(self.channel.socket.last[0:3], b'250')
@@ -972,24 +972,24 @@ kundi SMTPDChannelTestWithEnableSMTPUTF8Kweli(unittest.TestCase):
 
     eleza test_MAIL_command_limit_extended_with_SIZE_and_SMTPUTF8(self):
         self.write_line(b'ehlo example')
-        fill_len = (512 + 26 + 10) - len('mail kutoka:<@example>')
-        self.write_line(b'MAIL kutoka:<' +
+        fill_len = (512 + 26 + 10) - len('mail from:<@example>')
+        self.write_line(b'MAIL from:<' +
                         b'a' * (fill_len + 1) +
                         b'@example>')
         self.assertEqual(self.channel.socket.last,
                          b'500 Error: line too long\r\n')
-        self.write_line(b'MAIL kutoka:<' +
+        self.write_line(b'MAIL from:<' +
                         b'a' * fill_len +
                         b'@example>')
         self.assertEqual(self.channel.socket.last, b'250 OK\r\n')
 
     eleza test_multiple_emails_with_extended_command_length(self):
         self.write_line(b'ehlo example')
-        fill_len = (512 + 26 + 10) - len('mail kutoka:<@example>')
+        fill_len = (512 + 26 + 10) - len('mail from:<@example>')
         kila char kwenye [b'a', b'b', b'c']:
-            self.write_line(b'MAIL kutoka:<' + char * fill_len + b'a@example>')
+            self.write_line(b'MAIL from:<' + char * fill_len + b'a@example>')
             self.assertEqual(self.channel.socket.last[0:3], b'500')
-            self.write_line(b'MAIL kutoka:<' + char * fill_len + b'@example>')
+            self.write_line(b'MAIL from:<' + char * fill_len + b'@example>')
             self.assertEqual(self.channel.socket.last[0:3], b'250')
             self.write_line(b'rcpt to:<hans@example.com>')
             self.assertEqual(self.channel.socket.last[0:3], b'250')

@@ -41,7 +41,7 @@ __all__ = ["urlparse", "urlunparse", "urljoin", "urldefrag",
 
 # A classification of schemes.
 # The empty string classifies URLs ukijumuisha no scheme specified,
-# being the default value rudishaed by “urlsplit” na “urlparse”.
+# being the default value returned by “urlsplit” na “urlparse”.
 
 uses_relative = ['', 'ftp', 'http', 'gopher', 'nntp', 'imap',
                  'wais', 'file', 'https', 'shttp', 'mms',
@@ -109,7 +109,7 @@ eleza _decode_args(args, encoding=_implicit_encoding,
 
 eleza _coerce_args(*args):
     # Invokes decode ikiwa necessary to create str args
-    # na rudishas the coerced inputs along with
+    # na returns the coerced inputs along with
     # an appropriate result coercion function
     #   - noop kila str inputs
     #   - encoding function otherwise
@@ -118,7 +118,7 @@ eleza _coerce_args(*args):
         # We special-case the empty string to support the
         # "scheme=''" default argument to some functions
         ikiwa arg na isinstance(arg, str) != str_input:
-            ashiria TypeError("Cannot mix str na non-str arguments")
+             ashiria TypeError("Cannot mix str na non-str arguments")
     ikiwa str_input:
         rudisha args + (_noop,)
     rudisha _decode_args(args) + (_encode_result,)
@@ -149,7 +149,7 @@ kundi _NetlocResultMixinBase(object):
         rudisha self._userinfo[0]
 
     @property
-    eleza pitaword(self):
+    eleza password(self):
         rudisha self._userinfo[1]
 
     @property
@@ -169,11 +169,11 @@ kundi _NetlocResultMixinBase(object):
         ikiwa port ni sio Tupu:
             jaribu:
                 port = int(port, 10)
-            tatizo ValueError:
-                message = f'Port could sio be cast to integer value kama {port!r}'
-                ashiria ValueError(message) kutoka Tupu
+            except ValueError:
+                message = f'Port could sio be cast to integer value as {port!r}'
+                 ashiria ValueError(message) kutoka Tupu
             ikiwa sio ( 0 <= port <= 65535):
-                ashiria ValueError("Port out of range 0-65535")
+                 ashiria ValueError("Port out of range 0-65535")
         rudisha port
 
 
@@ -185,12 +185,12 @@ kundi _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
         netloc = self.netloc
         userinfo, have_info, hostinfo = netloc.rpartition('@')
         ikiwa have_info:
-            username, have_pitaword, pitaword = userinfo.partition(':')
-            ikiwa sio have_pitaword:
-                pitaword = Tupu
+            username, have_password, password = userinfo.partition(':')
+            ikiwa sio have_password:
+                password = Tupu
         isipokua:
-            username = pitaword = Tupu
-        rudisha username, pitaword
+            username = password = Tupu
+        rudisha username, password
 
     @property
     eleza _hostinfo(self):
@@ -215,12 +215,12 @@ kundi _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
         netloc = self.netloc
         userinfo, have_info, hostinfo = netloc.rpartition(b'@')
         ikiwa have_info:
-            username, have_pitaword, pitaword = userinfo.partition(b':')
-            ikiwa sio have_pitaword:
-                pitaword = Tupu
+            username, have_password, password = userinfo.partition(b':')
+            ikiwa sio have_password:
+                password = Tupu
         isipokua:
-            username = pitaword = Tupu
-        rudisha username, pitaword
+            username = password = Tupu
+        rudisha username, password
 
     @property
     eleza _hostinfo(self):
@@ -249,7 +249,7 @@ _DefragResultBase.__doc__ = """
 DefragResult(url, fragment)
 
 A 2-tuple that contains the url without fragment identifier na the fragment
-identifier kama a separate argument.
+identifier as a separate argument.
 """
 
 _DefragResultBase.url.__doc__ = """The URL ukijumuisha no fragment identifier."""
@@ -274,12 +274,12 @@ Network location where the request ni made to.
 """
 
 _SplitResultBase.path.__doc__ = """
-The hierarchical path, such kama the path to a file to download.
+The hierarchical path, such as the path to a file to download.
 """
 
 _SplitResultBase.query.__doc__ = """
 The query component, that contains non-hierarchical data, that along ukijumuisha data
-in path component, identifies a resource kwenye the scope of URI's scheme na
+in path component, identifies a resource kwenye the scope of URI's scheme and
 network location.
 """
 
@@ -390,7 +390,7 @@ eleza _splitparams(url):
 
 eleza _splitnetloc(url, start=0):
     delim = len(url)   # position of end of domain part of url, default ni end
-    kila c kwenye '/?#':    # look kila delimiters; the order ni NOT agizaant
+    kila c kwenye '/?#':    # look kila delimiters; the order ni NOT important
         wdelim = url.find(c, start)        # find first of this delim
         ikiwa wdelim >= 0:                    # ikiwa found
             delim = min(delim, wdelim)     # use earliest delim position
@@ -398,7 +398,7 @@ eleza _splitnetloc(url, start=0):
 
 eleza _checknetloc(netloc):
     ikiwa sio netloc ama netloc.isascii():
-        rudisha
+        return
     # looking kila characters like \u2100 that expand to 'a/c'
     # IDNA uses NFKC equivalence, so normalize kila this check
     agiza unicodedata
@@ -408,10 +408,10 @@ eleza _checknetloc(netloc):
     n = n.replace('?', '')
     netloc2 = unicodedata.normalize('NFKC', n)
     ikiwa n == netloc2:
-        rudisha
+        return
     kila c kwenye '/?#@:':
         ikiwa c kwenye netloc2:
-            ashiria ValueError("netloc '" + netloc + "' contains invalid " +
+             ashiria ValueError("netloc '" + netloc + "' contains invalid " +
                              "characters under NFKC normalization")
 
 eleza urlsplit(url, scheme='', allow_fragments=Kweli):
@@ -435,9 +435,9 @@ eleza urlsplit(url, scheme='', allow_fragments=Kweli):
             url = url[i+1:]
             ikiwa url[:2] == '//':
                 netloc, url = _splitnetloc(url, 2)
-                ikiwa (('[' kwenye netloc na ']' haiko kwenye netloc) ama
-                        (']' kwenye netloc na '[' haiko kwenye netloc)):
-                    ashiria ValueError("Invalid IPv6 URL")
+                ikiwa (('[' kwenye netloc na ']' sio kwenye netloc) or
+                        (']' kwenye netloc na '[' sio kwenye netloc)):
+                     ashiria ValueError("Invalid IPv6 URL")
             ikiwa allow_fragments na '#' kwenye url:
                 url, fragment = url.split('#', 1)
             ikiwa '?' kwenye url:
@@ -447,21 +447,21 @@ eleza urlsplit(url, scheme='', allow_fragments=Kweli):
             _parse_cache[key] = v
             rudisha _coerce_result(v)
         kila c kwenye url[:i]:
-            ikiwa c haiko kwenye scheme_chars:
+            ikiwa c sio kwenye scheme_chars:
                 koma
         isipokua:
             # make sure "url" ni sio actually a port number (in which case
             # "scheme" ni really part of the path)
             rest = url[i+1:]
-            ikiwa sio rest ama any(c haiko kwenye '0123456789' kila c kwenye rest):
+            ikiwa sio rest ama any(c sio kwenye '0123456789' kila c kwenye rest):
                 # sio a port number
                 scheme, url = url[:i].lower(), rest
 
     ikiwa url[:2] == '//':
         netloc, url = _splitnetloc(url, 2)
-        ikiwa (('[' kwenye netloc na ']' haiko kwenye netloc) ama
-                (']' kwenye netloc na '[' haiko kwenye netloc)):
-            ashiria ValueError("Invalid IPv6 URL")
+        ikiwa (('[' kwenye netloc na ']' sio kwenye netloc) or
+                (']' kwenye netloc na '[' sio kwenye netloc)):
+             ashiria ValueError("Invalid IPv6 URL")
     ikiwa allow_fragments na '#' kwenye url:
         url, fragment = url.split('#', 1)
     ikiwa '?' kwenye url:
@@ -483,8 +483,8 @@ eleza urlunparse(components):
     rudisha _coerce_result(urlunsplit((scheme, netloc, url, query, fragment)))
 
 eleza urlunsplit(components):
-    """Combine the elements of a tuple kama rudishaed by urlsplit() into a
-    complete URL kama a string. The data argument can be any five-item iterable.
+    """Combine the elements of a tuple as returned by urlsplit() into a
+    complete URL as a string. The data argument can be any five-item iterable.
     This may result kwenye a slightly different, but equivalent URL, ikiwa the URL that
     was parsed originally had unnecessary delimiters (kila example, a ? ukijumuisha an
     empty query; the RFC states that these are equivalent)."""
@@ -515,7 +515,7 @@ eleza urljoin(base, url, allow_fragments=Kweli):
     scheme, netloc, path, params, query, fragment = \
             urlparse(url, bscheme, allow_fragments)
 
-    ikiwa scheme != bscheme ama scheme haiko kwenye uses_relative:
+    ikiwa scheme != bscheme ama scheme sio kwenye uses_relative:
         rudisha _coerce_result(url)
     ikiwa scheme kwenye uses_netloc:
         ikiwa netloc:
@@ -552,11 +552,11 @@ eleza urljoin(base, url, allow_fragments=Kweli):
         ikiwa seg == '..':
             jaribu:
                 resolved_path.pop()
-            tatizo IndexError:
+            except IndexError:
                 # ignore any .. segments that would otherwise cause an IndexError
                 # when popped kutoka resolved_path ikiwa resolving kila rfc3986
-                pita
-        lasivyo seg == '.':
+                pass
+        elikiwa seg == '.':
             endelea
         isipokua:
             resolved_path.append(seg)
@@ -591,7 +591,7 @@ _hextobyte = Tupu
 
 eleza unquote_to_bytes(string):
     """unquote_to_bytes('abc%20def') -> b'abc def'."""
-    # Note: strings are encoded kama UTF-8. This ni only an issue ikiwa it contains
+    # Note: strings are encoded as UTF-8. This ni only an issue ikiwa it contains
     # unescaped non-ASCII characters, which URIs should not.
     ikiwa sio string:
         # Is it a string-like object?
@@ -608,13 +608,13 @@ eleza unquote_to_bytes(string):
     # ikiwa the function ni never called
     global _hextobyte
     ikiwa _hextobyte ni Tupu:
-        _hextobyte = {(a + b).encode(): bytes.kutokahex(a + b)
+        _hextobyte = {(a + b).encode(): bytes.fromhex(a + b)
                       kila a kwenye _hexdig kila b kwenye _hexdig}
     kila item kwenye bits[1:]:
         jaribu:
             append(_hextobyte[item[:2]])
             append(item[2:])
-        tatizo KeyError:
+        except KeyError:
             append(b'%')
             append(item)
     rudisha b''.join(res)
@@ -624,14 +624,14 @@ _asciire = re.compile('([\x00-\x7f]+)')
 eleza unquote(string, encoding='utf-8', errors='replace'):
     """Replace %xx escapes by their single-character equivalent. The optional
     encoding na errors parameters specify how to decode percent-encoded
-    sequences into Unicode characters, kama accepted by the bytes.decode()
+    sequences into Unicode characters, as accepted by the bytes.decode()
     method.
     By default, percent-encoded sequences are decoded ukijumuisha UTF-8, na invalid
     sequences are replaced by a placeholder character.
 
     unquote('abc%20def') -> 'abc def'.
     """
-    ikiwa '%' haiko kwenye string:
+    ikiwa '%' sio kwenye string:
         string.split
         rudisha string
     ikiwa encoding ni Tupu:
@@ -649,25 +649,25 @@ eleza unquote(string, encoding='utf-8', errors='replace'):
 
 eleza parse_qs(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
              encoding='utf-8', errors='replace', max_num_fields=Tupu):
-    """Parse a query given kama a string argument.
+    """Parse a query given as a string argument.
 
         Arguments:
 
         qs: percent-encoded query string to be parsed
 
         keep_blank_values: flag indicating whether blank values in
-            percent-encoded queries should be treated kama blank strings.
+            percent-encoded queries should be treated as blank strings.
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
-            blank values are to be ignored na treated kama ikiwa they were
+            blank values are to be ignored na treated as ikiwa they were
             sio included.
 
         strict_parsing: flag indicating what to do ukijumuisha parsing errors.
             If false (the default), errors are silently ignored.
-            If true, errors ashiria a ValueError exception.
+            If true, errors  ashiria a ValueError exception.
 
         encoding na errors: specify how to decode percent-encoded sequences
-            into Unicode characters, kama accepted by the bytes.decode() method.
+            into Unicode characters, as accepted by the bytes.decode() method.
 
         max_num_fields: int. If set, then throws a ValueError ikiwa there
             are more than n fields read by parse_qsl().
@@ -688,29 +688,29 @@ eleza parse_qs(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
 
 eleza parse_qsl(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
               encoding='utf-8', errors='replace', max_num_fields=Tupu):
-    """Parse a query given kama a string argument.
+    """Parse a query given as a string argument.
 
         Arguments:
 
         qs: percent-encoded query string to be parsed
 
         keep_blank_values: flag indicating whether blank values in
-            percent-encoded queries should be treated kama blank strings.
-            A true value indicates that blanks should be retained kama blank
+            percent-encoded queries should be treated as blank strings.
+            A true value indicates that blanks should be retained as blank
             strings.  The default false value indicates that blank values
-            are to be ignored na treated kama ikiwa they were  sio included.
+            are to be ignored na treated as ikiwa they were  sio included.
 
         strict_parsing: flag indicating what to do ukijumuisha parsing errors. If
             false (the default), errors are silently ignored. If true,
-            errors ashiria a ValueError exception.
+            errors  ashiria a ValueError exception.
 
         encoding na errors: specify how to decode percent-encoded sequences
-            into Unicode characters, kama accepted by the bytes.decode() method.
+            into Unicode characters, as accepted by the bytes.decode() method.
 
         max_num_fields: int. If set, then throws a ValueError
             ikiwa there are more than n fields read by parse_qsl().
 
-        Returns a list, kama G-d intended.
+        Returns a list, as G-d intended.
     """
     qs, _coerce_result = _coerce_args(qs)
 
@@ -720,7 +720,7 @@ eleza parse_qsl(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
     ikiwa max_num_fields ni sio Tupu:
         num_fields = 1 + qs.count('&') + qs.count(';')
         ikiwa max_num_fields < num_fields:
-            ashiria ValueError('Max number of fields exceeded')
+             ashiria ValueError('Max number of fields exceeded')
 
     pairs = [s2 kila s1 kwenye qs.split('&') kila s2 kwenye s1.split(';')]
     r = []
@@ -730,7 +730,7 @@ eleza parse_qsl(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
         nv = name_value.split('=', 1)
         ikiwa len(nv) != 2:
             ikiwa strict_parsing:
-                ashiria ValueError("bad query field: %r" % (name_value,))
+                 ashiria ValueError("bad query field: %r" % (name_value,))
             # Handle case of a control-name ukijumuisha no equal sign
             ikiwa keep_blank_values:
                 nv.append('')
@@ -747,7 +747,7 @@ eleza parse_qsl(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
     rudisha r
 
 eleza unquote_plus(string, encoding='utf-8', errors='replace'):
-    """Like unquote(), but also replace plus signs by spaces, kama required for
+    """Like unquote(), but also replace plus signs by spaces, as required for
     unquoting HTML form values.
 
     unquote_plus('%7e/abc+def') -> '~/abc def'
@@ -765,7 +765,7 @@ _safe_quoters = {}
 kundi Quoter(collections.defaultdict):
     """A mapping kutoka bytes (in range(0,256)) to strings.
 
-    String values are percent-encoded byte values, unless the key < 128, na
+    String values are percent-encoded byte values, unless the key < 128, and
     kwenye the "safe" set (either the specified safe set, ama default set).
     """
     # Keeps a cache internally, using defaultdict, kila efficiency (lookups
@@ -775,11 +775,11 @@ kundi Quoter(collections.defaultdict):
         self.safe = _ALWAYS_SAFE.union(safe)
 
     eleza __repr__(self):
-        # Without this, will just display kama a defaultdict
+        # Without this, will just display as a defaultdict
         rudisha "<%s %r>" % (self.__class__.__name__, dict(self))
 
     eleza __missing__(self, b):
-        # Handle a cache miss. Store quoted string kwenye cache na rudisha.
+        # Handle a cache miss. Store quoted string kwenye cache na return.
         res = chr(b) ikiwa b kwenye self.safe isipokua '%{:02X}'.format(b)
         self[b] = res
         rudisha res
@@ -789,7 +789,7 @@ eleza quote(string, safe='/', encoding=Tupu, errors=Tupu):
 
     Each part of a URL, e.g. the path info, the query, etc., has a
     different set of reserved characters that must be quoted. The
-    quote function offers a cautious (sio minimal) way to quote a
+    quote function offers a cautious (not minimal) way to quote a
     string kila most of these parts.
 
     RFC 3986 Uniform Resource Identifier (URI): Generic Syntax lists
@@ -819,9 +819,9 @@ eleza quote(string, safe='/', encoding=Tupu, errors=Tupu):
     must sio be specified ikiwa string ni a bytes object.
 
     The optional encoding na errors parameters specify how to deal with
-    non-ASCII characters, kama accepted by the str.encode method.
-    By default, encoding='utf-8' (characters are encoded ukijumuisha UTF-8), na
-    errors='strict' (unsupported characters ashiria a UnicodeEncodeError).
+    non-ASCII characters, as accepted by the str.encode method.
+    By default, encoding='utf-8' (characters are encoded ukijumuisha UTF-8), and
+    errors='strict' (unsupported characters  ashiria a UnicodeEncodeError).
     """
     ikiwa isinstance(string, str):
         ikiwa sio string:
@@ -833,20 +833,20 @@ eleza quote(string, safe='/', encoding=Tupu, errors=Tupu):
         string = string.encode(encoding, errors)
     isipokua:
         ikiwa encoding ni sio Tupu:
-            ashiria TypeError("quote() doesn't support 'encoding' kila bytes")
+             ashiria TypeError("quote() doesn't support 'encoding' kila bytes")
         ikiwa errors ni sio Tupu:
-            ashiria TypeError("quote() doesn't support 'errors' kila bytes")
+             ashiria TypeError("quote() doesn't support 'errors' kila bytes")
     rudisha quote_from_bytes(string, safe)
 
 eleza quote_plus(string, safe='', encoding=Tupu, errors=Tupu):
-    """Like quote(), but also replace ' ' ukijumuisha '+', kama required kila quoting
+    """Like quote(), but also replace ' ' ukijumuisha '+', as required kila quoting
     HTML form values. Plus signs kwenye the original string are escaped unless
     they are included kwenye safe. It also does sio have safe default to '/'.
     """
     # Check ikiwa ' ' kwenye string, where string may either be a str ama bytes.  If
     # there are no spaces, the regular quote will produce the right answer.
-    ikiwa ((isinstance(string, str) na ' ' haiko kwenye string) ama
-        (isinstance(string, bytes) na b' ' haiko kwenye string)):
+    ikiwa ((isinstance(string, str) na ' ' sio kwenye string) or
+        (isinstance(string, bytes) na b' ' sio kwenye string)):
         rudisha quote(string, safe, encoding, errors)
     ikiwa isinstance(safe, str):
         space = ' '
@@ -857,11 +857,11 @@ eleza quote_plus(string, safe='', encoding=Tupu, errors=Tupu):
 
 eleza quote_from_bytes(bs, safe='/'):
     """Like quote(), but accepts a bytes object rather than a str, na does
-    sio perform string-to-bytes encoding.  It always rudishas an ASCII string.
+    sio perform string-to-bytes encoding.  It always returns an ASCII string.
     quote_from_bytes(b'abc def\x3f') -> 'abc%20def%3f'
     """
     ikiwa sio isinstance(bs, (bytes, bytearray)):
-        ashiria TypeError("quote_from_bytes() expected bytes")
+         ashiria TypeError("quote_from_bytes() expected bytes")
     ikiwa sio bs:
         rudisha ''
     ikiwa isinstance(safe, str):
@@ -873,7 +873,7 @@ eleza quote_from_bytes(bs, safe='/'):
         rudisha bs.decode()
     jaribu:
         quoter = _safe_quoters[safe]
-    tatizo KeyError:
+    except KeyError:
         _safe_quoters[safe] = quoter = Quoter(safe).__getitem__
     rudisha ''.join([quoter(char) kila char kwenye bs])
 
@@ -890,7 +890,7 @@ eleza urlencode(query, doseq=Uongo, safe='', encoding=Tupu, errors=Tupu,
 
     The components of a query arg may each be either a string ama a bytes type.
 
-    The safe, encoding, na errors parameters are pitaed down to the function
+    The safe, encoding, na errors parameters are passed down to the function
     specified by quote_via (encoding na errors only ikiwa a component ni a str).
     """
 
@@ -903,14 +903,14 @@ eleza urlencode(query, doseq=Uongo, safe='', encoding=Tupu, errors=Tupu,
             # non-sequence items should sio work ukijumuisha len()
             # non-empty strings will fail this
             ikiwa len(query) na sio isinstance(query[0], tuple):
-                ashiria TypeError
+                 ashiria TypeError
             # Zero-length sequences of all types will get here na succeed,
             # but that's a minor nit.  Since the original implementation
             # allowed empty dicts that type of behavior probably should be
             # preserved kila consistency
-        tatizo TypeError:
+        except TypeError:
             ty, va, tb = sys.exc_info()
-            ashiria TypeError("not a valid non-string sequence "
+             ashiria TypeError("not a valid non-string sequence "
                             "or mapping object").with_traceback(tb)
 
     l = []
@@ -936,14 +936,14 @@ eleza urlencode(query, doseq=Uongo, safe='', encoding=Tupu, errors=Tupu,
             ikiwa isinstance(v, bytes):
                 v = quote_via(v, safe)
                 l.append(k + '=' + v)
-            lasivyo isinstance(v, str):
+            elikiwa isinstance(v, str):
                 v = quote_via(v, safe, encoding, errors)
                 l.append(k + '=' + v)
             isipokua:
                 jaribu:
                     # Is this a sufficient test kila sequence-ness?
                     x = len(v)
-                tatizo TypeError:
+                except TypeError:
                     # sio a sequence
                     v = quote_via(str(v), safe, encoding, errors)
                     l.append(k + '=' + v)
@@ -959,7 +959,7 @@ eleza urlencode(query, doseq=Uongo, safe='', encoding=Tupu, errors=Tupu,
 
 
 eleza to_bytes(url):
-    warnings.warn("urllib.parse.to_bytes() ni deprecated kama of 3.8",
+    warnings.warn("urllib.parse.to_bytes() ni deprecated as of 3.8",
                   DeprecationWarning, stacklevel=2)
     rudisha _to_bytes(url)
 
@@ -972,8 +972,8 @@ eleza _to_bytes(url):
     ikiwa isinstance(url, str):
         jaribu:
             url = url.encode("ASCII").decode()
-        tatizo UnicodeError:
-            ashiria UnicodeError("URL " + repr(url) +
+        except UnicodeError:
+             ashiria UnicodeError("URL " + repr(url) +
                                " contains non-ASCII characters")
     rudisha url
 
@@ -981,7 +981,7 @@ eleza _to_bytes(url):
 eleza unwrap(url):
     """Transform a string like '<URL:scheme://host/path>' into 'scheme://host/path'.
 
-    The string ni rudishaed unchanged ikiwa it's sio a wrapped URL.
+    The string ni returned unchanged ikiwa it's sio a wrapped URL.
     """
     url = str(url).strip()
     ikiwa url[:1] == '<' na url[-1:] == '>':
@@ -992,7 +992,7 @@ eleza unwrap(url):
 
 
 eleza splittype(url):
-    warnings.warn("urllib.parse.splittype() ni deprecated kama of 3.8, "
+    warnings.warn("urllib.parse.splittype() ni deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     rudisha _splittype(url)
@@ -1013,7 +1013,7 @@ eleza _splittype(url):
 
 
 eleza splithost(url):
-    warnings.warn("urllib.parse.splithost() ni deprecated kama of 3.8, "
+    warnings.warn("urllib.parse.splithost() ni deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     rudisha _splithost(url)
@@ -1036,33 +1036,33 @@ eleza _splithost(url):
 
 
 eleza splituser(host):
-    warnings.warn("urllib.parse.splituser() ni deprecated kama of 3.8, "
+    warnings.warn("urllib.parse.splituser() ni deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     rudisha _splituser(host)
 
 
 eleza _splituser(host):
-    """splituser('user[:pitawd]@host[:port]') --> 'user[:pitawd]', 'host[:port]'."""
+    """splituser('user[:passwd]@host[:port]') --> 'user[:passwd]', 'host[:port]'."""
     user, delim, host = host.rpartition('@')
     rudisha (user ikiwa delim isipokua Tupu), host
 
 
-eleza splitpitawd(user):
-    warnings.warn("urllib.parse.splitpitawd() ni deprecated kama of 3.8, "
+eleza splitpasswd(user):
+    warnings.warn("urllib.parse.splitpasswd() ni deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    rudisha _splitpitawd(user)
+    rudisha _splitpasswd(user)
 
 
-eleza _splitpitawd(user):
-    """splitpitawd('user:pitawd') -> 'user', 'pitawd'."""
-    user, delim, pitawd = user.partition(':')
-    rudisha user, (pitawd ikiwa delim isipokua Tupu)
+eleza _splitpasswd(user):
+    """splitpasswd('user:passwd') -> 'user', 'passwd'."""
+    user, delim, passwd = user.partition(':')
+    rudisha user, (passwd ikiwa delim isipokua Tupu)
 
 
 eleza splitport(host):
-    warnings.warn("urllib.parse.splitport() ni deprecated kama of 3.8, "
+    warnings.warn("urllib.parse.splitport() ni deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     rudisha _splitport(host)
@@ -1085,31 +1085,31 @@ eleza _splitport(host):
 
 
 eleza splitnport(host, defport=-1):
-    warnings.warn("urllib.parse.splitnport() ni deprecated kama of 3.8, "
+    warnings.warn("urllib.parse.splitnport() ni deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     rudisha _splitnport(host, defport)
 
 
 eleza _splitnport(host, defport=-1):
-    """Split host na port, rudishaing numeric port.
+    """Split host na port, returning numeric port.
     Return given default port ikiwa no ':' found; defaults to -1.
     Return numerical port ikiwa a valid number are found after ':'.
     Return Tupu ikiwa ':' but sio a valid number."""
     host, delim, port = host.rpartition(':')
     ikiwa sio delim:
         host = port
-    lasivyo port:
+    elikiwa port:
         jaribu:
             nport = int(port)
-        tatizo ValueError:
+        except ValueError:
             nport = Tupu
         rudisha host, nport
     rudisha host, defport
 
 
 eleza splitquery(url):
-    warnings.warn("urllib.parse.splitquery() ni deprecated kama of 3.8, "
+    warnings.warn("urllib.parse.splitquery() ni deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     rudisha _splitquery(url)
@@ -1124,7 +1124,7 @@ eleza _splitquery(url):
 
 
 eleza splittag(url):
-    warnings.warn("urllib.parse.splittag() ni deprecated kama of 3.8, "
+    warnings.warn("urllib.parse.splittag() ni deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     rudisha _splittag(url)
@@ -1139,7 +1139,7 @@ eleza _splittag(url):
 
 
 eleza splitattr(url):
-    warnings.warn("urllib.parse.splitattr() ni deprecated kama of 3.8, "
+    warnings.warn("urllib.parse.splitattr() ni deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     rudisha _splitattr(url)
@@ -1153,7 +1153,7 @@ eleza _splitattr(url):
 
 
 eleza splitvalue(attr):
-    warnings.warn("urllib.parse.splitvalue() ni deprecated kama of 3.8, "
+    warnings.warn("urllib.parse.splitvalue() ni deprecated as of 3.8, "
                   "use urllib.parse.parse_qsl() instead",
                   DeprecationWarning, stacklevel=2)
     rudisha _splitvalue(attr)

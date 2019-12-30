@@ -31,18 +31,18 @@ are strings, sio numbers, since they are rarely used kila calculations.
 # xover, xgtitle, xpath, date methods by Kevan Heydon
 
 # Incompatible changes kutoka the 2.x nntplib:
-# - all commands are encoded kama UTF-8 data (using the "surrogateescape"
-#   error handler), tatizo kila raw message data (POST, IHAVE)
-# - all responses are decoded kama UTF-8 data (using the "surrogateescape"
-#   error handler), tatizo kila raw message data (ARTICLE, HEAD, BODY)
+# - all commands are encoded as UTF-8 data (using the "surrogateescape"
+#   error handler), except kila raw message data (POST, IHAVE)
+# - all responses are decoded as UTF-8 data (using the "surrogateescape"
+#   error handler), except kila raw message data (ARTICLE, HEAD, BODY)
 # - the `file` argument to various methods ni keyword-only
 #
-# - NNTP.date() rudishas a datetime object
+# - NNTP.date() returns a datetime object
 # - NNTP.newgroups() na NNTP.newnews() take a datetime (or date) object,
 #   rather than a pair of (date, time) strings.
 # - NNTP.newgroups() na NNTP.list() rudisha a list of GroupInfo named tuples
-# - NNTP.descriptions() rudishas a dict mapping group names to descriptions
-# - NNTP.xover() rudishas a list of dicts mapping field names (header ama metadata)
+# - NNTP.descriptions() returns a dict mapping group names to descriptions
+# - NNTP.xover() returns a list of dicts mapping field names (header ama metadata)
 #   to field values; each dict representing a message overview.
 # - NNTP.article(), NNTP.head() na NNTP.body() rudisha a (response, ArticleInfo)
 #   tuple.
@@ -54,8 +54,8 @@ are strings, sio numbers, since they are rarely used kila calculations.
 # - New method NNTP.getcapabilities()
 # - New method NNTP.over()
 # - New helper function decode_header()
-# - NNTP.post() na NNTP.ihave() accept file objects, bytes-like objects na
-#   arbitrary iterables tumaing lines.
+# - NNTP.post() na NNTP.ihave() accept file objects, bytes-like objects and
+#   arbitrary iterables yielding lines.
 # - An extensive test suite :-)
 
 # TODO:
@@ -72,12 +72,12 @@ agiza sys
 
 jaribu:
     agiza ssl
-tatizo ImportError:
+except ImportError:
     _have_ssl = Uongo
 isipokua:
     _have_ssl = Kweli
 
-kutoka email.header agiza decode_header kama _email_decode_header
+kutoka email.header agiza decode_header as _email_decode_header
 kutoka socket agiza _GLOBAL_DEFAULT_TIMEOUT
 
 __all__ = ["NNTP",
@@ -93,35 +93,35 @@ __all__ = ["NNTP",
 _MAXLINE = 2048
 
 
-# Exceptions ashiriad when an error ama invalid response ni received
+# Exceptions raised when an error ama invalid response ni received
 kundi NNTPError(Exception):
     """Base kundi kila all nntplib exceptions"""
     eleza __init__(self, *args):
         Exception.__init__(self, *args)
         jaribu:
             self.response = args[0]
-        tatizo IndexError:
+        except IndexError:
             self.response = 'No response given'
 
 kundi NNTPReplyError(NNTPError):
     """Unexpected [123]xx reply"""
-    pita
+    pass
 
 kundi NNTPTemporaryError(NNTPError):
     """4xx errors"""
-    pita
+    pass
 
 kundi NNTPPermanentError(NNTPError):
     """5xx errors"""
-    pita
+    pass
 
 kundi NNTPProtocolError(NNTPError):
     """Response does sio begin ukijumuisha [1-5]"""
-    pita
+    pass
 
 kundi NNTPDataError(NNTPError):
     """Error kwenye response data"""
-    pita
+    pass
 
 
 # Standard port used by NNTP servers
@@ -146,7 +146,7 @@ _LONGRESP = {
 
 # Default decoded value kila LIST OVERVIEW.FMT ikiwa sio supported
 _DEFAULT_OVERVIEW_FMT = [
-    "subject", "kutoka", "date", "message-id", "references", ":bytes", ":lines"]
+    "subject", "from", "date", "message-id", "references", ":bytes", ":lines"]
 
 # Alternative names allowed kwenye LIST OVERVIEW.FMT response
 _OVERVIEW_FMT_ALTERNATIVES = {
@@ -167,7 +167,7 @@ ArticleInfo = collections.namedtuple('ArticleInfo',
 # Helper function(s)
 eleza decode_header(header_str):
     """Takes a unicode string representing a munged header value
-    na decodes it kama a (possibly non-ASCII) readable value."""
+    na decodes it as a (possibly non-ASCII) readable value."""
     parts = []
     kila v, enc kwenye _email_decode_header(header_str):
         ikiwa isinstance(v, bytes):
@@ -196,9 +196,9 @@ eleza _parse_overview_fmt(lines):
         fmt.append(name)
     defaults = _DEFAULT_OVERVIEW_FMT
     ikiwa len(fmt) < len(defaults):
-        ashiria NNTPDataError("LIST OVERVIEW.FMT response too short")
+         ashiria NNTPDataError("LIST OVERVIEW.FMT response too short")
     ikiwa fmt[:len(defaults)] != defaults:
-        ashiria NNTPDataError("LIST OVERVIEW.FMT redefines default fields")
+         ashiria NNTPDataError("LIST OVERVIEW.FMT redefines default fields")
     rudisha fmt
 
 eleza _parse_overview(lines, fmt, data_process_func=Tupu):
@@ -212,7 +212,7 @@ eleza _parse_overview(lines, fmt, data_process_func=Tupu):
         article_number = int(article_number)
         kila i, token kwenye enumerate(tokens):
             ikiwa i >= len(fmt):
-                # XXX should we ashiria an error? Some servers might not
+                # XXX should we  ashiria an error? Some servers might not
                 # support LIST OVERVIEW.FMT na still rudisha additional
                 # headers.
                 endelea
@@ -223,7 +223,7 @@ eleza _parse_overview(lines, fmt, data_process_func=Tupu):
                 # (unless the field ni totally empty)
                 h = field_name + ": "
                 ikiwa token na token[:len(h)].lower() != h:
-                    ashiria NNTPDataError("OVER/XOVER response doesn't include "
+                     ashiria NNTPDataError("OVER/XOVER response doesn't include "
                                         "names of additional headers")
                 token = token[len(h):] ikiwa token isipokua Tupu
             fields[fmt[i]] = token
@@ -248,16 +248,16 @@ eleza _parse_datetime(date_str, time_str=Tupu):
     # there are no dates before 1970 on Usenet.
     ikiwa year < 70:
         year += 2000
-    lasivyo year < 100:
+    elikiwa year < 100:
         year += 1900
     rudisha datetime.datetime(year, month, day, hours, minutes, seconds)
 
 eleza _unparse_datetime(dt, legacy=Uongo):
-    """Format a date ama datetime object kama a pair of (date, time) strings
+    """Format a date ama datetime object as a pair of (date, time) strings
     kwenye the format required by the NEWNEWS na NEWGROUPS commands.  If a
-    date object ni pitaed, the time ni assumed to be midnight (00h00).
+    date object ni passed, the time ni assumed to be midnight (00h00).
 
-    The rudishaed representation depends on the legacy flag:
+    The returned representation depends on the legacy flag:
     * ikiwa legacy ni Uongo (the default):
       date has the YYYYMMDD format na time the HHMMSS format
     * ikiwa legacy ni Kweli:
@@ -287,7 +287,7 @@ ikiwa _have_ssl:
         Returns:
         - sock: New, encrypted socket.
         """
-        # Generate a default SSL context ikiwa none was pitaed.
+        # Generate a default SSL context ikiwa none was passed.
         ikiwa context ni Tupu:
             context = ssl._create_stdlib_context()
         rudisha context.wrap_socket(sock, server_hostname=hostname)
@@ -300,10 +300,10 @@ kundi _NNTPBase:
     # by this class.
     # However, some multi-line data blocks can contain arbitrary bytes (for
     # example, latin-1 ama utf-16 data kwenye the body of a message). Commands
-    # taking (POST, IHAVE) ama rudishaing (HEAD, BODY, ARTICLE) raw message
+    # taking (POST, IHAVE) ama returning (HEAD, BODY, ARTICLE) raw message
     # data will therefore only accept na produce bytes objects.
     # Furthermore, since there could be non-compliant servers out there,
-    # we use 'surrogateescape' kama the error handler kila fault tolerance
+    # we use 'surrogateescape' as the error handler kila fault tolerance
     # na easy round-tripping. This could be useful kila some applications
     # (e.g. NNTP gateways).
 
@@ -321,7 +321,7 @@ kundi _NNTPBase:
 
         readermode ni sometimes necessary ikiwa you are connecting to an
         NNTP server on the local machine na intend to call
-        reader-specific commands, such kama `group'.  If you get
+        reader-specific commands, such as `group'.  If you get
         unexpected NNTPPermanentErrors, you might need to set
         readermode.
         """
@@ -338,11 +338,11 @@ kundi _NNTPBase:
         # However, the order kwenye which 'MODE READER' na 'AUTHINFO' need to
         # arrive differs between some NNTP servers. If _setreadermode() fails
         # ukijumuisha an authorization failed error, it will set this to Kweli;
-        # the login() routine will interpret that kama a request to try again
+        # the login() routine will interpret that as a request to try again
         # after performing its normal function.
         # Enable only ikiwa we're sio already kwenye READER mode anyway.
         self.readermode_afterauth = Uongo
-        ikiwa readermode na 'READER' haiko kwenye self._caps:
+        ikiwa readermode na 'READER' sio kwenye self._caps:
             self._setreadermode()
             ikiwa sio self.readermode_afterauth:
                 # Capabilities might have changed after MODE READER
@@ -365,8 +365,8 @@ kundi _NNTPBase:
         ikiwa is_connected():
             jaribu:
                 self.quit()
-            tatizo (OSError, EOFError):
-                pita
+            except (OSError, EOFError):
+                pass
             mwishowe:
                 ikiwa is_connected():
                     self._close()
@@ -381,15 +381,15 @@ kundi _NNTPBase:
         rudisha self.welcome
 
     eleza getcapabilities(self):
-        """Get the server capabilities, kama read by __init__().
+        """Get the server capabilities, as read by __init__().
         If the CAPABILITIES command ni sio supported, an empty dict is
-        rudishaed."""
+        returned."""
         ikiwa self._caps ni Tupu:
             self.nntp_version = 1
             self.nntp_implementation = Tupu
             jaribu:
                 resp, caps = self.capabilities()
-            tatizo (NNTPPermanentError, NNTPTemporaryError):
+            except (NNTPPermanentError, NNTPTemporaryError):
                 # Server doesn't support capabilities
                 self._caps = {}
             isipokua:
@@ -433,14 +433,14 @@ kundi _NNTPBase:
         Returns a bytes object."""
         line = self.file.readline(_MAXLINE +1)
         ikiwa len(line) > _MAXLINE:
-            ashiria NNTPDataError('line too long')
+             ashiria NNTPDataError('line too long')
         ikiwa self.debugging > 1:
             andika('*get*', repr(line))
-        ikiwa sio line: ashiria EOFError
+        ikiwa sio line:  ashiria EOFError
         ikiwa strip_crlf:
             ikiwa line[-2:] == _CRLF:
                 line = line[:-2]
-            lasivyo line[-1:] kwenye _CRLF:
+            elikiwa line[-1:] kwenye _CRLF:
                 line = line[:-1]
         rudisha line
 
@@ -453,11 +453,11 @@ kundi _NNTPBase:
         resp = resp.decode(self.encoding, self.errors)
         c = resp[:1]
         ikiwa c == '4':
-            ashiria NNTPTemporaryError(resp)
+             ashiria NNTPTemporaryError(resp)
         ikiwa c == '5':
-            ashiria NNTPPermanentError(resp)
-        ikiwa c haiko kwenye '123':
-            ashiria NNTPProtocolError(resp)
+             ashiria NNTPPermanentError(resp)
+        ikiwa c sio kwenye '123':
+             ashiria NNTPProtocolError(resp)
         rudisha resp
 
     eleza _getlongresp(self, file=Tupu):
@@ -471,13 +471,13 @@ kundi _NNTPBase:
 
         openedFile = Tupu
         jaribu:
-            # If a string was pitaed then open a file ukijumuisha that name
+            # If a string was passed then open a file ukijumuisha that name
             ikiwa isinstance(file, (str, bytes)):
                 openedFile = file = open(file, "wb")
 
             resp = self._getresp()
-            ikiwa resp[:3] haiko kwenye _LONGRESP:
-                ashiria NNTPReplyError(resp)
+            ikiwa resp[:3] sio kwenye _LONGRESP:
+                 ashiria NNTPReplyError(resp)
 
             lines = []
             ikiwa file ni sio Tupu:
@@ -508,19 +508,19 @@ kundi _NNTPBase:
 
     eleza _shortcmd(self, line):
         """Internal: send a command na get the response.
-        Same rudisha value kama _getresp()."""
+        Same rudisha value as _getresp()."""
         self._putcmd(line)
         rudisha self._getresp()
 
     eleza _longcmd(self, line, file=Tupu):
         """Internal: send a command na get the response plus following text.
-        Same rudisha value kama _getlongresp()."""
+        Same rudisha value as _getlongresp()."""
         self._putcmd(line)
         rudisha self._getlongresp(file)
 
     eleza _longcmdstring(self, line, file=Tupu):
         """Internal: send a command na get the response plus following text.
-        Same kama _longcmd() na _getlongresp(), tatizo that the rudishaed `lines`
+        Same as _longcmd() na _getlongresp(), except that the returned `lines`
         are unicode strings rather than bytes objects.
         """
         self._putcmd(line)
@@ -530,14 +530,14 @@ kundi _NNTPBase:
 
     eleza _getoverviewfmt(self):
         """Internal: get the overview format. Queries the server ikiwa not
-        already done, isipokua rudishas the cached value."""
+        already done, isipokua returns the cached value."""
         jaribu:
             rudisha self._cachedoverviewfmt
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         jaribu:
             resp, lines = self._longcmdstring("LIST OVERVIEW.FMT")
-        tatizo NNTPPermanentError:
+        except NNTPPermanentError:
             # Not supported by server?
             fmt = _DEFAULT_OVERVIEW_FMT[:]
         isipokua:
@@ -571,7 +571,7 @@ kundi _NNTPBase:
         - list: list of newsgroup names
         """
         ikiwa sio isinstance(date, (datetime.date, datetime.date)):
-            ashiria TypeError(
+             ashiria TypeError(
                 "the date parameter must be a date ama datetime object, "
                 "not '{:40}'".format(date.__class__.__name__))
         date_str, time_str = _unparse_datetime(date, self.nntp_version < 2)
@@ -588,7 +588,7 @@ kundi _NNTPBase:
         - list: list of message ids
         """
         ikiwa sio isinstance(date, (datetime.date, datetime.date)):
-            ashiria TypeError(
+             ashiria TypeError(
                 "the date parameter must be a date ama datetime object, "
                 "not '{:40}'".format(date.__class__.__name__))
         date_str, time_str = _unparse_datetime(date, self.nntp_version < 2)
@@ -610,13 +610,13 @@ kundi _NNTPBase:
         resp, lines = self._longcmdstring(command, file)
         rudisha resp, self._grouplist(lines)
 
-    eleza _getdescriptions(self, group_pattern, rudisha_all):
+    eleza _getdescriptions(self, group_pattern, return_all):
         line_pat = re.compile('^(?P<group>[^ \t]+)[ \t]+(.*)$')
         # Try the more std (acc. to RFC2980) LIST NEWSGROUPS first
         resp, lines = self._longcmdstring('LIST NEWSGROUPS ' + group_pattern)
         ikiwa sio resp.startswith('215'):
-            # Now the deprecated XGTITLE.  This either ashirias an error
-            # ama succeeds ukijumuisha the same output structure kama LIST
+            # Now the deprecated XGTITLE.  This either raises an error
+            # ama succeeds ukijumuisha the same output structure as LIST
             # NEWSGROUPS.
             resp, lines = self._longcmdstring('XGTITLE ' + group_pattern)
         groups = {}
@@ -624,10 +624,10 @@ kundi _NNTPBase:
             match = line_pat.search(raw_line.strip())
             ikiwa match:
                 name, desc = match.group(1, 2)
-                ikiwa sio rudisha_all:
+                ikiwa sio return_all:
                     rudisha desc
                 groups[name] = desc
-        ikiwa rudisha_all:
+        ikiwa return_all:
             rudisha resp, groups
         isipokua:
             # Nothing found
@@ -662,7 +662,7 @@ kundi _NNTPBase:
         """
         resp = self._shortcmd('GROUP ' + name)
         ikiwa sio resp.startswith('211'):
-            ashiria NNTPReplyError(resp)
+             ashiria NNTPReplyError(resp)
         words = resp.split()
         count = first = last = 0
         n = len(words)
@@ -681,7 +681,7 @@ kundi _NNTPBase:
         - file: Filename string ama file object to store the result in
         Returns:
         - resp: server response ikiwa successful
-        - list: list of strings rudishaed by the server kwenye response to the
+        - list: list of strings returned by the server kwenye response to the
                 HELP command
         """
         rudisha self._longcmdstring('HELP', file)
@@ -690,7 +690,7 @@ kundi _NNTPBase:
         """Internal: parse the response line of a STAT, NEXT, LAST,
         ARTICLE, HEAD ama BODY command."""
         ikiwa sio resp.startswith('22'):
-            ashiria NNTPReplyError(resp)
+             ashiria NNTPReplyError(resp)
         words = resp.split()
         art_num = int(words[1])
         message_id = words[2]
@@ -716,11 +716,11 @@ kundi _NNTPBase:
             rudisha self._statcmd('STAT')
 
     eleza next(self):
-        """Process a NEXT command.  No arguments.  Return kama kila STAT."""
+        """Process a NEXT command.  No arguments.  Return as kila STAT."""
         rudisha self._statcmd('NEXT')
 
     eleza last(self):
-        """Process a LAST command.  No arguments.  Return kama kila STAT."""
+        """Process a LAST command.  No arguments.  Return as kila STAT."""
         rudisha self._statcmd('LAST')
 
     eleza _artcmd(self, line, file=Tupu):
@@ -828,7 +828,7 @@ kundi _NNTPBase:
         ikiwa isinstance(message_spec, (tuple, list)):
             start, end = message_spec
             cmd += ' {0}-{1}'.format(start, end ama '')
-        lasivyo message_spec ni sio Tupu:
+        elikiwa message_spec ni sio Tupu:
             cmd = cmd + ' ' + message_spec
         resp, lines = self._longcmdstring(cmd, file)
         fmt = self._getoverviewfmt()
@@ -864,11 +864,11 @@ kundi _NNTPBase:
 
         resp = self._shortcmd('XPATH {0}'.format(id))
         ikiwa sio resp.startswith('223'):
-            ashiria NNTPReplyError(resp)
+             ashiria NNTPReplyError(resp)
         jaribu:
             [resp_num, path] = resp.split()
-        tatizo ValueError:
-            ashiria NNTPReplyError(resp) kutoka Tupu
+        except ValueError:
+             ashiria NNTPReplyError(resp) kutoka Tupu
         isipokua:
             rudisha resp, path
 
@@ -880,20 +880,20 @@ kundi _NNTPBase:
         """
         resp = self._shortcmd("DATE")
         ikiwa sio resp.startswith('111'):
-            ashiria NNTPReplyError(resp)
+             ashiria NNTPReplyError(resp)
         elem = resp.split()
         ikiwa len(elem) != 2:
-            ashiria NNTPDataError(resp)
+             ashiria NNTPDataError(resp)
         date = elem[1]
         ikiwa len(date) != 14:
-            ashiria NNTPDataError(resp)
+             ashiria NNTPDataError(resp)
         rudisha resp, _parse_datetime(date, Tupu)
 
     eleza _post(self, command, f):
         resp = self._shortcmd(command)
         # Raises a specific exception ikiwa posting ni sio allowed
         ikiwa sio resp.startswith('3'):
-            ashiria NNTPReplyError(resp)
+             ashiria NNTPReplyError(resp)
         ikiwa isinstance(f, (bytes, bytearray)):
             f = f.splitlines()
         # We don't use _putline() because:
@@ -923,7 +923,7 @@ kundi _NNTPBase:
         - data: file containing the article
         Returns:
         - resp: server response ikiwa successful
-        Note that ikiwa the server refuses the article an exception ni ashiriad."""
+        Note that ikiwa the server refuses the article an exception ni raised."""
         rudisha self._post('IHAVE {0}'.format(message_id), data)
 
     eleza _close(self):
@@ -939,13 +939,13 @@ kundi _NNTPBase:
             self._close()
         rudisha resp
 
-    eleza login(self, user=Tupu, pitaword=Tupu, usenetrc=Kweli):
+    eleza login(self, user=Tupu, password=Tupu, usenetrc=Kweli):
         ikiwa self.authenticated:
-            ashiria ValueError("Already logged in.")
+             ashiria ValueError("Already logged in.")
         ikiwa sio user na sio usenetrc:
-            ashiria ValueError(
+             ashiria ValueError(
                 "At least one of `user` na `usenetrc` must be specified")
-        # If no login/pitaword was specified but netrc was requested,
+        # If no login/password was specified but netrc was requested,
         # try to get them kutoka ~/.netrc
         # Presume that ikiwa .netrc has an entry, NNRP authentication ni required.
         jaribu:
@@ -955,26 +955,26 @@ kundi _NNTPBase:
                 auth = credentials.authenticators(self.host)
                 ikiwa auth:
                     user = auth[0]
-                    pitaword = auth[2]
-        tatizo OSError:
-            pita
+                    password = auth[2]
+        except OSError:
+            pass
         # Perform NNTP authentication ikiwa needed.
         ikiwa sio user:
-            rudisha
+            return
         resp = self._shortcmd('authinfo user ' + user)
         ikiwa resp.startswith('381'):
-            ikiwa sio pitaword:
-                ashiria NNTPReplyError(resp)
+            ikiwa sio password:
+                 ashiria NNTPReplyError(resp)
             isipokua:
-                resp = self._shortcmd('authinfo pita ' + pitaword)
+                resp = self._shortcmd('authinfo pass ' + password)
                 ikiwa sio resp.startswith('281'):
-                    ashiria NNTPPermanentError(resp)
+                     ashiria NNTPPermanentError(resp)
         # Capabilities might have changed after login
         self._caps = Tupu
         self.getcapabilities()
         # Attempt to send mode reader ikiwa it was requested after login.
-        # Only do so ikiwa we're haiko kwenye reader mode already.
-        ikiwa self.readermode_afterauth na 'READER' haiko kwenye self._caps:
+        # Only do so ikiwa we're sio kwenye reader mode already.
+        ikiwa self.readermode_afterauth na 'READER' sio kwenye self._caps:
             self._setreadermode()
             # Capabilities might have changed after MODE READER
             self._caps = Tupu
@@ -983,15 +983,15 @@ kundi _NNTPBase:
     eleza _setreadermode(self):
         jaribu:
             self.welcome = self._shortcmd('mode reader')
-        tatizo NNTPPermanentError:
+        except NNTPPermanentError:
             # Error 5xx, probably 'not implemented'
-            pita
-        tatizo NNTPTemporaryError kama e:
+            pass
+        except NNTPTemporaryError as e:
             ikiwa e.response.startswith('480'):
                 # Need authorization before 'mode reader'
                 self.readermode_afterauth = Kweli
             isipokua:
-                ashiria
+                raise
 
     ikiwa _have_ssl:
         eleza starttls(self, context=Tupu):
@@ -1001,9 +1001,9 @@ kundi _NNTPBase:
             # Per RFC 4642, STARTTLS MUST NOT be sent after authentication ama if
             # a TLS session already exists.
             ikiwa self.tls_on:
-                ashiria ValueError("TLS ni already enabled.")
+                 ashiria ValueError("TLS ni already enabled.")
             ikiwa self.authenticated:
-                ashiria ValueError("TLS cannot be started after authentication.")
+                 ashiria ValueError("TLS cannot be started after authentication.")
             resp = self._shortcmd('STARTTLS')
             ikiwa resp.startswith('382'):
                 self.file.close()
@@ -1015,28 +1015,28 @@ kundi _NNTPBase:
                 self._caps = Tupu
                 self.getcapabilities()
             isipokua:
-                ashiria NNTPError("TLS failed to start.")
+                 ashiria NNTPError("TLS failed to start.")
 
 
 kundi NNTP(_NNTPBase):
 
-    eleza __init__(self, host, port=NNTP_PORT, user=Tupu, pitaword=Tupu,
+    eleza __init__(self, host, port=NNTP_PORT, user=Tupu, password=Tupu,
                  readermode=Tupu, usenetrc=Uongo,
                  timeout=_GLOBAL_DEFAULT_TIMEOUT):
         """Initialize an instance.  Arguments:
         - host: hostname to connect to
         - port: port to connect to (default the standard NNTP port)
         - user: username to authenticate with
-        - pitaword: pitaword to use ukijumuisha username
+        - password: password to use ukijumuisha username
         - readermode: ikiwa true, send 'mode reader' command after
                       connecting.
-        - usenetrc: allow loading username na pitaword kutoka ~/.netrc file
+        - usenetrc: allow loading username na password kutoka ~/.netrc file
                     ikiwa sio specified explicitly
         - timeout: timeout (in seconds) used kila socket connections
 
         readermode ni sometimes necessary ikiwa you are connecting to an
         NNTP server on the local machine na intend to call
-        reader-specific commands, such kama `group'.  If you get
+        reader-specific commands, such as `group'.  If you get
         unexpected NNTPPermanentErrors, you might need to set
         readermode.
         """
@@ -1050,12 +1050,12 @@ kundi NNTP(_NNTPBase):
             _NNTPBase.__init__(self, file, host,
                                readermode, timeout)
             ikiwa user ama usenetrc:
-                self.login(user, pitaword, usenetrc)
+                self.login(user, password, usenetrc)
         tatizo:
             ikiwa file:
                 file.close()
             self.sock.close()
-            ashiria
+            raise
 
     eleza _close(self):
         jaribu:
@@ -1068,10 +1068,10 @@ ikiwa _have_ssl:
     kundi NNTP_SSL(_NNTPBase):
 
         eleza __init__(self, host, port=NNTP_SSL_PORT,
-                    user=Tupu, pitaword=Tupu, ssl_context=Tupu,
+                    user=Tupu, password=Tupu, ssl_context=Tupu,
                     readermode=Tupu, usenetrc=Uongo,
                     timeout=_GLOBAL_DEFAULT_TIMEOUT):
-            """This works identically to NNTP.__init__, tatizo kila the change
+            """This works identically to NNTP.__init__, except kila the change
             kwenye default port na the `ssl_context` argument kila SSL connections.
             """
             sys.audit("nntplib.connect", self, host, port)
@@ -1083,12 +1083,12 @@ ikiwa _have_ssl:
                 _NNTPBase.__init__(self, file, host,
                                    readermode=readermode, timeout=timeout)
                 ikiwa user ama usenetrc:
-                    self.login(user, pitaword, usenetrc)
+                    self.login(user, password, usenetrc)
             tatizo:
                 ikiwa file:
                     file.close()
                 self.sock.close()
-                ashiria
+                raise
 
         eleza _close(self):
             jaribu:
@@ -1099,7 +1099,7 @@ ikiwa _have_ssl:
     __all__.append("NNTP_SSL")
 
 
-# Test retrieval when run kama a script.
+# Test retrieval when run as a script.
 ikiwa __name__ == '__main__':
     agiza argparse
 
@@ -1141,7 +1141,7 @@ ikiwa __name__ == '__main__':
     first = str(int(last) - args.nb_articles + 1)
     resp, overviews = s.xover(first, last)
     kila artnum, over kwenye overviews:
-        author = decode_header(over['kutoka']).split('<', 1)[0]
+        author = decode_header(over['from']).split('<', 1)[0]
         subject = decode_header(over['subject'])
         lines = int(over[':lines'])
         andika("{:7} {:20} {:42} ({})".format(

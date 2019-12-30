@@ -1,6 +1,6 @@
-import gc
+agiza gc
 
-def start():
+eleza start():
     gc.collect(0)
     gc.collect(1)
     gc.collect(2)

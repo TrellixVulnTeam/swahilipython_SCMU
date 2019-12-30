@@ -8,7 +8,7 @@ agiza operator
 agiza os
 agiza stat
 agiza unittest
-agiza dbm.dumb kama dumbdbm
+agiza dbm.dumb as dumbdbm
 kutoka test agiza support
 kutoka functools agiza partial
 
@@ -18,8 +18,8 @@ eleza _delete_files():
     kila ext kwenye [".dir", ".dat", ".bak"]:
         jaribu:
             os.unlink(_fname + ext)
-        tatizo OSError:
-            pita
+        except OSError:
+            pass
 
 kundi DumbDBMTestCase(unittest.TestCase):
     _dict = {b'0': b'',
@@ -33,7 +33,7 @@ kundi DumbDBMTestCase(unittest.TestCase):
              }
 
     eleza test_dumbdbm_creation(self):
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'c')) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'c')) as f:
             self.assertEqual(list(f.keys()), [])
             kila key kwenye self._dict:
                 f[key] = self._dict[key]
@@ -69,16 +69,16 @@ kundi DumbDBMTestCase(unittest.TestCase):
 
     eleza test_dumbdbm_modification(self):
         self.init_db()
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'w')) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'w')) as f:
             self._dict[b'g'] = f[b'g'] = b"indented"
             self.read_helper(f)
-            # setdefault() works kama kwenye the dict interface
+            # setdefault() works as kwenye the dict interface
             self.assertEqual(f.setdefault(b'xxx', b'foo'), b'foo')
             self.assertEqual(f[b'xxx'], b'foo')
 
     eleza test_dumbdbm_read(self):
         self.init_db()
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'r')) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'r')) as f:
             self.read_helper(f)
             ukijumuisha self.assertRaisesRegex(dumbdbm.error,
                                     'The database ni opened kila reading only'):
@@ -86,7 +86,7 @@ kundi DumbDBMTestCase(unittest.TestCase):
             ukijumuisha self.assertRaisesRegex(dumbdbm.error,
                                     'The database ni opened kila reading only'):
                 toa f[b'a']
-            # get() works kama kwenye the dict interface
+            # get() works as kwenye the dict interface
             self.assertEqual(f.get(b'a'), self._dict[b'a'])
             self.assertEqual(f.get(b'xxx', b'foo'), b'foo')
             self.assertIsTupu(f.get(b'xxx'))
@@ -95,33 +95,33 @@ kundi DumbDBMTestCase(unittest.TestCase):
 
     eleza test_dumbdbm_keys(self):
         self.init_db()
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) as f:
             keys = self.keys_helper(f)
 
     eleza test_write_contains(self):
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) as f:
             f[b'1'] = b'hello'
             self.assertIn(b'1', f)
 
     eleza test_write_write_read(self):
         # test kila bug #482460
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) as f:
             f[b'1'] = b'hello'
             f[b'1'] = b'hello2'
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) as f:
             self.assertEqual(f[b'1'], b'hello2')
 
     eleza test_str_read(self):
         self.init_db()
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'r')) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'r')) as f:
             self.assertEqual(f['\u00fc'], self._dict['\u00fc'.encode('utf-8')])
 
     eleza test_str_write_contains(self):
         self.init_db()
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) as f:
             f['\u00fc'] = b'!'
             f['1'] = 'a'
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'r')) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'r')) as f:
             self.assertIn('\u00fc', f)
             self.assertEqual(f['\u00fc'.encode('utf-8')],
                              self._dict['\u00fc'.encode('utf-8')])
@@ -130,18 +130,18 @@ kundi DumbDBMTestCase(unittest.TestCase):
     eleza test_line_endings(self):
         # test kila bug #1172763: dumbdbm would die ikiwa the line endings
         # weren't what was expected.
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname)) as f:
             f[b'1'] = b'hello'
             f[b'2'] = b'hello2'
 
         # Mangle the file by changing the line separator to Windows ama Unix
-        ukijumuisha io.open(_fname + '.dir', 'rb') kama file:
+        ukijumuisha io.open(_fname + '.dir', 'rb') as file:
             data = file.read()
         ikiwa os.linesep == '\n':
             data = data.replace(b'\n', b'\r\n')
         isipokua:
             data = data.replace(b'\r\n', b'\n')
-        ukijumuisha io.open(_fname + '.dir', 'wb') kama file:
+        ukijumuisha io.open(_fname + '.dir', 'wb') as file:
             file.write(data)
 
         f = dumbdbm.open(_fname)
@@ -155,7 +155,7 @@ kundi DumbDBMTestCase(unittest.TestCase):
             self.assertEqual(self._dict[key], f[key])
 
     eleza init_db(self):
-        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'n')) kama f:
+        ukijumuisha contextlib.closing(dumbdbm.open(_fname, 'n')) as f:
             kila k kwenye self._dict:
                 f[k] = self._dict[k]
 
@@ -171,7 +171,7 @@ kundi DumbDBMTestCase(unittest.TestCase):
         agiza random
         d = {}  # mirror the database
         kila dummy kwenye range(5):
-            ukijumuisha contextlib.closing(dumbdbm.open(_fname)) kama f:
+            ukijumuisha contextlib.closing(dumbdbm.open(_fname)) as f:
                 kila dummy kwenye range(100):
                     k = random.choice('abcdefghijklm')
                     ikiwa random.random() < 0.2:
@@ -184,16 +184,16 @@ kundi DumbDBMTestCase(unittest.TestCase):
                         f[k] = v
                         self.assertEqual(f[k], v)
 
-            ukijumuisha contextlib.closing(dumbdbm.open(_fname)) kama f:
+            ukijumuisha contextlib.closing(dumbdbm.open(_fname)) as f:
                 expected = sorted((k.encode("latin-1"), v) kila k, v kwenye d.items())
                 got = sorted(f.items())
                 self.assertEqual(expected, got)
 
     eleza test_context_manager(self):
-        ukijumuisha dumbdbm.open(_fname, 'c') kama db:
+        ukijumuisha dumbdbm.open(_fname, 'c') as db:
             db["dumbdbm context manager"] = "context manager"
 
-        ukijumuisha dumbdbm.open(_fname, 'r') kama db:
+        ukijumuisha dumbdbm.open(_fname, 'r') as db:
             self.assertEqual(list(db.keys()), [b"dumbdbm context manager"])
 
         ukijumuisha self.assertRaises(dumbdbm.error):
@@ -207,7 +207,7 @@ kundi DumbDBMTestCase(unittest.TestCase):
                      partial(operator.setitem, f, 'b'),
                      partial(operator.getitem, f),
                      partial(operator.contains, f)):
-            ukijumuisha self.assertRaises(dumbdbm.error) kama cm:
+            ukijumuisha self.assertRaises(dumbdbm.error) as cm:
                 meth('test')
             self.assertEqual(str(cm.exception),
                              "DBM object has already been closed")
@@ -216,26 +216,26 @@ kundi DumbDBMTestCase(unittest.TestCase):
                      operator.methodcaller('iterkeys'),
                      operator.methodcaller('items'),
                      len):
-            ukijumuisha self.assertRaises(dumbdbm.error) kama cm:
+            ukijumuisha self.assertRaises(dumbdbm.error) as cm:
                 meth(f)
             self.assertEqual(str(cm.exception),
                              "DBM object has already been closed")
 
     eleza test_create_new(self):
-        ukijumuisha dumbdbm.open(_fname, 'n') kama f:
+        ukijumuisha dumbdbm.open(_fname, 'n') as f:
             kila k kwenye self._dict:
                 f[k] = self._dict[k]
 
-        ukijumuisha dumbdbm.open(_fname, 'n') kama f:
+        ukijumuisha dumbdbm.open(_fname, 'n') as f:
             self.assertEqual(f.keys(), [])
 
     eleza test_eval(self):
-        ukijumuisha open(_fname + '.dir', 'w') kama stream:
+        ukijumuisha open(_fname + '.dir', 'w') as stream:
             stream.write("str(andika('Hacked!')), 0\n")
-        ukijumuisha support.captured_stdout() kama stdout:
+        ukijumuisha support.captured_stdout() as stdout:
             ukijumuisha self.assertRaises(ValueError):
-                ukijumuisha dumbdbm.open(_fname) kama f:
-                    pita
+                ukijumuisha dumbdbm.open(_fname) as f:
+                    pass
             self.assertEqual(stdout.getvalue(), '')
 
     eleza test_missing_data(self):
@@ -247,8 +247,8 @@ kundi DumbDBMTestCase(unittest.TestCase):
             self.assertUongo(os.path.exists(_fname + '.bak'))
 
     eleza test_missing_index(self):
-        ukijumuisha dumbdbm.open(_fname, 'n') kama f:
-            pita
+        ukijumuisha dumbdbm.open(_fname, 'n') as f:
+            pass
         os.unlink(_fname + '.dir')
         kila value kwenye ('r', 'w'):
             ukijumuisha self.assertRaises(FileNotFoundError):
@@ -264,16 +264,16 @@ kundi DumbDBMTestCase(unittest.TestCase):
                 dumbdbm.open(_fname, flag)
 
     eleza test_readonly_files(self):
-        ukijumuisha support.temp_dir() kama dir:
+        ukijumuisha support.temp_dir() as dir:
             fname = os.path.join(dir, 'db')
-            ukijumuisha dumbdbm.open(fname, 'n') kama f:
+            ukijumuisha dumbdbm.open(fname, 'n') as f:
                 self.assertEqual(list(f.keys()), [])
                 kila key kwenye self._dict:
                     f[key] = self._dict[key]
             os.chmod(fname + ".dir", stat.S_IRUSR)
             os.chmod(fname + ".dat", stat.S_IRUSR)
             os.chmod(dir, stat.S_IRUSR|stat.S_IXUSR)
-            ukijumuisha dumbdbm.open(fname, 'r') kama f:
+            ukijumuisha dumbdbm.open(fname, 'r') as f:
                 self.assertEqual(sorted(f.keys()), sorted(self._dict))
                 f.close()  # don't write
 
@@ -283,11 +283,11 @@ kundi DumbDBMTestCase(unittest.TestCase):
         filename = support.TESTFN_NONASCII
         kila suffix kwenye ['.dir', '.dat', '.bak']:
             self.addCleanup(support.unlink, filename + suffix)
-        ukijumuisha dumbdbm.open(filename, 'c') kama db:
+        ukijumuisha dumbdbm.open(filename, 'c') as db:
             db[b'key'] = b'value'
         self.assertKweli(os.path.exists(filename + '.dat'))
         self.assertKweli(os.path.exists(filename + '.dir'))
-        ukijumuisha dumbdbm.open(filename, 'r') kama db:
+        ukijumuisha dumbdbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), [b'key'])
             self.assertKweli(b'key' kwenye db)
             self.assertEqual(db[b'key'], b'value')

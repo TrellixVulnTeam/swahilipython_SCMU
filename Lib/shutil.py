@@ -15,38 +15,38 @@ jaribu:
     agiza zlib
     toa zlib
     _ZLIB_SUPPORTED = Kweli
-tatizo ImportError:
+except ImportError:
     _ZLIB_SUPPORTED = Uongo
 
 jaribu:
     agiza bz2
     toa bz2
     _BZ2_SUPPORTED = Kweli
-tatizo ImportError:
+except ImportError:
     _BZ2_SUPPORTED = Uongo
 
 jaribu:
     agiza lzma
     toa lzma
     _LZMA_SUPPORTED = Kweli
-tatizo ImportError:
+except ImportError:
     _LZMA_SUPPORTED = Uongo
 
 jaribu:
     kutoka pwd agiza getpwnam
-tatizo ImportError:
+except ImportError:
     getpwnam = Tupu
 
 jaribu:
     kutoka grp agiza getgrnam
-tatizo ImportError:
+except ImportError:
     getgrnam = Tupu
 
 _WINDOWS = os.name == 'nt'
 posix = nt = Tupu
 ikiwa os.name == 'posix':
     agiza posix
-lasivyo _WINDOWS:
+elikiwa _WINDOWS:
     agiza nt
 
 COPY_BUFSIZE = 1024 * 1024 ikiwa _WINDOWS isipokua 64 * 1024
@@ -64,7 +64,7 @@ __all__ = ["copyfileobj", "copyfile", "copymode", "copystat", "copy", "copy2",
            # disk_usage ni added later, ikiwa available on the platform
 
 kundi Error(OSError):
-    pita
+    pass
 
 kundi SameFileError(Error):
     """Raised when source na destination are the same file."""
@@ -84,7 +84,7 @@ kundi RegistryError(Exception):
     na unpacking registries fails"""
 
 kundi _GiveupOnFastCopy(Exception):
-    """Raised kama a signal to fallback on using raw read()/write()
+    """Raised as a signal to fallback on using raw read()/write()
     file copy when fast-copy functions fail to do so.
     """
 
@@ -95,18 +95,18 @@ eleza _fastcopy_fcopyfile(fsrc, fdst, flags):
     jaribu:
         infd = fsrc.fileno()
         outfd = fdst.fileno()
-    tatizo Exception kama err:
-        ashiria _GiveupOnFastCopy(err)  # sio a regular file
+    except Exception as err:
+         ashiria _GiveupOnFastCopy(err)  # sio a regular file
 
     jaribu:
         posix._fcopyfile(infd, outfd, flags)
-    tatizo OSError kama err:
+    except OSError as err:
         err.filename = fsrc.name
         err.filename2 = fdst.name
         ikiwa err.errno kwenye {errno.EINVAL, errno.ENOTSUP}:
-            ashiria _GiveupOnFastCopy(err)
+             ashiria _GiveupOnFastCopy(err)
         isipokua:
-            ashiria err kutoka Tupu
+             ashiria err kutoka Tupu
 
 eleza _fastcopy_sendfile(fsrc, fdst):
     """Copy data kutoka one regular mmap-like fd to another by using
@@ -126,17 +126,17 @@ eleza _fastcopy_sendfile(fsrc, fdst):
     jaribu:
         infd = fsrc.fileno()
         outfd = fdst.fileno()
-    tatizo Exception kama err:
-        ashiria _GiveupOnFastCopy(err)  # sio a regular file
+    except Exception as err:
+         ashiria _GiveupOnFastCopy(err)  # sio a regular file
 
     # Hopefully the whole file will be copied kwenye a single call.
-    # sendfile() ni called kwenye a loop 'till EOF ni reached (0 rudisha)
+    # sendfile() ni called kwenye a loop 'till EOF ni reached (0 return)
     # so a bufsize smaller ama bigger than the actual file size
     # should sio make any difference, also kwenye case the file content
     # changes wakati being copied.
     jaribu:
         blocksize = max(os.fstat(infd).st_size, 2 ** 23)  # min 8MiB
-    tatizo OSError:
+    except OSError:
         blocksize = 2 ** 27  # 128MiB
     # On 32-bit architectures truncate to 1GiB to avoid OverflowError,
     # see bpo-38319.
@@ -147,7 +147,7 @@ eleza _fastcopy_sendfile(fsrc, fdst):
     wakati Kweli:
         jaribu:
             sent = os.sendfile(outfd, infd, offset, blocksize)
-        tatizo OSError kama err:
+        except OSError as err:
             # ...in oder to have a more informative exception.
             err.filename = fsrc.name
             err.filename2 = fdst.name
@@ -157,16 +157,16 @@ eleza _fastcopy_sendfile(fsrc, fdst):
                 # does sio support copies between regular files (only
                 # sockets).
                 _USE_CP_SENDFILE = Uongo
-                ashiria _GiveupOnFastCopy(err)
+                 ashiria _GiveupOnFastCopy(err)
 
             ikiwa err.errno == errno.ENOSPC:  # filesystem ni full
-                ashiria err kutoka Tupu
+                 ashiria err kutoka Tupu
 
             # Give up on first call na ikiwa no data was copied.
             ikiwa offset == 0 na os.lseek(outfd, 0, os.SEEK_CUR) == 0:
-                ashiria _GiveupOnFastCopy(err)
+                 ashiria _GiveupOnFastCopy(err)
 
-            ashiria err
+             ashiria err
         isipokua:
             ikiwa sent == 0:
                 koma  # EOF
@@ -180,13 +180,13 @@ eleza _copyfileobj_readinto(fsrc, fdst, length=COPY_BUFSIZE):
     # Localize variable access to minimize overhead.
     fsrc_readinto = fsrc.readinto
     fdst_write = fdst.write
-    ukijumuisha memoryview(bytearray(length)) kama mv:
+    ukijumuisha memoryview(bytearray(length)) as mv:
         wakati Kweli:
             n = fsrc_readinto(mv)
             ikiwa sio n:
                 koma
-            lasivyo n < length:
-                ukijumuisha mv[:n] kama smv:
+            elikiwa n < length:
+                ukijumuisha mv[:n] as smv:
                     fdst.write(smv)
             isipokua:
                 fdst_write(mv)
@@ -209,13 +209,13 @@ eleza _samefile(src, dst):
     ikiwa isinstance(src, os.DirEntry) na hasattr(os.path, 'samestat'):
         jaribu:
             rudisha os.path.samestat(src.stat(), os.stat(dst))
-        tatizo OSError:
+        except OSError:
             rudisha Uongo
 
     ikiwa hasattr(os.path, 'samefile'):
         jaribu:
             rudisha os.path.samefile(src, dst)
-        tatizo OSError:
+        except OSError:
             rudisha Uongo
 
     # All other platforms: check kila same pathname.
@@ -236,44 +236,44 @@ eleza copyfile(src, dst, *, follow_symlinks=Kweli):
 
     """
     ikiwa _samefile(src, dst):
-        ashiria SameFileError("{!r} na {!r} are the same file".format(src, dst))
+         ashiria SameFileError("{!r} na {!r} are the same file".format(src, dst))
 
     file_size = 0
     kila i, fn kwenye enumerate([src, dst]):
         jaribu:
             st = _stat(fn)
-        tatizo OSError:
+        except OSError:
             # File most likely does sio exist
-            pita
+            pass
         isipokua:
             # XXX What about other special files? (sockets, devices...)
             ikiwa stat.S_ISFIFO(st.st_mode):
                 fn = fn.path ikiwa isinstance(fn, os.DirEntry) isipokua fn
-                ashiria SpecialFileError("`%s` ni a named pipe" % fn)
+                 ashiria SpecialFileError("`%s` ni a named pipe" % fn)
             ikiwa _WINDOWS na i == 0:
                 file_size = st.st_size
 
     ikiwa sio follow_symlinks na _islink(src):
         os.symlink(os.readlink(src), dst)
     isipokua:
-        ukijumuisha open(src, 'rb') kama fsrc, open(dst, 'wb') kama fdst:
+        ukijumuisha open(src, 'rb') as fsrc, open(dst, 'wb') as fdst:
             # macOS
             ikiwa _HAS_FCOPYFILE:
                 jaribu:
                     _fastcopy_fcopyfile(fsrc, fdst, posix._COPYFILE_DATA)
                     rudisha dst
-                tatizo _GiveupOnFastCopy:
-                    pita
+                except _GiveupOnFastCopy:
+                    pass
             # Linux
-            lasivyo _USE_CP_SENDFILE:
+            elikiwa _USE_CP_SENDFILE:
                 jaribu:
                     _fastcopy_sendfile(fsrc, fdst)
                     rudisha dst
-                tatizo _GiveupOnFastCopy:
-                    pita
+                except _GiveupOnFastCopy:
+                    pass
             # Windows, see:
             # https://github.com/python/cpython/pull/7160#discussion_r195405230
-            lasivyo _WINDOWS na file_size > 0:
+            elikiwa _WINDOWS na file_size > 0:
                 _copyfileobj_readinto(fsrc, fdst, min(file_size, COPY_BUFSIZE))
                 rudisha dst
 
@@ -293,7 +293,7 @@ eleza copymode(src, dst, *, follow_symlinks=Kweli):
         ikiwa hasattr(os, 'lchmod'):
             stat_func, chmod_func = os.lstat, os.lchmod
         isipokua:
-            rudisha
+            return
     isipokua:
         stat_func, chmod_func = _stat, os.chmod
 
@@ -312,26 +312,26 @@ ikiwa hasattr(os, 'listxattr'):
 
         jaribu:
             names = os.listxattr(src, follow_symlinks=follow_symlinks)
-        tatizo OSError kama e:
-            ikiwa e.errno haiko kwenye (errno.ENOTSUP, errno.ENODATA, errno.EINVAL):
-                ashiria
-            rudisha
+        except OSError as e:
+            ikiwa e.errno sio kwenye (errno.ENOTSUP, errno.ENODATA, errno.EINVAL):
+                raise
+            return
         kila name kwenye names:
             jaribu:
                 value = os.getxattr(src, name, follow_symlinks=follow_symlinks)
                 os.setxattr(dst, name, value, follow_symlinks=follow_symlinks)
-            tatizo OSError kama e:
-                ikiwa e.errno haiko kwenye (errno.EPERM, errno.ENOTSUP, errno.ENODATA,
+            except OSError as e:
+                ikiwa e.errno sio kwenye (errno.EPERM, errno.ENOTSUP, errno.ENODATA,
                                    errno.EINVAL):
-                    ashiria
+                    raise
 isipokua:
     eleza _copyxattr(*args, **kwargs):
-        pita
+        pass
 
 eleza copystat(src, dst, *, follow_symlinks=Kweli):
     """Copy file metadata
 
-    Copy the permission bits, last access time, last modification time, na
+    Copy the permission bits, last access time, last modification time, and
     flags kutoka `src` to `dst`. On Linux, copystat() also copies the "extended
     attributes" where possible. The file contents, owner, na group are
     unaffected. `src` na `dst` are path-like objects ama path names given as
@@ -341,7 +341,7 @@ eleza copystat(src, dst, *, follow_symlinks=Kweli):
     followed ikiwa na only ikiwa both `src` na `dst` are symlinks.
     """
     eleza _nop(*args, ns=Tupu, follow_symlinks=Tupu):
-        pita
+        pass
 
     # follow symlinks (aka don't sio follow symlinks)
     follow = follow_symlinks ama sio (_islink(src) na os.path.islink(dst))
@@ -370,27 +370,27 @@ eleza copystat(src, dst, *, follow_symlinks=Kweli):
     _copyxattr(src, dst, follow_symlinks=follow)
     jaribu:
         lookup("chmod")(dst, mode, follow_symlinks=follow)
-    tatizo NotImplementedError:
+    except NotImplementedError:
         # ikiwa we got a NotImplementedError, it's because
         #   * follow_symlinks=Uongo,
-        #   * lchown() ni unavailable, na
+        #   * lchown() ni unavailable, and
         #   * either
-        #       * fchownat() ni unavailable ama
+        #       * fchownat() ni unavailable or
         #       * fchownat() doesn't implement AT_SYMLINK_NOFOLLOW.
-        #         (it rudishaed ENOSUP.)
+        #         (it returned ENOSUP.)
         # therefore we're out of options--we simply cannot chown the
         # symlink.  give up, suppress the error.
         # (which ni what shutil always did kwenye this circumstance.)
-        pita
+        pass
     ikiwa hasattr(st, 'st_flags'):
         jaribu:
             lookup("chflags")(dst, st.st_flags, follow_symlinks=follow)
-        tatizo OSError kama why:
+        except OSError as why:
             kila err kwenye 'EOPNOTSUPP', 'ENOTSUP':
                 ikiwa hasattr(errno, err) na why.errno == getattr(errno, err):
                     koma
             isipokua:
-                ashiria
+                raise
 
 eleza copy(src, dst, *, follow_symlinks=Kweli):
     """Copy data na mode bits ("cp src dst"). Return the file's destination.
@@ -401,7 +401,7 @@ eleza copy(src, dst, *, follow_symlinks=Kweli):
     resembles GNU's "cp -P src dst".
 
     If source na destination are the same file, a SameFileError will be
-    ashiriad.
+    raised.
 
     """
     ikiwa os.path.isdir(dst):
@@ -428,7 +428,7 @@ eleza copy2(src, dst, *, follow_symlinks=Kweli):
     rudisha dst
 
 eleza ignore_patterns(*patterns):
-    """Function that can be used kama copytree() ignore parameter.
+    """Function that can be used as copytree() ignore parameter.
 
     Patterns ni a sequence of glob-style patterns
     that are used to exclude files"""
@@ -476,48 +476,48 @@ eleza _copytree(entries, src, dst, symlinks, ignore, copy_function,
                     # ignore dangling symlink ikiwa the flag ni on
                     ikiwa sio os.path.exists(linkto) na ignore_dangling_symlinks:
                         endelea
-                    # otherwise let the copy occur. copy2 will ashiria an error
+                    # otherwise let the copy occur. copy2 will  ashiria an error
                     ikiwa srcentry.is_dir():
                         copytree(srcobj, dstname, symlinks, ignore,
                                  copy_function, dirs_exist_ok=dirs_exist_ok)
                     isipokua:
                         copy_function(srcobj, dstname)
-            lasivyo srcentry.is_dir():
+            elikiwa srcentry.is_dir():
                 copytree(srcobj, dstname, symlinks, ignore, copy_function,
                          dirs_exist_ok=dirs_exist_ok)
             isipokua:
-                # Will ashiria a SpecialFileError kila unsupported file types
+                # Will  ashiria a SpecialFileError kila unsupported file types
                 copy_function(srcobj, dstname)
         # catch the Error kutoka the recursive copytree so that we can
         # endelea ukijumuisha other files
-        tatizo Error kama err:
+        except Error as err:
             errors.extend(err.args[0])
-        tatizo OSError kama why:
+        except OSError as why:
             errors.append((srcname, dstname, str(why)))
     jaribu:
         copystat(src, dst)
-    tatizo OSError kama why:
+    except OSError as why:
         # Copying file access times may fail on Windows
         ikiwa getattr(why, 'winerror', Tupu) ni Tupu:
             errors.append((src, dst, str(why)))
     ikiwa errors:
-        ashiria Error(errors)
+         ashiria Error(errors)
     rudisha dst
 
 eleza copytree(src, dst, symlinks=Uongo, ignore=Tupu, copy_function=copy2,
              ignore_dangling_symlinks=Uongo, dirs_exist_ok=Uongo):
     """Recursively copy a directory tree na rudisha the destination directory.
 
-    dirs_exist_ok dictates whether to ashiria an exception kwenye case dst ama any
+    dirs_exist_ok dictates whether to  ashiria an exception kwenye case dst ama any
     missing parent directory already exists.
 
-    If exception(s) occur, an Error ni ashiriad ukijumuisha a list of reasons.
+    If exception(s) occur, an Error ni raised ukijumuisha a list of reasons.
 
     If the optional symlinks flag ni true, symbolic links kwenye the
     source tree result kwenye symbolic links kwenye the destination tree; if
     it ni false, the contents of the files pointed to by symbolic
     links are copied. If the file pointed by the symlink doesn't
-    exist, an exception will be added kwenye the list of errors ashiriad in
+    exist, an exception will be added kwenye the list of errors raised in
     an Error exception at the end of the copy process.
 
     You can set the optional ignore_dangling_symlinks flag to true ikiwa you
@@ -527,23 +527,23 @@ eleza copytree(src, dst, symlinks=Uongo, ignore=Tupu, copy_function=copy2,
     The optional ignore argument ni a callable. If given, it
     ni called ukijumuisha the `src` parameter, which ni the directory
     being visited by copytree(), na `names` which ni the list of
-    `src` contents, kama rudishaed by os.listdir():
+    `src` contents, as returned by os.listdir():
 
         callable(src, names) -> ignored_names
 
     Since copytree() ni called recursively, the callable will be
-    called once kila each directory that ni copied. It rudishas a
+    called once kila each directory that ni copied. It returns a
     list of names relative to the `src` directory that should
     sio be copied.
 
     The optional copy_function argument ni a callable that will be used
     to copy each file. It will be called ukijumuisha the source path na the
-    destination path kama arguments. By default, copy2() ni used, but any
+    destination path as arguments. By default, copy2() ni used, but any
     function that supports the same signature (like copy()) can be used.
 
     """
     sys.audit("shutil.copytree", src, dst)
-    ukijumuisha os.scandir(src) kama entries:
+    ukijumuisha os.scandir(src) as entries:
         rudisha _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
                          ignore=ignore, copy_function=copy_function,
                          ignore_dangling_symlinks=ignore_dangling_symlinks,
@@ -559,22 +559,22 @@ ikiwa hasattr(os.stat_result, 'st_file_attributes'):
             rudisha (stat.S_ISDIR(st.st_mode) na not
                 (st.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT
                  na st.st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT))
-        tatizo OSError:
+        except OSError:
             rudisha Uongo
 
     eleza _rmtree_islink(path):
         jaribu:
             st = os.lstat(path)
-            rudisha (stat.S_ISLNK(st.st_mode) ama
+            rudisha (stat.S_ISLNK(st.st_mode) or
                 (st.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT
                  na st.st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT))
-        tatizo OSError:
+        except OSError:
             rudisha Uongo
 isipokua:
     eleza _rmtree_isdir(entry):
         jaribu:
             rudisha entry.is_dir(follow_symlinks=Uongo)
-        tatizo OSError:
+        except OSError:
             rudisha Uongo
 
     eleza _rmtree_islink(path):
@@ -583,9 +583,9 @@ isipokua:
 # version vulnerable to race conditions
 eleza _rmtree_unsafe(path, onerror):
     jaribu:
-        ukijumuisha os.scandir(path) kama scandir_it:
+        ukijumuisha os.scandir(path) as scandir_it:
             entries = list(scandir_it)
-    tatizo OSError:
+    except OSError:
         onerror(os.scandir, path, sys.exc_info())
         entries = []
     kila entry kwenye entries:
@@ -596,48 +596,48 @@ eleza _rmtree_unsafe(path, onerror):
                     # This can only happen ikiwa someone replaces
                     # a directory ukijumuisha a symlink after the call to
                     # os.scandir ama entry.is_dir above.
-                    ashiria OSError("Cannot call rmtree on a symbolic link")
-            tatizo OSError:
+                     ashiria OSError("Cannot call rmtree on a symbolic link")
+            except OSError:
                 onerror(os.path.islink, fullname, sys.exc_info())
                 endelea
             _rmtree_unsafe(fullname, onerror)
         isipokua:
             jaribu:
                 os.unlink(fullname)
-            tatizo OSError:
+            except OSError:
                 onerror(os.unlink, fullname, sys.exc_info())
     jaribu:
         os.rmdir(path)
-    tatizo OSError:
+    except OSError:
         onerror(os.rmdir, path, sys.exc_info())
 
 # Version using fd-based APIs to protect against races
 eleza _rmtree_safe_fd(topfd, path, onerror):
     jaribu:
-        ukijumuisha os.scandir(topfd) kama scandir_it:
+        ukijumuisha os.scandir(topfd) as scandir_it:
             entries = list(scandir_it)
-    tatizo OSError kama err:
+    except OSError as err:
         err.filename = path
         onerror(os.scandir, path, sys.exc_info())
-        rudisha
+        return
     kila entry kwenye entries:
         fullname = os.path.join(path, entry.name)
         jaribu:
             is_dir = entry.is_dir(follow_symlinks=Uongo)
-        tatizo OSError:
+        except OSError:
             is_dir = Uongo
         isipokua:
             ikiwa is_dir:
                 jaribu:
                     orig_st = entry.stat(follow_symlinks=Uongo)
                     is_dir = stat.S_ISDIR(orig_st.st_mode)
-                tatizo OSError:
+                except OSError:
                     onerror(os.lstat, fullname, sys.exc_info())
                     endelea
         ikiwa is_dir:
             jaribu:
                 dirfd = os.open(entry.name, os.O_RDONLY, dir_fd=topfd)
-            tatizo OSError:
+            except OSError:
                 onerror(os.open, fullname, sys.exc_info())
             isipokua:
                 jaribu:
@@ -645,28 +645,28 @@ eleza _rmtree_safe_fd(topfd, path, onerror):
                         _rmtree_safe_fd(dirfd, fullname, onerror)
                         jaribu:
                             os.rmdir(entry.name, dir_fd=topfd)
-                        tatizo OSError:
+                        except OSError:
                             onerror(os.rmdir, fullname, sys.exc_info())
                     isipokua:
                         jaribu:
                             # This can only happen ikiwa someone replaces
                             # a directory ukijumuisha a symlink after the call to
                             # os.scandir ama stat.S_ISDIR above.
-                            ashiria OSError("Cannot call rmtree on a symbolic "
+                             ashiria OSError("Cannot call rmtree on a symbolic "
                                           "link")
-                        tatizo OSError:
+                        except OSError:
                             onerror(os.path.islink, fullname, sys.exc_info())
                 mwishowe:
                     os.close(dirfd)
         isipokua:
             jaribu:
                 os.unlink(entry.name, dir_fd=topfd)
-            tatizo OSError:
+            except OSError:
                 onerror(os.unlink, fullname, sys.exc_info())
 
 _use_fd_functions = ({os.open, os.stat, os.unlink, os.rmdir} <=
-                     os.supports_dir_fd na
-                     os.scandir kwenye os.supports_fd na
+                     os.supports_dir_fd and
+                     os.scandir kwenye os.supports_fd and
                      os.stat kwenye os.supports_follow_symlinks)
 
 eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
@@ -675,18 +675,18 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
     If ignore_errors ni set, errors are ignored; otherwise, ikiwa onerror
     ni set, it ni called to handle the error ukijumuisha arguments (func,
     path, exc_info) where func ni platform na implementation dependent;
-    path ni the argument to that function that caused it to fail; na
-    exc_info ni a tuple rudishaed by sys.exc_info().  If ignore_errors
-    ni false na onerror ni Tupu, an exception ni ashiriad.
+    path ni the argument to that function that caused it to fail; and
+    exc_info ni a tuple returned by sys.exc_info().  If ignore_errors
+    ni false na onerror ni Tupu, an exception ni raised.
 
     """
     sys.audit("shutil.rmtree", path)
     ikiwa ignore_errors:
         eleza onerror(*args):
-            pita
-    lasivyo onerror ni Tupu:
+            pass
+    elikiwa onerror ni Tupu:
         eleza onerror(*args):
-            ashiria
+            raise
     ikiwa _use_fd_functions:
         # While the unsafe rmtree works fine on bytes, the fd based does not.
         ikiwa isinstance(path, bytes):
@@ -695,26 +695,26 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
         # lstat()/open()/fstat() trick.
         jaribu:
             orig_st = os.lstat(path)
-        tatizo Exception:
+        except Exception:
             onerror(os.lstat, path, sys.exc_info())
-            rudisha
+            return
         jaribu:
             fd = os.open(path, os.O_RDONLY)
-        tatizo Exception:
+        except Exception:
             onerror(os.lstat, path, sys.exc_info())
-            rudisha
+            return
         jaribu:
             ikiwa os.path.samestat(orig_st, os.fstat(fd)):
                 _rmtree_safe_fd(fd, path, onerror)
                 jaribu:
                     os.rmdir(path)
-                tatizo OSError:
+                except OSError:
                     onerror(os.rmdir, path, sys.exc_info())
             isipokua:
                 jaribu:
                     # symlinks to directories are forbidden, see bug #1669
-                    ashiria OSError("Cannot call rmtree on a symbolic link")
-                tatizo OSError:
+                     ashiria OSError("Cannot call rmtree on a symbolic link")
+                except OSError:
                     onerror(os.path.islink, path, sys.exc_info())
         mwishowe:
             os.close(fd)
@@ -722,11 +722,11 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
         jaribu:
             ikiwa _rmtree_islink(path):
                 # symlinks to directories are forbidden, see bug #1669
-                ashiria OSError("Cannot call rmtree on a symbolic link")
-        tatizo OSError:
+                 ashiria OSError("Cannot call rmtree on a symbolic link")
+        except OSError:
             onerror(os.path.islink, path, sys.exc_info())
-            # can't endelea even ikiwa onerror hook rudishas
-            rudisha
+            # can't endelea even ikiwa onerror hook returns
+            return
         rudisha _rmtree_unsafe(path, onerror)
 
 # Allow introspection of whether ama sio the hardening against symlink
@@ -771,21 +771,21 @@ eleza move(src, dst, copy_function=copy2):
             # We might be on a case insensitive filesystem,
             # perform the rename anyway.
             os.rename(src, dst)
-            rudisha
+            return
 
         real_dst = os.path.join(dst, _basename(src))
         ikiwa os.path.exists(real_dst):
-            ashiria Error("Destination path '%s' already exists" % real_dst)
+             ashiria Error("Destination path '%s' already exists" % real_dst)
     jaribu:
         os.rename(src, real_dst)
-    tatizo OSError:
+    except OSError:
         ikiwa os.path.islink(src):
             linkto = os.readlink(src)
             os.symlink(linkto, real_dst)
             os.unlink(src)
-        lasivyo os.path.isdir(src):
+        elikiwa os.path.isdir(src):
             ikiwa _destinsrc(src, dst):
-                ashiria Error("Cannot move a directory '%s' into itself"
+                 ashiria Error("Cannot move a directory '%s' into itself"
                             " '%s'." % (src, dst))
             copytree(src, real_dst, copy_function=copy_function,
                      symlinks=Kweli)
@@ -810,7 +810,7 @@ eleza _get_gid(name):
         rudisha Tupu
     jaribu:
         result = getgrnam(name)
-    tatizo KeyError:
+    except KeyError:
         result = Tupu
     ikiwa result ni sio Tupu:
         rudisha result[2]
@@ -822,7 +822,7 @@ eleza _get_uid(name):
         rudisha Tupu
     jaribu:
         result = getpwnam(name)
-    tatizo KeyError:
+    except KeyError:
         result = Tupu
     ikiwa result ni sio Tupu:
         rudisha result[2]
@@ -846,14 +846,14 @@ eleza _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     """
     ikiwa compress ni Tupu:
         tar_compression = ''
-    lasivyo _ZLIB_SUPPORTED na compress == 'gzip':
+    elikiwa _ZLIB_SUPPORTED na compress == 'gzip':
         tar_compression = 'gz'
-    lasivyo _BZ2_SUPPORTED na compress == 'bzip2':
+    elikiwa _BZ2_SUPPORTED na compress == 'bzip2':
         tar_compression = 'bz2'
-    lasivyo _LZMA_SUPPORTED na compress == 'xz':
+    elikiwa _LZMA_SUPPORTED na compress == 'xz':
         tar_compression = 'xz'
     isipokua:
-        ashiria ValueError("bad value kila 'compress', ama compression format sio "
+         ashiria ValueError("bad value kila 'compress', ama compression format sio "
                          "supported : {0}".format(compress))
 
     agiza tarfile  # late agiza kila komaing circular dependency
@@ -916,7 +916,7 @@ eleza _make_zipfile(base_name, base_dir, verbose=0, dry_run=0, logger=Tupu):
 
     ikiwa sio dry_run:
         ukijumuisha zipfile.ZipFile(zip_filename, "w",
-                             compression=zipfile.ZIP_DEFLATED) kama zf:
+                             compression=zipfile.ZIP_DEFLATED) as zf:
             path = os.path.normpath(base_dir)
             ikiwa path != os.curdir:
                 zf.write(path, path)
@@ -957,7 +957,7 @@ ikiwa _LZMA_SUPPORTED:
 eleza get_archive_formats():
     """Returns a list of supported formats kila archiving na unarchiving.
 
-    Each element of the rudishaed sequence ni a tuple (name, description)
+    Each element of the returned sequence ni a tuple (name, description)
     """
     formats = [(name, registry[2]) kila name, registry in
                _ARCHIVE_FORMATS.items()]
@@ -969,19 +969,19 @@ eleza register_archive_format(name, function, extra_args=Tupu, description=''):
 
     name ni the name of the format. function ni the callable that will be
     used to create archives. If provided, extra_args ni a sequence of
-    (name, value) tuples that will be pitaed kama arguments to the callable.
-    description can be provided to describe the format, na will be rudishaed
+    (name, value) tuples that will be passed as arguments to the callable.
+    description can be provided to describe the format, na will be returned
     by the get_archive_formats() function.
     """
     ikiwa extra_args ni Tupu:
         extra_args = []
     ikiwa sio callable(function):
-        ashiria TypeError('The %s object ni sio callable' % function)
+         ashiria TypeError('The %s object ni sio callable' % function)
     ikiwa sio isinstance(extra_args, (tuple, list)):
-        ashiria TypeError('extra_args needs to be a sequence')
+         ashiria TypeError('extra_args needs to be a sequence')
     kila element kwenye extra_args:
         ikiwa sio isinstance(element, (tuple, list)) ama len(element) !=2:
-            ashiria TypeError('extra_args elements are : (arg_name, value)')
+             ashiria TypeError('extra_args elements are : (arg_name, value)')
 
     _ARCHIVE_FORMATS[name] = (function, extra_args, description)
 
@@ -998,8 +998,8 @@ eleza make_archive(base_name, format, root_dir=Tupu, base_dir=Tupu, verbose=0,
 
     'root_dir' ni a directory that will be the root directory of the
     archive; ie. we typically chdir into 'root_dir' before creating the
-    archive.  'base_dir' ni the directory where we start archiving kutoka;
-    ie. 'base_dir' will be the common prefix of all files na
+    archive.  'base_dir' ni the directory where we start archiving from;
+    ie. 'base_dir' will be the common prefix of all files and
     directories kwenye the archive.  'root_dir' na 'base_dir' both default
     to the current directory.  Returns the name of the archive file.
 
@@ -1022,8 +1022,8 @@ eleza make_archive(base_name, format, root_dir=Tupu, base_dir=Tupu, verbose=0,
 
     jaribu:
         format_info = _ARCHIVE_FORMATS[format]
-    tatizo KeyError:
-        ashiria ValueError("unknown archive format '%s'" % format) kutoka Tupu
+    except KeyError:
+         ashiria ValueError("unknown archive format '%s'" % format) kutoka Tupu
 
     func = format_info[0]
     kila arg, val kwenye format_info[1]:
@@ -1047,7 +1047,7 @@ eleza make_archive(base_name, format, root_dir=Tupu, base_dir=Tupu, verbose=0,
 eleza get_unpack_formats():
     """Returns a list of supported formats kila unpacking.
 
-    Each element of the rudishaed sequence ni a tuple
+    Each element of the returned sequence ni a tuple
     (name, extensions, description)
     """
     formats = [(name, info[0], info[3]) kila name, info in
@@ -1056,7 +1056,7 @@ eleza get_unpack_formats():
     rudisha formats
 
 eleza _check_unpack_options(extensions, function, extra_args):
-    """Checks what gets registered kama an unpacker."""
+    """Checks what gets registered as an unpacker."""
     # first make sure no other unpacker ni registered kila this extension
     existing_extensions = {}
     kila name, info kwenye _UNPACK_FORMATS.items():
@@ -1066,11 +1066,11 @@ eleza _check_unpack_options(extensions, function, extra_args):
     kila extension kwenye extensions:
         ikiwa extension kwenye existing_extensions:
             msg = '%s ni already registered kila "%s"'
-            ashiria RegistryError(msg % (extension,
+             ashiria RegistryError(msg % (extension,
                                        existing_extensions[extension]))
 
     ikiwa sio callable(function):
-        ashiria TypeError('The registered function must be a callable')
+         ashiria TypeError('The registered function must be a callable')
 
 
 eleza register_unpack_format(name, extensions, function, extra_args=Tupu,
@@ -1082,12 +1082,12 @@ eleza register_unpack_format(name, extensions, function, extra_args=Tupu,
 
     `function` ni the callable that will be
     used to unpack archives. The callable will receive archives to unpack.
-    If it's unable to handle an archive, it needs to ashiria a ReadError
+    If it's unable to handle an archive, it needs to  ashiria a ReadError
     exception.
 
     If provided, `extra_args` ni a sequence of
-    (name, value) tuples that will be pitaed kama arguments to the callable.
-    description can be provided to describe the format, na will be rudishaed
+    (name, value) tuples that will be passed as arguments to the callable.
+    description can be provided to describe the format, na will be returned
     by the get_unpack_formats() function.
     """
     ikiwa extra_args ni Tupu:
@@ -1111,7 +1111,7 @@ eleza _unpack_zipfile(filename, extract_dir):
     agiza zipfile  # late agiza kila komaing circular dependency
 
     ikiwa sio zipfile.is_zipfile(filename):
-        ashiria ReadError("%s ni sio a zip file" % filename)
+         ashiria ReadError("%s ni sio a zip file" % filename)
 
     zip = zipfile.ZipFile(filename)
     jaribu:
@@ -1145,8 +1145,8 @@ eleza _unpack_tarfile(filename, extract_dir):
     agiza tarfile  # late agiza kila komaing circular dependency
     jaribu:
         tarobj = tarfile.open(filename)
-    tatizo tarfile.TarError:
-        ashiria ReadError(
+    except tarfile.TarError:
+         ashiria ReadError(
             "%s ni sio a compressed ama uncompressed tar file" % filename)
     jaribu:
         tarobj.extractall(extract_dir)
@@ -1190,7 +1190,7 @@ eleza unpack_archive(filename, extract_dir=Tupu, format=Tupu):
     unpack_archive will use the filename extension na see ikiwa an unpacker
     was registered kila that extension.
 
-    In case none ni found, a ValueError ni ashiriad.
+    In case none ni found, a ValueError ni raised.
     """
     ikiwa extract_dir ni Tupu:
         extract_dir = os.getcwd()
@@ -1201,8 +1201,8 @@ eleza unpack_archive(filename, extract_dir=Tupu, format=Tupu):
     ikiwa format ni sio Tupu:
         jaribu:
             format_info = _UNPACK_FORMATS[format]
-        tatizo KeyError:
-            ashiria ValueError("Unknown unpack format '{0}'".format(format)) kutoka Tupu
+        except KeyError:
+             ashiria ValueError("Unknown unpack format '{0}'".format(format)) kutoka Tupu
 
         func = format_info[1]
         func(filename, extract_dir, **dict(format_info[2]))
@@ -1210,7 +1210,7 @@ eleza unpack_archive(filename, extract_dir=Tupu, format=Tupu):
         # we need to look at the registered unpackers supported extensions
         format = _find_unpack_format(filename)
         ikiwa format ni Tupu:
-            ashiria ReadError("Unknown archive format '{0}'".format(filename))
+             ashiria ReadError("Unknown archive format '{0}'".format(filename))
 
         func = _UNPACK_FORMATS[format][1]
         kwargs = dict(_UNPACK_FORMATS[format][2])
@@ -1228,7 +1228,7 @@ ikiwa hasattr(os, 'statvfs'):
     eleza disk_usage(path):
         """Return disk usage statistics about the given path.
 
-        Returned value ni a named tuple ukijumuisha attributes 'total', 'used' na
+        Returned value ni a named tuple ukijumuisha attributes 'total', 'used' and
         'free', which are the amount of total, used na free space, kwenye bytes.
         """
         st = os.statvfs(path)
@@ -1237,7 +1237,7 @@ ikiwa hasattr(os, 'statvfs'):
         used = (st.f_blocks - st.f_bfree) * st.f_frsize
         rudisha _ntuple_diskusage(total, used, free)
 
-lasivyo _WINDOWS:
+elikiwa _WINDOWS:
 
     __all__.append('disk_usage')
     _ntuple_diskusage = collections.namedtuple('usage', 'total used free')
@@ -1245,7 +1245,7 @@ lasivyo _WINDOWS:
     eleza disk_usage(path):
         """Return disk usage statistics about the given path.
 
-        Returned values ni a named tuple ukijumuisha attributes 'total', 'used' na
+        Returned values ni a named tuple ukijumuisha attributes 'total', 'used' and
         'free', which are the amount of total, used na free space, kwenye bytes.
         """
         total, free = nt._getdiskusage(path)
@@ -1261,7 +1261,7 @@ eleza chown(path, user=Tupu, group=Tupu):
     """
 
     ikiwa user ni Tupu na group ni Tupu:
-        ashiria ValueError("user and/or group must be set")
+         ashiria ValueError("user and/or group must be set")
 
     _user = user
     _group = group
@@ -1270,17 +1270,17 @@ eleza chown(path, user=Tupu, group=Tupu):
     ikiwa user ni Tupu:
         _user = -1
     # user can either be an int (the uid) ama a string (the system username)
-    lasivyo isinstance(user, str):
+    elikiwa isinstance(user, str):
         _user = _get_uid(user)
         ikiwa _user ni Tupu:
-            ashiria LookupError("no such user: {!r}".format(user))
+             ashiria LookupError("no such user: {!r}".format(user))
 
     ikiwa group ni Tupu:
         _group = -1
-    lasivyo sio isinstance(group, int):
+    elikiwa sio isinstance(group, int):
         _group = _get_gid(group)
         ikiwa _group ni Tupu:
-            ashiria LookupError("no such group: {!r}".format(group))
+             ashiria LookupError("no such group: {!r}".format(group))
 
     os.chown(path, _user, _group)
 
@@ -1288,7 +1288,7 @@ eleza get_terminal_size(fallback=(80, 24)):
     """Get the size of the terminal window.
 
     For each of the two dimensions, the environment variable, COLUMNS
-    na LINES respectively, ni checked. If the variable ni defined na
+    na LINES respectively, ni checked. If the variable ni defined and
     the value ni a positive integer, it ni used.
 
     When COLUMNS ama LINES ni sio defined, which ni the common case,
@@ -1301,25 +1301,25 @@ eleza get_terminal_size(fallback=(80, 24)):
     ni used. Fallback defaults to (80, 24) which ni the default
     size used by many terminal emulators.
 
-    The value rudishaed ni a named tuple of type os.terminal_size.
+    The value returned ni a named tuple of type os.terminal_size.
     """
     # columns, lines are the working values
     jaribu:
         columns = int(os.environ['COLUMNS'])
-    tatizo (KeyError, ValueError):
+    except (KeyError, ValueError):
         columns = 0
 
     jaribu:
         lines = int(os.environ['LINES'])
-    tatizo (KeyError, ValueError):
+    except (KeyError, ValueError):
         lines = 0
 
     # only query ikiwa necessary
     ikiwa columns <= 0 ama lines <= 0:
         jaribu:
             size = os.get_terminal_size(sys.__stdout__.fileno())
-        tatizo (AttributeError, ValueError, OSError):
-            # stdout ni Tupu, closed, detached, ama sio a terminal, ama
+        except (AttributeError, ValueError, OSError):
+            # stdout ni Tupu, closed, detached, ama sio a terminal, or
             # os.get_terminal_size() ni unsupported
             size = os.terminal_size(fallback)
         ikiwa columns <= 0:
@@ -1331,8 +1331,8 @@ eleza get_terminal_size(fallback=(80, 24)):
 
 
 # Check that a given file can be accessed ukijumuisha the correct mode.
-# Additionally check that `file` ni sio a directory, kama on Windows
-# directories pita the os.access check.
+# Additionally check that `file` ni sio a directory, as on Windows
+# directories pass the os.access check.
 eleza _access_check(fn, mode):
     rudisha (os.path.exists(fn) na os.access(fn, mode)
             na sio os.path.isdir(fn))
@@ -1363,7 +1363,7 @@ eleza which(cmd, mode=os.F_OK | os.X_OK, path=Tupu):
         ikiwa path ni Tupu:
             jaribu:
                 path = os.confstr("CS_PATH")
-            tatizo (AttributeError, ValueError):
+            except (AttributeError, ValueError):
                 # os.confstr() ama CS_PATH ni sio available
                 path = os.defpath
         # bpo-35755: Don't use os.defpath ikiwa the PATH environment variable is
@@ -1385,7 +1385,7 @@ eleza which(cmd, mode=os.F_OK | os.X_OK, path=Tupu):
         curdir = os.curdir
         ikiwa use_bytes:
             curdir = os.fsencode(curdir)
-        ikiwa curdir haiko kwenye path:
+        ikiwa curdir sio kwenye path:
             path.insert(0, curdir)
 
         # PATHEXT ni necessary to check on Windows.
@@ -1402,7 +1402,7 @@ eleza which(cmd, mode=os.F_OK | os.X_OK, path=Tupu):
             files = [cmd + ext kila ext kwenye pathext]
     isipokua:
         # On other platforms you don't have things like PATHEXT to tell you
-        # what file suffixes are executable, so just pita on cmd as-is.
+        # what file suffixes are executable, so just pass on cmd as-is.
         files = [cmd]
 
     seen = set()

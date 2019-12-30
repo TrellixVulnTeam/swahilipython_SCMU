@@ -1,11 +1,11 @@
 # Copyright 2004-2005 Elemental Security, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-# Pgen agizas
+# Pgen imports
 kutoka . agiza grammar, token, tokenize
 
 kundi PgenGrammar(grammar.Grammar):
-    pita
+    pass
 
 kundi ParserGenerator(object):
 
@@ -54,7 +54,7 @@ kundi ParserGenerator(object):
         first = {}
         kila label kwenye sorted(rawfirst):
             ilabel = self.make_label(c, label)
-            ##assert ilabel haiko kwenye first # XXX failed on <> ... !=
+            ##assert ilabel sio kwenye first # XXX failed on <> ... !=
             first[ilabel] = 1
         rudisha first
 
@@ -108,7 +108,7 @@ kundi ParserGenerator(object):
         names = list(self.dfas.keys())
         names.sort()
         kila name kwenye names:
-            ikiwa name haiko kwenye self.first:
+            ikiwa name sio kwenye self.first:
                 self.calcfirst(name)
             #print name, self.first[name].keys()
 
@@ -123,7 +123,7 @@ kundi ParserGenerator(object):
                 ikiwa label kwenye self.first:
                     fset = self.first[label]
                     ikiwa fset ni Tupu:
-                        ashiria ValueError("recursion kila rule %r" % name)
+                         ashiria ValueError("recursion kila rule %r" % name)
                 isipokua:
                     self.calcfirst(label)
                     fset = self.first[label]
@@ -136,8 +136,8 @@ kundi ParserGenerator(object):
         kila label, itsfirst kwenye overlapcheck.items():
             kila symbol kwenye itsfirst:
                 ikiwa symbol kwenye inverse:
-                    ashiria ValueError("rule %s ni ambiguous; %s ni kwenye the"
-                                     " first sets of %s kama well kama %s" %
+                     ashiria ValueError("rule %s ni ambiguous; %s ni kwenye the"
+                                     " first sets of %s as well as %s" %
                                      (name, symbol, label, inverse[symbol]))
                 inverse[symbol] = label
         self.first[name] = totalset
@@ -169,7 +169,7 @@ kundi ParserGenerator(object):
     eleza make_dfa(self, start, finish):
         # To turn an NFA into a DFA, we define the states of the DFA
         # to correspond to *sets* of states of the NFA.  Then do some
-        # state reduction.  Let's represent sets kama dicts ukijumuisha 1 for
+        # state reduction.  Let's represent sets as dicts ukijumuisha 1 for
         # values.
         assert isinstance(start, NFAState)
         assert isinstance(finish, NFAState)
@@ -180,7 +180,7 @@ kundi ParserGenerator(object):
         eleza addclosure(state, base):
             assert isinstance(state, NFAState)
             ikiwa state kwenye base:
-                rudisha
+                return
             base[state] = 1
             kila label, next kwenye state.arcs:
                 ikiwa label ni Tupu:
@@ -228,7 +228,7 @@ kundi ParserGenerator(object):
     eleza simplify_dfa(self, dfa):
         # This ni sio theoretically optimal, but works well enough.
         # Algorithm: repeatedly look kila two states that have the same
-        # set of arcs (same labels pointing to the same nodes) na
+        # set of arcs (same labels pointing to the same nodes) and
         # unify them, until things stop changing.
 
         # dfa ni a list of DFAState instances
@@ -266,7 +266,7 @@ kundi ParserGenerator(object):
     eleza parse_alt(self):
         # ALT: ITEM+
         a, b = self.parse_item()
-        wakati (self.value kwenye ("(", "[") ama
+        wakati (self.value kwenye ("(", "[") or
                self.type kwenye (token.NAME, token.STRING)):
             c, d = self.parse_item()
             b.addarc(c)
@@ -284,7 +284,7 @@ kundi ParserGenerator(object):
         isipokua:
             a, z = self.parse_atom()
             value = self.value
-            ikiwa value haiko kwenye ("+", "*"):
+            ikiwa value sio kwenye ("+", "*"):
                 rudisha a, z
             self.gettoken()
             z.addarc(a)
@@ -300,19 +300,19 @@ kundi ParserGenerator(object):
             a, z = self.parse_rhs()
             self.expect(token.OP, ")")
             rudisha a, z
-        lasivyo self.type kwenye (token.NAME, token.STRING):
+        elikiwa self.type kwenye (token.NAME, token.STRING):
             a = NFAState()
             z = NFAState()
             a.addarc(z, self.value)
             self.gettoken()
             rudisha a, z
         isipokua:
-            self.ashiria_error("expected (...) ama NAME ama STRING, got %s/%s",
+            self.raise_error("expected (...) ama NAME ama STRING, got %s/%s",
                              self.type, self.value)
 
     eleza expect(self, type, value=Tupu):
         ikiwa self.type != type ama (value ni sio Tupu na self.value != value):
-            self.ashiria_error("expected %s/%s, got %s/%s",
+            self.raise_error("expected %s/%s, got %s/%s",
                              type, value, self.type, self.value)
         value = self.value
         self.gettoken()
@@ -325,13 +325,13 @@ kundi ParserGenerator(object):
         self.type, self.value, self.begin, self.end, self.line = tup
         #print token.tok_name[self.type], repr(self.value)
 
-    eleza ashiria_error(self, msg, *args):
+    eleza raise_error(self, msg, *args):
         ikiwa args:
             jaribu:
                 msg = msg % args
             tatizo:
                 msg = " ".join([msg] + list(map(str, args)))
-        ashiria SyntaxError(msg, (self.filename, self.end[0],
+         ashiria SyntaxError(msg, (self.filename, self.end[0],
                                 self.end[1], self.line))
 
 kundi NFAState(object):
@@ -356,7 +356,7 @@ kundi DFAState(object):
 
     eleza addarc(self, next, label):
         assert isinstance(label, str)
-        assert label haiko kwenye self.arcs
+        assert label sio kwenye self.arcs
         assert isinstance(next, DFAState)
         self.arcs[label] = next
 

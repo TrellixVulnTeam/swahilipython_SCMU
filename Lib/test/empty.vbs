@@ -1,1 +1,1 @@
-'Empty VBS file, does nothing.  Helper kila Lib\test\test_startfile.py.
+'Empty VBS file, does nothing.  Helper for Lib\test\test_startfile.py.

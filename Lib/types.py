@@ -1,5 +1,5 @@
 """
-Define names kila built-in types that aren't directly accessible kama a builtin.
+Define names kila built-in types that aren't directly accessible as a builtin.
 """
 agiza sys
 
@@ -8,9 +8,9 @@ agiza sys
 # iterator.  Don't check the type!  Use hasattr to check kila both
 # "__iter__" na "__next__" attributes instead.
 
-eleza _f(): pita
+eleza _f(): pass
 FunctionType = type(_f)
-LambdaType = type(lambda: Tupu)         # Same kama FunctionType
+LambdaType = type(lambda: Tupu)         # Same as FunctionType
 CodeType = type(_f.__code__)
 MappingProxyType = type(type.__dict__)
 SimpleNamespace = type(sys.implementation)
@@ -26,22 +26,22 @@ eleza _g():
     tuma 1
 GeneratorType = type(_g())
 
-async eleza _c(): pita
+async eleza _c(): pass
 _c = _c()
 CoroutineType = type(_c)
 _c.close()  # Prevent ResourceWarning
 
 async eleza _ag():
-    tuma
+    yield
 _ag = _ag()
 AsyncGeneratorType = type(_ag)
 
 kundi _C:
-    eleza _m(self): pita
+    eleza _m(self): pass
 MethodType = type(_C()._m)
 
 BuiltinFunctionType = type(len)
-BuiltinMethodType = type([].append)     # Same kama BuiltinFunctionType
+BuiltinMethodType = type([].append)     # Same as BuiltinFunctionType
 
 WrapperDescriptorType = type(object.__init__)
 MethodWrapperType = type(object().__str__)
@@ -51,8 +51,8 @@ ClassMethodDescriptorType = type(dict.__dict__['fromkeys'])
 ModuleType = type(sys)
 
 jaribu:
-    ashiria TypeError
-tatizo TypeError:
+     ashiria TypeError
+except TypeError:
     tb = sys.exc_info()[2]
     TracebackType = type(tb)
     FrameType = type(tb.tb_frame)
@@ -77,7 +77,7 @@ eleza new_class(name, bases=(), kwds=Tupu, exec_body=Tupu):
     rudisha meta(name, resolved_bases, ns, **kwds)
 
 eleza resolve_bases(bases):
-    """Resolve MRO entries dynamically kama specified by PEP 560."""
+    """Resolve MRO entries dynamically as specified by PEP 560."""
     new_bases = list(bases)
     updated = Uongo
     shift = 0
@@ -89,7 +89,7 @@ eleza resolve_bases(bases):
         new_base = base.__mro_entries__(bases)
         updated = Kweli
         ikiwa sio isinstance(new_base, tuple):
-            ashiria TypeError("__mro_entries__ must rudisha a tuple")
+             ashiria TypeError("__mro_entries__ must rudisha a tuple")
         isipokua:
             new_bases[i+shift:i+shift+1] = new_base
             shift += len(new_base) - 1
@@ -100,12 +100,12 @@ eleza resolve_bases(bases):
 eleza prepare_class(name, bases=(), kwds=Tupu):
     """Call the __prepare__ method of the appropriate metaclass.
 
-    Returns (metaclass, namespace, kwds) kama a 3-tuple
+    Returns (metaclass, namespace, kwds) as a 3-tuple
 
     *metaclass* ni the appropriate metaclass
     *namespace* ni the prepared kundi namespace
-    *kwds* ni an updated copy of the pitaed kwenye kwds argument ukijumuisha any
-    'metaclass' entry removed. If no kwds argument ni pitaed in, this will
+    *kwds* ni an updated copy of the passed kwenye kwds argument ukijumuisha any
+    'metaclass' entry removed. If no kwds argument ni passed in, this will
     be an empty dict.
     """
     ikiwa kwds ni Tupu:
@@ -140,7 +140,7 @@ eleza _calculate_meta(meta, bases):
             winner = base_meta
             endelea
         # isipokua:
-        ashiria TypeError("metakundi conflict: "
+         ashiria TypeError("metakundi conflict: "
                         "the metakundi of a derived kundi "
                         "must be a (non-strict) subkundi "
                         "of the metaclasses of all its bases")
@@ -162,7 +162,7 @@ kundi DynamicClassAttribute:
         self.fget = fget
         self.fset = fset
         self.ftoa = fdel
-        # next two lines make DynamicClassAttribute act the same kama property
+        # next two lines make DynamicClassAttribute act the same as property
         self.__doc__ = doc ama fget.__doc__
         self.overwrite_doc = doc ni Tupu
         # support kila abstract methods
@@ -172,19 +172,19 @@ kundi DynamicClassAttribute:
         ikiwa instance ni Tupu:
             ikiwa self.__isabstractmethod__:
                 rudisha self
-            ashiria AttributeError()
-        lasivyo self.fget ni Tupu:
-            ashiria AttributeError("unreadable attribute")
+             ashiria AttributeError()
+        elikiwa self.fget ni Tupu:
+             ashiria AttributeError("unreadable attribute")
         rudisha self.fget(instance)
 
     eleza __set__(self, instance, value):
         ikiwa self.fset ni Tupu:
-            ashiria AttributeError("can't set attribute")
+             ashiria AttributeError("can't set attribute")
         self.fset(instance, value)
 
     eleza __delete__(self, instance):
         ikiwa self.ftoa ni Tupu:
-            ashiria AttributeError("can't delete attribute")
+             ashiria AttributeError("can't delete attribute")
         self.fdel(instance)
 
     eleza getter(self, fget):
@@ -227,12 +227,12 @@ kundi _GeneratorWrapper:
     eleza gi_running(self):
         rudisha self.__wrapped.gi_running
     @property
-    eleza gi_tumakutoka(self):
-        rudisha self.__wrapped.gi_tumakutoka
+    eleza gi_yieldfrom(self):
+        rudisha self.__wrapped.gi_yieldfrom
     cr_code = gi_code
     cr_frame = gi_frame
     cr_running = gi_running
-    cr_await = gi_tumakutoka
+    cr_await = gi_yieldfrom
     eleza __next__(self):
         rudisha next(self.__wrapped)
     eleza __iter__(self):
@@ -245,9 +245,9 @@ eleza coroutine(func):
     """Convert regular generator function to a coroutine."""
 
     ikiwa sio callable(func):
-        ashiria TypeError('types.coroutine() expects a callable')
+         ashiria TypeError('types.coroutine() expects a callable')
 
-    ikiwa (func.__class__ ni FunctionType na
+    ikiwa (func.__class__ ni FunctionType and
         getattr(func, '__code__', Tupu).__class__ ni CodeType):
 
         co_flags = func.__code__.co_flags
@@ -270,24 +270,24 @@ eleza coroutine(func):
     # rudisha generator-like objects (kila instance generators
     # compiled ukijumuisha Cython).
 
-    # Delay functools na _collections_abc agiza kila speeding up types agiza.
+    # Delay functools na _collections_abc agiza kila speeding up types import.
     agiza functools
     agiza _collections_abc
     @functools.wraps(func)
     eleza wrapped(*args, **kwargs):
         coro = func(*args, **kwargs)
-        ikiwa (coro.__class__ ni CoroutineType  ama
+        ikiwa (coro.__class__ ni CoroutineType or
             coro.__class__ ni GeneratorType na coro.gi_code.co_flags & 0x100):
             # 'coro' ni a native coroutine object ama an iterable coroutine
             rudisha coro
-        ikiwa (isinstance(coro, _collections_abc.Generator) na
+        ikiwa (isinstance(coro, _collections_abc.Generator) and
             sio isinstance(coro, _collections_abc.Coroutine)):
             # 'coro' ni either a pure Python generator iterator, ama it
             # implements collections.abc.Generator (and does sio implement
             # collections.abc.Coroutine).
             rudisha _GeneratorWrapper(coro)
-        # 'coro' ni either an instance of collections.abc.Coroutine ama
-        # some other object -- pita it through.
+        # 'coro' ni either an instance of collections.abc.Coroutine or
+        # some other object -- pass it through.
         rudisha coro
 
     rudisha wrapped

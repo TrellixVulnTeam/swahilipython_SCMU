@@ -1,10 +1,10 @@
-"""Utilities to get a pitaword and/or the current user name.
+"""Utilities to get a password and/or the current user name.
 
-getpita(prompt[, stream]) - Prompt kila a pitaword, ukijumuisha echo turned off.
-getuser() - Get the user name kutoka the environment ama pitaword database.
+getpass(prompt[, stream]) - Prompt kila a password, ukijumuisha echo turned off.
+getuser() - Get the user name kutoka the environment ama password database.
 
-GetPassWarning - This UserWarning ni issued when getpita() cannot prevent
-                 echoing of the pitaword contents wakati reading.
+GetPassWarning - This UserWarning ni issued when getpass() cannot prevent
+                 echoing of the password contents wakati reading.
 
 On Windows, the msvcrt module will be used.
 
@@ -20,14 +20,14 @@ agiza os
 agiza sys
 agiza warnings
 
-__all__ = ["getpita","getuser","GetPassWarning"]
+__all__ = ["getpass","getuser","GetPassWarning"]
 
 
-kundi GetPassWarning(UserWarning): pita
+kundi GetPassWarning(UserWarning): pass
 
 
-eleza unix_getpita(prompt='Password: ', stream=Tupu):
-    """Prompt kila a pitaword, ukijumuisha echo turned off.
+eleza unix_getpass(prompt='Password: ', stream=Tupu):
+    """Prompt kila a password, ukijumuisha echo turned off.
 
     Args:
       prompt: Written on stream to ask kila the input.  Default: 'Password: '
@@ -39,10 +39,10 @@ eleza unix_getpita(prompt='Password: ', stream=Tupu):
       EOFError: If our input tty ama stdin was closed.
       GetPassWarning: When we were unable to turn echo off on the input.
 
-    Always restores terminal settings before rudishaing.
+    Always restores terminal settings before returning.
     """
-    pitawd = Tupu
-    ukijumuisha contextlib.ExitStack() kama stack:
+    passwd = Tupu
+    ukijumuisha contextlib.ExitStack() as stack:
         jaribu:
             # Always try reading na writing directly on the tty first.
             fd = os.open('/dev/tty', os.O_RDWR|os.O_NOCTTY)
@@ -52,14 +52,14 @@ eleza unix_getpita(prompt='Password: ', stream=Tupu):
             stack.enter_context(input)
             ikiwa sio stream:
                 stream = input
-        tatizo OSError kama e:
+        except OSError as e:
             # If that fails, see ikiwa stdin can be controlled.
             stack.close()
             jaribu:
                 fd = sys.stdin.fileno()
-            tatizo (AttributeError, ValueError):
+            except (AttributeError, ValueError):
                 fd = Tupu
-                pitawd = fallback_getpita(prompt, stream)
+                passwd = fallback_getpass(prompt, stream)
             input = sys.stdin
             ikiwa sio stream:
                 stream = sys.stderr
@@ -74,30 +74,30 @@ eleza unix_getpita(prompt='Password: ', stream=Tupu):
                     tcsetattr_flags |= termios.TCSASOFT
                 jaribu:
                     termios.tcsetattr(fd, tcsetattr_flags, new)
-                    pitawd = _raw_input(prompt, stream, input=input)
+                    passwd = _raw_uliza(prompt, stream, input=input)
                 mwishowe:
                     termios.tcsetattr(fd, tcsetattr_flags, old)
                     stream.flush()  # issue7208
-            tatizo termios.error:
-                ikiwa pitawd ni sio Tupu:
-                    # _raw_input succeeded.  The final tcsetattr failed.  Reashiria
+            except termios.error:
+                ikiwa passwd ni sio Tupu:
+                    # _raw_input succeeded.  The final tcsetattr failed.  Reraise
                     # instead of leaving the terminal kwenye an unknown state.
-                    ashiria
+                    raise
                 # We can't control the tty ama stdin.  Give up na use normal IO.
-                # fallback_getpita() ashirias an appropriate warning.
+                # fallback_getpass() raises an appropriate warning.
                 ikiwa stream ni sio input:
                     # clean up unused file objects before blocking
                     stack.close()
-                pitawd = fallback_getpita(prompt, stream)
+                passwd = fallback_getpass(prompt, stream)
 
         stream.write('\n')
-        rudisha pitawd
+        rudisha passwd
 
 
-eleza win_getpita(prompt='Password: ', stream=Tupu):
-    """Prompt kila pitaword ukijumuisha echo off, using Windows getch()."""
+eleza win_getpass(prompt='Password: ', stream=Tupu):
+    """Prompt kila password ukijumuisha echo off, using Windows getch()."""
     ikiwa sys.stdin ni sio sys.__stdin__:
-        rudisha fallback_getpita(prompt, stream)
+        rudisha fallback_getpass(prompt, stream)
 
     kila c kwenye prompt:
         msvcrt.putwch(c)
@@ -107,7 +107,7 @@ eleza win_getpita(prompt='Password: ', stream=Tupu):
         ikiwa c == '\r' ama c == '\n':
             koma
         ikiwa c == '\003':
-            ashiria KeyboardInterrupt
+             ashiria KeyboardInterrupt
         ikiwa c == '\b':
             pw = pw[:-1]
         isipokua:
@@ -117,16 +117,16 @@ eleza win_getpita(prompt='Password: ', stream=Tupu):
     rudisha pw
 
 
-eleza fallback_getpita(prompt='Password: ', stream=Tupu):
+eleza fallback_getpass(prompt='Password: ', stream=Tupu):
     warnings.warn("Can sio control echo on the terminal.", GetPassWarning,
                   stacklevel=2)
     ikiwa sio stream:
         stream = sys.stderr
     andika("Warning: Password input may be echoed.", file=stream)
-    rudisha _raw_input(prompt, stream)
+    rudisha _raw_uliza(prompt, stream)
 
 
-eleza _raw_input(prompt="", stream=Tupu, input=Tupu):
+eleza _raw_uliza(prompt="", stream=Tupu, input=Tupu):
     # This doesn't save the string kwenye the GNU readline history.
     ikiwa sio stream:
         stream = sys.stderr
@@ -136,8 +136,8 @@ eleza _raw_input(prompt="", stream=Tupu, input=Tupu):
     ikiwa prompt:
         jaribu:
             stream.write(prompt)
-        tatizo UnicodeEncodeError:
-            # Use replace error handler to get kama much kama possible printed.
+        except UnicodeEncodeError:
+            # Use replace error handler to get as much as possible printed.
             prompt = prompt.encode(stream.encoding, 'replace')
             prompt = prompt.decode(stream.encoding)
             stream.write(prompt)
@@ -145,17 +145,17 @@ eleza _raw_input(prompt="", stream=Tupu, input=Tupu):
     # NOTE: The Python C API calls flockfile() (and unlock) during readline.
     line = input.readline()
     ikiwa sio line:
-        ashiria EOFError
+         ashiria EOFError
     ikiwa line[-1] == '\n':
         line = line[:-1]
     rudisha line
 
 
 eleza getuser():
-    """Get the username kutoka the environment ama pitaword database.
+    """Get the username kutoka the environment ama password database.
 
-    First try various environment variables, then the pitaword
-    database.  This works on Windows kama long kama USERNAME ni set.
+    First try various environment variables, then the password
+    database.  This works on Windows as long as USERNAME ni set.
 
     """
 
@@ -168,18 +168,18 @@ eleza getuser():
     agiza pwd
     rudisha pwd.getpwuid(os.getuid())[0]
 
-# Bind the name getpita to the appropriate function
+# Bind the name getpass to the appropriate function
 jaribu:
     agiza termios
     # it's possible there ni an incompatible termios kutoka the
     # McMillan Installer, make sure we have a UNIX-compatible termios
     termios.tcgetattr, termios.tcsetattr
-tatizo (ImportError, AttributeError):
+except (ImportError, AttributeError):
     jaribu:
         agiza msvcrt
-    tatizo ImportError:
-        getpita = fallback_getpita
+    except ImportError:
+        getpass = fallback_getpass
     isipokua:
-        getpita = win_getpita
+        getpass = win_getpass
 isipokua:
-    getpita = unix_getpita
+    getpass = unix_getpass

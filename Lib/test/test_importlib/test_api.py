@@ -1,4 +1,4 @@
-kutoka . agiza util kama test_util
+kutoka . agiza util as test_util
 
 init = test_util.import_importlib('importlib')
 util = test_util.import_importlib('importlib.util')
@@ -16,39 +16,39 @@ kundi ImportModuleTests:
 
     """Test importlib.import_module."""
 
-    eleza test_module_agiza(self):
-        # Test agizaing a top-level module.
-        ukijumuisha test_util.mock_modules('top_level') kama mock:
+    eleza test_module_import(self):
+        # Test importing a top-level module.
+        ukijumuisha test_util.mock_modules('top_level') as mock:
             ukijumuisha test_util.import_state(meta_path=[mock]):
                 module = self.init.import_module('top_level')
                 self.assertEqual(module.__name__, 'top_level')
 
-    eleza test_absolute_package_agiza(self):
-        # Test agizaing a module kutoka a package ukijumuisha an absolute name.
+    eleza test_absolute_package_import(self):
+        # Test importing a module kutoka a package ukijumuisha an absolute name.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
         name = '{0}.mod'.format(pkg_name)
-        ukijumuisha test_util.mock_modules(pkg_long_name, name) kama mock:
+        ukijumuisha test_util.mock_modules(pkg_long_name, name) as mock:
             ukijumuisha test_util.import_state(meta_path=[mock]):
                 module = self.init.import_module(name)
                 self.assertEqual(module.__name__, name)
 
-    eleza test_shallow_relative_package_agiza(self):
-        # Test agizaing a module kutoka a package through a relative agiza.
+    eleza test_shallow_relative_package_import(self):
+        # Test importing a module kutoka a package through a relative import.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
         module_name = 'mod'
         absolute_name = '{0}.{1}'.format(pkg_name, module_name)
         relative_name = '.{0}'.format(module_name)
-        ukijumuisha test_util.mock_modules(pkg_long_name, absolute_name) kama mock:
+        ukijumuisha test_util.mock_modules(pkg_long_name, absolute_name) as mock:
             ukijumuisha test_util.import_state(meta_path=[mock]):
                 self.init.import_module(pkg_name)
                 module = self.init.import_module(relative_name, pkg_name)
                 self.assertEqual(module.__name__, absolute_name)
 
-    eleza test_deep_relative_package_agiza(self):
+    eleza test_deep_relative_package_import(self):
         modules = ['a.__init__', 'a.b.__init__', 'a.c']
-        ukijumuisha test_util.mock_modules(*modules) kama mock:
+        ukijumuisha test_util.mock_modules(*modules) as mock:
             ukijumuisha test_util.import_state(meta_path=[mock]):
                 self.init.import_module('a')
                 self.init.import_module('a.b')
@@ -56,19 +56,19 @@ kundi ImportModuleTests:
                 self.assertEqual(module.__name__, 'a.c')
 
     eleza test_absolute_import_with_package(self):
-        # Test agizaing a module kutoka a package ukijumuisha an absolute name with
+        # Test importing a module kutoka a package ukijumuisha an absolute name with
         # the 'package' argument given.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
         name = '{0}.mod'.format(pkg_name)
-        ukijumuisha test_util.mock_modules(pkg_long_name, name) kama mock:
+        ukijumuisha test_util.mock_modules(pkg_long_name, name) as mock:
             ukijumuisha test_util.import_state(meta_path=[mock]):
                 self.init.import_module(pkg_name)
                 module = self.init.import_module(name, pkg_name)
                 self.assertEqual(module.__name__, name)
 
     eleza test_relative_import_wo_package(self):
-        # Relative agizas cannot happen without the 'package' argument being
+        # Relative imports cannot happen without the 'package' argument being
         # set.
         ukijumuisha self.assertRaises(TypeError):
             self.init.import_module('.support')
@@ -86,7 +86,7 @@ kundi ImportModuleTests:
             b_load_count += 1
         code = {'a': load_a, 'a.b': load_b}
         modules = ['a.__init__', 'a.b']
-        ukijumuisha test_util.mock_modules(*modules, module_code=code) kama mock:
+        ukijumuisha test_util.mock_modules(*modules, module_code=code) as mock:
             ukijumuisha test_util.import_state(meta_path=[mock]):
                 self.init.import_module('a.b')
         self.assertEqual(b_load_count, 1)
@@ -115,7 +115,7 @@ kundi FindLoaderTests:
             self.assertEqual(loader, found)
 
     eleza test_sys_modules_loader_is_Tupu(self):
-        # If sys.modules[name].__loader__ ni Tupu, ashiria ValueError.
+        # If sys.modules[name].__loader__ ni Tupu,  ashiria ValueError.
         name = 'some_mod'
         ukijumuisha test_util.uncache(name):
             module = types.ModuleType(name)
@@ -127,15 +127,15 @@ kundi FindLoaderTests:
                     self.init.find_loader(name)
 
     eleza test_sys_modules_loader_is_not_set(self):
-        # Should ashiria ValueError
+        # Should  ashiria ValueError
         # Issue #17099
         name = 'some_mod'
         ukijumuisha test_util.uncache(name):
             module = types.ModuleType(name)
             jaribu:
                 toa module.__loader__
-            tatizo AttributeError:
-                pita
+            except AttributeError:
+                pass
             sys.modules[name] = module
             ukijumuisha self.assertRaises(ValueError):
                 ukijumuisha warnings.catch_warnings():
@@ -163,7 +163,7 @@ kundi FindLoaderTests:
                                      self.init.find_loader(name, path))
 
     eleza test_nothing(self):
-        # Tupu ni rudishaed upon failure to find a loader.
+        # Tupu ni returned upon failure to find a loader.
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             self.assertIsTupu(self.init.find_loader('nevergoingtofindthismodule'))
@@ -244,10 +244,10 @@ kundi ReloadTests:
 
     eleza test_reload_location_changed(self):
         name = 'spam'
-        ukijumuisha support.temp_cwd(Tupu) kama cwd:
+        ukijumuisha support.temp_cwd(Tupu) as cwd:
             ukijumuisha test_util.uncache('spam'):
                 ukijumuisha support.DirsOnSysPath(cwd):
-                    # Start kama a plain module.
+                    # Start as a plain module.
                     self.init.invalidate_caches()
                     path = os.path.join(cwd, name + '.py')
                     cached = self.util.cache_from_source(path)
@@ -295,10 +295,10 @@ kundi ReloadTests:
 
     eleza test_reload_namespace_changed(self):
         name = 'spam'
-        ukijumuisha support.temp_cwd(Tupu) kama cwd:
+        ukijumuisha support.temp_cwd(Tupu) as cwd:
             ukijumuisha test_util.uncache('spam'):
                 ukijumuisha support.DirsOnSysPath(cwd):
-                    # Start kama a namespace package.
+                    # Start as a namespace package.
                     self.init.invalidate_caches()
                     bad_path = os.path.join(cwd, name, '__init.py')
                     cached = self.util.cache_from_source(bad_path)
@@ -308,7 +308,7 @@ kundi ReloadTests:
                                 '__file__': Tupu,
                                 }
                     os.mkdir(name)
-                    ukijumuisha open(bad_path, 'w') kama init_file:
+                    ukijumuisha open(bad_path, 'w') as init_file:
                         init_file.write('eggs = Tupu')
                     module = self.init.import_module(name)
                     ns = vars(module).copy()
@@ -355,7 +355,7 @@ kundi ReloadTests:
         # See #19851.
         name = 'spam'
         subname = 'ham'
-        ukijumuisha test_util.temp_module(name, pkg=Kweli) kama pkg_dir:
+        ukijumuisha test_util.temp_module(name, pkg=Kweli) as pkg_dir:
             fullname, _ = test_util.submodule(name, subname, pkg_dir)
             ham = self.init.import_module(fullname)
             reloaded = self.init.reload(ham)
@@ -367,7 +367,7 @@ kundi ReloadTests:
         name = 'spam'
         ukijumuisha test_util.uncache(name):
             module = sys.modules[name] = types.ModuleType(name)
-            # Sanity check by attempting an agiza.
+            # Sanity check by attempting an import.
             module = self.init.import_module(name)
             self.assertIsTupu(module.__spec__)
             ukijumuisha self.assertRaises(ModuleNotFoundError):
@@ -420,7 +420,7 @@ kundi FrozenImportlibTests(unittest.TestCase):
     eleza test_no_frozen_importlib(self):
         # Should be able to agiza w/o _frozen_importlib being defined.
         # Can't do an isinstance() check since separate copies of importlib
-        # may have been used kila agiza, so just check the name ni sio kila the
+        # may have been used kila import, so just check the name ni sio kila the
         # frozen loader.
         source_init = init['Source']
         self.assertNotEqual(source_init.__loader__.__class__.__name__,
@@ -438,7 +438,7 @@ kundi StartupTests:
                                     '{!r} lacks a __loader__ attribute'.format(name))
                     ikiwa self.machinery.BuiltinImporter.find_module(name):
                         self.assertIsNot(module.__loader__, Tupu)
-                    lasivyo self.machinery.FrozenImporter.find_module(name):
+                    elikiwa self.machinery.FrozenImporter.find_module(name):
                         self.assertIsNot(module.__loader__, Tupu)
 
     eleza test_everyone_has___spec__(self):
@@ -448,7 +448,7 @@ kundi StartupTests:
                     self.assertKweli(hasattr(module, '__spec__'))
                     ikiwa self.machinery.BuiltinImporter.find_module(name):
                         self.assertIsNot(module.__spec__, Tupu)
-                    lasivyo self.machinery.FrozenImporter.find_module(name):
+                    elikiwa self.machinery.FrozenImporter.find_module(name):
                         self.assertIsNot(module.__spec__, Tupu)
 
 

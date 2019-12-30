@@ -8,8 +8,8 @@ NotDefined = object()
 
 # A dispatch table all 8 combinations of providing
 # sep, end, na file.
-# I use this machinery so that I'm sio just pitaing default
-# values to print, I'm either pitaing ama sio pitaing kwenye the
+# I use this machinery so that I'm sio just passing default
+# values to print, I'm either passing ama sio passing kwenye the
 # arguments.
 dispatch = {
     (Uongo, Uongo, Uongo):
@@ -55,7 +55,7 @@ kundi TestPrint(unittest.TestCase):
                        end ni sio NotDefined,
                        file ni sio NotDefined)]
 
-        ukijumuisha support.captured_stdout() kama t:
+        ukijumuisha support.captured_stdout() as t:
             fn(args, sep, end, file)
 
         self.assertEqual(t.getvalue(), expected)
@@ -120,38 +120,38 @@ kundi TestPrint(unittest.TestCase):
         self.assertEqual(f.written, '123\n')
         self.assertEqual(f.flushed, 2)
 
-        # ensure exceptions kutoka flush are pitaed through
+        # ensure exceptions kutoka flush are passed through
         kundi noflush:
             eleza write(self, str):
-                pita
+                pass
 
             eleza flush(self):
-                ashiria RuntimeError
+                 ashiria RuntimeError
         self.assertRaises(RuntimeError, print, 1, file=noflush(), flush=Kweli)
 
 
 kundi TestPy2MigrationHint(unittest.TestCase):
     """Test that correct hint ni produced analogous to Python3 syntax,
-    ikiwa print statement ni executed kama kwenye Python 2.
+    ikiwa print statement ni executed as kwenye Python 2.
     """
 
     eleza test_normal_string(self):
         python2_print_str = 'print "Hello World"'
-        ukijumuisha self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World")', str(context.exception))
 
     eleza test_string_with_soft_space(self):
         python2_print_str = 'print "Hello World",'
-        ukijumuisha self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World", end=" ")', str(context.exception))
 
     eleza test_string_with_excessive_whitespace(self):
         python2_print_str = 'print  "Hello World", '
-        ukijumuisha self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World", end=" ")', str(context.exception))
@@ -160,49 +160,49 @@ kundi TestPy2MigrationHint(unittest.TestCase):
         python2_print_str = '''ikiwa 1:
             print "Hello World"
         '''
-        ukijumuisha self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World")', str(context.exception))
 
     # bpo-32685: Suggestions kila print statement should be proper when
-    # it ni kwenye the same line kama the header of a compound statement
+    # it ni kwenye the same line as the header of a compound statement
     # and/or followed by a semicolon
     eleza test_string_with_semicolon(self):
         python2_print_str = 'print p;'
-        ukijumuisha self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
         self.assertIn('andika(p)', str(context.exception))
 
     eleza test_string_in_loop_on_same_line(self):
         python2_print_str = 'kila i kwenye s: print i'
-        ukijumuisha self.assertRaises(SyntaxError) kama context:
+        ukijumuisha self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
         self.assertIn('andika(i)', str(context.exception))
 
     eleza test_stream_redirection_hint_for_py2_migration(self):
         # Test correct hint produced kila Py2 redirection syntax
-        ukijumuisha self.assertRaises(TypeError) kama context:
+        ukijumuisha self.assertRaises(TypeError) as context:
             print >> sys.stderr, "message"
         self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
         # Test correct hint ni produced kwenye the case where RHS implements
-        # __rrshift__ but rudishas NotImplemented
-        ukijumuisha self.assertRaises(TypeError) kama context:
+        # __rrshift__ but returns NotImplemented
+        ukijumuisha self.assertRaises(TypeError) as context:
             print >> 42
         self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
         # Test stream redirection hint ni specific to print
-        ukijumuisha self.assertRaises(TypeError) kama context:
+        ukijumuisha self.assertRaises(TypeError) as context:
             max >> sys.stderr
         self.assertNotIn('Did you mean ', str(context.exception))
 
         # Test stream redirection hint ni specific to rshift
-        ukijumuisha self.assertRaises(TypeError) kama context:
+        ukijumuisha self.assertRaises(TypeError) as context:
             print << sys.stderr
         self.assertNotIn('Did you mean', str(context.exception))
 

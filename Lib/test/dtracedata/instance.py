@@ -1,8 +1,8 @@
-import gc
+agiza gc
 
-class old_style_class():
+kundi old_style_class():
     pass
-class new_style_class(object):
+kundi new_style_class(object):
     pass
 
 a = old_style_class()

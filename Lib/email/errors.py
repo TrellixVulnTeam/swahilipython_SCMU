@@ -5,106 +5,106 @@
 """email package exception classes."""
 
 
-class MessageError(Exception):
-    """Base class for errors in the email package."""
+kundi MessageError(Exception):
+    """Base kundi kila errors kwenye the email package."""
 
 
-class MessageParseError(MessageError):
-    """Base class for message parsing errors."""
+kundi MessageParseError(MessageError):
+    """Base kundi kila message parsing errors."""
 
 
-class HeaderParseError(MessageParseError):
+kundi HeaderParseError(MessageParseError):
     """Error wakati parsing headers."""
 
 
-class BoundaryError(MessageParseError):
+kundi BoundaryError(MessageParseError):
     """Couldn't find terminating boundary."""
 
 
-class MultipartConversionError(MessageError, TypeError):
-    """Conversion to a multipart is prohibited."""
+kundi MultipartConversionError(MessageError, TypeError):
+    """Conversion to a multipart ni prohibited."""
 
 
-class CharsetError(MessageError):
+kundi CharsetError(MessageError):
     """An illegal charset was given."""
 
 
 # These are parsing defects which the parser was able to work around.
-class MessageDefect(ValueError):
-    """Base class for a message defect."""
+kundi MessageDefect(ValueError):
+    """Base kundi kila a message defect."""
 
-    def __init__(self, line=None):
-        if line ni sio None:
+    eleza __init__(self, line=Tupu):
+        ikiwa line ni sio Tupu:
             super().__init__(line)
         self.line = line
 
-class NoBoundaryInMultipartDefect(MessageDefect):
+kundi NoBoundaryInMultipartDefect(MessageDefect):
     """A message claimed to be a multipart but had no boundary parameter."""
 
-class StartBoundaryNotFoundDefect(MessageDefect):
+kundi StartBoundaryNotFoundDefect(MessageDefect):
     """The claimed start boundary was never found."""
 
-class CloseBoundaryNotFoundDefect(MessageDefect):
+kundi CloseBoundaryNotFoundDefect(MessageDefect):
     """A start boundary was found, but sio the corresponding close boundary."""
 
-class FirstHeaderLineIsContinuationDefect(MessageDefect):
+kundi FirstHeaderLineIsContinuationDefect(MessageDefect):
     """A message had a continuation line as its first header line."""
 
-class MisplacedEnvelopeHeaderDefect(MessageDefect):
-    """A 'Unix-from' header was found in the middle of a header block."""
+kundi MisplacedEnvelopeHeaderDefect(MessageDefect):
+    """A 'Unix-from' header was found kwenye the middle of a header block."""
 
-class MissingHeaderBodySeparatorDefect(MessageDefect):
-    """Found line with no leading whitespace and no colon before blank line."""
-# XXX: backward compatibility, just in case (it was never emitted).
+kundi MissingHeaderBodySeparatorDefect(MessageDefect):
+    """Found line ukijumuisha no leading whitespace na no colon before blank line."""
+# XXX: backward compatibility, just kwenye case (it was never emitted).
 MalformedHeaderDefect = MissingHeaderBodySeparatorDefect
 
-class MultipartInvariantViolationDefect(MessageDefect):
+kundi MultipartInvariantViolationDefect(MessageDefect):
     """A message claimed to be a multipart but no subparts were found."""
 
-class InvalidMultipartContentTransferEncodingDefect(MessageDefect):
+kundi InvalidMultipartContentTransferEncodingDefect(MessageDefect):
     """An invalid content transfer encoding was set on the multipart itself."""
 
-class UndecodableBytesDefect(MessageDefect):
+kundi UndecodableBytesDefect(MessageDefect):
     """Header contained bytes that could sio be decoded"""
 
-class InvalidBase64PaddingDefect(MessageDefect):
+kundi InvalidBase64PaddingDefect(MessageDefect):
     """base64 encoded sequence had an incorrect length"""
 
-class InvalidBase64CharactersDefect(MessageDefect):
-    """base64 encoded sequence had characters haiko kwenye base64 alphabet"""
+kundi InvalidBase64CharactersDefect(MessageDefect):
+    """base64 encoded sequence had characters sio kwenye base64 alphabet"""
 
-class InvalidBase64LengthDefect(MessageDefect):
+kundi InvalidBase64LengthDefect(MessageDefect):
     """base64 encoded sequence had invalid length (1 mod 4)"""
 
 # These errors are specific to header parsing.
 
-class HeaderDefect(MessageDefect):
-    """Base class for a header defect."""
+kundi HeaderDefect(MessageDefect):
+    """Base kundi kila a header defect."""
 
-    def __init__(self, *args, **kw):
+    eleza __init__(self, *args, **kw):
         super().__init__(*args, **kw)
 
-class InvalidHeaderDefect(HeaderDefect):
+kundi InvalidHeaderDefect(HeaderDefect):
     """Header ni sio valid, message gives details."""
 
-class HeaderMissingRequiredValue(HeaderDefect):
+kundi HeaderMissingRequiredValue(HeaderDefect):
     """A header that must have a value had none"""
 
-class NonPrintableDefect(HeaderDefect):
+kundi NonPrintableDefect(HeaderDefect):
     """ASCII characters outside the ascii-printable range found"""
 
-    def __init__(self, non_printables):
+    eleza __init__(self, non_printables):
         super().__init__(non_printables)
         self.non_printables = non_printables
 
-    def __str__(self):
-        return ("the following ASCII non-printables found in header: "
+    eleza __str__(self):
+        rudisha ("the following ASCII non-printables found kwenye header: "
             "{}".format(self.non_printables))
 
-class ObsoleteHeaderDefect(HeaderDefect):
+kundi ObsoleteHeaderDefect(HeaderDefect):
     """Header uses syntax declared obsolete by RFC 5322"""
 
-class NonASCIILocalPartDefect(HeaderDefect):
+kundi NonASCIILocalPartDefect(HeaderDefect):
     """local_part contains non-ASCII characters"""
     # This defect only occurs during unicode parsing, sio when
-    # parsing messages decoded from binary.
+    # parsing messages decoded kutoka binary.

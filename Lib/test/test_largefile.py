@@ -7,13 +7,13 @@ agiza sys
 agiza unittest
 kutoka test.support agiza TESTFN, requires, unlink, bigmemtest
 agiza io  # C implementation of io
-agiza _pyio kama pyio # Python implementation of io
+agiza _pyio as pyio # Python implementation of io
 
 # size of file to create (>2 GiB; 2 GiB == 2,147,483,648 bytes)
 size = 2_500_000_000
 
 kundi LargeFileTest:
-    """Test that each file function works kama expected kila large
+    """Test that each file function works as expected kila large
     (i.e. > 2 GiB) files.
     """
 
@@ -23,10 +23,10 @@ kundi LargeFileTest:
         isipokua:
             mode = 'w+b'
 
-        ukijumuisha self.open(TESTFN, mode) kama f:
+        ukijumuisha self.open(TESTFN, mode) as f:
             current_size = os.fstat(f.fileno())[stat.ST_SIZE]
             ikiwa current_size == size+1:
-                rudisha
+                return
 
             ikiwa current_size == 0:
                 f.write(b'z')
@@ -40,9 +40,9 @@ kundi LargeFileTest:
     @classmethod
     eleza tearDownClass(cls):
         ukijumuisha cls.open(TESTFN, 'wb'):
-            pita
+            pass
         ikiwa sio os.stat(TESTFN)[stat.ST_SIZE] == 0:
-            ashiria cls.failureException('File was sio truncated by opening '
+             ashiria cls.failureException('File was sio truncated by opening '
                                        'ukijumuisha mode "wb"')
 
     # _pyio.FileIO.readall() uses a temporary bytearray then casted to bytes,
@@ -50,7 +50,7 @@ kundi LargeFileTest:
     @bigmemtest(size=size, memuse=2, dry_run=Uongo)
     eleza test_large_read(self, _size):
         # bpo-24658: Test that a read greater than 2GB does sio fail.
-        ukijumuisha self.open(TESTFN, "rb") kama f:
+        ukijumuisha self.open(TESTFN, "rb") as f:
             self.assertEqual(len(f.read()), size + 1)
             self.assertEqual(f.tell(), size + 1)
 
@@ -58,7 +58,7 @@ kundi LargeFileTest:
         self.assertEqual(os.stat(TESTFN)[stat.ST_SIZE], size+1)
 
     eleza test_seek_read(self):
-        ukijumuisha self.open(TESTFN, 'rb') kama f:
+        ukijumuisha self.open(TESTFN, 'rb') as f:
             self.assertEqual(f.tell(), 0)
             self.assertEqual(f.read(1), b'z')
             self.assertEqual(f.tell(), 1)
@@ -89,7 +89,7 @@ kundi LargeFileTest:
             self.assertEqual(f.tell(), 1)
 
     eleza test_lseek(self):
-        ukijumuisha self.open(TESTFN, 'rb') kama f:
+        ukijumuisha self.open(TESTFN, 'rb') as f:
             self.assertEqual(os.lseek(f.fileno(), 0, 0), 0)
             self.assertEqual(os.lseek(f.fileno(), 42, 0), 42)
             self.assertEqual(os.lseek(f.fileno(), 42, 1), 84)
@@ -102,9 +102,9 @@ kundi LargeFileTest:
             self.assertEqual(f.read(1), b'a')
 
     eleza test_truncate(self):
-        ukijumuisha self.open(TESTFN, 'r+b') kama f:
+        ukijumuisha self.open(TESTFN, 'r+b') as f:
             ikiwa sio hasattr(f, 'truncate'):
-                ashiria unittest.SkipTest("open().truncate() sio available "
+                 ashiria unittest.SkipTest("open().truncate() sio available "
                                         "on this system")
             f.seek(0, 2)
             # isipokua we've lost track of the true size
@@ -136,7 +136,7 @@ kundi LargeFileTest:
         # Issue #5016; seekable() can rudisha Uongo when the current position
         # ni negative when truncated to an int.
         kila pos kwenye (2**31-1, 2**31, 2**31+1):
-            ukijumuisha self.open(TESTFN, 'rb') kama f:
+            ukijumuisha self.open(TESTFN, 'rb') as f:
                 f.seek(pos)
                 self.assertKweli(f.seekable())
 
@@ -145,10 +145,10 @@ eleza setUpModule():
         agiza signal
         # The default handler kila SIGXFSZ ni to abort the process.
         # By ignoring it, system calls exceeding the file size resource
-        # limit will ashiria OSError instead of crashing the interpreter.
+        # limit will  ashiria OSError instead of crashing the interpreter.
         signal.signal(signal.SIGXFSZ, signal.SIG_IGN)
-    tatizo (ImportError, AttributeError):
-        pita
+    except (ImportError, AttributeError):
+        pass
 
     # On Windows na Mac OSX this test consumes large resources; It
     # takes a long time to build the >2 GiB file na takes >2 GiB of disk
@@ -168,8 +168,8 @@ eleza setUpModule():
             # Seeking ni sio enough of a test: you must write na flush, too!
             f.write(b'x')
             f.flush()
-        tatizo (OSError, OverflowError):
-            ashiria unittest.SkipTest("filesystem does sio have "
+        except (OSError, OverflowError):
+             ashiria unittest.SkipTest("filesystem does sio have "
                                     "largefile support")
         mwishowe:
             f.close()

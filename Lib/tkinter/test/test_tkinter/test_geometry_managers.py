@@ -1,20 +1,20 @@
-import unittest
-import re
-import tkinter
-from tkinter import TclError
-from test.support import requires
+agiza unittest
+agiza re
+agiza tkinter
+kutoka tkinter agiza TclError
+kutoka test.support agiza requires
 
-from tkinter.test.support import pixels_conv, tcl_version, requires_tcl
-from tkinter.test.widget_tests import AbstractWidgetTest
+kutoka tkinter.test.support agiza pixels_conv, tcl_version, requires_tcl
+kutoka tkinter.test.widget_tests agiza AbstractWidgetTest
 
 requires('gui')
 
 
-class PackTest(AbstractWidgetTest, unittest.TestCase):
+kundi PackTest(AbstractWidgetTest, unittest.TestCase):
 
-    test_keys = None
+    test_keys = Tupu
 
-    def create2(self):
+    eleza create2(self):
         pack = tkinter.Toplevel(self.root, name='pack')
         pack.wm_geometry('300x200+0+0')
         pack.wm_minsize(1, 1)
@@ -22,13 +22,13 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         b = tkinter.Frame(pack, name='b', width=50, height=30, bg='blue')
         c = tkinter.Frame(pack, name='c', width=80, height=80, bg='green')
         d = tkinter.Frame(pack, name='d', width=40, height=30, bg='yellow')
-        return pack, a, b, c, d
+        rudisha pack, a, b, c, d
 
-    def test_pack_configure_after(self):
+    eleza test_pack_configure_after(self):
         pack, a, b, c, d = self.create2()
-        with self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % b):
+        ukijumuisha self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % b):
             a.pack_configure(after=b)
-        with self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
             a.pack_configure(after='.foo')
         a.pack_configure(side='top')
         b.pack_configure(side='top')
@@ -40,11 +40,11 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         a.pack_configure(after=a)
         self.assertEqual(pack.pack_slaves(), [b, a, c, d])
 
-    def test_pack_configure_anchor(self):
+    eleza test_pack_configure_anchor(self):
         pack, a, b, c, d = self.create2()
-        def check(anchor, geom):
+        eleza check(anchor, geom):
             a.pack_configure(side='top', ipadx=5, padx=10, ipady=15, pady=20,
-                             expand=True, anchor=anchor)
+                             expand=Kweli, anchor=anchor)
             self.root.update()
             self.assertEqual(a.winfo_geometry(), geom)
         check('n', '30x70+135+20')
@@ -57,11 +57,11 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         check('nw', '30x70+10+20')
         check('center', '30x70+135+65')
 
-    def test_pack_configure_before(self):
+    eleza test_pack_configure_before(self):
         pack, a, b, c, d = self.create2()
-        with self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % b):
+        ukijumuisha self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % b):
             a.pack_configure(before=b)
-        with self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
             a.pack_configure(before='.foo')
         a.pack_configure(side='top')
         b.pack_configure(side='top')
@@ -73,9 +73,9 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         a.pack_configure(before=a)
         self.assertEqual(pack.pack_slaves(), [b, c, a, d])
 
-    def test_pack_configure_expand(self):
+    eleza test_pack_configure_expand(self):
         pack, a, b, c, d = self.create2()
-        def check(*geoms):
+        eleza check(*geoms):
             self.root.update()
             self.assertEqual(a.winfo_geometry(), geoms[0])
             self.assertEqual(b.winfo_geometry(), geoms[1])
@@ -88,16 +88,16 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         check('20x40+0+80', '50x30+135+0', '80x80+220+75', '40x30+100+170')
         a.pack_configure(side='left', expand='yes')
         b.pack_configure(side='top', expand='on')
-        c.pack_configure(side='right', expand=True)
+        c.pack_configure(side='right', expand=Kweli)
         d.pack_configure(side='bottom', expand=1)
         check('20x40+40+80', '50x30+175+35', '80x80+180+110', '40x30+100+135')
         a.pack_configure(side='left', expand='yes', fill='both')
         b.pack_configure(side='top', expand='on', fill='both')
-        c.pack_configure(side='right', expand=True, fill='both')
+        c.pack_configure(side='right', expand=Kweli, fill='both')
         d.pack_configure(side='bottom', expand=1, fill='both')
         check('100x200+0+0', '200x100+100+0', '160x100+140+100', '40x100+100+100')
 
-    def test_pack_configure_in(self):
+    eleza test_pack_configure_in(self):
         pack, a, b, c, d = self.create2()
         a.pack_configure(side='top')
         b.pack_configure(side='top')
@@ -108,19 +108,19 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         a.pack_configure(in_=c)
         self.assertEqual(pack.pack_slaves(), [b, c, d])
         self.assertEqual(c.pack_slaves(), [a])
-        with self.assertRaisesRegex(TclError,
+        ukijumuisha self.assertRaisesRegex(TclError,
                                     'can\'t pack %s inside itself' % (a,)):
             a.pack_configure(in_=a)
-        with self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
             a.pack_configure(in_='.foo')
 
-    def test_pack_configure_padx_ipadx_fill(self):
+    eleza test_pack_configure_padx_ipadx_fill(self):
         pack, a, b, c, d = self.create2()
-        def check(geom1, geom2, **kwargs):
+        eleza check(geom1, geom2, **kwargs):
             a.pack_forget()
             b.pack_forget()
             a.pack_configure(**kwargs)
-            b.pack_configure(expand=True, fill='both')
+            b.pack_configure(expand=Kweli, fill='both')
             self.root.update()
             self.assertEqual(a.winfo_geometry(), geom1)
             self.assertEqual(b.winfo_geometry(), geom2)
@@ -156,13 +156,13 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(a.pack_info()['ipadx'],
                          self._str(pack.winfo_pixels('1c')))
 
-    def test_pack_configure_pady_ipady_fill(self):
+    eleza test_pack_configure_pady_ipady_fill(self):
         pack, a, b, c, d = self.create2()
-        def check(geom1, geom2, **kwargs):
+        eleza check(geom1, geom2, **kwargs):
             a.pack_forget()
             b.pack_forget()
             a.pack_configure(**kwargs)
-            b.pack_configure(expand=True, fill='both')
+            b.pack_configure(expand=Kweli, fill='both')
             self.root.update()
             self.assertEqual(a.winfo_geometry(), geom1)
             self.assertEqual(b.winfo_geometry(), geom2)
@@ -198,12 +198,12 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(a.pack_info()['ipady'],
                          self._str(pack.winfo_pixels('1c')))
 
-    def test_pack_configure_side(self):
+    eleza test_pack_configure_side(self):
         pack, a, b, c, d = self.create2()
-        def check(side, geom1, geom2):
+        eleza check(side, geom1, geom2):
             a.pack_configure(side=side)
             self.assertEqual(a.pack_info()['side'], side)
-            b.pack_configure(expand=True, fill='both')
+            b.pack_configure(expand=Kweli, fill='both')
             self.root.update()
             self.assertEqual(a.winfo_geometry(), geom1)
             self.assertEqual(b.winfo_geometry(), geom2)
@@ -212,7 +212,7 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         check('left', '20x40+0+80', '280x200+20+0')
         check('right', '20x40+280+80', '280x200+0+0')
 
-    def test_pack_forget(self):
+    eleza test_pack_forget(self):
         pack, a, b, c, d = self.create2()
         a.pack_configure()
         b.pack_configure()
@@ -224,12 +224,12 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(pack.pack_slaves(), [a, c])
         d.pack_forget()
 
-    def test_pack_info(self):
+    eleza test_pack_info(self):
         pack, a, b, c, d = self.create2()
-        with self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % a):
+        ukijumuisha self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % a):
             a.pack_info()
         a.pack_configure()
-        b.pack_configure(side='right', in_=a, anchor='s', expand=True, fill='x',
+        b.pack_configure(side='right', in_=a, anchor='s', expand=Kweli, fill='x',
                          ipadx=5, padx=10, ipady=2, pady=(5, 15))
         info = a.pack_info()
         self.assertIsInstance(info, dict)
@@ -254,20 +254,20 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(info['pady'], self._str((5, 15)))
         self.assertEqual(info['side'], 'right')
 
-    def test_pack_propagate(self):
+    eleza test_pack_propagate(self):
         pack, a, b, c, d = self.create2()
         pack.configure(width=300, height=200)
         a.pack_configure()
-        pack.pack_propagate(False)
+        pack.pack_propagate(Uongo)
         self.root.update()
         self.assertEqual(pack.winfo_reqwidth(), 300)
         self.assertEqual(pack.winfo_reqheight(), 200)
-        pack.pack_propagate(True)
+        pack.pack_propagate(Kweli)
         self.root.update()
         self.assertEqual(pack.winfo_reqwidth(), 20)
         self.assertEqual(pack.winfo_reqheight(), 40)
 
-    def test_pack_slaves(self):
+    eleza test_pack_slaves(self):
         pack, a, b, c, d = self.create2()
         self.assertEqual(pack.pack_slaves(), [])
         a.pack_configure()
@@ -276,33 +276,33 @@ class PackTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(pack.pack_slaves(), [a, b])
 
 
-class PlaceTest(AbstractWidgetTest, unittest.TestCase):
+kundi PlaceTest(AbstractWidgetTest, unittest.TestCase):
 
-    test_keys = None
+    test_keys = Tupu
 
-    def create2(self):
+    eleza create2(self):
         t = tkinter.Toplevel(self.root, width=300, height=200, bd=0)
         t.wm_geometry('300x200+0+0')
         f = tkinter.Frame(t, width=154, height=84, bd=2, relief='raised')
         f.place_configure(x=48, y=38)
         f2 = tkinter.Frame(t, width=30, height=60, bd=2, relief='raised')
         self.root.update()
-        return t, f, f2
+        rudisha t, f, f2
 
-    def test_place_configure_in(self):
+    eleza test_place_configure_in(self):
         t, f, f2 = self.create2()
         self.assertEqual(f2.winfo_manager(), '')
-        with self.assertRaisesRegex(TclError, "can't place %s relative to "
+        ukijumuisha self.assertRaisesRegex(TclError, "can't place %s relative to "
                                     "itself" % re.escape(str(f2))):
             f2.place_configure(in_=f2)
-        if tcl_version >= (8, 5):
+        ikiwa tcl_version >= (8, 5):
             self.assertEqual(f2.winfo_manager(), '')
-        with self.assertRaisesRegex(TclError, 'bad window path name'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad window path name'):
             f2.place_configure(in_='spam')
         f2.place_configure(in_=f)
         self.assertEqual(f2.winfo_manager(), 'place')
 
-    def test_place_configure_x(self):
+    eleza test_place_configure_x(self):
         t, f, f2 = self.create2()
         f2.place_configure(in_=f)
         self.assertEqual(f2.place_info()['x'], '0')
@@ -316,10 +316,10 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f2.place_info()['x'], '-10')
         self.root.update()
         self.assertEqual(f2.winfo_x(), 190)
-        with self.assertRaisesRegex(TclError, 'bad screen distance "spam"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "spam"'):
             f2.place_configure(in_=f, x='spam')
 
-    def test_place_configure_y(self):
+    eleza test_place_configure_y(self):
         t, f, f2 = self.create2()
         f2.place_configure(in_=f)
         self.assertEqual(f2.place_info()['y'], '0')
@@ -333,10 +333,10 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f2.place_info()['y'], '-10')
         self.root.update()
         self.assertEqual(f2.winfo_y(), 110)
-        with self.assertRaisesRegex(TclError, 'bad screen distance "spam"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "spam"'):
             f2.place_configure(in_=f, y='spam')
 
-    def test_place_configure_relx(self):
+    eleza test_place_configure_relx(self):
         t, f, f2 = self.create2()
         f2.place_configure(in_=f)
         self.assertEqual(f2.place_info()['relx'], '0')
@@ -350,11 +350,11 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f2.place_info()['relx'], '1')
         self.root.update()
         self.assertEqual(f2.winfo_x(), 200)
-        with self.assertRaisesRegex(TclError, 'expected floating-point number '
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected floating-point number '
                                     'but got "spam"'):
             f2.place_configure(in_=f, relx='spam')
 
-    def test_place_configure_rely(self):
+    eleza test_place_configure_rely(self):
         t, f, f2 = self.create2()
         f2.place_configure(in_=f)
         self.assertEqual(f2.place_info()['rely'], '0')
@@ -368,21 +368,21 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f2.place_info()['rely'], '1')
         self.root.update()
         self.assertEqual(f2.winfo_y(), 120)
-        with self.assertRaisesRegex(TclError, 'expected floating-point number '
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected floating-point number '
                                     'but got "spam"'):
             f2.place_configure(in_=f, rely='spam')
 
-    def test_place_configure_anchor(self):
+    eleza test_place_configure_anchor(self):
         f = tkinter.Frame(self.root)
-        with self.assertRaisesRegex(TclError, 'bad anchor "j"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad anchor "j"'):
             f.place_configure(anchor='j')
-        with self.assertRaisesRegex(TclError, 'ambiguous anchor ""'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'ambiguous anchor ""'):
             f.place_configure(anchor='')
-        for value in 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw', 'center':
+        kila value kwenye 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw', 'center':
             f.place_configure(anchor=value)
             self.assertEqual(f.place_info()['anchor'], value)
 
-    def test_place_configure_width(self):
+    eleza test_place_configure_width(self):
         t, f, f2 = self.create2()
         f2.place_configure(in_=f, width=120)
         self.root.update()
@@ -390,10 +390,10 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
         f2.place_configure(width='')
         self.root.update()
         self.assertEqual(f2.winfo_width(), 30)
-        with self.assertRaisesRegex(TclError, 'bad screen distance "abcd"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "abcd"'):
             f2.place_configure(width='abcd')
 
-    def test_place_configure_height(self):
+    eleza test_place_configure_height(self):
         t, f, f2 = self.create2()
         f2.place_configure(in_=f, height=120)
         self.root.update()
@@ -401,10 +401,10 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
         f2.place_configure(height='')
         self.root.update()
         self.assertEqual(f2.winfo_height(), 60)
-        with self.assertRaisesRegex(TclError, 'bad screen distance "abcd"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "abcd"'):
             f2.place_configure(height='abcd')
 
-    def test_place_configure_relwidth(self):
+    eleza test_place_configure_relwidth(self):
         t, f, f2 = self.create2()
         f2.place_configure(in_=f, relwidth=0.5)
         self.root.update()
@@ -412,11 +412,11 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
         f2.place_configure(relwidth='')
         self.root.update()
         self.assertEqual(f2.winfo_width(), 30)
-        with self.assertRaisesRegex(TclError, 'expected floating-point number '
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected floating-point number '
                                     'but got "abcd"'):
             f2.place_configure(relwidth='abcd')
 
-    def test_place_configure_relheight(self):
+    eleza test_place_configure_relheight(self):
         t, f, f2 = self.create2()
         f2.place_configure(in_=f, relheight=0.5)
         self.root.update()
@@ -424,31 +424,31 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
         f2.place_configure(relheight='')
         self.root.update()
         self.assertEqual(f2.winfo_height(), 60)
-        with self.assertRaisesRegex(TclError, 'expected floating-point number '
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected floating-point number '
                                     'but got "abcd"'):
             f2.place_configure(relheight='abcd')
 
-    def test_place_configure_bordermode(self):
+    eleza test_place_configure_bordermode(self):
         f = tkinter.Frame(self.root)
-        with self.assertRaisesRegex(TclError, 'bad bordermode "j"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad bordermode "j"'):
             f.place_configure(bordermode='j')
-        with self.assertRaisesRegex(TclError, 'ambiguous bordermode ""'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'ambiguous bordermode ""'):
             f.place_configure(bordermode='')
-        for value in 'inside', 'outside', 'ignore':
+        kila value kwenye 'inside', 'outside', 'ignore':
             f.place_configure(bordermode=value)
             self.assertEqual(f.place_info()['bordermode'], value)
 
-    def test_place_forget(self):
+    eleza test_place_forget(self):
         foo = tkinter.Frame(self.root)
         foo.place_configure(width=50, height=50)
         self.root.update()
         foo.place_forget()
         self.root.update()
-        self.assertFalse(foo.winfo_ismapped())
-        with self.assertRaises(TypeError):
+        self.assertUongo(foo.winfo_ismapped())
+        ukijumuisha self.assertRaises(TypeError):
             foo.place_forget(0)
 
-    def test_place_info(self):
+    eleza test_place_info(self):
         t, f, f2 = self.create2()
         f2.place_configure(in_=f, x=1, y=2, width=3, height=4,
                            relx=0.1, rely=0.2, relwidth=0.3, relheight=0.4,
@@ -467,35 +467,35 @@ class PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(info['bordermode'], 'outside')
         self.assertEqual(info['x'], '1')
         self.assertEqual(info['x'], '1')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             f2.place_info(0)
 
-    def test_place_slaves(self):
+    eleza test_place_slaves(self):
         foo = tkinter.Frame(self.root)
         bar = tkinter.Frame(self.root)
         self.assertEqual(foo.place_slaves(), [])
         bar.place_configure(in_=foo)
         self.assertEqual(foo.place_slaves(), [bar])
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             foo.place_slaves(0)
 
 
-class GridTest(AbstractWidgetTest, unittest.TestCase):
+kundi GridTest(AbstractWidgetTest, unittest.TestCase):
 
-    test_keys = None
+    test_keys = Tupu
 
-    def tearDown(self):
+    eleza tearDown(self):
         cols, rows = self.root.grid_size()
-        for i in range(cols + 1):
+        kila i kwenye range(cols + 1):
             self.root.grid_columnconfigure(i, weight=0, minsize=0, pad=0, uniform='')
-        for i in range(rows + 1):
+        kila i kwenye range(rows + 1):
             self.root.grid_rowconfigure(i, weight=0, minsize=0, pad=0, uniform='')
         self.root.grid_propagate(1)
-        if tcl_version >= (8, 5):
+        ikiwa tcl_version >= (8, 5):
             self.root.grid_anchor('nw')
         super().tearDown()
 
-    def test_grid_configure(self):
+    eleza test_grid_configure(self):
         b = tkinter.Button(self.root)
         self.assertEqual(b.grid_info(), {})
         b.grid_configure()
@@ -506,23 +506,23 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(b.grid_info()['column'], self._str(1))
         self.assertEqual(b.grid_info()['row'], self._str(2))
 
-    def test_grid_configure_column(self):
+    eleza test_grid_configure_column(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad column value "-1": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad column value "-1": '
                                     'must be a non-negative integer'):
             b.grid_configure(column=-1)
         b.grid_configure(column=2)
         self.assertEqual(b.grid_info()['column'], self._str(2))
 
-    def test_grid_configure_columnspan(self):
+    eleza test_grid_configure_columnspan(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad columnspan value "0": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad columnspan value "0": '
                                     'must be a positive integer'):
             b.grid_configure(columnspan=0)
         b.grid_configure(columnspan=2)
         self.assertEqual(b.grid_info()['columnspan'], self._str(2))
 
-    def test_grid_configure_in(self):
+    eleza test_grid_configure_in(self):
         f = tkinter.Frame(self.root)
         b = tkinter.Button(self.root)
         self.assertEqual(b.grid_info(), {})
@@ -533,9 +533,9 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         b.grid_configure({'in': self.root})
         self.assertEqual(b.grid_info()['in'], self.root)
 
-    def test_grid_configure_ipadx(self):
+    eleza test_grid_configure_ipadx(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad ipadx value "-1": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad ipadx value "-1": '
                                     'must be positive screen distance'):
             b.grid_configure(ipadx=-1)
         b.grid_configure(ipadx=1)
@@ -544,9 +544,9 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(b.grid_info()['ipadx'],
                          self._str(round(pixels_conv('.5c') * self.scaling)))
 
-    def test_grid_configure_ipady(self):
+    eleza test_grid_configure_ipady(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad ipady value "-1": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad ipady value "-1": '
                                     'must be positive screen distance'):
             b.grid_configure(ipady=-1)
         b.grid_configure(ipady=1)
@@ -555,9 +555,9 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(b.grid_info()['ipady'],
                          self._str(round(pixels_conv('.5c') * self.scaling)))
 
-    def test_grid_configure_padx(self):
+    eleza test_grid_configure_padx(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad pad value "-1": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad pad value "-1": '
                                     'must be positive screen distance'):
             b.grid_configure(padx=-1)
         b.grid_configure(padx=1)
@@ -568,9 +568,9 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(b.grid_info()['padx'],
                          self._str(round(pixels_conv('.5c') * self.scaling)))
 
-    def test_grid_configure_pady(self):
+    eleza test_grid_configure_pady(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad pad value "-1": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad pad value "-1": '
                                     'must be positive screen distance'):
             b.grid_configure(pady=-1)
         b.grid_configure(pady=1)
@@ -581,144 +581,144 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(b.grid_info()['pady'],
                          self._str(round(pixels_conv('.5c') * self.scaling)))
 
-    def test_grid_configure_row(self):
+    eleza test_grid_configure_row(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad (row|grid) value "-1": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad (row|grid) value "-1": '
                                     'must be a non-negative integer'):
             b.grid_configure(row=-1)
         b.grid_configure(row=2)
         self.assertEqual(b.grid_info()['row'], self._str(2))
 
-    def test_grid_configure_rownspan(self):
+    eleza test_grid_configure_rownspan(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad rowspan value "0": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad rowspan value "0": '
                                     'must be a positive integer'):
             b.grid_configure(rowspan=0)
         b.grid_configure(rowspan=2)
         self.assertEqual(b.grid_info()['rowspan'], self._str(2))
 
-    def test_grid_configure_sticky(self):
+    eleza test_grid_configure_sticky(self):
         f = tkinter.Frame(self.root, bg='red')
-        with self.assertRaisesRegex(TclError, 'bad stickyness value "glue"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad stickyness value "glue"'):
             f.grid_configure(sticky='glue')
         f.grid_configure(sticky='ne')
         self.assertEqual(f.grid_info()['sticky'], 'ne')
         f.grid_configure(sticky='n,s,e,w')
         self.assertEqual(f.grid_info()['sticky'], 'nesw')
 
-    def test_grid_columnconfigure(self):
-        with self.assertRaises(TypeError):
+    eleza test_grid_columnconfigure(self):
+        ukijumuisha self.assertRaises(TypeError):
             self.root.grid_columnconfigure()
         self.assertEqual(self.root.grid_columnconfigure(0),
-                         {'minsize': 0, 'pad': 0, 'uniform': None, 'weight': 0})
-        with self.assertRaisesRegex(TclError, 'bad option "-foo"'):
+                         {'minsize': 0, 'pad': 0, 'uniform': Tupu, 'weight': 0})
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad option "-foo"'):
             self.root.grid_columnconfigure(0, 'foo')
         self.root.grid_columnconfigure((0, 3), weight=2)
-        with self.assertRaisesRegex(TclError,
+        ukijumuisha self.assertRaisesRegex(TclError,
                                     'must specify a single element on retrieval'):
             self.root.grid_columnconfigure((0, 3))
         b = tkinter.Button(self.root)
         b.grid_configure(column=0, row=0)
-        if tcl_version >= (8, 5):
+        ikiwa tcl_version >= (8, 5):
             self.root.grid_columnconfigure('all', weight=3)
-            with self.assertRaisesRegex(TclError, 'expected integer but got "all"'):
+            ukijumuisha self.assertRaisesRegex(TclError, 'expected integer but got "all"'):
                 self.root.grid_columnconfigure('all')
             self.assertEqual(self.root.grid_columnconfigure(0, 'weight'), 3)
         self.assertEqual(self.root.grid_columnconfigure(3, 'weight'), 2)
         self.assertEqual(self.root.grid_columnconfigure(265, 'weight'), 0)
-        if tcl_version >= (8, 5):
+        ikiwa tcl_version >= (8, 5):
             self.root.grid_columnconfigure(b, weight=4)
             self.assertEqual(self.root.grid_columnconfigure(0, 'weight'), 4)
 
-    def test_grid_columnconfigure_minsize(self):
-        with self.assertRaisesRegex(TclError, 'bad screen distance "foo"'):
+    eleza test_grid_columnconfigure_minsize(self):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "foo"'):
             self.root.grid_columnconfigure(0, minsize='foo')
         self.root.grid_columnconfigure(0, minsize=10)
         self.assertEqual(self.root.grid_columnconfigure(0, 'minsize'), 10)
         self.assertEqual(self.root.grid_columnconfigure(0)['minsize'], 10)
 
-    def test_grid_columnconfigure_weight(self):
-        with self.assertRaisesRegex(TclError, 'expected integer but got "bad"'):
+    eleza test_grid_columnconfigure_weight(self):
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected integer but got "bad"'):
             self.root.grid_columnconfigure(0, weight='bad')
-        with self.assertRaisesRegex(TclError, 'invalid arg "-weight": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'invalid arg "-weight": '
                                     'should be non-negative'):
             self.root.grid_columnconfigure(0, weight=-3)
         self.root.grid_columnconfigure(0, weight=3)
         self.assertEqual(self.root.grid_columnconfigure(0, 'weight'), 3)
         self.assertEqual(self.root.grid_columnconfigure(0)['weight'], 3)
 
-    def test_grid_columnconfigure_pad(self):
-        with self.assertRaisesRegex(TclError, 'bad screen distance "foo"'):
+    eleza test_grid_columnconfigure_pad(self):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "foo"'):
             self.root.grid_columnconfigure(0, pad='foo')
-        with self.assertRaisesRegex(TclError, 'invalid arg "-pad": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'invalid arg "-pad": '
                                     'should be non-negative'):
             self.root.grid_columnconfigure(0, pad=-3)
         self.root.grid_columnconfigure(0, pad=3)
         self.assertEqual(self.root.grid_columnconfigure(0, 'pad'), 3)
         self.assertEqual(self.root.grid_columnconfigure(0)['pad'], 3)
 
-    def test_grid_columnconfigure_uniform(self):
+    eleza test_grid_columnconfigure_uniform(self):
         self.root.grid_columnconfigure(0, uniform='foo')
         self.assertEqual(self.root.grid_columnconfigure(0, 'uniform'), 'foo')
         self.assertEqual(self.root.grid_columnconfigure(0)['uniform'], 'foo')
 
-    def test_grid_rowconfigure(self):
-        with self.assertRaises(TypeError):
+    eleza test_grid_rowconfigure(self):
+        ukijumuisha self.assertRaises(TypeError):
             self.root.grid_rowconfigure()
         self.assertEqual(self.root.grid_rowconfigure(0),
-                         {'minsize': 0, 'pad': 0, 'uniform': None, 'weight': 0})
-        with self.assertRaisesRegex(TclError, 'bad option "-foo"'):
+                         {'minsize': 0, 'pad': 0, 'uniform': Tupu, 'weight': 0})
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad option "-foo"'):
             self.root.grid_rowconfigure(0, 'foo')
         self.root.grid_rowconfigure((0, 3), weight=2)
-        with self.assertRaisesRegex(TclError,
+        ukijumuisha self.assertRaisesRegex(TclError,
                                     'must specify a single element on retrieval'):
             self.root.grid_rowconfigure((0, 3))
         b = tkinter.Button(self.root)
         b.grid_configure(column=0, row=0)
-        if tcl_version >= (8, 5):
+        ikiwa tcl_version >= (8, 5):
             self.root.grid_rowconfigure('all', weight=3)
-            with self.assertRaisesRegex(TclError, 'expected integer but got "all"'):
+            ukijumuisha self.assertRaisesRegex(TclError, 'expected integer but got "all"'):
                 self.root.grid_rowconfigure('all')
             self.assertEqual(self.root.grid_rowconfigure(0, 'weight'), 3)
         self.assertEqual(self.root.grid_rowconfigure(3, 'weight'), 2)
         self.assertEqual(self.root.grid_rowconfigure(265, 'weight'), 0)
-        if tcl_version >= (8, 5):
+        ikiwa tcl_version >= (8, 5):
             self.root.grid_rowconfigure(b, weight=4)
             self.assertEqual(self.root.grid_rowconfigure(0, 'weight'), 4)
 
-    def test_grid_rowconfigure_minsize(self):
-        with self.assertRaisesRegex(TclError, 'bad screen distance "foo"'):
+    eleza test_grid_rowconfigure_minsize(self):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "foo"'):
             self.root.grid_rowconfigure(0, minsize='foo')
         self.root.grid_rowconfigure(0, minsize=10)
         self.assertEqual(self.root.grid_rowconfigure(0, 'minsize'), 10)
         self.assertEqual(self.root.grid_rowconfigure(0)['minsize'], 10)
 
-    def test_grid_rowconfigure_weight(self):
-        with self.assertRaisesRegex(TclError, 'expected integer but got "bad"'):
+    eleza test_grid_rowconfigure_weight(self):
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected integer but got "bad"'):
             self.root.grid_rowconfigure(0, weight='bad')
-        with self.assertRaisesRegex(TclError, 'invalid arg "-weight": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'invalid arg "-weight": '
                                     'should be non-negative'):
             self.root.grid_rowconfigure(0, weight=-3)
         self.root.grid_rowconfigure(0, weight=3)
         self.assertEqual(self.root.grid_rowconfigure(0, 'weight'), 3)
         self.assertEqual(self.root.grid_rowconfigure(0)['weight'], 3)
 
-    def test_grid_rowconfigure_pad(self):
-        with self.assertRaisesRegex(TclError, 'bad screen distance "foo"'):
+    eleza test_grid_rowconfigure_pad(self):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "foo"'):
             self.root.grid_rowconfigure(0, pad='foo')
-        with self.assertRaisesRegex(TclError, 'invalid arg "-pad": '
+        ukijumuisha self.assertRaisesRegex(TclError, 'invalid arg "-pad": '
                                     'should be non-negative'):
             self.root.grid_rowconfigure(0, pad=-3)
         self.root.grid_rowconfigure(0, pad=3)
         self.assertEqual(self.root.grid_rowconfigure(0, 'pad'), 3)
         self.assertEqual(self.root.grid_rowconfigure(0)['pad'], 3)
 
-    def test_grid_rowconfigure_uniform(self):
+    eleza test_grid_rowconfigure_uniform(self):
         self.root.grid_rowconfigure(0, uniform='foo')
         self.assertEqual(self.root.grid_rowconfigure(0, 'uniform'), 'foo')
         self.assertEqual(self.root.grid_rowconfigure(0)['uniform'], 'foo')
 
-    def test_grid_forget(self):
+    eleza test_grid_forget(self):
         b = tkinter.Button(self.root)
         c = tkinter.Button(self.root)
         b.grid_configure(row=2, column=2, rowspan=2, columnspan=2,
@@ -738,7 +738,7 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(info['pady'], self._str(0))
         self.assertEqual(info['sticky'], '')
 
-    def test_grid_remove(self):
+    eleza test_grid_remove(self):
         b = tkinter.Button(self.root)
         c = tkinter.Button(self.root)
         b.grid_configure(row=2, column=2, rowspan=2, columnspan=2,
@@ -758,7 +758,7 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(info['pady'], self._str(4))
         self.assertEqual(info['sticky'], 'ns')
 
-    def test_grid_info(self):
+    eleza test_grid_info(self):
         b = tkinter.Button(self.root)
         self.assertEqual(b.grid_info(), {})
         b.grid_configure(row=2, column=2, rowspan=2, columnspan=2,
@@ -775,29 +775,29 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(info['sticky'], 'ns')
 
     @requires_tcl(8, 5)
-    def test_grid_anchor(self):
-        with self.assertRaisesRegex(TclError, 'bad anchor "x"'):
+    eleza test_grid_anchor(self):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad anchor "x"'):
             self.root.grid_anchor('x')
-        with self.assertRaisesRegex(TclError, 'ambiguous anchor ""'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'ambiguous anchor ""'):
             self.root.grid_anchor('')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.root.grid_anchor('se', 'nw')
         self.root.grid_anchor('se')
         self.assertEqual(self.root.tk.call('grid', 'anchor', self.root), 'se')
 
-    def test_grid_bbox(self):
+    eleza test_grid_bbox(self):
         self.assertEqual(self.root.grid_bbox(), (0, 0, 0, 0))
         self.assertEqual(self.root.grid_bbox(0, 0), (0, 0, 0, 0))
         self.assertEqual(self.root.grid_bbox(0, 0, 1, 1), (0, 0, 0, 0))
-        with self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
             self.root.grid_bbox('x', 0)
-        with self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
             self.root.grid_bbox(0, 'x')
-        with self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
             self.root.grid_bbox(0, 0, 'x', 0)
-        with self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
             self.root.grid_bbox(0, 0, 0, 'x')
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.root.grid_bbox(0, 0, 0, 0, 0)
         t = self.root
         # de-maximize
@@ -816,16 +816,16 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(t.grid_bbox(-2, -2, -1, -1), (0, 0, 0, 0))
         self.assertEqual(t.grid_bbox(10, 10, 12, 12), (165, 165, 0, 0))
 
-    def test_grid_location(self):
-        with self.assertRaises(TypeError):
+    eleza test_grid_location(self):
+        ukijumuisha self.assertRaises(TypeError):
             self.root.grid_location()
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.root.grid_location(0)
-        with self.assertRaises(TypeError):
+        ukijumuisha self.assertRaises(TypeError):
             self.root.grid_location(0, 0, 0)
-        with self.assertRaisesRegex(TclError, 'bad screen distance "x"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "x"'):
             self.root.grid_location('x', 'y')
-        with self.assertRaisesRegex(TclError, 'bad screen distance "y"'):
+        ukijumuisha self.assertRaisesRegex(TclError, 'bad screen distance "y"'):
             self.root.grid_location('1c', 'y')
         t = self.root
         # de-maximize
@@ -848,30 +848,30 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(t.grid_location(0, 101), (0, 1))
         self.assertEqual(t.grid_location(201, 101), (1, 1))
 
-    def test_grid_propagate(self):
-        self.assertEqual(self.root.grid_propagate(), True)
-        with self.assertRaises(TypeError):
-            self.root.grid_propagate(False, False)
-        self.root.grid_propagate(False)
-        self.assertFalse(self.root.grid_propagate())
+    eleza test_grid_propagate(self):
+        self.assertEqual(self.root.grid_propagate(), Kweli)
+        ukijumuisha self.assertRaises(TypeError):
+            self.root.grid_propagate(Uongo, Uongo)
+        self.root.grid_propagate(Uongo)
+        self.assertUongo(self.root.grid_propagate())
         f = tkinter.Frame(self.root, width=100, height=100, bg='red')
         f.grid_configure(row=0, column=0)
         self.root.update()
         self.assertEqual(f.winfo_width(), 100)
         self.assertEqual(f.winfo_height(), 100)
-        f.grid_propagate(False)
+        f.grid_propagate(Uongo)
         g = tkinter.Frame(self.root, width=75, height=85, bg='green')
         g.grid_configure(in_=f, row=0, column=0)
         self.root.update()
         self.assertEqual(f.winfo_width(), 100)
         self.assertEqual(f.winfo_height(), 100)
-        f.grid_propagate(True)
+        f.grid_propagate(Kweli)
         self.root.update()
         self.assertEqual(f.winfo_width(), 75)
         self.assertEqual(f.winfo_height(), 85)
 
-    def test_grid_size(self):
-        with self.assertRaises(TypeError):
+    eleza test_grid_size(self):
+        ukijumuisha self.assertRaises(TypeError):
             self.root.grid_size(0)
         self.assertEqual(self.root.grid_size(), (0, 0))
         f = tkinter.Scale(self.root)
@@ -880,7 +880,7 @@ class GridTest(AbstractWidgetTest, unittest.TestCase):
         f.grid_configure(row=4, column=5)
         self.assertEqual(self.root.grid_size(), (6, 5))
 
-    def test_grid_slaves(self):
+    eleza test_grid_slaves(self):
         self.assertEqual(self.root.grid_slaves(), [])
         a = tkinter.Label(self.root)
         a.grid_configure(row=0, column=1)
@@ -902,5 +902,5 @@ tests_gui = (
     PackTest, PlaceTest, GridTest,
 )
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -1,20 +1,20 @@
-"""Tests for distutils.command.install_scripts."""
+"""Tests kila distutils.command.install_scripts."""
 
-import os
-import unittest
+agiza os
+agiza unittest
 
-from distutils.command.install_scripts import install_scripts
-from distutils.core import Distribution
+kutoka distutils.command.install_scripts agiza install_scripts
+kutoka distutils.core agiza Distribution
 
-from distutils.tests import support
-from test.support import run_unittest
+kutoka distutils.tests agiza support
+kutoka test.support agiza run_unittest
 
 
-class InstallScriptsTestCase(support.TempdirManager,
+kundi InstallScriptsTestCase(support.TempdirManager,
                              support.LoggingSilencer,
                              unittest.TestCase):
 
-    def test_default_settings(self):
+    eleza test_default_settings(self):
         dist = Distribution()
         dist.command_obj["build"] = support.DummyCommand(
             build_scripts="/foo/bar")
@@ -24,23 +24,23 @@ class InstallScriptsTestCase(support.TempdirManager,
             skip_build=1,
             )
         cmd = install_scripts(dist)
-        self.assertFalse(cmd.force)
-        self.assertFalse(cmd.skip_build)
-        self.assertIsNone(cmd.build_dir)
-        self.assertIsNone(cmd.install_dir)
+        self.assertUongo(cmd.force)
+        self.assertUongo(cmd.skip_build)
+        self.assertIsTupu(cmd.build_dir)
+        self.assertIsTupu(cmd.install_dir)
 
         cmd.finalize_options()
 
-        self.assertTrue(cmd.force)
-        self.assertTrue(cmd.skip_build)
+        self.assertKweli(cmd.force)
+        self.assertKweli(cmd.skip_build)
         self.assertEqual(cmd.build_dir, "/foo/bar")
         self.assertEqual(cmd.install_dir, "/splat/funk")
 
-    def test_installation(self):
+    eleza test_installation(self):
         source = self.mkdtemp()
         expected = []
 
-        def write_script(name, text):
+        eleza write_script(name, text):
             expected.append(name)
             f = open(os.path.join(source, name), "w")
             jaribu:
@@ -71,12 +71,12 @@ class InstallScriptsTestCase(support.TempdirManager,
         cmd.run()
 
         installed = os.listdir(target)
-        for name in expected:
+        kila name kwenye expected:
             self.assertIn(name, installed)
 
 
-def test_suite():
-    return unittest.makeSuite(InstallScriptsTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(InstallScriptsTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

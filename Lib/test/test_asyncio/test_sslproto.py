@@ -1,77 +1,77 @@
-"""Tests for asyncio/sslproto.py."""
+"""Tests kila asyncio/sslproto.py."""
 
-import logging
-import socket
-import sys
-import unittest
-import weakref
-from unittest import mock
+agiza logging
+agiza socket
+agiza sys
+agiza unittest
+agiza weakref
+kutoka unittest agiza mock
 jaribu:
-    import ssl
-tatizo ImportError:
-    ssl = None
+    agiza ssl
+except ImportError:
+    ssl = Tupu
 
-import asyncio
-from asyncio import log
-from asyncio import protocols
-from asyncio import sslproto
-from test.test_asyncio import utils as test_utils
-from test.test_asyncio import functional as func_tests
-
-
-def tearDownModule():
-    asyncio.set_event_loop_policy(None)
+agiza asyncio
+kutoka asyncio agiza log
+kutoka asyncio agiza protocols
+kutoka asyncio agiza sslproto
+kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza functional as func_tests
 
 
-@unittest.skipIf(ssl is None, 'No ssl module')
-class SslProtoHandshakeTests(test_utils.TestCase):
+eleza tearDownModule():
+    asyncio.set_event_loop_policy(Tupu)
 
-    def setUp(self):
+
+@unittest.skipIf(ssl ni Tupu, 'No ssl module')
+kundi SslProtoHandshakeTests(test_utils.TestCase):
+
+    eleza setUp(self):
         super().setUp()
         self.loop = asyncio.new_event_loop()
         self.set_event_loop(self.loop)
 
-    def ssl_protocol(self, *, waiter=None, proto=None):
+    eleza ssl_protocol(self, *, waiter=Tupu, proto=Tupu):
         sslcontext = test_utils.dummy_ssl_context()
-        if proto is None:  # app protocol
+        ikiwa proto ni Tupu:  # app protocol
             proto = asyncio.Protocol()
         ssl_proto = sslproto.SSLProtocol(self.loop, proto, sslcontext, waiter,
                                          ssl_handshake_timeout=0.1)
         self.assertIs(ssl_proto._app_transport.get_protocol(), proto)
         self.addCleanup(ssl_proto._app_transport.close)
-        return ssl_proto
+        rudisha ssl_proto
 
-    def connection_made(self, ssl_proto, *, do_handshake=None):
+    eleza connection_made(self, ssl_proto, *, do_handshake=Tupu):
         transport = mock.Mock()
         sslpipe = mock.Mock()
         sslpipe.shutdown.return_value = b''
-        if do_handshake:
+        ikiwa do_handshake:
             sslpipe.do_handshake.side_effect = do_handshake
         isipokua:
-            def mock_handshake(callback):
-                return []
+            eleza mock_handshake(callback):
+                rudisha []
             sslpipe.do_handshake.side_effect = mock_handshake
-        with mock.patch('asyncio.sslproto._SSLPipe', return_value=sslpipe):
+        ukijumuisha mock.patch('asyncio.sslproto._SSLPipe', return_value=sslpipe):
             ssl_proto.connection_made(transport)
-        return transport
+        rudisha transport
 
-    def test_handshake_timeout_zero(self):
+    eleza test_handshake_timeout_zero(self):
         sslcontext = test_utils.dummy_ssl_context()
         app_proto = mock.Mock()
         waiter = mock.Mock()
-        with self.assertRaisesRegex(ValueError, 'a positive number'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'a positive number'):
             sslproto.SSLProtocol(self.loop, app_proto, sslcontext, waiter,
                                  ssl_handshake_timeout=0)
 
-    def test_handshake_timeout_negative(self):
+    eleza test_handshake_timeout_negative(self):
         sslcontext = test_utils.dummy_ssl_context()
         app_proto = mock.Mock()
         waiter = mock.Mock()
-        with self.assertRaisesRegex(ValueError, 'a positive number'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'a positive number'):
             sslproto.SSLProtocol(self.loop, app_proto, sslcontext, waiter,
                                  ssl_handshake_timeout=-10)
 
-    def test_eof_received_waiter(self):
+    eleza test_eof_received_waiter(self):
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
         self.connection_made(ssl_proto)
@@ -79,24 +79,24 @@ class SslProtoHandshakeTests(test_utils.TestCase):
         test_utils.run_briefly(self.loop)
         self.assertIsInstance(waiter.exception(), ConnectionResetError)
 
-    def test_fatal_error_no_name_error(self):
+    eleza test_fatal_error_no_name_error(self):
         # From issue #363.
-        # _fatal_error() generates a NameError if sslproto.py
-        # does sio import base_events.
+        # _fatal_error() generates a NameError ikiwa sslproto.py
+        # does sio agiza base_events.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
         # Temporarily turn off error logging so as sio to spoil test output.
         log_level = log.logger.getEffectiveLevel()
         log.logger.setLevel(logging.FATAL)
         jaribu:
-            ssl_proto._fatal_error(None)
+            ssl_proto._fatal_error(Tupu)
         mwishowe:
             # Restore error logging.
             log.logger.setLevel(log_level)
 
-    def test_connection_lost(self):
+    eleza test_connection_lost(self):
         # From issue #472.
-        # yield from waiter hang if lost_connection was called.
+        # tuma kutoka waiter hang ikiwa lost_connection was called.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
         self.connection_made(ssl_proto)
@@ -104,7 +104,7 @@ class SslProtoHandshakeTests(test_utils.TestCase):
         test_utils.run_briefly(self.loop)
         self.assertIsInstance(waiter.exception(), ConnectionAbortedError)
 
-    def test_close_during_handshake(self):
+    eleza test_close_during_handshake(self):
         # bpo-29743 Closing transport during handshake process leaks socket
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
@@ -113,20 +113,20 @@ class SslProtoHandshakeTests(test_utils.TestCase):
         test_utils.run_briefly(self.loop)
 
         ssl_proto._app_transport.close()
-        self.assertTrue(transport.abort.called)
+        self.assertKweli(transport.abort.called)
 
-    def test_get_extra_info_on_closed_connection(self):
+    eleza test_get_extra_info_on_closed_connection(self):
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
-        self.assertIsNone(ssl_proto._get_extra_info('socket'))
+        self.assertIsTupu(ssl_proto._get_extra_info('socket'))
         default = object()
         self.assertIs(ssl_proto._get_extra_info('socket', default), default)
         self.connection_made(ssl_proto)
-        self.assertIsNotNone(ssl_proto._get_extra_info('socket'))
-        ssl_proto.connection_lost(None)
-        self.assertIsNone(ssl_proto._get_extra_info('socket'))
+        self.assertIsNotTupu(ssl_proto._get_extra_info('socket'))
+        ssl_proto.connection_lost(Tupu)
+        self.assertIsTupu(ssl_proto._get_extra_info('socket'))
 
-    def test_set_new_app_protocol(self):
+    eleza test_set_new_app_protocol(self):
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
         new_app_proto = asyncio.Protocol()
@@ -134,7 +134,7 @@ class SslProtoHandshakeTests(test_utils.TestCase):
         self.assertIs(ssl_proto._app_transport.get_protocol(), new_app_proto)
         self.assertIs(ssl_proto._app_protocol, new_app_proto)
 
-    def test_data_received_after_closing(self):
+    eleza test_data_received_after_closing(self):
         ssl_proto = self.ssl_protocol()
         self.connection_made(ssl_proto)
         transp = ssl_proto._app_transport
@@ -142,16 +142,16 @@ class SslProtoHandshakeTests(test_utils.TestCase):
         transp.close()
 
         # should sio raise
-        self.assertIsNone(ssl_proto.data_received(b'data'))
+        self.assertIsTupu(ssl_proto.data_received(b'data'))
 
-    def test_write_after_closing(self):
+    eleza test_write_after_closing(self):
         ssl_proto = self.ssl_protocol()
         self.connection_made(ssl_proto)
         transp = ssl_proto._app_transport
         transp.close()
 
         # should sio raise
-        self.assertIsNone(transp.write(b'data'))
+        self.assertIsTupu(transp.write(b'data'))
 
 
 ##############################################################################
@@ -159,37 +159,37 @@ class SslProtoHandshakeTests(test_utils.TestCase):
 ##############################################################################
 
 
-class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
+kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
     PAYLOAD_SIZE = 1024 * 100
     TIMEOUT = 60
 
-    def new_loop(self):
-        ashiria NotImplementedError
+    eleza new_loop(self):
+         ashiria NotImplementedError
 
-    def test_buf_feed_data(self):
+    eleza test_buf_feed_data(self):
 
-        class Proto(asyncio.BufferedProtocol):
+        kundi Proto(asyncio.BufferedProtocol):
 
-            def __init__(self, bufsize, usemv):
+            eleza __init__(self, bufsize, usemv):
                 self.buf = bytearray(bufsize)
                 self.mv = memoryview(self.buf)
                 self.data = b''
                 self.usemv = usemv
 
-            def get_buffer(self, sizehint):
-                if self.usemv:
-                    return self.mv
+            eleza get_buffer(self, sizehint):
+                ikiwa self.usemv:
+                    rudisha self.mv
                 isipokua:
-                    return self.buf
+                    rudisha self.buf
 
-            def buffer_updated(self, nsize):
-                if self.usemv:
+            eleza buffer_updated(self, nsize):
+                ikiwa self.usemv:
                     self.data += self.mv[:nsize]
                 isipokua:
                     self.data += self.buf[:nsize]
 
-        for usemv in [False, True]:
+        kila usemv kwenye [Uongo, Kweli]:
             proto = Proto(1, usemv)
             protocols._feed_data_to_buffered_proto(proto, b'12345')
             self.assertEqual(proto.data, b'12345')
@@ -211,22 +211,22 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             self.assertEqual(proto.data, b'12345')
 
             proto = Proto(0, usemv)
-            with self.assertRaisesRegex(RuntimeError, 'empty buffer'):
+            ukijumuisha self.assertRaisesRegex(RuntimeError, 'empty buffer'):
                 protocols._feed_data_to_buffered_proto(proto, b'12345')
 
-    def test_start_tls_client_reg_proto_1(self):
+    eleza test_start_tls_client_reg_proto_1(self):
         HELLO_MSG = b'1' * self.PAYLOAD_SIZE
 
         server_context = test_utils.simple_server_sslcontext()
         client_context = test_utils.simple_client_sslcontext()
 
-        def serve(sock):
+        eleza serve(sock):
             sock.settimeout(self.TIMEOUT)
 
             data = sock.recv_all(len(HELLO_MSG))
             self.assertEqual(len(data), len(HELLO_MSG))
 
-            sock.start_tls(server_context, server_side=True)
+            sock.start_tls(server_context, server_side=Kweli)
 
             sock.sendall(b'O')
             data = sock.recv_all(len(HELLO_MSG))
@@ -235,24 +235,24 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
 
-        class ClientProto(asyncio.Protocol):
-            def __init__(self, on_data, on_eof):
+        kundi ClientProto(asyncio.Protocol):
+            eleza __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
                 self.con_made_cnt = 0
 
-            def connection_made(proto, tr):
+            eleza connection_made(proto, tr):
                 proto.con_made_cnt += 1
                 # Ensure connection_made gets called only once.
                 self.assertEqual(proto.con_made_cnt, 1)
 
-            def data_received(self, data):
+            eleza data_received(self, data):
                 self.on_data.set_result(data)
 
-            def eof_received(self):
-                self.on_eof.set_result(True)
+            eleza eof_received(self):
+                self.on_eof.set_result(Kweli)
 
-        async def client(addr):
+        async eleza client(addr):
             await asyncio.sleep(0.5)
 
             on_data = self.loop.create_future()
@@ -270,24 +270,24 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             new_tr.close()
 
-        with self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr), timeout=10))
 
-        # No garbage is left if SSL is closed uncleanly
+        # No garbage ni left ikiwa SSL ni closed uncleanly
         client_context = weakref.ref(client_context)
-        self.assertIsNone(client_context())
+        self.assertIsTupu(client_context())
 
-    def test_create_connection_memory_leak(self):
+    eleza test_create_connection_memory_leak(self):
         HELLO_MSG = b'1' * self.PAYLOAD_SIZE
 
         server_context = test_utils.simple_server_sslcontext()
         client_context = test_utils.simple_client_sslcontext()
 
-        def serve(sock):
+        eleza serve(sock):
             sock.settimeout(self.TIMEOUT)
 
-            sock.start_tls(server_context, server_side=True)
+            sock.start_tls(server_context, server_side=Kweli)
 
             sock.sendall(b'O')
             data = sock.recv_all(len(HELLO_MSG))
@@ -296,26 +296,26 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
 
-        class ClientProto(asyncio.Protocol):
-            def __init__(self, on_data, on_eof):
+        kundi ClientProto(asyncio.Protocol):
+            eleza __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
                 self.con_made_cnt = 0
 
-            def connection_made(proto, tr):
-                # XXX: We assume user stores the transport in protocol
+            eleza connection_made(proto, tr):
+                # XXX: We assume user stores the transport kwenye protocol
                 proto.tr = tr
                 proto.con_made_cnt += 1
                 # Ensure connection_made gets called only once.
                 self.assertEqual(proto.con_made_cnt, 1)
 
-            def data_received(self, data):
+            eleza data_received(self, data):
                 self.on_data.set_result(data)
 
-            def eof_received(self):
-                self.on_eof.set_result(True)
+            eleza eof_received(self):
+                self.on_eof.set_result(Kweli)
 
-        async def client(addr):
+        async eleza client(addr):
             await asyncio.sleep(0.5)
 
             on_data = self.loop.create_future()
@@ -331,29 +331,29 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             tr.close()
 
-        with self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr), timeout=10))
 
-        # No garbage is left for SSL client from loop.create_connection, even
-        # if user stores the SSLTransport in corresponding protocol instance
+        # No garbage ni left kila SSL client kutoka loop.create_connection, even
+        # ikiwa user stores the SSLTransport kwenye corresponding protocol instance
         client_context = weakref.ref(client_context)
-        self.assertIsNone(client_context())
+        self.assertIsTupu(client_context())
 
-    def test_start_tls_client_buf_proto_1(self):
+    eleza test_start_tls_client_buf_proto_1(self):
         HELLO_MSG = b'1' * self.PAYLOAD_SIZE
 
         server_context = test_utils.simple_server_sslcontext()
         client_context = test_utils.simple_client_sslcontext()
         client_con_made_calls = 0
 
-        def serve(sock):
+        eleza serve(sock):
             sock.settimeout(self.TIMEOUT)
 
             data = sock.recv_all(len(HELLO_MSG))
             self.assertEqual(len(data), len(HELLO_MSG))
 
-            sock.start_tls(server_context, server_side=True)
+            sock.start_tls(server_context, server_side=Kweli)
 
             sock.sendall(b'O')
             data = sock.recv_all(len(HELLO_MSG))
@@ -366,39 +366,39 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             sock.shutdown(socket.SHUT_RDWR)
             sock.close()
 
-        class ClientProtoFirst(asyncio.BufferedProtocol):
-            def __init__(self, on_data):
+        kundi ClientProtoFirst(asyncio.BufferedProtocol):
+            eleza __init__(self, on_data):
                 self.on_data = on_data
                 self.buf = bytearray(1)
 
-            def connection_made(self, tr):
+            eleza connection_made(self, tr):
                 nonlocal client_con_made_calls
                 client_con_made_calls += 1
 
-            def get_buffer(self, sizehint):
-                return self.buf
+            eleza get_buffer(self, sizehint):
+                rudisha self.buf
 
-            def buffer_updated(self, nsize):
+            eleza buffer_updated(self, nsize):
                 assert nsize == 1
                 self.on_data.set_result(bytes(self.buf[:nsize]))
 
-        class ClientProtoSecond(asyncio.Protocol):
-            def __init__(self, on_data, on_eof):
+        kundi ClientProtoSecond(asyncio.Protocol):
+            eleza __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
                 self.con_made_cnt = 0
 
-            def connection_made(self, tr):
+            eleza connection_made(self, tr):
                 nonlocal client_con_made_calls
                 client_con_made_calls += 1
 
-            def data_received(self, data):
+            eleza data_received(self, data):
                 self.on_data.set_result(data)
 
-            def eof_received(self):
-                self.on_eof.set_result(True)
+            eleza eof_received(self):
+                self.on_eof.set_result(Kweli)
 
-        async def client(addr):
+        async eleza client(addr):
             await asyncio.sleep(0.5)
 
             on_data1 = self.loop.create_future()
@@ -422,22 +422,22 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             new_tr.close()
 
             # connection_made() should be called only once -- when
-            # we establish connection for the first time. Start TLS
+            # we establish connection kila the first time. Start TLS
             # doesn't call connection_made() on application protocols.
             self.assertEqual(client_con_made_calls, 1)
 
-        with self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr),
                                  timeout=self.TIMEOUT))
 
-    def test_start_tls_slow_client_cancel(self):
+    eleza test_start_tls_slow_client_cancel(self):
         HELLO_MSG = b'1' * self.PAYLOAD_SIZE
 
         client_context = test_utils.simple_client_sslcontext()
         server_waits_on_handshake = self.loop.create_future()
 
-        def serve(sock):
+        eleza serve(sock):
             sock.settimeout(self.TIMEOUT)
 
             data = sock.recv_all(len(HELLO_MSG))
@@ -445,31 +445,31 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             jaribu:
                 self.loop.call_soon_threadsafe(
-                    server_waits_on_handshake.set_result, None)
+                    server_waits_on_handshake.set_result, Tupu)
                 data = sock.recv_all(1024 * 1024)
-            tatizo ConnectionAbortedError:
+            except ConnectionAbortedError:
                 pass
             mwishowe:
                 sock.close()
 
-        class ClientProto(asyncio.Protocol):
-            def __init__(self, on_data, on_eof):
+        kundi ClientProto(asyncio.Protocol):
+            eleza __init__(self, on_data, on_eof):
                 self.on_data = on_data
                 self.on_eof = on_eof
                 self.con_made_cnt = 0
 
-            def connection_made(proto, tr):
+            eleza connection_made(proto, tr):
                 proto.con_made_cnt += 1
                 # Ensure connection_made gets called only once.
                 self.assertEqual(proto.con_made_cnt, 1)
 
-            def data_received(self, data):
+            eleza data_received(self, data):
                 self.on_data.set_result(data)
 
-            def eof_received(self):
-                self.on_eof.set_result(True)
+            eleza eof_received(self):
+                self.on_eof.set_result(Kweli)
 
-        async def client(addr):
+        async eleza client(addr):
             await asyncio.sleep(0.5)
 
             on_data = self.loop.create_future()
@@ -482,32 +482,32 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             await server_waits_on_handshake
 
-            with self.assertRaises(asyncio.TimeoutError):
+            ukijumuisha self.assertRaises(asyncio.TimeoutError):
                 await asyncio.wait_for(
                     self.loop.start_tls(tr, proto, client_context),
                     0.5)
 
-        with self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr), timeout=10))
 
-    def test_start_tls_server_1(self):
+    eleza test_start_tls_server_1(self):
         HELLO_MSG = b'1' * self.PAYLOAD_SIZE
         ANSWER = b'answer'
 
         server_context = test_utils.simple_server_sslcontext()
         client_context = test_utils.simple_client_sslcontext()
-        if (sys.platform.startswith('freebsd')
-                or sys.platform.startswith('win')
-                or sys.platform.startswith('darwin')):
-            # bpo-35031: Some FreeBSD and Windows buildbots fail to run this test
-            # as the eof was sio being received by the server if the payload
-            # size ni sio big enough. This behaviour only appears if the
-            # client is using TLS1.3.  Also seen on macOS.
+        ikiwa (sys.platform.startswith('freebsd')
+                ama sys.platform.startswith('win')
+                ama sys.platform.startswith('darwin')):
+            # bpo-35031: Some FreeBSD na Windows buildbots fail to run this test
+            # as the eof was sio being received by the server ikiwa the payload
+            # size ni sio big enough. This behaviour only appears ikiwa the
+            # client ni using TLS1.3.  Also seen on macOS.
             client_context.options |= ssl.OP_NO_TLSv1_3
-        answer = None
+        answer = Tupu
 
-        def client(sock, addr):
+        eleza client(sock, addr):
             nonlocal answer
             sock.settimeout(self.TIMEOUT)
 
@@ -520,33 +520,33 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             answer = sock.recv_all(len(ANSWER))
             sock.close()
 
-        class ServerProto(asyncio.Protocol):
-            def __init__(self, on_con, on_con_lost):
+        kundi ServerProto(asyncio.Protocol):
+            eleza __init__(self, on_con, on_con_lost):
                 self.on_con = on_con
                 self.on_con_lost = on_con_lost
                 self.data = b''
-                self.transport = None
+                self.transport = Tupu
 
-            def connection_made(self, tr):
+            eleza connection_made(self, tr):
                 self.transport = tr
                 self.on_con.set_result(tr)
 
-            def replace_transport(self, tr):
+            eleza replace_transport(self, tr):
                 self.transport = tr
 
-            def data_received(self, data):
+            eleza data_received(self, data):
                 self.data += data
-                if len(self.data) >= len(HELLO_MSG):
+                ikiwa len(self.data) >= len(HELLO_MSG):
                     self.transport.write(ANSWER)
 
-            def connection_lost(self, exc):
-                self.transport = None
-                if exc is None:
-                    self.on_con_lost.set_result(None)
+            eleza connection_lost(self, exc):
+                self.transport = Tupu
+                ikiwa exc ni Tupu:
+                    self.on_con_lost.set_result(Tupu)
                 isipokua:
                     self.on_con_lost.set_exception(exc)
 
-        async def main(proto, on_con, on_con_lost):
+        async eleza main(proto, on_con, on_con_lost):
             tr = await on_con
             tr.write(HELLO_MSG)
 
@@ -554,7 +554,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             new_tr = await self.loop.start_tls(
                 tr, proto, server_context,
-                server_side=True,
+                server_side=Kweli,
                 ssl_handshake_timeout=self.TIMEOUT)
 
             proto.replace_transport(new_tr)
@@ -563,7 +563,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             self.assertEqual(proto.data, HELLO_MSG)
             new_tr.close()
 
-        async def run_main():
+        async eleza run_main():
             on_con = self.loop.create_future()
             on_con_lost = self.loop.create_future()
             proto = ServerProto(on_con, on_con_lost)
@@ -572,7 +572,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 lambda: proto, '127.0.0.1', 0)
             addr = server.sockets[0].getsockname()
 
-            with self.tcp_client(lambda sock: client(sock, addr),
+            ukijumuisha self.tcp_client(lambda sock: client(sock, addr),
                                  timeout=self.TIMEOUT):
                 await asyncio.wait_for(
                     main(proto, on_con, on_con_lost),
@@ -584,37 +584,37 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         self.loop.run_until_complete(run_main())
 
-    def test_start_tls_wrong_args(self):
-        async def main():
-            with self.assertRaisesRegex(TypeError, 'SSLContext, got'):
-                await self.loop.start_tls(None, None, None)
+    eleza test_start_tls_wrong_args(self):
+        async eleza main():
+            ukijumuisha self.assertRaisesRegex(TypeError, 'SSLContext, got'):
+                await self.loop.start_tls(Tupu, Tupu, Tupu)
 
             sslctx = test_utils.simple_server_sslcontext()
-            with self.assertRaisesRegex(TypeError, 'is sio supported'):
-                await self.loop.start_tls(None, None, sslctx)
+            ukijumuisha self.assertRaisesRegex(TypeError, 'is sio supported'):
+                await self.loop.start_tls(Tupu, Tupu, sslctx)
 
         self.loop.run_until_complete(main())
 
-    def test_handshake_timeout(self):
-        # bpo-29970: Check that a connection is aborted if handshake is not
-        # completed in timeout period, instead of remaining open indefinitely
+    eleza test_handshake_timeout(self):
+        # bpo-29970: Check that a connection ni aborted ikiwa handshake ni not
+        # completed kwenye timeout period, instead of remaining open indefinitely
         client_sslctx = test_utils.simple_client_sslcontext()
 
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
-        server_side_aborted = False
+        server_side_aborted = Uongo
 
-        def server(sock):
+        eleza server(sock):
             nonlocal server_side_aborted
             jaribu:
                 sock.recv_all(1024 * 1024)
-            tatizo ConnectionAbortedError:
-                server_side_aborted = True
+            except ConnectionAbortedError:
+                server_side_aborted = Kweli
             mwishowe:
                 sock.close()
 
-        async def client(addr):
+        async eleza client(addr):
             await asyncio.wait_for(
                 self.loop.create_connection(
                     asyncio.Protocol,
@@ -624,40 +624,40 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                     ssl_handshake_timeout=10.0),
                 0.5)
 
-        with self.tcp_server(server,
+        ukijumuisha self.tcp_server(server,
                              max_clients=1,
                              backlog=1) as srv:
 
-            with self.assertRaises(asyncio.TimeoutError):
+            ukijumuisha self.assertRaises(asyncio.TimeoutError):
                 self.loop.run_until_complete(client(srv.addr))
 
-        self.assertTrue(server_side_aborted)
+        self.assertKweli(server_side_aborted)
 
-        # Python issue #23197: cancelling a handshake must sio ashiria an
-        # exception or log an error, even if the handshake failed
+        # Python issue #23197: cancelling a handshake must sio  ashiria an
+        # exception ama log an error, even ikiwa the handshake failed
         self.assertEqual(messages, [])
 
         # The 10s handshake timeout should be cancelled to free related
-        # objects without really waiting for 10s
+        # objects without really waiting kila 10s
         client_sslctx = weakref.ref(client_sslctx)
-        self.assertIsNone(client_sslctx())
+        self.assertIsTupu(client_sslctx())
 
-    def test_create_connection_ssl_slow_handshake(self):
+    eleza test_create_connection_ssl_slow_handshake(self):
         client_sslctx = test_utils.simple_client_sslcontext()
 
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
-        def server(sock):
+        eleza server(sock):
             jaribu:
                 sock.recv_all(1024 * 1024)
-            tatizo ConnectionAbortedError:
+            except ConnectionAbortedError:
                 pass
             mwishowe:
                 sock.close()
 
-        async def client(addr):
-            with self.assertWarns(DeprecationWarning):
+        async eleza client(addr):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 reader, writer = await asyncio.open_connection(
                     *addr,
                     ssl=client_sslctx,
@@ -665,11 +665,11 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                     loop=self.loop,
                     ssl_handshake_timeout=1.0)
 
-        with self.tcp_server(server,
+        ukijumuisha self.tcp_server(server,
                              max_clients=1,
                              backlog=1) as srv:
 
-            with self.assertRaisesRegex(
+            ukijumuisha self.assertRaisesRegex(
                     ConnectionAbortedError,
                     r'SSL handshake.*is taking longer'):
 
@@ -677,27 +677,27 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         self.assertEqual(messages, [])
 
-    def test_create_connection_ssl_failed_certificate(self):
-        self.loop.set_exception_handler(lambda loop, ctx: None)
+    eleza test_create_connection_ssl_failed_certificate(self):
+        self.loop.set_exception_handler(lambda loop, ctx: Tupu)
 
         sslctx = test_utils.simple_server_sslcontext()
         client_sslctx = test_utils.simple_client_sslcontext(
-            disable_verify=False)
+            disable_verify=Uongo)
 
-        def server(sock):
+        eleza server(sock):
             jaribu:
                 sock.start_tls(
                     sslctx,
-                    server_side=True)
-            tatizo ssl.SSLError:
+                    server_side=Kweli)
+            except ssl.SSLError:
                 pass
-            tatizo OSError:
+            except OSError:
                 pass
             mwishowe:
                 sock.close()
 
-        async def client(addr):
-            with self.assertWarns(DeprecationWarning):
+        async eleza client(addr):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 reader, writer = await asyncio.open_connection(
                     *addr,
                     ssl=client_sslctx,
@@ -705,36 +705,36 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                     loop=self.loop,
                     ssl_handshake_timeout=1.0)
 
-        with self.tcp_server(server,
+        ukijumuisha self.tcp_server(server,
                              max_clients=1,
                              backlog=1) as srv:
 
-            with self.assertRaises(ssl.SSLCertVerificationError):
+            ukijumuisha self.assertRaises(ssl.SSLCertVerificationError):
                 self.loop.run_until_complete(client(srv.addr))
 
-    def test_start_tls_client_corrupted_ssl(self):
-        self.loop.set_exception_handler(lambda loop, ctx: None)
+    eleza test_start_tls_client_corrupted_ssl(self):
+        self.loop.set_exception_handler(lambda loop, ctx: Tupu)
 
         sslctx = test_utils.simple_server_sslcontext()
         client_sslctx = test_utils.simple_client_sslcontext()
 
-        def server(sock):
+        eleza server(sock):
             orig_sock = sock.dup()
             jaribu:
                 sock.start_tls(
                     sslctx,
-                    server_side=True)
+                    server_side=Kweli)
                 sock.sendall(b'A\n')
                 sock.recv_all(1)
                 orig_sock.send(b'please corrupt the SSL connection')
-            tatizo ssl.SSLError:
+            except ssl.SSLError:
                 pass
             mwishowe:
                 orig_sock.close()
                 sock.close()
 
-        async def client(addr):
-            with self.assertWarns(DeprecationWarning):
+        async eleza client(addr):
+            ukijumuisha self.assertWarns(DeprecationWarning):
                 reader, writer = await asyncio.open_connection(
                     *addr,
                     ssl=client_sslctx,
@@ -743,13 +743,13 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             self.assertEqual(await reader.readline(), b'A\n')
             writer.write(b'B')
-            with self.assertRaises(ssl.SSLError):
+            ukijumuisha self.assertRaises(ssl.SSLError):
                 await reader.readline()
 
             writer.close()
-            return 'OK'
+            rudisha 'OK'
 
-        with self.tcp_server(server,
+        ukijumuisha self.tcp_server(server,
                              max_clients=1,
                              backlog=1) as srv:
 
@@ -758,20 +758,20 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
         self.assertEqual(res, 'OK')
 
 
-@unittest.skipIf(ssl is None, 'No ssl module')
-class SelectorStartTLSTests(BaseStartTLS, unittest.TestCase):
+@unittest.skipIf(ssl ni Tupu, 'No ssl module')
+kundi SelectorStartTLSTests(BaseStartTLS, unittest.TestCase):
 
-    def new_loop(self):
-        return asyncio.SelectorEventLoop()
+    eleza new_loop(self):
+        rudisha asyncio.SelectorEventLoop()
 
 
-@unittest.skipIf(ssl is None, 'No ssl module')
+@unittest.skipIf(ssl ni Tupu, 'No ssl module')
 @unittest.skipUnless(hasattr(asyncio, 'ProactorEventLoop'), 'Windows only')
-class ProactorStartTLSTests(BaseStartTLS, unittest.TestCase):
+kundi ProactorStartTLSTests(BaseStartTLS, unittest.TestCase):
 
-    def new_loop(self):
-        return asyncio.ProactorEventLoop()
+    eleza new_loop(self):
+        rudisha asyncio.ProactorEventLoop()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

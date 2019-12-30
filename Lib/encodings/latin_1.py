@@ -12,8 +12,8 @@ agiza codecs
 
 kundi Codec(codecs.Codec):
 
-    # Note: Binding these as C functions will result in the kundi not
-    # converting them to methods. This is intended.
+    # Note: Binding these as C functions will result kwenye the kundi not
+    # converting them to methods. This ni intended.
     encode = codecs.latin_1_encode
     decode = codecs.latin_1_decode
 
@@ -26,10 +26,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha codecs.latin_1_decode(input,self.errors)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pita
+    pass
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pita
+    pass
 
 kundi StreamConverter(StreamWriter,StreamReader):
 

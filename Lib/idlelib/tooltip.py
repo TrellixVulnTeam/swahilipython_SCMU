@@ -26,7 +26,7 @@ kundi TooltipBase(object):
     eleza showtip(self):
         """display the tooltip"""
         ikiwa self.tipwindow:
-            rudisha
+            return
         self.tipwindow = tw = Toplevel(self.anchor_widget)
         # show no border on the top level window
         tw.wm_overrideredirect(1)
@@ -36,8 +36,8 @@ kundi TooltipBase(object):
             # the focus.
             tw.tk.call("::tk::unsupported::MacWindowStyle", "style", tw._w,
                        "help", "noActivates")
-        tatizo TclError:
-            pita
+        except TclError:
+            pass
 
         self.position_window()
         self.showcontents()
@@ -65,7 +65,7 @@ kundi TooltipBase(object):
     eleza showcontents(self):
         """content display hook kila sub-classes"""
         # See ToolTip kila an example
-        ashiria NotImplementedError
+         ashiria NotImplementedError
 
     eleza hidetip(self):
         """hide the tooltip"""
@@ -75,8 +75,8 @@ kundi TooltipBase(object):
         ikiwa tw:
             jaribu:
                 tw.destroy()
-            tatizo TclError:  # pragma: no cover
-                pita
+            except TclError:  # pragma: no cover
+                pass
 
 
 kundi OnHoverTooltipBase(TooltipBase):
@@ -105,8 +105,8 @@ kundi OnHoverTooltipBase(TooltipBase):
             self.anchor_widget.unbind("<Enter>", self._id1)
             self.anchor_widget.unbind("<Leave>", self._id2)  # pragma: no cover
             self.anchor_widget.unbind("<Button>", self._id3) # pragma: no cover
-        tatizo TclError:
-            pita
+        except TclError:
+            pass
         super(OnHoverTooltipBase, self).__del__()
 
     eleza _show_event(self, event=Tupu):
@@ -137,8 +137,8 @@ kundi OnHoverTooltipBase(TooltipBase):
         """hide the tooltip"""
         jaribu:
             self.unschedule()
-        tatizo TclError:  # pragma: no cover
-            pita
+        except TclError:  # pragma: no cover
+            pass
         super(OnHoverTooltipBase, self).hidetip()
 
 

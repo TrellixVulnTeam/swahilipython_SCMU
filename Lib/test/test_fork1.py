@@ -1,7 +1,7 @@
 """This test checks kila correct fork() behavior.
 """
 
-agiza _imp kama imp
+agiza _imp as imp
 agiza os
 agiza signal
 agiza sys
@@ -31,7 +31,7 @@ kundi ForkTest(ForkWait):
         self.assertEqual(status, 0, "cause = %d, exit = %d" % (status&0xff, status>>8))
 
     eleza test_threaded_import_lock_fork(self):
-        """Check fork() kwenye main thread works wakati a subthread ni doing an agiza"""
+        """Check fork() kwenye main thread works wakati a subthread ni doing an import"""
         import_started = threading.Event()
         fake_module_name = "fake test module"
         partial_module = "partial"
@@ -62,18 +62,18 @@ kundi ForkTest(ForkWait):
             isipokua:
                 t.join()
                 # Exitcode 1 means the child got a partial module (bad.) No
-                # exitcode (but a hang, which manifests kama 'got pid 0')
+                # exitcode (but a hang, which manifests as 'got pid 0')
                 # means the child deadlocked (also bad.)
                 self.wait_impl(pid)
         mwishowe:
             jaribu:
                 os.kill(pid, signal.SIGKILL)
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
 
 
     eleza test_nested_import_lock_fork(self):
-        """Check fork() kwenye main thread works wakati the main thread ni doing an agiza"""
+        """Check fork() kwenye main thread works wakati the main thread ni doing an import"""
         # Issue 9573: this used to trigger RuntimeError kwenye the child process
         eleza fork_with_import_lock(level):
             release = 0
@@ -88,12 +88,12 @@ kundi ForkTest(ForkWait):
                 mwishowe:
                     kila i kwenye range(release):
                         imp.release_lock()
-            tatizo RuntimeError:
+            except RuntimeError:
                 ikiwa in_child:
                     ikiwa verbose > 1:
                         andika("RuntimeError kwenye child")
                     os._exit(1)
-                ashiria
+                raise
             ikiwa in_child:
                 os._exit(0)
             self.wait_impl(pid)

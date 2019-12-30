@@ -1,7 +1,7 @@
 """Fix function attribute names (f.func_x -> f.__x__)."""
 # Author: Collin Winter
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 

@@ -1,6 +1,6 @@
 """Simple kundi to read IFF chunks.
 
-An IFF chunk (used kwenye formats such kama AIFF, TIFF, RMFF (RealMedia File
+An IFF chunk (used kwenye formats such as AIFF, TIFF, RMFF (RealMedia File
 Format)) has the following structure:
 
 +----------------+
@@ -28,19 +28,19 @@ Usage:
 wakati Kweli:
     jaribu:
         chunk = Chunk(file)
-    tatizo EOFError:
+    except EOFError:
         koma
     chunktype = chunk.getname()
     wakati Kweli:
         data = chunk.read(nbytes)
         ikiwa sio data:
-            pita
+            pass
         # do something ukijumuisha data
 
 The interface ni file-like.  The implemented methods are:
 read, close, seek, tell, isatty.
 Extra methods are: skip() (called by close, skips to the end of the chunk),
-getname() (rudishas the name (ID) of the chunk)
+getname() (returns the name (ID) of the chunk)
 
 The __init__ method has one required argument, a file-like object
 (including a chunk instance), na one optional argument, a flag which
@@ -60,17 +60,17 @@ kundi Chunk:
         self.file = file
         self.chunkname = file.read(4)
         ikiwa len(self.chunkname) < 4:
-            ashiria EOFError
+             ashiria EOFError
         jaribu:
-            self.chunksize = struct.unpack_kutoka(strflag+'L', file.read(4))[0]
-        tatizo struct.error:
-            ashiria EOFError kutoka Tupu
+            self.chunksize = struct.unpack_from(strflag+'L', file.read(4))[0]
+        except struct.error:
+             ashiria EOFError kutoka Tupu
         ikiwa inclheader:
             self.chunksize = self.chunksize - 8 # subtract header
         self.size_read = 0
         jaribu:
             self.offset = self.file.tell()
-        tatizo (AttributeError, OSError):
+        except (AttributeError, OSError):
             self.seekable = Uongo
         isipokua:
             self.seekable = Kweli
@@ -92,7 +92,7 @@ kundi Chunk:
 
     eleza isatty(self):
         ikiwa self.closed:
-            ashiria ValueError("I/O operation on closed file")
+             ashiria ValueError("I/O operation on closed file")
         rudisha Uongo
 
     eleza seek(self, pos, whence=0):
@@ -102,21 +102,21 @@ kundi Chunk:
         """
 
         ikiwa self.closed:
-            ashiria ValueError("I/O operation on closed file")
+             ashiria ValueError("I/O operation on closed file")
         ikiwa sio self.seekable:
-            ashiria OSError("cannot seek")
+             ashiria OSError("cannot seek")
         ikiwa whence == 1:
             pos = pos + self.size_read
-        lasivyo whence == 2:
+        elikiwa whence == 2:
             pos = pos + self.chunksize
         ikiwa pos < 0 ama pos > self.chunksize:
-            ashiria RuntimeError
+             ashiria RuntimeError
         self.file.seek(self.offset + pos, 0)
         self.size_read = pos
 
     eleza tell(self):
         ikiwa self.closed:
-            ashiria ValueError("I/O operation on closed file")
+             ashiria ValueError("I/O operation on closed file")
         rudisha self.size_read
 
     eleza read(self, size=-1):
@@ -126,7 +126,7 @@ kundi Chunk:
         """
 
         ikiwa self.closed:
-            ashiria ValueError("I/O operation on closed file")
+             ashiria ValueError("I/O operation on closed file")
         ikiwa self.size_read >= self.chunksize:
             rudisha b''
         ikiwa size < 0:
@@ -150,7 +150,7 @@ kundi Chunk:
         """
 
         ikiwa self.closed:
-            ashiria ValueError("I/O operation on closed file")
+             ashiria ValueError("I/O operation on closed file")
         ikiwa self.seekable:
             jaribu:
                 n = self.chunksize - self.size_read
@@ -159,11 +159,11 @@ kundi Chunk:
                     n = n + 1
                 self.file.seek(n, 1)
                 self.size_read = self.size_read + n
-                rudisha
-            tatizo OSError:
-                pita
+                return
+            except OSError:
+                pass
         wakati self.size_read < self.chunksize:
             n = min(8192, self.chunksize - self.size_read)
             dummy = self.read(n)
             ikiwa sio dummy:
-                ashiria EOFError
+                 ashiria EOFError

@@ -7,7 +7,7 @@ agiza unittest
 # Location of mailcap file
 MAILCAPFILE = test.support.findfile("mailcap.txt")
 
-# Dict to act kama mock mailcap entry kila this test
+# Dict to act as mock mailcap entry kila this test
 # The keys na values should match the contents of MAILCAPFILE
 MAILCAPDICT = {
     'application/x-movie':
@@ -68,13 +68,13 @@ kundi HelperFunctionTest(unittest.TestCase):
 
     eleza test_listmailcapfiles(self):
         # The rudisha value kila listmailcapfiles() will vary by system.
-        # So verify that listmailcapfiles() rudishas a list of strings that ni of
+        # So verify that listmailcapfiles() returns a list of strings that ni of
         # non-zero length.
         mcfiles = mailcap.listmailcapfiles()
         self.assertIsInstance(mcfiles, list)
         kila m kwenye mcfiles:
             self.assertIsInstance(m, str)
-        ukijumuisha test.support.EnvironmentVarGuard() kama env:
+        ukijumuisha test.support.EnvironmentVarGuard() as env:
             # According to RFC 1524, ikiwa MAILCAPS env variable exists, use that
             # na only that.
             ikiwa "MAILCAPS" kwenye env:
@@ -87,7 +87,7 @@ kundi HelperFunctionTest(unittest.TestCase):
 
     eleza test_readmailcapfile(self):
         # Test readmailcapfile() using test file. It should match MAILCAPDICT.
-        ukijumuisha open(MAILCAPFILE, 'r') kama mcf:
+        ukijumuisha open(MAILCAPFILE, 'r') as mcf:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 d = mailcap.readmailcapfile(mcf)
         self.assertDictEqual(d, MAILCAPDICT_DEPRECATED)
@@ -136,7 +136,7 @@ kundi GetcapsTest(unittest.TestCase):
         # Test mailcap.getcaps() using mock mailcap file kwenye this dir.
         # Temporarily override any existing system mailcap file by pointing the
         # MAILCAPS environment variable to our mock file.
-        ukijumuisha test.support.EnvironmentVarGuard() kama env:
+        ukijumuisha test.support.EnvironmentVarGuard() as env:
             env["MAILCAPS"] = MAILCAPFILE
             caps = mailcap.getcaps()
             self.assertDictEqual(caps, MAILCAPDICT)
@@ -216,15 +216,15 @@ kundi FindmatchTest(unittest.TestCase):
     eleza test_test(self):
         # findmatch() will automatically check any "test" conditions na skip
         # the entry ikiwa the check fails.
-        caps = {"test/pita": [{"test": "test 1 -eq 1"}],
+        caps = {"test/pass": [{"test": "test 1 -eq 1"}],
                 "test/fail": [{"test": "test 1 -eq 0"}]}
         # test case: (findmatch args, findmatch keyword args, expected output)
         #   positional args: caps, MIMEtype, key ("test")
         #   keyword args: N/A
         #   output: (command line, mailcap entry)
         cases = [
-            # findmatch will rudisha the mailcap entry kila test/pita because it evaluates to true
-            ([caps, "test/pita", "test"], {}, ("test 1 -eq 1", {"test": "test 1 -eq 1"})),
+            # findmatch will rudisha the mailcap entry kila test/pass because it evaluates to true
+            ([caps, "test/pass", "test"], {}, ("test 1 -eq 1", {"test": "test 1 -eq 1"})),
             # findmatch will rudisha Tupu because test/fail evaluates to false
             ([caps, "test/fail", "test"], {}, (Tupu, Tupu))
         ]

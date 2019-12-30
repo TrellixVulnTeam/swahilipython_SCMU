@@ -34,11 +34,11 @@ saferepr()
 
 """
 
-agiza collections kama _collections
+agiza collections as _collections
 agiza re
-agiza sys kama _sys
-agiza types kama _types
-kutoka io agiza StringIO kama _StringIO
+agiza sys as _sys
+agiza types as _types
+kutoka io agiza StringIO as _StringIO
 
 __all__ = ["pprint","pformat","isreadable","isrecursive","saferepr",
            "PrettyPrinter", "pp"]
@@ -92,7 +92,7 @@ kundi _safe_key:
     eleza __lt__(self, other):
         jaribu:
             rudisha self.obj < other.obj
-        tatizo TypeError:
+        except TypeError:
             rudisha ((str(type(self.obj)), id(self.obj)) < \
                     (str(type(other.obj)), id(other.obj)))
 
@@ -129,11 +129,11 @@ kundi PrettyPrinter:
         indent = int(indent)
         width = int(width)
         ikiwa indent < 0:
-            ashiria ValueError('indent must be >= 0')
+             ashiria ValueError('indent must be >= 0')
         ikiwa depth ni sio Tupu na depth <= 0:
-            ashiria ValueError('depth must be > 0')
+             ashiria ValueError('depth must be > 0')
         ikiwa sio width:
-            ashiria ValueError('width must be != 0')
+             ashiria ValueError('width must be != 0')
         self._depth = depth
         self._indent_per_level = indent
         self._width = width
@@ -149,9 +149,9 @@ kundi PrettyPrinter:
         self._stream.write("\n")
 
     eleza pformat(self, object):
-        sio_obj = _StringIO()
-        self._format(object, sio_obj, 0, 0, {}, 0)
-        rudisha sio_obj.getvalue()
+        sio = _StringIO()
+        self._format(object, sio, 0, 0, {}, 0)
+        rudisha sio.getvalue()
 
     eleza isrecursive(self, object):
         rudisha self.format(object, {}, 0, 0)[2]
@@ -166,7 +166,7 @@ kundi PrettyPrinter:
             stream.write(_recursion(object))
             self._recursive = Kweli
             self._readable = Uongo
-            rudisha
+            return
         rep = self._repr(object, context, level)
         max_width = self._width - indent - allowance
         ikiwa len(rep) > max_width:
@@ -175,13 +175,13 @@ kundi PrettyPrinter:
                 context[objid] = 1
                 p(self, object, stream, indent, allowance, context, level + 1)
                 toa context[objid]
-                rudisha
-            lasivyo isinstance(object, dict):
+                return
+            elikiwa isinstance(object, dict):
                 context[objid] = 1
                 self._pprint_dict(object, stream, indent, allowance,
                                   context, level + 1)
                 toa context[objid]
-                rudisha
+                return
         stream.write(rep)
 
     _dispatch = {}
@@ -206,7 +206,7 @@ kundi PrettyPrinter:
     eleza _pprint_ordered_dict(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            rudisha
+            return
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         self._format(list(object.items()), stream,
@@ -236,7 +236,7 @@ kundi PrettyPrinter:
     eleza _pprint_set(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            rudisha
+            return
         typ = object.__class__
         ikiwa typ ni set:
             stream.write('{')
@@ -257,7 +257,7 @@ kundi PrettyPrinter:
         write = stream.write
         ikiwa sio len(object):
             write(repr(object))
-            rudisha
+            return
         chunks = []
         lines = object.splitlines(Kweli)
         ikiwa level == 1:
@@ -292,7 +292,7 @@ kundi PrettyPrinter:
                     chunks.append(repr(current))
         ikiwa len(chunks) == 1:
             write(rep)
-            rudisha
+            return
         ikiwa level == 1:
             write('(')
         kila i, rep kwenye enumerate(chunks):
@@ -308,7 +308,7 @@ kundi PrettyPrinter:
         write = stream.write
         ikiwa len(object) <= 4:
             write(repr(object))
-            rudisha
+            return
         parens = level == 1
         ikiwa parens:
             indent += 1
@@ -370,14 +370,14 @@ kundi PrettyPrinter:
         it = iter(items)
         jaribu:
             next_ent = next(it)
-        tatizo StopIteration:
-            rudisha
+        except StopIteration:
+            return
         last = Uongo
         wakati sio last:
             ent = next_ent
             jaribu:
                 next_ent = next(it)
-            tatizo StopIteration:
+            except StopIteration:
                 last = Kweli
                 max_width -= allowance
                 width -= allowance
@@ -410,7 +410,7 @@ kundi PrettyPrinter:
         rudisha repr
 
     eleza format(self, object, context, maxlevels, level):
-        """Format object kila a specific context, rudishaing a string
+        """Format object kila a specific context, returning a string
         na flags indicating whether the representation ni 'readable'
         na whether the object represents a recursive construct.
         """
@@ -419,7 +419,7 @@ kundi PrettyPrinter:
     eleza _pprint_default_dict(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            rudisha
+            return
         rdf = self._repr(object.default_factory, context, level)
         cls = object.__class__
         indent += len(cls.__name__) + 1
@@ -432,7 +432,7 @@ kundi PrettyPrinter:
     eleza _pprint_counter(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            rudisha
+            return
         cls = object.__class__
         stream.write(cls.__name__ + '({')
         ikiwa self._indent_per_level > 1:
@@ -448,7 +448,7 @@ kundi PrettyPrinter:
     eleza _pprint_chain_map(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object.maps):
             stream.write(repr(object))
-            rudisha
+            return
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1
@@ -465,7 +465,7 @@ kundi PrettyPrinter:
     eleza _pprint_deque(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            rudisha
+            return
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1
@@ -539,7 +539,7 @@ eleza _safe_repr(object, context, maxlevels, level, sort_dicts):
             ikiwa sio object:
                 rudisha "[]", Kweli, Uongo
             format = "[%s]"
-        lasivyo len(object) == 1:
+        elikiwa len(object) == 1:
             format = "(%s,)"
         isipokua:
             ikiwa sio object:

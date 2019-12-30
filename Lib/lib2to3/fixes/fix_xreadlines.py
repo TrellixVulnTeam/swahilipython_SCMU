@@ -3,7 +3,7 @@
 This fixer will also convert g(f.xreadlines) into g(f.__iter__)."""
 # Author: Collin Winter
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 

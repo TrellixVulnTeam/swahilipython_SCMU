@@ -4,7 +4,7 @@ These tests try to exercise the 32-bit boundary that ni sometimes, if
 rarely, exceeded kwenye practice, but almost never tested.  They are really only
 meaningful on 64-bit builds on machines ukijumuisha a *lot* of memory, but the
 tests are always run, usually ukijumuisha very low memory limits to make sure the
-tests themselves don't suffer kutoka bitrot.  To run them kila real, pita a
+tests themselves don't suffer kutoka bitrot.  To run them kila real, pass a
 high memory limit to regrtest, ukijumuisha the -M option.
 """
 
@@ -27,7 +27,7 @@ agiza sys
 #
 # When run ukijumuisha a memory limit set, both decorators skip tests that need
 # more memory than available to be meaningful.  The precisionbigmemtest will
-# always pita minsize kama size, even ikiwa there ni much more memory available.
+# always pass minsize as size, even ikiwa there ni much more memory available.
 # The bigmemtest decorator will scale size upward to fill available memory.
 #
 # Bigmem testing houserules:
@@ -53,12 +53,12 @@ agiza sys
 #    ukijumuisha a much smaller number too, kwenye the normal test run (5Kb currently.)
 #    This ni so the tests themselves get frequent testing.
 #    Consequently, always make all large allocations based on the
-#    pitaed-in 'size', na don't rely on the size being very large. Also,
+#    passed-in 'size', na don't rely on the size being very large. Also,
 #    memuse-per-size should remain sane (less than a few thousand); ikiwa your
 #    test uses more, adjust 'size' upward, instead.
 
 # BEWARE: it seems that one failing test can tuma other subsequent tests to
-# fail kama well. I do sio know whether it ni due to memory fragmentation
+# fail as well. I do sio know whether it ni due to memory fragmentation
 # issues, ama other specifics of the platform malloc() routine.
 
 ascii_char_size = 1
@@ -70,8 +70,8 @@ pointer_size = 4 ikiwa sys.maxsize < 2**32 isipokua 8
 kundi BaseStrTest:
 
     eleza _test_capitalize(self, size):
-        _ = self.kutoka_latin1
-        SUBSTR = self.kutoka_latin1(' abc eleza ghi')
+        _ = self.from_latin1
+        SUBSTR = self.from_latin1(' abc eleza ghi')
         s = _('-') * size + SUBSTR
         caps = s.capitalize()
         self.assertEqual(caps[-len(SUBSTR):],
@@ -80,7 +80,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=1)
     eleza test_center(self, size):
-        SUBSTR = self.kutoka_latin1(' abc eleza ghi')
+        SUBSTR = self.from_latin1(' abc eleza ghi')
         s = SUBSTR.center(size)
         self.assertEqual(len(s), size)
         lpadsize = rpadsize = (len(s) - len(SUBSTR)) // 2
@@ -91,7 +91,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_count(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         s = _('.') * size + SUBSTR
         self.assertEqual(s.count(_('.')), size)
@@ -103,7 +103,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_endswith(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         s = _('-') * size + SUBSTR
         self.assertKweli(s.endswith(SUBSTR))
@@ -115,7 +115,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=2)
     eleza test_expandtabs(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         s = _('-') * size
         tabsize = 8
         self.assertKweli(s.expandtabs() == s)
@@ -128,7 +128,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_find(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         sublen = len(SUBSTR)
         s = _('').join([SUBSTR, _('-') * size, SUBSTR])
@@ -145,7 +145,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_index(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         sublen = len(SUBSTR)
         s = _('').join([SUBSTR, _('-') * size, SUBSTR])
@@ -162,7 +162,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_isalnum(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('123456')
         s = _('a') * size + SUBSTR
         self.assertKweli(s.isalnum())
@@ -171,7 +171,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_isalpha(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('zzzzzzz')
         s = _('a') * size + SUBSTR
         self.assertKweli(s.isalpha())
@@ -180,7 +180,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_isdigit(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('123456')
         s = _('9') * size + SUBSTR
         self.assertKweli(s.isdigit())
@@ -189,7 +189,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_islower(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         chars = _(''.join(
             chr(c) kila c kwenye range(255) ikiwa sio chr(c).isupper()))
         repeats = size // len(chars) + 2
@@ -200,7 +200,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_isspace(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         whitespace = _(' \f\n\r\t\v')
         repeats = size // len(whitespace) + 2
         s = whitespace * repeats
@@ -210,7 +210,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_istitle(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('123456')
         s = _('').join([_('A'), _('a') * size, SUBSTR])
         self.assertKweli(s.istitle())
@@ -221,7 +221,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_isupper(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         chars = _(''.join(
             chr(c) kila c kwenye range(255) ikiwa sio chr(c).islower()))
         repeats = size // len(chars) + 2
@@ -232,7 +232,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_join(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         s = _('A') * size
         x = s.join([_('aaaaa'), _('bbbbb')])
         self.assertEqual(x.count(_('a')), 5)
@@ -242,7 +242,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=1)
     eleza test_ljust(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         s = SUBSTR.ljust(size)
         self.assertKweli(s.startswith(SUBSTR + _('  ')))
@@ -251,7 +251,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=2)
     eleza test_lower(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         s = _('A') * size
         s = s.lower()
         self.assertEqual(len(s), size)
@@ -259,7 +259,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=1)
     eleza test_lstrip(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('abc eleza ghi')
         s = SUBSTR.rjust(size)
         self.assertEqual(len(s), size)
@@ -274,7 +274,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=2)
     eleza test_replace(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         replacement = _('a')
         s = _(' ') * size
         s = s.replace(_(' '), replacement)
@@ -287,7 +287,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_rfind(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         sublen = len(SUBSTR)
         s = _('').join([SUBSTR, _('-') * size, SUBSTR])
@@ -303,7 +303,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_rindex(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         sublen = len(SUBSTR)
         s = _('').join([SUBSTR, _('-') * size, SUBSTR])
@@ -322,7 +322,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=1)
     eleza test_rjust(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         s = SUBSTR.ljust(size)
         self.assertKweli(s.startswith(SUBSTR + _('  ')))
@@ -331,7 +331,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=1)
     eleza test_rstrip(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         s = SUBSTR.ljust(size)
         self.assertEqual(len(s), size)
@@ -349,7 +349,7 @@ kundi BaseStrTest:
     # hold sqrt(size) items. It's close but just over 2x size.
     @bigmemtest(size=_2G, memuse=2.1)
     eleza test_split_small(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         # Crudely calculate an estimate so that the result of s.split won't
         # take up an inordinate amount of memory
         chunksize = int(size ** 0.5 + 2)
@@ -375,7 +375,7 @@ kundi BaseStrTest:
     # 8*size bytes.
     @bigmemtest(size=_2G + 5, memuse=ascii_char_size * 2 + pointer_size)
     eleza test_split_large(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         s = _(' a') * size + _(' ')
         l = s.split()
         self.assertEqual(len(l), size)
@@ -387,7 +387,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2.1)
     eleza test_splitlines(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         # Crudely calculate an estimate so that the result of s.split won't
         # take up an inordinate amount of memory
         chunksize = int(size ** 0.5 + 2) // 2
@@ -401,7 +401,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_startswith(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _(' abc eleza ghi')
         s = _('-') * size + SUBSTR
         self.assertKweli(s.startswith(s))
@@ -410,7 +410,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=1)
     eleza test_strip(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('   abc eleza ghi   ')
         s = SUBSTR.rjust(size)
         self.assertEqual(len(s), size)
@@ -421,7 +421,7 @@ kundi BaseStrTest:
         self.assertEqual(s.strip(), SUBSTR.strip())
 
     eleza _test_swapcase(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _("aBcDeFG12.'\xa9\x00")
         sublen = len(SUBSTR)
         repeats = size // sublen + 2
@@ -432,7 +432,7 @@ kundi BaseStrTest:
         self.assertEqual(s[-sublen * 3:], SUBSTR.swapcase() * 3)
 
     eleza _test_title(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('SpaaHAaaAaham')
         s = SUBSTR * (size // len(SUBSTR) + 2)
         s = s.title()
@@ -441,7 +441,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_translate(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('aZz.z.Aaz.')
         trans = bytes.maketrans(b'.aZ', b'-!$')
         sublen = len(SUBSTR)
@@ -457,7 +457,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 5, memuse=2)
     eleza test_upper(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         s = _('a') * size
         s = s.upper()
         self.assertEqual(len(s), size)
@@ -465,7 +465,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 20, memuse=1)
     eleza test_zfill(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('-568324723598234')
         s = SUBSTR.zfill(size)
         self.assertKweli(s.endswith(_('0') + SUBSTR[1:]))
@@ -473,22 +473,22 @@ kundi BaseStrTest:
         self.assertEqual(len(s), size)
         self.assertEqual(s.count(_('0')), size - len(SUBSTR))
 
-    # This test ni meaningful even ukijumuisha size < 2G, kama long kama the
+    # This test ni meaningful even ukijumuisha size < 2G, as long as the
     # doubled string ni > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     eleza test_concat(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         s = _('.') * size
         self.assertEqual(len(s), size)
         s = s + s
         self.assertEqual(len(s), size * 2)
         self.assertEqual(s.count(_('.')), size * 2)
 
-    # This test ni meaningful even ukijumuisha size < 2G, kama long kama the
+    # This test ni meaningful even ukijumuisha size < 2G, as long as the
     # repeated string ni > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     eleza test_repeat(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         s = _('.') * size
         self.assertEqual(len(s), size)
         s = s * 2
@@ -497,7 +497,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 20, memuse=2)
     eleza test_slice_and_getitem(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('0123456789')
         sublen = len(SUBSTR)
         s = SUBSTR * (size // sublen)
@@ -531,7 +531,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G, memuse=2)
     eleza test_contains(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('0123456789')
         edge = _('-') * (size // 2)
         s = _('').join([edge, SUBSTR, edge])
@@ -545,7 +545,7 @@ kundi BaseStrTest:
 
     @bigmemtest(size=_2G + 10, memuse=2)
     eleza test_compare(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         s1 = _('-') * size
         s2 = _('-') * size
         self.assertKweli(s1 == s2)
@@ -564,7 +564,7 @@ kundi BaseStrTest:
         # test ni dodgy (there's no *guarantee* that the two things should
         # have a different hash, even ikiwa they, kwenye the current
         # implementation, almost always do.)
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         s = _('\x00') * size
         h1 = hash(s)
         toa s
@@ -574,7 +574,7 @@ kundi BaseStrTest:
 
 kundi StrTest(unittest.TestCase, BaseStrTest):
 
-    eleza kutoka_latin1(self, s):
+    eleza from_latin1(self, s):
         rudisha s
 
     eleza basic_encode_test(self, size, enc, c='.', expectedsize=Tupu):
@@ -596,7 +596,7 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
             meth = getattr(type(self), name)
             jaribu:
                 memuse = meth.memuse
-            tatizo AttributeError:
+            except AttributeError:
                 endelea
             meth.memuse = ascii_char_size * memuse
             self._adjusted[name] = memuse
@@ -628,22 +628,22 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
     eleza test_encode_raw_unicode_escape(self, size):
         jaribu:
             rudisha self.basic_encode_test(size, 'raw_unicode_escape')
-        tatizo MemoryError:
-            pita # acceptable on 32-bit
+        except MemoryError:
+            pass # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 5 + 70, memuse=ascii_char_size + 8 + 1)
     eleza test_encode_utf7(self, size):
         jaribu:
             rudisha self.basic_encode_test(size, 'utf7')
-        tatizo MemoryError:
-            pita # acceptable on 32-bit
+        except MemoryError:
+            pass # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 4 + 5, memuse=ascii_char_size + ucs4_char_size + 4)
     eleza test_encode_utf32(self, size):
         jaribu:
             rudisha self.basic_encode_test(size, 'utf32', expectedsize=4 * size + 4)
-        tatizo MemoryError:
-            pita # acceptable on 32-bit
+        except MemoryError:
+            pass # acceptable on 32-bit
 
     @bigmemtest(size=_2G - 1, memuse=ascii_char_size + 1)
     eleza test_encode_ascii(self, size):
@@ -681,7 +681,7 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s[-1], "'")
         self.assertEqual(s.count('-'), size)
         toa s
-        # repr() will create a string four times kama large kama this 'binary
+        # repr() will create a string four times as large as this 'binary
         # string', but we don't want to allocate much more than twice
         # size kwenye total.  (We do extra testing kwenye test_repr_large())
         size = size // 5 * 2
@@ -737,13 +737,13 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
         mwishowe:
             r = s = Tupu
 
-    # The original test_translate ni overridden here, so kama to get the
+    # The original test_translate ni overridden here, so as to get the
     # correct size estimate: str.translate() uses an intermediate Py_UCS4
     # representation.
 
     @bigmemtest(size=_2G, memuse=ascii_char_size * 2 + ucs4_char_size)
     eleza test_translate(self, size):
-        _ = self.kutoka_latin1
+        _ = self.from_latin1
         SUBSTR = _('aZz.z.Aaz.')
         trans = {
             ord(_('.')): _('-'),
@@ -764,12 +764,12 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
 
 kundi BytesTest(unittest.TestCase, BaseStrTest):
 
-    eleza kutoka_latin1(self, s):
+    eleza from_latin1(self, s):
         rudisha s.encode("latin-1")
 
     @bigmemtest(size=_2G + 2, memuse=1 + ascii_char_size)
     eleza test_decode(self, size):
-        s = self.kutoka_latin1('.') * size
+        s = self.from_latin1('.') * size
         self.assertEqual(len(s.decode('utf-8')), size)
 
     @bigmemtest(size=_2G, memuse=2)
@@ -787,12 +787,12 @@ kundi BytesTest(unittest.TestCase, BaseStrTest):
 
 kundi BytearrayTest(unittest.TestCase, BaseStrTest):
 
-    eleza kutoka_latin1(self, s):
+    eleza from_latin1(self, s):
         rudisha bytearray(s.encode("latin-1"))
 
     @bigmemtest(size=_2G + 2, memuse=1 + ascii_char_size)
     eleza test_decode(self, size):
-        s = self.kutoka_latin1('.') * size
+        s = self.from_latin1('.') * size
         self.assertEqual(len(s.decode('utf-8')), size)
 
     @bigmemtest(size=_2G, memuse=2)
@@ -819,7 +819,7 @@ kundi TupleTest(unittest.TestCase):
 
     # As a side-effect of testing long tuples, these tests happen to test
     # having more than 2<<31 references to any given object. Hence the
-    # use of different types of objects kama contents kwenye different tests.
+    # use of different types of objects as contents kwenye different tests.
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2)
     eleza test_compare(self, size):
@@ -909,8 +909,8 @@ kundi TupleTest(unittest.TestCase):
     eleza test_from_2G_generator(self, size):
         jaribu:
             t = tuple(iter([42]*size))
-        tatizo MemoryError:
-            pita # acceptable on 32-bit
+        except MemoryError:
+            pass # acceptable on 32-bit
         isipokua:
             self.assertEqual(len(t), size)
             self.assertEqual(t[:10], (42,) * 10)
@@ -920,8 +920,8 @@ kundi TupleTest(unittest.TestCase):
     eleza test_from_almost_2G_generator(self, size):
         jaribu:
             t = tuple(iter([42]*size))
-        tatizo MemoryError:
-            pita # acceptable on 32-bit
+        except MemoryError:
+            pass # acceptable on 32-bit
         isipokua:
             self.assertEqual(len(t), size)
             self.assertEqual(t[:10], (42,) * 10)

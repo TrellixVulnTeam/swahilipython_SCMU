@@ -1,18 +1,18 @@
 # -*- encoding: utf-8 -*-
 
-# This is a package that contains a number of modules that are used to
-# test import from the source files that have different encodings.
-# This file (the __init__ module of the package), is encoded in utf-8
-# and contains a list of strings from various unicode planes that are
+# This ni a package that contains a number of modules that are used to
+# test agiza kutoka the source files that have different encodings.
+# This file (the __init__ module of the package), ni encoded kwenye utf-8
+# na contains a list of strings kutoka various unicode planes that are
 # encoded differently to compare them to the same strings encoded
-# differently in submodules.  The following list, test_strings,
-# contains a list of tuples. The first element of each tuple is the
-# suffix that should be prepended with 'module_' to arrive at the
-# encoded submodule name, the second item is the encoding and the last
-# is the test string.  The same string is assigned to the variable
+# differently kwenye submodules.  The following list, test_strings,
+# contains a list of tuples. The first element of each tuple ni the
+# suffix that should be prepended ukijumuisha 'module_' to arrive at the
+# encoded submodule name, the second item ni the encoding na the last
+# ni the test string.  The same string ni assigned to the variable
 # named 'test' inside the submodule.  If the decoding of modules works
-# correctly, from module_xyz import test should result in the same
-# string as listed below in the 'xyz' entry.
+# correctly, kutoka module_xyz agiza test should result kwenye the same
+# string as listed below kwenye the 'xyz' entry.
 
 # module, encoding, test string
 test_strings = (

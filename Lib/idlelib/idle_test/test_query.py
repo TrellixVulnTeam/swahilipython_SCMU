@@ -6,7 +6,7 @@ attributes.  GUI tests create an instance of each kundi na simulate
 entries na button clicks.  Subkundi tests only target the new code in
 the subkundi definition.
 
-The appearance of the widgets ni checked by the Query na
+The appearance of the widgets ni checked by the Query and
 HelpSource htests.  These are run by running query.py.
 """
 kutoka idlelib agiza query
@@ -150,7 +150,7 @@ kundi HelpsourceBrowsefileTest(unittest.TestCase):
     eleza test_file_replaces_path(self):
         dialog = self.Dummy_HelpSource()
         # Path ni widget entry, either '' ama something.
-        # Func rudisha ni file dialog rudisha, either '' ama something.
+        # Func rudisha ni file dialog return, either '' ama something.
         # Func rudisha should override widget entry.
         # We need all 4 combinations to test all (most) code paths.
         kila path, func, result kwenye (

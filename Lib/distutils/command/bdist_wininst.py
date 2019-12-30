@@ -3,29 +3,29 @@
 Implements the Distutils 'bdist_wininst' command: create a windows installer
 exe-program."""
 
-import os
-import sys
-import warnings
-from distutils.core import Command
-from distutils.util import get_platform
-from distutils.dir_util import create_tree, remove_tree
-from distutils.errors import *
-from distutils.sysconfig import get_python_version
-from distutils import log
+agiza os
+agiza sys
+agiza warnings
+kutoka distutils.core agiza Command
+kutoka distutils.util agiza get_platform
+kutoka distutils.dir_util agiza create_tree, remove_tree
+kutoka distutils.errors agiza *
+kutoka distutils.sysconfig agiza get_python_version
+kutoka distutils agiza log
 
-class bdist_wininst(Command):
+kundi bdist_wininst(Command):
 
-    description = "create an executable installer for MS Windows"
+    description = "create an executable installer kila MS Windows"
 
-    user_options = [('bdist-dir=', None,
-                     "temporary directory for creating the distribution"),
+    user_options = [('bdist-dir=', Tupu,
+                     "temporary directory kila creating the distribution"),
                     ('plat-name=', 'p',
-                     "platform name to embed in generated filenames "
+                     "platform name to embed kwenye generated filenames "
                      "(default: %s)" % get_platform()),
                     ('keep-temp', 'k',
                      "keep the pseudo-installation tree around after " +
                      "creating the distribution archive"),
-                    ('target-version=', None,
+                    ('target-version=', Tupu,
                      "require a specific python version" +
                      " on the target system"),
                     ('no-target-compile', 'c',
@@ -36,21 +36,21 @@ class bdist_wininst(Command):
                     ('dist-dir=', 'd',
                      "directory to put final built distributions in"),
                     ('bitmap=', 'b',
-                     "bitmap to use for the installer instead of python-powered logo"),
+                     "bitmap to use kila the installer instead of python-powered logo"),
                     ('title=', 't',
                      "title to display on the installer background instead of default"),
-                    ('skip-build', None,
-                     "skip rebuilding everything (for testing/debugging)"),
-                    ('install-script=', None,
+                    ('skip-build', Tupu,
+                     "skip rebuilding everything (kila testing/debugging)"),
+                    ('install-script=', Tupu,
                      "basename of installation script to be run after "
-                     "installation or before deinstallation"),
-                    ('pre-install-script=', None,
+                     "installation ama before deinstallation"),
+                    ('pre-install-script=', Tupu,
                      "Fully qualified filename of a script to be run before "
-                     "any files are installed.  This script need sio be in the "
+                     "any files are installed.  This script need sio be kwenye the "
                      "distribution"),
-                    ('user-access-control=', None,
+                    ('user-access-control=', Tupu,
                      "specify Vista's UAC handling - 'none'/default=no "
-                     "handling, 'auto'=use UAC if target Python installed for "
+                     "handling, 'auto'=use UAC ikiwa target Python installed kila "
                      "all users, 'force'=always use UAC"),
                    ]
 
@@ -60,34 +60,34 @@ class bdist_wininst(Command):
     # bpo-10945: bdist_wininst requires mbcs encoding only available on Windows
     _unsupported = (sys.platform != "win32")
 
-    def __init__(self, *args, **kw):
+    eleza __init__(self, *args, **kw):
         super().__init__(*args, **kw)
-        warnings.warn("bdist_wininst command is deprecated since Python 3.8, "
+        warnings.warn("bdist_wininst command ni deprecated since Python 3.8, "
                       "use bdist_wheel (wheel packages) instead",
                       DeprecationWarning, 2)
 
-    def initialize_options(self):
-        self.bdist_dir = None
-        self.plat_name = None
+    eleza initialize_options(self):
+        self.bdist_dir = Tupu
+        self.plat_name = Tupu
         self.keep_temp = 0
         self.no_target_compile = 0
         self.no_target_optimize = 0
-        self.target_version = None
-        self.dist_dir = None
-        self.bitmap = None
-        self.title = None
-        self.skip_build = None
-        self.install_script = None
-        self.pre_install_script = None
-        self.user_access_control = None
+        self.target_version = Tupu
+        self.dist_dir = Tupu
+        self.bitmap = Tupu
+        self.title = Tupu
+        self.skip_build = Tupu
+        self.install_script = Tupu
+        self.pre_install_script = Tupu
+        self.user_access_control = Tupu
 
 
-    def finalize_options(self):
+    eleza finalize_options(self):
         self.set_undefined_options('bdist', ('skip_build', 'skip_build'))
 
-        if self.bdist_dir is None:
-            if self.skip_build and self.plat_name:
-                # If build is skipped and plat_name is overridden, bdist will
+        ikiwa self.bdist_dir ni Tupu:
+            ikiwa self.skip_build na self.plat_name:
+                # If build ni skipped na plat_name ni overridden, bdist will
                 # sio see the correct 'plat_name' - so set that up manually.
                 bdist = self.distribution.get_command_obj('bdist')
                 bdist.plat_name = self.plat_name
@@ -95,14 +95,14 @@ class bdist_wininst(Command):
             bdist_base = self.get_finalized_command('bdist').bdist_base
             self.bdist_dir = os.path.join(bdist_base, 'wininst')
 
-        if sio self.target_version:
+        ikiwa sio self.target_version:
             self.target_version = ""
 
-        if sio self.skip_build and self.distribution.has_ext_modules():
+        ikiwa sio self.skip_build na self.distribution.has_ext_modules():
             short_version = get_python_version()
-            if self.target_version and self.target_version != short_version:
-                ashiria DistutilsOptionError(
-                      "target version can only be %s, or the '--skip-build'" \
+            ikiwa self.target_version na self.target_version != short_version:
+                 ashiria DistutilsOptionError(
+                      "target version can only be %s, ama the '--skip-build'" \
                       " option must be specified" % (short_version,))
             self.target_version = short_version
 
@@ -111,24 +111,24 @@ class bdist_wininst(Command):
                                    ('plat_name', 'plat_name'),
                                   )
 
-        if self.install_script:
-            for script in self.distribution.scripts:
-                if self.install_script == os.path.basename(script):
+        ikiwa self.install_script:
+            kila script kwenye self.distribution.scripts:
+                ikiwa self.install_script == os.path.basename(script):
                     koma
             isipokua:
-                ashiria DistutilsOptionError(
-                      "install_script '%s' sio found in scripts"
+                 ashiria DistutilsOptionError(
+                      "install_script '%s' sio found kwenye scripts"
                       % self.install_script)
 
-    def run(self):
-        if (sys.platform != "win32" na
-            (self.distribution.has_ext_modules() ama
+    eleza run(self):
+        ikiwa (sys.platform != "win32" and
+            (self.distribution.has_ext_modules() or
              self.distribution.has_c_libraries())):
-            ashiria DistutilsPlatformError \
+             ashiria DistutilsPlatformError \
                   ("distribution contains extensions and/or C libraries; "
                    "must be compiled on a Windows 32 platform")
 
-        if sio self.skip_build:
+        ikiwa sio self.skip_build:
             self.run_command('build')
 
         install = self.reinitialize_command('install', reinit_subcommands=1)
@@ -138,19 +138,19 @@ class bdist_wininst(Command):
         install.plat_name = self.plat_name
 
         install_lib = self.reinitialize_command('install_lib')
-        # we do sio want to include pyc or pyo files
+        # we do sio want to include pyc ama pyo files
         install_lib.compile = 0
         install_lib.optimize = 0
 
-        if self.distribution.has_ext_modules():
-            # If we are building an installer for a Python version other
+        ikiwa self.distribution.has_ext_modules():
+            # If we are building an installer kila a Python version other
             # than the one we are currently running, then we need to ensure
             # our build_lib reflects the other Python version rather than ours.
-            # Note that for target_version!=sys.version, we must have skipped the
-            # build step, so there is no issue with enforcing the build of this
+            # Note that kila target_version!=sys.version, we must have skipped the
+            # build step, so there ni no issue ukijumuisha enforcing the build of this
             # version.
             target_version = self.target_version
-            if sio target_version:
+            ikiwa sio target_version:
                 assert self.skip_build, "Should have already checked this"
                 target_version = '%d.%d' % sys.version_info[:2]
             plat_specifier = ".%s-%s" % (self.plat_name, target_version)
@@ -158,11 +158,11 @@ class bdist_wininst(Command):
             build.build_lib = os.path.join(build.build_base,
                                            'lib' + plat_specifier)
 
-        # Use a custom scheme for the zip-file, because we have to decide
+        # Use a custom scheme kila the zip-file, because we have to decide
         # at installation time which scheme to use.
-        for key in ('purelib', 'platlib', 'headers', 'scripts', 'data'):
+        kila key kwenye ('purelib', 'platlib', 'headers', 'scripts', 'data'):
             value = key.upper()
-            if key == 'headers':
+            ikiwa key == 'headers':
                 value = value + '/Include/$dist_name'
             setattr(install,
                     'install_' + key,
@@ -172,7 +172,7 @@ class bdist_wininst(Command):
         install.ensure_finalized()
 
         # avoid warning of 'install_lib' about installing
-        # into a directory haiko kwenye sys.path
+        # into a directory sio kwenye sys.path
         sys.path.insert(0, os.path.join(self.bdist_dir, 'PURELIB'))
 
         install.run()
@@ -181,14 +181,14 @@ class bdist_wininst(Command):
 
         # And make an archive relative to the root of the
         # pseudo-installation tree.
-        from tempfile import mktemp
+        kutoka tempfile agiza mktemp
         archive_basename = mktemp()
         fullname = self.distribution.get_fullname()
         arcname = self.make_archive(archive_basename, "zip",
                                     root_dir=self.bdist_dir)
         # create an exe containing the zip-file
         self.create_exe(arcname, fullname, self.bitmap)
-        if self.distribution.has_ext_modules():
+        ikiwa self.distribution.has_ext_modules():
             pyversion = get_python_version()
         isipokua:
             pyversion = 'any'
@@ -198,10 +198,10 @@ class bdist_wininst(Command):
         log.debug("removing temporary file '%s'", arcname)
         os.remove(arcname)
 
-        if sio self.keep_temp:
+        ikiwa sio self.keep_temp:
             remove_tree(self.bdist_dir, dry_run=self.dry_run)
 
-    def get_inidata(self):
+    eleza get_inidata(self):
         # Return data describing the installation.
         lines = []
         metadata = self.distribution.metadata
@@ -209,18 +209,18 @@ class bdist_wininst(Command):
         # Write the [metadata] section.
         lines.append("[metadata]")
 
-        # 'info' will be displayed in the installer's dialog box,
+        # 'info' will be displayed kwenye the installer's dialog box,
         # describing the items to be installed.
-        info = (metadata.long_description or '') + '\n'
+        info = (metadata.long_description ama '') + '\n'
 
         # Escape newline characters
-        def escape(s):
-            return s.replace("\n", "\\n")
+        eleza escape(s):
+            rudisha s.replace("\n", "\\n")
 
-        for name in ["author", "author_email", "description", "maintainer",
+        kila name kwenye ["author", "author_email", "description", "maintainer",
                      "maintainer_email", "name", "url", "version"]:
             data = getattr(metadata, name, "")
-            if data:
+            ikiwa data:
                 info = info + ("\n    %s: %s" % \
                                (name.capitalize(), escape(data)))
                 lines.append("%s=%s" % (name, escape(data)))
@@ -228,27 +228,27 @@ class bdist_wininst(Command):
         # The [setup] section contains entries controlling
         # the installer runtime.
         lines.append("\n[Setup]")
-        if self.install_script:
+        ikiwa self.install_script:
             lines.append("install_script=%s" % self.install_script)
         lines.append("info=%s" % escape(info))
-        lines.append("target_compile=%d" % (sio self.no_target_compile))
-        lines.append("target_optimize=%d" % (sio self.no_target_optimize))
-        if self.target_version:
+        lines.append("target_compile=%d" % (not self.no_target_compile))
+        lines.append("target_optimize=%d" % (not self.no_target_optimize))
+        ikiwa self.target_version:
             lines.append("target_version=%s" % self.target_version)
-        if self.user_access_control:
+        ikiwa self.user_access_control:
             lines.append("user_access_control=%s" % self.user_access_control)
 
-        title = self.title or self.distribution.get_fullname()
+        title = self.title ama self.distribution.get_fullname()
         lines.append("title=%s" % escape(title))
-        import time
-        import distutils
-        build_info = "Built %s with distutils-%s" % \
+        agiza time
+        agiza distutils
+        build_info = "Built %s ukijumuisha distutils-%s" % \
                      (time.ctime(time.time()), distutils.__version__)
         lines.append("build_info=%s" % build_info)
-        return "\n".join(lines)
+        rudisha "\n".join(lines)
 
-    def create_exe(self, arcname, fullname, bitmap=None):
-        import struct
+    eleza create_exe(self, arcname, fullname, bitmap=Tupu):
+        agiza struct
 
         self.mkpath(self.dist_dir)
 
@@ -257,29 +257,29 @@ class bdist_wininst(Command):
         installer_name = self.get_installer_filename(fullname)
         self.announce("creating %s" % installer_name)
 
-        if bitmap:
-            with open(bitmap, "rb") as f:
+        ikiwa bitmap:
+            ukijumuisha open(bitmap, "rb") as f:
                 bitmapdata = f.read()
             bitmaplen = len(bitmapdata)
         isipokua:
             bitmaplen = 0
 
-        with open(installer_name, "wb") as file:
+        ukijumuisha open(installer_name, "wb") as file:
             file.write(self.get_exe_bytes())
-            if bitmap:
+            ikiwa bitmap:
                 file.write(bitmapdata)
 
-            # Convert cfgdata from unicode to ascii, mbcs encoded
-            if isinstance(cfgdata, str):
+            # Convert cfgdata kutoka unicode to ascii, mbcs encoded
+            ikiwa isinstance(cfgdata, str):
                 cfgdata = cfgdata.encode("mbcs")
 
             # Append the pre-install script
             cfgdata = cfgdata + b"\0"
-            if self.pre_install_script:
-                # We need to normalize newlines, so we open in text mode na
+            ikiwa self.pre_install_script:
+                # We need to normalize newlines, so we open kwenye text mode and
                 # convert back to bytes. "latin-1" simply avoids any possible
                 # failures.
-                with open(self.pre_install_script, "r",
+                ukijumuisha open(self.pre_install_script, "r",
                           encoding="latin-1") as script:
                     script_data = script.read().encode("latin-1")
                 cfgdata = cfgdata + script_data + b"\n\0"
@@ -288,83 +288,83 @@ class bdist_wininst(Command):
                 cfgdata = cfgdata + b"\0"
             file.write(cfgdata)
 
-            # The 'magic number' 0x1234567B is used to make sure that the
-            # binary layout of 'cfgdata' is what the wininst.exe binary
+            # The 'magic number' 0x1234567B ni used to make sure that the
+            # binary layout of 'cfgdata' ni what the wininst.exe binary
             # expects.  If the layout changes, increment that number, make
-            # the corresponding changes to the wininst.exe sources, na
+            # the corresponding changes to the wininst.exe sources, and
             # recompile them.
             header = struct.pack("<iii",
                                 0x1234567B,       # tag
                                 len(cfgdata),     # length
-                                bitmaplen,        # number of bytes in bitmap
+                                bitmaplen,        # number of bytes kwenye bitmap
                                 )
             file.write(header)
-            with open(arcname, "rb") as f:
+            ukijumuisha open(arcname, "rb") as f:
                 file.write(f.read())
 
-    def get_installer_filename(self, fullname):
-        # Factored out to allow overriding in subclasses
-        if self.target_version:
-            # if we create an installer for a specific python version,
-            # it's better to include this in the name
+    eleza get_installer_filename(self, fullname):
+        # Factored out to allow overriding kwenye subclasses
+        ikiwa self.target_version:
+            # ikiwa we create an installer kila a specific python version,
+            # it's better to include this kwenye the name
             installer_name = os.path.join(self.dist_dir,
                                           "%s.%s-py%s.exe" %
                                            (fullname, self.plat_name, self.target_version))
         isipokua:
             installer_name = os.path.join(self.dist_dir,
                                           "%s.%s.exe" % (fullname, self.plat_name))
-        return installer_name
+        rudisha installer_name
 
-    def get_exe_bytes(self):
+    eleza get_exe_bytes(self):
         # If a target-version other than the current version has been
-        # specified, then using the MSVC version from *this* build is no good.
-        # Without actually finding and executing the target version and parsing
+        # specified, then using the MSVC version kutoka *this* build ni no good.
+        # Without actually finding na executing the target version na parsing
         # its sys.version, we just hard-code our knowledge of old versions.
-        # NOTE: Possible alternative is to allow "--target-version" to
+        # NOTE: Possible alternative ni to allow "--target-version" to
         # specify a Python executable rather than a simple version string.
         # We can then execute this program to obtain any info we need, such
-        # as the real sys.version string for the build.
+        # as the real sys.version string kila the build.
         cur_version = get_python_version()
 
-        # If the target version is *later* than us, then we assume they
+        # If the target version ni *later* than us, then we assume they
         # use what we use
         # string compares seem wrong, but are what sysconfig.py itself uses
-        if self.target_version and self.target_version < cur_version:
-            if self.target_version < "2.4":
+        ikiwa self.target_version na self.target_version < cur_version:
+            ikiwa self.target_version < "2.4":
                 bv = '6.0'
-            lasivyo self.target_version == "2.4":
+            elikiwa self.target_version == "2.4":
                 bv = '7.1'
-            lasivyo self.target_version == "2.5":
+            elikiwa self.target_version == "2.5":
                 bv = '8.0'
-            lasivyo self.target_version <= "3.2":
+            elikiwa self.target_version <= "3.2":
                 bv = '9.0'
-            lasivyo self.target_version <= "3.4":
+            elikiwa self.target_version <= "3.4":
                 bv = '10.0'
             isipokua:
                 bv = '14.0'
         isipokua:
-            # for current version - use authoritative check.
+            # kila current version - use authoritative check.
             jaribu:
-                from msvcrt import CRT_ASSEMBLY_VERSION
-            tatizo ImportError:
+                kutoka msvcrt agiza CRT_ASSEMBLY_VERSION
+            except ImportError:
                 # cross-building, so assume the latest version
                 bv = '14.0'
             isipokua:
-                # as far as we know, CRT is binary compatible based on
+                # as far as we know, CRT ni binary compatible based on
                 # the first field, so assume 'x.0' until proven otherwise
                 major = CRT_ASSEMBLY_VERSION.partition('.')[0]
                 bv = major + '.0'
 
 
-        # wininst-x.y.exe is in the same directory as this file
+        # wininst-x.y.exe ni kwenye the same directory as this file
         directory = os.path.dirname(__file__)
-        # we must use a wininst-x.y.exe built with the same C compiler
-        # used for python.  XXX What about mingw, borland, and so on?
+        # we must use a wininst-x.y.exe built ukijumuisha the same C compiler
+        # used kila python.  XXX What about mingw, borland, na so on?
 
-        # if plat_name starts with "win" but ni sio "win32"
-        # we want to strip "win" and leave the rest (e.g. -amd64)
-        # for all other cases, we don't want any suffix
-        if self.plat_name != 'win32' and self.plat_name[:3] == 'win':
+        # ikiwa plat_name starts ukijumuisha "win" but ni sio "win32"
+        # we want to strip "win" na leave the rest (e.g. -amd64)
+        # kila all other cases, we don't want any suffix
+        ikiwa self.plat_name != 'win32' na self.plat_name[:3] == 'win':
             sfix = self.plat_name[3:]
         isipokua:
             sfix = ''
@@ -372,6 +372,6 @@ class bdist_wininst(Command):
         filename = os.path.join(directory, "wininst-%s%s.exe" % (bv, sfix))
         f = open(filename, "rb")
         jaribu:
-            return f.read()
+            rudisha f.read()
         mwishowe:
             f.close()

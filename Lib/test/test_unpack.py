@@ -31,7 +31,7 @@ Unpack generic sequence
     >>> kundi Seq:
     ...     eleza __getitem__(self, i):
     ...         ikiwa i >= 0 na i < 3: rudisha i
-    ...         ashiria IndexError
+    ...          ashiria IndexError
     ...
     >>> a, b, c = Seq()
     >>> a == 0 na b == 1 na c == 2
@@ -85,20 +85,20 @@ Unpacking sequence too long
       ...
     ValueError: too many values to unpack (expected 2)
 
-Unpacking a sequence where the test kila too long ashirias a different kind of
+Unpacking a sequence where the test kila too long raises a different kind of
 error
 
     >>> kundi BozoError(Exception):
-    ...     pita
+    ...     pass
     ...
     >>> kundi BadSeq:
     ...     eleza __getitem__(self, i):
     ...         ikiwa i >= 0 na i < 3:
     ...             rudisha i
-    ...         lasivyo i == 3:
-    ...             ashiria BozoError
+    ...         elikiwa i == 3:
+    ...              ashiria BozoError
     ...         isipokua:
-    ...             ashiria IndexError
+    ...              ashiria IndexError
     ...
 
 Trigger code wakati sio expecting an IndexError (unpack sequence too long, wrong
@@ -124,14 +124,14 @@ Allow unpacking empty iterables
     >>> [] = []
     >>> () = ()
 
-Unpacking non-iterables should ashiria TypeError
+Unpacking non-iterables should  ashiria TypeError
 
     >>> () = 42
     Traceback (most recent call last):
       ...
     TypeError: cannot unpack non-iterable int object
 
-Unpacking to an empty iterable should ashiria ValueError
+Unpacking to an empty iterable should  ashiria ValueError
 
     >>> () = [42]
     Traceback (most recent call last):

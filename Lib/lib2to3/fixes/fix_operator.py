@@ -11,9 +11,9 @@ operator.irepeat(obj, n)       -> operator.imul(obj, n)
 
 agiza collections.abc
 
-# Local agizas
+# Local imports
 kutoka lib2to3 agiza fixer_base
-kutoka lib2to3.fixer_util agiza Call, Name, String, touch_agiza
+kutoka lib2to3.fixer_util agiza Call, Name, String, touch_import
 
 
 eleza invocation(s):
@@ -80,7 +80,7 @@ kundi FixOperator(fixer_base.BaseFix):
         method.changed()
 
     eleza _handle_type2abc(self, node, results, module, abc):
-        touch_agiza(Tupu, module, node)
+        touch_import(Tupu, module, node)
         obj = results["obj"]
         args = [obj.clone(), String(", " + ".".join([module, abc]))]
         rudisha Call(Name("isinstance"), args, prefix=node.prefix)

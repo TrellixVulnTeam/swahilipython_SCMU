@@ -63,7 +63,7 @@ eleza _find_module(name, path=Tupu):
     spec = importlib.machinery.PathFinder.find_spec(name, path)
 
     ikiwa spec ni Tupu:
-        ashiria ImportError("No module named {name!r}".format(name=name), name=name)
+         ashiria ImportError("No module named {name!r}".format(name=name), name=name)
 
     # Some special cases:
 
@@ -82,11 +82,11 @@ eleza _find_module(name, path=Tupu):
         kind = _PY_SOURCE
         mode = "r"
 
-    lasivyo isinstance(spec.loader, importlib.machinery.ExtensionFileLoader):
+    elikiwa isinstance(spec.loader, importlib.machinery.ExtensionFileLoader):
         kind = _C_EXTENSION
         mode = "rb"
 
-    lasivyo isinstance(spec.loader, importlib.machinery.SourcelessFileLoader):
+    elikiwa isinstance(spec.loader, importlib.machinery.SourcelessFileLoader):
         kind = _PY_COMPILED
         mode = "rb"
 
@@ -107,12 +107,12 @@ kundi Module:
         self.__path__ = path
         self.__code__ = Tupu
         # The set of global names that are assigned to kwenye the module.
-        # This includes those names imported through staragizas of
+        # This includes those names imported through starimports of
         # Python modules.
         self.globalnames = {}
-        # The set of staragizas this module did that could sio be
+        # The set of starimports this module did that could sio be
         # resolved, ie. a staragiza kutoka a non-Python module.
-        self.staragizas = {}
+        self.starimports = {}
 
     eleza __repr__(self):
         s = "Module(%r" % (self.__name__,)
@@ -160,26 +160,26 @@ kundi ModuleFinder:
 
     eleza run_script(self, pathname):
         self.msg(2, "run_script", pathname)
-        ukijumuisha open(pathname) kama fp:
+        ukijumuisha open(pathname) as fp:
             stuff = ("", "r", _PY_SOURCE)
             self.load_module('__main__', fp, pathname, stuff)
 
     eleza load_file(self, pathname):
         dir, name = os.path.split(pathname)
         name, ext = os.path.splitext(name)
-        ukijumuisha open(pathname) kama fp:
+        ukijumuisha open(pathname) as fp:
             stuff = (ext, "r", _PY_SOURCE)
             self.load_module(name, fp, pathname, stuff)
 
-    eleza import_hook(self, name, caller=Tupu, kutokalist=Tupu, level=-1):
-        self.msg(3, "import_hook", name, caller, kutokalist, level)
+    eleza import_hook(self, name, caller=Tupu, fromlist=Tupu, level=-1):
+        self.msg(3, "import_hook", name, caller, fromlist, level)
         parent = self.determine_parent(caller, level=level)
         q, tail = self.find_head_package(parent, name)
         m = self.load_tail(q, tail)
-        ikiwa sio kutokalist:
+        ikiwa sio fromlist:
             rudisha q
         ikiwa m.__path__:
-            self.ensure_kutokalist(m, kutokalist)
+            self.ensure_fromlist(m, fromlist)
         rudisha Tupu
 
     eleza determine_parent(self, caller, level=-1):
@@ -188,7 +188,7 @@ kundi ModuleFinder:
             self.msgout(4, "determine_parent -> Tupu")
             rudisha Tupu
         pname = caller.__name__
-        ikiwa level >= 1: # relative agiza
+        ikiwa level >= 1: # relative import
             ikiwa caller.__path__:
                 level -= 1
             ikiwa level == 0:
@@ -197,7 +197,7 @@ kundi ModuleFinder:
                 self.msgout(4, "determine_parent ->", parent)
                 rudisha parent
             ikiwa pname.count(".") < level:
-                ashiria ImportError("relative agizapath too deep")
+                 ashiria ImportError("relative importpath too deep")
             pname = ".".join(pname.split(".")[:-level])
             parent = self.modules[pname]
             self.msgout(4, "determine_parent ->", parent)
@@ -241,8 +241,8 @@ kundi ModuleFinder:
             ikiwa q:
                 self.msgout(4, "find_head_package ->", (q, tail))
                 rudisha q, tail
-        self.msgout(4, "ashiria ImportError: No module named", qname)
-        ashiria ImportError("No module named " + qname)
+        self.msgout(4, " ashiria ImportError: No module named", qname)
+         ashiria ImportError("No module named " + qname)
 
     eleza load_tail(self, q, tail):
         self.msgin(4, "load_tail", q, tail)
@@ -254,28 +254,28 @@ kundi ModuleFinder:
             mname = "%s.%s" % (m.__name__, head)
             m = self.import_module(head, mname, m)
             ikiwa sio m:
-                self.msgout(4, "ashiria ImportError: No module named", mname)
-                ashiria ImportError("No module named " + mname)
+                self.msgout(4, " ashiria ImportError: No module named", mname)
+                 ashiria ImportError("No module named " + mname)
         self.msgout(4, "load_tail ->", m)
         rudisha m
 
-    eleza ensure_kutokalist(self, m, kutokalist, recursive=0):
-        self.msg(4, "ensure_kutokalist", m, kutokalist, recursive)
-        kila sub kwenye kutokalist:
+    eleza ensure_fromlist(self, m, fromlist, recursive=0):
+        self.msg(4, "ensure_fromlist", m, fromlist, recursive)
+        kila sub kwenye fromlist:
             ikiwa sub == "*":
                 ikiwa sio recursive:
                     all = self.find_all_submodules(m)
                     ikiwa all:
-                        self.ensure_kutokalist(m, all, 1)
-            lasivyo sio hasattr(m, sub):
+                        self.ensure_fromlist(m, all, 1)
+            elikiwa sio hasattr(m, sub):
                 subname = "%s.%s" % (m.__name__, sub)
                 submod = self.import_module(sub, subname, m)
                 ikiwa sio submod:
-                    ashiria ImportError("No module named " + subname)
+                     ashiria ImportError("No module named " + subname)
 
     eleza find_all_submodules(self, m):
         ikiwa sio m.__path__:
-            rudisha
+            return
         modules = {}
         # 'suffixes' used to be a list hardcoded to [".py", ".pyc"].
         # But we must also collect Python extension modules - although
@@ -287,7 +287,7 @@ kundi ModuleFinder:
         kila dir kwenye m.__path__:
             jaribu:
                 names = os.listdir(dir)
-            tatizo OSError:
+            except OSError:
                 self.msg(2, "can't list directory", dir)
                 endelea
             kila name kwenye names:
@@ -305,8 +305,8 @@ kundi ModuleFinder:
         self.msgin(3, "import_module", partname, fqname, parent)
         jaribu:
             m = self.modules[fqname]
-        tatizo KeyError:
-            pita
+        except KeyError:
+            pass
         isipokua:
             self.msgout(3, "import_module ->", m)
             rudisha m
@@ -319,7 +319,7 @@ kundi ModuleFinder:
         jaribu:
             fp, pathname, stuff = self.find_module(partname,
                                                    parent na parent.__path__, parent)
-        tatizo ImportError:
+        except ImportError:
             self.msgout(3, "import_module ->", Tupu)
             rudisha Tupu
         jaribu:
@@ -341,13 +341,13 @@ kundi ModuleFinder:
             rudisha m
         ikiwa type == _PY_SOURCE:
             co = compile(fp.read()+'\n', pathname, 'exec')
-        lasivyo type == _PY_COMPILED:
+        elikiwa type == _PY_COMPILED:
             jaribu:
                 data = fp.read()
                 importlib._bootstrap_external._classify_pyc(data, fqname, {})
-            tatizo ImportError kama exc:
-                self.msgout(2, "ashiria ImportError: " + str(exc), pathname)
-                ashiria
+            except ImportError as exc:
+                self.msgout(2, " ashiria ImportError: " + str(exc), pathname)
+                raise
             co = marshal.loads(memoryview(data)[16:])
         isipokua:
             co = Tupu
@@ -362,36 +362,36 @@ kundi ModuleFinder:
         rudisha m
 
     eleza _add_badmodule(self, name, caller):
-        ikiwa name haiko kwenye self.badmodules:
+        ikiwa name sio kwenye self.badmodules:
             self.badmodules[name] = {}
         ikiwa caller:
             self.badmodules[name][caller.__name__] = 1
         isipokua:
             self.badmodules[name]["-"] = 1
 
-    eleza _safe_import_hook(self, name, caller, kutokalist, level=-1):
-        # wrapper kila self.import_hook() that won't ashiria ImportError
+    eleza _safe_import_hook(self, name, caller, fromlist, level=-1):
+        # wrapper kila self.import_hook() that won't  ashiria ImportError
         ikiwa name kwenye self.badmodules:
             self._add_badmodule(name, caller)
-            rudisha
+            return
         jaribu:
             self.import_hook(name, caller, level=level)
-        tatizo ImportError kama msg:
+        except ImportError as msg:
             self.msg(2, "ImportError:", str(msg))
             self._add_badmodule(name, caller)
-        tatizo SyntaxError kama msg:
+        except SyntaxError as msg:
             self.msg(2, "SyntaxError:", str(msg))
             self._add_badmodule(name, caller)
         isipokua:
-            ikiwa kutokalist:
-                kila sub kwenye kutokalist:
+            ikiwa fromlist:
+                kila sub kwenye fromlist:
                     fullname = name + "." + sub
                     ikiwa fullname kwenye self.badmodules:
                         self._add_badmodule(fullname, caller)
                         endelea
                     jaribu:
                         self.import_hook(name, caller, [sub], level=level)
-                    tatizo ImportError kama msg:
+                    except ImportError as msg:
                         self.msg(2, "ImportError:", str(msg))
                         self._add_badmodule(fullname, caller)
 
@@ -409,11 +409,11 @@ kundi ModuleFinder:
             ikiwa (op == IMPORT_NAME na i >= 2
                     na opargs[i-1][0] == opargs[i-2][0] == LOAD_CONST):
                 level = consts[opargs[i-2][1]]
-                kutokalist = consts[opargs[i-1][1]]
-                ikiwa level == 0: # absolute agiza
-                    tuma "absolute_agiza", (kutokalist, names[oparg])
-                isipokua: # relative agiza
-                    tuma "relative_agiza", (level, kutokalist, names[oparg])
+                fromlist = consts[opargs[i-1][1]]
+                ikiwa level == 0: # absolute import
+                    tuma "absolute_import", (fromlist, names[oparg])
+                isipokua: # relative import
+                    tuma "relative_import", (level, fromlist, names[oparg])
                 endelea
 
     eleza scan_code(self, co, m):
@@ -423,14 +423,14 @@ kundi ModuleFinder:
             ikiwa what == "store":
                 name, = args
                 m.globalnames[name] = 1
-            lasivyo what == "absolute_agiza":
-                kutokalist, name = args
+            elikiwa what == "absolute_import":
+                fromlist, name = args
                 have_star = 0
-                ikiwa kutokalist ni sio Tupu:
-                    ikiwa "*" kwenye kutokalist:
+                ikiwa fromlist ni sio Tupu:
+                    ikiwa "*" kwenye fromlist:
                         have_star = 1
-                    kutokalist = [f kila f kwenye kutokalist ikiwa f != "*"]
-                self._safe_import_hook(name, m, kutokalist, level=0)
+                    fromlist = [f kila f kwenye fromlist ikiwa f != "*"]
+                self._safe_import_hook(name, m, fromlist, level=0)
                 ikiwa have_star:
                     # We've encountered an "agiza *". If it ni a Python module,
                     # the code has already been parsed na we can suck out the
@@ -445,21 +445,21 @@ kundi ModuleFinder:
                         mm = self.modules.get(name)
                     ikiwa mm ni sio Tupu:
                         m.globalnames.update(mm.globalnames)
-                        m.staragizas.update(mm.staragizas)
+                        m.starimports.update(mm.starimports)
                         ikiwa mm.__code__ ni Tupu:
-                            m.staragizas[name] = 1
+                            m.starimports[name] = 1
                     isipokua:
-                        m.staragizas[name] = 1
-            lasivyo what == "relative_agiza":
-                level, kutokalist, name = args
+                        m.starimports[name] = 1
+            elikiwa what == "relative_import":
+                level, fromlist, name = args
                 ikiwa name:
-                    self._safe_import_hook(name, m, kutokalist, level=level)
+                    self._safe_import_hook(name, m, fromlist, level=level)
                 isipokua:
                     parent = self.determine_parent(m, level=level)
-                    self._safe_import_hook(parent.__name__, Tupu, kutokalist, level=0)
+                    self._safe_import_hook(parent.__name__, Tupu, fromlist, level=0)
             isipokua:
                 # We don't expect anything isipokua kutoka the generator.
-                ashiria RuntimeError(what)
+                 ashiria RuntimeError(what)
 
         kila c kwenye co.co_consts:
             ikiwa isinstance(c, type(co)):
@@ -500,7 +500,7 @@ kundi ModuleFinder:
             fullname = name
         ikiwa fullname kwenye self.excludes:
             self.msgout(3, "find_module -> Excluded", fullname)
-            ashiria ImportError(name)
+             ashiria ImportError(name)
 
         ikiwa path ni Tupu:
             ikiwa name kwenye sys.builtin_module_names:
@@ -512,7 +512,7 @@ kundi ModuleFinder:
 
     eleza report(self):
         """Print a report to stdout, listing the found modules ukijumuisha their
-        paths, kama well kama modules that are missing, ama seem to be missing.
+        paths, as well as modules that are missing, ama seem to be missing.
         """
         andika()
         andika("  %-25s %s" % ("Name", "File"))
@@ -534,7 +534,7 @@ kundi ModuleFinder:
             andika("Missing modules:")
             kila name kwenye missing:
                 mods = sorted(self.badmodules[name].keys())
-                andika("?", name, "imported kutoka", ', '.join(mods))
+                andika("?", name, "imported from", ', '.join(mods))
         # Print modules that may be missing, but then again, maybe not...
         ikiwa maybe:
             andika()
@@ -542,7 +542,7 @@ kundi ModuleFinder:
             andika("global names kwenye the parent package:")
             kila name kwenye maybe:
                 mods = sorted(self.badmodules[name].keys())
-                andika("?", name, "imported kutoka", ', '.join(mods))
+                andika("?", name, "imported from", ', '.join(mods))
 
     eleza any_missing(self):
         """Return a list of modules that appear to be missing. Use
@@ -559,7 +559,7 @@ kundi ModuleFinder:
 
         The reason it can't always be determined ni that it's impossible to
         tell which names are imported when "kutoka module agiza *" ni done
-        ukijumuisha an extension module, short of actually agizaing it.
+        ukijumuisha an extension module, short of actually importing it.
         """
         missing = []
         maybe = []
@@ -575,19 +575,19 @@ kundi ModuleFinder:
             pkg = self.modules.get(pkgname)
             ikiwa pkg ni sio Tupu:
                 ikiwa pkgname kwenye self.badmodules[name]:
-                    # The package tried to agiza this module itself na
+                    # The package tried to agiza this module itself and
                     # failed. It's definitely missing.
                     missing.append(name)
-                lasivyo subname kwenye pkg.globalnames:
+                elikiwa subname kwenye pkg.globalnames:
                     # It's a global kwenye the package: definitely sio missing.
-                    pita
-                lasivyo pkg.staragizas:
+                    pass
+                elikiwa pkg.starimports:
                     # It could be missing, but the package did an "agiza *"
                     # kutoka a non-Python module, so we simply can't be sure.
                     maybe.append(name)
                 isipokua:
                     # It's sio a global kwenye the package, the package didn't
-                    # do funny star agizas, it's very likely to be missing.
+                    # do funny star imports, it's very likely to be missing.
                     # The symbol could be inserted into the package kutoka the
                     # outside, but since that's sio good style we simply list
                     # it missing.
@@ -605,7 +605,7 @@ kundi ModuleFinder:
                 new_filename = r + original_filename[len(f):]
                 koma
 
-        ikiwa self.debug na original_filename haiko kwenye self.processed_paths:
+        ikiwa self.debug na original_filename sio kwenye self.processed_paths:
             ikiwa new_filename != original_filename:
                 self.msgout(2, "co_filename %r changed to %r" \
                                     % (original_filename,new_filename,))
@@ -627,9 +627,9 @@ eleza test():
     agiza getopt
     jaribu:
         opts, args = getopt.getopt(sys.argv[1:], "dmp:qx:")
-    tatizo getopt.error kama msg:
+    except getopt.error as msg:
         andika(msg)
-        rudisha
+        return
 
     # Process options
     debug = 1
@@ -684,5 +684,5 @@ eleza test():
 ikiwa __name__ == '__main__':
     jaribu:
         mf = test()
-    tatizo KeyboardInterrupt:
+    except KeyboardInterrupt:
         andika("\n[interrupted]")

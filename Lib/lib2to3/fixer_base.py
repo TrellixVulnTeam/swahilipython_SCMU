@@ -3,13 +3,13 @@
 
 """Base kundi kila fixers (optional, but recommended)."""
 
-# Python agizas
+# Python imports
 agiza itertools
 
-# Local agizas
+# Local imports
 kutoka .patcomp agiza PatternCompiler
 kutoka . agiza pygram
-kutoka .fixer_util agiza does_tree_agiza
+kutoka .fixer_util agiza does_tree_import
 
 kundi BaseFix(object):
 
@@ -24,7 +24,7 @@ kundi BaseFix(object):
     PATTERN = Tupu  # Most subclasses should override ukijumuisha a string literal
     pattern = Tupu  # Compiled pattern, set by compile_pattern()
     pattern_tree = Tupu # Tree representation of the pattern
-    options = Tupu  # Options object pitaed to initializer
+    options = Tupu  # Options object passed to initializer
     filename = Tupu # The filename (set by set_filename)
     numbers = itertools.count(1) # For new_name()
     used_names = set() # A set of all used NAMEs
@@ -48,7 +48,7 @@ kundi BaseFix(object):
         """Initializer.  Subkundi may override.
 
         Args:
-            options: a dict containing the options pitaed to RefactoringTool
+            options: a dict containing the options passed to RefactoringTool
             that could be used to customize the fixer through the command line.
             log: a list to append warnings na other messages to.
         """
@@ -77,9 +77,9 @@ kundi BaseFix(object):
     eleza match(self, node):
         """Returns match kila a given parse tree node.
 
-        Should rudisha a true ama false object (sio necessarily a bool).
+        Should rudisha a true ama false object (not necessarily a bool).
         It may rudisha a non-empty dict of matching sub-nodes as
-        rudishaed by a matching pattern.
+        returned by a matching pattern.
 
         Subkundi may override.
         """
@@ -100,10 +100,10 @@ kundi BaseFix(object):
 
         Subkundi *must* override.
         """
-        ashiria NotImplementedError()
+         ashiria NotImplementedError()
 
     eleza new_name(self, template="xxx_todo_changeme"):
-        """Return a string suitable kila use kama an identifier
+        """Return a string suitable kila use as an identifier
 
         The new name ni guaranteed sio to conflict ukijumuisha other identifiers.
         """
@@ -149,7 +149,7 @@ kundi BaseFix(object):
         This method ni called once, at the start of tree fix-up.
 
         tree - the root node of the tree to be processed.
-        filename - the name of the file the tree came kutoka.
+        filename - the name of the file the tree came from.
         """
         self.used_names = tree.used_names
         self.set_filename(filename)
@@ -161,9 +161,9 @@ kundi BaseFix(object):
         This method ni called once, at the conclusion of tree fix-up.
 
         tree - the root node of the tree to be processed.
-        filename - the name of the file the tree came kutoka.
+        filename - the name of the file the tree came from.
         """
-        pita
+        pass
 
 
 kundi ConditionalFix(BaseFix):
@@ -182,5 +182,5 @@ kundi ConditionalFix(BaseFix):
         pkg = self.skip_on.split(".")
         name = pkg[-1]
         pkg = ".".join(pkg[:-1])
-        self._should_skip = does_tree_agiza(pkg, name, node)
+        self._should_skip = does_tree_import(pkg, name, node)
         rudisha self._should_skip

@@ -112,7 +112,7 @@ kundi TestPlistlib(unittest.TestCase):
         jaribu:
             os.unlink(support.TESTFN)
         tatizo:
-            pita
+            pass
 
     eleza _create(self, fmt=Tupu):
         pl = dict(
@@ -148,10 +148,10 @@ kundi TestPlistlib(unittest.TestCase):
 
     eleza test_io(self):
         pl = self._create()
-        ukijumuisha open(support.TESTFN, 'wb') kama fp:
+        ukijumuisha open(support.TESTFN, 'wb') as fp:
             plistlib.dump(pl, fp)
 
-        ukijumuisha open(support.TESTFN, 'rb') kama fp:
+        ukijumuisha open(support.TESTFN, 'rb') as fp:
             pl2 = plistlib.load(fp)
 
         self.assertEqual(dict(pl), dict(pl2))
@@ -273,7 +273,7 @@ kundi TestPlistlib(unittest.TestCase):
                         "generated data was sio identical to Apple's output")
 
 
-    eleza test_appleformattingkutokaliteral(self):
+    eleza test_appleformattingfromliteral(self):
         self.maxDiff = Tupu
         kila fmt kwenye ALL_FORMATS:
             ukijumuisha self.subTest(fmt=fmt):
@@ -565,7 +565,7 @@ kundi TestBinaryPlistlib(unittest.TestCase):
         # Issue #26709: 32-bit timestamp out of range
         kila ts kwenye -2**31-1, 2**31:
             ukijumuisha self.subTest(ts=ts):
-                d = (datetime.datetime.utckutokatimestamp(0) +
+                d = (datetime.datetime.utcfromtimestamp(0) +
                      datetime.timedelta(seconds=ts))
                 data = plistlib.dumps(d, fmt=plistlib.FMT_BINARY)
                 self.assertEqual(plistlib.loads(data), d)
@@ -651,11 +651,11 @@ kundi TestPlistlibDeprecated(unittest.TestCase):
 
         os.unlink(support.TESTFN)
 
-        ukijumuisha open(support.TESTFN, 'wb') kama fp:
+        ukijumuisha open(support.TESTFN, 'wb') as fp:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 plistlib.writePlist(pl_in, fp)
 
-        ukijumuisha open(support.TESTFN, 'rb') kama fp:
+        ukijumuisha open(support.TESTFN, 'rb') as fp:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 pl2 = plistlib.readPlist(fp)
 

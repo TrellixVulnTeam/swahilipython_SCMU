@@ -32,7 +32,7 @@ eleza _close_handles(*handles):
 
 #
 # We define a Popen kundi similar to the one kutoka subprocess, but
-# whose constructor takes a process object kama its argument.
+# whose constructor takes a process object as its argument.
 #
 
 kundi Popen(object):
@@ -58,7 +58,7 @@ kundi Popen(object):
 
         python_exe = spawn.get_executable()
 
-        # bpo-35797: When running kwenye a venv, we bypita the redirect
+        # bpo-35797: When running kwenye a venv, we bypass the redirect
         # executor na launch our base Python.
         ikiwa WINENV na _path_eq(python_exe, sys.executable):
             python_exe = sys._base_executable
@@ -67,7 +67,7 @@ kundi Popen(object):
         isipokua:
             env = Tupu
 
-        ukijumuisha open(wfd, 'wb', closefd=Kweli) kama to_child:
+        ukijumuisha open(wfd, 'wb', closefd=Kweli) as to_child:
             # start process
             jaribu:
                 hp, ht, pid, tid = _winapi.CreateProcess(
@@ -76,7 +76,7 @@ kundi Popen(object):
                 _winapi.CloseHandle(ht)
             tatizo:
                 _winapi.CloseHandle(rhandle)
-                ashiria
+                raise
 
             # set attributes of self
             self.pid = pid
@@ -121,9 +121,9 @@ kundi Popen(object):
         ikiwa self.returncode ni Tupu:
             jaribu:
                 _winapi.TerminateProcess(int(self._handle), TERMINATE)
-            tatizo OSError:
+            except OSError:
                 ikiwa self.wait(timeout=1.0) ni Tupu:
-                    ashiria
+                    raise
 
     kill = terminate
 

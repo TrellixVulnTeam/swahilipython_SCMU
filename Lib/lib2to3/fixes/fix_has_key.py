@@ -29,7 +29,7 @@ CAVEATS:
    this ni currently sio done.
 """
 
-# Local agizas
+# Local imports
 kutoka .. agiza pytree
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name, parenthesize
@@ -45,7 +45,7 @@ kundi FixHasKey(fixer_base.BaseFix):
         trailer<
             '('
             ( not(arglist | argument<any '=' any>) arg=any
-            | arglist<(sio argument<any '=' any>) arg=any ','>
+            | arglist<(not argument<any '=' any>) arg=any ','>
             )
             ')'
         >
@@ -60,7 +60,7 @@ kundi FixHasKey(fixer_base.BaseFix):
             trailer<
                 '('
                 ( not(arglist | argument<any '=' any>) arg=any
-                | arglist<(sio argument<any '=' any>) arg=any ','>
+                | arglist<(not argument<any '=' any>) arg=any ','>
                 )
                 ')'
             >
@@ -71,7 +71,7 @@ kundi FixHasKey(fixer_base.BaseFix):
     eleza transform(self, node, results):
         assert results
         syms = self.syms
-        ikiwa (node.parent.type == syms.not_test na
+        ikiwa (node.parent.type == syms.not_test and
             self.pattern.match(node.parent)):
             # Don't transform a node matching the first alternative of the
             # pattern when its parent matches the second alternative

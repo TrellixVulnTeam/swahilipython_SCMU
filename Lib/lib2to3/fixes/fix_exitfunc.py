@@ -14,7 +14,7 @@ kundi FixExitfunc(fixer_base.BaseFix):
 
     PATTERN = """
               (
-                  sys_agiza=import_name<'agiza'
+                  sys_import=import_name<'import'
                       ('sys'
                       |
                       dotted_as_names< (any ',')* 'sys' (',' any)* >
@@ -35,11 +35,11 @@ kundi FixExitfunc(fixer_base.BaseFix):
         self.sys_agiza = Tupu
 
     eleza transform(self, node, results):
-        # First, find the sys agiza. We'll just hope it's global scope.
-        ikiwa "sys_agiza" kwenye results:
+        # First, find the sys import. We'll just hope it's global scope.
+        ikiwa "sys_import" kwenye results:
             ikiwa self.sys_agiza ni Tupu:
-                self.sys_agiza = results["sys_agiza"]
-            rudisha
+                self.sys_agiza = results["sys_import"]
+            return
 
         func = results["func"].clone()
         func.prefix = ""
@@ -51,22 +51,22 @@ kundi FixExitfunc(fixer_base.BaseFix):
 
         ikiwa self.sys_agiza ni Tupu:
             # That's interesting.
-            self.warning(node, "Can't find sys agiza; Please add an atexit "
+            self.warning(node, "Can't find sys import; Please add an atexit "
                              "agiza at the top of your file.")
-            rudisha
+            return
 
-        # Now add an atexit agiza after the sys agiza.
-        names = self.sys_agiza.children[1]
+        # Now add an atexit agiza after the sys import.
+        names = self.sys_import.children[1]
         ikiwa names.type == syms.dotted_as_names:
             names.append_child(Comma())
             names.append_child(Name("atexit", " "))
         isipokua:
-            containing_stmt = self.sys_agiza.parent
-            position = containing_stmt.children.index(self.sys_agiza)
+            containing_stmt = self.sys_import.parent
+            position = containing_stmt.children.index(self.sys_import)
             stmt_container = containing_stmt.parent
             new_agiza = pytree.Node(syms.import_name,
-                              [Name("agiza"), Name("atexit", " ")]
+                              [Name("import"), Name("atexit", " ")]
                               )
-            new = pytree.Node(syms.simple_stmt, [new_agiza])
+            new = pytree.Node(syms.simple_stmt, [new_import])
             containing_stmt.insert_child(position + 1, Newline())
             containing_stmt.insert_child(position + 2, new)

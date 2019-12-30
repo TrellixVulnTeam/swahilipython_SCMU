@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec for PalmOS 3.5.
+""" Python Character Mapping Codec kila PalmOS 3.5.
 
 Written by Sjoerd Mullender (sjoerd@acm.org); based on iso8859_15.py.
 
@@ -24,10 +24,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pita
+    pass
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pita
+    pass
 
 ### encodings module API
 

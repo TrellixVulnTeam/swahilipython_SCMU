@@ -8,9 +8,9 @@
 --                                                                    --
 -- These testcases are experimental ('beta' versions), and they       --
 -- may contain errors.  They are offered on an as-is basis.  In       --
--- particular, achieving the same results as the tests here ni sio    --
+-- particular, achieving the same results as the tests here is not    --
 -- a guarantee that an implementation complies with any Standard      --
--- or specification.  The tests are sio exhaustive.                   --
+-- or specification.  The tests are not exhaustive.                   --
 --                                                                    --
 -- Please send comments, suggestions, and corrections to the author:  --
 --   Mike Cowlishaw, IBM Fellow                                       --
@@ -120,7 +120,7 @@ logbx1125 logb 1E-100 -> -100
 logbx1126 logb 1E-383 -> -383
 logbx1127 logb 1E-999 -> -999
 
--- suggestions from Ilan Neh ama
+-- suggestions from Ilan Nehama
 logbx1400 logb 10E-3    -> -2
 logbx1401 logb 10E-2    -> -1
 logbx1402 logb 100E-2   ->  0

@@ -1,20 +1,20 @@
-"""Tests for distutils.command.build_clib."""
-import unittest
-import os
-import sys
+"""Tests kila distutils.command.build_clib."""
+agiza unittest
+agiza os
+agiza sys
 
-from test.support import run_unittest, missing_compiler_executable
+kutoka test.support agiza run_unittest, missing_compiler_executable
 
-from distutils.command.build_clib import build_clib
-from distutils.errors import DistutilsSetupError
-from distutils.tests import support
-from distutils.spawn import find_executable
+kutoka distutils.command.build_clib agiza build_clib
+kutoka distutils.errors agiza DistutilsSetupError
+kutoka distutils.tests agiza support
+kutoka distutils.spawn agiza find_executable
 
-class BuildCLibTestCase(support.TempdirManager,
+kundi BuildCLibTestCase(support.TempdirManager,
                         support.LoggingSilencer,
                         unittest.TestCase):
 
-    def test_check_library_dist(self):
+    eleza test_check_library_dist(self):
         pkg_dir, dist = self.create_dist()
         cmd = build_clib(dist)
 
@@ -25,7 +25,7 @@ class BuildCLibTestCase(support.TempdirManager,
         self.assertRaises(DistutilsSetupError, cmd.check_library_list,
                           ['foo1', 'foo2'])
 
-        # first element of each tuple in 'libraries'
+        # first element of each tuple kwenye 'libraries'
         # must be a string (the library name)
         self.assertRaises(DistutilsSetupError, cmd.check_library_list,
                           [(1, 'foo1'), ('name', 'foo2')])
@@ -44,11 +44,11 @@ class BuildCLibTestCase(support.TempdirManager,
         libs = [('name', {}), ('name', {'ok': 'good'})]
         cmd.check_library_list(libs)
 
-    def test_get_source_files(self):
+    eleza test_get_source_files(self):
         pkg_dir, dist = self.create_dist()
         cmd = build_clib(dist)
 
-        # "in 'libraries' option 'sources' must be present and must be
+        # "in 'libraries' option 'sources' must be present na must be
         # a list of source filenames
         cmd.libraries = [('name', {})]
         self.assertRaises(DistutilsSetupError, cmd.get_source_files)
@@ -66,18 +66,18 @@ class BuildCLibTestCase(support.TempdirManager,
                          ('name2', {'sources': ['c', 'd']})]
         self.assertEqual(cmd.get_source_files(), ['a', 'b', 'c', 'd'])
 
-    def test_build_libraries(self):
+    eleza test_build_libraries(self):
 
         pkg_dir, dist = self.create_dist()
         cmd = build_clib(dist)
-        class FakeCompiler:
-            def compile(*args, **kw):
+        kundi FakeCompiler:
+            eleza compile(*args, **kw):
                 pass
             create_static_lib = compile
 
         cmd.compiler = FakeCompiler()
 
-        # build_libraries is also doing a bit of typo checking
+        # build_libraries ni also doing a bit of typo checking
         lib = [('name', {'sources': 'notvalid'})]
         self.assertRaises(DistutilsSetupError, cmd.build_libraries, lib)
 
@@ -87,7 +87,7 @@ class BuildCLibTestCase(support.TempdirManager,
         lib = [('name', {'sources': tuple()})]
         cmd.build_libraries(lib)
 
-    def test_finalize_options(self):
+    eleza test_finalize_options(self):
         pkg_dir, dist = self.create_dist()
         cmd = build_clib(dist)
 
@@ -95,7 +95,7 @@ class BuildCLibTestCase(support.TempdirManager,
         cmd.finalize_options()
         self.assertEqual(cmd.include_dirs, ['one-dir'])
 
-        cmd.include_dirs = None
+        cmd.include_dirs = Tupu
         cmd.finalize_options()
         self.assertEqual(cmd.include_dirs, [])
 
@@ -103,12 +103,12 @@ class BuildCLibTestCase(support.TempdirManager,
         self.assertRaises(DistutilsSetupError, cmd.finalize_options)
 
     @unittest.skipIf(sys.platform == 'win32', "can't test on Windows")
-    def test_run(self):
+    eleza test_run(self):
         pkg_dir, dist = self.create_dist()
         cmd = build_clib(dist)
 
         foo_c = os.path.join(pkg_dir, 'foo.c')
-        self.write_file(foo_c, 'int main(void) { return 1;}\n')
+        self.write_file(foo_c, 'int main(void) { rudisha 1;}\n')
         cmd.libraries = [('foo', {'sources': [foo_c]})]
 
         build_temp = os.path.join(pkg_dir, 'build')
@@ -119,7 +119,7 @@ class BuildCLibTestCase(support.TempdirManager,
         # Before we run the command, we want to make sure
         # all commands are present on the system.
         ccmd = missing_compiler_executable()
-        if ccmd ni sio None:
+        ikiwa ccmd ni sio Tupu:
             self.skipTest('The %r command ni sio found' % ccmd)
 
         # this should work
@@ -128,8 +128,8 @@ class BuildCLibTestCase(support.TempdirManager,
         # let's check the result
         self.assertIn('libfoo.a', os.listdir(build_temp))
 
-def test_suite():
-    return unittest.makeSuite(BuildCLibTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(BuildCLibTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     run_unittest(test_suite())

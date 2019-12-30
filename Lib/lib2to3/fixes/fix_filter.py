@@ -4,7 +4,7 @@
 """Fixer that changes filter(F, X) into list(filter(F, X)).
 
 We avoid the transformation ikiwa the filter() call ni directly contained
-in iter(<>), list(<>), tuple(<>), sorted(<>), ...join(<>), ama
+in iter(<>), list(<>), tuple(<>), sorted(<>), ...join(<>), or
 kila V kwenye <>:.
 
 NOTE: This ni still sio correct ikiwa the original code was depending on
@@ -13,10 +13,10 @@ tuple.  That would require type inference, which we don't do.  Let
 Python 2.6 figure it out.
 """
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..pytree agiza Node
-kutoka ..pygram agiza python_symbols kama syms
+kutoka ..pygram agiza python_symbols as syms
 kutoka ..fixer_util agiza Name, ArgList, ListComp, in_special_context
 
 
@@ -57,7 +57,7 @@ kundi FixFilter(fixer_base.ConditionalFix):
 
     eleza transform(self, node, results):
         ikiwa self.should_skip(node):
-            rudisha
+            return
 
         trailers = []
         ikiwa 'extra_trailers' kwenye results:
@@ -71,7 +71,7 @@ kundi FixFilter(fixer_base.ConditionalFix):
                            results.get("xp").clone())
             new = Node(syms.power, [new] + trailers, prefix="")
 
-        lasivyo "none" kwenye results:
+        elikiwa "none" kwenye results:
             new = ListComp(Name("_f"),
                            Name("_f"),
                            results["seq"].clone(),

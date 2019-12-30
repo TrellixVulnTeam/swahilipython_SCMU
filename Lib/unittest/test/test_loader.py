@@ -17,8 +17,8 @@ eleza warningregistry(func):
             ikiwa saved ni missing:
                 jaribu:
                     toa warnings.__warningregistry__
-                tatizo AttributeError:
-                    pita
+                except AttributeError:
+                    pass
             isipokua:
                 warnings.__warningregistry__ = saved
     rudisha wrapper
@@ -40,9 +40,9 @@ kundi Test_TestLoader(unittest.TestCase):
     # kundi testCaseClass"
     eleza test_loadTestsFromTestCase(self):
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foo_bar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foo_bar(self): pass
 
         tests = unittest.TestSuite([Foo('test_1'), Foo('test_2')])
 
@@ -55,7 +55,7 @@ kundi Test_TestLoader(unittest.TestCase):
     # Make sure it does the right thing even ikiwa no tests were found
     eleza test_loadTestsFromTestCase__no_matches(self):
         kundi Foo(unittest.TestCase):
-            eleza foo_bar(self): pita
+            eleza foo_bar(self): pass
 
         empty_suite = unittest.TestSuite()
 
@@ -73,15 +73,15 @@ kundi Test_TestLoader(unittest.TestCase):
     # test kila it.
     eleza test_loadTestsFromTestCase__TestSuite_subclass(self):
         kundi NotATestCase(unittest.TestSuite):
-            pita
+            pass
 
         loader = unittest.TestLoader()
         jaribu:
             loader.loadTestsFromTestCase(NotATestCase)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            self.fail('Should ashiria TypeError')
+            self.fail('Should  ashiria TypeError')
 
     # "Return a suite of all test cases contained kwenye the TestCase-derived
     # kundi testCaseClass"
@@ -92,7 +92,7 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_loadTestsFromTestCase__default_method_name(self):
         kundi Foo(unittest.TestCase):
             eleza runTest(self):
-                pita
+                pass
 
         loader = unittest.TestLoader()
         # This has to be false kila the test to succeed
@@ -113,7 +113,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -140,7 +140,7 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_loadTestsFromModule__no_TestCase_tests(self):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
-            pita
+            pass
         m.testcase_1 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -156,13 +156,13 @@ kundi Test_TestLoader(unittest.TestCase):
     #
     # XXX Currently, it succeeds anyway. This flexibility
     # should either be documented ama loadTestsFromModule() should
-    # ashiria a TypeError
+    #  ashiria a TypeError
     #
     # XXX Certain people are using this behaviour. We'll add a test kila it
     eleza test_loadTestsFromModule__not_a_module(self):
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
 
         kundi NotAModule(object):
             test_2 = MyTestCase
@@ -181,7 +181,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         load_tests_args = []
@@ -208,7 +208,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         load_tests_args = []
@@ -219,8 +219,8 @@ kundi Test_TestLoader(unittest.TestCase):
         m.load_tests = load_tests
         # The method still works.
         loader = unittest.TestLoader()
-        # use_load_tests=Kweli kama a positional argument.
-        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
+        # use_load_tests=Kweli as a positional argument.
+        ukijumuisha warnings.catch_warnings(record=Kweli) as w:
             warnings.simplefilter('always')
             suite = loader.loadTestsFromModule(m, Uongo)
         self.assertIsInstance(suite, unittest.TestSuite)
@@ -237,7 +237,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         load_tests_args = []
@@ -248,7 +248,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m.load_tests = load_tests
         # The method still works.
         loader = unittest.TestLoader()
-        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) as w:
             warnings.simplefilter('always')
             suite = loader.loadTestsFromModule(m, use_load_tests=Uongo)
         self.assertIsInstance(suite, unittest.TestSuite)
@@ -265,7 +265,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         load_tests_args = []
@@ -275,8 +275,8 @@ kundi Test_TestLoader(unittest.TestCase):
             rudisha tests
         m.load_tests = load_tests
         loader = unittest.TestLoader()
-        ukijumuisha self.assertRaises(TypeError) kama cm, \
-             warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha self.assertRaises(TypeError) as cm, \
+             warnings.catch_warnings(record=Kweli) as w:
             warnings.simplefilter('always')
             loader.loadTestsFromModule(m, Uongo, 'testme.*')
         # We still got the deprecation warning.
@@ -294,7 +294,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         load_tests_args = []
@@ -306,7 +306,7 @@ kundi Test_TestLoader(unittest.TestCase):
         loader = unittest.TestLoader()
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore')
-            ukijumuisha self.assertRaises(TypeError) kama cm:
+            ukijumuisha self.assertRaises(TypeError) as cm:
                 loader.loadTestsFromModule(
                     m, use_load_tests=Uongo, very_bad=Kweli, worse=Uongo)
         self.assertEqual(type(cm.exception), TypeError)
@@ -320,7 +320,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         load_tests_args = []
@@ -339,7 +339,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
 
         eleza load_tests(loader, tests, pattern):
-            ashiria TypeError('some failure')
+             ashiria TypeError('some failure')
         m.load_tests = load_tests
 
         loader = unittest.TestLoader()
@@ -365,23 +365,23 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
-    # Is ValueError ashiriad kwenye response to an empty name?
+    # Is ValueError raised kwenye response to an empty name?
     eleza test_loadTestsFromName__empty_name(self):
         loader = unittest.TestLoader()
 
         jaribu:
             loader.loadTestsFromName('')
-        tatizo ValueError kama e:
+        except ValueError as e:
             self.assertEqual(str(e), "Empty module name")
         isipokua:
-            self.fail("TestLoader.loadTestsFromName failed to ashiria ValueError")
+            self.fail("TestLoader.loadTestsFromName failed to  ashiria ValueError")
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
     # What happens when the name contains invalid characters?
@@ -415,7 +415,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
     # What happens when the module ni found, but the attribute isn't?
@@ -432,7 +432,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
     # What happens when the module ni found, but the attribute isn't?
@@ -449,7 +449,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
     # What happens when we provide the module, but the attribute can't be
@@ -467,15 +467,15 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # Does loadTestsFromName ashiria ValueError when pitaed an empty
+    # Does loadTestsFromName  ashiria ValueError when passed an empty
     # name relative to a provided module?
     #
-    # XXX Should probably ashiria a ValueError instead of an AttributeError
+    # XXX Should probably  ashiria a ValueError instead of an AttributeError
     eleza test_loadTestsFromName__relative_empty_name(self):
         loader = unittest.TestLoader()
 
@@ -489,7 +489,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
@@ -499,7 +499,7 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_loadTestsFromName__relative_malformed_name(self):
         loader = unittest.TestLoader()
 
-        # XXX Should this ashiria AttributeError ama ValueError?
+        # XXX Should this  ashiria AttributeError ama ValueError?
         suite = loader.loadTestsFromName('abc () //', unittest)
         error, test = self.check_deferred_error(loader, suite)
         expected = "module 'unittest' has no attribute 'abc () //'"
@@ -512,17 +512,17 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The method optionally resolves name relative to the given module"
     #
-    # Does loadTestsFromName ashiria TypeError when the `module` argument
+    # Does loadTestsFromName  ashiria TypeError when the `module` argument
     # isn't a module object?
     #
     # XXX Accepts the not-a-module object, ignoring the object's type
-    # This should ashiria an exception ama the method name should be changed
+    # This should  ashiria an exception ama the method name should be changed
     #
     # XXX Some people are relying on this, so keep it kila now
     eleza test_loadTestsFromName__relative_not_a_module(self):
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
 
         kundi NotAModule(object):
             test_2 = MyTestCase
@@ -535,10 +535,10 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
-    # Does it ashiria an exception ikiwa the name resolves to an invalid
+    # Does it  ashiria an exception ikiwa the name resolves to an invalid
     # object?
     eleza test_loadTestsFromName__relative_bad_object(self):
         m = types.ModuleType('m')
@@ -547,10 +547,10 @@ kundi Test_TestLoader(unittest.TestCase):
         loader = unittest.TestLoader()
         jaribu:
             loader.loadTestsFromName('testcase_1', m)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            self.fail("Should have ashiriad TypeError")
+            self.fail("Should have raised TypeError")
 
     # "The specifier name ni a ``dotted name'' that may
     # resolve either to ... a test case class"
@@ -558,7 +558,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -568,13 +568,13 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     eleza test_loadTestsFromName__relative_TestSuite(self):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testsuite = unittest.TestSuite([MyTestCase('test')])
 
         loader = unittest.TestLoader()
@@ -589,7 +589,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -600,17 +600,17 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
-    # Does loadTestsFromName() ashiria the proper exception when trying to
+    # Does loadTestsFromName()  ashiria the proper exception when trying to
     # resolve "a test method within a test case class" that doesn't exist
     # kila the given name (relative to a provided module)?
     eleza test_loadTestsFromName__relative_invalid_testmethod(self):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -623,51 +623,51 @@ kundi Test_TestLoader(unittest.TestCase):
         self.assertRaisesRegex(AttributeError, expected, test.testfoo)
 
     # "The specifier name ni a ``dotted name'' that may resolve ... to
-    # ... a callable object which rudishas a ... TestSuite instance"
+    # ... a callable object which returns a ... TestSuite instance"
     eleza test_loadTestsFromName__callable__TestSuite(self):
         m = types.ModuleType('m')
         testcase_1 = unittest.FunctionTestCase(lambda: Tupu)
         testcase_2 = unittest.FunctionTestCase(lambda: Tupu)
-        eleza rudisha_TestSuite():
+        eleza return_TestSuite():
             rudisha unittest.TestSuite([testcase_1, testcase_2])
-        m.rudisha_TestSuite = rudisha_TestSuite
+        m.return_TestSuite = return_TestSuite
 
         loader = unittest.TestLoader()
-        suite = loader.loadTestsFromName('rudisha_TestSuite', m)
+        suite = loader.loadTestsFromName('return_TestSuite', m)
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [testcase_1, testcase_2])
 
     # "The specifier name ni a ``dotted name'' that may resolve ... to
-    # ... a callable object which rudishas a TestCase ... instance"
+    # ... a callable object which returns a TestCase ... instance"
     eleza test_loadTestsFromName__callable__TestCase_instance(self):
         m = types.ModuleType('m')
         testcase_1 = unittest.FunctionTestCase(lambda: Tupu)
-        eleza rudisha_TestCase():
+        eleza return_TestCase():
             rudisha testcase_1
-        m.rudisha_TestCase = rudisha_TestCase
+        m.return_TestCase = return_TestCase
 
         loader = unittest.TestLoader()
-        suite = loader.loadTestsFromName('rudisha_TestCase', m)
+        suite = loader.loadTestsFromName('return_TestCase', m)
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [testcase_1])
 
     # "The specifier name ni a ``dotted name'' that may resolve ... to
-    # ... a callable object which rudishas a TestCase ... instance"
+    # ... a callable object which returns a TestCase ... instance"
     #*****************************************************************
     #Override the suiteClass attribute to ensure that the suiteClass
     #attribute ni used
     eleza test_loadTestsFromName__callable__TestCase_instance_ProperSuiteClass(self):
         kundi SubTestSuite(unittest.TestSuite):
-            pita
+            pass
         m = types.ModuleType('m')
         testcase_1 = unittest.FunctionTestCase(lambda: Tupu)
-        eleza rudisha_TestCase():
+        eleza return_TestCase():
             rudisha testcase_1
-        m.rudisha_TestCase = rudisha_TestCase
+        m.return_TestCase = return_TestCase
 
         loader = unittest.TestLoader()
         loader.suiteClass = SubTestSuite
-        suite = loader.loadTestsFromName('rudisha_TestCase', m)
+        suite = loader.loadTestsFromName('return_TestCase', m)
         self.assertIsInstance(suite, loader.suiteClass)
         self.assertEqual(list(suite), [testcase_1])
 
@@ -678,11 +678,11 @@ kundi Test_TestLoader(unittest.TestCase):
     #attribute ni used
     eleza test_loadTestsFromName__relative_testmethod_ProperSuiteClass(self):
         kundi SubTestSuite(unittest.TestSuite):
-            pita
+            pass
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -693,27 +693,27 @@ kundi Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(suite), [MyTestCase('test')])
 
     # "The specifier name ni a ``dotted name'' that may resolve ... to
-    # ... a callable object which rudishas a TestCase ama TestSuite instance"
+    # ... a callable object which returns a TestCase ama TestSuite instance"
     #
-    # What happens ikiwa the callable rudishas something else?
+    # What happens ikiwa the callable returns something else?
     eleza test_loadTestsFromName__callable__wrong_type(self):
         m = types.ModuleType('m')
-        eleza rudisha_wrong():
+        eleza return_wrong():
             rudisha 6
-        m.rudisha_wrong = rudisha_wrong
+        m.return_wrong = return_wrong
 
         loader = unittest.TestLoader()
         jaribu:
-            suite = loader.loadTestsFromName('rudisha_wrong', m)
-        tatizo TypeError:
-            pita
+            suite = loader.loadTestsFromName('return_wrong', m)
+        except TypeError:
+            pass
         isipokua:
-            self.fail("TestLoader.loadTestsFromName failed to ashiria TypeError")
+            self.fail("TestLoader.loadTestsFromName failed to  ashiria TypeError")
 
     # "The specifier can refer to modules na packages which have sio been
-    # imported; they will be imported kama a side-effect"
+    # imported; they will be imported as a side-effect"
     eleza test_loadTestsFromName__module_not_loaded(self):
-        # We're going to try to load this module kama a side-effect, so it
+        # We're going to try to load this module as a side-effect, so it
         # better sio be loaded before we try.
         #
         module_name = 'unittest.test.dummy'
@@ -743,7 +743,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
         :param loader: A loader ukijumuisha some errors.
         :param suite: A suite that should have a late bound error.
-        :rudisha: The first error message kutoka the loader na the test object
+        :return: The first error message kutoka the loader na the test object
             kutoka the suite.
         """
         self.assertIsInstance(suite, unittest.TestSuite)
@@ -773,7 +773,7 @@ kundi Test_TestLoader(unittest.TestCase):
     #
     # What happens ikiwa that sequence of names ni empty?
     #
-    # XXX Should this ashiria a ValueError ama just rudisha an empty TestSuite?
+    # XXX Should this  ashiria a ValueError ama just rudisha an empty TestSuite?
     eleza test_loadTestsFromNames__relative_empty_name_list(self):
         loader = unittest.TestLoader()
 
@@ -783,30 +783,30 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
-    # Is ValueError ashiriad kwenye response to an empty name?
+    # Is ValueError raised kwenye response to an empty name?
     eleza test_loadTestsFromNames__empty_name(self):
         loader = unittest.TestLoader()
 
         jaribu:
             loader.loadTestsFromNames([''])
-        tatizo ValueError kama e:
+        except ValueError as e:
             self.assertEqual(str(e), "Empty module name")
         isipokua:
-            self.fail("TestLoader.loadTestsFromNames failed to ashiria ValueError")
+            self.fail("TestLoader.loadTestsFromNames failed to  ashiria ValueError")
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
     # What happens when presented ukijumuisha an impossible module name?
     eleza test_loadTestsFromNames__malformed_name(self):
         loader = unittest.TestLoader()
 
-        # XXX Should this ashiria ValueError ama ImportError?
+        # XXX Should this  ashiria ValueError ama ImportError?
         suite = loader.loadTestsFromNames(['abc () //'])
         error, test = self.check_deferred_error(loader, list(suite)[0])
         expected = "Failed to agiza test module: abc () //"
@@ -819,7 +819,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
     # What happens when no module can be found kila the given name?
@@ -836,7 +836,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
     # What happens when the module can be found, but sio the attribute?
@@ -854,7 +854,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
@@ -874,12 +874,12 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # Do unknown attributes (relative to a provided module) still ashiria an
+    # Do unknown attributes (relative to a provided module) still  ashiria an
     # exception even kwenye the presence of valid attribute names?
     eleza test_loadTestsFromNames__unknown_name_relative_2(self):
         loader = unittest.TestLoader()
@@ -894,14 +894,14 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
     #
     # What happens when faced ukijumuisha the empty string?
     #
-    # XXX This currently ashirias AttributeError, though ValueError ni probably
+    # XXX This currently raises AttributeError, though ValueError ni probably
     # more appropriate
     eleza test_loadTestsFromNames__relative_empty_name(self):
         loader = unittest.TestLoader()
@@ -916,7 +916,7 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     # ...
     # "The method optionally resolves name relative to the given module"
@@ -925,7 +925,7 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_loadTestsFromNames__relative_malformed_name(self):
         loader = unittest.TestLoader()
 
-        # XXX Should this ashiria AttributeError ama ValueError?
+        # XXX Should this  ashiria AttributeError ama ValueError?
         suite = loader.loadTestsFromNames(['abc () //'], unittest)
         error, test = self.check_deferred_error(loader, list(suite)[0])
         expected = "module 'unittest' has no attribute 'abc () //'"
@@ -942,11 +942,11 @@ kundi Test_TestLoader(unittest.TestCase):
     # a module?
     #
     # XXX This validation ni currently sio done. This flexibility should
-    # either be documented ama a TypeError should be ashiriad.
+    # either be documented ama a TypeError should be raised.
     eleza test_loadTestsFromNames__relative_not_a_module(self):
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
 
         kundi NotAModule(object):
             test_2 = MyTestCase
@@ -959,10 +959,10 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The specifier name ni a ``dotted name'' that may resolve either to
     # a module, a test case class, a TestSuite instance, a test method
-    # within a test case class, ama a callable object which rudishas a
+    # within a test case class, ama a callable object which returns a
     # TestCase ama TestSuite instance."
     #
-    # Does it ashiria an exception ikiwa the name resolves to an invalid
+    # Does it  ashiria an exception ikiwa the name resolves to an invalid
     # object?
     eleza test_loadTestsFromNames__relative_bad_object(self):
         m = types.ModuleType('m')
@@ -971,10 +971,10 @@ kundi Test_TestLoader(unittest.TestCase):
         loader = unittest.TestLoader()
         jaribu:
             loader.loadTestsFromNames(['testcase_1'], m)
-        tatizo TypeError:
-            pita
+        except TypeError:
+            pass
         isipokua:
-            self.fail("Should have ashiriad TypeError")
+            self.fail("Should have raised TypeError")
 
     # "The specifier name ni a ``dotted name'' that may resolve ... to
     # ... a test case class"
@@ -982,7 +982,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -998,7 +998,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testsuite = unittest.TestSuite([MyTestCase('test')])
 
         loader = unittest.TestLoader()
@@ -1013,7 +1013,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -1024,7 +1024,7 @@ kundi Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(suite), [ref_suite])
 
     # #14971: Make sure the dotted name resolution works even ikiwa the actual
-    # function doesn't have the same name kama ni used to find it.
+    # function doesn't have the same name as ni used to find it.
     eleza test_loadTestsFromName__function_with_different_name_than_method(self):
         # lambdas have the name '<lambda>'.
         m = types.ModuleType('m')
@@ -1048,7 +1048,7 @@ kundi Test_TestLoader(unittest.TestCase):
         m = types.ModuleType('m')
         kundi MyTestCase(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
         m.testcase_1 = MyTestCase
 
         loader = unittest.TestLoader()
@@ -1061,47 +1061,47 @@ kundi Test_TestLoader(unittest.TestCase):
         self.assertRaisesRegex(AttributeError, expected, test.testfoo)
 
     # "The specifier name ni a ``dotted name'' that may resolve ... to
-    # ... a callable object which rudishas a ... TestSuite instance"
+    # ... a callable object which returns a ... TestSuite instance"
     eleza test_loadTestsFromNames__callable__TestSuite(self):
         m = types.ModuleType('m')
         testcase_1 = unittest.FunctionTestCase(lambda: Tupu)
         testcase_2 = unittest.FunctionTestCase(lambda: Tupu)
-        eleza rudisha_TestSuite():
+        eleza return_TestSuite():
             rudisha unittest.TestSuite([testcase_1, testcase_2])
-        m.rudisha_TestSuite = rudisha_TestSuite
+        m.return_TestSuite = return_TestSuite
 
         loader = unittest.TestLoader()
-        suite = loader.loadTestsFromNames(['rudisha_TestSuite'], m)
+        suite = loader.loadTestsFromNames(['return_TestSuite'], m)
         self.assertIsInstance(suite, loader.suiteClass)
 
         expected = unittest.TestSuite([testcase_1, testcase_2])
         self.assertEqual(list(suite), [expected])
 
     # "The specifier name ni a ``dotted name'' that may resolve ... to
-    # ... a callable object which rudishas a TestCase ... instance"
+    # ... a callable object which returns a TestCase ... instance"
     eleza test_loadTestsFromNames__callable__TestCase_instance(self):
         m = types.ModuleType('m')
         testcase_1 = unittest.FunctionTestCase(lambda: Tupu)
-        eleza rudisha_TestCase():
+        eleza return_TestCase():
             rudisha testcase_1
-        m.rudisha_TestCase = rudisha_TestCase
+        m.return_TestCase = return_TestCase
 
         loader = unittest.TestLoader()
-        suite = loader.loadTestsFromNames(['rudisha_TestCase'], m)
+        suite = loader.loadTestsFromNames(['return_TestCase'], m)
         self.assertIsInstance(suite, loader.suiteClass)
 
         ref_suite = unittest.TestSuite([testcase_1])
         self.assertEqual(list(suite), [ref_suite])
 
     # "The specifier name ni a ``dotted name'' that may resolve ... to
-    # ... a callable object which rudishas a TestCase ama TestSuite instance"
+    # ... a callable object which returns a TestCase ama TestSuite instance"
     #
     # Are staticmethods handled correctly?
     eleza test_loadTestsFromNames__callable__call_staticmethod(self):
         m = types.ModuleType('m')
         kundi Test1(unittest.TestCase):
             eleza test(self):
-                pita
+                pass
 
         testcase_1 = Test1('test')
         kundi Foo(unittest.TestCase):
@@ -1118,27 +1118,27 @@ kundi Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(suite), [ref_suite])
 
     # "The specifier name ni a ``dotted name'' that may resolve ... to
-    # ... a callable object which rudishas a TestCase ama TestSuite instance"
+    # ... a callable object which returns a TestCase ama TestSuite instance"
     #
-    # What happens when the callable rudishas something else?
+    # What happens when the callable returns something else?
     eleza test_loadTestsFromNames__callable__wrong_type(self):
         m = types.ModuleType('m')
-        eleza rudisha_wrong():
+        eleza return_wrong():
             rudisha 6
-        m.rudisha_wrong = rudisha_wrong
+        m.return_wrong = return_wrong
 
         loader = unittest.TestLoader()
         jaribu:
-            suite = loader.loadTestsFromNames(['rudisha_wrong'], m)
-        tatizo TypeError:
-            pita
+            suite = loader.loadTestsFromNames(['return_wrong'], m)
+        except TypeError:
+            pass
         isipokua:
-            self.fail("TestLoader.loadTestsFromNames failed to ashiria TypeError")
+            self.fail("TestLoader.loadTestsFromNames failed to  ashiria TypeError")
 
     # "The specifier can refer to modules na packages which have sio been
-    # imported; they will be imported kama a side-effect"
+    # imported; they will be imported as a side-effect"
     eleza test_loadTestsFromNames__module_not_loaded(self):
-        # We're going to try to load this module kama a side-effect, so it
+        # We're going to try to load this module as a side-effect, so it
         # better sio be loaded before we try.
         #
         module_name = 'unittest.test.dummy'
@@ -1169,9 +1169,9 @@ kundi Test_TestLoader(unittest.TestCase):
     # loader.testMethodPrefix
     eleza test_getTestCaseNames(self):
         kundi Test(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foobar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foobar(self): pass
 
         loader = unittest.TestLoader()
 
@@ -1182,7 +1182,7 @@ kundi Test_TestLoader(unittest.TestCase):
     # Does getTestCaseNames() behave appropriately ikiwa no tests are found?
     eleza test_getTestCaseNames__no_tests(self):
         kundi Test(unittest.TestCase):
-            eleza foobar(self): pita
+            eleza foobar(self): pass
 
         loader = unittest.TestLoader()
 
@@ -1192,14 +1192,14 @@ kundi Test_TestLoader(unittest.TestCase):
     #
     # Are not-TestCases handled gracefully?
     #
-    # XXX This should ashiria a TypeError, sio rudisha a list
+    # XXX This should  ashiria a TypeError, sio rudisha a list
     #
     # XXX It's too late kwenye the 2.5 release cycle to fix this, but it should
     # probably be revisited kila 2.6
     eleza test_getTestCaseNames__not_a_TestCase(self):
         kundi BadCase(int):
             eleza test_foo(self):
-                pita
+                pass
 
         loader = unittest.TestLoader()
         names = loader.getTestCaseNames(BadCase)
@@ -1214,13 +1214,13 @@ kundi Test_TestLoader(unittest.TestCase):
     # loader.testMethodPrefix
     eleza test_getTestCaseNames__inheritance(self):
         kundi TestP(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foobar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foobar(self): pass
 
         kundi TestC(TestP):
-            eleza test_1(self): pita
-            eleza test_3(self): pita
+            eleza test_1(self): pass
+            eleza test_3(self): pass
 
         loader = unittest.TestLoader()
 
@@ -1233,9 +1233,9 @@ kundi Test_TestLoader(unittest.TestCase):
     # patterns should be included.
     eleza test_getTestCaseNames__testNamePatterns(self):
         kundi MyTest(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foobar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foobar(self): pass
 
         loader = unittest.TestLoader()
 
@@ -1267,7 +1267,7 @@ kundi Test_TestLoader(unittest.TestCase):
                 self.fail('Non-test attribute accessed')
 
         kundi MyTest(unittest.TestCase):
-            eleza test_1(self): pita
+            eleza test_1(self): pass
             foobar = Trap()
 
         loader = unittest.TestLoader()
@@ -1290,9 +1290,9 @@ kundi Test_TestLoader(unittest.TestCase):
     # all loadTestsFrom* methods.
     eleza test_testMethodPrefix__loadTestsFromTestCase(self):
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foo_bar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foo_bar(self): pass
 
         tests_1 = unittest.TestSuite([Foo('foo_bar')])
         tests_2 = unittest.TestSuite([Foo('test_1'), Foo('test_2')])
@@ -1312,9 +1312,9 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_testMethodPrefix__loadTestsFromModule(self):
         m = types.ModuleType('m')
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foo_bar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foo_bar(self): pass
         m.Foo = Foo
 
         tests_1 = [unittest.TestSuite([Foo('foo_bar')])]
@@ -1335,9 +1335,9 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_testMethodPrefix__loadTestsFromName(self):
         m = types.ModuleType('m')
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foo_bar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foo_bar(self): pass
         m.Foo = Foo
 
         tests_1 = unittest.TestSuite([Foo('foo_bar')])
@@ -1358,9 +1358,9 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_testMethodPrefix__loadTestsFromNames(self):
         m = types.ModuleType('m')
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foo_bar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foo_bar(self): pass
         m.Foo = Foo
 
         tests_1 = unittest.TestSuite([unittest.TestSuite([Foo('foo_bar')])])
@@ -1392,8 +1392,8 @@ kundi Test_TestLoader(unittest.TestCase):
             rudisha -((x > y) - (x < y))
 
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
 
         loader = unittest.TestLoader()
         loader.sortTestMethodsUsing = reversed_cmp
@@ -1409,8 +1409,8 @@ kundi Test_TestLoader(unittest.TestCase):
 
         m = types.ModuleType('m')
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
         m.Foo = Foo
 
         loader = unittest.TestLoader()
@@ -1427,8 +1427,8 @@ kundi Test_TestLoader(unittest.TestCase):
 
         m = types.ModuleType('m')
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
         m.Foo = Foo
 
         loader = unittest.TestLoader()
@@ -1445,8 +1445,8 @@ kundi Test_TestLoader(unittest.TestCase):
 
         m = types.ModuleType('m')
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
         m.Foo = Foo
 
         loader = unittest.TestLoader()
@@ -1464,8 +1464,8 @@ kundi Test_TestLoader(unittest.TestCase):
             rudisha -((x > y) - (x < y))
 
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
 
         loader = unittest.TestLoader()
         loader.sortTestMethodsUsing = reversed_cmp
@@ -1475,14 +1475,14 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "The default value ni the built-in cmp() function"
     # Since cmp ni now defunct, we simply verify that the results
-    # occur kwenye the same order kama they would ukijumuisha the default sort.
+    # occur kwenye the same order as they would ukijumuisha the default sort.
     eleza test_sortTestMethodsUsing__default_value(self):
         loader = unittest.TestLoader()
 
         kundi Foo(unittest.TestCase):
-            eleza test_2(self): pita
-            eleza test_3(self): pita
-            eleza test_1(self): pita
+            eleza test_2(self): pass
+            eleza test_3(self): pass
+            eleza test_1(self): pass
 
         test_names = ['test_2', 'test_3', 'test_1']
         self.assertEqual(loader.getTestCaseNames(Foo), sorted(test_names))
@@ -1490,12 +1490,12 @@ kundi Test_TestLoader(unittest.TestCase):
 
     # "it can be set to Tupu to disable the sort."
     #
-    # XXX How ni this different kutoka reassigning cmp? Are the tests rudishaed
+    # XXX How ni this different kutoka reassigning cmp? Are the tests returned
     # kwenye a random order ama something? This behaviour should die
     eleza test_sortTestMethodsUsing__Tupu(self):
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
 
         loader = unittest.TestLoader()
         loader.sortTestMethodsUsing = Tupu
@@ -1512,9 +1512,9 @@ kundi Test_TestLoader(unittest.TestCase):
     # "Callable object that constructs a test suite kutoka a list of tests."
     eleza test_suiteClass__loadTestsFromTestCase(self):
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foo_bar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foo_bar(self): pass
 
         tests = [Foo('test_1'), Foo('test_2')]
 
@@ -1527,9 +1527,9 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_suiteClass__loadTestsFromModule(self):
         m = types.ModuleType('m')
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foo_bar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foo_bar(self): pass
         m.Foo = Foo
 
         tests = [[Foo('test_1'), Foo('test_2')]]
@@ -1543,9 +1543,9 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_suiteClass__loadTestsFromName(self):
         m = types.ModuleType('m')
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foo_bar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foo_bar(self): pass
         m.Foo = Foo
 
         tests = [Foo('test_1'), Foo('test_2')]
@@ -1559,9 +1559,9 @@ kundi Test_TestLoader(unittest.TestCase):
     eleza test_suiteClass__loadTestsFromNames(self):
         m = types.ModuleType('m')
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pita
-            eleza test_2(self): pita
-            eleza foo_bar(self): pita
+            eleza test_1(self): pass
+            eleza test_2(self): pass
+            eleza foo_bar(self): pass
         m.Foo = Foo
 
         tests = [[Foo('test_1'), Foo('test_2')]]
@@ -1578,10 +1578,10 @@ kundi Test_TestLoader(unittest.TestCase):
 
     eleza test_partial_functions(self):
         eleza noop(arg):
-            pita
+            pass
 
         kundi Foo(unittest.TestCase):
-            pita
+            pass
 
         setattr(Foo, 'test_partial', functools.partial(noop, Tupu))
 

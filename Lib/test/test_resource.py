@@ -21,13 +21,13 @@ kundi ResourceTest(unittest.TestCase):
     eleza test_fsize_ismax(self):
         jaribu:
             (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             # RLIMIT_FSIZE should be RLIM_INFINITY, which will be a really big
             # number on a platform ukijumuisha large file support.  On these platforms,
             # we need to test that the get/setrlimit functions properly convert
-            # the number to a C long long na that the conversion doesn't ashiria
+            # the number to a C long long na that the conversion doesn't raise
             # an error.
             self.assertEqual(resource.RLIM_INFINITY, max)
             resource.setrlimit(resource.RLIMIT_FSIZE, (cur, max))
@@ -35,8 +35,8 @@ kundi ResourceTest(unittest.TestCase):
     eleza test_fsize_enforced(self):
         jaribu:
             (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             # Check to see what happens when the RLIMIT_FSIZE ni small.  Some
             # versions of Python were terminated by an uncaught SIGXFSZ, but
@@ -44,12 +44,12 @@ kundi ResourceTest(unittest.TestCase):
             # write() should rudisha EFBIG when the limit ni exceeded.
 
             # At least one platform has an unlimited RLIMIT_FSIZE na attempts
-            # to change it ashiria ValueError instead.
+            # to change it  ashiria ValueError instead.
             jaribu:
                 jaribu:
                     resource.setrlimit(resource.RLIMIT_FSIZE, (1024, max))
                     limit_set = Kweli
-                tatizo ValueError:
+                except ValueError:
                     limit_set = Uongo
                 f = open(support.TESTFN, "wb")
                 jaribu:
@@ -60,14 +60,14 @@ kundi ResourceTest(unittest.TestCase):
                         # On some systems (e.g., Ubuntu on hppa) the flush()
                         # doesn't always cause the exception, but the close()
                         # does eventually.  Try flushing several times in
-                        # an attempt to ensure the file ni really synced na
-                        # the exception ashiriad.
+                        # an attempt to ensure the file ni really synced and
+                        # the exception raised.
                         kila i kwenye range(5):
                             time.sleep(.1)
                             f.flush()
-                    tatizo OSError:
+                    except OSError:
                         ikiwa sio limit_set:
-                            ashiria
+                            raise
                     ikiwa limit_set:
                         # Close will attempt to flush the byte we wrote
                         # Restore limit first to avoid getting a spurious error
@@ -84,17 +84,17 @@ kundi ResourceTest(unittest.TestCase):
         too_big = 10**50
         jaribu:
             (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             jaribu:
                 resource.setrlimit(resource.RLIMIT_FSIZE, (too_big, max))
-            tatizo (OverflowError, ValueError):
-                pita
+            except (OverflowError, ValueError):
+                pass
             jaribu:
                 resource.setrlimit(resource.RLIMIT_FSIZE, (max, too_big))
-            tatizo (OverflowError, ValueError):
-                pita
+            except (OverflowError, ValueError):
+                pass
 
     eleza test_getrusage(self):
         self.assertRaises(TypeError, resource.getrusage)
@@ -104,12 +104,12 @@ kundi ResourceTest(unittest.TestCase):
         # May sio be available on all systems.
         jaribu:
             usageboth = resource.getrusage(resource.RUSAGE_BOTH)
-        tatizo (ValueError, AttributeError):
-            pita
+        except (ValueError, AttributeError):
+            pass
         jaribu:
             usage_thread = resource.getrusage(resource.RUSAGE_THREAD)
-        tatizo (ValueError, AttributeError):
-            pita
+        except (ValueError, AttributeError):
+            pass
 
     # Issue 6083: Reference counting bug
     @unittest.skipIf(sys.platform == "vxworks",
@@ -117,8 +117,8 @@ kundi ResourceTest(unittest.TestCase):
     eleza test_setrusage_refcount(self):
         jaribu:
             limits = resource.getrlimit(resource.RLIMIT_CPU)
-        tatizo AttributeError:
-            pita
+        except AttributeError:
+            pass
         isipokua:
             kundi BadSequence:
                 eleza __len__(self):
@@ -126,7 +126,7 @@ kundi ResourceTest(unittest.TestCase):
                 eleza __getitem__(self, key):
                     ikiwa key kwenye (0, 1):
                         rudisha len(tuple(range(1000000)))
-                    ashiria IndexError
+                     ashiria IndexError
 
             resource.setrlimit(resource.RLIMIT_CPU, BadSequence())
 

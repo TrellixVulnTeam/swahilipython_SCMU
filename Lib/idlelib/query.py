@@ -39,7 +39,7 @@ kundi Query(Toplevel):
         """Create modal popup, rudisha when destroyed.
 
         Additional subkundi init must be done before this unless
-        _utest=Kweli ni pitaed to suppress wait_window().
+        _utest=Kweli ni passed to suppress wait_window().
 
         title - string, title of popup dialog
         message - string, informational message to display
@@ -65,7 +65,7 @@ kundi Query(Toplevel):
                 self.tk.call('::tk::unsupported::MacWindowStyle', 'style',
                              self._w, 'moveableModal', '')
             tatizo:
-                pita
+                pass
             self.bind("<Command-.>", self.cancel)
         self.bind('<Key-Escape>', self.cancel)
         self.protocol("WM_DELETE_WINDOW", self.cancel)
@@ -124,7 +124,7 @@ kundi Query(Toplevel):
         self.button_ok.grid(column=1, row=99, padx=5)
         self.button_cancel.grid(column=2, row=99, padx=5)
 
-    eleza create_extra(self): pita  # Override to add widgets.
+    eleza create_extra(self): pass  # Override to add widgets.
 
     eleza showerror(self, message, widget=Tupu):
         #self.bell(displayof=self)
@@ -178,10 +178,10 @@ kundi SectionName(Query):
         ikiwa sio name:
             self.showerror('no name specified.')
             rudisha Tupu
-        lasivyo len(name)>30:
+        elikiwa len(name)>30:
             self.showerror('name ni longer than 30 characters.')
             rudisha Tupu
-        lasivyo name kwenye self.used_names:
+        elikiwa name kwenye self.used_names:
             self.showerror('name ni already kwenye use.')
             rudisha Tupu
         rudisha name
@@ -197,7 +197,7 @@ kundi ModuleName(Query):
                        _htest=_htest, _utest=_utest)
 
     eleza entry_ok(self):
-        "Return entered module name kama file path ama Tupu."
+        "Return entered module name as file path ama Tupu."
         self.entry_error['text'] = ''
         name = self.entry.get().strip()
         ikiwa sio name:
@@ -206,7 +206,7 @@ kundi ModuleName(Query):
         # XXX Ought to insert current file's directory kwenye front of path.
         jaribu:
             spec = importlib.util.find_spec(name)
-        tatizo (ValueError, ImportError) kama msg:
+        except (ValueError, ImportError) as msg:
             self.showerror(str(msg))
             rudisha Tupu
         ikiwa spec ni Tupu:
@@ -217,7 +217,7 @@ kundi ModuleName(Query):
             rudisha Tupu
         jaribu:
             file_path = spec.loader.get_filename(name)
-        tatizo AttributeError:
+        except AttributeError:
             self.showerror("loader does sio support get_filename",
                       parent=self)
             rudisha Tupu
@@ -263,8 +263,8 @@ kundi HelpSource(Query):
 
     eleza askfilename(self, filetypes, initdir, initfile):  # htest #
         # Extracted kutoka browse_file so can mock kila unittests.
-        # Cannot unittest kama cannot simulate button clicks.
-        # Test by running htest, such kama by running this file.
+        # Cannot unittest as cannot simulate button clicks.
+        # Test by running htest, such as by running this file.
         rudisha filedialog.Open(parent=self, filetypes=filetypes)\
                .show(initialdir=initdir, initialfile=initfile)
 
@@ -298,7 +298,7 @@ kundi HelpSource(Query):
         ikiwa sio path: #no path specified
             self.showerror('no help file path specified.', self.path_error)
             rudisha Tupu
-        lasivyo sio path.startswith(('www.', 'http')):
+        elikiwa sio path.startswith(('www.', 'http')):
             ikiwa path[:5] == 'file:':
                 path = path[5:]
             ikiwa sio os.path.exists(path):
@@ -355,7 +355,7 @@ kundi CustomRun(Query):
         cli_string = self.entry.get().strip()
         jaribu:
             cli_args = shlex.split(cli_string, posix=Kweli)
-        tatizo ValueError kama err:
+        except ValueError as err:
             self.showerror(str(err))
             rudisha Tupu
         rudisha cli_args

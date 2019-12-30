@@ -1,111 +1,111 @@
 """curses
 
-The main package for curses support for Python.  Normally used by importing
-the package, and perhaps a particular module inside it.
+The main package kila curses support kila Python.  Normally used by importing
+the package, na perhaps a particular module inside it.
 
-   import curses
-   from curses import textpad
+   agiza curses
+   kutoka curses agiza textpad
    curses.initscr()
    ...
 
 """
 
-from _curses import *
-import os as _os
-import sys as _sys
+kutoka _curses agiza *
+agiza os as _os
+agiza sys as _sys
 
 # Some constants, most notably the ACS_* ones, are only added to the C
-# _curses module's dictionary after initscr() is called.  (Some
-# versions of SGI's curses don't define values for those constants
+# _curses module's dictionary after initscr() ni called.  (Some
+# versions of SGI's curses don't define values kila those constants
 # until initscr() has been called.)  This wrapper function calls the
-# underlying C initscr(), and then copies the constants from the
+# underlying C initscr(), na then copies the constants kutoka the
 # _curses module to the curses package's dictionary.  Don't do 'from
-# curses import *' if you'll be needing the ACS_* constants.
+# curses agiza *' ikiwa you'll be needing the ACS_* constants.
 
-def initscr():
+eleza initscr():
     agiza _curses, curses
     # we call setupterm() here because it raises an error
-    # instead of calling exit() in error cases.
+    # instead of calling exit() kwenye error cases.
     setupterm(term=_os.environ.get("TERM", "unknown"),
               fd=_sys.__stdout__.fileno())
     stdscr = _curses.initscr()
-    for key, value in _curses.__dict__.items():
-        if key[0:4] == 'ACS_' or key in ('LINES', 'COLS'):
+    kila key, value kwenye _curses.__dict__.items():
+        ikiwa key[0:4] == 'ACS_' ama key kwenye ('LINES', 'COLS'):
             setattr(curses, key, value)
 
-    return stdscr
+    rudisha stdscr
 
-# This is a similar wrapper for start_color(), which adds the COLORS na
+# This ni a similar wrapper kila start_color(), which adds the COLORS and
 # COLOR_PAIRS variables which are only available after start_color() is
 # called.
 
-def start_color():
+eleza start_color():
     agiza _curses, curses
     retval = _curses.start_color()
-    if hasattr(_curses, 'COLORS'):
+    ikiwa hasattr(_curses, 'COLORS'):
         curses.COLORS = _curses.COLORS
-    if hasattr(_curses, 'COLOR_PAIRS'):
+    ikiwa hasattr(_curses, 'COLOR_PAIRS'):
         curses.COLOR_PAIRS = _curses.COLOR_PAIRS
-    return retval
+    rudisha retval
 
-# Import Python has_key() implementation if _curses doesn't contain has_key()
+# Import Python has_key() implementation ikiwa _curses doesn't contain has_key()
 
 jaribu:
     has_key
-tatizo NameError:
-    from .has_key import has_key
+except NameError:
+    kutoka .has_key agiza has_key
 
-# Wrapper for the entire curses-based application.  Runs a function which
+# Wrapper kila the entire curses-based application.  Runs a function which
 # should be the rest of your curses-based application.  If the application
 # raises an exception, wrapper() will restore the terminal to a sane state so
 # you can read the resulting traceback.
 
-def wrapper(*args, **kwds):
-    """Wrapper function that initializes curses and calls another function,
+eleza wrapper(*args, **kwds):
+    """Wrapper function that initializes curses na calls another function,
     restoring normal keyboard/screen behavior on error.
-    The callable object 'func' is then passed the main window 'stdscr'
+    The callable object 'func' ni then passed the main window 'stdscr'
     as its first argument, followed by any other arguments passed to
     wrapper().
     """
 
-    if args:
+    ikiwa args:
         func, *args = args
-    lasivyo 'func' in kwds:
+    elikiwa 'func' kwenye kwds:
         func = kwds.pop('func')
-        import warnings
-        warnings.warn("Passing 'func' as keyword argument is deprecated",
+        agiza warnings
+        warnings.warn("Passing 'func' as keyword argument ni deprecated",
                       DeprecationWarning, stacklevel=2)
     isipokua:
-        ashiria TypeError('wrapper expected at least 1 positional argument, '
+         ashiria TypeError('wrapper expected at least 1 positional argument, '
                         'got %d' % len(args))
 
     jaribu:
         # Initialize curses
         stdscr = initscr()
 
-        # Turn off echoing of keys, and enter ckoma mode,
-        # where no buffering is performed on keyboard input
+        # Turn off echoing of keys, na enter ckoma mode,
+        # where no buffering ni performed on keyboard input
         noecho()
         ckoma()
 
-        # In keypad mode, escape sequences for special keys
-        # (like the cursor keys) will be interpreted na
+        # In keypad mode, escape sequences kila special keys
+        # (like the cursor keys) will be interpreted and
         # a special value like curses.KEY_LEFT will be returned
         stdscr.keypad(1)
 
-        # Start color, too.  Harmless if the terminal doesn't have
-        # color; user can test with has_color() later on.  The try/catch
-        # works around a minor bit of over-conscientiousness in the curses
-        # module -- the error return from C start_color() is ignorable.
+        # Start color, too.  Harmless ikiwa the terminal doesn't have
+        # color; user can test ukijumuisha has_color() later on.  The try/catch
+        # works around a minor bit of over-conscientiousness kwenye the curses
+        # module -- the error rudisha kutoka C start_color() ni ignorable.
         jaribu:
             start_color()
         tatizo:
             pass
 
-        return func(stdscr, *args, **kwds)
+        rudisha func(stdscr, *args, **kwds)
     mwishowe:
         # Set everything back to normal
-        if 'stdscr' in locals():
+        ikiwa 'stdscr' kwenye locals():
             stdscr.keypad(0)
             echo()
             nockoma()

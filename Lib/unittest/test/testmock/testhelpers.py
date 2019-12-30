@@ -12,9 +12,9 @@ kutoka datetime agiza datetime
 kutoka functools agiza partial
 
 kundi SomeClass(object):
-    eleza one(self, a, b): pita
-    eleza two(self): pita
-    eleza three(self, a=Tupu): pita
+    eleza one(self, a, b): pass
+    eleza two(self): pass
+    eleza three(self, a=Tupu): pass
 
 
 
@@ -46,8 +46,8 @@ kundi AnyTest(unittest.TestCase):
     eleza test_any_mock_calls_comparison_order(self):
         mock = Mock()
         kundi Foo(object):
-            eleza __eq__(self, other): pita
-            eleza __ne__(self, other): pita
+            eleza __eq__(self, other): pass
+            eleza __ne__(self, other): pass
 
         kila d kwenye datetime.now(), Foo():
             mock.reset_mock()
@@ -391,15 +391,15 @@ kundi SpecSignatureTest(unittest.TestCase):
         self._check_someclass_mock(mock)
 
 
-    eleza test_create_autospec_rudisha_value(self):
-        eleza f(): pita
-        mock = create_autospec(f, rudisha_value='foo')
+    eleza test_create_autospec_return_value(self):
+        eleza f(): pass
+        mock = create_autospec(f, return_value='foo')
         self.assertEqual(mock(), 'foo')
 
         kundi Foo(object):
-            pita
+            pass
 
-        mock = create_autospec(Foo, rudisha_value='foo')
+        mock = create_autospec(Foo, return_value='foo')
         self.assertEqual(mock(), 'foo')
 
 
@@ -412,7 +412,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
     eleza test_mocking_unbound_methods(self):
         kundi Foo(object):
-            eleza foo(self, foo): pita
+            eleza foo(self, foo): pass
         p = patch.object(Foo, 'foo')
         mock_foo = p.start()
         Foo().foo(1)
@@ -428,7 +428,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
 
     eleza test_create_autospec_keyword_only_arguments(self):
-        eleza foo(a, *, b=Tupu): pita
+        eleza foo(a, *, b=Tupu): pass
 
         m = create_autospec(foo)
         m(1)
@@ -441,7 +441,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
     eleza test_function_as_instance_attribute(self):
         obj = SomeClass()
-        eleza f(a): pita
+        eleza f(a): pass
         obj.f = f
 
         mock = create_autospec(obj)
@@ -450,8 +450,8 @@ kundi SpecSignatureTest(unittest.TestCase):
 
 
     eleza test_spec_as_list(self):
-        # because spec kama a list of strings kwenye the mock constructor means
-        # something very different we treat a list instance kama the type.
+        # because spec as a list of strings kwenye the mock constructor means
+        # something very different we treat a list instance as the type.
         mock = create_autospec([])
         mock.append('foo')
         mock.append.assert_called_with('foo')
@@ -477,7 +477,7 @@ kundi SpecSignatureTest(unittest.TestCase):
             self._check_someclass_mock(mock)
 
 
-    eleza test_spec_has_descriptor_rudishaing_function(self):
+    eleza test_spec_has_descriptor_returning_function(self):
 
         kundi CrazyDescriptor(object):
 
@@ -507,7 +507,7 @@ kundi SpecSignatureTest(unittest.TestCase):
             eleza __getattr__(self, item):
                 ikiwa item == 'crazy':
                     rudisha lambda x: x
-                ashiria AttributeError(item)
+                 ashiria AttributeError(item)
 
         inst = CrazyClass()
         ukijumuisha self.assertRaises(AttributeError):
@@ -525,9 +525,9 @@ kundi SpecSignatureTest(unittest.TestCase):
     eleza test_builtin_functions_types(self):
         # we could replace builtin functions / methods ukijumuisha a function
         # ukijumuisha *args / **kwargs signature. Using the builtin method type
-        # kama a spec seems to work fairly well though.
+        # as a spec seems to work fairly well though.
         kundi BuiltinSubclass(list):
-            eleza bar(self, arg): pita
+            eleza bar(self, arg): pass
             sorted = sorted
             attr = {}
 
@@ -601,13 +601,13 @@ kundi SpecSignatureTest(unittest.TestCase):
     eleza test_descriptors(self):
         kundi Foo(object):
             @classmethod
-            eleza f(cls, a, b): pita
+            eleza f(cls, a, b): pass
             @staticmethod
-            eleza g(a, b): pita
+            eleza g(a, b): pass
 
-        kundi Bar(Foo): pita
+        kundi Bar(Foo): pass
 
-        kundi Baz(SomeClass, Bar): pita
+        kundi Baz(SomeClass, Bar): pass
 
         kila spec kwenye (Foo, Foo(), Bar, Bar(), Baz, Baz()):
             mock = create_autospec(spec)
@@ -620,7 +620,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
     eleza test_recursive(self):
         kundi A(object):
-            eleza a(self): pita
+            eleza a(self): pass
             foo = 'foo bar baz'
             bar = foo
 
@@ -642,9 +642,9 @@ kundi SpecSignatureTest(unittest.TestCase):
 
     eleza test_spec_inheritance_for_classes(self):
         kundi Foo(object):
-            eleza a(self, x): pita
+            eleza a(self, x): pass
             kundi Bar(object):
-                eleza f(self, y): pita
+                eleza f(self, y): pass
 
         class_mock = create_autospec(Foo)
 
@@ -724,7 +724,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
 
     eleza test_function(self):
-        eleza f(a, b): pita
+        eleza f(a, b): pass
 
         mock = create_autospec(f)
         self.assertRaises(TypeError, mock)
@@ -745,10 +745,10 @@ kundi SpecSignatureTest(unittest.TestCase):
         kundi Raiser(object):
             eleza __get__(self, obj, type=Tupu):
                 ikiwa obj ni Tupu:
-                    ashiria AttributeError('Can only be accessed via an instance')
+                     ashiria AttributeError('Can only be accessed via an instance')
 
         kundi RaiserClass(object):
-            ashiriar = Raiser()
+            raiser = Raiser()
 
             @staticmethod
             eleza existing(a, b):
@@ -757,17 +757,17 @@ kundi SpecSignatureTest(unittest.TestCase):
         self.assertEqual(RaiserClass.existing(1, 2), 3)
         s = create_autospec(RaiserClass)
         self.assertRaises(TypeError, lambda x: s.existing(1, 2, 3))
-        self.assertEqual(s.existing(1, 2), s.existing.rudisha_value)
+        self.assertEqual(s.existing(1, 2), s.existing.return_value)
         self.assertRaises(AttributeError, lambda: s.nonexisting)
 
-        # check we can fetch the ashiriar attribute na it has no spec
-        obj = s.ashiriar
+        # check we can fetch the raiser attribute na it has no spec
+        obj = s.raiser
         obj.foo, obj.bar
 
 
     eleza test_signature_class(self):
         kundi Foo(object):
-            eleza __init__(self, a, b=3): pita
+            eleza __init__(self, a, b=3): pass
 
         mock = create_autospec(Foo)
 
@@ -784,17 +784,17 @@ kundi SpecSignatureTest(unittest.TestCase):
 
 
     eleza test_class_with_no_init(self):
-        # this used to ashiria an exception
+        # this used to  ashiria an exception
         # due to trying to get a signature kutoka object.__init__
         kundi Foo(object):
-            pita
+            pass
         create_autospec(Foo)
 
 
     eleza test_signature_callable(self):
         kundi Callable(object):
-            eleza __init__(self, x, y): pita
-            eleza __call__(self, a): pita
+            eleza __init__(self, x, y): pass
+            eleza __call__(self, a): pass
 
         mock = create_autospec(Callable)
         mock(1, 2)
@@ -822,7 +822,7 @@ kundi SpecSignatureTest(unittest.TestCase):
     eleza test_signature_noncallable(self):
         kundi NonCallable(object):
             eleza __init__(self):
-                pita
+                pass
 
         mock = create_autospec(NonCallable)
         instance = mock()
@@ -850,7 +850,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
     eleza test_autospec_functions_with_self_in_odd_place(self):
         kundi Foo(object):
-            eleza f(a, self): pita
+            eleza f(a, self): pass
 
         a = create_autospec(Foo)
         a.f(10)
@@ -869,19 +869,19 @@ kundi SpecSignatureTest(unittest.TestCase):
             eleza __get__(self, obj, cls=Tupu):
                 rudisha self
 
-            eleza __set__(self, obj, value): pita
+            eleza __set__(self, obj, value): pass
 
         kundi MyProperty(property):
-            pita
+            pass
 
         kundi Foo(object):
             __slots__ = ['slot']
 
             @property
-            eleza prop(self): pita
+            eleza prop(self): pass
 
             @MyProperty
-            eleza subprop(self): pita
+            eleza subprop(self): pass
 
             desc = Descriptor(42)
 
@@ -919,7 +919,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
 
     eleza test_autospec_getattr_partial_function(self):
-        # bpo-32153 : getattr rudishaing partial functions without
+        # bpo-32153 : getattr returning partial functions without
         # __name__ should sio create AttributeError kwenye create_autospec
         kundi Foo:
 
@@ -933,7 +933,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
     eleza test_spec_inspect_signature(self):
 
-        eleza myfunc(x, y): pita
+        eleza myfunc(x, y): pass
 
         mock = create_autospec(myfunc)
         mock(1, 2)
@@ -967,7 +967,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
 
     eleza test_spec_function_assert_has_calls(self):
-        eleza f(a): pita
+        eleza f(a): pass
         mock = create_autospec(f)
         mock(1)
         mock.assert_has_calls([call(1)])
@@ -976,7 +976,7 @@ kundi SpecSignatureTest(unittest.TestCase):
 
 
     eleza test_spec_function_assert_any_call(self):
-        eleza f(a): pita
+        eleza f(a): pass
         mock = create_autospec(f)
         mock(1)
         mock.assert_any_call(1)
@@ -985,9 +985,9 @@ kundi SpecSignatureTest(unittest.TestCase):
 
 
     eleza test_spec_function_reset_mock(self):
-        eleza f(a): pita
+        eleza f(a): pass
         rv = Mock()
-        mock = create_autospec(f, rudisha_value=rv)
+        mock = create_autospec(f, return_value=rv)
         mock(1)(2)
         self.assertEqual(mock.mock_calls, [call(1)])
         self.assertEqual(rv.mock_calls, [call(2)])
@@ -1056,15 +1056,15 @@ kundi TestCallList(unittest.TestCase):
             p.stop()
 
 
-    eleza test_propertymock_rudishavalue(self):
+    eleza test_propertymock_returnvalue(self):
         m = MagicMock()
         p = PropertyMock()
         type(m).foo = p
 
-        rudishaed = m.foo
+        returned = m.foo
         p.assert_called_once_with()
-        self.assertIsInstance(rudishaed, MagicMock)
-        self.assertNotIsInstance(rudishaed, PropertyMock)
+        self.assertIsInstance(returned, MagicMock)
+        self.assertNotIsInstance(returned, PropertyMock)
 
 
 kundi TestCallablePredicate(unittest.TestCase):
@@ -1075,14 +1075,14 @@ kundi TestCallablePredicate(unittest.TestCase):
 
     eleza test_call_magic_method(self):
         kundi Callable:
-            eleza __call__(self): pita
+            eleza __call__(self): pass
         instance = Callable()
         self.assertKweli(_callable(instance))
 
     eleza test_staticmethod(self):
         kundi WithStaticMethod:
             @staticmethod
-            eleza staticfunc(): pita
+            eleza staticfunc(): pass
         self.assertKweli(_callable(WithStaticMethod.staticfunc))
 
     eleza test_non_callable_staticmethod(self):
@@ -1093,7 +1093,7 @@ kundi TestCallablePredicate(unittest.TestCase):
     eleza test_classmethod(self):
         kundi WithClassMethod:
             @classmethod
-            eleza classfunc(cls): pita
+            eleza classfunc(cls): pass
         self.assertKweli(_callable(WithClassMethod.classfunc))
 
     eleza test_non_callable_classmethod(self):

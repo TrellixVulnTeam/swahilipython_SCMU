@@ -4,7 +4,7 @@ This converts ``[x kila x kwenye 1, 2]`` to ``[x kila x kwenye (1, 2)]``."""
 
 # By Taek Joo Kim na Benjamin Peterson
 
-# Local agizas
+# Local imports
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza LParen, RParen
 

@@ -3,7 +3,7 @@
 agiza os, unittest
 
 ikiwa sio hasattr(os, "openpty"):
-    ashiria unittest.SkipTest("os.openpty() sio available.")
+     ashiria unittest.SkipTest("os.openpty() sio available.")
 
 
 kundi OpenptyTest(unittest.TestCase):

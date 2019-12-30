@@ -1,7 +1,7 @@
 """Utilities to support packages."""
 
 kutoka collections agiza namedtuple
-kutoka functools agiza singledispatch kama simplegeneric
+kutoka functools agiza singledispatch as simplegeneric
 agiza importlib
 agiza importlib.util
 agiza importlib.machinery
@@ -28,7 +28,7 @@ eleza _get_spec(finder, name):
     # Works ukijumuisha legacy finders.
     jaribu:
         find_spec = finder.find_spec
-    tatizo AttributeError:
+    except AttributeError:
         loader = finder.find_module(name)
         ikiwa loader ni Tupu:
             rudisha Tupu
@@ -90,14 +90,14 @@ eleza walk_packages(path=Tupu, prefix='', onerror=Tupu):
         ikiwa info.ispkg:
             jaribu:
                 __import__(info.name)
-            tatizo ImportError:
+            except ImportError:
                 ikiwa onerror ni sio Tupu:
                     onerror(info.name)
-            tatizo Exception:
+            except Exception:
                 ikiwa onerror ni sio Tupu:
                     onerror(info.name)
                 isipokua:
-                    ashiria
+                    raise
             isipokua:
                 path = getattr(sys.modules[info.name], '__path__', Tupu) ama []
 
@@ -119,17 +119,17 @@ eleza iter_modules(path=Tupu, prefix=''):
     """
     ikiwa path ni Tupu:
         importers = iter_importers()
-    lasivyo isinstance(path, str):
-        ashiria ValueError("path must be Tupu ama list of paths to look kila "
+    elikiwa isinstance(path, str):
+         ashiria ValueError("path must be Tupu ama list of paths to look kila "
                         "modules in")
     isipokua:
         importers = map(get_importer, path)
 
-    tumaed = {}
+    yielded = {}
     kila i kwenye importers:
         kila name, ispkg kwenye iter_importer_modules(i, prefix):
-            ikiwa name haiko kwenye tumaed:
-                tumaed[name] = 1
+            ikiwa name sio kwenye yielded:
+                yielded[name] = 1
                 tuma ModuleInfo(i, name, ispkg)
 
 
@@ -143,30 +143,30 @@ eleza iter_importer_modules(importer, prefix=''):
 # Implement a file walker kila the normal importlib path hook
 eleza _iter_file_finder_modules(importer, prefix=''):
     ikiwa importer.path ni Tupu ama sio os.path.isdir(importer.path):
-        rudisha
+        return
 
-    tumaed = {}
+    yielded = {}
     agiza inspect
     jaribu:
         filenames = os.listdir(importer.path)
-    tatizo OSError:
+    except OSError:
         # ignore unreadable directories like agiza does
         filenames = []
     filenames.sort()  # handle packages before same-named modules
 
     kila fn kwenye filenames:
         modname = inspect.getmodulename(fn)
-        ikiwa modname=='__init__' ama modname kwenye tumaed:
+        ikiwa modname=='__init__' ama modname kwenye yielded:
             endelea
 
         path = os.path.join(importer.path, fn)
         ispkg = Uongo
 
-        ikiwa sio modname na os.path.isdir(path) na '.' haiko kwenye fn:
+        ikiwa sio modname na os.path.isdir(path) na '.' sio kwenye fn:
             modname = fn
             jaribu:
                 dircontents = os.listdir(path)
-            tatizo OSError:
+            except OSError:
                 # ignore unreadable directories like agiza does
                 dircontents = []
             kila fn kwenye dircontents:
@@ -177,8 +177,8 @@ eleza _iter_file_finder_modules(importer, prefix=''):
             isipokua:
                 endelea    # sio a package
 
-        ikiwa modname na '.' haiko kwenye modname:
-            tumaed[modname] = 1
+        ikiwa modname na '.' sio kwenye modname:
+            yielded[modname] = 1
             tuma prefix + modname, ispkg
 
 iter_importer_modules.register(
@@ -220,36 +220,36 @@ kundi ImpImporter:
             path = [os.path.realpath(self.path)]
         jaribu:
             file, filename, etc = imp.find_module(subname, path)
-        tatizo ImportError:
+        except ImportError:
             rudisha Tupu
         rudisha ImpLoader(fullname, file, filename, etc)
 
     eleza iter_modules(self, prefix=''):
         ikiwa self.path ni Tupu ama sio os.path.isdir(self.path):
-            rudisha
+            return
 
-        tumaed = {}
+        yielded = {}
         agiza inspect
         jaribu:
             filenames = os.listdir(self.path)
-        tatizo OSError:
+        except OSError:
             # ignore unreadable directories like agiza does
             filenames = []
         filenames.sort()  # handle packages before same-named modules
 
         kila fn kwenye filenames:
             modname = inspect.getmodulename(fn)
-            ikiwa modname=='__init__' ama modname kwenye tumaed:
+            ikiwa modname=='__init__' ama modname kwenye yielded:
                 endelea
 
             path = os.path.join(self.path, fn)
             ispkg = Uongo
 
-            ikiwa sio modname na os.path.isdir(path) na '.' haiko kwenye fn:
+            ikiwa sio modname na os.path.isdir(path) na '.' sio kwenye fn:
                 modname = fn
                 jaribu:
                     dircontents = os.listdir(path)
-                tatizo OSError:
+                except OSError:
                     # ignore unreadable directories like agiza does
                     dircontents = []
                 kila fn kwenye dircontents:
@@ -260,8 +260,8 @@ kundi ImpImporter:
                 isipokua:
                     endelea    # sio a package
 
-            ikiwa modname na '.' haiko kwenye modname:
-                tumaed[modname] = 1
+            ikiwa modname na '.' sio kwenye modname:
+                yielded[modname] = 1
                 tuma prefix + modname, ispkg
 
 
@@ -291,7 +291,7 @@ kundi ImpLoader:
         rudisha mod
 
     eleza get_data(self, pathname):
-        ukijumuisha open(pathname, "rb") kama file:
+        ukijumuisha open(pathname, "rb") as file:
             rudisha file.read()
 
     eleza _reopen(self):
@@ -299,14 +299,14 @@ kundi ImpLoader:
             mod_type = self.etc[2]
             ikiwa mod_type==imp.PY_SOURCE:
                 self.file = open(self.filename, 'r')
-            lasivyo mod_type kwenye (imp.PY_COMPILED, imp.C_EXTENSION):
+            elikiwa mod_type kwenye (imp.PY_COMPILED, imp.C_EXTENSION):
                 self.file = open(self.filename, 'rb')
 
     eleza _fix_name(self, fullname):
         ikiwa fullname ni Tupu:
             fullname = self.fullname
-        lasivyo fullname != self.fullname:
-            ashiria ImportError("Loader kila module %s cannot handle "
+        elikiwa fullname != self.fullname:
+             ashiria ImportError("Loader kila module %s cannot handle "
                               "module %s" % (self.fullname, fullname))
         rudisha fullname
 
@@ -321,13 +321,13 @@ kundi ImpLoader:
             ikiwa mod_type==imp.PY_SOURCE:
                 source = self.get_source(fullname)
                 self.code = compile(source, self.filename, 'exec')
-            lasivyo mod_type==imp.PY_COMPILED:
+            elikiwa mod_type==imp.PY_COMPILED:
                 self._reopen()
                 jaribu:
                     self.code = read_code(self.file)
                 mwishowe:
                     self.file.close()
-            lasivyo mod_type==imp.PKG_DIRECTORY:
+            elikiwa mod_type==imp.PKG_DIRECTORY:
                 self.code = self._get_delegate().get_code()
         rudisha self.code
 
@@ -341,11 +341,11 @@ kundi ImpLoader:
                     self.source = self.file.read()
                 mwishowe:
                     self.file.close()
-            lasivyo mod_type==imp.PY_COMPILED:
+            elikiwa mod_type==imp.PY_COMPILED:
                 ikiwa os.path.exists(self.filename[:-1]):
-                    ukijumuisha open(self.filename[:-1], 'r') kama f:
+                    ukijumuisha open(self.filename[:-1], 'r') as f:
                         self.source = f.read()
-            lasivyo mod_type==imp.PKG_DIRECTORY:
+            elikiwa mod_type==imp.PKG_DIRECTORY:
                 self.source = self._get_delegate().get_source()
         rudisha self.source
 
@@ -359,20 +359,20 @@ kundi ImpLoader:
         mod_type = self.etc[2]
         ikiwa mod_type==imp.PKG_DIRECTORY:
             rudisha self._get_delegate().get_filename()
-        lasivyo mod_type kwenye (imp.PY_SOURCE, imp.PY_COMPILED, imp.C_EXTENSION):
+        elikiwa mod_type kwenye (imp.PY_SOURCE, imp.PY_COMPILED, imp.C_EXTENSION):
             rudisha self.filename
         rudisha Tupu
 
 
 jaribu:
-    agiza zipagiza
+    agiza zipimport
     kutoka zipagiza agiza zipimporter
 
     eleza iter_zipimport_modules(importer, prefix=''):
-        dirlist = sorted(zipagiza._zip_directory_cache[importer.archive])
+        dirlist = sorted(zipimport._zip_directory_cache[importer.archive])
         _prefix = importer.prefix
         plen = len(_prefix)
-        tumaed = {}
+        yielded = {}
         agiza inspect
         kila fn kwenye dirlist:
             ikiwa sio fn.startswith(_prefix):
@@ -381,8 +381,8 @@ jaribu:
             fn = fn[plen:].split(os.sep)
 
             ikiwa len(fn)==2 na fn[1].startswith('__init__.py'):
-                ikiwa fn[0] haiko kwenye tumaed:
-                    tumaed[fn[0]] = 1
+                ikiwa fn[0] sio kwenye yielded:
+                    yielded[fn[0]] = 1
                     tuma prefix + fn[0], Kweli
 
             ikiwa len(fn)!=1:
@@ -392,20 +392,20 @@ jaribu:
             ikiwa modname=='__init__':
                 endelea
 
-            ikiwa modname na '.' haiko kwenye modname na modname haiko kwenye tumaed:
-                tumaed[modname] = 1
+            ikiwa modname na '.' sio kwenye modname na modname sio kwenye yielded:
+                yielded[modname] = 1
                 tuma prefix + modname, Uongo
 
     iter_importer_modules.register(zipimporter, iter_zipimport_modules)
 
-tatizo ImportError:
-    pita
+except ImportError:
+    pass
 
 
 eleza get_importer(path_item):
     """Retrieve a finder kila the given path item
 
-    The rudishaed finder ni cached kwenye sys.path_importer_cache
+    The returned finder ni cached kwenye sys.path_importer_cache
     ikiwa it was newly created by a path hook.
 
     The cache (or part of it) can be cleared manually ikiwa a
@@ -413,14 +413,14 @@ eleza get_importer(path_item):
     """
     jaribu:
         importer = sys.path_importer_cache[path_item]
-    tatizo KeyError:
+    except KeyError:
         kila path_hook kwenye sys.path_hooks:
             jaribu:
                 importer = path_hook(path_item)
                 sys.path_importer_cache.setdefault(path_item, importer)
                 koma
-            tatizo ImportError:
-                pita
+            except ImportError:
+                pass
         isipokua:
             importer = Tupu
     rudisha importer
@@ -433,21 +433,21 @@ eleza iter_importers(fullname=""):
     containing fullname, otherwise they will be all registered top level
     finders (i.e. those on both sys.meta_path na sys.path_hooks).
 
-    If the named module ni kwenye a package, that package ni imported kama a side
+    If the named module ni kwenye a package, that package ni imported as a side
     effect of invoking this function.
 
     If no module name ni specified, all top level finders are produced.
     """
     ikiwa fullname.startswith('.'):
         msg = "Relative module name {!r} sio supported".format(fullname)
-        ashiria ImportError(msg)
+         ashiria ImportError(msg)
     ikiwa '.' kwenye fullname:
         # Get the containing package's __path__
         pkg_name = fullname.rpartition(".")[0]
         pkg = importlib.import_module(pkg_name)
         path = getattr(pkg, '__path__', Tupu)
         ikiwa path ni Tupu:
-            rudisha
+            return
     isipokua:
         tuma kutoka sys.meta_path
         path = sys.path
@@ -484,19 +484,19 @@ eleza find_loader(fullname):
 
     This ni a backwards compatibility wrapper around
     importlib.util.find_spec that converts most failures to ImportError
-    na only rudishas the loader rather than the full spec
+    na only returns the loader rather than the full spec
     """
     ikiwa fullname.startswith('.'):
         msg = "Relative module name {!r} sio supported".format(fullname)
-        ashiria ImportError(msg)
+         ashiria ImportError(msg)
     jaribu:
         spec = importlib.util.find_spec(fullname)
-    tatizo (ImportError, AttributeError, TypeError, ValueError) kama ex:
-        # This hack fixes an impedance mismatch between pkgutil na
-        # importlib, where the latter ashirias other errors kila cases where
-        # pkgutil previously ashiriad ImportError
+    except (ImportError, AttributeError, TypeError, ValueError) as ex:
+        # This hack fixes an impedance mismatch between pkgutil and
+        # importlib, where the latter raises other errors kila cases where
+        # pkgutil previously raised ImportError
         msg = "Error wakati finding loader kila {!r} ({}: {})"
-        ashiria ImportError(msg.format(fullname, type(ex), ex)) kutoka ex
+         ashiria ImportError(msg.format(fullname, type(ex), ex)) kutoka ex
     rudisha spec.loader ikiwa spec ni sio Tupu isipokua Tupu
 
 
@@ -511,25 +511,25 @@ eleza extend_path(path, name):
     This will add to the package's __path__ all subdirectories of
     directories on sys.path named after the package.  This ni useful
     ikiwa one wants to distribute different parts of a single logical
-    package kama multiple directories.
+    package as multiple directories.
 
     It also looks kila *.pkg files beginning where * matches the name
     argument.  This feature ni similar to *.pth files (see site.py),
-    tatizo that it doesn't special-case lines starting ukijumuisha 'agiza'.
+    except that it doesn't special-case lines starting ukijumuisha 'import'.
     A *.pkg file ni trusted at face value: apart kutoka checking for
     duplicates, all entries found kwenye a *.pkg file are added to the
     path, regardless of whether they are exist the filesystem.  (This
     ni a feature.)
 
     If the input path ni sio a list (as ni the case kila frozen
-    packages) it ni rudishaed unchanged.  The input path ni not
-    modified; an extended copy ni rudishaed.  Items are only appended
+    packages) it ni returned unchanged.  The input path ni not
+    modified; an extended copy ni returned.  Items are only appended
     to the copy at the end.
 
     It ni assumed that sys.path ni a sequence.  Items of sys.path that
     are sio (unicode ama 8-bit) strings referring to existing
     directories are ignored.  Unicode items of sys.path that cause
-    errors when used kama filenames may cause this function to ashiria an
+    errors when used as filenames may cause this function to  ashiria an
     exception (in line ukijumuisha os.path.isdir() behavior).
     """
 
@@ -546,9 +546,9 @@ eleza extend_path(path, name):
     ikiwa parent_package:
         jaribu:
             search_path = sys.modules[parent_package].__path__
-        tatizo (KeyError, AttributeError):
-            # We can't do anything: find_loader() rudishas Tupu when
-            # pitaed a dotted name.
+        except (KeyError, AttributeError):
+            # We can't do anything: find_loader() returns Tupu when
+            # passed a dotted name.
             rudisha path
     isipokua:
         search_path = sys.path
@@ -565,13 +565,13 @@ eleza extend_path(path, name):
                 ikiwa spec ni sio Tupu:
                     portions = spec.submodule_search_locations ama []
             # Is this finder PEP 420 compliant?
-            lasivyo hasattr(finder, 'find_loader'):
+            elikiwa hasattr(finder, 'find_loader'):
                 _, portions = finder.find_loader(final_name)
 
             kila portion kwenye portions:
                 # XXX This may still add duplicate entries to path on
                 # case-insensitive filesystems
-                ikiwa portion haiko kwenye path:
+                ikiwa portion sio kwenye path:
                     path.append(portion)
 
         # XXX Is this the right thing kila subpackages like zope.app?
@@ -580,7 +580,7 @@ eleza extend_path(path, name):
         ikiwa os.path.isfile(pkgfile):
             jaribu:
                 f = open(pkgfile)
-            tatizo OSError kama msg:
+            except OSError as msg:
                 sys.stderr.write("Can't open %s: %s\n" %
                                  (pkgfile, msg))
             isipokua:
@@ -600,10 +600,10 @@ eleza get_data(package, resource):
     This ni a wrapper round the PEP 302 loader get_data API. The package
     argument should be the name of a package, kwenye standard module format
     (foo.bar). The resource argument should be kwenye the form of a relative
-    filename, using '/' kama the path separator. The parent directory name '..'
+    filename, using '/' as the path separator. The parent directory name '..'
     ni sio allowed, na nor ni a rooted name (starting ukijumuisha a '/').
 
-    The function rudishas a binary string, which ni the contents of the
+    The function returns a binary string, which ni the contents of the
     specified resource.
 
     For packages located kwenye the filesystem, which have already been imported,
@@ -613,7 +613,7 @@ eleza get_data(package, resource):
         data = open(os.path.join(d, resource), 'rb').read()
 
     If the package cannot be located ama loaded, ama it uses a PEP 302 loader
-    which does sio support get_data(), then Tupu ni rudishaed.
+    which does sio support get_data(), then Tupu ni returned.
     """
 
     spec = importlib.util.find_spec(package)
@@ -623,7 +623,7 @@ eleza get_data(package, resource):
     ikiwa loader ni Tupu ama sio hasattr(loader, 'get_data'):
         rudisha Tupu
     # XXX needs test
-    mod = (sys.modules.get(package) ama
+    mod = (sys.modules.get(package) or
            importlib._bootstrap._load(spec))
     ikiwa mod ni Tupu ama sio hasattr(mod, '__file__'):
         rudisha Tupu

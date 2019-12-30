@@ -68,7 +68,7 @@ kundi TestMain(unittest.TestCase):
         self.setup_files.append(os.path.basename(PY2_TEST_MODULE))
         self.trivial_py2_file = os.path.join(self.py2_src_dir, "trivial.py")
         self.init_py2_file = os.path.join(self.py2_src_dir, "__init__.py")
-        ukijumuisha open(self.trivial_py2_file, "w") kama trivial:
+        ukijumuisha open(self.trivial_py2_file, "w") as trivial:
             trivial.write("print 'I need a simple conversion.'")
         self.setup_files.append("trivial.py")
 

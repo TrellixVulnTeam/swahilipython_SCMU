@@ -1,37 +1,37 @@
-"""Tests support for new syntax introduced by PEP 492."""
+"""Tests support kila new syntax introduced by PEP 492."""
 
-import sys
-import types
-import unittest
+agiza sys
+agiza types
+agiza unittest
 
-from unittest import mock
+kutoka unittest agiza mock
 
-import asyncio
-from test.test_asyncio import utils as test_utils
+agiza asyncio
+kutoka test.test_asyncio agiza utils as test_utils
 
 
-def tearDownModule():
-    asyncio.set_event_loop_policy(None)
+eleza tearDownModule():
+    asyncio.set_event_loop_policy(Tupu)
 
 
 # Test that asyncio.iscoroutine() uses collections.abc.Coroutine
-class FakeCoro:
-    def send(self, value):
+kundi FakeCoro:
+    eleza send(self, value):
         pass
 
-    def throw(self, typ, val=None, tb=None):
+    eleza throw(self, typ, val=Tupu, tb=Tupu):
         pass
 
-    def close(self):
+    eleza close(self):
         pass
 
-    def __await__(self):
+    eleza __await__(self):
         yield
 
 
-class BaseTest(test_utils.TestCase):
+kundi BaseTest(test_utils.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.loop = asyncio.BaseEventLoop()
         self.loop._process_events = mock.Mock()
@@ -40,10 +40,10 @@ class BaseTest(test_utils.TestCase):
         self.set_event_loop(self.loop)
 
 
-class LockTests(BaseTest):
+kundi LockTests(BaseTest):
 
-    def test_context_manager_async_with(self):
-        with self.assertWarns(DeprecationWarning):
+    eleza test_context_manager_async_with(self):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             primitives = [
                 asyncio.Lock(loop=self.loop),
                 asyncio.Condition(loop=self.loop),
@@ -51,22 +51,22 @@ class LockTests(BaseTest):
                 asyncio.BoundedSemaphore(loop=self.loop),
             ]
 
-        async def test(lock):
+        async eleza test(lock):
             await asyncio.sleep(0.01)
-            self.assertFalse(lock.locked())
-            async with lock as _lock:
-                self.assertIs(_lock, None)
-                self.assertTrue(lock.locked())
+            self.assertUongo(lock.locked())
+            async ukijumuisha lock as _lock:
+                self.assertIs(_lock, Tupu)
+                self.assertKweli(lock.locked())
                 await asyncio.sleep(0.01)
-                self.assertTrue(lock.locked())
-            self.assertFalse(lock.locked())
+                self.assertKweli(lock.locked())
+            self.assertUongo(lock.locked())
 
-        for primitive in primitives:
+        kila primitive kwenye primitives:
             self.loop.run_until_complete(test(primitive))
-            self.assertFalse(primitive.locked())
+            self.assertUongo(primitive.locked())
 
-    def test_context_manager_with_await(self):
-        with self.assertWarns(DeprecationWarning):
+    eleza test_context_manager_with_await(self):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             primitives = [
                 asyncio.Lock(loop=self.loop),
                 asyncio.Condition(loop=self.loop),
@@ -74,135 +74,135 @@ class LockTests(BaseTest):
                 asyncio.BoundedSemaphore(loop=self.loop),
             ]
 
-        async def test(lock):
+        async eleza test(lock):
             await asyncio.sleep(0.01)
-            self.assertFalse(lock.locked())
-            with self.assertWarns(DeprecationWarning):
-                with await lock as _lock:
-                    self.assertIs(_lock, None)
-                    self.assertTrue(lock.locked())
+            self.assertUongo(lock.locked())
+            ukijumuisha self.assertWarns(DeprecationWarning):
+                ukijumuisha await lock as _lock:
+                    self.assertIs(_lock, Tupu)
+                    self.assertKweli(lock.locked())
                     await asyncio.sleep(0.01)
-                    self.assertTrue(lock.locked())
-                self.assertFalse(lock.locked())
+                    self.assertKweli(lock.locked())
+                self.assertUongo(lock.locked())
 
-        for primitive in primitives:
+        kila primitive kwenye primitives:
             self.loop.run_until_complete(test(primitive))
-            self.assertFalse(primitive.locked())
+            self.assertUongo(primitive.locked())
 
 
-class StreamReaderTests(BaseTest):
+kundi StreamReaderTests(BaseTest):
 
-    def test_readline(self):
+    eleza test_readline(self):
         DATA = b'line1\nline2\nline3'
 
         stream = asyncio.StreamReader(loop=self.loop)
         stream.feed_data(DATA)
         stream.feed_eof()
 
-        async def reader():
+        async eleza reader():
             data = []
-            async for line in stream:
+            async kila line kwenye stream:
                 data.append(line)
-            return data
+            rudisha data
 
         data = self.loop.run_until_complete(reader())
         self.assertEqual(data, [b'line1\n', b'line2\n', b'line3'])
 
 
-class CoroutineTests(BaseTest):
+kundi CoroutineTests(BaseTest):
 
-    def test_iscoroutine(self):
-        async def foo(): pass
+    eleza test_iscoroutine(self):
+        async eleza foo(): pass
 
         f = foo()
         jaribu:
-            self.assertTrue(asyncio.iscoroutine(f))
+            self.assertKweli(asyncio.iscoroutine(f))
         mwishowe:
             f.close() # silence warning
 
-        self.assertTrue(asyncio.iscoroutine(FakeCoro()))
+        self.assertKweli(asyncio.iscoroutine(FakeCoro()))
 
-    def test_iscoroutinefunction(self):
-        async def foo(): pass
-        self.assertTrue(asyncio.iscoroutinefunction(foo))
+    eleza test_iscoroutinefunction(self):
+        async eleza foo(): pass
+        self.assertKweli(asyncio.iscoroutinefunction(foo))
 
-    def test_function_returning_awaitable(self):
-        class Awaitable:
-            def __await__(self):
-                return ('spam',)
+    eleza test_function_returning_awaitable(self):
+        kundi Awaitable:
+            eleza __await__(self):
+                rudisha ('spam',)
 
-        with self.assertWarns(DeprecationWarning):
+        ukijumuisha self.assertWarns(DeprecationWarning):
             @asyncio.coroutine
-            def func():
-                return Awaitable()
+            eleza func():
+                rudisha Awaitable()
 
         coro = func()
-        self.assertEqual(coro.send(None), 'spam')
+        self.assertEqual(coro.send(Tupu), 'spam')
         coro.close()
 
-    def test_async_def_coroutines(self):
-        async def bar():
-            return 'spam'
-        async def foo():
-            return await bar()
+    eleza test_async_def_coroutines(self):
+        async eleza bar():
+            rudisha 'spam'
+        async eleza foo():
+            rudisha await bar()
 
         # production mode
         data = self.loop.run_until_complete(foo())
         self.assertEqual(data, 'spam')
 
         # debug mode
-        self.loop.set_debug(True)
+        self.loop.set_debug(Kweli)
         data = self.loop.run_until_complete(foo())
         self.assertEqual(data, 'spam')
 
-    def test_debug_mode_manages_coroutine_origin_tracking(self):
-        async def start():
-            self.assertTrue(sys.get_coroutine_origin_tracking_depth() > 0)
+    eleza test_debug_mode_manages_coroutine_origin_tracking(self):
+        async eleza start():
+            self.assertKweli(sys.get_coroutine_origin_tracking_depth() > 0)
 
         self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 0)
-        self.loop.set_debug(True)
+        self.loop.set_debug(Kweli)
         self.loop.run_until_complete(start())
         self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 0)
 
-    def test_types_coroutine(self):
-        def gen():
-            yield from ()
-            return 'spam'
+    eleza test_types_coroutine(self):
+        eleza gen():
+            tuma kutoka ()
+            rudisha 'spam'
 
         @types.coroutine
-        def func():
-            return gen()
+        eleza func():
+            rudisha gen()
 
-        async def coro():
+        async eleza coro():
             wrapper = func()
             self.assertIsInstance(wrapper, types._GeneratorWrapper)
-            return await wrapper
+            rudisha await wrapper
 
         data = self.loop.run_until_complete(coro())
         self.assertEqual(data, 'spam')
 
-    def test_task_print_stack(self):
-        T = None
+    eleza test_task_print_stack(self):
+        T = Tupu
 
-        async def foo():
+        async eleza foo():
             f = T.get_stack(limit=1)
             jaribu:
                 self.assertEqual(f[0].f_code.co_name, 'foo')
             mwishowe:
-                f = None
+                f = Tupu
 
-        async def runner():
+        async eleza runner():
             nonlocal T
             T = asyncio.ensure_future(foo(), loop=self.loop)
             await T
 
         self.loop.run_until_complete(runner())
 
-    def test_double_await(self):
-        async def afunc():
+    eleza test_double_await(self):
+        async eleza afunc():
             await asyncio.sleep(0.1)
 
-        async def runner():
+        async eleza runner():
             coro = afunc()
             t = self.loop.create_task(coro)
             jaribu:
@@ -211,13 +211,13 @@ class CoroutineTests(BaseTest):
             mwishowe:
                 t.cancel()
 
-        self.loop.set_debug(True)
-        with self.assertRaises(
+        self.loop.set_debug(Kweli)
+        ukijumuisha self.assertRaises(
                 RuntimeError,
-                msg='coroutine is being awaited already'):
+                msg='coroutine ni being awaited already'):
 
             self.loop.run_until_complete(runner())
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

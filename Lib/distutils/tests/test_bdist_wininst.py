@@ -1,38 +1,38 @@
-"""Tests for distutils.command.bdist_wininst."""
-import sys
-import platform
-import unittest
-from test.support import run_unittest, check_warnings
+"""Tests kila distutils.command.bdist_wininst."""
+agiza sys
+agiza platform
+agiza unittest
+kutoka test.support agiza run_unittest, check_warnings
 
-from distutils.command.bdist_wininst import bdist_wininst
-from distutils.tests import support
+kutoka distutils.command.bdist_wininst agiza bdist_wininst
+kutoka distutils.tests agiza support
 
-@unittest.skipIf(sys.platform == 'win32' and platform.machine() == 'ARM64',
-    'bdist_wininst ni sio supported in this install')
-@unittest.skipIf(getattr(bdist_wininst, '_unsupported', False),
-    'bdist_wininst ni sio supported in this install')
-class BuildWinInstTestCase(support.TempdirManager,
+@unittest.skipIf(sys.platform == 'win32' na platform.machine() == 'ARM64',
+    'bdist_wininst ni sio supported kwenye this install')
+@unittest.skipIf(getattr(bdist_wininst, '_unsupported', Uongo),
+    'bdist_wininst ni sio supported kwenye this install')
+kundi BuildWinInstTestCase(support.TempdirManager,
                            support.LoggingSilencer,
                            unittest.TestCase):
 
-    def test_get_exe_bytes(self):
+    eleza test_get_exe_bytes(self):
 
         # issue5731: command was broken on non-windows platforms
-        # this test makes sure it works now for every platform
+        # this test makes sure it works now kila every platform
         # let's create a command
         pkg_pth, dist = self.create_dist()
-        with check_warnings(("", DeprecationWarning)):
+        ukijumuisha check_warnings(("", DeprecationWarning)):
             cmd = bdist_wininst(dist)
         cmd.ensure_finalized()
 
         # let's run the code that finds the right wininst*.exe file
-        # and make sure it finds it and returns its content
+        # na make sure it finds it na returns its content
         # no matter what platform we have
         exe_file = cmd.get_exe_bytes()
         self.assertGreater(len(exe_file), 10)
 
-def test_suite():
-    return unittest.makeSuite(BuildWinInstTestCase)
+eleza test_suite():
+    rudisha unittest.makeSuite(BuildWinInstTestCase)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     run_unittest(test_suite())

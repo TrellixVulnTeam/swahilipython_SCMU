@@ -21,7 +21,7 @@ ikiwa verbose:
         andika(msg)
 isipokua:
     eleza debug(msg):
-        pita
+        pass
 
 
 # Note that os.read() ni nondeterministic so we need to be very careful
@@ -85,13 +85,13 @@ kundi PtyTest(unittest.TestCase):
             debug("Calling slave_open(%r)" % (slave_name,))
             slave_fd = pty.slave_open(slave_name)
             debug("Got slave_fd '%d'" % slave_fd)
-        tatizo OSError:
+        except OSError:
             # " An optional feature could sio be imported " ... ?
-            ashiria unittest.SkipTest("Pseudo-terminals (seemingly) sio functional.")
+             ashiria unittest.SkipTest("Pseudo-terminals (seemingly) sio functional.")
 
         self.assertKweli(os.isatty(slave_fd), 'slave_fd ni sio a tty')
 
-        # Solaris requires reading the fd before anything ni rudishaed.
+        # Solaris requires reading the fd before anything ni returned.
         # My guess ni that since we open na close the slave fd
         # kwenye master_open(), we need to read the EOF.
 
@@ -102,9 +102,9 @@ kundi PtyTest(unittest.TestCase):
             jaribu:
                 s1 = os.read(master_fd, 1024)
                 self.assertEqual(b'', s1)
-            tatizo OSError kama e:
+            except OSError as e:
                 ikiwa e.errno != errno.EAGAIN:
-                    ashiria
+                    raise
         mwishowe:
             # Restore the original flags.
             os.set_blocking(master_fd, blocking)
@@ -139,20 +139,20 @@ kundi PtyTest(unittest.TestCase):
             debug("In child, calling os.setsid()")
             jaribu:
                 os.setsid()
-            tatizo OSError:
+            except OSError:
                 # Good, we already were session leader
-                debug("Good: OSError was ashiriad.")
-                pita
-            tatizo AttributeError:
+                debug("Good: OSError was raised.")
+                pass
+            except AttributeError:
                 # Have pty, but sio setsid()?
                 debug("No setsid() available?")
-                pita
+                pass
             tatizo:
                 # We don't want this error to propagate, escaping the call to
                 # os._exit() na causing very peculiar behavior kwenye the calling
                 # regrtest.py !
                 # Note: could add traceback printing here.
-                debug("An unexpected error was ashiriad.")
+                debug("An unexpected error was raised.")
                 os._exit(1)
             isipokua:
                 debug("os.setsid() succeeded! (bad!)")
@@ -166,14 +166,14 @@ kundi PtyTest(unittest.TestCase):
             # platform-dependent amount of data ni written to its fd.  On
             # Linux 2.6, it's 4000 bytes na the child won't block, but on OS
             # X even the small writes kwenye the child above will block it.  Also
-            # on Linux, the read() will ashiria an OSError (input/output error)
+            # on Linux, the read() will  ashiria an OSError (input/output error)
             # when it tries to read past the end of the buffer but the child's
             # already exited, so catch na discard those exceptions.  It's not
             # worth checking kila EIO.
             wakati Kweli:
                 jaribu:
                     data = os.read(master_fd, 80)
-                tatizo OSError:
+                except OSError:
                     koma
                 ikiwa sio data:
                     koma
@@ -183,32 +183,32 @@ kundi PtyTest(unittest.TestCase):
             ##line = os.read(master_fd, 80)
             ##lines = line.replace('\r\n', '\n').split('\n')
             ##ikiwa Uongo na lines != ['In child, calling os.setsid()',
-            ##             'Good: OSError was ashiriad.', '']:
-            ##    ashiria TestFailed("Unexpected output kutoka child: %r" % line)
+            ##             'Good: OSError was raised.', '']:
+            ##     ashiria TestFailed("Unexpected output kutoka child: %r" % line)
 
             (pid, status) = os.waitpid(pid, 0)
             res = status >> 8
             debug("Child (%d) exited ukijumuisha status %d (%d)." % (pid, res, status))
             ikiwa res == 1:
-                self.fail("Child ashiriad an unexpected exception kwenye os.setsid()")
-            lasivyo res == 2:
+                self.fail("Child raised an unexpected exception kwenye os.setsid()")
+            elikiwa res == 2:
                 self.fail("pty.fork() failed to make child a session leader.")
-            lasivyo res == 3:
-                self.fail("Child spawned by pty.fork() did sio have a tty kama stdout")
-            lasivyo res != 4:
+            elikiwa res == 3:
+                self.fail("Child spawned by pty.fork() did sio have a tty as stdout")
+            elikiwa res != 4:
                 self.fail("pty.fork() failed kila unknown reasons.")
 
             ##debug("Reading kutoka master_fd now that the child has exited")
             ##jaribu:
             ##    s1 = os.read(master_fd, 1024)
-            ##tatizo OSError:
-            ##    pita
+            ##except OSError:
+            ##    pass
             ##isipokua:
-            ##    ashiria TestFailed("Read kutoka master_fd did sio ashiria exception")
+            ##     ashiria TestFailed("Read kutoka master_fd did sio  ashiria exception")
 
         os.close(master_fd)
 
-        # pty.fork() pitaed.
+        # pty.fork() passed.
 
 
 kundi SmallPtyTests(unittest.TestCase):
@@ -230,13 +230,13 @@ kundi SmallPtyTests(unittest.TestCase):
         kila file kwenye self.files:
             jaribu:
                 file.close()
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
         kila fd kwenye self.fds:
             jaribu:
                 os.close(fd)
-            tatizo OSError:
-                pita
+            except OSError:
+                pass
 
     eleza _pipe(self):
         pipe_fds = os.pipe()
@@ -249,7 +249,7 @@ kundi SmallPtyTests(unittest.TestCase):
         rudisha socketpair
 
     eleza _mock_select(self, rfds, wfds, xfds):
-        # This will ashiria IndexError when no more expected calls exist.
+        # This will  ashiria IndexError when no more expected calls exist.
         self.assertEqual(self.select_rfds_lengths.pop(0), len(rfds))
         rudisha self.select_rfds_results.pop(0), [], []
 
@@ -297,7 +297,7 @@ kundi SmallPtyTests(unittest.TestCase):
         pty.select = self._mock_select
         self.select_rfds_lengths.append(2)
         self.select_rfds_results.append([mock_stdin_fd, masters[0]])
-        # We expect that both fds were removed kutoka the fds list kama they
+        # We expect that both fds were removed kutoka the fds list as they
         # both encountered an EOF before the second select call.
         self.select_rfds_lengths.append(0)
 

@@ -10,7 +10,7 @@ kutoka test agiza support
 kundi SelectTestCase(unittest.TestCase):
 
     kundi Nope:
-        pita
+        pass
 
     kundi Almost:
         eleza fileno(self):
@@ -27,17 +27,17 @@ kundi SelectTestCase(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('freebsd'),
                      'skip because of a FreeBSD bug: kern/155606')
     eleza test_errno(self):
-        ukijumuisha open(__file__, 'rb') kama fp:
+        ukijumuisha open(__file__, 'rb') as fp:
             fd = fp.fileno()
             fp.close()
             jaribu:
                 select.select([fd], [], [], 0)
-            tatizo OSError kama err:
+            except OSError as err:
                 self.assertEqual(err.errno, errno.EBADF)
             isipokua:
-                self.fail("exception sio ashiriad")
+                self.fail("exception sio raised")
 
-    eleza test_rudishaed_list_identity(self):
+    eleza test_returned_list_identity(self):
         # See issue #8329
         r, w, x = select.select([], [], [], 1)
         self.assertIsNot(r, w)
@@ -46,7 +46,7 @@ kundi SelectTestCase(unittest.TestCase):
 
     eleza test_select(self):
         cmd = 'kila i kwenye 0 1 2 3 4 5 6 7 8 9; do echo testing...; sleep 1; done'
-        ukijumuisha os.popen(cmd) kama p:
+        ukijumuisha os.popen(cmd) as p:
             kila tout kwenye (0, 1, 2, 4, 8, 16) + (Tupu,)*10:
                 ikiwa support.verbose:
                     andika('timeout =', tout)

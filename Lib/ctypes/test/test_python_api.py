@@ -1,23 +1,23 @@
-from ctypes import *
-import unittest, sys
-from test import support
+kutoka ctypes agiza *
+agiza unittest, sys
+kutoka test agiza support
 
 ################################################################
 # This section should be moved into ctypes\__init__.py, when it's ready.
 
-from _ctypes import PyObj_FromPtr
+kutoka _ctypes agiza PyObj_FromPtr
 
 ################################################################
 
-from sys import getrefcount as grc
-if sys.version_info > (2, 4):
+kutoka sys agiza getrefcount as grc
+ikiwa sys.version_info > (2, 4):
     c_py_ssize_t = c_size_t
 isipokua:
     c_py_ssize_t = c_int
 
-class PythonAPITestCase(unittest.TestCase):
+kundi PythonAPITestCase(unittest.TestCase):
 
-    def test_PyBytes_FromStringAndSize(self):
+    eleza test_PyBytes_FromStringAndSize(self):
         PyBytes_FromStringAndSize = pythonapi.PyBytes_FromStringAndSize
 
         PyBytes_FromStringAndSize.restype = py_object
@@ -26,7 +26,7 @@ class PythonAPITestCase(unittest.TestCase):
         self.assertEqual(PyBytes_FromStringAndSize(b"abcdefghi", 3), b"abc")
 
     @support.refcount_test
-    def test_PyString_FromString(self):
+    eleza test_PyString_FromString(self):
         pythonapi.PyBytes_FromString.restype = py_object
         pythonapi.PyBytes_FromString.argtypes = (c_char_p,)
 
@@ -39,7 +39,7 @@ class PythonAPITestCase(unittest.TestCase):
         self.assertEqual(grc(s), refcnt)
 
     @support.refcount_test
-    def test_PyLong_Long(self):
+    eleza test_PyLong_Long(self):
         ref42 = grc(42)
         pythonapi.PyLong_FromLong.restype = py_object
         self.assertEqual(pythonapi.PyLong_FromLong(42), 42)
@@ -55,10 +55,10 @@ class PythonAPITestCase(unittest.TestCase):
         self.assertEqual(grc(42), ref42)
 
     @support.refcount_test
-    def test_PyObj_FromPtr(self):
-        s = "abc def ghi jkl"
+    eleza test_PyObj_FromPtr(self):
+        s = "abc eleza ghi jkl"
         ref = grc(s)
-        # id(python-object) is the address
+        # id(python-object) ni the address
         pyobj = PyObj_FromPtr(id(s))
         self.assertIs(s, pyobj)
 
@@ -66,24 +66,24 @@ class PythonAPITestCase(unittest.TestCase):
         toa pyobj
         self.assertEqual(grc(s), ref)
 
-    def test_PyOS_snprintf(self):
+    eleza test_PyOS_snprintf(self):
         PyOS_snprintf = pythonapi.PyOS_snprintf
         PyOS_snprintf.argtypes = POINTER(c_char), c_size_t, c_char_p
 
         buf = c_buffer(256)
-        PyOS_snprintf(buf, sizeof(buf), b"Hello from %s", b"ctypes")
-        self.assertEqual(buf.value, b"Hello from ctypes")
+        PyOS_snprintf(buf, sizeof(buf), b"Hello kutoka %s", b"ctypes")
+        self.assertEqual(buf.value, b"Hello kutoka ctypes")
 
-        PyOS_snprintf(buf, sizeof(buf), b"Hello from %s (%d, %d, %d)", b"ctypes", 1, 2, 3)
-        self.assertEqual(buf.value, b"Hello from ctypes (1, 2, 3)")
+        PyOS_snprintf(buf, sizeof(buf), b"Hello kutoka %s (%d, %d, %d)", b"ctypes", 1, 2, 3)
+        self.assertEqual(buf.value, b"Hello kutoka ctypes (1, 2, 3)")
 
         # sio enough arguments
         self.assertRaises(TypeError, PyOS_snprintf, buf)
 
-    def test_pyobject_repr(self):
+    eleza test_pyobject_repr(self):
         self.assertEqual(repr(py_object()), "py_object(<NULL>)")
         self.assertEqual(repr(py_object(42)), "py_object(42)")
         self.assertEqual(repr(py_object(object)), "py_object(%r)" % object)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

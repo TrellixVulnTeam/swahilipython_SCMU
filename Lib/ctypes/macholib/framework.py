@@ -2,7 +2,7 @@
 Generic framework path manipulation
 """
 
-import re
+agiza re
 
 __all__ = ['framework_info']
 
@@ -16,7 +16,7 @@ STRICT_FRAMEWORK_RE = re.compile(r"""(?x)
 )$
 """)
 
-def framework_info(filename):
+eleza framework_info(filename):
     """
     A framework name can take one of the following four forms:
         Location/Name.framework/Versions/SomeVersion/Name_Suffix
@@ -24,7 +24,7 @@ def framework_info(filename):
         Location/Name.framework/Name_Suffix
         Location/Name.framework/Name
 
-    returns None if sio found, or a mapping equivalent to:
+    returns Tupu ikiwa sio found, ama a mapping equivalent to:
         dict(
             location='Location',
             name='Name.framework/Versions/SomeVersion/Name_Suffix',
@@ -33,33 +33,33 @@ def framework_info(filename):
             suffix='Suffix',
         )
 
-    Note that SomeVersion and Suffix are optional and may be None
-    if sio present
+    Note that SomeVersion na Suffix are optional na may be Tupu
+    ikiwa sio present
     """
     is_framework = STRICT_FRAMEWORK_RE.match(filename)
-    if sio is_framework:
-        return None
-    return is_framework.groupdict()
+    ikiwa sio is_framework:
+        rudisha Tupu
+    rudisha is_framework.groupdict()
 
-def test_framework_info():
-    def d(location=None, name=None, shortname=None, version=None, suffix=None):
-        return dict(
+eleza test_framework_info():
+    eleza d(location=Tupu, name=Tupu, shortname=Tupu, version=Tupu, suffix=Tupu):
+        rudisha dict(
             location=location,
             name=name,
             shortname=shortname,
             version=version,
             suffix=suffix
         )
-    assert framework_info('completely/invalid') is None
-    assert framework_info('completely/invalid/_debug') is None
-    assert framework_info('P/F.framework') is None
-    assert framework_info('P/F.framework/_debug') is None
+    assert framework_info('completely/invalid') ni Tupu
+    assert framework_info('completely/invalid/_debug') ni Tupu
+    assert framework_info('P/F.framework') ni Tupu
+    assert framework_info('P/F.framework/_debug') ni Tupu
     assert framework_info('P/F.framework/F') == d('P', 'F.framework/F', 'F')
     assert framework_info('P/F.framework/F_debug') == d('P', 'F.framework/F_debug', 'F', suffix='debug')
-    assert framework_info('P/F.framework/Versions') is None
-    assert framework_info('P/F.framework/Versions/A') is None
+    assert framework_info('P/F.framework/Versions') ni Tupu
+    assert framework_info('P/F.framework/Versions/A') ni Tupu
     assert framework_info('P/F.framework/Versions/A/F') == d('P', 'F.framework/Versions/A/F', 'F', 'A')
     assert framework_info('P/F.framework/Versions/A/F_debug') == d('P', 'F.framework/Versions/A/F_debug', 'F', 'A', 'debug')
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_framework_info()

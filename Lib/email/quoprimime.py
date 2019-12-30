@@ -4,25 +4,25 @@
 
 """Quoted-printable content transfer encoding per RFCs 2045-2047.
 
-This module handles the content transfer encoding method defined in RFC 2045
-to encode US ASCII-like 8-bit data called `quoted-printable'.  It is used to
-safely encode text that is in a character set similar to the 7-bit US ASCII
+This module handles the content transfer encoding method defined kwenye RFC 2045
+to encode US ASCII-like 8-bit data called `quoted-printable'.  It ni used to
+safely encode text that ni kwenye a character set similar to the 7-bit US ASCII
 character set, but that includes some 8-bit characters that are normally not
-allowed in email bodies or headers.
+allowed kwenye email bodies ama headers.
 
-Quoted-printable is very space-inefficient for encoding binary files; use the
-email.base64mime module for that instead.
+Quoted-printable ni very space-inefficient kila encoding binary files; use the
+email.base64mime module kila that instead.
 
-This module provides an interface to encode and decode both headers and bodies
-with quoted-printable encoding.
+This module provides an interface to encode na decode both headers na bodies
+ukijumuisha quoted-printable encoding.
 
-RFC 2045 defines a method for including character set information in an
-`encoded-word' in a header.  This method is commonly used for 8-bit real names
+RFC 2045 defines a method kila including character set information kwenye an
+`encoded-word' kwenye a header.  This method ni commonly used kila 8-bit real names
 in To:/From:/Cc: etc. fields, as well as Subject: lines.
 
-This module does sio do the line wrapping or end-of-line character
-conversion necessary for proper internationalized headers; it only
-does dumb encoding and decoding.  To deal with the various line
+This module does sio do the line wrapping ama end-of-line character
+conversion necessary kila proper internationalized headers; it only
+does dumb encoding na decoding.  To deal ukijumuisha the various line
 wrapping issues, use the email.header module.
 """
 
@@ -39,9 +39,9 @@ __all__ = [
     'unquote',
     ]
 
-import re
+agiza re
 
-from string import ascii_letters, digits, hexdigits
+kutoka string agiza ascii_letters, digits, hexdigits
 
 CRLF = '\r\n'
 NL = '\n'
@@ -49,21 +49,21 @@ EMPTYSTRING = ''
 
 # Build a mapping of octets to the expansion of that octet.  Since we're only
 # going to have 256 of these things, this isn't terribly inefficient
-# space-wise.  Remember that headers and bodies have different sets of safe
-# characters.  Initialize both maps with the full expansion, and then override
-# the safe bytes with the more compact form.
-_QUOPRI_MAP = ['=%02X' % c for c in range(256)]
+# space-wise.  Remember that headers na bodies have different sets of safe
+# characters.  Initialize both maps ukijumuisha the full expansion, na then override
+# the safe bytes ukijumuisha the more compact form.
+_QUOPRI_MAP = ['=%02X' % c kila c kwenye range(256)]
 _QUOPRI_HEADER_MAP = _QUOPRI_MAP[:]
 _QUOPRI_BODY_MAP = _QUOPRI_MAP[:]
 
 # Safe header bytes which need no encoding.
-for c in b'-!*+/' + ascii_letters.encode('ascii') + digits.encode('ascii'):
+kila c kwenye b'-!*+/' + ascii_letters.encode('ascii') + digits.encode('ascii'):
     _QUOPRI_HEADER_MAP[c] = chr(c)
 # Headers have one other special encoding; spaces become underscores.
 _QUOPRI_HEADER_MAP[ord(' ')] = '_'
 
 # Safe body bytes which need no encoding.
-for c in (b' !"#$%&\'()*+,-./0123456789:;<>'
+kila c kwenye (b' !"#$%&\'()*+,-./0123456789:;<>'
           b'?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`'
           b'abcdefghijklmnopqrstuvwxyz{|}~\t'):
     _QUOPRI_BODY_MAP[c] = chr(c)
@@ -71,90 +71,90 @@ for c in (b' !"#$%&\'()*+,-./0123456789:;<>'
 
 
 # Helpers
-def header_check(octet):
-    """Return True if the octet should be escaped with header quopri."""
-    return chr(octet) != _QUOPRI_HEADER_MAP[octet]
+eleza header_check(octet):
+    """Return Kweli ikiwa the octet should be escaped ukijumuisha header quopri."""
+    rudisha chr(octet) != _QUOPRI_HEADER_MAP[octet]
 
 
-def body_check(octet):
-    """Return True if the octet should be escaped with body quopri."""
-    return chr(octet) != _QUOPRI_BODY_MAP[octet]
+eleza body_check(octet):
+    """Return Kweli ikiwa the octet should be escaped ukijumuisha body quopri."""
+    rudisha chr(octet) != _QUOPRI_BODY_MAP[octet]
 
 
-def header_length(bytearray):
+eleza header_length(bytearray):
     """Return a header quoted-printable encoding length.
 
     Note that this does sio include any RFC 2047 chrome added by
     `header_encode()`.
 
     :param bytearray: An array of bytes (a.k.a. octets).
-    :return: The length in bytes of the byte array when it is encoded with
-        quoted-printable for headers.
+    :return: The length kwenye bytes of the byte array when it ni encoded with
+        quoted-printable kila headers.
     """
-    return sum(len(_QUOPRI_HEADER_MAP[octet]) for octet in bytearray)
+    rudisha sum(len(_QUOPRI_HEADER_MAP[octet]) kila octet kwenye bytearray)
 
 
-def body_length(bytearray):
+eleza body_length(bytearray):
     """Return a body quoted-printable encoding length.
 
     :param bytearray: An array of bytes (a.k.a. octets).
-    :return: The length in bytes of the byte array when it is encoded with
-        quoted-printable for bodies.
+    :return: The length kwenye bytes of the byte array when it ni encoded with
+        quoted-printable kila bodies.
     """
-    return sum(len(_QUOPRI_BODY_MAP[octet]) for octet in bytearray)
+    rudisha sum(len(_QUOPRI_BODY_MAP[octet]) kila octet kwenye bytearray)
 
 
-def _max_append(L, s, maxlen, extra=''):
-    if sio isinstance(s, str):
+eleza _max_append(L, s, maxlen, extra=''):
+    ikiwa sio isinstance(s, str):
         s = chr(s)
-    if sio L:
+    ikiwa sio L:
         L.append(s.lstrip())
-    lasivyo len(L[-1]) + len(s) <= maxlen:
+    elikiwa len(L[-1]) + len(s) <= maxlen:
         L[-1] += extra + s
     isipokua:
         L.append(s.lstrip())
 
 
-def unquote(s):
-    """Turn a string in the form =AB to the ASCII character with value 0xab"""
-    return chr(int(s[1:3], 16))
+eleza unquote(s):
+    """Turn a string kwenye the form =AB to the ASCII character ukijumuisha value 0xab"""
+    rudisha chr(int(s[1:3], 16))
 
 
-def quote(c):
-    return _QUOPRI_MAP[ord(c)]
+eleza quote(c):
+    rudisha _QUOPRI_MAP[ord(c)]
 
 
-def header_encode(header_bytes, charset='iso-8859-1'):
-    """Encode a single header line with quoted-printable (like) encoding.
+eleza header_encode(header_bytes, charset='iso-8859-1'):
+    """Encode a single header line ukijumuisha quoted-printable (like) encoding.
 
-    Defined in RFC 2045, this `Q' encoding is similar to quoted-printable, but
-    used specifically for email header fields to allow charsets with mostly 7
-    bit characters (and some 8 bit) to remain more or less readable in non-RFC
+    Defined kwenye RFC 2045, this `Q' encoding ni similar to quoted-printable, but
+    used specifically kila email header fields to allow charsets ukijumuisha mostly 7
+    bit characters (and some 8 bit) to remain more ama less readable kwenye non-RFC
     2045 aware mail clients.
 
-    charset names the character set to use in the RFC 2046 header.  It
+    charset names the character set to use kwenye the RFC 2046 header.  It
     defaults to iso-8859-1.
     """
     # Return empty headers as an empty string.
-    if sio header_bytes:
-        return ''
-    # Iterate over every byte, encoding if necessary.
+    ikiwa sio header_bytes:
+        rudisha ''
+    # Iterate over every byte, encoding ikiwa necessary.
     encoded = header_bytes.decode('latin1').translate(_QUOPRI_HEADER_MAP)
-    # Now add the RFC chrome to each encoded chunk and glue the chunks
+    # Now add the RFC chrome to each encoded chunk na glue the chunks
     # together.
-    return '=?%s?q?%s?=' % (charset, encoded)
+    rudisha '=?%s?q?%s?=' % (charset, encoded)
 
 
 _QUOPRI_BODY_ENCODE_MAP = _QUOPRI_BODY_MAP[:]
-for c in b'\r\n':
+kila c kwenye b'\r\n':
     _QUOPRI_BODY_ENCODE_MAP[c] = chr(c)
 
-def body_encode(body, maxlinelen=76, eol=NL):
-    """Encode with quoted-printable, wrapping at maxlinelen characters.
+eleza body_encode(body, maxlinelen=76, eol=NL):
+    """Encode ukijumuisha quoted-printable, wrapping at maxlinelen characters.
 
-    Each line of encoded text will end with eol, which defaults to "\\n".  Set
-    this to "\\r\\n" if you will be using the result of this function directly
-    in an email.
+    Each line of encoded text will end ukijumuisha eol, which defaults to "\\n".  Set
+    this to "\\r\\n" ikiwa you will be using the result of this function directly
+    kwenye an email.
 
     Each line will be wrapped at, at most, maxlinelen characters before the
     eol string (maxlinelen defaults to 76 characters, the maximum value
@@ -162,87 +162,87 @@ def body_encode(body, maxlinelen=76, eol=NL):
     quoted-printable character "=" appended to them, so the decoded text will
     be identical to the original text.
 
-    The minimum maxlinelen is 4 to have room for a quoted character ("=XX")
+    The minimum maxlinelen ni 4 to have room kila a quoted character ("=XX")
     followed by a soft line koma.  Smaller values will generate a
     ValueError.
 
     """
 
-    if maxlinelen < 4:
-        ashiria ValueError("maxlinelen must be at least 4")
-    if sio body:
-        return body
+    ikiwa maxlinelen < 4:
+         ashiria ValueError("maxlinelen must be at least 4")
+    ikiwa sio body:
+        rudisha body
 
     # quote special characters
     body = body.translate(_QUOPRI_BODY_ENCODE_MAP)
 
     soft_koma = '=' + eol
-    # leave space for the '=' at the end of a line
+    # leave space kila the '=' at the end of a line
     maxlinelen1 = maxlinelen - 1
 
     encoded_body = []
     append = encoded_body.append
 
-    for line in body.splitlines():
+    kila line kwenye body.splitlines():
         # koma up the line into pieces no longer than maxlinelen - 1
         start = 0
         laststart = len(line) - 1 - maxlinelen
         wakati start <= laststart:
             stop = start + maxlinelen1
             # make sure we don't koma up an escape sequence
-            if line[stop - 2] == '=':
+            ikiwa line[stop - 2] == '=':
                 append(line[start:stop - 1])
                 start = stop - 2
-            lasivyo line[stop - 1] == '=':
+            elikiwa line[stop - 1] == '=':
                 append(line[start:stop])
                 start = stop - 1
             isipokua:
                 append(line[start:stop] + '=')
                 start = stop
 
-        # handle rest of line, special case if line ends in whitespace
-        if line and line[-1] in ' \t':
+        # handle rest of line, special case ikiwa line ends kwenye whitespace
+        ikiwa line na line[-1] kwenye ' \t':
             room = start - laststart
-            if room >= 3:
-                # It's a whitespace character at end-of-line, and we have room
-                # for the three-character quoted encoding.
+            ikiwa room >= 3:
+                # It's a whitespace character at end-of-line, na we have room
+                # kila the three-character quoted encoding.
                 q = quote(line[-1])
-            lasivyo room == 2:
-                # There's room for the whitespace character and a soft koma.
+            elikiwa room == 2:
+                # There's room kila the whitespace character na a soft koma.
                 q = line[-1] + soft_koma
             isipokua:
-                # There's room only for a soft koma.  The quoted whitespace
+                # There's room only kila a soft koma.  The quoted whitespace
                 # will be the only content on the subsequent line.
                 q = soft_koma + quote(line[-1])
             append(line[start:-1] + q)
         isipokua:
             append(line[start:])
 
-    # add back final newline if present
-    if body[-1] in CRLF:
+    # add back final newline ikiwa present
+    ikiwa body[-1] kwenye CRLF:
         append('')
 
-    return eol.join(encoded_body)
+    rudisha eol.join(encoded_body)
 
 
 
-# BAW: I'm sio sure if the intent was for the signature of this function to be
+# BAW: I'm sio sure ikiwa the intent was kila the signature of this function to be
 # the same as base64MIME.decode() ama not...
-def decode(encoded, eol=NL):
+eleza decode(encoded, eol=NL):
     """Decode a quoted-printable string.
 
-    Lines are separated with eol, which defaults to \\n.
+    Lines are separated ukijumuisha eol, which defaults to \\n.
     """
-    if sio encoded:
-        return encoded
-    # BAW: see comment in encode() above.  Again, we're building up the
-    # decoded string with string concatenation, which could be done much more
+    ikiwa sio encoded:
+        rudisha encoded
+    # BAW: see comment kwenye encode() above.  Again, we're building up the
+    # decoded string ukijumuisha string concatenation, which could be done much more
     # efficiently.
     decoded = ''
 
-    for line in encoded.splitlines():
+    kila line kwenye encoded.splitlines():
         line = line.rstrip()
-        if sio line:
+        ikiwa sio line:
             decoded += eol
             endelea
 
@@ -250,50 +250,50 @@ def decode(encoded, eol=NL):
         n = len(line)
         wakati i < n:
             c = line[i]
-            if c != '=':
+            ikiwa c != '=':
                 decoded += c
                 i += 1
             # Otherwise, c == "=".  Are we at the end of the line?  If so, add
             # a soft line koma.
-            lasivyo i+1 == n:
+            elikiwa i+1 == n:
                 i += 1
                 endelea
-            # Decode if in form =AB
-            lasivyo i+2 < n and line[i+1] in hexdigits and line[i+2] in hexdigits:
+            # Decode ikiwa kwenye form =AB
+            elikiwa i+2 < n na line[i+1] kwenye hexdigits na line[i+2] kwenye hexdigits:
                 decoded += unquote(line[i:i+3])
                 i += 3
-            # Otherwise, haiko kwenye form =AB, pass literally
+            # Otherwise, sio kwenye form =AB, pass literally
             isipokua:
                 decoded += c
                 i += 1
 
-            if i == n:
+            ikiwa i == n:
                 decoded += eol
-    # Special case if original string did sio end with eol
-    if encoded[-1] haiko kwenye '\r\n' and decoded.endswith(eol):
+    # Special case ikiwa original string did sio end ukijumuisha eol
+    ikiwa encoded[-1] sio kwenye '\r\n' na decoded.endswith(eol):
         decoded = decoded[:-1]
-    return decoded
+    rudisha decoded
 
 
-# For convenience and backwards compatibility w/ standard base64 module
+# For convenience na backwards compatibility w/ standard base64 module
 body_decode = decode
 decodestring = decode
 
 
 
-def _unquote_match(match):
-    """Turn a match in the form =AB to the ASCII character with value 0xab"""
+eleza _unquote_match(match):
+    """Turn a match kwenye the form =AB to the ASCII character ukijumuisha value 0xab"""
     s = match.group(0)
-    return unquote(s)
+    rudisha unquote(s)
 
 
-# Header decoding is done a bit differently
-def header_decode(s):
-    """Decode a string encoded with RFC 2045 MIME header `Q' encoding.
+# Header decoding ni done a bit differently
+eleza header_decode(s):
+    """Decode a string encoded ukijumuisha RFC 2045 MIME header `Q' encoding.
 
     This function does sio parse a full MIME header value encoded with
     quoted-printable (like =?iso-8859-1?q?Hello_World?=) -- please use
-    the high level email.header class for that functionality.
+    the high level email.header kundi kila that functionality.
     """
     s = s.replace('_', ' ')
-    return re.sub(r'=[a-fA-F0-9]{2}', _unquote_match, s, flags=re.ASCII)
+    rudisha re.sub(r'=[a-fA-F0-9]{2}', _unquote_match, s, flags=re.ASCII)

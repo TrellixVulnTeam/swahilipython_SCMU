@@ -16,8 +16,8 @@ kundi TestHook:
     after the test completes.
     """
 
-    eleza __init__(self, ashiria_on_events=Tupu, exc_type=RuntimeError):
-        self.ashiria_on_events = ashiria_on_events ama ()
+    eleza __init__(self, raise_on_events=Tupu, exc_type=RuntimeError):
+        self.raise_on_events = raise_on_events ama ()
         self.exc_type = exc_type
         self.seen = []
         self.closed = Uongo
@@ -38,10 +38,10 @@ kundi TestHook:
 
     eleza __call__(self, event, args):
         ikiwa self.closed:
-            rudisha
+            return
         self.seen.append((event, args))
-        ikiwa event kwenye self.ashiria_on_events:
-            ashiria self.exc_type("saw event " + event)
+        ikiwa event kwenye self.raise_on_events:
+             ashiria self.exc_type("saw event " + event)
 
 
 kundi TestFinalizeHook:
@@ -56,52 +56,52 @@ kundi TestFinalizeHook:
     eleza __call__(self, event, args):
         # Avoid recursion when we call id() below
         ikiwa event == "builtins.id":
-            rudisha
+            return
 
         andika(event, id(self), file=sys.stdout, flush=Kweli)
 
         ikiwa event == "cpython._PySys_ClearAuditHooks":
-            ashiria RuntimeError("Should be ignored")
-        lasivyo event == "cpython.PyInterpreterState_Clear":
-            ashiria RuntimeError("Should be ignored")
+             ashiria RuntimeError("Should be ignored")
+        elikiwa event == "cpython.PyInterpreterState_Clear":
+             ashiria RuntimeError("Should be ignored")
 
 
-# Simple helpers, since we are haiko kwenye unittest here
+# Simple helpers, since we are sio kwenye unittest here
 eleza assertEqual(x, y):
     ikiwa x != y:
-        ashiria AssertionError(f"{x!r} should equal {y!r}")
+         ashiria AssertionError(f"{x!r} should equal {y!r}")
 
 
 eleza assertIn(el, series):
-    ikiwa el haiko kwenye series:
-        ashiria AssertionError(f"{el!r} should be kwenye {series!r}")
+    ikiwa el sio kwenye series:
+         ashiria AssertionError(f"{el!r} should be kwenye {series!r}")
 
 
 eleza assertNotIn(el, series):
     ikiwa el kwenye series:
-        ashiria AssertionError(f"{el!r} should sio be kwenye {series!r}")
+         ashiria AssertionError(f"{el!r} should sio be kwenye {series!r}")
 
 
 eleza assertSequenceEqual(x, y):
     ikiwa len(x) != len(y):
-        ashiria AssertionError(f"{x!r} should equal {y!r}")
+         ashiria AssertionError(f"{x!r} should equal {y!r}")
     ikiwa any(ix != iy kila ix, iy kwenye zip(x, y)):
-        ashiria AssertionError(f"{x!r} should equal {y!r}")
+         ashiria AssertionError(f"{x!r} should equal {y!r}")
 
 
 @contextlib.contextmanager
 eleza assertRaises(ex_type):
     jaribu:
-        tuma
+        yield
         assert Uongo, f"expected {ex_type}"
-    tatizo BaseException kama ex:
+    except BaseException as ex:
         ikiwa isinstance(ex, AssertionError):
-            ashiria
+            raise
         assert type(ex) ni ex_type, f"{ex} should be {ex_type}"
 
 
 eleza test_basic():
-    ukijumuisha TestHook() kama hook:
+    ukijumuisha TestHook() as hook:
         sys.audit("test_event", 1, 2, 3)
         assertEqual(hook.seen[0][0], "test_event")
         assertEqual(hook.seen[0][1], (1, 2, 3))
@@ -110,8 +110,8 @@ eleza test_basic():
 eleza test_block_add_hook():
     # Raising an exception should prevent a new hook kutoka being added,
     # but will sio propagate out.
-    ukijumuisha TestHook(ashiria_on_events="sys.addaudithook") kama hook1:
-        ukijumuisha TestHook() kama hook2:
+    ukijumuisha TestHook(raise_on_events="sys.addaudithook") as hook1:
+        ukijumuisha TestHook() as hook2:
             sys.audit("test_event")
             assertIn("test_event", hook1.seen_events)
             assertNotIn("test_event", hook2.seen_events)
@@ -121,11 +121,11 @@ eleza test_block_add_hook_baseexception():
     # Raising BaseException will propagate out when adding a hook
     ukijumuisha assertRaises(BaseException):
         ukijumuisha TestHook(
-            ashiria_on_events="sys.addaudithook", exc_type=BaseException
-        ) kama hook1:
-            # Adding this next hook should ashiria BaseException
-            ukijumuisha TestHook() kama hook2:
-                pita
+            raise_on_events="sys.addaudithook", exc_type=BaseException
+        ) as hook1:
+            # Adding this next hook should  ashiria BaseException
+            ukijumuisha TestHook() as hook2:
+                pass
 
 
 eleza test_finalize_hooks():
@@ -145,7 +145,7 @@ eleza test_pickle():
     # Before we add the hook, ensure our malicious pickle loads
     assertEqual("Pwned!", pickle.loads(payload_1))
 
-    ukijumuisha TestHook(ashiria_on_events="pickle.find_class") kama hook:
+    ukijumuisha TestHook(raise_on_events="pickle.find_class") as hook:
         ukijumuisha assertRaises(RuntimeError):
             # With the hook enabled, loading globals ni sio allowed
             pickle.loads(payload_1)
@@ -155,22 +155,22 @@ eleza test_pickle():
 
 eleza test_monkeypatch():
     kundi A:
-        pita
+        pass
 
     kundi B:
-        pita
+        pass
 
     kundi C(A):
-        pita
+        pass
 
     a = A()
 
-    ukijumuisha TestHook() kama hook:
+    ukijumuisha TestHook() as hook:
         # Catch name changes
         C.__name__ = "X"
         # Catch type changes
         C.__bases__ = (B,)
-        # Ensure bypitaing __setattr__ ni still caught
+        # Ensure bypassing __setattr__ ni still caught
         type.__dict__["__bases__"].__set__(C, (B,))
         # Catch attribute replacement
         C.__init__ = B.__init__
@@ -191,12 +191,12 @@ eleza test_open():
         agiza ssl
 
         load_dh_params = ssl.create_default_context().load_dh_params
-    tatizo ImportError:
+    except ImportError:
         load_dh_params = Tupu
 
     # Try a range of "open" functions.
     # All of them should fail
-    ukijumuisha TestHook(ashiria_on_events={"open"}) kama hook:
+    ukijumuisha TestHook(raise_on_events={"open"}) as hook:
         kila fn, *args kwenye [
             (open, sys.argv[2], "r"),
             (open, sys.executable, "rb"),
@@ -237,7 +237,7 @@ eleza test_cantrace():
 
     old = sys.settrace(trace)
     jaribu:
-        ukijumuisha TestHook() kama hook:
+        ukijumuisha TestHook() as hook:
             # No traced call
             eval("1")
 
@@ -263,7 +263,7 @@ eleza test_cantrace():
 
 eleza test_mmap():
     agiza mmap
-    ukijumuisha TestHook() kama hook:
+    ukijumuisha TestHook() as hook:
         mmap.mmap(-1, 8)
         assertEqual(hook.seen[0][1][:2], (-1, 8))
 

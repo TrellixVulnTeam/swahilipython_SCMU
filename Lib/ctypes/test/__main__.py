@@ -1,4 +1,4 @@
-from ctypes.test import load_tests
-import unittest
+kutoka ctypes.test agiza load_tests
+agiza unittest
 
 unittest.main()

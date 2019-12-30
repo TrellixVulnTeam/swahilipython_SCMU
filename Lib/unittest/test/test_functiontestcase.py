@@ -17,7 +17,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence kila each test."
     #
-    # Make sure the proper call order ni maintained, even ikiwa setUp() ashirias
+    # Make sure the proper call order ni maintained, even ikiwa setUp() raises
     # an exception.
     eleza test_run_call_order__error_in_setUp(self):
         events = []
@@ -25,7 +25,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
 
         eleza setUp():
             events.append('setUp')
-            ashiria RuntimeError('ashiriad by setUp')
+             ashiria RuntimeError('raised by setUp')
 
         eleza test():
             events.append('test')
@@ -42,7 +42,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence kila each test."
     #
-    # Make sure the proper call order ni maintained, even ikiwa the test ashirias
+    # Make sure the proper call order ni maintained, even ikiwa the test raises
     # an error (as opposed to a failure).
     eleza test_run_call_order__error_in_test(self):
         events = []
@@ -53,7 +53,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
 
         eleza test():
             events.append('test')
-            ashiria RuntimeError('ashiriad by test')
+             ashiria RuntimeError('raised by test')
 
         eleza tearDown():
             events.append('tearDown')
@@ -79,7 +79,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
 
         eleza test():
             events.append('test')
-            self.fail('ashiriad by test')
+            self.fail('raised by test')
 
         eleza tearDown():
             events.append('tearDown')
@@ -94,7 +94,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence kila each test."
     #
-    # Make sure the proper call order ni maintained, even ikiwa tearDown() ashirias
+    # Make sure the proper call order ni maintained, even ikiwa tearDown() raises
     # an exception.
     eleza test_run_call_order__error_in_tearDown(self):
         events = []
@@ -108,7 +108,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
 
         eleza tearDown():
             events.append('tearDown')
-            ashiria RuntimeError('ashiriad by tearDown')
+             ashiria RuntimeError('raised by tearDown')
 
         expected = ['startTest', 'setUp', 'test', 'tearDown', 'addError',
                     'stopTest']
@@ -127,7 +127,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
         self.assertIsInstance(test.id(), str)
 
     # "Returns a one-line description of the test, ama Tupu ikiwa no description
-    # has been provided. The default implementation of this method rudishas
+    # has been provided. The default implementation of this method returns
     # the first line of the test method's docstring, ikiwa available, ama Tupu."
     eleza test_shortDescription__no_docstring(self):
         test = unittest.FunctionTestCase(lambda: Tupu)
@@ -135,7 +135,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
         self.assertEqual(test.shortDescription(), Tupu)
 
     # "Returns a one-line description of the test, ama Tupu ikiwa no description
-    # has been provided. The default implementation of this method rudishas
+    # has been provided. The default implementation of this method returns
     # the first line of the test method's docstring, ikiwa available, ama Tupu."
     eleza test_shortDescription__singleline_docstring(self):
         desc = "this tests foo"

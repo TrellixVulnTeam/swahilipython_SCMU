@@ -22,14 +22,14 @@ Simple usage:
     ikiwa __name__ == '__main__':
         unittest.main()
 
-Further information ni available kwenye the bundled documentation, na kutoka
+Further information ni available kwenye the bundled documentation, na from
 
   http://docs.python.org/library/unittest.html
 
 Copyright (c) 1999-2003 Steve Purcell
 Copyright (c) 2003-2010 Python Software Foundation
 This module ni free software, na you may redistribute it and/or modify
-it under the same terms kama Python itself, so long kama this copyright message
+it under the same terms as Python itself, so long as this copyright message
 and disclaimer are retained kwenye their original form.
 
 IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
@@ -70,7 +70,7 @@ kutoka .signals agiza installHandler, registerResult, removeResult, removeHandle
 # deprecated
 _TextTestResult = TextTestResult
 
-# There are no tests here, so don't try to run anything discovered kutoka
+# There are no tests here, so don't try to run anything discovered from
 # introspecting the symbols (e.g. FunctionTestCase). Instead, all our
 # tests come kutoka within unittest.test.
 eleza load_tests(loader, tests, pattern):

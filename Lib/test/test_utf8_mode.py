@@ -104,7 +104,7 @@ kundi UTF8ModeTests(unittest.TestCase):
         ''')
 
         ikiwa MS_WINDOWS:
-            expected = 'utf-8/surrogatepita'
+            expected = 'utf-8/surrogatepass'
         isipokua:
             expected = 'utf-8/surrogateescape'
 
@@ -153,7 +153,7 @@ kundi UTF8ModeTests(unittest.TestCase):
         code = textwrap.dedent('''
             agiza sys
             filename = sys.argv[1]
-            ukijumuisha open(filename) kama fp:
+            ukijumuisha open(filename) as fp:
                 andika(f"{fp.encoding}/{fp.errors}")
         ''')
         filename = __file__
@@ -174,7 +174,7 @@ kundi UTF8ModeTests(unittest.TestCase):
             agiza sys
             kutoka %s agiza open
             filename = sys.argv[1]
-            ukijumuisha open(filename, %s) kama fp:
+            ukijumuisha open(filename, %s) as fp:
                 andika(f"{fp.encoding}/{fp.errors}")
         ''') % (module, ', '.join(args))
         out = self.get_output('-c', code, filename,
@@ -227,7 +227,7 @@ kundi UTF8ModeTests(unittest.TestCase):
 
         ikiwa sys.platform == 'darwin' ama support.is_android ama VXWORKS:
             c_arg = arg_utf8
-        lasivyo sys.platform.startswith("aix"):
+        elikiwa sys.platform.startswith("aix"):
             c_arg = arg.decode('iso-8859-1')
         isipokua:
             c_arg = arg_ascii

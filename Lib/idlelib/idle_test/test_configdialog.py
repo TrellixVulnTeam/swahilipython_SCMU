@@ -181,10 +181,10 @@ kundi FontPageTest(unittest.TestCase):
         self.assertEqual(d.set_samples.called, 2)
         changes.clear()
 
-        d.font_bold.set(sio default_bold)
+        d.font_bold.set(not default_bold)
         expected = {'EditorWindow': {'font': 'Test Font',
                                      'font-size': '20',
-                                     'font-bold': str(sio default_bold)}}
+                                     'font-bold': str(not default_bold)}}
         self.assertEqual(mainpage, expected)
         self.assertEqual(d.set_samples.called, 3)
 
@@ -268,7 +268,7 @@ kundi HighPageTest(unittest.TestCase):
         eq = self.assertEqual
 
         # Use builtin theme ukijumuisha no user themes created.
-        idleConf.CurrentTheme = mock.Mock(rudisha_value='IDLE Classic')
+        idleConf.CurrentTheme = mock.Mock(return_value='IDLE Classic')
         d.load_theme_cfg()
         self.assertKweli(d.theme_source.get())
         # builtinlist sets variable builtin_name to the CurrentTheme default.
@@ -290,7 +290,7 @@ kundi HighPageTest(unittest.TestCase):
         eq(d.set_highlight_target.called, 2)
 
         # Use custom theme.
-        idleConf.CurrentTheme = mock.Mock(rudisha_value='test2')
+        idleConf.CurrentTheme = mock.Mock(return_value='test2')
         idleConf.SetOption('main', 'Theme', 'default', '0')
         d.load_theme_cfg()
         self.assertUongo(d.theme_source.get())
@@ -456,7 +456,7 @@ kundi HighPageTest(unittest.TestCase):
         d.button_set_color.invoke()
         eq(d.color.get(), '#ffffff')
 
-        # Selection same kama previous color.
+        # Selection same as previous color.
         chooser.result = ('', d.style.lookup(d.frame_color_set['style'], 'background'))
         d.button_set_color.invoke()
         eq(d.color.get(), '#ffffff')
@@ -503,7 +503,7 @@ kundi HighPageTest(unittest.TestCase):
 
     eleza test_get_new_theme_name(self):
         orig_sectionname = configdialog.SectionName
-        sn = configdialog.SectionName = Func(rudisha_self=Kweli)
+        sn = configdialog.SectionName = Func(return_self=Kweli)
         d = self.page
 
         sn.result = 'New Theme'
@@ -534,7 +534,7 @@ kundi HighPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
 
-        # Use default kama previously active theme.
+        # Use default as previously active theme.
         d.theme_source.set(Kweli)
         d.builtin_name.set('IDLE Classic')
         first_new = 'my new custom theme'
@@ -713,7 +713,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
 
         # Use builtin keyset ukijumuisha no user keysets created.
-        idleConf.CurrentKeys = mock.Mock(rudisha_value='IDLE Classic OSX')
+        idleConf.CurrentKeys = mock.Mock(return_value='IDLE Classic OSX')
         d.load_key_cfg()
         self.assertKweli(d.keyset_source.get())
         # builtinlist sets variable builtin_name to the CurrentKeys default.
@@ -735,8 +735,8 @@ kundi KeysPageTest(unittest.TestCase):
         eq(d.load_keys_list.args, ('IDLE Classic OSX', ))
 
         # Use custom keyset.
-        idleConf.CurrentKeys = mock.Mock(rudisha_value='test2')
-        idleConf.default_keys = mock.Mock(rudisha_value='IDLE Modern Unix')
+        idleConf.CurrentKeys = mock.Mock(return_value='test2')
+        idleConf.default_keys = mock.Mock(return_value='IDLE Modern Unix')
         idleConf.SetOption('main', 'Keys', 'default', '0')
         d.load_key_cfg()
         self.assertUongo(d.keyset_source.get())
@@ -862,7 +862,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
         orig_getkeysdialog = configdialog.GetKeysDialog
-        gkd = configdialog.GetKeysDialog = Func(rudisha_self=Kweli)
+        gkd = configdialog.GetKeysDialog = Func(return_self=Kweli)
         gnkn = d.get_new_keys_name = Func()
 
         d.button_new_keys.state(('!disabled',))
@@ -908,7 +908,7 @@ kundi KeysPageTest(unittest.TestCase):
 
     eleza test_get_new_keys_name(self):
         orig_sectionname = configdialog.SectionName
-        sn = configdialog.SectionName = Func(rudisha_self=Kweli)
+        sn = configdialog.SectionName = Func(return_self=Kweli)
         d = self.page
 
         sn.result = 'New Keys'
@@ -959,7 +959,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
 
-        # Use default kama previously active keyset.
+        # Use default as previously active keyset.
         d.keyset_source.set(Kweli)
         d.builtin_name.set('IDLE Classic Windows')
         first_new = 'my new custom key set'
@@ -1223,7 +1223,7 @@ kundi GenPageTest(unittest.TestCase):
         # Double call enables check on order.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
-        hs = configdialog.HelpSource = Func(rudisha_self=Kweli)
+        hs = configdialog.HelpSource = Func(return_self=Kweli)
         d = self.page
         d.helplist.delete(0, 'end')
         d.user_helplist.clear()
@@ -1250,7 +1250,7 @@ kundi GenPageTest(unittest.TestCase):
         # Call without na ukijumuisha HelpSource change.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
-        hs = configdialog.HelpSource = Func(rudisha_self=Kweli)
+        hs = configdialog.HelpSource = Func(return_self=Kweli)
         d = self.page
         d.helplist.delete(0, 'end')
         d.helplist.insert(0, 'name1')
@@ -1325,7 +1325,7 @@ kundi VarTraceTest(unittest.TestCase):
         self.called += 13
 
     eleza var_changed_boolean(self, *params):
-        pita
+        pass
 
     eleza test_init(self):
         tr = self.tracers
@@ -1344,7 +1344,7 @@ kundi VarTraceTest(unittest.TestCase):
     eleza test_add(self):
         tr = self.tracers
         func = Func()
-        cb = tr.make_callback = mock.Mock(rudisha_value=func)
+        cb = tr.make_callback = mock.Mock(return_value=func)
 
         iv = tr.add(self.iv, self.var_changed_increment)
         self.assertIs(iv, self.iv)

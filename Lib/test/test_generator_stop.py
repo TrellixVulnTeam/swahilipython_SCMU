@@ -6,22 +6,22 @@ agiza unittest
 kundi TestPEP479(unittest.TestCase):
     eleza test_stopiteration_wrapping(self):
         eleza f():
-            ashiria StopIteration
+             ashiria StopIteration
         eleza g():
             tuma f()
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    "generator ashiriad StopIteration"):
+                                    "generator raised StopIteration"):
             next(g())
 
     eleza test_stopiteration_wrapping_context(self):
         eleza f():
-            ashiria StopIteration
+             ashiria StopIteration
         eleza g():
             tuma f()
 
         jaribu:
             next(g())
-        tatizo RuntimeError kama exc:
+        except RuntimeError as exc:
             self.assertIs(type(exc.__cause__), StopIteration)
             self.assertIs(type(exc.__context__), StopIteration)
             self.assertKweli(exc.__suppress_context__)

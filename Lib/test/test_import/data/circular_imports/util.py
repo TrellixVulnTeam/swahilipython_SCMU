@@ -1,2 +1,2 @@
 eleza util():
-    pita
+    pass

@@ -12,7 +12,7 @@ agiza errno
 agiza threading
 
 kutoka unittest agiza TestCase, skipUnless
-kutoka test agiza support kama test_support
+kutoka test agiza support as test_support
 
 HOST = test_support.HOST
 PORT = 0
@@ -27,7 +27,7 @@ ikiwa hasattr(poplib, 'POP3_SSL'):
 
 requires_ssl = skipUnless(SUPPORTS_SSL, 'SSL sio supported')
 
-# the dummy data rudishaed by server when LIST na RETR commands are issued
+# the dummy data returned by server when LIST na RETR commands are issued
 LIST_RESP = b'1 1\r\n2 2\r\n3 3\r\n4 4\r\n5 5\r\n.\r\n'
 RETR_RESP = b"""From: postmaster@python.org\
 \r\nContent-Type: text/plain\r\n\
@@ -73,7 +73,7 @@ kundi DummyPOP3Handler(asynchat.async_chat):
             self.push('-ERR unrecognized POP3 command "%s".' %cmd)
 
     eleza handle_error(self):
-        ashiria
+        raise
 
     eleza push(self, data):
         asynchat.async_chat.push(self, data.encode("ISO-8859-1") + b'\r\n')
@@ -85,11 +85,11 @@ kundi DummyPOP3Handler(asynchat.async_chat):
     eleza cmd_user(self, arg):
         ikiwa arg != "guido":
             self.push("-ERR no such user")
-        self.push('+OK pitaword required')
+        self.push('+OK password required')
 
-    eleza cmd_pita(self, arg):
+    eleza cmd_pass(self, arg):
         ikiwa arg != "python":
-            self.push("-ERR wrong pitaword")
+            self.push("-ERR wrong password")
         self.push('+OK 10 messages')
 
     eleza cmd_stat(self, arg):
@@ -170,18 +170,18 @@ kundi DummyPOP3Handler(asynchat.async_chat):
         eleza _do_tls_handshake(self):
             jaribu:
                 self.socket.do_handshake()
-            tatizo ssl.SSLError kama err:
+            except ssl.SSLError as err:
                 ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    rudisha
-                lasivyo err.args[0] == ssl.SSL_ERROR_EOF:
+                    return
+                elikiwa err.args[0] == ssl.SSL_ERROR_EOF:
                     rudisha self.handle_close()
                 # TODO: SSLError does sio expose alert information
-                lasivyo ("SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1] ama
+                elikiwa ("SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1] or
                       "SSLV3_ALERT_CERTIFICATE_UNKNOWN" kwenye err.args[1]):
                     rudisha self.handle_close()
-                ashiria
-            tatizo OSError kama err:
+                raise
+            except OSError as err:
                 ikiwa err.args[0] == errno.ECONNABORTED:
                     rudisha self.handle_close()
             isipokua:
@@ -194,7 +194,7 @@ kundi DummyPOP3Handler(asynchat.async_chat):
             isipokua:
                 jaribu:
                     asynchat.async_chat.handle_read(self)
-                tatizo ssl.SSLEOFError:
+                except ssl.SSLEOFError:
                     self.handle_close()
 
 kundi DummyPOP3Server(asyncore.dispatcher, threading.Thread):
@@ -245,7 +245,7 @@ kundi DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         rudisha 0
 
     eleza handle_error(self):
-        ashiria
+        raise
 
 
 kundi TestPOP3Class(TestCase):
@@ -274,8 +274,8 @@ kundi TestPOP3Class(TestCase):
         self.assertOK(self.client.user('guido'))
         self.assertRaises(poplib.error_proto, self.client.user, 'invalid')
 
-    eleza test_pita_(self):
-        self.assertOK(self.client.pita_('python'))
+    eleza test_pass_(self):
+        self.assertOK(self.client.pass_('python'))
         self.assertRaises(poplib.error_proto, self.client.user, 'invalid')
 
     eleza test_stat(self):
@@ -311,7 +311,7 @@ kundi TestPOP3Class(TestCase):
 
     @test_support.requires_hashdigest('md5')
     eleza test_apop_normal(self):
-        self.assertOK(self.client.apop('foo', 'dummypitaword'))
+        self.assertOK(self.client.apop('foo', 'dummypassword'))
 
     @test_support.requires_hashdigest('md5')
     eleza test_apop_REDOS(self):
@@ -336,7 +336,7 @@ kundi TestPOP3Class(TestCase):
         self.client.uidl()
         self.client.uidl('foo')
 
-    eleza test_utf8_ashirias_if_unsupported(self):
+    eleza test_utf8_raises_if_unsupported(self):
         self.server.handler.enable_UTF8 = Uongo
         self.assertRaises(poplib.error_proto, self.client.utf8)
 
@@ -452,9 +452,9 @@ kundi TestPOP3_TLSClass(TestPOP3Class):
         ikiwa self.client.file ni sio Tupu na self.client.sock ni sio Tupu:
             jaribu:
                 self.client.quit()
-            tatizo poplib.error_proto:
+            except poplib.error_proto:
                 # happens kwenye the test_too_long_lines case; the overlong
-                # response will be treated kama response to QUIT na ashiria
+                # response will be treated as response to QUIT na raise
                 # this exception
                 self.client.close()
         self.server.stop()
@@ -495,8 +495,8 @@ kundi TestTimeouts(TestCase):
             conn, addr = serv.accept()
             conn.send(b"+ Hola mundo\n")
             conn.close()
-        tatizo socket.timeout:
-            pita
+        except socket.timeout:
+            pass
         mwishowe:
             serv.close()
 

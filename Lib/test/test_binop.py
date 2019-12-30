@@ -27,7 +27,7 @@ eleza isRat(x):
 
 kundi Rat(object):
 
-    """Rational number implemented kama a normalized pair of ints."""
+    """Rational number implemented as a normalized pair of ints."""
 
     __slots__ = ['_Rat__num', '_Rat__den']
 
@@ -36,12 +36,12 @@ kundi Rat(object):
 
         The arguments must be ints, na default to (0, 1)."""
         ikiwa sio isint(num):
-            ashiria TypeError("Rat numerator must be int (%r)" % num)
+             ashiria TypeError("Rat numerator must be int (%r)" % num)
         ikiwa sio isint(den):
-            ashiria TypeError("Rat denominator must be int (%r)" % den)
+             ashiria TypeError("Rat denominator must be int (%r)" % den)
         # But the zero ni always on
         ikiwa den == 0:
-            ashiria ZeroDivisionError("zero denominator")
+             ashiria ZeroDivisionError("zero denominator")
         g = gcd(den, num)
         self.__num = int(num//g)
         self.__den = int(den//g)
@@ -73,10 +73,10 @@ kundi Rat(object):
         ikiwa self.__den == 1:
             jaribu:
                 rudisha int(self.__num)
-            tatizo OverflowError:
-                ashiria OverflowError("%s too large to convert to int" %
+            except OverflowError:
+                 ashiria OverflowError("%s too large to convert to int" %
                                       repr(self))
-        ashiria ValueError("can't convert %s to int" % repr(self))
+         ashiria ValueError("can't convert %s to int" % repr(self))
 
     eleza __add__(self, other):
         """Add two Rats, ama a Rat na a number."""
@@ -146,33 +146,33 @@ kundi Rat(object):
         rudisha NotImplemented
 
     eleza __floordiv__(self, other):
-        """Divide two Rats, rudishaing the floored result."""
+        """Divide two Rats, returning the floored result."""
         ikiwa isint(other):
             other = Rat(other)
-        lasivyo sio isRat(other):
+        elikiwa sio isRat(other):
             rudisha NotImplemented
         x = self/other
         rudisha x.__num // x.__den
 
     eleza __rfloordiv__(self, other):
-        """Divide two Rats, rudishaing the floored result (reversed args)."""
+        """Divide two Rats, returning the floored result (reversed args)."""
         x = other/self
         rudisha x.__num // x.__den
 
     eleza __divmod__(self, other):
-        """Divide two Rats, rudishaing quotient na remainder."""
+        """Divide two Rats, returning quotient na remainder."""
         ikiwa isint(other):
             other = Rat(other)
-        lasivyo sio isRat(other):
+        elikiwa sio isRat(other):
             rudisha NotImplemented
         x = self//other
         rudisha (x, self - other * x)
 
     eleza __rdivmod__(self, other):
-        """Divide two Rats, rudishaing quotient na remainder (reversed args)."""
+        """Divide two Rats, returning quotient na remainder (reversed args)."""
         ikiwa isint(other):
             other = Rat(other)
-        lasivyo sio isRat(other):
+        elikiwa sio isRat(other):
             rudisha NotImplemented
         rudisha divmod(other, self)
 
@@ -230,23 +230,23 @@ kundi RatTestCase(unittest.TestCase):
         self.assertEqual(a.den, 1)
         jaribu:
             a = Rat(1, 0)
-        tatizo ZeroDivisionError:
-            pita
+        except ZeroDivisionError:
+            pass
         isipokua:
-            self.fail("Rat(1, 0) didn't ashiria ZeroDivisionError")
+            self.fail("Rat(1, 0) didn't  ashiria ZeroDivisionError")
         kila bad kwenye "0", 0.0, 0j, (), [], {}, Tupu, Rat, unittest:
             jaribu:
                 a = Rat(bad)
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
             isipokua:
-                self.fail("Rat(%r) didn't ashiria TypeError" % bad)
+                self.fail("Rat(%r) didn't  ashiria TypeError" % bad)
             jaribu:
                 a = Rat(1, bad)
-            tatizo TypeError:
-                pita
+            except TypeError:
+                pass
             isipokua:
-                self.fail("Rat(1, %r) didn't ashiria TypeError" % bad)
+                self.fail("Rat(1, %r) didn't  ashiria TypeError" % bad)
 
     eleza test_add(self):
         self.assertEqual(Rat(2, 3) + Rat(1, 3), 1)
@@ -317,8 +317,8 @@ eleza op_sequence(op, *classes):
 
     jaribu:
         op(*instances)
-    tatizo TypeError:
-        pita
+    except TypeError:
+        pass
     rudisha log
 
 kundi A(OperationLogger):

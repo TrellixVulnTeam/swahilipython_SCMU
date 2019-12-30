@@ -22,7 +22,7 @@ kundi ListTest(list_tests.CommonTest):
 
         ikiwa sys.maxsize == 0x7fffffff:
             # This test can currently only work on 32-bit machines.
-            # XXX If/when PySequence_Length() rudishas a ssize_t, it should be
+            # XXX If/when PySequence_Length() returns a ssize_t, it should be
             # XXX re-enabled.
             # Verify clearing of bug #556025.
             # This assumes that the max data size (sys.maxint) == max
@@ -30,7 +30,7 @@ kundi ListTest(list_tests.CommonTest):
             # least 4 bytes ukijumuisha 8 byte addresses, the bug ni sio well
             # tested
             #
-            # Note: This test ni expected to SEGV under Cygwin 1.3.12 ama
+            # Note: This test ni expected to SEGV under Cygwin 1.3.12 or
             # earlier due to a newlib bug.  See the following mailing list
             # thread kila the details:
 
@@ -48,7 +48,7 @@ kundi ListTest(list_tests.CommonTest):
 
     eleza test_truth(self):
         super().test_truth()
-        self.assertKweli(sio [])
+        self.assertKweli(not [])
         self.assertKweli([42])
 
     eleza test_identity(self):
@@ -154,7 +154,7 @@ kundi ListTest(list_tests.CommonTest):
         # Issue 8847: In the PGO build, the MSVC linker's COMDAT folding
         # optimization causes failures kwenye code that relies on distinct
         # function addresses.
-        kundi L(list): pita
+        kundi L(list): pass
         ukijumuisha self.assertRaises(TypeError):
             (3,) + L([1,2])
 

@@ -17,7 +17,7 @@ For more information see:
 """
 kutoka turtle agiza *
 kutoka math agiza cos, pi
-kutoka time agiza perf_counter kama clock, sleep
+kutoka time agiza perf_counter as clock, sleep
 
 f = (5**0.5-1)/2.0   # (sqrt(5)-1)/2 -- golden ratio
 d = 2 * cos(3*pi/10)
@@ -51,7 +51,7 @@ eleza inflatekite(l, n):
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = Kweli
-        rudisha
+        return
     fl = f * l
     lt(36)
     inflatedart(fl, n-1)
@@ -73,7 +73,7 @@ eleza inflatedart(l, n):
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = Uongo
-        rudisha
+        return
     fl = f * l
     inflatekite(fl, n-1)
     lt(36)

@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 # configuration variables that may contain universal build flags,
-# like "-arch" or "-isdkroot", that may need customization for
+# like "-arch" ama "-isdkroot", that may need customization for
 # the user environment
 _UNIVERSAL_CONFIG_VARS = ('CFLAGS', 'LDFLAGS', 'CPPFLAGS', 'BASECFLAGS',
                             'BLDSHARED', 'LDSHARED', 'CC', 'CXX',
@@ -26,75 +26,75 @@ _COMPILER_CONFIG_VARS = ('BLDSHARED', 'LDSHARED', 'CC', 'CXX')
 _INITPRE = '_OSX_SUPPORT_INITIAL_'
 
 
-def _find_executable(executable, path=None):
-    """Tries to find 'executable' in the directories listed in 'path'.
+eleza _find_executable(executable, path=Tupu):
+    """Tries to find 'executable' kwenye the directories listed kwenye 'path'.
 
     A string listing directories separated by 'os.pathsep'; defaults to
-    os.environ['PATH'].  Returns the complete filename or None if sio found.
+    os.environ['PATH'].  Returns the complete filename ama Tupu ikiwa sio found.
     """
-    if path is None:
+    ikiwa path ni Tupu:
         path = os.environ['PATH']
 
     paths = path.split(os.pathsep)
     base, ext = os.path.splitext(executable)
 
-    if (sys.platform == 'win32') and (ext != '.exe'):
+    ikiwa (sys.platform == 'win32') na (ext != '.exe'):
         executable = executable + '.exe'
 
-    if sio os.path.isfile(executable):
-        for p in paths:
+    ikiwa sio os.path.isfile(executable):
+        kila p kwenye paths:
             f = os.path.join(p, executable)
-            if os.path.isfile(f):
+            ikiwa os.path.isfile(f):
                 # the file exists, we have a shot at spawn working
-                return f
-        return None
+                rudisha f
+        rudisha Tupu
     isipokua:
-        return executable
+        rudisha executable
 
 
-def _read_output(commandstring):
-    """Output kutoka successful command execution or None"""
+eleza _read_output(commandstring):
+    """Output kutoka successful command execution ama Tupu"""
     # Similar to os.popen(commandstring, "r").read(),
     # but without actually using os.popen because that
     # function ni sio usable during python bootstrap.
-    # tempfile is also sio available then.
+    # tempfile ni also sio available then.
     agiza contextlib
     jaribu:
         agiza tempfile
         fp = tempfile.NamedTemporaryFile()
-    tatizo ImportError:
+    except ImportError:
         fp = open("/tmp/_osx_support.%s"%(
             os.getpid(),), "w+b")
 
-    with contextlib.closing(fp) as fp:
+    ukijumuisha contextlib.closing(fp) as fp:
         cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
-        return fp.read().decode('utf-8').strip() if sio os.system(cmd) isipokua None
+        rudisha fp.read().decode('utf-8').strip() ikiwa sio os.system(cmd) isipokua Tupu
 
 
-def _find_build_tool(toolname):
-    """Find a build tool on current path or using xcrun"""
-    return (_find_executable(toolname)
-                or _read_output("/usr/bin/xcrun -find %s" % (toolname,))
-                or ''
+eleza _find_build_tool(toolname):
+    """Find a build tool on current path ama using xcrun"""
+    rudisha (_find_executable(toolname)
+                ama _read_output("/usr/bin/xcrun -find %s" % (toolname,))
+                ama ''
             )
 
-_SYSTEM_VERSION = None
+_SYSTEM_VERSION = Tupu
 
-def _get_system_version():
+eleza _get_system_version():
     """Return the OS X system version as a string"""
-    # Reading this plist is a documented way to get the system
-    # version (see the documentation for the Gestalt Manager)
+    # Reading this plist ni a documented way to get the system
+    # version (see the documentation kila the Gestalt Manager)
     # We avoid using platform.mac_ver to avoid possible bootstrap issues during
-    # the build of Python itself (distutils is used to build standard library
+    # the build of Python itself (distutils ni used to build standard library
     # extensions).
 
     global _SYSTEM_VERSION
 
-    if _SYSTEM_VERSION is None:
+    ikiwa _SYSTEM_VERSION ni Tupu:
         _SYSTEM_VERSION = ''
         jaribu:
             f = open('/System/Library/CoreServices/SystemVersion.plist')
-        tatizo OSError:
+        except OSError:
             # We're on a plain darwin box, fall back to the default
             # behaviour.
             pass
@@ -104,362 +104,362 @@ def _get_system_version():
                               r'<string>(.*?)</string>', f.read())
             mwishowe:
                 f.close()
-            if m ni sio None:
+            ikiwa m ni sio Tupu:
                 _SYSTEM_VERSION = '.'.join(m.group(1).split('.')[:2])
             # isipokua: fall back to the default behaviour
 
-    return _SYSTEM_VERSION
+    rudisha _SYSTEM_VERSION
 
-def _remove_original_values(_config_vars):
-    """Remove original unmodified values for testing"""
-    # This is needed for higher-level cross-platform tests of get_platform.
-    for k in list(_config_vars):
-        if k.startswith(_INITPRE):
+eleza _remove_original_values(_config_vars):
+    """Remove original unmodified values kila testing"""
+    # This ni needed kila higher-level cross-platform tests of get_platform.
+    kila k kwenye list(_config_vars):
+        ikiwa k.startswith(_INITPRE):
             toa _config_vars[k]
 
-def _save_modified_value(_config_vars, cv, newvalue):
-    """Save modified and original unmodified value of configuration var"""
+eleza _save_modified_value(_config_vars, cv, newvalue):
+    """Save modified na original unmodified value of configuration var"""
 
     oldvalue = _config_vars.get(cv, '')
-    if (oldvalue != newvalue) and (_INITPRE + cv haiko kwenye _config_vars):
+    ikiwa (oldvalue != newvalue) na (_INITPRE + cv sio kwenye _config_vars):
         _config_vars[_INITPRE + cv] = oldvalue
     _config_vars[cv] = newvalue
 
-def _supports_universal_builds():
-    """Returns True if universal builds are supported on this system"""
-    # As an approximation, we assume that if we are running on 10.4 or above,
-    # then we are running with an Xcode environment that supports universal
-    # builds, in particular -isysroot and -arch arguments to the compiler. This
-    # is in support of allowing 10.4 universal builds to run on 10.3.x systems.
+eleza _supports_universal_builds():
+    """Returns Kweli ikiwa universal builds are supported on this system"""
+    # As an approximation, we assume that ikiwa we are running on 10.4 ama above,
+    # then we are running ukijumuisha an Xcode environment that supports universal
+    # builds, kwenye particular -isysroot na -arch arguments to the compiler. This
+    # ni kwenye support of allowing 10.4 universal builds to run on 10.3.x systems.
 
     osx_version = _get_system_version()
-    if osx_version:
+    ikiwa osx_version:
         jaribu:
-            osx_version = tuple(int(i) for i in osx_version.split('.'))
-        tatizo ValueError:
+            osx_version = tuple(int(i) kila i kwenye osx_version.split('.'))
+        except ValueError:
             osx_version = ''
-    return bool(osx_version >= (10, 4)) if osx_version isipokua False
+    rudisha bool(osx_version >= (10, 4)) ikiwa osx_version isipokua Uongo
 
 
-def _find_appropriate_compiler(_config_vars):
-    """Find appropriate C compiler for extension module builds"""
+eleza _find_appropriate_compiler(_config_vars):
+    """Find appropriate C compiler kila extension module builds"""
 
     # Issue #13590:
-    #    The OSX location for the compiler varies between OSX
+    #    The OSX location kila the compiler varies between OSX
     #    (or rather Xcode) releases.  With older releases (up-to 10.5)
-    #    the compiler is in /usr/bin, with newer releases the compiler
-    #    can only be found inside Xcode.app if the "Command Line Tools"
+    #    the compiler ni kwenye /usr/bin, ukijumuisha newer releases the compiler
+    #    can only be found inside Xcode.app ikiwa the "Command Line Tools"
     #    are sio installed.
     #
     #    Furthermore, the compiler that can be used varies between
     #    Xcode releases. Up to Xcode 4 it was possible to use 'gcc-4.2'
     #    as the compiler, after that 'clang' should be used because
-    #    gcc-4.2 is either sio present, or a copy of 'llvm-gcc' that
+    #    gcc-4.2 ni either sio present, ama a copy of 'llvm-gcc' that
     #    miscompiles Python.
 
-    # skip checks if the compiler was overridden with a CC env variable
-    if 'CC' in os.environ:
-        return _config_vars
+    # skip checks ikiwa the compiler was overridden ukijumuisha a CC env variable
+    ikiwa 'CC' kwenye os.environ:
+        rudisha _config_vars
 
     # The CC config var might contain additional arguments.
     # Ignore them wakati searching.
     cc = oldcc = _config_vars['CC'].split()[0]
-    if sio _find_executable(cc):
+    ikiwa sio _find_executable(cc):
         # Compiler ni sio found on the shell search PATH.
-        # Now search for clang, first on PATH (if the Command LIne
-        # Tools have been installed in / or if the user has provided
+        # Now search kila clang, first on PATH (ikiwa the Command LIne
+        # Tools have been installed kwenye / ama ikiwa the user has provided
         # another location via CC).  If sio found, try using xcrun
         # to find an uninstalled clang (within a selected Xcode).
 
         # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself (and os.popen is
-        # implemented on top of subprocess and is therefore not
+        # implemented on top of subprocess na ni therefore not
         # usable as well)
 
         cc = _find_build_tool('clang')
 
-    lasivyo os.path.basename(cc).startswith('gcc'):
-        # Compiler is GCC, check if it is LLVM-GCC
+    elikiwa os.path.basename(cc).startswith('gcc'):
+        # Compiler ni GCC, check ikiwa it ni LLVM-GCC
         data = _read_output("'%s' --version"
                              % (cc.replace("'", "'\"'\"'"),))
-        if data and 'llvm-gcc' in data:
+        ikiwa data na 'llvm-gcc' kwenye data:
             # Found LLVM-GCC, fall back to clang
             cc = _find_build_tool('clang')
 
-    if sio cc:
-        ashiria SystemError(
+    ikiwa sio cc:
+         ashiria SystemError(
                "Cannot locate working compiler")
 
-    if cc != oldcc:
+    ikiwa cc != oldcc:
         # Found a replacement compiler.
-        # Modify config vars using new compiler, if sio already explicitly
+        # Modify config vars using new compiler, ikiwa sio already explicitly
         # overridden by an env variable, preserving additional arguments.
-        for cv in _COMPILER_CONFIG_VARS:
-            if cv in _config_vars and cv haiko kwenye os.environ:
+        kila cv kwenye _COMPILER_CONFIG_VARS:
+            ikiwa cv kwenye _config_vars na cv sio kwenye os.environ:
                 cv_split = _config_vars[cv].split()
-                cv_split[0] = cc if cv != 'CXX' isipokua cc + '++'
+                cv_split[0] = cc ikiwa cv != 'CXX' isipokua cc + '++'
                 _save_modified_value(_config_vars, cv, ' '.join(cv_split))
 
-    return _config_vars
+    rudisha _config_vars
 
 
-def _remove_universal_flags(_config_vars):
+eleza _remove_universal_flags(_config_vars):
     """Remove all universal build arguments kutoka config vars"""
 
-    for cv in _UNIVERSAL_CONFIG_VARS:
+    kila cv kwenye _UNIVERSAL_CONFIG_VARS:
         # Do sio alter a config var explicitly overridden by env var
-        if cv in _config_vars and cv haiko kwenye os.environ:
+        ikiwa cv kwenye _config_vars na cv sio kwenye os.environ:
             flags = _config_vars[cv]
             flags = re.sub(r'-arch\s+\w+\s', ' ', flags, flags=re.ASCII)
             flags = re.sub('-isysroot [^ \t]*', ' ', flags)
             _save_modified_value(_config_vars, cv, flags)
 
-    return _config_vars
+    rudisha _config_vars
 
 
-def _remove_unsupported_archs(_config_vars):
+eleza _remove_unsupported_archs(_config_vars):
     """Remove any unsupported archs kutoka config vars"""
-    # Different Xcode releases support different sets for '-arch'
+    # Different Xcode releases support different sets kila '-arch'
     # flags. In particular, Xcode 4.x no longer supports the
     # PPC architectures.
     #
-    # This code automatically removes '-arch ppc' and '-arch ppc64'
+    # This code automatically removes '-arch ppc' na '-arch ppc64'
     # when these are sio supported. That makes it possible to
-    # build extensions on OSX 10.7 and later with the prebuilt
+    # build extensions on OSX 10.7 na later ukijumuisha the prebuilt
     # 32-bit installer on the python.org website.
 
-    # skip checks if the compiler was overridden with a CC env variable
-    if 'CC' in os.environ:
-        return _config_vars
+    # skip checks ikiwa the compiler was overridden ukijumuisha a CC env variable
+    ikiwa 'CC' kwenye os.environ:
+        rudisha _config_vars
 
-    if re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) ni sio None:
+    ikiwa re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) ni sio Tupu:
         # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself
         status = os.system(
             """echo 'int main{};' | """
             """'%s' -c -arch ppc -x c -o /dev/null /dev/null 2>/dev/null"""
             %(_config_vars['CC'].replace("'", "'\"'\"'"),))
-        if status:
-            # The compile failed for some reason.  Because of differences
-            # across Xcode and compiler versions, there is no reliable way
+        ikiwa status:
+            # The compile failed kila some reason.  Because of differences
+            # across Xcode na compiler versions, there ni no reliable way
             # to be sure why it failed.  Assume here it was due to lack of
-            # PPC support and remove the related '-arch' flags kutoka each
+            # PPC support na remove the related '-arch' flags kutoka each
             # config variables sio explicitly overridden by an environment
-            # variable.  If the error was for some other reason, we hope the
+            # variable.  If the error was kila some other reason, we hope the
             # failure will show up again when trying to compile an extension
             # module.
-            for cv in _UNIVERSAL_CONFIG_VARS:
-                if cv in _config_vars and cv haiko kwenye os.environ:
+            kila cv kwenye _UNIVERSAL_CONFIG_VARS:
+                ikiwa cv kwenye _config_vars na cv sio kwenye os.environ:
                     flags = _config_vars[cv]
                     flags = re.sub(r'-arch\s+ppc\w*\s', ' ', flags)
                     _save_modified_value(_config_vars, cv, flags)
 
-    return _config_vars
+    rudisha _config_vars
 
 
-def _override_all_archs(_config_vars):
-    """Allow override of all archs with ARCHFLAGS env var"""
-    # NOTE: This name was introduced by Apple in OSX 10.5 na
-    # is used by several scripting languages distributed with
+eleza _override_all_archs(_config_vars):
+    """Allow override of all archs ukijumuisha ARCHFLAGS env var"""
+    # NOTE: This name was introduced by Apple kwenye OSX 10.5 and
+    # ni used by several scripting languages distributed with
     # that OS release.
-    if 'ARCHFLAGS' in os.environ:
+    ikiwa 'ARCHFLAGS' kwenye os.environ:
         arch = os.environ['ARCHFLAGS']
-        for cv in _UNIVERSAL_CONFIG_VARS:
-            if cv in _config_vars and '-arch' in _config_vars[cv]:
+        kila cv kwenye _UNIVERSAL_CONFIG_VARS:
+            ikiwa cv kwenye _config_vars na '-arch' kwenye _config_vars[cv]:
                 flags = _config_vars[cv]
                 flags = re.sub(r'-arch\s+\w+\s', ' ', flags)
                 flags = flags + ' ' + arch
                 _save_modified_value(_config_vars, cv, flags)
 
-    return _config_vars
+    rudisha _config_vars
 
 
-def _check_for_unavailable_sdk(_config_vars):
+eleza _check_for_unavailable_sdk(_config_vars):
     """Remove references to any SDKs sio available"""
-    # If we're on OSX 10.5 or later and the user tries to
+    # If we're on OSX 10.5 ama later na the user tries to
     # compile an extension using an SDK that ni sio present
-    # on the current machine it is better to sio use an SDK
-    # than to fail.  This is particularly agizaant with
+    # on the current machine it ni better to sio use an SDK
+    # than to fail.  This ni particularly important with
     # the standalone Command Line Tools alternative to a
     # full-blown Xcode install since the CLT packages do not
-    # provide SDKs.  If the SDK ni sio present, it is assumed
-    # that the header files and dev libs have been installed
-    # to /usr and /System/Library by either a standalone CLT
-    # package or the CLT component within Xcode.
+    # provide SDKs.  If the SDK ni sio present, it ni assumed
+    # that the header files na dev libs have been installed
+    # to /usr na /System/Library by either a standalone CLT
+    # package ama the CLT component within Xcode.
     cflags = _config_vars.get('CFLAGS', '')
     m = re.search(r'-isysroot\s+(\S+)', cflags)
-    if m ni sio None:
+    ikiwa m ni sio Tupu:
         sdk = m.group(1)
-        if sio os.path.exists(sdk):
-            for cv in _UNIVERSAL_CONFIG_VARS:
+        ikiwa sio os.path.exists(sdk):
+            kila cv kwenye _UNIVERSAL_CONFIG_VARS:
                 # Do sio alter a config var explicitly overridden by env var
-                if cv in _config_vars and cv haiko kwenye os.environ:
+                ikiwa cv kwenye _config_vars na cv sio kwenye os.environ:
                     flags = _config_vars[cv]
                     flags = re.sub(r'-isysroot\s+\S+(?:\s|$)', ' ', flags)
                     _save_modified_value(_config_vars, cv, flags)
 
-    return _config_vars
+    rudisha _config_vars
 
 
-def compiler_fixup(compiler_so, cc_args):
+eleza compiler_fixup(compiler_so, cc_args):
     """
-    This function will strip '-isysroot PATH' and '-arch ARCH' kutoka the
-    compile flags if the user has specified one them in extra_compile_flags.
+    This function will strip '-isysroot PATH' na '-arch ARCH' kutoka the
+    compile flags ikiwa the user has specified one them kwenye extra_compile_flags.
 
-    This is needed because '-arch ARCH' adds another architecture to the
+    This ni needed because '-arch ARCH' adds another architecture to the
     build, without a way to remove an architecture. Furthermore GCC will
-    barf if multiple '-isysroot' arguments are present.
+    barf ikiwa multiple '-isysroot' arguments are present.
     """
-    stripArch = stripSysroot = False
+    stripArch = stripSysroot = Uongo
 
     compiler_so = list(compiler_so)
 
-    if sio _supports_universal_builds():
-        # OSX before 10.4.0, these don't support -arch and -isysroot at
+    ikiwa sio _supports_universal_builds():
+        # OSX before 10.4.0, these don't support -arch na -isysroot at
         # all.
-        stripArch = stripSysroot = True
+        stripArch = stripSysroot = Kweli
     isipokua:
-        stripArch = '-arch' in cc_args
-        stripSysroot = '-isysroot' in cc_args
+        stripArch = '-arch' kwenye cc_args
+        stripSysroot = '-isysroot' kwenye cc_args
 
-    if stripArch or 'ARCHFLAGS' in os.environ:
-        wakati True:
+    ikiwa stripArch ama 'ARCHFLAGS' kwenye os.environ:
+        wakati Kweli:
             jaribu:
                 index = compiler_so.index('-arch')
-                # Strip this argument and the next one:
+                # Strip this argument na the next one:
                 toa compiler_so[index:index+2]
-            tatizo ValueError:
+            except ValueError:
                 koma
 
-    if 'ARCHFLAGS' in os.environ and sio stripArch:
-        # User specified different -arch flags in the environ,
+    ikiwa 'ARCHFLAGS' kwenye os.environ na sio stripArch:
+        # User specified different -arch flags kwenye the environ,
         # see also distutils.sysconfig
         compiler_so = compiler_so + os.environ['ARCHFLAGS'].split()
 
-    if stripSysroot:
-        wakati True:
+    ikiwa stripSysroot:
+        wakati Kweli:
             jaribu:
                 index = compiler_so.index('-isysroot')
-                # Strip this argument and the next one:
+                # Strip this argument na the next one:
                 toa compiler_so[index:index+2]
-            tatizo ValueError:
+            except ValueError:
                 koma
 
-    # Check if the SDK that is used during compilation actually exists,
-    # the universal build requires the usage of a universal SDK and sio all
+    # Check ikiwa the SDK that ni used during compilation actually exists,
+    # the universal build requires the usage of a universal SDK na sio all
     # users have that installed by default.
-    sysroot = None
-    if '-isysroot' in cc_args:
+    sysroot = Tupu
+    ikiwa '-isysroot' kwenye cc_args:
         idx = cc_args.index('-isysroot')
         sysroot = cc_args[idx+1]
-    lasivyo '-isysroot' in compiler_so:
+    elikiwa '-isysroot' kwenye compiler_so:
         idx = compiler_so.index('-isysroot')
         sysroot = compiler_so[idx+1]
 
-    if sysroot and sio os.path.isdir(sysroot):
+    ikiwa sysroot na sio os.path.isdir(sysroot):
         kutoka distutils agiza log
-        log.warn("Compiling with an SDK that doesn't seem to exist: %s",
+        log.warn("Compiling ukijumuisha an SDK that doesn't seem to exist: %s",
                 sysroot)
         log.warn("Please check your Xcode installation")
 
-    return compiler_so
+    rudisha compiler_so
 
 
-def customize_config_vars(_config_vars):
+eleza customize_config_vars(_config_vars):
     """Customize Python build configuration variables.
 
-    Called internally kutoka sysconfig with a mutable mapping
+    Called internally kutoka sysconfig ukijumuisha a mutable mapping
     containing name/value pairs parsed kutoka the configured
     makefile used to build this interpreter.  Returns
     the mapping updated as needed to reflect the environment
-    in which the interpreter is running; in the case of
+    kwenye which the interpreter ni running; kwenye the case of
     a Python kutoka a binary installer, the installed
     environment may be very different kutoka the build
     environment, i.e. different OS levels, different
     built tools, different available CPU architectures.
 
-    This customization is performed whenever
-    distutils.sysconfig.get_config_vars() is first
-    called.  It may be used in environments where no
+    This customization ni performed whenever
+    distutils.sysconfig.get_config_vars() ni first
+    called.  It may be used kwenye environments where no
     compilers are present, i.e. when installing pure
     Python dists.  Customization of compiler paths
-    and detection of unavailable archs is deferred
+    na detection of unavailable archs ni deferred
     until the first extension module build is
     requested (in distutils.sysconfig.customize_compiler).
 
     Currently called kutoka distutils.sysconfig
     """
 
-    if sio _supports_universal_builds():
-        # On Mac OS X before 10.4, check if -arch and -isysroot
-        # are in CFLAGS or LDFLAGS and remove them if they are.
-        # This is needed when building extensions on a 10.3 system
+    ikiwa sio _supports_universal_builds():
+        # On Mac OS X before 10.4, check ikiwa -arch na -isysroot
+        # are kwenye CFLAGS ama LDFLAGS na remove them ikiwa they are.
+        # This ni needed when building extensions on a 10.3 system
         # using a universal build of python.
         _remove_universal_flags(_config_vars)
 
-    # Allow user to override all archs with ARCHFLAGS env var
+    # Allow user to override all archs ukijumuisha ARCHFLAGS env var
     _override_all_archs(_config_vars)
 
     # Remove references to sdks that are sio found
     _check_for_unavailable_sdk(_config_vars)
 
-    return _config_vars
+    rudisha _config_vars
 
 
-def customize_compiler(_config_vars):
-    """Customize compiler path and configuration variables.
+eleza customize_compiler(_config_vars):
+    """Customize compiler path na configuration variables.
 
-    This customization is performed when the first
-    extension module build is requested
-    in distutils.sysconfig.customize_compiler).
+    This customization ni performed when the first
+    extension module build ni requested
+    kwenye distutils.sysconfig.customize_compiler).
     """
 
-    # Find a compiler to use for extension module builds
+    # Find a compiler to use kila extension module builds
     _find_appropriate_compiler(_config_vars)
 
-    # Remove ppc arch flags if sio supported here
+    # Remove ppc arch flags ikiwa sio supported here
     _remove_unsupported_archs(_config_vars)
 
-    # Allow user to override all archs with ARCHFLAGS env var
+    # Allow user to override all archs ukijumuisha ARCHFLAGS env var
     _override_all_archs(_config_vars)
 
-    return _config_vars
+    rudisha _config_vars
 
 
-def get_platform_osx(_config_vars, osname, release, machine):
-    """Filter values for get_platform()"""
-    # called kutoka get_platform() in sysconfig and distutils.util
+eleza get_platform_osx(_config_vars, osname, release, machine):
+    """Filter values kila get_platform()"""
+    # called kutoka get_platform() kwenye sysconfig na distutils.util
     #
-    # For our purposes, we'll assume that the system version kutoka
-    # distutils' perspective is what MACOSX_DEPLOYMENT_TARGET is set
+    # For our purposes, we'll assume that the system version from
+    # distutils' perspective ni what MACOSX_DEPLOYMENT_TARGET ni set
     # to. This makes the compatibility story a bit more sane because the
-    # machine is going to compile and link as if it were
+    # machine ni going to compile na link as ikiwa it were
     # MACOSX_DEPLOYMENT_TARGET.
 
     macver = _config_vars.get('MACOSX_DEPLOYMENT_TARGET', '')
     macrelease = _get_system_version() ama macver
-    macver = macver or macrelease
+    macver = macver ama macrelease
 
-    if macver:
+    ikiwa macver:
         release = macver
         osname = "macosx"
 
-        # Use the original CFLAGS value, if available, so that we
-        # return the same machine type for the platform string.
+        # Use the original CFLAGS value, ikiwa available, so that we
+        # rudisha the same machine type kila the platform string.
         # Otherwise, distutils may consider this a cross-compiling
-        # case and disallow installs.
+        # case na disallow installs.
         cflags = _config_vars.get(_INITPRE+'CFLAGS',
                                     _config_vars.get('CFLAGS', ''))
-        if macrelease:
+        ikiwa macrelease:
             jaribu:
-                macrelease = tuple(int(i) for i in macrelease.split('.')[0:2])
-            tatizo ValueError:
+                macrelease = tuple(int(i) kila i kwenye macrelease.split('.')[0:2])
+            except ValueError:
                 macrelease = (10, 0)
         isipokua:
             # assume no universal support
             macrelease = (10, 0)
 
-        if (macrelease >= (10, 4)) and '-arch' in cflags.strip():
+        ikiwa (macrelease >= (10, 4)) na '-arch' kwenye cflags.strip():
             # The universal build will build fat binaries, but sio on
             # systems before 10.4
 
@@ -468,35 +468,35 @@ def get_platform_osx(_config_vars, osname, release, machine):
             archs = re.findall(r'-arch\s+(\S+)', cflags)
             archs = tuple(sorted(set(archs)))
 
-            if len(archs) == 1:
+            ikiwa len(archs) == 1:
                 machine = archs[0]
-            lasivyo archs == ('i386', 'ppc'):
+            elikiwa archs == ('i386', 'ppc'):
                 machine = 'fat'
-            lasivyo archs == ('i386', 'x86_64'):
+            elikiwa archs == ('i386', 'x86_64'):
                 machine = 'intel'
-            lasivyo archs == ('i386', 'ppc', 'x86_64'):
+            elikiwa archs == ('i386', 'ppc', 'x86_64'):
                 machine = 'fat3'
-            lasivyo archs == ('ppc64', 'x86_64'):
+            elikiwa archs == ('ppc64', 'x86_64'):
                 machine = 'fat64'
-            lasivyo archs == ('i386', 'ppc', 'ppc64', 'x86_64'):
+            elikiwa archs == ('i386', 'ppc', 'ppc64', 'x86_64'):
                 machine = 'universal'
             isipokua:
-                ashiria ValueError(
-                   "Don't know machine value for archs=%r" % (archs,))
+                 ashiria ValueError(
+                   "Don't know machine value kila archs=%r" % (archs,))
 
-        lasivyo machine == 'i386':
-            # On OSX the machine type returned by uname is always the
-            # 32-bit variant, even if the executable architecture is
+        elikiwa machine == 'i386':
+            # On OSX the machine type returned by uname ni always the
+            # 32-bit variant, even ikiwa the executable architecture is
             # the 64-bit variant
-            if sys.maxsize >= 2**32:
+            ikiwa sys.maxsize >= 2**32:
                 machine = 'x86_64'
 
-        lasivyo machine in ('PowerPC', 'Power_Macintosh'):
-            # Pick a sane name for the PPC architecture.
+        elikiwa machine kwenye ('PowerPC', 'Power_Macintosh'):
+            # Pick a sane name kila the PPC architecture.
             # See 'i386' case
-            if sys.maxsize >= 2**32:
+            ikiwa sys.maxsize >= 2**32:
                 machine = 'ppc64'
             isipokua:
                 machine = 'ppc'
 
-    return (osname, release, machine)
+    rudisha (osname, release, machine)

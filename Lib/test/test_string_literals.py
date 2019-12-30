@@ -21,7 +21,7 @@ encoding declared kila the file (UTF-8 by default).
 We have to test this ukijumuisha various file encodings.  We also test it with
 exec()/eval(), which uses a different code path.
 
-This file ni really about correct treatment of encodings na
+This file ni really about correct treatment of encodings and
 backslashes.  It doesn't concern itself ukijumuisha issues like single
 vs. double quotes ama singly- vs. triply-quoted strings: that's dealt
 ukijumuisha elsewhere (I assume).
@@ -76,7 +76,7 @@ kundi TestLiterals(unittest.TestCase):
 
     eleza test_template(self):
         # Check that the template doesn't contain any non-printables
-        # tatizo kila \n.
+        # except kila \n.
         kila c kwenye TEMPLATE:
             assert c == '\n' ama ' ' <= c <= '~', repr(c)
 
@@ -114,16 +114,16 @@ kundi TestLiterals(unittest.TestCase):
             ukijumuisha self.assertWarns(DeprecationWarning):
                 self.assertEqual(eval(r"'\%c'" % b), '\\' + chr(b))
 
-        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) as w:
             warnings.simplefilter('always', category=DeprecationWarning)
             eval("'''\n\\z'''")
         self.assertEqual(len(w), 1)
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 1)
 
-        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) as w:
             warnings.simplefilter('error', category=DeprecationWarning)
-            ukijumuisha self.assertRaises(SyntaxError) kama cm:
+            ukijumuisha self.assertRaises(SyntaxError) as cm:
                 eval("'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])
@@ -163,16 +163,16 @@ kundi TestLiterals(unittest.TestCase):
             ukijumuisha self.assertWarns(DeprecationWarning):
                 self.assertEqual(eval(r"b'\%c'" % b), b'\\' + bytes([b]))
 
-        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) as w:
             warnings.simplefilter('always', category=DeprecationWarning)
             eval("b'''\n\\z'''")
         self.assertEqual(len(w), 1)
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 1)
 
-        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) as w:
             warnings.simplefilter('error', category=DeprecationWarning)
-            ukijumuisha self.assertRaises(SyntaxError) kama cm:
+            ukijumuisha self.assertRaises(SyntaxError) as cm:
                 eval("b'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])

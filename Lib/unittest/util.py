@@ -45,7 +45,7 @@ eleza _common_shorten_repr(*args):
 eleza safe_repr(obj, short=Uongo):
     jaribu:
         result = repr(obj)
-    tatizo Exception:
+    except Exception:
         result = object.__repr__(obj)
     ikiwa sio short ama len(result) < _MAX_LENGTH:
         rudisha result
@@ -58,8 +58,8 @@ eleza sorted_list_difference(expected, actual):
     """Finds elements kwenye only one ama the other of two, sorted input lists.
 
     Returns a two-element tuple of lists.    The first list contains those
-    elements kwenye the "expected" list but haiko kwenye the "actual" list, na the
-    second contains those elements kwenye the "actual" list but haiko kwenye the
+    elements kwenye the "expected" list but sio kwenye the "actual" list, na the
+    second contains those elements kwenye the "actual" list but sio kwenye the
     "expected" list.    Duplicate elements kwenye either input list are ignored.
     """
     i = j = 0
@@ -74,7 +74,7 @@ eleza sorted_list_difference(expected, actual):
                 i += 1
                 wakati expected[i] == e:
                     i += 1
-            lasivyo e > a:
+            elikiwa e > a:
                 unexpected.append(a)
                 j += 1
                 wakati actual[j] == a:
@@ -88,7 +88,7 @@ eleza sorted_list_difference(expected, actual):
                     j += 1
                     wakati actual[j] == a:
                         j += 1
-        tatizo IndexError:
+        except IndexError:
             missing.extend(expected[i:])
             unexpected.extend(actual[j:])
             koma
@@ -96,7 +96,7 @@ eleza sorted_list_difference(expected, actual):
 
 
 eleza unorderable_list_difference(expected, actual):
-    """Same behavior kama sorted_list_difference but
+    """Same behavior as sorted_list_difference but
     kila lists of unorderable items (like dicts).
 
     As it does a linear search per item (remove) it
@@ -106,7 +106,7 @@ eleza unorderable_list_difference(expected, actual):
         item = expected.pop()
         jaribu:
             actual.remove(item)
-        tatizo ValueError:
+        except ValueError:
             missing.append(item)
 
     # anything left kwenye actual ni unexpected
@@ -164,7 +164,7 @@ eleza _count_diff_hashable(actual, expected):
             diff = _Mismatch(cnt_s, cnt_t, elem)
             result.append(diff)
     kila elem, cnt_t kwenye t.items():
-        ikiwa elem haiko kwenye s:
+        ikiwa elem sio kwenye s:
             diff = _Mismatch(0, cnt_t, elem)
             result.append(diff)
     rudisha result
