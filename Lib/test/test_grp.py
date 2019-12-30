@@ -41,7 +41,7 @@ kundi GroupDatabaseTestCase(unittest.TestCase):
                 endelea
             e2 = grp.getgrnam(name)
             self.check_value(e2)
-            # There are instances where getgrall() returns group names in
+            # There are instances where getgrall() returns group names kwenye
             # lowercase wakati getgrgid() returns proper casing.
             # Discovered on Ubuntu 5.04 (custom).
             self.assertEqual(e2.gr_name.lower(), name.lower())

@@ -591,7 +591,7 @@ kundi _BaseAddress(_IPAddressBase):
             rudisha self._ip < other._ip
         rudisha Uongo
 
-    # Shorthand kila Integer addition na subtraction. This ni not
+    # Shorthand kila Integer addition na subtraction. This ni sio
     # meant to ever support addition/subtraction of addresses.
     eleza __add__(self, other):
         ikiwa sio isinstance(other, int):
@@ -911,7 +911,7 @@ kundi _BaseNetwork(_IPAddressBase):
             ikiwa new_prefix < self._prefixlen:
                 ashiria ValueError('new prefix must be longer')
             ikiwa prefixlen_diff != 1:
-                ashiria ValueError('cannot set prefixlen_diff na new_prefix')
+                ashiria ValueError('cansio set prefixlen_diff na new_prefix')
             prefixlen_diff = new_prefix - self._prefixlen
 
         ikiwa prefixlen_diff < 0:
@@ -958,13 +958,13 @@ kundi _BaseNetwork(_IPAddressBase):
             ikiwa new_prefix > self._prefixlen:
                 ashiria ValueError('new prefix must be shorter')
             ikiwa prefixlen_diff != 1:
-                ashiria ValueError('cannot set prefixlen_diff na new_prefix')
+                ashiria ValueError('cansio set prefixlen_diff na new_prefix')
             prefixlen_diff = self._prefixlen - new_prefix
 
         new_prefixlen = self.prefixlen - prefixlen_diff
         ikiwa new_prefixlen < 0:
             ashiria ValueError(
-                'current prefixlen ni %d, cannot have a prefixlen_diff of %d' %
+                'current prefixlen ni %d, cansio have a prefixlen_diff of %d' %
                 (self.prefixlen, prefixlen_diff))
         rudisha self.__class__((
             int(self.network_address) & (int(self.netmask) << prefixlen_diff),
@@ -1054,7 +1054,7 @@ kundi _BaseNetwork(_IPAddressBase):
         """Test ikiwa the address ni unspecified.
 
         Returns:
-            A boolean, Kweli ikiwa this ni the unspecified address kama defined in
+            A boolean, Kweli ikiwa this ni the unspecified address kama defined kwenye
             RFC 2373 2.5.2.
 
         """
@@ -1066,7 +1066,7 @@ kundi _BaseNetwork(_IPAddressBase):
         """Test ikiwa the address ni a loopback address.
 
         Returns:
-            A boolean, Kweli ikiwa the address ni a loopback address kama defined in
+            A boolean, Kweli ikiwa the address ni a loopback address kama defined kwenye
             RFC 2373 2.5.3.
 
         """
@@ -1137,7 +1137,7 @@ kundi _BaseV4:
 
         """
         ikiwa sio ip_str:
-            ashiria AddressValueError('Address cannot be empty')
+            ashiria AddressValueError('Address cansio be empty')
 
         octets = ip_str.split('.')
         ikiwa len(octets) != 4:
@@ -1300,7 +1300,7 @@ kundi IPv4Address(_BaseV4, _BaseAddress):
         """Test ikiwa the address ni unspecified.
 
         Returns:
-            A boolean, Kweli ikiwa this ni the unspecified address kama defined in
+            A boolean, Kweli ikiwa this ni the unspecified address kama defined kwenye
             RFC 5735 3.
 
         """
@@ -1424,7 +1424,7 @@ kundi IPv4Network(_BaseV4, _BaseNetwork):
               are also functionally equivalent. That ni to say, failing to
               provide a subnetmask will create an object ukijumuisha a mask of /32.
 
-              If the mask (portion after the / kwenye the argument) ni given in
+              If the mask (portion after the / kwenye the argument) ni given kwenye
               dotted quad form, it ni treated kama a netmask ikiwa it starts ukijumuisha a
               non-zero field (e.g. /255.0.0.0 == /8) na kama a hostmask ikiwa it
               starts ukijumuisha a zero field (e.g. 0.255.255.255 == /8), ukijumuisha the
@@ -1441,7 +1441,7 @@ kundi IPv4Network(_BaseV4, _BaseNetwork):
             AddressValueError: If ipaddress isn't a valid IPv4 address.
             NetmaskValueError: If the netmask isn't valid for
               an IPv4 address.
-            ValueError: If strict ni Kweli na a network address ni not
+            ValueError: If strict ni Kweli na a network address ni sio
               supplied.
         """
         addr, mask = self._split_addr_prefix(address)
@@ -1563,7 +1563,7 @@ kundi _BaseV6:
 
         """
         ikiwa sio ip_str:
-            ashiria AddressValueError('Address cannot be empty')
+            ashiria AddressValueError('Address cansio be empty')
 
         parts = ip_str.split(':')
 
@@ -1915,7 +1915,7 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
         """Test ikiwa the address ni unspecified.
 
         Returns:
-            A boolean, Kweli ikiwa this ni the unspecified address kama defined in
+            A boolean, Kweli ikiwa this ni the unspecified address kama defined kwenye
             RFC 2373 2.5.2.
 
         """
@@ -1926,7 +1926,7 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
         """Test ikiwa the address ni a loopback address.
 
         Returns:
-            A boolean, Kweli ikiwa the address ni a loopback address kama defined in
+            A boolean, Kweli ikiwa the address ni a loopback address kama defined kwenye
             RFC 2373 2.5.3.
 
         """
@@ -2093,7 +2093,7 @@ kundi IPv6Network(_BaseV6, _BaseNetwork):
             AddressValueError: If address isn't a valid IPv6 address.
             NetmaskValueError: If the netmask isn't valid for
               an IPv6 address.
-            ValueError: If strict was Kweli na a network address was not
+            ValueError: If strict was Kweli na a network address was sio
               supplied.
         """
         addr, mask = self._split_addr_prefix(address)

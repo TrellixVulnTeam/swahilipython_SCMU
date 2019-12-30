@@ -4,13 +4,13 @@
 
 Usage: finddiv [-l] file_or_directory ...
 
-For directory arguments, all files kwenye the directory whose name ends in
+For directory arguments, all files kwenye the directory whose name ends kwenye
 .py are processed, na subdirectories are processed recursively.
 
 This actually tokenizes the files to avoid false hits kwenye comments ama
 strings literals.
 
-By default, this prints all lines containing a / ama /= operator, in
+By default, this prints all lines containing a / ama /= operator, kwenye
 grep -n style.  With the -l option specified, it prints the filename
 of files that contain at least one / ama /= operator.
 """

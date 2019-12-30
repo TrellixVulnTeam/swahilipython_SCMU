@@ -30,7 +30,7 @@ eleza selective_len(str, max):
 eleza selective_find(str, char, index, pos):
     """Return a pair (index, pos), indicating the next occurrence of
     char kwenye str. index ni the position of the character considering
-    only ordinals up to na including char, na pos ni the position in
+    only ordinals up to na including char, na pos ni the position kwenye
     the full string. index/pos ni the starting position kwenye the full
     string."""
 

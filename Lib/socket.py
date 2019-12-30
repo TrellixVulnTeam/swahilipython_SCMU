@@ -135,7 +135,7 @@ ikiwa sys.platform.lower().startswith("win"):
     errorTab[10046] = "Protocol family sio supported."
     errorTab[10047] = "Address family sio supported by protocol family."
     errorTab[10048] = "The network address ni kwenye use."
-    errorTab[10049] = "Cannot assign requested address."
+    errorTab[10049] = "Cansio assign requested address."
     errorTab[10050] = "Network ni down."
     errorTab[10051] = "Network ni unreachable."
     errorTab[10052] = "Network dropped connection on reset."
@@ -148,7 +148,7 @@ ikiwa sys.platform.lower().startswith("win"):
     errorTab[10059] = "Too many references."
     errorTab[10060] = "The operation timed out."
     errorTab[10061] = "Connection refused."
-    errorTab[10062] = "Cannot translate name."
+    errorTab[10062] = "Cansio translate name."
     errorTab[10063] = "The name ni too long."
     errorTab[10064] = "The host ni down."
     errorTab[10065] = "The host ni unreachable."
@@ -269,7 +269,7 @@ kundi socket(_socket.socket):
         rudisha s
 
     eleza __getstate__(self):
-        ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
+        ashiria TypeError(f"cansio pickle {self.__class__.__name__!r} object")
 
     eleza dup(self):
         """dup() -> socket object
@@ -472,7 +472,7 @@ kundi socket(_socket.socket):
         *offset* tells kutoka where to start reading the file.
         If specified, *count* ni the total number of bytes to transmit
         kama opposed to sending the file until EOF ni reached.
-        File position ni updated on rudisha ama also kwenye case of error in
+        File position ni updated on rudisha ama also kwenye case of error kwenye
         which case file.tell() can be used to figure out the number of
         bytes which were sent.
         The socket must be of SOCK_STREAM type.
@@ -503,7 +503,7 @@ kundi socket(_socket.socket):
         """detach() -> file descriptor
 
         Close the socket object without closing the underlying file descriptor.
-        The object cannot be used after this call, but the file descriptor
+        The object cansio be used after this call, but the file descriptor
         can be reused kila other purposes.  The file descriptor ni returned.
         """
         self._closed = Kweli
@@ -663,7 +663,7 @@ kundi SocketIO(io.RawIOBase):
         self._checkClosed()
         self._checkReadable()
         ikiwa self._timeout_occurred:
-            ashiria OSError("cannot read kutoka timed out object")
+            ashiria OSError("cansio read kutoka timed out object")
         wakati Kweli:
             jaribu:
                 rudisha self._sock.recv_into(b)
@@ -855,7 +855,7 @@ eleza create_server(address, *, family=AF_INET, backlog=Tupu, reuse_port=Uongo,
     jaribu:
         # Note about Windows. We don't set SO_REUSEADDR because:
         # 1) It's unnecessary: bind() will succeed even kwenye case of a
-        # previous closed socket on the same address na still in
+        # previous closed socket on the same address na still kwenye
         # TIME_WAIT state.
         # 2) If set, another socket ni free to bind() on the same
         # address, effectively preventing this one kutoka accepting
@@ -867,7 +867,7 @@ eleza create_server(address, *, family=AF_INET, backlog=Tupu, reuse_port=Uongo,
             jaribu:
                 sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
             tatizo error:
-                # Fail later on bind(), kila platforms which may not
+                # Fail later on bind(), kila platforms which may sio
                 # support this option.
                 pita
         ikiwa reuse_port:

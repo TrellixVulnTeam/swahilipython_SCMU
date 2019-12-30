@@ -65,11 +65,11 @@ kundi LZMAFile(_compression.BaseStream):
 
         check specifies the integrity check to use. This argument can
         only be used when opening a file kila writing. For FORMAT_XZ,
-        the default ni CHECK_CRC64. FORMAT_ALONE na FORMAT_RAW do not
+        the default ni CHECK_CRC64. FORMAT_ALONE na FORMAT_RAW do sio
         support integrity checks - kila these formats, check must be
         omitted, ama be CHECK_NONE.
 
-        When opening a file kila reading, the *preset* argument ni not
+        When opening a file kila reading, the *preset* argument ni sio
         meaningful, na should be omitted. The *filters* argument should
         also be omitted, tatizo when format ni FORMAT_RAW (in which case
         it ni required).
@@ -96,10 +96,10 @@ kundi LZMAFile(_compression.BaseStream):
 
         ikiwa mode kwenye ("r", "rb"):
             ikiwa check != -1:
-                ashiria ValueError("Cannot specify an integrity check "
+                ashiria ValueError("Cansio specify an integrity check "
                                  "when opening a file kila reading")
             ikiwa preset ni sio Tupu:
-                ashiria ValueError("Cannot specify a preset compression "
+                ashiria ValueError("Cansio specify a preset compression "
                                  "level when opening a file kila reading")
             ikiwa format ni Tupu:
                 format = FORMAT_AUTO

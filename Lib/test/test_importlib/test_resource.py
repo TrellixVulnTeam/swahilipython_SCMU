@@ -138,7 +138,7 @@ kundi NamespaceTest(unittest.TestCase):
     eleza test_namespaces_cannot_have_resources(self):
         contents = resources.contents('test.test_importlib.data03.namespace')
         self.assertUongo(list(contents))
-        # Even though there ni a file kwenye the namespace directory, it ni not
+        # Even though there ni a file kwenye the namespace directory, it ni sio
         # considered a resource, since namespace packages can't have them.
         self.assertUongo(resources.is_resource(
             'test.test_importlib.data03.namespace',

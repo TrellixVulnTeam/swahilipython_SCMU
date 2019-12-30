@@ -66,7 +66,7 @@ kundi build_scripts(Command):
             outfiles.append(outfile)
 
             ikiwa sio self.force na sio newer(script, outfile):
-                log.debug("not copying %s (up-to-date)", script)
+                log.debug("sio copying %s (up-to-date)", script)
                 endelea
 
             # Always open the file, but ignore failures kwenye dry-run mode --
@@ -107,7 +107,7 @@ kundi build_scripts(Command):
                     shebang = b"#!" + executable + post_interp + b"\n"
                     # Python parser starts to read a script using UTF-8 until
                     # it gets a #coding:xxx cookie. The shebang has to be the
-                    # first line of a file, the #coding:xxx cookie cannot be
+                    # first line of a file, the #coding:xxx cookie cansio be
                     # written before. So the shebang has to be decodable from
                     # UTF-8.
                     jaribu:

@@ -39,7 +39,7 @@ kundi SearchDialogBase:
         default_command: set kwenye subclasses, used kwenye create_widgets().
 
         title (of dialog): kundi attribute, override kwenye subclasses.
-        icon (of dialog): ditto, use unclear ikiwa cannot minimize dialog.
+        icon (of dialog): ditto, use unclear ikiwa cansio minimize dialog.
         '''
         self.root = root
         self.bell = root.bell

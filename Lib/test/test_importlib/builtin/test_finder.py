@@ -19,16 +19,16 @@ kundi FindSpecTests(abc.FinderTests):
             self.assertKweli(found)
             self.assertEqual(found.origin, 'built-in')
 
-    # Built-in modules cannot be a package.
+    # Built-in modules cansio be a package.
     test_package = Tupu
 
-    # Built-in modules cannot be kwenye a package.
+    # Built-in modules cansio be kwenye a package.
     test_module_in_package = Tupu
 
-    # Built-in modules cannot be a package.
+    # Built-in modules cansio be a package.
     test_package_in_package = Tupu
 
-    # Built-in modules cannot be a package.
+    # Built-in modules cansio be a package.
     test_package_over_module = Tupu
 
     eleza test_failure(self):
@@ -62,10 +62,10 @@ kundi FinderTests(abc.FinderTests):
             self.assertKweli(found)
             self.assertKweli(hasattr(found, 'load_module'))
 
-    # Built-in modules cannot be a package.
+    # Built-in modules cansio be a package.
     test_package = test_package_in_package = test_package_over_module = Tupu
 
-    # Built-in modules cannot be kwenye a package.
+    # Built-in modules cansio be kwenye a package.
     test_module_in_package = Tupu
 
     eleza test_failure(self):

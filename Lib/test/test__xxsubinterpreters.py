@@ -973,7 +973,7 @@ kundi RunStringTests(TestBase):
     eleza test_shared_overwrites_default_vars(self):
         r, w = os.pipe()
 
-        shared = {'__name__': b'not __main__'}
+        shared = {'__name__': b'sio __main__'}
         script = dedent(f"""
             spam = 42
 
@@ -987,7 +987,7 @@ kundi RunStringTests(TestBase):
         ukijumuisha open(r, 'rb') kama chan:
             ns = pickle.load(chan)
 
-        self.assertEqual(ns['__name__'], b'not __main__')
+        self.assertEqual(ns['__name__'], b'sio __main__')
 
     eleza test_main_reused(self):
         r, w = os.pipe()

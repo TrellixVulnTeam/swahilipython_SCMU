@@ -38,7 +38,7 @@ receipt.
 
 kila example:
 Say you build an async nntp client using this class.  At the start
-of the connection, you'll have self.terminator set to '\r\n', in
+of the connection, you'll have self.terminator set to '\r\n', kwenye
 order to process the single-line greeting.  Just before issuing a
 'LIST' command you'll set it to '\r\n.\r\n'.  The output of the LIST
 command will be accumulated (using your own 'collect_incoming_data'
@@ -207,7 +207,7 @@ kundi async_chat(asyncore.dispatcher):
 
     eleza readable(self):
         "predicate kila inclusion kwenye the readable kila select()"
-        # cannot use the old predicate, it violates the claim of the
+        # cansio use the old predicate, it violates the claim of the
         # set_terminator method.
 
         # rudisha (len(self.ac_in_buffer) <= self.ac_in_buffer_size)

@@ -3,7 +3,7 @@ Fixer that changes zip(seq0, seq1, ...) into list(zip(seq0, seq1, ...)
 unless there exists a 'kutoka future_builtins agiza zip' statement kwenye the
 top-level namespace.
 
-We avoid the transformation ikiwa the zip() call ni directly contained in
+We avoid the transformation ikiwa the zip() call ni directly contained kwenye
 iter(<>), list(<>), tuple(<>), sorted(<>), ...join(<>), ama kila V kwenye <>:.
 """
 

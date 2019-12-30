@@ -462,7 +462,7 @@ kundi IOBinding:
             command = idleConf.GetOption('main','General','print-command-win')
         isipokua: #no printing kila this platform
             printPlatform = Uongo
-        ikiwa printPlatform:  #we can try to print kila this platform
+        ikiwa printPlatform:  #we can try to andika kila this platform
             command = command % shlex.quote(filename)
             pipe = os.popen(command, "r")
             # things can get ugly on NT ikiwa there ni no printer available.

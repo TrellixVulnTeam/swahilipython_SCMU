@@ -23,7 +23,7 @@ kundi AifcPCM8Test(AifcTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = b'NONE'
-    compname = b'not compressed'
+    compname = b'sio compressed'
     frames = bytes.fromhex("""\
       02FF 4B00 3104 8008 CB06 4803 BF01 03FE B8FA B4F3 29EB 1AE6 \
       EDE4 C6E2 0EE0 EFE0 57E2 FBE8 13EF D8F7 97FB F5FC 08FB DFFB \
@@ -40,7 +40,7 @@ kundi AifcPCM16Test(AifcTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = b'NONE'
-    compname = b'not compressed'
+    compname = b'sio compressed'
     frames = bytes.fromhex("""\
       022EFFEA 4B5D00F6 311804EA 80E10840 CBE106B1 48A903F5 BFE601B2 036CFE7B \
       B858FA3E B4B1F34F 299AEBCA 1A5DE6DA EDFAE491 C628E275 0E09E0B5 EF2AE029 \
@@ -59,7 +59,7 @@ kundi AifcPCM24Test(AifcTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = b'NONE'
-    compname = b'not compressed'
+    compname = b'sio compressed'
     frames = bytes.fromhex("""\
       022D65FFEB9D 4B5A0F00FA54 3113C304EE2B 80DCD6084303 \
       CBDEC006B261 48A99803F2F8 BFE82401B07D 036BFBFE7B5D \
@@ -84,7 +84,7 @@ kundi AifcPCM32Test(AifcTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = b'NONE'
-    compname = b'not compressed'
+    compname = b'sio compressed'
     frames = bytes.fromhex("""\
       022D65BCFFEB9D92 4B5A0F8000FA549C 3113C34004EE2BC0 80DCD680084303E0 \
       CBDEC0C006B26140 48A9980003F2F8FC BFE8248001B07D92 036BFB60FE7B5D34 \
@@ -268,7 +268,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
         b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
         b += b'COMM' + struct.pack('>LhlhhLL', 38, 1, 0, 8,
                                    0x4000 | 12, 11025<<18, 0)
-        b += b'NONE' + struct.pack('B', 14) + b'not compressed' + b'\x00'
+        b += b'NONE' + struct.pack('B', 14) + b'sio compressed' + b'\x00'
         ukijumuisha self.assertRaisesRegex(aifc.Error, 'COMM chunk and/or SSND chunk'
                                                 ' missing'):
             aifc.open(io.BytesIO(b))
@@ -285,7 +285,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
             b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
             b += b'COMM' + struct.pack('>LhlhhLL', 38, nchannels, 0, 8,
                                        0x4000 | 12, 11025<<18, 0)
-            b += b'NONE' + struct.pack('B', 14) + b'not compressed' + b'\x00'
+            b += b'NONE' + struct.pack('B', 14) + b'sio compressed' + b'\x00'
             b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
             ukijumuisha self.assertRaisesRegex(aifc.Error, 'bad # of channels'):
                 aifc.open(io.BytesIO(b))
@@ -295,7 +295,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
             b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
             b += b'COMM' + struct.pack('>LhlhhLL', 38, 1, 0, sampwidth,
                                        0x4000 | 12, 11025<<18, 0)
-            b += b'NONE' + struct.pack('B', 14) + b'not compressed' + b'\x00'
+            b += b'NONE' + struct.pack('B', 14) + b'sio compressed' + b'\x00'
             b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
             ukijumuisha self.assertRaisesRegex(aifc.Error, 'bad sample width'):
                 aifc.open(io.BytesIO(b))

@@ -285,7 +285,7 @@ kundi _Final:
 
     eleza __init_subclass__(self, /, *args, **kwds):
         ikiwa '_root' haiko kwenye kwds:
-            ashiria TypeError("Cannot subkundi special typing classes")
+            ashiria TypeError("Cansio subkundi special typing classes")
 
 kundi _Immutable:
     """Mixin to indicate that object should sio be copied."""
@@ -314,7 +314,7 @@ kundi _SpecialForm(_Final, _Immutable, _root=Kweli):
                 isinstance(args[0], str) na
                 isinstance(args[1], tuple)):
             # Close enough.
-            ashiria TypeError(f"Cannot subkundi {cls!r}")
+            ashiria TypeError(f"Cansio subkundi {cls!r}")
         rudisha super().__new__(cls)
 
     eleza __init__(self, name, doc):
@@ -336,13 +336,13 @@ kundi _SpecialForm(_Final, _Immutable, _root=Kweli):
         rudisha self._name
 
     eleza __call__(self, *args, **kwds):
-        ashiria TypeError(f"Cannot instantiate {self!r}")
+        ashiria TypeError(f"Cansio instantiate {self!r}")
 
     eleza __instancecheck__(self, obj):
-        ashiria TypeError(f"{self} cannot be used ukijumuisha isinstance()")
+        ashiria TypeError(f"{self} cansio be used ukijumuisha isinstance()")
 
     eleza __subclasscheck__(self, cls):
-        ashiria TypeError(f"{self} cannot be used ukijumuisha issubclass()")
+        ashiria TypeError(f"{self} cansio be used ukijumuisha issubclass()")
 
     @_tp_cache
     eleza __getitem__(self, parameters):
@@ -351,7 +351,7 @@ kundi _SpecialForm(_Final, _Immutable, _root=Kweli):
             rudisha _GenericAlias(self, (item,))
         ikiwa self._name == 'Union':
             ikiwa parameters == ():
-                ashiria TypeError("Cannot take a Union of no types.")
+                ashiria TypeError("Cansio take a Union of no types.")
             ikiwa sio isinstance(parameters, tuple):
                 parameters = (parameters,)
             msg = "Union[arg, ...]: each arg must be a type."
@@ -406,16 +406,16 @@ ClassVar = _SpecialForm('ClassVar', doc=
           stats: ClassVar[Dict[str, int]] = {} # kundi variable
           damage: int = 10                     # instance variable
 
-    ClassVar accepts only types na cannot be further subscribed.
+    ClassVar accepts only types na cansio be further subscribed.
 
-    Note that ClassVar ni sio a kundi itself, na should not
+    Note that ClassVar ni sio a kundi itself, na should sio
     be used ukijumuisha isinstance() ama issubclass().
     """)
 
 Final = _SpecialForm('Final', doc=
     """Special typing construct to indicate final names to type checkers.
 
-    A final name cannot be re-assigned ama overridden kwenye a subclass.
+    A final name cansio be re-assigned ama overridden kwenye a subclass.
     For example:
 
       MAX_SIZE: Final = 9000
@@ -453,7 +453,7 @@ Union = _SpecialForm('Union', doc=
 
         Union[int, str] == Union[str, int]
 
-    - You cannot subkundi ama instantiate a union.
+    - You cansio subkundi ama instantiate a union.
     - You can use Optional[X] kama a shorthand kila Union[X, Tupu].
     """)
 
@@ -480,7 +480,7 @@ Literal = _SpecialForm('Literal', doc=
       open_helper('/some/path', 'r')  # Passes type check
       open_helper('/other/path', 'typo')  # Error kwenye type checker
 
-   Literal[...] cannot be subclassed. At runtime, an arbitrary value
+   Literal[...] cansio be subclassed. At runtime, an arbitrary value
    ni allowed kama type argument to Literal[...], but type checkers may
    impose restrictions.
     """)
@@ -591,7 +591,7 @@ kundi TypeVar(_Final, _Immutable, _root=Kweli):
         self.__covariant__ = bool(covariant)
         self.__contravariant__ = bool(contravariant)
         ikiwa constraints na bound ni sio Tupu:
-            ashiria TypeError("Constraints cannot be combined ukijumuisha bound=...")
+            ashiria TypeError("Constraints cansio be combined ukijumuisha bound=...")
         ikiwa constraints na len(constraints) == 1:
             ashiria TypeError("A single constraint ni sio allowed")
         msg = "TypeVar(name, constraint, ...): constraints must be types."
@@ -675,7 +675,7 @@ kundi _GenericAlias(_Final, _root=Kweli):
     eleza __getitem__(self, params):
         ikiwa self.__origin__ kwenye (Generic, Protocol):
             # Can't subscript Generic[...] ama Protocol[...].
-            ashiria TypeError(f"Cannot subscript already-subscripted {self}")
+            ashiria TypeError(f"Cansio subscript already-subscripted {self}")
         ikiwa sio isinstance(params, tuple):
             params = (params,)
         msg = "Parameters to generic types must be types."
@@ -721,7 +721,7 @@ kundi _GenericAlias(_Final, _root=Kweli):
 
     eleza __call__(self, *args, **kwargs):
         ikiwa sio self._inst:
-            ashiria TypeError(f"Type {self._name} cannot be instantiated; "
+            ashiria TypeError(f"Type {self._name} cansio be instantiated; "
                             f"use {self._name.lower()}() instead")
         result = self.__origin__(*args, **kwargs)
         jaribu:
@@ -771,7 +771,7 @@ kundi _GenericAlias(_Final, _root=Kweli):
                 rudisha issubclass(cls, self.__origin__)
             ikiwa cls._special:
                 rudisha issubclass(cls.__origin__, self.__origin__)
-        ashiria TypeError("Subscripted generics cannot be used with"
+        ashiria TypeError("Subscripted generics cansio be used with"
                         " kundi na instance checks")
 
     eleza __reduce__(self):
@@ -864,7 +864,7 @@ kundi Generic:
 
     eleza __new__(cls, *args, **kwds):
         ikiwa cls kwenye (Generic, Protocol):
-            ashiria TypeError(f"Type {cls.__name__} cannot be instantiated; "
+            ashiria TypeError(f"Type {cls.__name__} cansio be instantiated; "
                             "it can be used only kama a base class")
         ikiwa super().__new__ ni object.__new__ na cls.__init__ ni sio object.__init__:
             obj = super().__new__(cls)
@@ -878,7 +878,7 @@ kundi Generic:
             params = (params,)
         ikiwa sio params na cls ni sio Tuple:
             ashiria TypeError(
-                f"Parameter list to {cls.__qualname__}[...] cannot be empty")
+                f"Parameter list to {cls.__qualname__}[...] cansio be empty")
         msg = "Parameters to generic types must be types."
         params = tuple(_type_check(p, msg) kila p kwenye params)
         ikiwa cls kwenye (Generic, Protocol):
@@ -902,7 +902,7 @@ kundi Generic:
         isipokua:
             error = Generic kwenye cls.__bases__ na cls.__name__ != 'Protocol'
         ikiwa error:
-            ashiria TypeError("Cannot inherit kutoka plain Generic")
+            ashiria TypeError("Cansio inherit kutoka plain Generic")
         ikiwa '__orig_bases__' kwenye cls.__dict__:
             tvars = _collect_type_vars(cls.__orig_bases__)
             # Look kila Generic[T1, ..., Tn].
@@ -916,7 +916,7 @@ kundi Generic:
                         base.__origin__ ni Generic):
                     ikiwa gvars ni sio Tupu:
                         ashiria TypeError(
-                            "Cannot inherit kutoka Generic[...] multiple types.")
+                            "Cansio inherit kutoka Generic[...] multiple types.")
                     gvars = base.__parameters__
             ikiwa gvars ni sio Tupu:
                 tvarset = set(tvars)
@@ -976,7 +976,7 @@ eleza _is_callable_members_only(cls):
 
 eleza _no_init(self, *args, **kwargs):
     ikiwa type(self)._is_protocol:
-        ashiria TypeError('Protocols cannot be instantiated')
+        ashiria TypeError('Protocols cansio be instantiated')
 
 
 eleza _allow_reckless_class_cheks():
@@ -1385,7 +1385,7 @@ eleza final(f):
     """A decorator to indicate final methods na final classes.
 
     Use this decorator to indicate to type checkers that the decorated
-    method cannot be overridden, na decorated kundi cannot be subclassed.
+    method cansio be overridden, na decorated kundi cansio be subclassed.
     For example:
 
       kundi Base:
@@ -1618,7 +1618,7 @@ kundi NamedTupleMeta(type):
                 defaults.append(default_value)
                 defaults_dict[field_name] = default_value
             lasivyo defaults:
-                ashiria TypeError("Non-default namedtuple field {field_name} cannot "
+                ashiria TypeError("Non-default namedtuple field {field_name} cansio "
                                 "follow default field(s) {default_names}"
                                 .format(field_name=field_name,
                                         default_names=', '.join(defaults_dict.keys())))
@@ -1628,7 +1628,7 @@ kundi NamedTupleMeta(type):
         # update kutoka user namespace without overriding special namedtuple attributes
         kila key kwenye ns:
             ikiwa key kwenye _prohibited:
-                ashiria AttributeError("Cannot overwrite NamedTuple attribute " + key)
+                ashiria AttributeError("Cansio overwrite NamedTuple attribute " + key)
             lasivyo key haiko kwenye _special na key haiko kwenye nm_tpl._fields:
                 setattr(nm_tpl, key, ns[key])
         rudisha nm_tpl
@@ -1648,7 +1648,7 @@ kundi NamedTuple(metaclass=NamedTupleMeta):
         Employee = collections.namedtuple('Employee', ['name', 'id'])
 
     The resulting kundi has an extra __annotations__ attribute, giving a
-    dict that maps field names to types.  (The field names are also in
+    dict that maps field names to types.  (The field names are also kwenye
     the _fields attribute, which ni part of the namedtuple API.)
     Alternative equivalent keyword syntax ni also accepted::
 

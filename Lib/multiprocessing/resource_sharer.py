@@ -100,7 +100,7 @@ kundi _ResourceSharer(object):
                 self._thread.join(timeout)
                 ikiwa self._thread.is_alive():
                     util.sub_warning('_ResourceSharer thread did '
-                                     'not stop when asked')
+                                     'sio stop when asked')
                 self._listener.close()
                 self._thread = Tupu
                 self._address = Tupu

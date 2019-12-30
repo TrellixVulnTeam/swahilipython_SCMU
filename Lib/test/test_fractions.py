@@ -269,13 +269,13 @@ kundi FractionTest(unittest.TestCase):
         nan = inf - inf
         # bug 16469: error types should be consistent ukijumuisha float -> int
         self.assertRaisesMessage(
-            OverflowError, "cannot convert Infinity to integer ratio",
+            OverflowError, "cansio convert Infinity to integer ratio",
             F.from_float, inf)
         self.assertRaisesMessage(
-            OverflowError, "cannot convert Infinity to integer ratio",
+            OverflowError, "cansio convert Infinity to integer ratio",
             F.from_float, -inf)
         self.assertRaisesMessage(
-            ValueError, "cannot convert NaN to integer ratio",
+            ValueError, "cansio convert NaN to integer ratio",
             F.from_float, nan)
 
     eleza testFromDecimal(self):
@@ -290,16 +290,16 @@ kundi FractionTest(unittest.TestCase):
 
         # bug 16469: error types should be consistent ukijumuisha decimal -> int
         self.assertRaisesMessage(
-            OverflowError, "cannot convert Infinity to integer ratio",
+            OverflowError, "cansio convert Infinity to integer ratio",
             F.from_decimal, Decimal("inf"))
         self.assertRaisesMessage(
-            OverflowError, "cannot convert Infinity to integer ratio",
+            OverflowError, "cansio convert Infinity to integer ratio",
             F.from_decimal, Decimal("-inf"))
         self.assertRaisesMessage(
-            ValueError, "cannot convert NaN to integer ratio",
+            ValueError, "cansio convert NaN to integer ratio",
             F.from_decimal, Decimal("nan"))
         self.assertRaisesMessage(
-            ValueError, "cannot convert NaN to integer ratio",
+            ValueError, "cansio convert NaN to integer ratio",
             F.from_decimal, Decimal("snan"))
 
     eleza test_as_integer_ratio(self):

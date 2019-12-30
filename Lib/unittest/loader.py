@@ -172,7 +172,7 @@ kundi TestLoader(object):
                 ikiwa (getattr(obj, '__path__', Tupu) ni sio Tupu
                     na error_case ni sio Tupu):
                     # This ni a package (no __path__ per importlib docs), na we
-                    # encountered an error importing something. We cannot tell
+                    # encountered an error importing something. We cansio tell
                     # the difference between package.WrongNameTestClass na
                     # package.wrong_module_name so we just report the
                     # ImportError - it ni more informative.
@@ -357,7 +357,7 @@ kundi TestLoader(object):
             rudisha os.path.dirname(os.path.dirname(full_path))
         isipokua:
             # here we have been given a module rather than a package - so
-            # all we can do ni search the *same* directory the module ni in
+            # all we can do ni search the *same* directory the module ni kwenye
             # should an exception be raised instead
             rudisha os.path.dirname(full_path)
 

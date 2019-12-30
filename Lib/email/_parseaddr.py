@@ -28,7 +28,7 @@ _monthnames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul',
 _daynames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
 # The timezone table does sio inlude the military time zones defined
-# kwenye RFC822, other than Z.  According to RFC1123, the description in
+# kwenye RFC822, other than Z.  According to RFC1123, the description kwenye
 # RFC822 gets the signs wrong, so we can't rely on any such time
 # zones.  RFC1123 recommends that numeric timezone indicators be used
 # instead of timezone names.
@@ -203,7 +203,7 @@ eleza quote(str):
 kundi AddrlistClass:
     """Address parser kundi by Ben Escoto.
 
-    To understand what this kundi does, it helps to have a copy of RFC 2822 in
+    To understand what this kundi does, it helps to have a copy of RFC 2822 kwenye
     front of you.
 
     Note: this kundi interface ni deprecated na may be removed kwenye the future.
@@ -462,7 +462,7 @@ kundi AddrlistClass:
         """Parse an RFC 2822 atom.
 
         Optional atomends specifies a different set of end token delimiters
-        (the default ni to use self.atomends).  This ni used e.g. in
+        (the default ni to use self.atomends).  This ni used e.g. kwenye
         getphraselist() since phrase endings must sio inlude the `.' (which
         ni legal kwenye phrases)."""
         atomlist = ['']

@@ -19,7 +19,7 @@ kundi ABCMeta(type):
     unrelated concrete classes (even built-in classes) na unrelated
     ABCs kama 'virtual subclasses' -- these na their descendants will
     be considered subclasses of the registering ABC by the built-in
-    issubclass() function, but the registering ABC won't show up in
+    issubclass() function, but the registering ABC won't show up kwenye
     their MRO (Method Resolution Order) nor will method
     implementations defined by the registering ABC be callable (not
     even via super()).
@@ -70,7 +70,7 @@ kundi ABCMeta(type):
         rudisha subclass
 
     eleza _dump_registry(cls, file=Tupu):
-        """Debug helper to print the ABC registry."""
+        """Debug helper to andika the ABC registry."""
         andika(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
         andika(f"Inv. counter: {get_cache_token()}", file=file)
         kila name kwenye cls.__dict__:

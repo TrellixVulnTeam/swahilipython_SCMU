@@ -85,7 +85,7 @@ eleza main():
         data, error = NSPropertyListSerialization.dataWithPropertyList_format_options_error_(
             pl, fmt_key, 0, Tupu)
         ikiwa data ni Tupu:
-            andika("Cannot serialize", fmt_name, error)
+            andika("Cansio serialize", fmt_name, error)
 
         isipokua:
             andika("    %s: binascii.a2b_base64(b'''\n        %s'''),"%(fmt_name, _encode_base64(bytes(data)).decode('ascii')[:-1]))

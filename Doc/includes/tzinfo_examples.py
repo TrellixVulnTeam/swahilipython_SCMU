@@ -5,7 +5,7 @@ HOUR = timedelta(hours=1)
 SECOND = timedelta(seconds=1)
 
 # A kundi capturing the platform's idea of local time.
-# (May result kwenye wrong values on historical times in
+# (May result kwenye wrong values on historical times kwenye
 #  timezones where UTC offset and/or the DST rules had
 #  changed kwenye the past.)
 agiza time kama _time

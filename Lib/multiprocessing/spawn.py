@@ -235,7 +235,7 @@ eleza prepare(data):
     lasivyo 'init_main_from_path' kwenye data:
         _fixup_main_from_path(data['init_main_from_path'])
 
-# Multiprocessing module helpers to fix up the main module in
+# Multiprocessing module helpers to fix up the main module kwenye
 # spawned subprocesses
 eleza _fixup_main_from_name(mod_name):
     # __main__.py files kila packages, directories, zip archives, etc, run

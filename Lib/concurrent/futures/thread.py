@@ -176,9 +176,9 @@ kundi ThreadPoolExecutor(_base.Executor):
                 ashiria BrokenThreadPool(self._broken)
 
             ikiwa self._shutdown:
-                ashiria RuntimeError('cannot schedule new futures after shutdown')
+                ashiria RuntimeError('cansio schedule new futures after shutdown')
             ikiwa _shutdown:
-                ashiria RuntimeError('cannot schedule new futures after '
+                ashiria RuntimeError('cansio schedule new futures after '
                                    'interpreter shutdown')
 
             f = _base.Future()

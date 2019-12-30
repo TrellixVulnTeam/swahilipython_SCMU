@@ -21,7 +21,7 @@ jaribu:
 tatizo ImportError:
     pita
 
-cmp_op = ('<', '<=', '==', '!=', '>', '>=', 'in', 'not in', 'is',
+cmp_op = ('<', '<=', '==', '!=', '>', '>=', 'in', 'sio in', 'is',
         'is not', 'exception match', 'BAD')
 
 hasconst = []

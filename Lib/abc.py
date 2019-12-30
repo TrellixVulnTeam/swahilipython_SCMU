@@ -8,7 +8,7 @@ eleza abstractmethod(funcobj):
     """A decorator indicating abstract methods.
 
     Requires that the metakundi ni ABCMeta ama derived kutoka it.  A
-    kundi that has a metakundi derived kutoka ABCMeta cannot be
+    kundi that has a metakundi derived kutoka ABCMeta cansio be
     instantiated unless all of its abstract methods are overridden.
     The abstract methods can be called using any of the normal
     'super' call mechanisms.  abstractmethod() may be used to declare
@@ -76,7 +76,7 @@ isipokua:
         unrelated concrete classes (even built-in classes) na unrelated
         ABCs kama 'virtual subclasses' -- these na their descendants will
         be considered subclasses of the registering ABC by the built-in
-        issubclass() function, but the registering ABC won't show up in
+        issubclass() function, but the registering ABC won't show up kwenye
         their MRO (Method Resolution Order) nor will method
         implementations defined by the registering ABC be callable (not
         even via super()).
@@ -102,7 +102,7 @@ isipokua:
             rudisha _abc_subclasscheck(cls, subclass)
 
         eleza _dump_registry(cls, file=Tupu):
-            """Debug helper to print the ABC registry."""
+            """Debug helper to andika the ABC registry."""
             andika(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
             andika(f"Inv. counter: {get_cache_token()}", file=file)
             (_abc_registry, _abc_cache, _abc_negative_cache,

@@ -3,7 +3,7 @@
 # Permission to use, copy, modify, na distribute this software na its
 # documentation kila any purpose na without fee ni hereby granted,
 # provided that the above copyright notice appear kwenye all copies na that
-# both that copyright notice na this permission notice appear in
+# both that copyright notice na this permission notice appear kwenye
 # supporting documentation, na that the name of Vinay Sajip
 # sio be used kwenye advertising ama publicity pertaining to distribution
 # of the software without specific, written prior permission.
@@ -165,7 +165,7 @@ eleza _handle_existing_loggers(existing, child_loggers, disable_existing):
     deleting them kama other threads may endelea to hold references to them;
     na by disabling them, you stop them doing any logging.
 
-    However, don't disable children of named loggers, kama that's probably not
+    However, don't disable children of named loggers, kama that's probably sio
     what was intended by the user. Also, allow existing loggers to NOT be
     disabled ikiwa disable_existing ni false.
     """
@@ -392,7 +392,7 @@ kundi BaseConfigurator(object):
             rudisha found
         tatizo ImportError:
             e, tb = sys.exc_info()[1:]
-            v = ValueError('Cannot resolve %r: %s' % (s, e))
+            v = ValueError('Cansio resolve %r: %s' % (s, e))
             v.__cause__, v.__traceback__ = e, tb
             ashiria v
 

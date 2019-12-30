@@ -3093,12 +3093,12 @@ kundi ContextAPItests(unittest.TestCase):
 
         # Issue 12079 kila Context.fma ...
         self.assertRaises(TypeError, c.fma,
-                          Decimal('Infinity'), Decimal(0), "not a decimal")
+                          Decimal('Infinity'), Decimal(0), "sio a decimal")
         self.assertRaises(TypeError, c.fma,
                           Decimal(1), Decimal('snan'), 1.222)
         # ... na kila Decimal.fma.
         self.assertRaises(TypeError, Decimal('Infinity').fma,
-                          Decimal(0), "not a decimal")
+                          Decimal(0), "sio a decimal")
         self.assertRaises(TypeError, Decimal(1).fma,
                           Decimal('snan'), 1.222)
 
@@ -4071,7 +4071,7 @@ kundi ContextInputValidation(unittest.TestCase):
         self.assertRaises(KeyError, setattr, c, 'traps',
                           {'InvalidOperation':0})
 
-        # Attributes cannot be deleted
+        # Attributes cansio be deleted
         kila attr kwenye ['prec', 'Emax', 'Emin', 'rounding', 'capitals', 'clamp',
                      'flags', 'traps']:
             self.assertRaises(AttributeError, c.__delattr__, attr)
@@ -5494,14 +5494,14 @@ kundi SignatureTest(unittest.TestCase):
 
                 # parameter names:
                 c_names = list(c_sig.parameters.keys())
-                p_names = [x kila x kwenye p_sig.parameters.keys() ikiwa not
+                p_names = [x kila x kwenye p_sig.parameters.keys() ikiwa sio
                            x.startswith('_')]
 
                 self.assertEqual(c_names, p_names,
                                  msg="parameter name mismatch kwenye %s" % p_func)
 
                 c_kind = [x.kind kila x kwenye c_sig.parameters.values()]
-                p_kind = [x[1].kind kila x kwenye p_sig.parameters.items() ikiwa not
+                p_kind = [x[1].kind kila x kwenye p_sig.parameters.items() ikiwa sio
                           x[0].startswith('_')]
 
                 # parameters:

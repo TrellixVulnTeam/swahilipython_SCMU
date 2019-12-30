@@ -167,7 +167,7 @@ kundi ColorDelegator(Delegator):
     eleza toggle_colorize_event(self, event=Tupu):
         """Toggle colorizing on na off.
 
-        When toggling off, ikiwa colorizing ni scheduled ama ni in
+        When toggling off, ikiwa colorizing ni scheduled ama ni kwenye
         process, it will be cancelled and/or stopped.
 
         When toggling on, colorizing will be scheduled.

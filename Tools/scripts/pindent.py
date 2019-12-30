@@ -24,7 +24,7 @@
 #        ikiwa b > a: a = a-1
 #        # end if
 #    isipokua:
-#        print 'oops!'
+#        andika 'oops!'
 #    # end if
 # # end eleza foobar
 

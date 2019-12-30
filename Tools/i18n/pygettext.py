@@ -57,7 +57,7 @@ below kila how to augment this.
 
 NOTE: pygettext attempts to be option na feature compatible ukijumuisha GNU
 xgettext where ever possible. However some options are still missing ama are
-not fully implemented. Also, xgettext's use of command line switches with
+sio fully implemented. Also, xgettext's use of command line switches with
 option arguments ni broken, na kwenye these cases, pygettext just defines
 additional switches.
 
@@ -80,7 +80,7 @@ Options:
     -D
     --docstrings
         Extract module, class, method, na function docstrings.  These do
-        sio need to be wrapped kwenye _() markers, na kwenye fact cannot be for
+        sio need to be wrapped kwenye _() markers, na kwenye fact cansio be for
         Python to consider them docstrings. (See also the -X option).
 
     -h
@@ -149,7 +149,7 @@ Options:
     -X filename
     --no-docstrings=filename
         Specify a file that contains a list of files (one per line) that
-        should sio have their docstrings extracted.  This ni only useful in
+        should sio have their docstrings extracted.  This ni only useful kwenye
         conjunction ukijumuisha the -D option above.
 
 If `inputfile' ni -, standard input ni read.

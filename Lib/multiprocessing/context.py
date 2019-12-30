@@ -42,7 +42,7 @@ kundi BaseContext(object):
         '''Returns the number of CPUs kwenye the system'''
         num = os.cpu_count()
         ikiwa num ni Tupu:
-            ashiria NotImplementedError('cannot determine number of cpus')
+            ashiria NotImplementedError('cansio determine number of cpus')
         isipokua:
             rudisha num
 
@@ -190,7 +190,7 @@ kundi BaseContext(object):
         jaribu:
             ctx = _concrete_contexts[method]
         tatizo KeyError:
-            ashiria ValueError('cannot find context kila %r' % method) kutoka Tupu
+            ashiria ValueError('cansio find context kila %r' % method) kutoka Tupu
         ctx._check_available()
         rudisha ctx
 
@@ -198,7 +198,7 @@ kundi BaseContext(object):
         rudisha self._name
 
     eleza set_start_method(self, method, force=Uongo):
-        ashiria ValueError('cannot set start method of concrete context')
+        ashiria ValueError('cansio set start method of concrete context')
 
     @property
     eleza reducer(self):

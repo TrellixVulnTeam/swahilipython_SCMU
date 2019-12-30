@@ -35,7 +35,7 @@ where kind ni a string of two characters: the first ni '-' ikiwa the
 command reads its standard input ama 'f' ikiwa it requires a file; the
 second likewise kila the output. The command must be valid /bin/sh
 syntax.  If input ama output files are required, they are pitaed as
-$IN na $OUT; otherwise, it must be  possible to use the command in
+$IN na $OUT; otherwise, it must be  possible to use the command kwenye
 a pipeline.
 
 To add a conversion step at the beginning:

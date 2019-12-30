@@ -15,7 +15,7 @@ eleza insort_right(a, x, lo=0, hi=Tupu):
 eleza bisect_right(a, x, lo=0, hi=Tupu):
     """Return the index where to insert item x kwenye list a, assuming a ni sorted.
 
-    The rudisha value i ni such that all e kwenye a[:i] have e <= x, na all e in
+    The rudisha value i ni such that all e kwenye a[:i] have e <= x, na all e kwenye
     a[i:] have e > x.  So ikiwa x already appears kwenye the list, a.insert(x) will
     insert just after the rightmost x already there.
 
@@ -49,7 +49,7 @@ eleza insort_left(a, x, lo=0, hi=Tupu):
 eleza bisect_left(a, x, lo=0, hi=Tupu):
     """Return the index where to insert item x kwenye list a, assuming a ni sorted.
 
-    The rudisha value i ni such that all e kwenye a[:i] have e < x, na all e in
+    The rudisha value i ni such that all e kwenye a[:i] have e < x, na all e kwenye
     a[i:] have e >= x.  So ikiwa x already appears kwenye the list, a.insert(x) will
     insert just before the leftmost x already there.
 

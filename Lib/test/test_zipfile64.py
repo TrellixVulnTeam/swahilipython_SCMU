@@ -21,7 +21,7 @@ kutoka test.support agiza TESTFN, requires_zlib
 
 TESTFN2 = TESTFN + "2"
 
-# How much time kwenye seconds can pita before we print a 'Still working' message.
+# How much time kwenye seconds can pita before we andika a 'Still working' message.
 _PRINT_WORKING_MSG_INTERVAL = 60
 
 kundi TestsWithSourceFile(unittest.TestCase):

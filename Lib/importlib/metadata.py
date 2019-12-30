@@ -158,7 +158,7 @@ kundi Distribution:
         :return: The Distribution instance (or subkundi thereof) kila the named
             package, ikiwa found.
         :raises PackageNotFoundError: When the named package's distribution
-            metadata cannot be found.
+            metadata cansio be found.
         """
         kila resolver kwenye cls._discover_resolvers():
             dists = resolver(DistributionFinder.Context(name=name))
@@ -180,7 +180,7 @@ kundi Distribution:
         """
         context = kwargs.pop('context', Tupu)
         ikiwa context na kwargs:
-            ashiria ValueError("cannot accept context na kwargs")
+            ashiria ValueError("cansio accept context na kwargs")
         context = context ama DistributionFinder.Context(**kwargs)
         rudisha itertools.chain.from_iterable(
             resolver(context)
@@ -286,7 +286,7 @@ kundi Distribution:
         section_pairs = cls._read_sections(source.splitlines())
         sections = {
             section: list(map(operator.itemgetter('line'), results))
-            kila section, results in
+            kila section, results kwenye
             itertools.groupby(section_pairs, operator.itemgetter('section'))
             }
         rudisha cls._convert_egg_info_reqs_to_simple_reqs(sections)

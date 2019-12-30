@@ -620,10 +620,10 @@ kundi TestRecursiveStructure(unittest.TestCase):
         jaribu:
             Recursive._fields_ = [("next", Recursive)]
         tatizo AttributeError kama details:
-            self.assertIn("Structure ama union cannot contain itself",
+            self.assertIn("Structure ama union cansio contain itself",
                           str(details))
         isipokua:
-            self.fail("Structure ama union cannot contain itself")
+            self.fail("Structure ama union cansio contain itself")
 
 
     eleza test_vice_versa(self):

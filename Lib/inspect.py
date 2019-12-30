@@ -392,7 +392,7 @@ eleza classify_class_attrs(cls):
 
     If one of the items kwenye dir(cls) ni stored kwenye the metakundi it will now
     be discovered na sio have Tupu be listed kama the kundi kwenye which it was
-    defined.  Any items whose home kundi cannot be discovered are skipped.
+    defined.  Any items whose home kundi cansio be discovered are skipped.
     """
 
     mro = getmro(cls)
@@ -413,7 +413,7 @@ eleza classify_class_attrs(cls):
 
     kila name kwenye names:
         # Get the object associated ukijumuisha the name, na where it was defined.
-        # Normal objects will be looked up ukijumuisha both getattr na directly in
+        # Normal objects will be looked up ukijumuisha both getattr na directly kwenye
         # its class' dict (in case getattr fails [bug #1785], na also to look
         # kila a docstring).
         # For DynamicClassAttributes on the second pita we only look kwenye the
@@ -699,7 +699,7 @@ eleza getsourcefile(object):
     ikiwa any(filename.endswith(s) kila s kwenye all_bytecode_suffixes):
         filename = (os.path.splitext(filename)[0] +
                     importlib.machinery.SOURCE_SUFFIXES[0])
-    lasivyo any(filename.endswith(s) kila s in
+    lasivyo any(filename.endswith(s) kila s kwenye
                  importlib.machinery.EXTENSION_SUFFIXES):
         rudisha Tupu
     ikiwa os.path.exists(filename):
@@ -775,7 +775,7 @@ eleza findsource(object):
     The argument may be a module, class, method, function, traceback, frame,
     ama code object.  The source code ni returned kama a list of all the lines
     kwenye the file na the line number indexes a line kwenye that list.  An OSError
-    ni raised ikiwa the source code cannot be retrieved."""
+    ni raised ikiwa the source code cansio be retrieved."""
 
     file = getsourcefile(object)
     ikiwa file:
@@ -962,7 +962,7 @@ eleza getsourcelines(object):
     ama code object.  The source code ni returned kama a list of the lines
     corresponding to the object na the line number indicates where kwenye the
     original source file the first line of code was found.  An OSError is
-    raised ikiwa the source code cannot be retrieved."""
+    raised ikiwa the source code cansio be retrieved."""
     object = unwrap(object)
     lines, lnum = findsource(object)
 
@@ -981,7 +981,7 @@ eleza getsource(object):
 
     The argument may be a module, class, method, function, traceback, frame,
     ama code object.  The source code ni returned kama a single string.  An
-    OSError ni raised ikiwa the source code cannot be retrieved."""
+    OSError ni raised ikiwa the source code cansio be retrieved."""
     lines, lnum = getsourcelines(object)
     rudisha ''.join(lines)
 
@@ -2276,7 +2276,7 @@ eleza _signature_from_callable(obj, *,
             sig = _signature_get_partial(wrapped_sig, partialmethod, (Tupu,))
             first_wrapped_param = tuple(wrapped_sig.parameters.values())[0]
             ikiwa first_wrapped_param.kind ni Parameter.VAR_POSITIONAL:
-                # First argument of the wrapped callable ni `*args`, kama in
+                # First argument of the wrapped callable ni `*args`, kama kwenye
                 # `partialmethod(lambda *args)`.
                 rudisha sig
             isipokua:
@@ -2481,7 +2481,7 @@ kundi Parameter:
             ashiria ValueError(f'value {kind!r} ni sio a valid Parameter.kind')
         ikiwa default ni sio _empty:
             ikiwa self._kind kwenye (_VAR_POSITIONAL, _VAR_KEYWORD):
-                msg = '{} parameters cannot have default values'
+                msg = '{} parameters cansio have default values'
                 msg = msg.format(self._kind.description)
                 ashiria ValueError(msg)
         self._default = default

@@ -65,7 +65,7 @@ kundi BottomMatcher(object):
             rudisha match_nodes
         isipokua:
             #single token
-            #not last
+            #sio last
             ikiwa pattern[0] haiko kwenye start.transition_table:
                 #transition did sio exist, create new
                 next_node = BMNode()

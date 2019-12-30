@@ -315,7 +315,7 @@ kundi AutoCompleteWindow:
         ikiwa keysym != "Tab":
             self.lastkey_was_tab = Uongo
         ikiwa (len(keysym) == 1 ama keysym kwenye ("underscore", "BackSpace")
-            ama (self.mode == FILES na keysym in
+            ama (self.mode == FILES na keysym kwenye
                 ("period", "minus"))) \
            na sio (state & ~MC_SHIFT):
             # Normal editing of text
@@ -344,10 +344,10 @@ kundi AutoCompleteWindow:
             self.hide_window()
             rudisha 'koma'
 
-        lasivyo (self.mode == ATTRS na keysym in
+        lasivyo (self.mode == ATTRS na keysym kwenye
               ("period", "space", "parenleft", "parenright", "bracketleft",
                "bracketright")) ama \
-             (self.mode == FILES na keysym in
+             (self.mode == FILES na keysym kwenye
               ("slash", "backslash", "quotedbl", "apostrophe")) \
              na sio (state & ~MC_SHIFT):
             # If start ni a prefix of the selection, but ni sio '' when

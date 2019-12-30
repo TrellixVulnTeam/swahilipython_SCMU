@@ -154,10 +154,10 @@ ikiwa _exists("_have_functions"):
     # it behave like lchmod().  So kwenye theory it would be a suitable
     # replacement kila lchmod().  But when lchmod() doesn't work, fchmodat()'s
     # flag doesn't work *either*.  Sadly ./configure isn't sophisticated
-    # enough to detect this condition--it only determines whether ama not
+    # enough to detect this condition--it only determines whether ama sio
     # fchmodat() minimally works.
     #
-    # Therefore we simply ignore fchmodat() when deciding whether ama not
+    # Therefore we simply ignore fchmodat() when deciding whether ama sio
     # os.chmod supports follow_symlinks.  Just checking lchmod() is
     # sufficient.  After all--ikiwa you have a working fchmodat(), your
     # lchmod() almost certainly works too.
@@ -220,7 +220,7 @@ eleza makedirs(name, mode=0o777, exist_ok=Uongo):
     jaribu:
         mkdir(name, mode)
     tatizo OSError:
-        # Cannot rely on checking kila EEXIST, since the operating system
+        # Cansio rely on checking kila EEXIST, since the operating system
         # could give priority to other errors like EACCES ama EROFS
         ikiwa sio exist_ok ama sio path.isdir(name):
             raise
@@ -287,7 +287,7 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
     the names of the subdirectories kwenye dirpath (excluding '.' na '..').
     filenames ni a list of the names of the non-directory files kwenye dirpath.
     Note that the names kwenye the lists are just names, ukijumuisha no path components.
-    To get a full path (which begins ukijumuisha top) to a file ama directory in
+    To get a full path (which begins ukijumuisha top) to a file ama directory kwenye
     dirpath, do os.path.join(dirpath, name).
 
     If optional arg 'topdown' ni true ama sio specified, the triple kila a
@@ -368,7 +368,7 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
             jaribu:
                 is_dir = entry.is_dir()
             tatizo OSError:
-                # If is_dir() raises an OSError, consider that the entry ni not
+                # If is_dir() raises an OSError, consider that the entry ni sio
                 # a directory, same behaviour than os.path.isdir().
                 is_dir = Uongo
 
@@ -641,7 +641,7 @@ eleza get_exec_path(env=Tupu):
             isipokua:
                 ikiwa path_list ni sio Tupu:
                     ashiria ValueError(
-                        "env cannot contain 'PATH' na b'PATH' keys")
+                        "env cansio contain 'PATH' na b'PATH' keys")
                 path_list = path_listb
 
             ikiwa path_list ni sio Tupu na isinstance(path_list, bytes):
@@ -841,7 +841,7 @@ ikiwa _exists("fork") na sio _exists("spawnv") na _exists("execv"):
         ikiwa sio isinstance(args, (tuple, list)):
             ashiria TypeError('argv must be a tuple ama a list')
         ikiwa sio args ama sio args[0]:
-            ashiria ValueError('argv first element cannot be empty')
+            ashiria ValueError('argv first element cansio be empty')
         pid = fork()
         ikiwa sio pid:
             # Child
@@ -1044,12 +1044,12 @@ eleza _fspath(path):
             raise
         isipokua:
             ashiria TypeError("expected str, bytes ama os.PathLike object, "
-                            "not " + path_type.__name__)
+                            "sio " + path_type.__name__)
     ikiwa isinstance(path_repr, (str, bytes)):
         rudisha path_repr
     isipokua:
         ashiria TypeError("expected {}.__fspath__() to rudisha str ama bytes, "
-                        "not {}".format(path_type.__name__,
+                        "sio {}".format(path_type.__name__,
                                         type(path_repr).__name__))
 
 # If there ni no C implementation, make the pure Python version the

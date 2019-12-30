@@ -89,7 +89,7 @@ Custom 3
 >>> toa c1.first
 Traceback (most recent call last):
   File "<stdin>", line 1, kwenye ?
-TypeError: Cannot delete the first attribute
+TypeError: Cansio delete the first attribute
 >>> c1.first = 42
 Traceback (most recent call last):
   File "<stdin>", line 1, kwenye ?
@@ -128,7 +128,7 @@ Custom 4
 >>> toa c1.first
 Traceback (most recent call last):
 ...
-TypeError: Cannot delete the first attribute
+TypeError: Cansio delete the first attribute
 >>> c1.name()
 'will tell'
 >>> c1.first = 'drew'

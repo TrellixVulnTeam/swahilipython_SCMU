@@ -612,7 +612,7 @@ eleza _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                     # Now update the cache dictionary.
                     toa cache[oldkey]
                     # Save the potentially reentrant cache[key] assignment
-                    # kila last, after the root na links have been put in
+                    # kila last, after the root na links have been put kwenye
                     # a consistent state.
                     cache[key] = oldroot
                 isipokua:
@@ -939,7 +939,7 @@ kundi cached_property:
             self.attrname = name
         lasivyo name != self.attrname:
             ashiria TypeError(
-                "Cannot assign the same cached_property to two different names "
+                "Cansio assign the same cached_property to two different names "
                 f"({self.attrname!r} na {name!r})."
             )
 
@@ -948,7 +948,7 @@ kundi cached_property:
             rudisha self
         ikiwa self.attrname ni Tupu:
             ashiria TypeError(
-                "Cannot use cached_property instance without calling __set_name__ on it.")
+                "Cansio use cached_property instance without calling __set_name__ on it.")
         jaribu:
             cache = instance.__dict__
         tatizo AttributeError:  # sio all objects have __dict__ (e.g. kundi defines slots)

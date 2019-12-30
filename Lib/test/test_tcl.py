@@ -239,7 +239,7 @@ kundi TclTest(unittest.TestCase):
                                     fullname[0],
                                     fullname[3:])
         ikiwa sio os.path.exists(unc_name):
-            ashiria unittest.SkipTest('Cannot connect to UNC Path')
+            ashiria unittest.SkipTest('Cansio connect to UNC Path')
 
         ukijumuisha support.EnvironmentVarGuard() kama env:
             env.unset("TCL_LIBRARY")

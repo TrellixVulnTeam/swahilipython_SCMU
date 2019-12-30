@@ -448,7 +448,7 @@ kundi TestBytes(unittest.TestCase):
         self._assert_type_error(expect, difflib.diff_bytes, context, b, a)
 
     eleza test_mixed_types_filenames(self):
-        # cannot pita filenames kama bytes ikiwa content ni str (this may sio be
+        # cansio pita filenames kama bytes ikiwa content ni str (this may sio be
         # the right behaviour, but at least the test demonstrates how
         # things work)
         a = ['hello\n']

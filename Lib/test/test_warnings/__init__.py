@@ -485,7 +485,7 @@ kundi WarnTests(BaseTest):
 
     eleza test_bad_str(self):
         # issue 6415
-        # Warnings instance ukijumuisha a bad format string kila __str__ should not
+        # Warnings instance ukijumuisha a bad format string kila __str__ should sio
         # trigger a bus error.
         kundi BadStrWarning(Warning):
             """Warning ukijumuisha a bad format string kila __str__."""
@@ -707,7 +707,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
     eleza test_showwarning_not_callable(self):
         ukijumuisha original_warnings.catch_warnings(module=self.module):
             self.module.filterwarnings("always", category=UserWarning)
-            self.module.showwarning = print
+            self.module.showwarning = andika
             ukijumuisha support.captured_output('stdout'):
                 self.module.warn('Warning!')
             self.module.showwarning = 23

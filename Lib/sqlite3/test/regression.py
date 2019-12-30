@@ -13,7 +13,7 @@
 # including commercial applications, na to alter it na redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must sio be misrepresented; you must not
+# 1. The origin of this software must sio be misrepresented; you must sio
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
@@ -268,7 +268,7 @@ kundi RegressionTests(unittest.TestCase):
         eleza collation_cb(a, b):
             rudisha 1
         self.assertRaises(sqlite.ProgrammingError, self.con.create_collation,
-            # Lone surrogate cannot be encoded to the default encoding (utf8)
+            # Lone surrogate cansio be encoded to the default encoding (utf8)
             "\uDC80", collation_cb)
 
     eleza CheckRecursiveCursorUse(self):

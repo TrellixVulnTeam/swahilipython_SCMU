@@ -554,7 +554,7 @@ eleza get_config_vars(*args):
         ikiwa SO ni sio Tupu:
             _CONFIG_VARS['SO'] = SO
         # Setting 'userbase' ni done below the call to the
-        # init function to enable using 'get_config_var' in
+        # init function to enable using 'get_config_var' kwenye
         # the init-function.
         _CONFIG_VARS['userbase'] = _getuserbase()
 

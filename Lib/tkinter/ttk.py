@@ -374,7 +374,7 @@ kundi Style(object):
 
 
     eleza configure(self, style, query_opt=Tupu, **kw):
-        """Query ama sets the default value of the specified option(s) in
+        """Query ama sets the default value of the specified option(s) kwenye
         style.
 
         Each key kwenye kw ni an option na each value ni either a string ama
@@ -387,7 +387,7 @@ kundi Style(object):
 
 
     eleza map(self, style, query_opt=Tupu, **kw):
-        """Query ama sets dynamic values of the specified option(s) in
+        """Query ama sets dynamic values of the specified option(s) kwenye
         style.
 
         Each key kwenye kw ni an option na each value should be a list ama a
@@ -1357,7 +1357,7 @@ kundi Treeview(Widget, tkinter.XView, tkinter.YView):
         the new item. If index ni less than ama equal to zero, the new node
         ni inserted at the beginning, ikiwa index ni greater than ama equal to
         the current number of children, it ni inserted at the end. If iid
-        ni specified, it ni used kama the item identifier, iid must not
+        ni specified, it ni used kama the item identifier, iid must sio
         already exist kwenye the tree. Otherwise, a new unique identifier
         ni generated."""
         opts = _format_optdict(kw)

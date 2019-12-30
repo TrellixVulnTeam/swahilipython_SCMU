@@ -59,7 +59,7 @@ kundi TransportSocket:
         rudisha f"{s}>"
 
     eleza __getstate__(self):
-        ashiria TypeError("Cannot serialize asyncio.TransportSocket object")
+        ashiria TypeError("Cansio serialize asyncio.TransportSocket object")
 
     eleza fileno(self):
         rudisha self._sock.fileno()
@@ -195,7 +195,7 @@ kundi TransportSocket:
         ikiwa sio flag:
             rudisha
         ashiria ValueError(
-            'setblocking(): transport sockets cannot be blocking')
+            'setblocking(): transport sockets cansio be blocking')
 
     eleza __enter__(self):
         self._na('context manager protocol')

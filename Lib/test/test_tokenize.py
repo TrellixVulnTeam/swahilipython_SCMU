@@ -36,7 +36,7 @@ kundi TokenizeTest(TestCase):
     # Tests kila the tokenize module.
 
     # The tests can be really simple. Given a small fragment of source
-    # code, print out a table ukijumuisha tokens. The ENDMARKER, ENCODING na
+    # code, andika out a table ukijumuisha tokens. The ENDMARKER, ENCODING na
     # final NEWLINE are omitted kila brevity.
 
     eleza check_tokenize(self, s, expected):
@@ -1007,7 +1007,7 @@ kundi TestTokenizerAdheresToPep0263(TestCase):
     eleza test_latin1_coding_cookie_and_utf8_bom(self):
         """
         As per PEP 0263, ikiwa a file starts ukijumuisha a utf-8 BOM signature, the only
-        allowed encoding kila the comment ni 'utf-8'.  The text file used in
+        allowed encoding kila the comment ni 'utf-8'.  The text file used kwenye
         this test starts ukijumuisha a BOM signature, but specifies latin1 kama the
         coding, so verify that a SyntaxError ni raised, which matches the
         behaviour of the interpreter when it encounters a similar condition.

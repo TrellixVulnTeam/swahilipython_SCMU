@@ -842,7 +842,7 @@ eleza merge_old_version(version, new, old):
                         assert value kwenye "0123456789"
                         decimal_changes[i] = int(value)
                     lasivyo k == 8:
-                        # print "NUMERIC",hex(i), `old.table[i][k]`, new.table[i][k]
+                        # andika "NUMERIC",hex(i), `old.table[i][k]`, new.table[i][k]
                         # Since 0 encodes "no change", the old value ni better sio 0
                         ikiwa sio value:
                             numeric_changes[i] = -1

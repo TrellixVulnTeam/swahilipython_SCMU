@@ -290,7 +290,7 @@ kundi TestWorkerProcess(threading.Thread):
     eleza wait_stopped(self, start_time):
         # bpo-38207: MultiprocessTestRunner.stop_workers() called self.stop()
         # which killed the process. Sometimes, killing the process kutoka the
-        # main thread does sio inerrupt popen.communicate() in
+        # main thread does sio inerrupt popen.communicate() kwenye
         # TestWorkerProcess thread. This loop ukijumuisha a timeout ni a workaround
         # kila that.
         #

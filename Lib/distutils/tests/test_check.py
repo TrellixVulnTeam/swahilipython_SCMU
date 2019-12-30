@@ -146,7 +146,7 @@ kundi CheckTestCase(support.LoggingSilencer,
                 self.assertEqual(len(msgs), 1)
                 self.assertEqual(
                     str(msgs[0][1]),
-                    'Cannot analyze code. Pygments package sio found.'
+                    'Cansio analyze code. Pygments package sio found.'
                 )
 
     eleza test_check_all(self):

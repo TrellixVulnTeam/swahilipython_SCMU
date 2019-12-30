@@ -214,7 +214,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         kundi DummyExecutor(concurrent.futures.ThreadPoolExecutor):
             eleza submit(self, fn, *args, **kwargs):
                 ashiria NotImplementedError(
-                    'cannot submit into a dummy executor')
+                    'cansio submit into a dummy executor')
 
         executor = DummyExecutor()
         self.loop.set_default_executor(executor)
@@ -463,7 +463,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         self.assertEqual(len(self.loop._scheduled), not_cancelled_count)
 
         # Ensure only uncancelled events remain scheduled
-        self.assertKweli(all([not x._cancelled kila x kwenye self.loop._scheduled]))
+        self.assertKweli(all([sio x._cancelled kila x kwenye self.loop._scheduled]))
 
     eleza test_run_until_complete_type_error(self):
         self.assertRaises(TypeError,

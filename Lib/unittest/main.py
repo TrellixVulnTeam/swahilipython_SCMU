@@ -83,7 +83,7 @@ kundi TestProgram(object):
         self.tb_locals = tb_locals
         ikiwa warnings ni Tupu na sio sys.warnoptions:
             # even ikiwa DeprecationWarnings are ignored by default
-            # print them anyway unless other warnings settings are
+            # andika them anyway unless other warnings settings are
             # specified by the warnings arg ama the -W python flag
             self.warnings = 'default'
         isipokua:

@@ -269,7 +269,7 @@ What about willful misconduct?
     Traceback (most recent call last):
       ...
     TypeError: TupuType object argument after * must be an iterable, \
-not function
+sio function
 
     >>> h(**h)
     Traceback (most recent call last):
@@ -310,7 +310,7 @@ not function
     Traceback (most recent call last):
       ...
     TypeError: TupuType object argument after ** must be a mapping, \
-not function
+sio function
 
     >>> dir(b=1, **{'b': 1})
     Traceback (most recent call last):

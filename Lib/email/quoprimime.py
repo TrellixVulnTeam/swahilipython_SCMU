@@ -7,7 +7,7 @@
 This module handles the content transfer encoding method defined kwenye RFC 2045
 to encode US ASCII-like 8-bit data called `quoted-printable'.  It ni used to
 safely encode text that ni kwenye a character set similar to the 7-bit US ASCII
-character set, but that includes some 8-bit characters that are normally not
+character set, but that includes some 8-bit characters that are normally sio
 allowed kwenye email bodies ama headers.
 
 Quoted-printable ni very space-inefficient kila encoding binary files; use the

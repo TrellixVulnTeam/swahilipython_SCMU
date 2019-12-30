@@ -311,7 +311,7 @@ kundi config(Command):
         without actually checking that any particular symbols are provided
         by it.  'headers' will be used kwenye constructing the source file to
         be compiled, but the only effect of this ni to check ikiwa all the
-        header files listed are available.  Any libraries listed in
+        header files listed are available.  Any libraries listed kwenye
         'other_libraries' will be included kwenye the link, kwenye case 'library'
         has symbols that depend on other libraries.
         """

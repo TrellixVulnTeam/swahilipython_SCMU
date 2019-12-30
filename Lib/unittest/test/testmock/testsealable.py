@@ -139,7 +139,7 @@ kundi TestSealable(unittest.TestCase):
             m.method_sample2()
 
     eleza test_integration_with_spec_method_definition_respects_spec(self):
-        """You cannot define methods out of the spec"""
+        """You cansio define methods out of the spec"""
         m = mock.Mock(SampleObject)
 
         ukijumuisha self.assertRaises(AttributeError):

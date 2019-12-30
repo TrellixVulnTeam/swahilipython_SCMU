@@ -278,7 +278,7 @@ eleza _dnsname_match(dn, hostname):
     - Hostnames are compared lower case.
     - For IDNA, both dn na hostname must be encoded kama IDN A-label (ACE).
     - Partial wildcards like 'www*.example.org', multiple wildcards, sole
-      wildcard ama wildcards kwenye labels other then the left-most label are not
+      wildcard ama wildcards kwenye labels other then the left-most label are sio
       supported na a CertificateError ni raised.
     - A wildcard must match at least one character.
     """
@@ -533,7 +533,7 @@ kundi SSLContext(_SSLContext):
             self.sni_callback = Tupu
         isipokua:
             ikiwa sio callable(server_name_callback):
-                ashiria TypeError("not a callable object")
+                ashiria TypeError("sio a callable object")
 
             eleza shim_cb(sslobj, servername, sslctx):
                 servername = self._encode_hostname(servername)
@@ -1313,7 +1313,7 @@ kundi SSLSocket(socket):
     eleza _real_connect(self, addr, connect_ex):
         ikiwa self.server_side:
             ashiria ValueError("can't connect kwenye server-side mode")
-        # Here we assume that the socket ni client-side, na not
+        # Here we assume that the socket ni client-side, na sio
         # connected at the time of the call.  We connect it, then wrap it.
         ikiwa self._connected ama self._sslobj ni sio Tupu:
             ashiria ValueError("attempt to connect already-connected SSLSocket!")
@@ -1337,12 +1337,12 @@ kundi SSLSocket(socket):
             raise
 
     eleza connect(self, addr):
-        """Connects to remote ADDR, na then wraps the connection in
+        """Connects to remote ADDR, na then wraps the connection kwenye
         an SSL channel."""
         self._real_connect(addr, Uongo)
 
     eleza connect_ex(self, addr):
-        """Connects to remote ADDR, na then wraps the connection in
+        """Connects to remote ADDR, na then wraps the connection kwenye
         an SSL channel."""
         rudisha self._real_connect(addr, Kweli)
 

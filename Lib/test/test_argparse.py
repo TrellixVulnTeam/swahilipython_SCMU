@@ -2045,7 +2045,7 @@ kundi TestAddSubparsers(TestCase):
 
             optional arguments:
               -h, --help      show this help message na exit
-              --non-komaing  help message containing non-komaing spaces shall not
+              --non-komaing  help message containing non-komaing spaces shall sio
                               wrap\N{NO-BREAK SPACE}at non-komaing spaces
         '''))
 
@@ -4949,7 +4949,7 @@ kundi TestIntermixedArgs(TestCase):
         self.assertEqual(NS(bar='y', cmd='cmd', foo='x', rest=[1, 2, 3]), args)
 
         args, extras = parser.parse_known_args(argv)
-        # cannot parse the '1,2,3'
+        # cansio parse the '1,2,3'
         self.assertEqual(NS(bar='y', cmd='cmd', foo='x', rest=[]), args)
         self.assertEqual(["1", "2", "3"], extras)
 

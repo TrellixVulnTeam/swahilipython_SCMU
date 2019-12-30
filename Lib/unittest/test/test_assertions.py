@@ -307,10 +307,10 @@ kundi TestLongMessage(unittest.TestCase):
                              "^1 sio greater than ama equal to 2 : oops$"])
 
     eleza testAssertIsTupu(self):
-        self.assertMessages('assertIsTupu', ('not Tupu',),
-                            ["^'not Tupu' ni sio Tupu$", "^oops$",
-                             "^'not Tupu' ni sio Tupu$",
-                             "^'not Tupu' ni sio Tupu : oops$"])
+        self.assertMessages('assertIsTupu', ('sio Tupu',),
+                            ["^'sio Tupu' ni sio Tupu$", "^oops$",
+                             "^'sio Tupu' ni sio Tupu$",
+                             "^'sio Tupu' ni sio Tupu : oops$"])
 
     eleza testAssertIsNotTupu(self):
         self.assertMessages('assertIsNotTupu', (Tupu,),

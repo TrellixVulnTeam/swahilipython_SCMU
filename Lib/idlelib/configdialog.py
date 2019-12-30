@@ -694,8 +694,8 @@ kundi HighPage(Frame):
         """Return frame of widgets kila Highlighting tab.
 
         Enable users to provisionally change foreground na background
-        colors applied to textual tags.  Color mappings are stored in
-        complete listings called themes.  Built-in themes in
+        colors applied to textual tags.  Color mappings are stored kwenye
+        complete listings called themes.  Built-in themes kwenye
         idlelib/config-highlight.eleza are fixed kama far kama the dialog is
         concerned. Any theme can be used kama the base kila a new custom
         theme, stored kwenye .idlerc/config-highlight.cfg.
@@ -746,7 +746,7 @@ kundi HighPage(Frame):
         Mouse button 1 allows kila selection of a tag na updates
         highlight_target ukijumuisha that tag value.
 
-        Note: The font kwenye highlight_sample ni set through the config in
+        Note: The font kwenye highlight_sample ni set through the config kwenye
         the fonts tab.
 
         In other words, a tag can be selected either kutoka targetlist ama
@@ -1364,7 +1364,7 @@ kundi KeysPage(Frame):
         keyset_source, which controls ikiwa the current set of keybindings
         are kutoka a builtin ama custom keyset. DynOptionMenus builtinlist
         na customlist contain lists of the builtin na custom keysets,
-        respectively, na the current item kutoka each list ni stored in
+        respectively, na the current item kutoka each list ni stored kwenye
         vars builtin_name na custom_name.
 
         Button delete_custom_keys invokes delete_custom_keys() to delete
@@ -2242,7 +2242,7 @@ tracers = VarTrace()
 
 help_common = '''\
 When you click either the Apply ama Ok buttons, settings kwenye this
-dialog that are different kutoka IDLE's default are saved in
+dialog that are different kutoka IDLE's default are saved kwenye
 a .idlerc directory kwenye your home directory. Except kama noted,
 these changes apply to all versions of IDLE installed on this
 machine. [Cancel] only cancels changes made since the last save.

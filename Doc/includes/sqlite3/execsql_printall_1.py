@@ -9,7 +9,7 @@ cur = con.cursor()
 # Execute the SELECT statement:
 cur.execute("select * kutoka people order by age")
 
-# Retrieve all rows kama a sequence na print that sequence:
+# Retrieve all rows kama a sequence na andika that sequence:
 andika(cur.fetchall())
 
 con.close()

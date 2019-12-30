@@ -157,7 +157,7 @@ kundi BaseSelector(metaclass=ABCMeta):
         ready ama a timeout expires.
 
         Parameters:
-        timeout -- ikiwa timeout > 0, this specifies the maximum wait time, in
+        timeout -- ikiwa timeout > 0, this specifies the maximum wait time, kwenye
                    seconds
                    ikiwa timeout <= 0, the select() call won't block, na will
                    report the currently ready file objects

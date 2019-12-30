@@ -470,7 +470,7 @@ kundi TestMkstempInner(TestBadTempdir, BaseTestCase):
             me = sys.argv[0]
 
         # We have to exec something, so that FD_CLOEXEC will take
-        # effect.  The core of this test ni therefore in
+        # effect.  The core of this test ni therefore kwenye
         # tf_inherit_check.py, which see.
         tester = os.path.join(os.path.dirname(os.path.abspath(me)),
                               "tf_inherit_check.py")

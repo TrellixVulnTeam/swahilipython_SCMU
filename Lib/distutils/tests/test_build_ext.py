@@ -138,7 +138,7 @@ kundi BuildExtTestCase(TempdirManager,
         cmd = self.build_ext(dist)
 
         # making sure the user option ni there
-        options = [name kila name, short, lable in
+        options = [name kila name, short, lable kwenye
                    cmd.user_options]
         self.assertIn('user', options)
 

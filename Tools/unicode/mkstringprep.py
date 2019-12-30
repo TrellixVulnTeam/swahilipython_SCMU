@@ -148,7 +148,7 @@ eleza in_table_a1(code):
     rudisha (c & 0xFFFF) haiko kwenye (0xFFFE, 0xFFFF)
 """)
 
-# B.1 cannot easily be derived
+# B.1 cansio easily be derived
 name, table = tables[0]
 toa tables[0]
 assert name == "B.1"

@@ -135,7 +135,7 @@ kundi TestContentManager(TestEmailBase):
 @parameterize
 kundi TestRawDataManager(TestEmailBase):
     # Note: these tests are dependent on the order kwenye which headers are added
-    # to the message objects by the code.  There's no defined ordering in
+    # to the message objects by the code.  There's no defined ordering kwenye
     # RFC5322/MIME, so this makes the tests more fragile than the standards
     # require.  However, ikiwa the header order changes it ni best to understand
     # *why*, na make sure it isn't a subtle bug kwenye whatever change was

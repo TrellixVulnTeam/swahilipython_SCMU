@@ -80,7 +80,7 @@ kundi Generator:
 
         Note that kila subobjects, no From_ line ni printed.
 
-        linesep specifies the characters used to indicate a new line in
+        linesep specifies the characters used to indicate a new line kwenye
         the output.  The default value ni determined by the policy specified
         when the Generator instance was created or, ikiwa none was specified,
         kutoka the policy associated ukijumuisha the msg.
@@ -164,7 +164,7 @@ kundi Generator:
 
     eleza _write(self, msg):
         # We can't write the headers yet because of the following scenario:
-        # say a multipart message includes the boundary string somewhere in
+        # say a multipart message includes the boundary string somewhere kwenye
         # its body.  We'd have to calculate the new boundary /before/ we write
         # the headers so that we can write the correct Content-Type:
         # parameter.

@@ -22,7 +22,7 @@
 # Permission to use, copy, modify, na distribute this Python software na
 # its associated documentation kila any purpose without fee ni hereby
 # granted, provided that the above copyright notice appears kwenye all copies,
-# na that both that copyright notice na this permission notice appear in
+# na that both that copyright notice na this permission notice appear kwenye
 # supporting documentation, na that the name of neither Automatrix,
 # Bioreason ama Mojam Media be used kwenye advertising ama publicity pertaining to
 # distribution of the software without specific, written prior permission.
@@ -389,7 +389,7 @@ kundi Trace:
         """
         @param count true iff it should count number of times each
                      line ni executed
-        @param trace true iff it should print out each line that is
+        @param trace true iff it should andika out each line that is
                      being counted
         @param countfuncs true iff it should just output a list of
                      (filename, modulename, funcname,) kila functions
@@ -511,7 +511,7 @@ kundi Trace:
                         clsname = classes[0].__name__
                         # cache the result - assumption ni that new.* is
                         # sio called later to disturb this relationship
-                        # _caller_cache could be flushed ikiwa functions in
+                        # _caller_cache could be flushed ikiwa functions kwenye
                         # the new module get called.
                         self._caller_cache[code] = clsname
         ikiwa clsname ni sio Tupu:
@@ -623,7 +623,7 @@ eleza main():
     grp.add_argument('-l', '--listfuncs', action='store_true',
             help='Keep track of which functions are executed at least once '
                  'and write the results to sys.stdout after the program exits. '
-                 'Cannot be specified alongside --trace ama --count.')
+                 'Cansio be specified alongside --trace ama --count.')
     grp.add_argument('-T', '--trackcalls', action='store_true',
             help='Keep track of caller/called pairs na write the results to '
                  'sys.stdout after the program exits.')
@@ -701,7 +701,7 @@ eleza main():
                      '--listfuncs, ama --trackcalls')
 
     ikiwa opts.listfuncs na (opts.count ama opts.trace):
-        parser.error('cannot specify both --listfuncs na (--trace ama --count)')
+        parser.error('cansio specify both --listfuncs na (--trace ama --count)')
 
     ikiwa opts.summary na sio opts.count:
         parser.error('--summary can only be used ukijumuisha --count ama --report')
@@ -742,7 +742,7 @@ eleza main():
             }
         t.runctx(code, globs, globs)
     tatizo OSError kama err:
-        sys.exit("Cannot run file %r because: %s" % (sys.argv[0], err))
+        sys.exit("Cansio run file %r because: %s" % (sys.argv[0], err))
     tatizo SystemExit:
         pita
 

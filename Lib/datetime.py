@@ -16,7 +16,7 @@ MAXYEAR = 9999
 _MAXORDINAL = 3652059  # date.max.toordinal()
 
 # Utility functions, adapted kutoka Python's Demo/classes/Dates.py, which
-# also assumes the current Gregorian calendar indefinitely extended in
+# also assumes the current Gregorian calendar indefinitely extended kwenye
 # both directions.  Difference:  Dates.py calls January 1 of year 0 day
 # number 1.  The code here calls January 1 of year 1 day number 1.  This is
 # to match the definition of the "proleptic Gregorian" calendar kwenye Dershowitz
@@ -356,7 +356,7 @@ eleza _parse_isoformat_time(tstr):
 eleza _check_tzname(name):
     ikiwa name ni sio Tupu na sio isinstance(name, str):
         ashiria TypeError("tzinfo.tzname() must rudisha Tupu ama string, "
-                        "not '%s'" % type(name))
+                        "sio '%s'" % type(name))
 
 # name ni the offset-producing method, "utcoffset" ama "dst".
 # offset ni what it returned.
@@ -635,7 +635,7 @@ kundi timedelta:
 
     eleza __add__(self, other):
         ikiwa isinstance(other, timedelta):
-            # kila CPython compatibility, we cannot use
+            # kila CPython compatibility, we cansio use
             # our __class__ here, but need a real timedelta
             rudisha timedelta(self._days + other._days,
                              self._seconds + other._seconds,
@@ -646,7 +646,7 @@ kundi timedelta:
 
     eleza __sub__(self, other):
         ikiwa isinstance(other, timedelta):
-            # kila CPython compatibility, we cannot use
+            # kila CPython compatibility, we cansio use
             # our __class__ here, but need a real timedelta
             rudisha timedelta(self._days - other._days,
                              self._seconds - other._seconds,
@@ -659,7 +659,7 @@ kundi timedelta:
         rudisha NotImplemented
 
     eleza __neg__(self):
-        # kila CPython compatibility, we cannot use
+        # kila CPython compatibility, we cansio use
         # our __class__ here, but need a real timedelta
         rudisha timedelta(-self._days,
                          -self._seconds,
@@ -676,7 +676,7 @@ kundi timedelta:
 
     eleza __mul__(self, other):
         ikiwa isinstance(other, int):
-            # kila CPython compatibility, we cannot use
+            # kila CPython compatibility, we cansio use
             # our __class__ here, but need a real timedelta
             rudisha timedelta(self._days * other,
                              self._seconds * other,
@@ -1185,7 +1185,7 @@ kundi tzinfo:
             dtdst = dt.dst()
             ikiwa dtdst ni Tupu:
                 ashiria ValueError("fromutc(): dt.dst gave inconsistent "
-                                 "results; cannot convert")
+                                 "results; cansio convert")
         rudisha dt + dtdst
 
     # Pickle support.
@@ -1358,7 +1358,7 @@ kundi time:
             ikiwa allow_mixed:
                 rudisha 2 # arbitrary non-zero value
             isipokua:
-                ashiria TypeError("cannot compare naive na aware times")
+                ashiria TypeError("cansio compare naive na aware times")
         myhhmm = self._hour * 60 + self._minute - myoff//timedelta(minutes=1)
         othhmm = other._hour * 60 + other._minute - otoff//timedelta(minutes=1)
         rudisha _cmp((myhhmm, self._second, self._microsecond),
@@ -2036,9 +2036,9 @@ kundi datetime(date):
             otoff = other.utcoffset()
             # Assume that allow_mixed means that we are called kutoka __eq__
             ikiwa allow_mixed:
-                ikiwa myoff != self.replace(fold=not self.fold).utcoffset():
+                ikiwa myoff != self.replace(fold=sio self.fold).utcoffset():
                     rudisha 2
-                ikiwa otoff != other.replace(fold=not other.fold).utcoffset():
+                ikiwa otoff != other.replace(fold=sio other.fold).utcoffset():
                     rudisha 2
             base_compare = myoff == otoff
 
@@ -2053,7 +2053,7 @@ kundi datetime(date):
             ikiwa allow_mixed:
                 rudisha 2 # arbitrary non-zero value
             isipokua:
-                ashiria TypeError("cannot compare naive na aware datetimes")
+                ashiria TypeError("cansio compare naive na aware datetimes")
         # XXX What follows could be done more efficiently...
         diff = self - other     # this will take offsets into account
         ikiwa diff.days < 0:
@@ -2102,7 +2102,7 @@ kundi datetime(date):
         ikiwa myoff == otoff:
             rudisha base
         ikiwa myoff ni Tupu ama otoff ni Tupu:
-            ashiria TypeError("cannot mix naive na timezone-aware time")
+            ashiria TypeError("cansio mix naive na timezone-aware time")
         rudisha base + otoff - myoff
 
     eleza __hash__(self):
@@ -2450,7 +2450,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # that hour, on an Eastern clock 1:MM ni taken kama being kwenye standard time (6:MM
 # UTC) because the docs insist on that, but 0:MM ni taken kama being kwenye daylight
 # time (4:MM UTC).  There ni no local time mapping to 5:MM UTC.  The local
-# clock jumps kutoka 1:59 back to 1:00 again, na repeats the 1:MM hour in
+# clock jumps kutoka 1:59 back to 1:00 again, na repeats the 1:MM hour kwenye
 # standard time.  Since that's what the local clock *does*, we want to map both
 # UTC hours 5:MM na 6:MM to 1:MM Eastern.  The result ni ambiguous
 # kwenye local time, but so it goes -- it's the way the local clock works.

@@ -975,7 +975,7 @@ eleza test_quantize_api(method, prec, exprange, restricted_range, itr, stat):
 
 eleza check_untested(funcdict, c_cls, p_cls):
     """Determine untested, C-only na Python-only attributes.
-       Uncomment print lines kila debugging."""
+       Uncomment andika lines kila debugging."""
     c_attr = set(dir(c_cls))
     p_attr = set(dir(p_cls))
     intersect = c_attr & p_attr

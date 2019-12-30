@@ -35,7 +35,7 @@ kundi HTTPSServer(_HTTPServer):
             sock, addr = self.socket.accept()
             sslconn = self.context.wrap_socket(sock, server_side=Kweli)
         tatizo OSError kama e:
-            # socket errors are silenced by the caller, print them here
+            # socket errors are silenced by the caller, andika them here
             ikiwa support.verbose:
                 sys.stderr.write("Got an error:\n%s\n" % e)
             raise

@@ -215,7 +215,7 @@ kundi Clamped(DecimalException):
     altered kwenye order to fit the constraints of a specific concrete
     representation.  This may occur when the exponent of a zero result would
     be outside the bounds of a representation, ama when a large normal
-    number would have an encoded exponent that cannot be represented.  In
+    number would have an encoded exponent that cansio be represented.  In
     this latter case, the exponent ni reduced to fit na the corresponding
     number of zero digits are appended to the coefficient ("fold-down").
     """
@@ -276,7 +276,7 @@ kundi DivisionByZero(DecimalException, ZeroDivisionError):
         rudisha _SignedInfinity[sign]
 
 kundi DivisionImpossible(InvalidOperation):
-    """Cannot perform the division adequately.
+    """Cansio perform the division adequately.
 
     This occurs na signals invalid-operation ikiwa the integer result of a
     divide-integer ama remainder operation had too many digits (would be
@@ -407,7 +407,7 @@ kundi FloatOperation(DecimalException, TypeError):
     all comparison operators. Both conversion na comparisons are exact.
     Any occurrence of a mixed operation ni silently recorded by setting
     FloatOperation kwenye the context flags.  Explicit conversions with
-    Decimal.from_float() ama context.create_decimal_from_float() do not
+    Decimal.from_float() ama context.create_decimal_from_float() do sio
     set the flag.
 
     Otherwise (the signal ni trapped), only equality comparisons na explicit
@@ -503,7 +503,7 @@ eleza localcontext(ctx=Tupu):
 ##### Decimal kundi #######################################################
 
 # Do sio subkundi Decimal kutoka numbers.Real na do sio register it kama such
-# (because Decimals are sio ineroperable ukijumuisha floats).  See the notes in
+# (because Decimals are sio ineroperable ukijumuisha floats).  See the notes kwenye
 # numbers.py kila more detail.
 
 kundi Decimal(object):
@@ -663,7 +663,7 @@ kundi Decimal(object):
             self._is_special  = value._is_special
             rudisha self
 
-        ashiria TypeError("Cannot convert %r to Decimal" % value)
+        ashiria TypeError("Cansio convert %r to Decimal" % value)
 
     @classmethod
     eleza from_float(cls, f):
@@ -945,7 +945,7 @@ kundi Decimal(object):
         # kwenye the documentation.  (See library docs, 'Built-in Types').
         ikiwa self._is_special:
             ikiwa self.is_snan():
-                ashiria TypeError('Cannot hash a signaling NaN value.')
+                ashiria TypeError('Cansio hash a signaling NaN value.')
             lasivyo self.is_nan():
                 rudisha _PyHASH_NAN
             isipokua:
@@ -985,9 +985,9 @@ kundi Decimal(object):
         """
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                ashiria ValueError("cannot convert NaN to integer ratio")
+                ashiria ValueError("cansio convert NaN to integer ratio")
             isipokua:
-                ashiria OverflowError("cannot convert Infinity to integer ratio")
+                ashiria OverflowError("cansio convert Infinity to integer ratio")
 
         ikiwa sio self:
             rudisha 0, 1
@@ -1379,7 +1379,7 @@ kundi Decimal(object):
     eleza _divide(self, other, context):
         """Return (self // other, self % other), to context.prec precision.
 
-        Assumes that neither self nor other ni a NaN, that self ni not
+        Assumes that neither self nor other ni a NaN, that self ni sio
         infinite na that other ni nonzero.
         """
         sign = self._sign ^ other._sign
@@ -1607,7 +1607,7 @@ kundi Decimal(object):
         """Float representation."""
         ikiwa self._isnan():
             ikiwa self.is_snan():
-                ashiria ValueError("Cannot convert signaling NaN to float")
+                ashiria ValueError("Cansio convert signaling NaN to float")
             s = "-nan" ikiwa self._sign isipokua "nan"
         isipokua:
             s = str(self)
@@ -1617,9 +1617,9 @@ kundi Decimal(object):
         """Converts self to an int, truncating ikiwa necessary."""
         ikiwa self._is_special:
             ikiwa self._isnan():
-                ashiria ValueError("Cannot convert NaN to integer")
+                ashiria ValueError("Cansio convert NaN to integer")
             lasivyo self._isinfinity():
-                ashiria OverflowError("Cannot convert infinity to integer")
+                ashiria OverflowError("Cansio convert infinity to integer")
         s = (-1)**self._sign
         ikiwa self._exp >= 0:
             rudisha s*int(self._int)*10**self._exp
@@ -1845,11 +1845,11 @@ kundi Decimal(object):
         >>> round(Decimal('Inf'))
         Traceback (most recent call last):
           ...
-        OverflowError: cannot round an infinity
+        OverflowError: cansio round an infinity
         >>> round(Decimal('NaN'))
         Traceback (most recent call last):
           ...
-        ValueError: cannot round a NaN
+        ValueError: cansio round a NaN
 
         If a second argument n ni supplied, self ni rounded to n
         decimal places using the rounding mode kila the current
@@ -1880,9 +1880,9 @@ kundi Decimal(object):
         # one-argument form
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                ashiria ValueError("cannot round a NaN")
+                ashiria ValueError("cansio round a NaN")
             isipokua:
-                ashiria OverflowError("cannot round an infinity")
+                ashiria OverflowError("cansio round an infinity")
         rudisha int(self._rescale(0, ROUND_HALF_EVEN))
 
     eleza __floor__(self):
@@ -1895,9 +1895,9 @@ kundi Decimal(object):
         """
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                ashiria ValueError("cannot round a NaN")
+                ashiria ValueError("cansio round a NaN")
             isipokua:
-                ashiria OverflowError("cannot round an infinity")
+                ashiria OverflowError("cansio round an infinity")
         rudisha int(self._rescale(0, ROUND_FLOOR))
 
     eleza __ceil__(self):
@@ -1910,9 +1910,9 @@ kundi Decimal(object):
         """
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                ashiria ValueError("cannot round a NaN")
+                ashiria ValueError("cansio round a NaN")
             isipokua:
-                ashiria OverflowError("cannot round an infinity")
+                ashiria OverflowError("cansio round an infinity")
         rudisha int(self._rescale(0, ROUND_CEILING))
 
     eleza fma(self, other, third, context=Tupu):
@@ -2002,11 +2002,11 @@ kundi Decimal(object):
                                         'unless all arguments are integers')
         ikiwa other < 0:
             rudisha context._raise_error(InvalidOperation,
-                                        'pow() 2nd argument cannot be '
+                                        'pow() 2nd argument cansio be '
                                         'negative when 3rd argument specified')
         ikiwa sio modulo:
             rudisha context._raise_error(InvalidOperation,
-                                        'pow() 3rd argument cannot be 0')
+                                        'pow() 3rd argument cansio be 0')
 
         # additional restriction kila decimal: the modulus must be less
         # than 10**prec kwenye absolute value
@@ -2049,7 +2049,7 @@ kundi Decimal(object):
 
         Given Decimals self na other na an integer p, attempt to
         compute an exact result kila the power self**other, ukijumuisha p
-        digits of precision.  Return Tupu ikiwa self**other ni not
+        digits of precision.  Return Tupu ikiwa self**other ni sio
         exactly representable kwenye p digits.
 
         Assumes that elimination of special cases has already been
@@ -2081,7 +2081,7 @@ kundi Decimal(object):
         #  (1) ikiwa xc != 1 then kila the result to be representable we
         #      need xc**(1/n) >= 2, na hence also xc**|y| >= 2.  So
         #      ikiwa |y| <= 1/nbits(xc) then xc < 2**nbits(xc) <=
-        #      2**(1/|y|), hence xc**|y| < 2 na the result ni not
+        #      2**(1/|y|), hence xc**|y| < 2 na the result ni sio
         #      representable.
         #
         #  (2) ikiwa xe != 0, |xe|*(1/n) >= 1, so |xe|*|y| >= 1.  Hence if
@@ -2196,7 +2196,7 @@ kundi Decimal(object):
                     xc //= 5
                     e -= 1
 
-                # Guard against large values of ye, using the same logic kama in
+                # Guard against large values of ye, using the same logic kama kwenye
                 # the 'xc ni a power of 2' branch.  10/3 ni an upper bound for
                 # log(10)/log(2).
                 emax = p*10//3
@@ -2755,7 +2755,7 @@ kundi Decimal(object):
 
         # write argument kwenye the form c*100**e where e = self._exp//2
         # ni the 'ideal' exponent, to be used ikiwa the square root is
-        # exactly representable.  l ni the number of 'digits' of c in
+        # exactly representable.  l ni the number of 'digits' of c kwenye
         # base 100, so that 100**(l-1) <= c < 100**l.
         op = _WorkRep(self)
         e = op.exp >> 1
@@ -3840,7 +3840,7 @@ eleza _dec_from_triple(sign, coefficient, exponent, special=Uongo):
     rudisha self
 
 # Register Decimal kama a kind of Number (an abstract base class).
-# However, do sio register it kama Real (because Decimals are not
+# However, do sio register it kama Real (because Decimals are sio
 # interoperable ukijumuisha floats).
 _numbers.Number.register(Decimal)
 
@@ -3968,7 +3968,7 @@ kundi Context(object):
                 "'decimal.Context' object has no attribute '%s'" % name)
 
     eleza __delattr__(self, name):
-        ashiria AttributeError("%s cannot be deleted" % name)
+        ashiria AttributeError("%s cansio be deleted" % name)
 
     # Support kila pickling, copy, na deepcopy
     eleza __reduce__(self):
@@ -4185,7 +4185,7 @@ kundi Context(object):
 
         If the signs of the operands differ, a value representing each operand
         ('-1' ikiwa the operand ni less than zero, '0' ikiwa the operand ni zero ama
-        negative zero, ama '1' ikiwa the operand ni greater than zero) ni used in
+        negative zero, ama '1' ikiwa the operand ni greater than zero) ni used kwenye
         place of that operand kila the comparison instead of the actual
         operand.
 
@@ -5290,7 +5290,7 @@ kundi Context(object):
 
         This operation will fail under the same conditions kama integer division
         (that is, ikiwa integer division on the same two operands would fail, the
-        remainder cannot be calculated).
+        remainder cansio be calculated).
 
         >>> ExtendedContext.remainder(Decimal('2.1'), Decimal('3'))
         Decimal('2.1')
@@ -5326,7 +5326,7 @@ kundi Context(object):
 
         This operation will fail under the same conditions kama integer division
         (that is, ikiwa integer division on the same two operands would fail, the
-        remainder cannot be calculated).
+        remainder cansio be calculated).
 
         >>> ExtendedContext.remainder_near(Decimal('2.1'), Decimal('3'))
         Decimal('-0.9')
@@ -5355,7 +5355,7 @@ kundi Context(object):
     eleza rotate(self, a, b):
         """Returns a rotated copy of a, b times.
 
-        The coefficient of the result ni a rotated copy of the digits in
+        The coefficient of the result ni a rotated copy of the digits kwenye
         the coefficient of the first operand.  The number of places of
         rotation ni taken kutoka the absolute value of the second operand,
         ukijumuisha the rotation being to the left ikiwa the second operand is
@@ -5734,7 +5734,7 @@ eleza _ilog(x, M, L = 8):
     #
     #    log1p(y) = 2*log1p(y/(1+sqrt(1+y)))
     #
-    # repeatedly until the argument to log1p ni small (< 2**-L in
+    # repeatedly until the argument to log1p ni small (< 2**-L kwenye
     # absolute value).  For small y we can use the Taylor series
     # expansion
     #
@@ -6101,7 +6101,7 @@ ExtendedContext = Context(
 # comments:
 #
 # 1. Uncomment the two '\s*' lines to allow leading and/or trailing
-# whitespace.  But note that the specification disallows whitespace in
+# whitespace.  But note that the specification disallows whitespace kwenye
 # a numeric string.
 #
 # 2. For finite numbers (sio ininities na NaNs) the body of the

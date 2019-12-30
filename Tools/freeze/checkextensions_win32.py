@@ -67,13 +67,13 @@ eleza checkextensions(unknown, extra_inis, prefix):
     ret = []
     kila mod kwenye unknown:
         kila ini kwenye extra_inis:
-#                       print "Looking for", mod, "in", win32api.GetFullPathName(ini),"...",
+#                       andika "Looking for", mod, "in", win32api.GetFullPathName(ini),"...",
             defn = get_extension_defn( mod, ini, prefix )
             ikiwa defn ni sio Tupu:
-#                               print "Yay - found it!"
+#                               andika "Yay - found it!"
                 ret.append( defn )
                 koma
-#                       print "Nope!"
+#                       andika "Nope!"
         isipokua: # For sio broken!
             sys.stderr.write("No definition of module %s kwenye any specified map file.\n" % (mod))
 
@@ -125,7 +125,7 @@ eleza get_extension_defn(moduleName, mapFileName, prefix):
 # Given an MSVC DSP file, locate C source files it uses
 # returns a list of source files.
 eleza parse_dsp(dsp):
-#       print "Processing", dsp
+#       andika "Processing", dsp
     # For now, only support
     ret = []
     dsp_path, dsp_name = os.path.split(dsp)

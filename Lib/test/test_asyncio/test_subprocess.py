@@ -291,7 +291,7 @@ kundi SubprocessMixin:
             stdout, stderr = await proc.communicate()
 
             # The child process produced more than limit bytes of output,
-            # the stream reader transport should pause the protocol to not
+            # the stream reader transport should pause the protocol to sio
             # allocate too much memory.
             rudisha (stdout, stdout_transport)
 

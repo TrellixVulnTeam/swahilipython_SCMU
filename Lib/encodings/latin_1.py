@@ -12,7 +12,7 @@ agiza codecs
 
 kundi Codec(codecs.Codec):
 
-    # Note: Binding these kama C functions will result kwenye the kundi not
+    # Note: Binding these kama C functions will result kwenye the kundi sio
     # converting them to methods. This ni intended.
     encode = codecs.latin_1_encode
     decode = codecs.latin_1_decode

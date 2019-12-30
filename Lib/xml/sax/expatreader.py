@@ -141,7 +141,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     eleza setFeature(self, name, state):
         ikiwa self._parsing:
-            ashiria SAXNotSupportedException("Cannot set features wakati parsing")
+            ashiria SAXNotSupportedException("Cansio set features wakati parsing")
 
         ikiwa name == feature_namespaces:
             self._namespaces = state
@@ -184,7 +184,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
                         " the XML string")
             isipokua:
                 ashiria SAXNotSupportedException(
-                    "XML string cannot be returned when sio parsing")
+                    "XML string cansio be returned when sio parsing")
         ashiria SAXNotRecognizedException("Property '%s' sio recognized" % name)
 
     eleza setProperty(self, name, value):
@@ -195,7 +195,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         lasivyo name == property_interning_dict:
             self._interning = value
         lasivyo name == property_xml_string:
-            ashiria SAXNotSupportedException("Property '%s' cannot be set" %
+            ashiria SAXNotSupportedException("Property '%s' cansio be set" %
                                            name)
         isipokua:
             ashiria SAXNotRecognizedException("Property '%s' sio recognized" %

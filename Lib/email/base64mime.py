@@ -89,7 +89,7 @@ eleza body_encode(s, maxlinelen=76, eol=NL):
     encvec = []
     max_unencoded = maxlinelen * 3 // 4
     kila i kwenye range(0, len(s), max_unencoded):
-        # BAW: should encode() inherit b2a_base64()'s dubious behavior in
+        # BAW: should encode() inherit b2a_base64()'s dubious behavior kwenye
         # adding a newline to the encoded string?
         enc = b2a_base64(s[i:i + max_unencoded]).decode("ascii")
         ikiwa enc.endswith(NL) na eol != NL:

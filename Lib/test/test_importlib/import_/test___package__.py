@@ -80,7 +80,7 @@ kundi Using__package__:
                                 '__spec__': FakeSpec('pkg.fakefake')})
 
     eleza test_bad__package__(self):
-        globals = {'__package__': '<not real>'}
+        globals = {'__package__': '<sio real>'}
         ukijumuisha self.assertRaises(ModuleNotFoundError):
             self.__import__('', globals, {}, ['relimport'], 1)
 

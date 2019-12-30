@@ -1,5 +1,5 @@
 eleza hello():
     jaribu:
-        print "Hello, world"
+        andika "Hello, world"
     tatizo IOError, e:
-        print e.errno
+        andika e.errno

@@ -609,7 +609,7 @@ kundi StructTest(unittest.TestCase):
 
         ukijumuisha self.assertRaisesRegex(
                 struct.error,
-                r'not enough data to unpack 4 bytes at offset -2'):
+                r'sio enough data to unpack 4 bytes at offset -2'):
             struct.unpack_from('<I', byte_list, -2)
 
         ukijumuisha self.assertRaisesRegex(

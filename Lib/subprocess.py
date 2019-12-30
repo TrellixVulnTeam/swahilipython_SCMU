@@ -232,7 +232,7 @@ ikiwa _mswindows:
     eleza _cleanup():
         pita
 isipokua:
-    # This lists holds Popen instances kila which the underlying process had not
+    # This lists holds Popen instances kila which the underlying process had sio
     # exited at the time its __del__ method got called: those processes are
     # wait()ed kila synchronously kutoka _cleanup() when a new Popen object is
     # created, to avoid zombie processes.
@@ -780,7 +780,7 @@ kundi Popen(object):
         # Validate the combinations of text na universal_newlines
         ikiwa (text ni sio Tupu na universal_newlines ni sio Tupu
             na bool(universal_newlines) != bool(text)):
-            ashiria SubprocessError('Cannot disambiguate when both text '
+            ashiria SubprocessError('Cansio disambiguate when both text '
                                   'and universal_newlines are supplied but '
                                   'different. Pass one ama the other.')
 
@@ -918,7 +918,7 @@ kundi Popen(object):
                 # In the case of a KeyboardInterrupt we assume the SIGINT
                 # was also already sent to our child processes.  We can't
                 # block indefinitely kama that ni sio user friendly.
-                # If we have sio already waited a brief amount of time in
+                # If we have sio already waited a brief amount of time kwenye
                 # an interrupted .wait() ama .communicate() call, do so here
                 # kila consistency.
                 ikiwa self._sigint_wait_secs > 0:
@@ -996,7 +996,7 @@ kundi Popen(object):
         """
 
         ikiwa self._communication_started na input:
-            ashiria ValueError("Cannot send input after starting communication")
+            ashiria ValueError("Cansio send input after starting communication")
 
         # Optimization: If we are sio worried about timeouts, we haven't
         # started communicating, na we have one ama zero pipes, using select()
@@ -1726,7 +1726,7 @@ kundi Popen(object):
             """Check ikiwa child process has terminated.  Returns returncode
             attribute.
 
-            This method ni called by __del__, so it cannot reference anything
+            This method ni called by __del__, so it cansio reference anything
             outside of the local scope (nor can any methods it calls).
 
             """

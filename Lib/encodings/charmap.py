@@ -16,7 +16,7 @@ agiza codecs
 
 kundi Codec(codecs.Codec):
 
-    # Note: Binding these kama C functions will result kwenye the kundi not
+    # Note: Binding these kama C functions will result kwenye the kundi sio
     # converting them to methods. This ni intended.
     encode = codecs.charmap_encode
     decode = codecs.charmap_decode

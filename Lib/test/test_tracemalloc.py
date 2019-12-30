@@ -846,7 +846,7 @@ kundi TestCommandLine(unittest.TestCase):
         self.assertEqual(stdout, b'Uongo')
 
     @unittest.skipIf(interpreter_requires_environment(),
-                     'Cannot run -E tests when PYTHON env vars are required.')
+                     'Cansio run -E tests when PYTHON env vars are required.')
     eleza test_env_var_ignored_with_E(self):
         """PYTHON* environment variables must be ignored when -E ni present."""
         code = 'agiza tracemalloc; andika(tracemalloc.is_tracing())'

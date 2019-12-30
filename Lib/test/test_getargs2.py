@@ -1178,7 +1178,7 @@ kundi ParseTupleAndKeywords_Test(unittest.TestCase):
                           (), {}, '', [42])
 
     eleza test_bad_use(self):
-        # Test handling invalid format na keywords in
+        # Test handling invalid format na keywords kwenye
         # PyArg_ParseTupleAndKeywords()
         self.assertRaises(SystemError, _testcapi.parse_tuple_and_keywords,
                           (1,), {}, '||O', ['a'])

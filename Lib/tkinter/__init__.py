@@ -764,7 +764,7 @@ kundi Misc:
         rudisha self._nametowidget(name)
 
     eleza tk_focusFollowsMouse(self):
-        """The widget under mouse will get automatically focus. Can not
+        """The widget under mouse will get automatically focus. Can sio
         be disabled easily."""
         self.tk.call('tk_focusFollowsMouse')
 
@@ -1214,7 +1214,7 @@ kundi Misc:
             self.tk.call('winfo', 'screenwidth', self._w))
 
     eleza winfo_server(self):
-        """Return information of the X-Server of the screen of this widget in
+        """Return information of the X-Server of the screen of this widget kwenye
         the form "XmajorRminor vendor vendorVersion"."""
         rudisha self.tk.call('winfo', 'server', self._w)
 
@@ -1650,7 +1650,7 @@ kundi Misc:
     eleza keys(self):
         """Return a list of all resource names of this widget."""
         splitlist = self.tk.splitlist
-        rudisha [splitlist(x)[0][1:] kila x in
+        rudisha [splitlist(x)[0][1:] kila x kwenye
                 splitlist(self.tk.call(self._w, 'configure'))]
 
     eleza __str__(self):
@@ -1682,7 +1682,7 @@ kundi Misc:
     eleza pack_slaves(self):
         """Return a list of all slaves of this widget
         kwenye its packing order."""
-        rudisha [self._nametowidget(x) kila x in
+        rudisha [self._nametowidget(x) kila x kwenye
                 self.tk.splitlist(
                    self.tk.call('pack', 'slaves', self._w))]
 
@@ -1692,7 +1692,7 @@ kundi Misc:
     eleza place_slaves(self):
         """Return a list of all slaves of this widget
         kwenye its packing order."""
-        rudisha [self._nametowidget(x) kila x in
+        rudisha [self._nametowidget(x) kila x kwenye
                 self.tk.splitlist(
                    self.tk.call(
                        'place', 'slaves', self._w))]
@@ -1820,7 +1820,7 @@ kundi Misc:
             args = args + ('-row', row)
         ikiwa column ni sio Tupu:
             args = args + ('-column', column)
-        rudisha [self._nametowidget(x) kila x in
+        rudisha [self._nametowidget(x) kila x kwenye
                 self.tk.splitlist(self.tk.call(
                    ('grid', 'slaves', self._w) + args))]
 
@@ -1924,7 +1924,7 @@ kundi YView:
         self.tk.call(self._w, 'yview', 'moveto', fraction)
 
     eleza yview_scroll(self, number, what):
-        """Shift the y-view according to NUMBER which ni measured in
+        """Shift the y-view according to NUMBER which ni measured kwenye
         "units" ama "pages" (WHAT)."""
         self.tk.call(self._w, 'yview', 'scroll', number, what)
 
@@ -2756,7 +2756,7 @@ kundi Canvas(Widget, XView, YView):
     eleza coords(self, *args):
         """Return a list of coordinates kila the item given kwenye ARGS."""
         # XXX Should use _flatten on args
-        rudisha [self.tk.getdouble(x) kila x in
+        rudisha [self.tk.getdouble(x) kila x kwenye
                            self.tk.splitlist(
                    self.tk.call((self._w, 'coords') + args))]
 
@@ -2948,7 +2948,7 @@ kundi Canvas(Widget, XView, YView):
 
     eleza scan_dragto(self, x, y, gain=10):
         """Adjust the view of the canvas to GAIN times the
-        difference between X na Y na the coordinates given in
+        difference between X na Y na the coordinates given kwenye
         scan_mark."""
         self.tk.call(self._w, 'scan', 'dragto', x, y, gain)
 
@@ -3056,7 +3056,7 @@ kundi Entry(Widget, XView):
 
     eleza scan_dragto(self, x):
         """Adjust the view of the canvas to 10 times the
-        difference between X na Y na the coordinates given in
+        difference between X na Y na the coordinates given kwenye
         scan_mark."""
         self.tk.call(self._w, 'scan', 'dragto', x)
 
@@ -3202,7 +3202,7 @@ kundi Listbox(Widget, XView, YView):
 
     eleza scan_dragto(self, x, y):
         """Adjust the view of the listbox to 10 times the
-        difference between X na Y na the coordinates given in
+        difference between X na Y na the coordinates given kwenye
         scan_mark."""
         self.tk.call(self._w, 'scan', 'dragto', x, y)
 
@@ -3791,7 +3791,7 @@ kundi Text(Widget, XView, YView):
 
     eleza scan_dragto(self, x, y):
         """Adjust the view of the text to 10 times the
-        difference between X na Y na the coordinates given in
+        difference between X na Y na the coordinates given kwenye
         scan_mark."""
         self.tk.call(self._w, 'scan', 'dragto', x, y)
 
@@ -4286,7 +4286,7 @@ kundi Spinbox(Widget, XView):
         Then adjust that end of the selection to be at index
         (i.e including but sio going beyond index). The other
         end of the selection ni made the anchor point kila future
-        select to commands. If the selection isn't currently in
+        select to commands. If the selection isn't currently kwenye
         the spinbox, then a new selection ni created to include
         the characters between index na the most recent selection
         anchor point, inclusive.
@@ -4486,13 +4486,13 @@ kundi PanedWindow(Widget):
         height size
             Specify a height kila the window. The height will be the
             outer dimension of the window including its border, if
-            any. If size ni an empty string, ama ikiwa -height ni not
+            any. If size ni an empty string, ama ikiwa -height ni sio
             specified, then the height requested internally by the
             window will be used initially; the height may later be
             adjusted by the movement of sashes kwenye the panedwindow.
             Size may be any value accepted by Tk_GetPixels.
         minsize n
-            Specifies that the size of the window cannot be made
+            Specifies that the size of the window cansio be made
             less than n. This constraint only affects the size of
             the widget kwenye the paned dimension -- the x dimension
             kila horizontal panedwindows, the y dimension for
@@ -4500,12 +4500,12 @@ kundi PanedWindow(Widget):
             Tk_GetPixels.
         padx n
             Specifies a non-negative value indicating how much
-            extra space to leave on each side of the window in
+            extra space to leave on each side of the window kwenye
             the X-direction. The value may have any of the forms
             accepted by Tk_GetPixels.
         pady n
             Specifies a non-negative value indicating how much
-            extra space to leave on each side of the window in
+            extra space to leave on each side of the window kwenye
             the Y-direction. The value may have any of the forms
             accepted by Tk_GetPixels.
         sticky style

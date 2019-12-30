@@ -374,7 +374,7 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 endelea
             isipokua:
                 ashiria TypeError(f'keys must be str, int, float, bool ama Tupu, '
-                                f'not {key.__class__.__name__}')
+                                f'sio {key.__class__.__name__}')
             ikiwa first:
                 first = Uongo
             isipokua:

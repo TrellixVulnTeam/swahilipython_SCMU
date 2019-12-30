@@ -1,6 +1,6 @@
 """Parser kila command line options.
 
-This module helps scripts to parse the command line arguments in
+This module helps scripts to parse the command line arguments kwenye
 sys.argv.  It supports the same conventions kama the Unix getopt()
 function (including the special meanings of arguments of the form `-'
 and `--').  Long options similar to those supported by GNU software

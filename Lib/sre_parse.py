@@ -101,9 +101,9 @@ kundi State:
     eleza checklookbehindgroup(self, gid, source):
         ikiwa self.lookbehindgroups ni sio Tupu:
             ikiwa sio self.checkgroup(gid):
-                ashiria source.error('cannot refer to an open group')
+                ashiria source.error('cansio refer to an open group')
             ikiwa gid >= self.lookbehindgroups:
-                ashiria source.error('cannot refer to group defined kwenye the same '
+                ashiria source.error('cansio refer to group defined kwenye the same '
                                    'lookbehind subpattern')
 
 kundi SubPattern:
@@ -416,7 +416,7 @@ eleza _escape(source, escape, state):
             group = int(escape[1:])
             ikiwa group < state.groups:
                 ikiwa sio state.checkgroup(group):
-                    ashiria source.error("cannot refer to an open group",
+                    ashiria source.error("cansio refer to an open group",
                                        len(escape))
                 state.checklookbehindgroup(group, source)
                 rudisha GROUPREF, group
@@ -712,7 +712,7 @@ eleza _parse(source, state, verbose, nested, first=Uongo):
                             msg = "unknown group name %r" % name
                             ashiria source.error(msg, len(name) + 1)
                         ikiwa sio state.checkgroup(gid):
-                            ashiria source.error("cannot refer to an open group",
+                            ashiria source.error("cansio refer to an open group",
                                                len(name) + 1)
                         state.checklookbehindgroup(gid, source)
                         subpatternappend((GROUPREF, gid))
@@ -867,11 +867,11 @@ eleza _parse_flags(source, state, char):
             flag = FLAGS[char]
             ikiwa source.istext:
                 ikiwa char == 'L':
-                    msg = "bad inline flags: cannot use 'L' flag ukijumuisha a str pattern"
+                    msg = "bad inline flags: cansio use 'L' flag ukijumuisha a str pattern"
                     ashiria source.error(msg)
             isipokua:
                 ikiwa char == 'u':
-                    msg = "bad inline flags: cannot use 'u' flag ukijumuisha a bytes pattern"
+                    msg = "bad inline flags: cansio use 'u' flag ukijumuisha a bytes pattern"
                     ashiria source.error(msg)
             add_flags |= flag
             ikiwa (flag & TYPE_FLAGS) na (add_flags & TYPE_FLAGS) != flag:
@@ -889,7 +889,7 @@ eleza _parse_flags(source, state, char):
         state.flags |= add_flags
         rudisha Tupu
     ikiwa add_flags & GLOBAL_FLAGS:
-        ashiria source.error("bad inline flags: cannot turn on global flag", 1)
+        ashiria source.error("bad inline flags: cansio turn on global flag", 1)
     ikiwa char == "-":
         char = sourceget()
         ikiwa char ni Tupu:
@@ -900,7 +900,7 @@ eleza _parse_flags(source, state, char):
         wakati Kweli:
             flag = FLAGS[char]
             ikiwa flag & TYPE_FLAGS:
-                msg = "bad inline flags: cannot turn off flags 'a', 'u' na 'L'"
+                msg = "bad inline flags: cansio turn off flags 'a', 'u' na 'L'"
                 ashiria source.error(msg)
             del_flags |= flag
             char = sourceget()
@@ -913,7 +913,7 @@ eleza _parse_flags(source, state, char):
                 ashiria source.error(msg, len(char))
     assert char == ":"
     ikiwa del_flags & GLOBAL_FLAGS:
-        ashiria source.error("bad inline flags: cannot turn off global flag", 1)
+        ashiria source.error("bad inline flags: cansio turn off global flag", 1)
     ikiwa add_flags & del_flags:
         ashiria source.error("bad inline flags: flag turned on na off", 1)
     rudisha add_flags, del_flags
@@ -922,14 +922,14 @@ eleza fix_flags(src, flags):
     # Check na fix flags according to the type of pattern (str ama bytes)
     ikiwa isinstance(src, str):
         ikiwa flags & SRE_FLAG_LOCALE:
-            ashiria ValueError("cannot use LOCALE flag ukijumuisha a str pattern")
+            ashiria ValueError("cansio use LOCALE flag ukijumuisha a str pattern")
         ikiwa sio flags & SRE_FLAG_ASCII:
             flags |= SRE_FLAG_UNICODE
         lasivyo flags & SRE_FLAG_UNICODE:
             ashiria ValueError("ASCII na UNICODE flags are incompatible")
     isipokua:
         ikiwa flags & SRE_FLAG_UNICODE:
-            ashiria ValueError("cannot use UNICODE flag ukijumuisha a bytes pattern")
+            ashiria ValueError("cansio use UNICODE flag ukijumuisha a bytes pattern")
         ikiwa flags & SRE_FLAG_LOCALE na flags & SRE_FLAG_ASCII:
             ashiria ValueError("ASCII na LOCALE flags are incompatible")
     rudisha flags

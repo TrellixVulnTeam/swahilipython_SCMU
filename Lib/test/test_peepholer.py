@@ -66,10 +66,10 @@ kundi TestTranforms(BytecodeTestCase):
 
     eleza test_elim_inversion_of_is_or_in(self):
         kila line, cmp_op kwenye (
-            ('not a ni b', 'is not',),
-            ('not a kwenye b', 'not in',),
-            ('not a ni sio b', 'is',),
-            ('not a haiko kwenye b', 'in',),
+            ('sio a ni b', 'is not',),
+            ('sio a kwenye b', 'sio in',),
+            ('sio a ni sio b', 'is',),
+            ('sio a haiko kwenye b', 'in',),
             ):
             code = compile(line, '', 'single')
             self.assertInBytecode(code, 'COMPARE_OP', cmp_op)
@@ -167,7 +167,7 @@ kundi TestTranforms(BytecodeTestCase):
 
     eleza test_folding_of_lists_of_constants(self):
         kila line, elem kwenye (
-            # in/not kwenye constants ukijumuisha BUILD_LIST should be folded to a tuple:
+            # in/sio kwenye constants ukijumuisha BUILD_LIST should be folded to a tuple:
             ('a kwenye [1,2,3]', (1, 2, 3)),
             ('a haiko kwenye ["a","b","c"]', ('a', 'b', 'c')),
             ('a kwenye [Tupu, 1, Tupu]', (Tupu, 1, Tupu)),
@@ -180,7 +180,7 @@ kundi TestTranforms(BytecodeTestCase):
 
     eleza test_folding_of_sets_of_constants(self):
         kila line, elem kwenye (
-            # in/not kwenye constants ukijumuisha BUILD_SET should be folded to a frozenset:
+            # in/sio kwenye constants ukijumuisha BUILD_SET should be folded to a frozenset:
             ('a kwenye {1,2,3}', frozenset({1, 2, 3})),
             ('a haiko kwenye {"a","b","c"}', frozenset({'a', 'c', 'b'})),
             ('a kwenye {Tupu, 1, Tupu}', frozenset({1, Tupu})),

@@ -438,7 +438,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
              '0x1.aeaa51052e978p-2', '0x1.092178fb945a6p-2'])
 
     eleza test_bug_31478(self):
-        # There shouldn't be an assertion failure kwenye _random.Random.seed() in
+        # There shouldn't be an assertion failure kwenye _random.Random.seed() kwenye
         # case the argument has a bad __abs__() method.
         kundi BadInt(int):
             eleza __abs__(self):
@@ -499,7 +499,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertEqual(self.gen.getrandbits(100), bits100)
 
         # Little trick to make "tuple(x % (2**32) kila x kwenye internalstate)"
-        # ashiria ValueError. I cannot think of a simple way to achieve this, so
+        # ashiria ValueError. I cansio think of a simple way to achieve this, so
         # I am opting kila using a generator kama the middle argument of setstate
         # which attempts to cast a NaN to integer.
         state_values = self.gen.getstate()[1]
@@ -674,7 +674,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
             self.gen._randbelow_without_getrandbits(0, maxsize=maxsize)
 
         # This might be going too far to test a single line, but because of our
-        # noble aim of achieving 100% test coverage we need to write a case in
+        # noble aim of achieving 100% test coverage we need to write a case kwenye
         # which the following line kwenye Random._randbelow() gets executed:
         #
         # rem = maxsize % n

@@ -199,7 +199,7 @@ kundi Queue:
         been processed (meaning that a task_done() call was received kila every
         item that had been put() into the queue).
 
-        Raises ValueError ikiwa called more times than there were items placed in
+        Raises ValueError ikiwa called more times than there were items placed kwenye
         the queue.
         """
         ikiwa self._unfinished_tasks <= 0:

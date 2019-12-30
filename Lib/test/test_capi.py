@@ -571,7 +571,7 @@ kundi SubinterpreterTest(unittest.TestCase):
     eleza test_mutate_exception(self):
         """
         Exceptions saved kwenye global module state get shared between
-        individual module instances. This test checks whether ama not
+        individual module instances. This test checks whether ama sio
         a change kwenye one interpreter's module gets reflected into the
         other ones.
         """

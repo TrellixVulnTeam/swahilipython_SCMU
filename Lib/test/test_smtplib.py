@@ -297,7 +297,7 @@ kundi DebuggingServerTests(unittest.TestCase):
     eleza testVRFY(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
-        expected = (252, b'Cannot VRFY user, but will accept message ' + \
+        expected = (252, b'Cansio VRFY user, but will accept message ' + \
                          b'and attempt delivery')
         self.assertEqual(smtp.vrfy('nobody@nowhere.com'), expected)
         self.assertEqual(smtp.verify('nobody@nowhere.com'), expected)

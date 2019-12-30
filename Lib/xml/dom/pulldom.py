@@ -58,7 +58,7 @@ kundi PullDOM(xml.sax.ContentHandler):
             self._xmlns_attrs = []
         uri, localname = name
         ikiwa uri:
-            # When using namespaces, the reader may ama may not
+            # When using namespaces, the reader may ama may sio
             # provide us ukijumuisha the original name. If not, create
             # *a* valid tagName kutoka the current context.
             ikiwa tagName ni Tupu:

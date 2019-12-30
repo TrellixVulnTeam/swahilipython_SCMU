@@ -27,7 +27,7 @@ kila typ kwenye [c_short, c_int, c_long, c_longlong,
 kundi TestStructures(unittest.TestCase):
     eleza test_native(self):
         kila typ kwenye structures:
-##            print typ.value
+##            andika typ.value
             self.assertEqual(typ.value.offset, 1)
             o = typ()
             o.value = 4
@@ -35,7 +35,7 @@ kundi TestStructures(unittest.TestCase):
 
     eleza test_swapped(self):
         kila typ kwenye byteswapped_structures:
-##            print >> sys.stderr, typ.value
+##            andika >> sys.stderr, typ.value
             self.assertEqual(typ.value.offset, 1)
             o = typ()
             o.value = 4

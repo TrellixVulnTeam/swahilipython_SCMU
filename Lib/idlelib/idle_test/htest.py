@@ -13,7 +13,7 @@ The first parameter of X must be 'parent'.  When called, the parent
 argument will be the root window.  X must create a child Toplevel
 window (or subkundi thereof).  The Toplevel may be a test widget ama
 dialog, kwenye which case the callable ni the corresponding class.  Or the
-Toplevel may contain the widget to be tested ama set up a context in
+Toplevel may contain the widget to be tested ama set up a context kwenye
 which a test widget ni invoked.  In this latter case, the callable ni a
 wrapper function that sets up the Toplevel na other objects.  Wrapper
 function names, such kama _editor_window', should start ukijumuisha '_'.
@@ -188,7 +188,7 @@ HelpSource_spec = {
            "'', > than 30 chars, na 'abc' are invalid menu item names.\n"
            "'' na file does sio exist are invalid path items.\n"
            "Any url ('www...', 'http...') ni accepted.\n"
-           "Test Browse ukijumuisha na without path, kama cannot unittest.\n"
+           "Test Browse ukijumuisha na without path, kama cansio unittest.\n"
            "[Ok] ama <Return> prints valid entry to shell\n"
            "[Cancel] ama <Escape> prints Tupu to shell"
     }
@@ -199,7 +199,7 @@ _io_binding_spec = {
     'msg': "Test the following bindings.\n"
            "<Control-o> to open file kutoka dialog.\n"
            "Edit the file.\n"
-           "<Control-p> to print the file.\n"
+           "<Control-p> to andika the file.\n"
            "<Control-s> to save the file.\n"
            "<Alt-s> to save-as another file.\n"
            "<Control-c> to save-copy-as another file.\n"
@@ -229,7 +229,7 @@ _linenumbers_drag_scrolling_spec = {
 _multi_call_spec = {
     'file': 'multicall',
     'kwds': {},
-    'msg': "The following actions should trigger a print to console ama IDLE"
+    'msg': "The following actions should trigger a andika to console ama IDLE"
            " Shell.\nEntering na leaving the text area, key entry, "
            "<Control-Key>,\n<Alt-Key-a>, <Control-Key-a>, "
            "<Alt-Control-Key-a>, \n<Control-Button-1>, <Alt-Button-1> na "
@@ -264,7 +264,7 @@ _percolator_spec = {
     'file': 'percolator',
     'kwds': {},
     'msg': "There are two tracers which can be toggled using a checkbox.\n"
-           "Toggling a tracer 'on' by checking it should print tracer "
+           "Toggling a tracer 'on' by checking it should andika tracer "
            "output to the console ama to the IDLE shell.\n"
            "If both the tracers are 'on', the output kutoka the tracer which "
            "was switched 'on' later, should be printed first\n"

@@ -3,7 +3,7 @@
 Non-gui tests kila Query, SectionName, ModuleName, na HelpSource use
 dummy versions that extract the non-gui methods na add other needed
 attributes.  GUI tests create an instance of each kundi na simulate
-entries na button clicks.  Subkundi tests only target the new code in
+entries na button clicks.  Subkundi tests only target the new code kwenye
 the subkundi definition.
 
 The appearance of the widgets ni checked by the Query na
@@ -125,7 +125,7 @@ kundi ModuleNameTest(unittest.TestCase):
     eleza test_bogus_module_name(self):
         dialog = self.Dummy_ModuleName('__name_xyz123_should_not_exist__')
         self.assertEqual(dialog.entry_ok(), Tupu)
-        self.assertIn('not found', dialog.entry_error['text'])
+        self.assertIn('sio found', dialog.entry_error['text'])
 
     eleza test_c_source_name(self):
         dialog = self.Dummy_ModuleName('itertools')
@@ -189,7 +189,7 @@ kundi HelpsourcePathokTest(unittest.TestCase):
     eleza test_path_ok_bad(self):
         dialog = self.Dummy_HelpSource(__file__ + 'bad-bad-bad')
         self.assertEqual(dialog.path_ok(), Tupu)
-        self.assertIn('not exist', dialog.path_error['text'])
+        self.assertIn('sio exist', dialog.path_error['text'])
 
     eleza test_path_ok_web(self):
         dialog = self.Dummy_HelpSource('')

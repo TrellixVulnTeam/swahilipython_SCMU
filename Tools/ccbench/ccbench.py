@@ -388,7 +388,7 @@ eleza run_latency_tests(max_threads):
         wakati nthreads <= max_threads:
             results = run_latency_test(func, args, nthreads)
             n = len(results)
-            # We print out milliseconds
+            # We andika out milliseconds
             lats = [1000 * (t2 - t1) kila (t1, t2) kwenye results]
             #andika(list(map(int, lats)))
             avg = sum(lats) / n

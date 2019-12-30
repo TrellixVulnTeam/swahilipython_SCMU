@@ -40,7 +40,7 @@ eleza duplicate_string(text):
     new object ukijumuisha a reference count of 1.
 
     This ni a best-effort: latin1 single letters na the empty
-    string ('') are singletons na cannot be cloned.
+    string ('') are singletons na cansio be cloned.
     """
     rudisha text.encode().decode()
 
@@ -2088,7 +2088,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         # Error handling (wrong arguments)
         self.assertRaises(TypeError, "hello".encode, 42, 42, 42)
 
-        # Error handling (lone surrogate in
+        # Error handling (lone surrogate kwenye
         # _PyUnicode_TransformDecimalAndSpaceToASCII())
         self.assertRaises(ValueError, int, "\ud800")
         self.assertRaises(ValueError, int, "\udf00")

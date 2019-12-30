@@ -121,7 +121,7 @@ kundi BaseFix(object):
 
     eleza cannot_convert(self, node, reason=Tupu):
         """Warn the user that a given chunk of code ni sio valid Python 3,
-        but that it cannot be converted automatically.
+        but that it cansio be converted automatically.
 
         First argument ni the top-level node kila the code kwenye question.
         Optional second argument ni why it can't be converted.

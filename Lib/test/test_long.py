@@ -694,13 +694,13 @@ kundi LongTest(unittest.TestCase):
         self.assertRaises(ValueError, format, 3, "+c")   # sign sio allowed
                                                          # ukijumuisha 'c'
 
-        self.assertRaisesRegex(ValueError, 'Cannot specify both', format, 3, '_,')
-        self.assertRaisesRegex(ValueError, 'Cannot specify both', format, 3, ',_')
-        self.assertRaisesRegex(ValueError, 'Cannot specify both', format, 3, '_,d')
-        self.assertRaisesRegex(ValueError, 'Cannot specify both', format, 3, ',_d')
+        self.assertRaisesRegex(ValueError, 'Cansio specify both', format, 3, '_,')
+        self.assertRaisesRegex(ValueError, 'Cansio specify both', format, 3, ',_')
+        self.assertRaisesRegex(ValueError, 'Cansio specify both', format, 3, '_,d')
+        self.assertRaisesRegex(ValueError, 'Cansio specify both', format, 3, ',_d')
 
-        self.assertRaisesRegex(ValueError, "Cannot specify ',' ukijumuisha 's'", format, 3, ',s')
-        self.assertRaisesRegex(ValueError, "Cannot specify '_' ukijumuisha 's'", format, 3, '_s')
+        self.assertRaisesRegex(ValueError, "Cansio specify ',' ukijumuisha 's'", format, 3, ',s')
+        self.assertRaisesRegex(ValueError, "Cansio specify '_' ukijumuisha 's'", format, 3, '_s')
 
         # ensure that only int na float type specifiers work
         kila format_spec kwenye ([chr(x) kila x kwenye range(ord('a'), ord('z')+1)] +

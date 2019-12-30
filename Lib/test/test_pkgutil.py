@@ -423,7 +423,7 @@ kundi ImportlibMigrationTests(unittest.TestCase):
             self.assertIsNotTupu(pkgutil.get_loader("test.support"))
             self.assertEqual(len(w.warnings), 0)
 
-    @unittest.skipIf(__name__ == '__main__', 'not compatible ukijumuisha __main__')
+    @unittest.skipIf(__name__ == '__main__', 'sio compatible ukijumuisha __main__')
     eleza test_get_loader_handles_missing_loader_attribute(self):
         global __loader__
         this_loader = __loader__

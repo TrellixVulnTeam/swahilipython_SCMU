@@ -245,7 +245,7 @@ kundi ListTest(ReadTest, unittest.TestCase):
         # Make sure it puts trailing slash kila directory
         self.assertIn(b'ustar/dirtype/', out)
         self.assertIn(b'ustar/dirtype-with-size/', out)
-        # Make sure it ni able to print unencodable characters
+        # Make sure it ni able to andika unencodable characters
         eleza conv(b):
             s = b.decode(self.tar.encoding, 'surrogateescape')
             rudisha s.encode('ascii', 'backslashreplace')
@@ -264,7 +264,7 @@ kundi ListTest(ReadTest, unittest.TestCase):
         # ...
         self.assertRegex(out, br'ustar/conttype ?\r?\n'
                               br'ustar/regtype ?\r?\n')
-        # Make sure it does sio print the source of link without verbose flag
+        # Make sure it does sio andika the source of link without verbose flag
         self.assertNotIn(b'link to', out)
         self.assertNotIn(b'->', out)
 
@@ -2053,7 +2053,7 @@ kundi LimitsTest(unittest.TestCase):
         tarinfo = tarfile.TarInfo("0123456789" * 10)
         tarinfo.tobuf(tarfile.USTAR_FORMAT)
 
-        # 101 char name that cannot be stored
+        # 101 char name that cansio be stored
         tarinfo = tarfile.TarInfo("0123456789" * 10 + "0")
         self.assertRaises(ValueError, tarinfo.tobuf, tarfile.USTAR_FORMAT)
 
@@ -2061,7 +2061,7 @@ kundi LimitsTest(unittest.TestCase):
         tarinfo = tarfile.TarInfo("123/" * 62 + "longname")
         tarinfo.tobuf(tarfile.USTAR_FORMAT)
 
-        # 256 char name that cannot be stored
+        # 256 char name that cansio be stored
         tarinfo = tarfile.TarInfo("1234567/" * 31 + "longname")
         self.assertRaises(ValueError, tarinfo.tobuf, tarfile.USTAR_FORMAT)
 

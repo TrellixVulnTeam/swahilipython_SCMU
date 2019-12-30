@@ -696,7 +696,7 @@ boolean {0[0]} NO
     eleza test_set_string_types(self):
         cf = self.fromstring("[sect]\n"
                              "option1{eq}foo\n".format(eq=self.delimiters[0]))
-        # Check that we don't get an exception when setting values in
+        # Check that we don't get an exception when setting values kwenye
         # an existing section using strings:
         kundi mystr(str):
             pita
@@ -1236,7 +1236,7 @@ kundi ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
             [dollars]
             $var = $$value
             $var2 = ${$var}
-            ${sick} = cannot interpolate me
+            ${sick} = cansio interpolate me
 
             [interpolated]
             $other = ${dollars:$var}
@@ -1245,7 +1245,7 @@ kundi ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
 
         self.assertEqual(cf['dollars']['$var'], '$value')
         self.assertEqual(cf['interpolated']['$other'], '$value')
-        self.assertEqual(cf['dollars']['${sick}'], 'cannot interpolate me')
+        self.assertEqual(cf['dollars']['${sick}'], 'cansio interpolate me')
         exception_class = configparser.InterpolationMissingOptionError
         ukijumuisha self.assertRaises(exception_class) kama cm:
             cf['interpolated']['$trying']
@@ -1600,7 +1600,7 @@ kundi CoverageOneHundredTestCase(unittest.TestCase):
                                             "given.")
         ukijumuisha self.assertRaises(ValueError) kama cm:
             configparser.ParsingError(source='source', filename='filename')
-        self.assertEqual(str(cm.exception), "Cannot specify both `filename' "
+        self.assertEqual(str(cm.exception), "Cansio specify both `filename' "
                                             "and `source'. Use `source'.")
         error = configparser.ParsingError(filename='source')
         self.assertEqual(error.source, 'source')
@@ -2015,7 +2015,7 @@ kundi ConvertersTestCase(BasicTestCase, unittest.TestCase):
 
 
 kundi BlatantOverrideConvertersTestCase(unittest.TestCase):
-    """What ikiwa somebody overrode a getboolean()? We want to make sure that in
+    """What ikiwa somebody overrode a getboolean()? We want to make sure that kwenye
     this case the automatic converters do sio kick in."""
 
     config = """

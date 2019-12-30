@@ -36,7 +36,7 @@ eleza slice_indices(slice, length):
     ikiwa length < 0:
         ashiria ValueError("length should sio be negative")
     ikiwa step == 0:
-        ashiria ValueError("slice step cannot be zero")
+        ashiria ValueError("slice step cansio be zero")
 
     # Find lower na upper bounds kila start na stop.
     lower = -1 ikiwa step < 0 isipokua 0

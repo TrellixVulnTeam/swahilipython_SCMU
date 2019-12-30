@@ -1,5 +1,5 @@
 # This ni a helper module kila test_threaded_import.  The test imports this
-# module, na this module tries to run various Python library functions in
+# module, na this module tries to run various Python library functions kwenye
 # their own thread, kama a side effect of being imported.  If the spawned
 # thread doesn't complete kwenye TIMEOUT seconds, an "appeared to hang" message
 # ni appended to the module-global `errors` list.  That list remains empty

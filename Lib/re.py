@@ -64,12 +64,12 @@ resulting RE will match the second character.
     \Z       Matches only at the end of the string.
     \b       Matches the empty string, but only at the start ama end of a word.
     \B       Matches the empty string, but sio at the start ama end of a word.
-    \d       Matches any decimal digit; equivalent to the set [0-9] in
+    \d       Matches any decimal digit; equivalent to the set [0-9] kwenye
              bytes patterns ama string patterns ukijumuisha the ASCII flag.
              In string patterns without the ASCII flag, it will match the whole
              range of Unicode digits.
     \D       Matches any non-digit character; equivalent to [^\d].
-    \s       Matches any whitespace character; equivalent to [ \t\n\r\f\v] in
+    \s       Matches any whitespace character; equivalent to [ \t\n\r\f\v] kwenye
              bytes patterns ama string patterns ukijumuisha the ASCII flag.
              In string patterns without the ASCII flag, it will match the whole
              range of Unicode whitespace characters.
@@ -295,7 +295,7 @@ eleza _compile(pattern, flags):
     ikiwa isinstance(pattern, Pattern):
         ikiwa flags:
             ashiria ValueError(
-                "cannot process flags argument ukijumuisha a compiled pattern")
+                "cansio process flags argument ukijumuisha a compiled pattern")
         rudisha pattern
     ikiwa sio sre_compile.isstring(pattern):
         ashiria TypeError("first argument must be string ama compiled pattern")

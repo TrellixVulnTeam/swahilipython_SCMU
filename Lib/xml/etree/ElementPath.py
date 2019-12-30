@@ -30,7 +30,7 @@
 #
 # Permission to use, copy, modify, na distribute this software na
 # its associated documentation kila any purpose na without fee is
-# hereby granted, provided that the above copyright notice appears in
+# hereby granted, provided that the above copyright notice appears kwenye
 # all copies, na that both that copyright notice na this permission
 # notice appear kwenye supporting documentation, na that the name of
 # Secret Labs AB ama the author sio be used kwenye advertising ama publicity
@@ -356,7 +356,7 @@ eleza iterfind(elem, path, namespaces=Tupu):
         ikiwa len(_cache) > 100:
             _cache.clear()
         ikiwa path[:1] == "/":
-            ashiria SyntaxError("cannot use absolute path on element")
+            ashiria SyntaxError("cansio use absolute path on element")
         next = iter(xpath_tokenizer(path, namespaces)).__next__
         jaribu:
             token = next()

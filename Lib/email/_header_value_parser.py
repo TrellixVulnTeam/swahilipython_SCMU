@@ -37,7 +37,7 @@ semantically meaningful value of that part of the parse subtree.  The value of
 all whitespace tokens (no matter how many sub-tokens they may contain) ni a
 single space, kama per the RFC rules.  This includes 'CFWS', which ni herein
 included kwenye the general kundi of whitespace tokens.  There ni one exception to
-the rule that whitespace tokens are collapsed into single spaces kwenye values: in
+the rule that whitespace tokens are collapsed into single spaces kwenye values: kwenye
 the value of a 'bare-quoted-string' (a quoted-string ukijumuisha no leading ama
 trailing whitespace), any whitespace that appeared between the quotation marks
 is preserved kwenye the returned value.  Note that kwenye all Terminal strings quoted
@@ -725,7 +725,7 @@ kundi MimeParameters(TokenList):
 
     @property
     eleza params(self):
-        # The RFC specifically states that the ordering of parameters ni not
+        # The RFC specifically states that the ordering of parameters ni sio
         # guaranteed na may be reordered by the transport layer.  So we have
         # to assume the RFC 2231 pieces can come kwenye any order.  However, we
         # output them kwenye the order that we first see a given name, which gives
@@ -1086,7 +1086,7 @@ eleza get_unstructured(value):
 
        obs-NO-WS-CTL ni control characters tatizo WSP/CR/LF.
 
-    So, basically, we have printable runs, plus control characters ama nulls in
+    So, basically, we have printable runs, plus control characters ama nulls kwenye
     the obsolete syntax, separated by whitespace.  Since RFC 2047 uses the
     obsolete syntax kwenye its specification, but requires whitespace on either
     side of the encoded words, I can see no reason to need to separate the
@@ -2118,7 +2118,7 @@ eleza parse_message_id(value):
 
 #
 # XXX: As I begin to add additional header parsers, I'm realizing we probably
-# have two level of parser routines: the get_XXX methods that get a token in
+# have two level of parser routines: the get_XXX methods that get a token kwenye
 # the grammar, na parse_XXX methods that parse an entire field value.  So
 # get_address_list above should really be a parse_ method, kama probably should
 # be get_unstructured.
@@ -2532,7 +2532,7 @@ eleza parse_mime_parameters(value):
     """ parameter *( ";" parameter )
 
     That BNF ni meant to indicate this routine should only be called after
-    finding na handling the leading ';'.  There ni no corresponding rule in
+    finding na handling the leading ';'.  There ni no corresponding rule kwenye
     the formal RFC grammar, but it ni more convenient kila us kila the set of
     parameters to be treated kama its own TokenList.
 
@@ -2909,7 +2909,7 @@ eleza _fold_mime_parameters(part, lines, maxlen, encoding):
     """Fold TokenList 'part' into the 'lines' list kama mime parameters.
 
     Using the decoded list of parameters na values, format them according to
-    the RFC rules, including using RFC2231 encoding ikiwa the value cannot be
+    the RFC rules, including using RFC2231 encoding ikiwa the value cansio be
     expressed kwenye 'encoding' and/or the parameter+value ni too long to fit
     within 'maxlen'.
 

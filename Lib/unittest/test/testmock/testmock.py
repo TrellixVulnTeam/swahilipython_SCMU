@@ -725,7 +725,7 @@ kundi MockTest(unittest.TestCase):
 
     eleza test_assert_called_with_message(self):
         mock = Mock()
-        self.assertRaisesRegex(AssertionError, 'not called',
+        self.assertRaisesRegex(AssertionError, 'sio called',
                                 mock.assert_called_with)
 
 
@@ -942,7 +942,7 @@ kundi MockTest(unittest.TestCase):
     eleza test_assert_called_with_failure_message(self):
         mock = NonCallableMock()
 
-        actual = 'not called.'
+        actual = 'sio called.'
         expected = "mock(1, '2', 3, bar='foo')"
         message = 'expected call sio found.\nExpected: %s\nActual: %s'
         self.assertRaisesWithMsg(
@@ -1539,7 +1539,7 @@ kundi MockTest(unittest.TestCase):
     #Issue21238
     eleza test_mock_unsafe(self):
         m = Mock()
-        msg = "Attributes cannot start ukijumuisha 'assert' ama 'assret'"
+        msg = "Attributes cansio start ukijumuisha 'assert' ama 'assret'"
         ukijumuisha self.assertRaisesRegex(AttributeError, msg):
             m.assert_foo_call()
         ukijumuisha self.assertRaisesRegex(AttributeError, msg):

@@ -71,9 +71,9 @@ kundi PointersTestCase(unittest.TestCase):
 
         eleza func(arg):
             kila i kwenye range(10):
-##                print arg[i],
+##                andika arg[i],
                 self.result.append(arg[i])
-##            print
+##            andika
             rudisha 0
         callback = PROTOTYPE(func)
 
@@ -88,19 +88,19 @@ kundi PointersTestCase(unittest.TestCase):
 ##        self.assertEqual(i.value, 84)
 
         doit(callback)
-##        print self.result
+##        andika self.result
         doit(callback)
-##        print self.result
+##        andika self.result
 
     eleza test_basics(self):
         kutoka operator agiza delitem
         kila ct, pt kwenye zip(ctype_types, python_types):
             i = ct(42)
             p = pointer(i)
-##            print type(p.contents), ct
+##            andika type(p.contents), ct
             self.assertIs(type(p.contents), ct)
             # p.contents ni the same kama p[0]
-##            print p.contents
+##            andika p.contents
 ##            self.assertEqual(p.contents, 42)
 ##            self.assertEqual(p[0], 42)
 
@@ -112,9 +112,9 @@ kundi PointersTestCase(unittest.TestCase):
         addr = a.buffer_info()[0]
 
         p = POINTER(POINTER(c_int))
-##        print dir(p)
-##        print p.from_address
-##        print p.from_address(addr)[0][0]
+##        andika dir(p)
+##        andika p.from_address
+##        andika p.from_address(addr)[0][0]
 
     eleza test_other(self):
         kundi Table(Structure):

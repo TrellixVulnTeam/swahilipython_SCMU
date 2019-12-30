@@ -36,7 +36,7 @@ ikiwa len(sys.argv) < 2:
 jaribu:
     ucrtbased = WinDLL(sys.argv[1])
 tatizo OSError:
-    andika('Cannot find ucrtbased.dll')
+    andika('Cansio find ucrtbased.dll')
     # This likely means that VS ni sio installed, but that ni an
     # obvious enough problem ikiwa you're trying to produce a debug
     # build that we don't need to fail here.

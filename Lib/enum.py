@@ -36,7 +36,7 @@ eleza _is_sunder(name):
 eleza _make_class_unpicklable(cls):
     """Make the given kundi un-picklable."""
     eleza _koma_on_call_reduce(self, proto):
-        ashiria TypeError('%r cannot be pickled' % self)
+        ashiria TypeError('%r cansio be pickled' % self)
     cls.__reduce_ex__ = _koma_on_call_reduce
     cls.__module__ = '<unknown>'
 
@@ -86,7 +86,7 @@ kundi _EnumDict(dict):
                 self._ignore = value
                 already = set(value) & set(self._member_names)
                 ikiwa already:
-                    ashiria ValueError('_ignore_ cannot specify already set names: %r' % (already, ))
+                    ashiria ValueError('_ignore_ cansio specify already set names: %r' % (already, ))
         lasivyo _is_dunder(key):
             ikiwa key == '__order__':
                 key = '_order_'
@@ -128,7 +128,7 @@ kundi EnumMeta(type):
 
     eleza __new__(metacls, cls, bases, classdict):
         # an Enum kundi ni final once enumeration items have been defined; it
-        # cannot be mixed ukijumuisha other types (int, float, etc.) ikiwa it has an
+        # cansio be mixed ukijumuisha other types (int, float, etc.) ikiwa it has an
         # inherited __new__ unless a new __new__ ni defined (or the resulting
         # kundi will fail).
         #
@@ -181,7 +181,7 @@ kundi EnumMeta(type):
         # kutoka the source, sabotage the pickle protocol kila this kundi so
         # that pickle.dumps also fails.
         #
-        # However, ikiwa the new kundi implements its own __reduce_ex__, do not
+        # However, ikiwa the new kundi implements its own __reduce_ex__, do sio
         # sabotage -- it's on them to make sure it works correctly.  We use
         # __reduce_ex__ instead of any of the others kama it ni preferred by
         # pickle over __reduce__, na it handles all pickle protocols.
@@ -317,7 +317,7 @@ kundi EnumMeta(type):
         # (see issue19025).
         ikiwa attr kwenye cls._member_map_:
             ashiria AttributeError(
-                    "%s: cannot delete Enum member." % cls.__name__)
+                    "%s: cansio delete Enum member." % cls.__name__)
         super().__delattr__(attr)
 
     eleza __dir__(self):
@@ -375,7 +375,7 @@ kundi EnumMeta(type):
         """
         member_map = cls.__dict__.get('_member_map_', {})
         ikiwa name kwenye member_map:
-            ashiria AttributeError('Cannot reassign members.')
+            ashiria AttributeError('Cansio reassign members.')
         super().__setattr__(name, value)
 
     eleza _create_(cls, class_name, names, *, module=Tupu, qualname=Tupu, type=Tupu, start=1):
@@ -438,7 +438,7 @@ kundi EnumMeta(type):
         # convert all constants kutoka source (or module) that pita filter() to
         # a new Enum called name, na export the enum na its members back to
         # module;
-        # also, replace the __reduce_ex__ method so unpickling works in
+        # also, replace the __reduce_ex__ method so unpickling works kwenye
         # previous Python versions
         module_globals = vars(sys.modules[module])
         ikiwa source:
@@ -499,7 +499,7 @@ kundi EnumMeta(type):
                     "`EnumName([mixin_type, ...] [data_type,] enum_type)`")
         member_type = _find_data_type(bases) ama object
         ikiwa first_enum._member_names_:
-            ashiria TypeError("Cannot extend enumerations")
+            ashiria TypeError("Cansio extend enumerations")
         rudisha member_type, first_enum
 
     @staticmethod

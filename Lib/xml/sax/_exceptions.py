@@ -13,7 +13,7 @@ kundi SAXException(Exception):
     functionality, ama to add localization. Note that although you will
     receive a SAXException kama the argument to the handlers kwenye the
     ErrorHandler interface, you are sio actually required to raise
-    the exception; instead, you can simply read the information in
+    the exception; instead, you can simply read the information kwenye
     it."""
 
     eleza __init__(self, msg, exception=Tupu):
@@ -46,7 +46,7 @@ kundi SAXException(Exception):
 kundi SAXParseException(SAXException):
     """Encapsulate an XML parse error ama warning.
 
-    This exception will include information kila locating the error in
+    This exception will include information kila locating the error kwenye
     the original XML document. Note that although the application will
     receive a SAXParseException kama the argument to the handlers kwenye the
     ErrorHandler interface, the application ni sio actually required
@@ -126,6 +126,6 @@ kundi SAXReaderNotAvailable(SAXNotSupportedException):
     """Exception kundi kila a missing driver.
 
     An XMLReader module (driver) should ashiria this exception when it
-    ni first imported, e.g. when a support module cannot be imported.
+    ni first imported, e.g. when a support module cansio be imported.
     It also may be raised during parsing, e.g. ikiwa executing an external
     program ni sio permitted."""

@@ -24,7 +24,7 @@ kundi PyncheWidget:
         self.__detailswin = Tupu
         self.__helpwin = Tupu
         self.__dialogstate = {}
-        modal = self.__modal = sio not master
+        modal = self.__modal = sio sio master
         # If a master was given, we are running kama a modal dialog servant to
         # some other application.  We rearrange our UI kwenye this case (there's
         # no File menu na we get `Okay' na `Cancel' buttons), na we do a

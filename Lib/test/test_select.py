@@ -20,7 +20,7 @@ kundi SelectTestCase(unittest.TestCase):
         self.assertRaises(TypeError, select.select, 1, 2, 3)
         self.assertRaises(TypeError, select.select, [self.Nope()], [], [])
         self.assertRaises(TypeError, select.select, [self.Almost()], [], [])
-        self.assertRaises(TypeError, select.select, [], [], [], "not a number")
+        self.assertRaises(TypeError, select.select, [], [], [], "sio a number")
         self.assertRaises(ValueError, select.select, [], [], [], -1)
 
     # Issue #12367: http://www.freebsd.org/cgi/query-pr.cgi?pr=kern/155606

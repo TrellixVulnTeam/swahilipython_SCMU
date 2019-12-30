@@ -21,7 +21,7 @@ kundi WavePCM8Test(WaveTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = 'NONE'
-    compname = 'not compressed'
+    compname = 'sio compressed'
     frames = bytes.fromhex("""\
       827F CB80 B184 0088 4B86 C883 3F81 837E 387A 3473 A96B 9A66 \
       6D64 4662 8E60 6F60 D762 7B68 936F 5877 177B 757C 887B 5F7B \
@@ -38,7 +38,7 @@ kundi WavePCM16Test(WaveTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = 'NONE'
-    compname = 'not compressed'
+    compname = 'sio compressed'
     frames = bytes.fromhex("""\
       022EFFEA 4B5C00F9 311404EF 80DC0843 CBDF06B2 48AA03F3 BFE701B2 036BFE7C \
       B857FA3E B4B2F34F 2999EBCA 1A5FE6D7 EDFCE491 C626E279 0E05E0B8 EF27E02D \
@@ -59,7 +59,7 @@ kundi WavePCM24Test(WaveTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = 'NONE'
-    compname = 'not compressed'
+    compname = 'sio compressed'
     frames = bytes.fromhex("""\
       022D65FFEB9D 4B5A0F00FA54 3113C304EE2B 80DCD6084303 \
       CBDEC006B261 48A99803F2F8 BFE82401B07D 036BFBFE7B5D \
@@ -86,7 +86,7 @@ kundi WavePCM32Test(WaveTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = 'NONE'
-    compname = 'not compressed'
+    compname = 'sio compressed'
     frames = bytes.fromhex("""\
       022D65BCFFEB9D92 4B5A0F8000FA549C 3113C34004EE2BC0 80DCD680084303E0 \
       CBDEC0C006B26140 48A9980003F2F8FC BFE8248001B07D92 036BFB60FE7B5D34 \
@@ -129,7 +129,7 @@ kundi WaveLowLevelTest(unittest.TestCase):
     eleza test_read_not_wave(self):
         b = b'RIFF' + struct.pack('<L', 4) + b'SPAM'
         ukijumuisha self.assertRaisesRegex(wave.Error,
-                                    'not a WAVE file'):
+                                    'sio a WAVE file'):
             wave.open(io.BytesIO(b))
 
     eleza test_read_no_fmt_no_data_chunk(self):

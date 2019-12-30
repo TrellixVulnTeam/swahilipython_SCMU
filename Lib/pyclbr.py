@@ -118,7 +118,7 @@ eleza readmodule_ex(module, path=Tupu):
 eleza _readmodule(module, path, inpackage=Tupu):
     """Do the hard work kila readmodule[_ex].
 
-    If inpackage ni given, it must be the dotted name of the package in
+    If inpackage ni given, it must be the dotted name of the package kwenye
     which we are searching kila a submodule, na then PATH must be the
     package search path; otherwise, we are searching kila a top-level
     module, na path ni combined ukijumuisha sys.path.
@@ -169,7 +169,7 @@ eleza _readmodule(module, path, inpackage=Tupu):
     jaribu:
         source = spec.loader.get_source(fullmodule)
     tatizo (AttributeError, ImportError):
-        # If module ni sio Python source, we cannot do anything.
+        # If module ni sio Python source, we cansio do anything.
         rudisha tree
     isipokua:
         ikiwa source ni Tupu:

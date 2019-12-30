@@ -709,7 +709,7 @@ kundi BaseProactorEventLoopTests(test_utils.TestCase):
         self.assertIsTupu(self.loop._ssock)
         self.assertIsTupu(self.loop._csock)
 
-        # Don't call close(): _close_self_pipe() cannot be called twice
+        # Don't call close(): _close_self_pipe() cansio be called twice
         self.loop._closed = Kweli
 
     eleza test_close(self):
@@ -975,7 +975,7 @@ kundi ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
         f = object()
         ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "not a regular file"):
+                                    "sio a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Tupu))
         self.assertEqual(self.file.tell(), 0)
@@ -984,7 +984,7 @@ kundi ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
         f = io.BytesIO()
         ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "not a regular file"):
+                                    "sio a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Tupu))
         self.assertEqual(self.file.tell(), 0)
@@ -994,7 +994,7 @@ kundi ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         f = mock.Mock()
         f.fileno.return_value = -1
         ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "not a regular file"):
+                                    "sio a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Tupu))
         self.assertEqual(self.file.tell(), 0)

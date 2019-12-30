@@ -1,4 +1,4 @@
-"""When called kama a script, print a comma-separated list of the open
+"""When called kama a script, andika a comma-separated list of the open
 file descriptors on stdout.
 
 Usage:

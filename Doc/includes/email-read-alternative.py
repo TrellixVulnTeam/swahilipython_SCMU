@@ -21,8 +21,8 @@ andika('To:', msg['to'])
 andika('From:', msg['kutoka'])
 andika('Subject:', msg['subject'])
 
-# If we want to print a preview of the message content, we can extract whatever
-# the least formatted payload ni na print the first three lines.  Of course,
+# If we want to andika a preview of the message content, we can extract whatever
+# the least formatted payload ni na andika the first three lines.  Of course,
 # ikiwa the message has no plain text part printing the first three lines of html
 # ni probably useless, but this ni just a conceptual example.
 simplest = msg.get_body(preferencelist=('plain', 'html'))

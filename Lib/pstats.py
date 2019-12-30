@@ -63,14 +63,14 @@ kundi Stats:
     several distinct profile runs.  Both the constructor na the add()
     method now take arbitrarily many file names kama arguments.
 
-    All the print methods now take an argument that indicates how many lines
+    All the andika methods now take an argument that indicates how many lines
     to print.  If the arg ni a floating point number between 0 na 1.0, then
     it ni taken kama a decimal percentage of the available lines to be printed
-    (e.g., .1 means print 10% of all available lines).  If it ni an integer,
+    (e.g., .1 means andika 10% of all available lines).  If it ni an integer,
     it ni taken to mean the number of lines of data that you wish to have
     printed.
 
-    The sort_stats() method now processes some additional options (i.e., in
+    The sort_stats() method now processes some additional options (i.e., kwenye
     addition to the old -1, 0, 1, ama 2 that are respectively interpreted as
     'stdname', 'calls', 'time', na 'cumulative').  It takes either an
     arbitrary number of quoted strings ama SortKey enum to select the sort
@@ -78,7 +78,7 @@ kundi Stats:
 
     For example sort_stats('time', 'name') ama sort_stats(SortKey.TIME,
     SortKey.NAME) sorts on the major key of 'internal function time', na on
-    the minor key of 'the name of the function'.  Look at the two tables in
+    the minor key of 'the name of the function'.  Look at the two tables kwenye
     sort_stats() na get_sort_arg_defs(self) kila more examples.
 
     All methods rudisha self, so you can string together commands like:
@@ -133,7 +133,7 @@ kundi Stats:
             self.stats = arg.stats
             arg.stats = {}
         ikiwa sio self.stats:
-            ashiria TypeError("Cannot create ama construct a %r object kutoka %r"
+            ashiria TypeError("Cansio create ama construct a %r object kutoka %r"
                             % (self.__class__, arg))
         rudisha
 
@@ -408,7 +408,7 @@ kundi Stats:
 
     eleza print_call_heading(self, name_size, column_title):
         andika("Function ".ljust(name_size) + column_title, file=self.stream)
-        # print sub-header only ikiwa we have new-style callers
+        # andika sub-header only ikiwa we have new-style callers
         subheader = Uongo
         kila cc, nc, tt, ct, callers kwenye self.stats.values():
             ikiwa callers:
@@ -447,7 +447,7 @@ kundi Stats:
         andika('   ncalls  tottime  percall  cumtime  percall', end=' ', file=self.stream)
         andika('filename:lineno(function)', file=self.stream)
 
-    eleza print_line(self, func):  # hack: should print percentages
+    eleza print_line(self, func):  # hack: should andika percentages
         cc, nc, tt, ct, callers = self.stats[func]
         c = str(nc)
         ikiwa nc != cc:
@@ -654,7 +654,7 @@ ikiwa __name__ == '__main__':
                 line = self.prompt[:-2]
                 self.do_read(line)
             isipokua:
-                andika("No statistics object ni current -- cannot reload.", file=self.stream)
+                andika("No statistics object ni current -- cansio reload.", file=self.stream)
             rudisha 0
         eleza help_read(self):
             andika("Read kwenye profile data kutoka a specified file.", file=self.stream)

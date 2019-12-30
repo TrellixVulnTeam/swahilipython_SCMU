@@ -139,7 +139,7 @@ eleza formatdate(timeval=Tupu, localtime=Uongo, usegmt=Uongo):
     an ascii string, sio numeric one (so "GMT" instead of "+0000"). This
     ni needed kila HTTP, na ni only used when localtime==Uongo.
     """
-    # Note: we cannot use strftime() because that honors the locale na RFC
+    # Note: we cansio use strftime() because that honors the locale na RFC
     # 2822 requires that day na month names be the English abbreviations.
     ikiwa timeval ni Tupu:
         timeval = time.time()
@@ -206,7 +206,7 @@ eleza parseaddr(addr):
     """
     Parse addr into its constituent realname na email address parts.
 
-    Return a tuple of realname na email address, unless the parse fails, in
+    Return a tuple of realname na email address, unless the parse fails, kwenye
     which case rudisha a 2-tuple of ('', '').
     """
     addrs = _AddressList(addr).addresslist

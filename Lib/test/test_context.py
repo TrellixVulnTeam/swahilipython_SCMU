@@ -62,16 +62,16 @@ kundi ContextTest(unittest.TestCase):
         self.assertIn(' used ', repr(t))
 
     eleza test_context_subclassing_1(self):
-        ukijumuisha self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'sio an acceptable base type'):
             kundi MyContextVar(contextvars.ContextVar):
                 # Potentially we might want ContextVars to be subclassable.
                 pita
 
-        ukijumuisha self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'sio an acceptable base type'):
             kundi MyContext(contextvars.Context):
                 pita
 
-        ukijumuisha self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'sio an acceptable base type'):
             kundi MyToken(contextvars.Token):
                 pita
 
@@ -391,9 +391,9 @@ kundi HashKey:
             ashiria EqError
 
         ikiwa self.error_on_eq_to ni sio Tupu na self.error_on_eq_to ni other:
-            ashiria ValueError(f'cannot compare {self!r} to {other!r}')
+            ashiria ValueError(f'cansio compare {self!r} to {other!r}')
         ikiwa other.error_on_eq_to ni sio Tupu na other.error_on_eq_to ni self:
-            ashiria ValueError(f'cannot compare {other!r} to {self!r}')
+            ashiria ValueError(f'cansio compare {other!r} to {self!r}')
 
         rudisha (self.name, self.hash) == (other.name, other.hash)
 
@@ -417,7 +417,7 @@ kundi HaskKeyCrasher:
 
     eleza __enter__(self):
         ikiwa HashKey._crasher ni sio Tupu:
-            ashiria RuntimeError('cannot nest crashers')
+            ashiria RuntimeError('cansio nest crashers')
         HashKey._crasher = self
 
     eleza __exit__(self, *exc):
@@ -572,7 +572,7 @@ kundi HamtTest(unittest.TestCase):
             self.assertEqual(len(h), COLLECTION_SIZE)
 
             kila key kwenye range(COLLECTION_SIZE):
-                self.assertEqual(h.get(KeyStr(key), 'not found'), key)
+                self.assertEqual(h.get(KeyStr(key), 'sio found'), key)
 
             keys_to_delete = list(range(COLLECTION_SIZE))
             random.shuffle(keys_to_delete)
@@ -590,7 +590,7 @@ kundi HamtTest(unittest.TestCase):
                             h.delete(KeyStr(i))
 
                 h = h.delete(key)
-                self.assertEqual(h.get(key, 'not found'), 'not found')
+                self.assertEqual(h.get(key, 'sio found'), 'sio found')
                 toa d[key]
                 self.assertEqual(len(d), len(h))
 
@@ -613,7 +613,7 @@ kundi HamtTest(unittest.TestCase):
 
             kila i, key kwenye enumerate(keys_to_delete):
                 hm = hm.delete(str(key))
-                self.assertEqual(hm.get(str(key), 'not found'), 'not found')
+                self.assertEqual(hm.get(str(key), 'sio found'), 'sio found')
                 dm.pop(str(key), Tupu)
                 self.assertEqual(len(d), len(h))
 
@@ -654,7 +654,7 @@ kundi HamtTest(unittest.TestCase):
         h = h.delete(C)
         self.assertEqual(len(h), orig_len - 1)
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio compare'):
             h.delete(Er)
 
         h = h.delete(D)
@@ -698,7 +698,7 @@ kundi HamtTest(unittest.TestCase):
         #             <Key name:B hash:201001>: 'b'
         #             <Key name:C hash:101001>: 'c'
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio compare'):
             h.delete(Er)
 
         h = h.delete(Z)
@@ -972,10 +972,10 @@ kundi HamtTest(unittest.TestCase):
         h2 = hamt()
         h2 = h2.set(Er, 'a')
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio compare'):
             h1 == h2
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio compare'):
             h1 != h2
 
     eleza test_hamt_gc_1(self):

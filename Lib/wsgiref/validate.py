@@ -357,7 +357,7 @@ eleza check_environ(environ):
             "One of SCRIPT_NAME ama PATH_INFO are required (PATH_INFO "
             "should at least be '/' ikiwa SCRIPT_NAME ni empty)")
     assert_(environ.get('SCRIPT_NAME') != '/',
-        "SCRIPT_NAME cannot be '/'; it should instead be '', na "
+        "SCRIPT_NAME cansio be '/'; it should instead be '', na "
         "PATH_INFO should be '/'")
 
 eleza check_uliza(wsgi_input):
@@ -399,7 +399,7 @@ eleza check_headers(headers):
         name = check_string_type(name, "Header name")
         value = check_string_type(value, "Header value")
         assert_(name.lower() != 'status',
-            "The Status header cannot be used; it conflicts ukijumuisha CGI "
+            "The Status header cansio be used; it conflicts ukijumuisha CGI "
             "script, na HTTP status ni sio given through headers "
             "(value: %r)." % value)
         assert_('\n' haiko kwenye name na ':' haiko kwenye name,

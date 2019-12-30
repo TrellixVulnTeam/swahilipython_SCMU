@@ -74,7 +74,7 @@ eleza check_syntax(fn, lines):
     jaribu:
         compile(code, fn, 'exec')
     tatizo SyntaxError kama err:
-        tuma err.lineno, 'not compilable: %s' % err
+        tuma err.lineno, 'sio compilable: %s' % err
 
 
 @checker('.rst', severity=2)
@@ -198,7 +198,7 @@ Options:  -v       verbose (print all checked file names)
                 ukijumuisha open(fn, 'r', encoding='utf-8') kama f:
                     lines = list(f)
             tatizo (IOError, OSError) kama err:
-                andika('%s: cannot open: %s' % (fn, err))
+                andika('%s: cansio open: %s' % (fn, err))
                 count[4] += 1
                 endelea
 

@@ -225,7 +225,7 @@ kundi TestForkInThread(unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'fork'), 'need os.fork')
     @support.reap_threads
     eleza test_forkinthread(self):
-        status = "not set"
+        status = "sio set"
 
         eleza thread1():
             nonlocal status

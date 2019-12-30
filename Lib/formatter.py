@@ -361,7 +361,7 @@ kundi AbstractWriter(NullWriter):
 
 
 kundi DumbWriter(NullWriter):
-    """Simple writer kundi which writes output on the file object pitaed in
+    """Simple writer kundi which writes output on the file object pitaed kwenye
     kama the file parameter or, ikiwa file ni omitted, on standard output.  The
     output ni simply word-wrapped to the number of columns specified by
     the maxcol parameter.  This kundi ni suitable kila reflowing a sequence

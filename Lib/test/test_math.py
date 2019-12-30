@@ -212,7 +212,7 @@ eleza result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     ikiwa got == expected:
         rudisha Tupu
 
-    failure = "not equal"
+    failure = "sio equal"
 
     # Turn mixed float na int comparison (e.g. floor()) to all-float
     ikiwa isinstance(expected, float) na isinstance(got, int):
@@ -1618,7 +1618,7 @@ kundi MathTests(unittest.TestCase):
             lasivyo fn == 'lgamma':
                 # we use a weaker accuracy test kila lgamma;
                 # lgamma only achieves an absolute error of
-                # a few multiples of the machine accuracy, in
+                # a few multiples of the machine accuracy, kwenye
                 # general.
                 abs_tol = 1e-15
 

@@ -220,7 +220,7 @@ kundi PosixPathTest(unittest.TestCase):
 
     @unittest.skipIf(posix ni Tupu, "Test requires posix module")
     eleza test_ismount_directory_not_readable(self):
-        # issue #2466: Simulate ismount run on a directory that ni not
+        # issue #2466: Simulate ismount run on a directory that ni sio
         # readable, which used to rudisha Uongo.
         save_lstat = os.lstat
         eleza fake_lstat(path):
@@ -291,7 +291,7 @@ kundi PosixPathTest(unittest.TestCase):
             self.assertEqual(posixpath.expanduser("~"), home)
 
             # bpo-10496: If the HOME environment variable ni sio set na the
-            # user (current identifier ama name kwenye the path) doesn't exist in
+            # user (current identifier ama name kwenye the path) doesn't exist kwenye
             # the pitaword database (pwd.getuid() ama pwd.getpwnam() fail),
             # expanduser() must rudisha the path unchanged.
             ukijumuisha mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \

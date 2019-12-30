@@ -71,7 +71,7 @@ eleza get_git_upstream_remote():
 
 
 @status("Getting base branch kila PR",
-        info=lambda x: x ikiwa x ni sio Tupu isipokua "not a PR branch")
+        info=lambda x: x ikiwa x ni sio Tupu isipokua "sio a PR branch")
 eleza get_base_branch():
     ikiwa sio os.path.exists(os.path.join(SRCDIR, '.git')):
         # Not a git checkout, so there's no base branch
@@ -182,7 +182,7 @@ eleza normalize_docs_whitespace(file_paths):
                     f.writelines(new_lines)
                 fixed.append(path)
         tatizo Exception kama err:
-            andika('Cannot fix %s: %s' % (path, err))
+            andika('Cansio fix %s: %s' % (path, err))
     rudisha fixed
 
 
@@ -210,7 +210,7 @@ eleza regenerated_configure(file_paths):
     ikiwa 'configure.ac' kwenye file_paths:
         rudisha "yes" ikiwa 'configure' kwenye file_paths isipokua "no"
     isipokua:
-        rudisha "not needed"
+        rudisha "sio needed"
 
 @status("pyconfig.h.in regenerated", modal=Kweli, info=str)
 eleza regenerated_pyconfig_h_in(file_paths):
@@ -218,7 +218,7 @@ eleza regenerated_pyconfig_h_in(file_paths):
     ikiwa 'configure.ac' kwenye file_paths:
         rudisha "yes" ikiwa 'pyconfig.h.in' kwenye file_paths isipokua "no"
     isipokua:
-        rudisha "not needed"
+        rudisha "sio needed"
 
 eleza travis(pull_request):
     ikiwa pull_request == 'false':

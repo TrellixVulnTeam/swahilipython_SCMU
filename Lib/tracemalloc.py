@@ -452,7 +452,7 @@ kundi Snapshot:
         ikiwa key_type haiko kwenye ('traceback', 'filename', 'lineno'):
             ashiria ValueError("unknown key_type: %r" % (key_type,))
         ikiwa cumulative na key_type haiko kwenye ('lineno', 'filename'):
-            ashiria ValueError("cumulative mode cannot by used "
+            ashiria ValueError("cumulative mode cansio by used "
                              "ukijumuisha key type %r" % key_type)
 
         stats = {}

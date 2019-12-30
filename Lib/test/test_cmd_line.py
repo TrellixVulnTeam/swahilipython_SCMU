@@ -63,7 +63,7 @@ kundi CmdLineTest(unittest.TestCase):
         self.assertNotIn(b'stack overflow', err)
 
     @unittest.skipIf(interpreter_requires_environment(),
-                     'Cannot run -E tests when PYTHON env vars are required.')
+                     'Cansio run -E tests when PYTHON env vars are required.')
     eleza test_xoptions(self):
         eleza get_xoptions(*args):
             # use subprocess module directly because test.support.script_helper adds
@@ -169,7 +169,7 @@ kundi CmdLineTest(unittest.TestCase):
             env=env)
         stdout, stderr = p.communicate()
         ikiwa p.returncode == 1:
-            # _Py_char2wchar() decoded b'\xff' kama '\udcff' (b'\xff' ni not
+            # _Py_char2wchar() decoded b'\xff' kama '\udcff' (b'\xff' ni sio
             # decodable kutoka ASCII) na run_command() failed on
             # PyUnicode_AsUTF8String(). This ni the expected behaviour on
             # Linux.
@@ -473,7 +473,7 @@ kundi CmdLineTest(unittest.TestCase):
         self.assertEqual(b'', out)
 
     @unittest.skipIf(interpreter_requires_environment(),
-                     'Cannot run -I tests when PYTHON env vars are required.')
+                     'Cansio run -I tests when PYTHON env vars are required.')
     eleza test_isolatedmode(self):
         self.verify_valid_flag('-I')
         self.verify_valid_flag('-IEs')
@@ -741,7 +741,7 @@ kundi CmdLineTest(unittest.TestCase):
         self.assertEqual(proc.stdout.strip(), b'0')
 
 @unittest.skipIf(interpreter_requires_environment(),
-                 'Cannot run -I tests when PYTHON env vars are required.')
+                 'Cansio run -I tests when PYTHON env vars are required.')
 kundi IgnoreEnvironmentTest(unittest.TestCase):
 
     eleza run_ignoring_vars(self, predicate, **env_vars):

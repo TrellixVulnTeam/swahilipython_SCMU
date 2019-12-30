@@ -306,7 +306,7 @@ kundi ImpLoader:
         ikiwa fullname ni Tupu:
             fullname = self.fullname
         lasivyo fullname != self.fullname:
-            ashiria ImportError("Loader kila module %s cannot handle "
+            ashiria ImportError("Loader kila module %s cansio handle "
                               "module %s" % (self.fullname, fullname))
         rudisha fullname
 
@@ -458,7 +458,7 @@ eleza iter_importers(fullname=""):
 eleza get_loader(module_or_name):
     """Get a "loader" object kila module_or_name
 
-    Returns Tupu ikiwa the module cannot be found ama imported.
+    Returns Tupu ikiwa the module cansio be found ama imported.
     If the named module ni sio already imported, its containing package
     (ikiwa any) ni imported, kwenye order to establish the package __path__.
     """
@@ -522,7 +522,7 @@ eleza extend_path(path, name):
     ni a feature.)
 
     If the input path ni sio a list (as ni the case kila frozen
-    packages) it ni returned unchanged.  The input path ni not
+    packages) it ni returned unchanged.  The input path ni sio
     modified; an extended copy ni returned.  Items are only appended
     to the copy at the end.
 
@@ -612,7 +612,7 @@ eleza get_data(package, resource):
         d = os.path.dirname(sys.modules[package].__file__)
         data = open(os.path.join(d, resource), 'rb').read()
 
-    If the package cannot be located ama loaded, ama it uses a PEP 302 loader
+    If the package cansio be located ama loaded, ama it uses a PEP 302 loader
     which does sio support get_data(), then Tupu ni returned.
     """
 

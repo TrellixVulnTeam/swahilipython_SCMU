@@ -413,7 +413,7 @@ kundi StreamReader:
         # it also doubles kama half the buffer limit.
 
         ikiwa limit <= 0:
-            ashiria ValueError('Limit cannot be <= 0')
+            ashiria ValueError('Limit cansio be <= 0')
 
         self._limit = limit
         ikiwa loop ni Tupu:
@@ -582,7 +582,7 @@ kundi StreamReader:
         buffer will be reset.  The IncompleteReadError.partial attribute
         may contain the separator partially.
 
-        If the data cannot be read because of over limit, a
+        If the data cansio be read because of over limit, a
         LimitOverrunError exception  will be raised, na the data
         will be left kwenye the internal buffer, so it can be read again.
         """

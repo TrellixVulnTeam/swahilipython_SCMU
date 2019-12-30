@@ -115,8 +115,8 @@ kundi SocketServerTest(unittest.TestCase):
         jaribu:
             server = MyServer(addr, MyHandler)
         tatizo PermissionError kama e:
-            # Issue 29184: cannot bind() a Unix socket on Android.
-            self.skipTest('Cannot create server (%s, %s): %s' %
+            # Issue 29184: cansio bind() a Unix socket on Android.
+            self.skipTest('Cansio create server (%s, %s): %s' %
                           (svrcls, addr, e))
         self.assertEqual(server.server_address, server.socket.getsockname())
         rudisha server
@@ -436,7 +436,7 @@ kundi SocketWriterTest(unittest.TestCase):
                 reader.read(100)
                 # The main thread should now be blocking kwenye a send() syscall.
                 # But kwenye theory, it could get interrupted by other signals,
-                # na then retried. So keep sending the signal kwenye a loop, in
+                # na then retried. So keep sending the signal kwenye a loop, kwenye
                 # case an earlier signal happens to be delivered at an
                 # inconvenient moment.
                 wakati Kweli:

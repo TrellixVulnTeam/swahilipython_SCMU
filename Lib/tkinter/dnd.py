@@ -54,11 +54,11 @@ source object, na 'event' ni the most recent event object):
 - The old na new target objects are the same object.  Its method
 dnd_motion(source, event) ni called.
 
-- The old target object was Tupu, na the new target object ni not
+- The old target object was Tupu, na the new target object ni sio
 Tupu.  The new target object's method dnd_enter(source, event) is
 called.
 
-- The new target object ni Tupu, na the old target object ni not
+- The new target object ni Tupu, na the old target object ni sio
 Tupu.  The old target object's method dnd_leave(source, event) is
 called.
 

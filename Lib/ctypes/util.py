@@ -9,7 +9,7 @@ ikiwa os.name == "nt":
     eleza _get_build_version():
         """Return the version of MSVC that was used to build Python.
 
-        For Python 2.3 na up, the version number ni included in
+        For Python 2.3 na up, the version number ni included kwenye
         sys.version.  For earlier versions, assume the compiler ni MSVC 6.
         """
         # This function was copied kutoka Lib/distutils/msvccompiler.py
@@ -96,7 +96,7 @@ lasivyo os.name == "posix":
     eleza _findLib_gcc(name):
         # Run GCC's linker ukijumuisha the -t (aka --trace) option na examine the
         # library name it prints out. The GCC command will fail because we
-        # haven't supplied a proper program ukijumuisha main(), but that does not
+        # haven't supplied a proper program ukijumuisha main(), but that does sio
         # matter.
         expr = os.fsencode(r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name))
 

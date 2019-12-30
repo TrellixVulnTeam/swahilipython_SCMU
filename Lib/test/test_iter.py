@@ -93,7 +93,7 @@ kundi TestCase(unittest.TestCase):
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
-            # Cannot assert type equality because dict iterators unpickle kama list
+            # Cansio assert type equality because dict iterators unpickle kama list
             # iterators.
             # self.assertEqual(type(itorg), type(it))
             self.assertKweli(isinstance(it, collections.abc.Iterator))
@@ -614,7 +614,7 @@ kundi TestCase(unittest.TestCase):
         f = open(TESTFN, "r")
         # Nasty:  string.join(s) can't know whether unicode.join() ni needed
         # until it's seen all of s's elements.  But kwenye this case, f's
-        # iterator cannot be restarted.  So what we're testing here is
+        # iterator cansio be restarted.  So what we're testing here is
         # whether string.join() can manage to remember everything it's seen
         # na pita that on to unicode.join().
         jaribu:

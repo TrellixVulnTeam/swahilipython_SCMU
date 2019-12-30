@@ -659,7 +659,7 @@ kundi PurePosixPathTest(_BasePurePathTest, unittest.TestCase):
         jaribu:
             os.fsencode('\xe9')
         tatizo UnicodeEncodeError:
-            self.skipTest("\\xe9 cannot be encoded to the filesystem encoding")
+            self.skipTest("\\xe9 cansio be encoded to the filesystem encoding")
         self.assertEqual(P('/a/b\xe9').as_uri(),
                          'file:///a/b' + quote_from_bytes(os.fsencode('\xe9')))
 
@@ -1833,7 +1833,7 @@ kundi _BasePathTest(object):
             ikiwa sio p.is_dir():
                 koma
         isipokua:
-            self.skipTest("cannot find a drive that doesn't exist")
+            self.skipTest("cansio find a drive that doesn't exist")
         ukijumuisha self.assertRaises(OSError):
             (p / 'child' / 'path').mkdir(parents=Kweli)
 
@@ -2011,7 +2011,7 @@ kundi _BasePathTest(object):
         tatizo OSError kama e:
             ikiwa (isinstance(e, PermissionError) ama
                     "AF_UNIX path too long" kwenye str(e)):
-                self.skipTest("cannot bind Unix socket: " + str(e))
+                self.skipTest("cansio bind Unix socket: " + str(e))
         self.assertKweli(P.is_socket())
         self.assertUongo(P.is_fifo())
         self.assertUongo(P.is_file())

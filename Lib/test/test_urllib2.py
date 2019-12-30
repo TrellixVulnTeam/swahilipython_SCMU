@@ -87,7 +87,7 @@ kundi RequestHdrsTests(unittest.TestCase):
         will be using the dictionary.
 
         The introduction kwenye 2.4 of those methods was a mistake kila the same
-        reason: code that previously saw all (urllib2 user)-provided headers in
+        reason: code that previously saw all (urllib2 user)-provided headers kwenye
         .headers now sees only a subset.
 
         """
@@ -108,7 +108,7 @@ kundi RequestHdrsTests(unittest.TestCase):
         http.client).
 
         Note that e.g. r.has_header("spam-EggS") ni currently Uongo, na
-        r.get_header("spam-EggS") returns Tupu, but that could be changed in
+        r.get_header("spam-EggS") returns Tupu, but that could be changed kwenye
         future.
 
         Method r.remove_header should remove items both kutoka r.headers na
@@ -969,7 +969,7 @@ kundi HandlerTests(unittest.TestCase):
 
     eleza test_http_body_pipe(self):
         # A file reading kutoka a pipe.
-        # A pipe cannot be seek'ed.  There ni no way to determine the
+        # A pipe cansio be seek'ed.  There ni no way to determine the
         # content length up front.  Thus, do_request_() should fall
         # back to Transfer-encoding chunked.
 
@@ -1038,7 +1038,7 @@ kundi HandlerTests(unittest.TestCase):
         self.assertEqual(h._debuglevel, 1)
 
     eleza test_http_doubleslash(self):
-        # Checks the presence of any unnecessary double slash kwenye url does not
+        # Checks the presence of any unnecessary double slash kwenye url does sio
         # koma anything. Previously, a double slash directly after the host
         # could cause incorrect parsing.
         h = urllib.request.AbstractHTTPHandler()
@@ -1095,7 +1095,7 @@ kundi HandlerTests(unittest.TestCase):
         self.assertEqual(r.selector, '')
 
     eleza test_fixpath_in_weirdurls(self):
-        # Issue4493: urllib2 to supply '/' when to urls where path does not
+        # Issue4493: urllib2 to supply '/' when to urls where path does sio
         # start with'/'
 
         h = urllib.request.AbstractHTTPHandler()

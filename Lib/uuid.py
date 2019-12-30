@@ -120,7 +120,7 @@ kundi UUID:
         version     the UUID version number (1 through 5, meaningful only
                     when the variant ni RFC_4122)
 
-        is_safe     An enum indicating whether the UUID has been generated in
+        is_safe     An enum indicating whether the UUID has been generated kwenye
                     a way that ni safe kila multiprocessing applications, via
                     uuid_generate_time_safe(3).
     """

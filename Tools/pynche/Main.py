@@ -36,11 +36,11 @@ Where:
 
     --version
     -v
-        print the version number na exit
+        andika the version number na exit
 
     --help
     -h
-        print this message
+        andika this message
 
     initialcolor
         initial color, kama a color name ama #RRGGBB format
@@ -114,7 +114,7 @@ eleza initial_color(s, colordb):
         andika('Bad initial color, using gray50:', s)
         r, g, b = scan_color('gray50')
     ikiwa r ni Tupu:
-        usage(1, 'Cannot find an initial color to use')
+        usage(1, 'Cansio find an initial color to use')
         # does sio rudisha
     rudisha r, g, b
 

@@ -169,7 +169,7 @@ kundi Finalize(object):
         ikiwa obj ni sio Tupu:
             self._weakref = weakref.ref(obj, self)
         lasivyo exitpriority ni Tupu:
-            ashiria ValueError("Without object, exitpriority cannot be Tupu")
+            ashiria ValueError("Without object, exitpriority cansio be Tupu")
 
         self._callback = callback
         self._args = args

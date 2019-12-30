@@ -8,7 +8,7 @@ eleza bin(s):
 
 # Each *simple* type that supports different byte orders has an
 # __ctype_be__ attribute that specifies the same type kwenye BIG ENDIAN
-# byte order, na a __ctype_le__ attribute that ni the same type in
+# byte order, na a __ctype_le__ attribute that ni the same type kwenye
 # LITTLE ENDIAN byte order.
 #
 # For Structures na Unions, these types are created on demand.

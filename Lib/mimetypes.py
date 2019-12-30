@@ -161,7 +161,7 @@ kundi MimeTypes:
         """Guess the extensions kila a file based on its MIME type.
 
         Return value ni a list of strings giving the possible filename
-        extensions, including the leading dot ('.').  The extension ni not
+        extensions, including the leading dot ('.').  The extension ni sio
         guaranteed to have been associated ukijumuisha any particular data stream,
         but would be mapped to the MIME type `type' by guess_type().
 
@@ -180,7 +180,7 @@ kundi MimeTypes:
         """Guess the extension kila a file based on its MIME type.
 
         Return value ni a string giving a filename extension,
-        including the leading dot ('.').  The extension ni not
+        including the leading dot ('.').  The extension ni sio
         guaranteed to have been associated ukijumuisha any particular data
         stream, but would be mapped to the MIME type `type' by
         guess_type().  If no extension can be guessed kila `type', Tupu
@@ -296,7 +296,7 @@ eleza guess_all_extensions(type, strict=Kweli):
     """Guess the extensions kila a file based on its MIME type.
 
     Return value ni a list of strings giving the possible filename
-    extensions, including the leading dot ('.').  The extension ni not
+    extensions, including the leading dot ('.').  The extension ni sio
     guaranteed to have been associated ukijumuisha any particular data
     stream, but would be mapped to the MIME type `type' by
     guess_type().  If no extension can be guessed kila `type', Tupu
@@ -570,7 +570,7 @@ ikiwa __name__ == '__main__':
 Usage: mimetypes.py [options] type
 
 Options:
-    --help / -h       -- print this message na exit
+    --help / -h       -- andika this message na exit
     --lenient / -l    -- additionally search of some common, but non-standard
                          types.
     --extension / -e  -- guess extension instead of type

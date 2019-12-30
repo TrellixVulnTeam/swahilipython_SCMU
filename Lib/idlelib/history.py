@@ -43,7 +43,7 @@ kundi History:
 
         Set prefix na pointer kama needed kila successive fetches.
         Reset them to Tupu, Tupu when returning to the start line.
-        Sound bell when rudisha to start line ama cannot leave a line
+        Sound bell when rudisha to start line ama cansio leave a line
         because cyclic ni Uongo.
         '''
         nhist = len(self.history)

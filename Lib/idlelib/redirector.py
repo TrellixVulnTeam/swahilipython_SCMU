@@ -102,7 +102,7 @@ kundi WidgetRedirector:
         associated function to the args pitaed into Tcl. Otherwise, pita the
         operation through to Tk via the original Tcl function.
 
-        Note that ikiwa a registered function ni called, the operation ni not
+        Note that ikiwa a registered function ni called, the operation ni sio
         pitaed through to Tk.  Apply the function returned by self.register()
         to *args to accomplish that.  For an example, see colorizer.py.
 

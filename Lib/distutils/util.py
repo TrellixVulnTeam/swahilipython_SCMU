@@ -119,9 +119,9 @@ eleza convert_path (pathname):
     ikiwa sio pathname:
         rudisha pathname
     ikiwa pathname[0] == '/':
-        ashiria ValueError("path '%s' cannot be absolute" % pathname)
+        ashiria ValueError("path '%s' cansio be absolute" % pathname)
     ikiwa pathname[-1] == '/':
-        ashiria ValueError("path '%s' cannot end ukijumuisha '/'" % pathname)
+        ashiria ValueError("path '%s' cansio end ukijumuisha '/'" % pathname)
 
     paths = pathname.split('/')
     wakati '.' kwenye paths:
@@ -434,7 +434,7 @@ byte_compile(files, optimize=%r, force=%r,
 
         kila file kwenye py_files:
             ikiwa file[-3:] != ".py":
-                # This lets us be lazy na sio filter filenames in
+                # This lets us be lazy na sio filter filenames kwenye
                 # the "install_lib" command.
                 endelea
 

@@ -362,7 +362,7 @@ kundi FileCookieJarTests(unittest.TestCase):
                 c.load(filename="kila this test to work, a file ukijumuisha this "
                                 "filename should sio exist")
             tatizo OSError kama exc:
-                # an OSError subkundi (likely FileNotFoundError), but not
+                # an OSError subkundi (likely FileNotFoundError), but sio
                 # LoadError
                 self.assertIsNot(exc.__class__, LoadError)
             isipokua:
@@ -422,7 +422,7 @@ kundi CookieTests(unittest.TestCase):
 ##   including empty expires attributes ("expires="). Be kama flexible kama you
 ##   can, na certainly don't expect the weekday to be there; ikiwa you can't
 ##   parse it, just ignore it na pretend it's a session cookie.
-## - Domain-matching: Netscape uses the 2-dot rule kila _all_ domains, not
+## - Domain-matching: Netscape uses the 2-dot rule kila _all_ domains, sio
 ##   just the 7 special TLD's listed kwenye their spec. And folks rely on
 ##   that...
 

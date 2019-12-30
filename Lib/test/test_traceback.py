@@ -1149,7 +1149,7 @@ kundi TestTracebackException(unittest.TestCase):
         self.assertEqual(exc.stack[0].locals, Tupu)
 
     eleza test_traceback_header(self):
-        # do sio print a traceback header ikiwa exc_traceback ni Tupu
+        # do sio andika a traceback header ikiwa exc_traceback ni Tupu
         # see issue #24695
         exc = traceback.TracebackException(Exception, Exception("haven"), Tupu)
         self.assertEqual(list(exc.format()), ["Exception: haven\n"])

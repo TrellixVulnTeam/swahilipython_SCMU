@@ -1372,7 +1372,7 @@ kundi JumpTestCase(unittest.TestCase):
         self.run_test(no_jump_to_non_integers, 2, "Spam", [Kweli])
 
     eleza test_no_jump_without_trace_function(self):
-        # Must set sys.settrace(Tupu) kwenye setUp(), isipokua condition ni not
+        # Must set sys.settrace(Tupu) kwenye setUp(), isipokua condition ni sio
         # triggered.
         no_jump_without_trace_function()
 

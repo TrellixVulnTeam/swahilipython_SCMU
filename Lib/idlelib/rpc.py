@@ -98,7 +98,7 @@ kundi RPCServer(socketserver.TCPServer):
         """Override TCPServer method
 
         Error message goes to __stderr__.  No error message ikiwa exiting
-        normally ama socket raised EOF.  Other exceptions sio handled in
+        normally ama socket raised EOF.  Other exceptions sio handled kwenye
         server code will cause os._exit.
 
         """
@@ -334,7 +334,7 @@ kundi SocketIO(object):
         jaribu:
             s = dumps(message)
         tatizo pickle.PicklingError:
-            andika("Cannot pickle:", repr(message), file=sys.__stderr__)
+            andika("Cansio pickle:", repr(message), file=sys.__stderr__)
             raise
         s = struct.pack("<i", len(s)) + s
         wakati len(s) > 0:
@@ -388,7 +388,7 @@ kundi SocketIO(object):
             message = pickle.loads(packet)
         tatizo pickle.UnpicklingError:
             andika("-----------------------", file=sys.__stderr__)
-            andika("cannot unpickle packet:", repr(packet), file=sys.__stderr__)
+            andika("cansio unpickle packet:", repr(packet), file=sys.__stderr__)
             traceback.print_stack(file=sys.__stderr__)
             andika("-----------------------", file=sys.__stderr__)
             raise
@@ -413,7 +413,7 @@ kundi SocketIO(object):
         sequence number kwenye the response_queue.
 
         pollresponse() will loop until a response message ukijumuisha the myseq
-        sequence number ni received, na will save other responses in
+        sequence number ni received, na will save other responses kwenye
         self.responses na notify the owning thread.
 
         """

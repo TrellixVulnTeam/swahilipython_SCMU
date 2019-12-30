@@ -46,13 +46,13 @@ kundi StringArrayTestCase(unittest.TestCase):
     eleza test_param_1(self):
         BUF = c_char * 4
         buf = BUF()
-##        print c_char_p.from_param(buf)
+##        andika c_char_p.from_param(buf)
 
     eleza test_param_2(self):
         BUF = c_char * 4
         buf = BUF()
-##        print BUF.from_param(c_char_p("python"))
-##        print BUF.from_param(BUF(*"pyth"))
+##        andika BUF.from_param(c_char_p("python"))
+##        andika BUF.from_param(BUF(*"pyth"))
 
     eleza test_del_segfault(self):
         BUF = c_char * 4
@@ -90,7 +90,7 @@ kundi StringTestCase(unittest.TestCase):
     eleza test_basic_strings(self):
         cs = c_string("abcdef")
 
-        # Cannot call len on a c_string any longer
+        # Cansio call len on a c_string any longer
         self.assertRaises(TypeError, len, cs)
         self.assertEqual(sizeof(cs), 7)
 

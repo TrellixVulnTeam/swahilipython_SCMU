@@ -396,7 +396,7 @@ protect_ident = ident(protect)
 eleza capture_events(callable, p=Tupu):
     ikiwa p ni Tupu:
         p = HookWatcher()
-    # Disable the garbage collector. This prevents __del__s kutoka showing up in
+    # Disable the garbage collector. This prevents __del__s kutoka showing up kwenye
     # traces.
     old_gc = gc.isenabled()
     gc.disable()

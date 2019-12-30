@@ -37,11 +37,11 @@ kundi CopyRegTestCase(unittest.TestCase):
 
     eleza test_noncallable_reduce(self):
         self.assertRaises(TypeError, copyreg.pickle,
-                          type(1), "not a callable")
+                          type(1), "sio a callable")
 
     eleza test_noncallable_constructor(self):
         self.assertRaises(TypeError, copyreg.pickle,
-                          type(1), int, "not a callable")
+                          type(1), int, "sio a callable")
 
     eleza test_bool(self):
         agiza copy

@@ -12,7 +12,7 @@ eleza fetch_zip(commit_hash, zip_dir, *, org='python', binary=Uongo, verbose):
     url = f'https://github.com/{org}/{repo}/archive/{commit_hash}.zip'
     reporthook = Tupu
     ikiwa verbose:
-        reporthook = print
+        reporthook = andika
     zip_dir.mkdir(parents=Kweli, exist_ok=Kweli)
     filename, headers = urlretrieve(
         url,

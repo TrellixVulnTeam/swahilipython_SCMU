@@ -1,7 +1,7 @@
 """Configuration file parser.
 
 A configuration file consists of sections, lead by a "[section]" header,
-and followed by "name: value" entries, ukijumuisha continuations na such in
+and followed by "name: value" entries, ukijumuisha continuations na such kwenye
 the style of RFC 822.
 
 Intrinsic defaults can be specified by pitaing them into the
@@ -104,7 +104,7 @@ ConfigParser -- responsible kila parsing a list of
         expanded kwenye the rudisha values, based on the defaults pitaed into the
         constructor na the DEFAULT section.  Additional substitutions may be
         provided using the `vars' argument, which must be a dictionary whose
-        contents override any pre-existing defaults. If `option' ni a key in
+        contents override any pre-existing defaults. If `option' ni a key kwenye
         `vars', the value kutoka `vars' ni used.
 
     getint(section, options, raw=Uongo, vars=Tupu, fallback=_UNSET)
@@ -287,7 +287,7 @@ kundi InterpolationDepthError(InterpolationError):
     eleza __init__(self, option, section, rawval):
         msg = ("Recursion limit exceeded kwenye value substitution: option {!r} "
                "in section {!r} contains an interpolation key which "
-               "cannot be substituted kwenye {} steps. Raw value: {!r}"
+               "cansio be substituted kwenye {} steps. Raw value: {!r}"
                "".format(option, section, MAX_INTERPOLATION_DEPTH,
                          rawval))
         InterpolationError.__init__(self, option, section, msg)
@@ -301,7 +301,7 @@ kundi ParsingError(Error):
         # Exactly one of `source'/`filename' arguments has to be given.
         # `filename' kept kila compatibility.
         ikiwa filename na source:
-            ashiria ValueError("Cannot specify both `filename' na `source'. "
+            ashiria ValueError("Cansio specify both `filename' na `source'. "
                              "Use `source'.")
         lasivyo sio filename na sio source:
             ashiria ValueError("Required argument `source' sio given.")
@@ -376,7 +376,7 @@ kundi Interpolation:
 kundi BasicInterpolation(Interpolation):
     """Interpolation kama implemented kwenye the classic ConfigParser.
 
-    The option values can contain format strings which refer to other values in
+    The option values can contain format strings which refer to other values kwenye
     the same section, ama values kwenye the special default section.
 
     For example:
@@ -384,7 +384,7 @@ kundi BasicInterpolation(Interpolation):
         something: %(dir)s/whatever
 
     would resolve the "%(dir)s" to the value of dir.  All reference
-    expansions are done late, on demand. If a user needs to use a bare % in
+    expansions are done late, on demand. If a user needs to use a bare % kwenye
     a configuration file, she can escape it by writing %%. Other % usage
     ni considered a user error na raises `InterpolationSyntaxError'."""
 
@@ -679,7 +679,7 @@ kundi RawConfigParser(MutableMapping):
     eleza read(self, filenames, encoding=Tupu):
         """Read na parse a filename ama an iterable of filenames.
 
-        Files that cannot be opened are silently ignored; this is
+        Files that cansio be opened are silently ignored; this is
         designed so that you can specify an iterable of potential
         configuration file locations (e.g. current directory, user's
         home directory, systemwide directory), na all existing
@@ -863,7 +863,7 @@ kundi RawConfigParser(MutableMapping):
         a (section_name, section_proxy) tuple. If no section ni present, raise
         KeyError.
 
-        The section DEFAULT ni never returned because it cannot be removed.
+        The section DEFAULT ni never returned because it cansio be removed.
         """
         kila key kwenye self.sections():
             value = self[key]
@@ -961,7 +961,7 @@ kundi RawConfigParser(MutableMapping):
         rudisha self._proxies[key]
 
     eleza __setitem__(self, key, value):
-        # To conform ukijumuisha the mapping protocol, overwrites existing values in
+        # To conform ukijumuisha the mapping protocol, overwrites existing values kwenye
         # the section.
         ikiwa key kwenye self na self[key] ni value:
             rudisha
@@ -975,7 +975,7 @@ kundi RawConfigParser(MutableMapping):
 
     eleza __delitem__(self, key):
         ikiwa key == self.default_section:
-            ashiria ValueError("Cannot remove the default section.")
+            ashiria ValueError("Cansio remove the default section.")
         ikiwa sio self.has_section(key):
             ashiria KeyError(key)
         self.remove_section(key)
@@ -1333,7 +1333,7 @@ kundi ConverterMapping(MutableMapping):
             ashiria ValueError('Incompatible key: {} (type: {})'
                              ''.format(key, type(key)))
         ikiwa k == 'get':
-            ashiria ValueError('Incompatible key: cannot use "" kama a name')
+            ashiria ValueError('Incompatible key: cansio use "" kama a name')
         self._data[key] = value
         func = functools.partial(self._parser._get_conv, conv=value)
         func.converter = value

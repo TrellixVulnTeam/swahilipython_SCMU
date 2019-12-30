@@ -216,7 +216,7 @@ kundi CCompiler:
 
     eleza add_include_dir(self, dir):
         """Add 'dir' to the list of directories that will be searched for
-        header files.  The compiler ni instructed to search directories in
+        header files.  The compiler ni instructed to search directories kwenye
         the order kwenye which they are supplied by successive calls to
         'add_include_dir()'.
         """
@@ -233,7 +233,7 @@ kundi CCompiler:
         self.include_dirs = dirs[:]
 
     eleza add_library(self, libname):
-        """Add 'libname' to the list of libraries that will be included in
+        """Add 'libname' to the list of libraries that will be included kwenye
         all links driven by this compiler object.  Note that 'libname'
         should *not* be the name of a file containing a library, but the
         name of the library itself: the actual filename will be inferred by
@@ -294,7 +294,7 @@ kundi CCompiler:
         self.objects.append(object)
 
     eleza set_link_objects(self, objects):
-        """Set the list of object files (or analogues) to be included in
+        """Set the list of object files (or analogues) to be included kwenye
         every link to 'objects'.  This does sio affect any standard object
         files that the linker may include by default (such kama system
         libraries).
@@ -552,7 +552,7 @@ kundi CCompiler:
         cut the mustard.
 
         'depends', ikiwa given, ni a list of filenames that all targets
-        depend on.  If a source file ni older than any file in
+        depend on.  If a source file ni older than any file kwenye
         depends, then the source file will be recompiled.  This
         supports dependency tracking, but only at a coarse
         granularity.

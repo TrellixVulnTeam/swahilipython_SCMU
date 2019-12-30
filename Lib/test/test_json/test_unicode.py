@@ -67,7 +67,7 @@ kundi TestUnicode:
         self.assertRaises(UnicodeDecodeError, self.loads, b'["\x80"]')
         # RFC-7159 na ECMA-404 extend JSON to allow documents that
         # consist of only a string, which can present a special case
-        # sio covered by the encoding detection patterns specified in
+        # sio covered by the encoding detection patterns specified kwenye
         # RFC-4627 kila utf-16-le (XX 00 XX 00).
         self.assertEqual(self.loads('"\u2600"'.encode('utf-16-le')),
                          '\u2600')

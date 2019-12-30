@@ -289,7 +289,7 @@ kundi SendfileMixin(SendfileBase):
                 asyncio.DatagramProtocol,
                 family=socket.AF_INET))
         jaribu:
-            ukijumuisha self.assertRaisesRegex(RuntimeError, "not supported"):
+            ukijumuisha self.assertRaisesRegex(RuntimeError, "sio supported"):
                 self.run_loop(
                     self.loop.sendfile(tr, self.file))
             self.assertEqual(0, self.file.tell())
@@ -341,7 +341,7 @@ kundi SendfileMixin(SendfileBase):
         self.loop._sendfile_native = sendfile_native
 
         ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "not supported"):
+                                    "sio supported"):
             self.run_loop(
                 self.loop.sendfile(cli_proto.transport, self.file,
                                    fallback=Uongo))

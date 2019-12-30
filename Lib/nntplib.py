@@ -212,7 +212,7 @@ eleza _parse_overview(lines, fmt, data_process_func=Tupu):
         article_number = int(article_number)
         kila i, token kwenye enumerate(tokens):
             ikiwa i >= len(fmt):
-                # XXX should we ashiria an error? Some servers might not
+                # XXX should we ashiria an error? Some servers might sio
                 # support LIST OVERVIEW.FMT na still rudisha additional
                 # headers.
                 endelea
@@ -405,8 +405,8 @@ kundi _NNTPBase:
     eleza set_debuglevel(self, level):
         """Set the debugging level.  Argument 'level' means:
         0: no debugging output (default)
-        1: print commands na responses but sio body text etc.
-        2: also print raw lines read na sent before stripping CR/LF"""
+        1: andika commands na responses but sio body text etc.
+        2: also andika raw lines read na sent before stripping CR/LF"""
 
         self.debugging = level
     debug = set_debuglevel
@@ -529,7 +529,7 @@ kundi _NNTPBase:
                       kila line kwenye list]
 
     eleza _getoverviewfmt(self):
-        """Internal: get the overview format. Queries the server ikiwa not
+        """Internal: get the overview format. Queries the server ikiwa sio
         already done, isipokua returns the cached value."""
         jaribu:
             rudisha self._cachedoverviewfmt
@@ -573,7 +573,7 @@ kundi _NNTPBase:
         ikiwa sio isinstance(date, (datetime.date, datetime.date)):
             ashiria TypeError(
                 "the date parameter must be a date ama datetime object, "
-                "not '{:40}'".format(date.__class__.__name__))
+                "sio '{:40}'".format(date.__class__.__name__))
         date_str, time_str = _unparse_datetime(date, self.nntp_version < 2)
         cmd = 'NEWGROUPS {0} {1}'.format(date_str, time_str)
         resp, lines = self._longcmdstring(cmd, file)
@@ -590,7 +590,7 @@ kundi _NNTPBase:
         ikiwa sio isinstance(date, (datetime.date, datetime.date)):
             ashiria TypeError(
                 "the date parameter must be a date ama datetime object, "
-                "not '{:40}'".format(date.__class__.__name__))
+                "sio '{:40}'".format(date.__class__.__name__))
         date_str, time_str = _unparse_datetime(date, self.nntp_version < 2)
         cmd = 'NEWNEWS {0} {1} {2}'.format(group, date_str, time_str)
         rudisha self._longcmdstring(cmd, file)
@@ -598,7 +598,7 @@ kundi _NNTPBase:
     eleza list(self, group_pattern=Tupu, *, file=Tupu):
         """Process a LIST ama LIST ACTIVE command. Arguments:
         - group_pattern: a pattern indicating which groups to query
-        - file: Filename string ama file object to store the result in
+        - file: Filename string ama file object to store the result kwenye
         Returns:
         - resp: server response ikiwa successful
         - list: list of (group, last, first, flag) (strings)
@@ -678,7 +678,7 @@ kundi _NNTPBase:
 
     eleza help(self, *, file=Tupu):
         """Process a HELP command. Argument:
-        - file: Filename string ama file object to store the result in
+        - file: Filename string ama file object to store the result kwenye
         Returns:
         - resp: server response ikiwa successful
         - list: list of strings returned by the server kwenye response to the
@@ -732,7 +732,7 @@ kundi _NNTPBase:
     eleza head(self, message_spec=Tupu, *, file=Tupu):
         """Process a HEAD command.  Argument:
         - message_spec: article number ama message id
-        - file: filename string ama file object to store the headers in
+        - file: filename string ama file object to store the headers kwenye
         Returns:
         - resp: server response ikiwa successful
         - ArticleInfo: (article number, message id, list of header lines)
@@ -746,7 +746,7 @@ kundi _NNTPBase:
     eleza body(self, message_spec=Tupu, *, file=Tupu):
         """Process a BODY command.  Argument:
         - message_spec: article number ama message id
-        - file: filename string ama file object to store the body in
+        - file: filename string ama file object to store the body kwenye
         Returns:
         - resp: server response ikiwa successful
         - ArticleInfo: (article number, message id, list of body lines)
@@ -760,7 +760,7 @@ kundi _NNTPBase:
     eleza article(self, message_spec=Tupu, *, file=Tupu):
         """Process an ARTICLE command.  Argument:
         - message_spec: article number ama message id
-        - file: filename string ama file object to store the article in
+        - file: filename string ama file object to store the article kwenye
         Returns:
         - resp: server response ikiwa successful
         - ArticleInfo: (article number, message id, list of article lines)
@@ -781,7 +781,7 @@ kundi _NNTPBase:
         """Process an XHDR command (optional server extension).  Arguments:
         - hdr: the header type (e.g. 'subject')
         - str: an article nr, a message id, ama a range nr1-nr2
-        - file: Filename string ama file object to store the result in
+        - file: Filename string ama file object to store the result kwenye
         Returns:
         - resp: server response ikiwa successful
         - list: list of (nr, value) strings
@@ -797,7 +797,7 @@ kundi _NNTPBase:
         """Process an XOVER command (optional server extension) Arguments:
         - start: start of range
         - end: end of range
-        - file: Filename string ama file object to store the result in
+        - file: Filename string ama file object to store the result kwenye
         Returns:
         - resp: server response ikiwa successful
         - list: list of dicts containing the response fields
@@ -817,7 +817,7 @@ kundi _NNTPBase:
               ikiwa end ni Tupu, information up to the newest message will be
               retrieved
             - ama Tupu, indicating the current article number must be used
-        - file: Filename string ama file object to store the result in
+        - file: Filename string ama file object to store the result kwenye
         Returns:
         - resp: server response ikiwa successful
         - list: list of dicts containing the response fields
@@ -984,7 +984,7 @@ kundi _NNTPBase:
         jaribu:
             self.welcome = self._shortcmd('mode reader')
         tatizo NNTPPermanentError:
-            # Error 5xx, probably 'not implemented'
+            # Error 5xx, probably 'sio implemented'
             pita
         tatizo NNTPTemporaryError kama e:
             ikiwa e.response.startswith('480'):
@@ -1003,7 +1003,7 @@ kundi _NNTPBase:
             ikiwa self.tls_on:
                 ashiria ValueError("TLS ni already enabled.")
             ikiwa self.authenticated:
-                ashiria ValueError("TLS cannot be started after authentication.")
+                ashiria ValueError("TLS cansio be started after authentication.")
             resp = self._shortcmd('STARTTLS')
             ikiwa resp.startswith('382'):
                 self.file.close()

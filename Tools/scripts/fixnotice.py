@@ -21,7 +21,7 @@ Options:
         the hard coded value kwenye the script.
 
     --dry-run
-        Don't actually make the changes, but print out the list of files that
+        Don't actually make the changes, but andika out the list of files that
         would change.  When used ukijumuisha -v, a status will be printed kila every
         file.
 

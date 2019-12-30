@@ -659,7 +659,7 @@ kundi SSLProtocol(protocols.Protocol):
         # In case transport.write() was already called. Don't call
         # immediately _process_write_backlog(), but schedule it:
         # _on_handshake_complete() can be called indirectly from
-        # _process_write_backlog(), na _process_write_backlog() ni not
+        # _process_write_backlog(), na _process_write_backlog() ni sio
         # reentrant.
         self._loop.call_soon(self._process_write_backlog)
 

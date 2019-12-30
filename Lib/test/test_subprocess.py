@@ -604,7 +604,7 @@ kundi ProcessTestCase(BaseTestCase):
         # stdout ni set to 1 (#1531862).
         # To avoid printing the text on stdout, we do something similar to
         # test_stdout_none (see above).  The parent subprocess calls the child
-        # subprocess pitaing stdout=1, na this test uses stdout=PIPE in
+        # subprocess pitaing stdout=1, na this test uses stdout=PIPE kwenye
         # order to capture na check the output of the parent. See #11963.
         code = ('agiza sys, subprocess; '
                 'rc = subprocess.call([sys.executable, "-c", '
@@ -658,9 +658,9 @@ kundi ProcessTestCase(BaseTestCase):
     # Windows requires at least the SYSTEMROOT environment variable to start
     # Python
     @unittest.skipIf(sys.platform == 'win32',
-                     'cannot test an empty env on Windows')
+                     'cansio test an empty env on Windows')
     @unittest.skipIf(sysconfig.get_config_var('Py_ENABLE_SHARED') == 1,
-                     'The Python shared library cannot be loaded '
+                     'The Python shared library cansio be loaded '
                      'ukijumuisha an empty environment.')
     eleza test_empty_env(self):
         """Verify that env={} ni kama empty kama possible."""
@@ -1178,7 +1178,7 @@ kundi ProcessTestCase(BaseTestCase):
 
     eleza test_nonexisting_with_pipes(self):
         # bpo-30121: Popen ukijumuisha pipes must close properly pipes on error.
-        # Previously, os.close() was called ukijumuisha a Windows handle which ni not
+        # Previously, os.close() was called ukijumuisha a Windows handle which ni sio
         # a valid file descriptor.
         #
         # Run the test kwenye a subprocess to control how the CRT reports errors
@@ -1264,7 +1264,7 @@ kundi ProcessTestCase(BaseTestCase):
             results.append(('thread-after-second-wait', proc.returncode))
 
         # This ni a timing sensitive test, the failure mode is
-        # triggered when both the main thread na this thread are in
+        # triggered when both the main thread na this thread are kwenye
         # the wait() call at once.  The delay here ni to allow the
         # main thread to most likely be blocked kwenye its wait() call.
         t = threading.Timer(0.2, kill_proc_timer_thread)
@@ -1673,7 +1673,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
 
     @mock.patch("subprocess._posixsubprocess.fork_exec")
     eleza test_exception_errpipe_bad_data(self, fork_exec):
-        """Test error pitaing done through errpipe_write where its not
+        """Test error pitaing done through errpipe_write where its sio
         kwenye the expected format"""
         error_data = b"\xFF\x00\xDE\xAD"
         eleza bad_error(*args):
@@ -1968,7 +1968,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
     eleza _kill_process(self, method, *args):
         # Do sio inerit file handles kutoka the parent.
         # It should fix failures on some platforms.
-        # Also set the SIGINT handler to the default to make sure it's not
+        # Also set the SIGINT handler to the default to make sure it's sio
         # being ignored (some tests rely on that.)
         old_handler = signal.signal(signal.SIGINT, signal.default_int_handler)
         jaribu:

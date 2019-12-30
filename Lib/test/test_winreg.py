@@ -101,7 +101,7 @@ kundi BaseWinregTests(unittest.TestCase):
         jaribu:
             QueryInfoKey(int_sub_key)
             self.fail("It appears the CloseKey() function does "
-                      "not close the actual key!")
+                      "sio close the actual key!")
         tatizo OSError:
             pita
         # ... na close that key that way :-)

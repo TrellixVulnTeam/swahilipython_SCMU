@@ -34,7 +34,7 @@ kundi FindSpecTests(abc.FinderTests):
     test_package_over_module = Tupu
 
     eleza test_failure(self):
-        spec = self.find('<not real>')
+        spec = self.find('<sio real>')
         self.assertIsTupu(spec)
 
 
@@ -71,7 +71,7 @@ kundi FinderTests(abc.FinderTests):
     test_package_over_module = Tupu
 
     eleza test_failure(self):
-        loader = self.find('<not real>')
+        loader = self.find('<sio real>')
         self.assertIsTupu(loader)
 
 

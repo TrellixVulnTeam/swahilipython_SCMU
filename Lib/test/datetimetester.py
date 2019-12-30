@@ -322,7 +322,7 @@ kundi TestTimeZone(unittest.TestCase):
         ukijumuisha self.assertRaises(ValueError):
             timezone.utc.fromutc(self.DT)
         ukijumuisha self.assertRaises(TypeError):
-            timezone.utc.fromutc('not datetime')
+            timezone.utc.fromutc('sio datetime')
         kila tz kwenye [self.EST, self.ACDT, Eastern]:
             utctime = self.DT.replace(tzinfo=tz)
             local = tz.fromutc(utctime)
@@ -1933,7 +1933,7 @@ kundi TestDateTime(TestDate):
         self.assertEqual(dt.microsecond, 0)
 
     eleza test_basic_attributes_nonzero(self):
-        # Make sure all attributes are non-zero so bugs in
+        # Make sure all attributes are non-zero so bugs kwenye
         # bit-shifting access show up.
         dt = self.theclass(2002, 3, 1, 12, 59, 59, 8000)
         self.assertEqual(dt.year, 2002)
@@ -2353,7 +2353,7 @@ kundi TestDateTime(TestDate):
         got = self.theclass.utcfromtimestamp(ts)
         self.verify_field_equality(expected, got)
 
-    # Run ukijumuisha US-style DST rules: DST begins 2 a.m. on second Sunday in
+    # Run ukijumuisha US-style DST rules: DST begins 2 a.m. on second Sunday kwenye
     # March (M3.2.0) na ends 2 a.m. on first Sunday kwenye November (M11.1.0).
     @support.run_with_tz('EST+05EDT,M3.2.0,M11.1.0')
     eleza test_timestamp_naive(self):
@@ -3028,7 +3028,7 @@ kundi TestDateTime(TestDate):
 kundi TestSubclassDateTime(TestDateTime):
     thekundi = SubclassDatetime
     # Override tests sio designed kila subclass
-    @unittest.skip('not appropriate kila subclasses')
+    @unittest.skip('sio appropriate kila subclasses')
     eleza test_roundtrip(self):
         pita
 
@@ -3047,7 +3047,7 @@ kundi TestTime(HarmlessMixedComparison, unittest.TestCase):
         self.assertEqual(t.microsecond, 0)
 
     eleza test_basic_attributes_nonzero(self):
-        # Make sure all attributes are non-zero so bugs in
+        # Make sure all attributes are non-zero so bugs kwenye
         # bit-shifting access show up.
         t = self.theclass(12, 59, 59, 8000)
         self.assertEqual(t.hour, 12)
@@ -4801,7 +4801,7 @@ kundi TestTimezoneConversions(unittest.TestCase):
             self.assertEqual(dt, there_and_back)
 
         # Because we have a redundant spelling when DST begins, there is
-        # (unfortunately) an hour when DST ends that can't be spelled at all in
+        # (unfortunately) an hour when DST ends that can't be spelled at all kwenye
         # local time.  When DST ends, the clock jumps kutoka 1:59 back to 1:00
         # again.  The hour 1:MM DST has no spelling then:  1:MM ni taken to be
         # standard time.  1:MM DST == 0:MM EST, but 0:MM ni taken to be
@@ -4866,7 +4866,7 @@ kundi TestTimezoneConversions(unittest.TestCase):
         self.convert_between_tz_and_utc(Eastern, Pacific)
         self.convert_between_tz_and_utc(Pacific, Eastern)
         # OTOH, these fail!  Don't enable them.  The difficulty ni that
-        # the edge case tests assume that every hour ni representable in
+        # the edge case tests assume that every hour ni representable kwenye
         # the "utc" class.  This ni always true kila a fixed-offset tzinfo
         # kundi (lke utc_real na utc_fake), but sio kila Eastern ama Central.
         # For these adjacent DST-aware time zones, the range of time offsets
@@ -5581,7 +5581,7 @@ kundi ZoneInfo(tzinfo):
     @classmethod
     eleza fromfile(cls, fileobj):
         ikiwa fileobj.read(4).decode() != "TZif":
-            ashiria ValueError("not a zoneinfo file")
+            ashiria ValueError("sio a zoneinfo file")
         fileobj.seek(32)
         counts = array('i')
         counts.fromfile(fileobj, 3)
@@ -5668,7 +5668,7 @@ kundi ZoneInfo(tzinfo):
 
     eleza dst(self, dt):
         isdst = self._find_ti(dt, 1)
-        # XXX: We cannot accurately determine the "save" value,
+        # XXX: We cansio accurately determine the "save" value,
         # so let's rudisha 1h whenever DST ni kwenye effect.  Since
         # we don't use dst() kwenye fromutc(), it ni unlikely that
         # it will be needed kila anything more than bool(dst()).

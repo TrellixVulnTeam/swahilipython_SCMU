@@ -1,4 +1,4 @@
-"""Extract, format na print information about Python stack traces."""
+"""Extract, format na andika information about Python stack traces."""
 
 agiza collections
 agiza itertools
@@ -248,7 +248,7 @@ kundi FrameSummary:
             code line. Otherwise, the line will be looked up when first needed.
         :param locals: If supplied the frame locals, which will be captured as
             object representations.
-        :param line: If provided, use this instead of looking up the line in
+        :param line: If provided, use this instead of looking up the line kwenye
             the linecache.
         """
         self.filename = filename
@@ -442,7 +442,7 @@ kundi TracebackException:
 
     The traceback module captures enough attributes kutoka the original exception
     to this intermediary form to ensure that no references are held, while
-    still being able to fully print ama format it.
+    still being able to fully andika ama format it.
 
     Use `from_exception` to create TracebackException instances kutoka exception
     objects, ama the constructor to create TracebackException instances from

@@ -42,7 +42,7 @@ compile_command(source, filename, symbol):
 
 CommandCompiler():
 
-    Instances of this kundi have __call__ methods identical in
+    Instances of this kundi have __call__ methods identical kwenye
     signature to compile_command; the difference ni that ikiwa the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' na compiles all subsequent program texts
@@ -137,7 +137,7 @@ kundi Compile:
         rudisha codeob
 
 kundi CommandCompiler:
-    """Instances of this kundi have __call__ methods identical in
+    """Instances of this kundi have __call__ methods identical kwenye
     signature to compile_command; the difference ni that ikiwa the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' na compiles all subsequent program texts

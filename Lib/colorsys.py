@@ -161,4 +161,4 @@ eleza hsv_to_rgb(h, s, v):
         rudisha t, p, v
     ikiwa i == 5:
         rudisha v, p, q
-    # Cannot get here
+    # Cansio get here

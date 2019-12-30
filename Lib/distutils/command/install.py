@@ -159,7 +159,7 @@ kundi install(Command):
         self.install_platbase = Tupu
         self.root = Tupu
 
-        # These options are the actual installation directories; ikiwa not
+        # These options are the actual installation directories; ikiwa sio
         # supplied by the user, they are filled kwenye using the installation
         # scheme implied by prefix/exec-prefix/home na the contents of
         # that installation scheme.
@@ -180,14 +180,14 @@ kundi install(Command):
         # own directory na creating a .pth file ikiwa it makes sense.
         # 'extra_path' comes kutoka the setup file; 'install_path_file' can
         # be turned off ikiwa it makes no sense to install a .pth file.  (But
-        # better to install it uselessly than to guess wrong na not
+        # better to install it uselessly than to guess wrong na sio
         # install it when it's necessary na would be used!)  Currently,
         # 'install_path_file' ni always true unless some outsider meddles
         # ukijumuisha it.
         self.extra_path = Tupu
         self.install_path_file = 1
 
-        # 'force' forces installation, even ikiwa target files are not
+        # 'force' forces installation, even ikiwa target files are sio
         # out-of-date.  'skip_build' skips running the "build" command,
         # handy ikiwa you know it's sio necessary.  'warn_dir' (which ni *not*
         # a user option, it's just there so the bdist_* commands can turn

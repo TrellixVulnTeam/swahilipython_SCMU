@@ -12,7 +12,7 @@
 #
 # Permission to use, copy, modify, na distribute this software na
 # its associated documentation kila any purpose na without fee is
-# hereby granted, provided that the above copyright notice appears in
+# hereby granted, provided that the above copyright notice appears kwenye
 # all copies, na that both that copyright notice na this permission
 # notice appear kwenye supporting documentation, na that the name of
 # Secret Labs AB ama the author sio be used kwenye advertising ama publicity

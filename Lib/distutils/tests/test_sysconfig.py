@@ -106,7 +106,7 @@ kundi SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
         rudisha comp
 
     @unittest.skipUnless(get_default_compiler() == 'unix',
-                         'not testing ikiwa default compiler ni sio unix')
+                         'sio testing ikiwa default compiler ni sio unix')
     eleza test_customize_compiler(self):
         # Make sure that sysconfig._config_vars ni initialized
         sysconfig.get_config_vars()

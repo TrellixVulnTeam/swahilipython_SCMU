@@ -213,10 +213,10 @@ kundi TestDefectsBase:
         # separates the header kutoka the body ni missing, na to stop parsing
         # headers na start parsing the body.
         ukijumuisha self._raise_point(errors.MissingHeaderBodySeparatorDefect):
-            msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')
+            msg = self._str_msg('Subject: test\nsio a header\nTo: abc\n\nb\n')
         ikiwa self.raise_expected: rudisha
         self.assertEqual(msg.keys(), ['Subject'])
-        self.assertEqual(msg.get_payload(), 'not a header\nTo: abc\n\nb\n')
+        self.assertEqual(msg.get_payload(), 'sio a header\nTo: abc\n\nb\n')
         self.assertDefectsEqual(self.get_defects(msg),
                                 [errors.MissingHeaderBodySeparatorDefect])
 

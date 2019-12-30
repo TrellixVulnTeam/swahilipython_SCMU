@@ -7,7 +7,7 @@
 # - functions (even inside other defs ama classes)
 # - classes
 # - filenames
-# Warns about files it cannot open.
+# Warns about files it cansio open.
 # No warnings about duplicate tags.
 
 agiza sys, re, os
@@ -31,7 +31,7 @@ eleza treat_file(filename):
     jaribu:
         fp = open(filename, 'r')
     tatizo:
-        sys.stderr.write('Cannot open %s\n' % filename)
+        sys.stderr.write('Cansio open %s\n' % filename)
         rudisha
     ukijumuisha fp:
         base = os.path.basename(filename)

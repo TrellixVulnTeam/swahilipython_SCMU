@@ -19,4 +19,4 @@ kundi MIMENonMultipart(MIMEBase):
         # derived subtypes since none of them are, by definition, of content
         # type multipart/*
         ashiria errors.MultipartConversionError(
-            'Cannot attach additional subparts to non-multipart/*')
+            'Cansio attach additional subparts to non-multipart/*')

@@ -349,7 +349,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
         self.assertEqual(bufs, [MSG] * NUM_SOCKETS)
 
     @unittest.skipIf(sys.platform == 'win32',
-                     'select.select() cannot be used ukijumuisha empty fd sets')
+                     'select.select() cansio be used ukijumuisha empty fd sets')
     eleza test_empty_select(self):
         # Issue #23009: Make sure EpollSelector.select() works when no FD is
         # registered.

@@ -637,7 +637,7 @@ kundi NonCallableMock(Base):
             ashiria AttributeError(name)
         ikiwa sio self._mock_unsafe:
             ikiwa name.startswith(('assert', 'assret')):
-                ashiria AttributeError("Attributes cannot start ukijumuisha 'assert' "
+                ashiria AttributeError("Attributes cansio start ukijumuisha 'assert' "
                                      "or 'assret'")
 
         result = self._mock_children.get(name)
@@ -766,7 +766,7 @@ kundi NonCallableMock(Base):
 
         ikiwa self._mock_sealed na sio hasattr(self, name):
             mock_name = f'{self._extract_mock_name()}.{name}'
-            ashiria AttributeError(f'Cannot set {mock_name}')
+            ashiria AttributeError(f'Cansio set {mock_name}')
 
         rudisha object.__setattr__(self, name, value)
 
@@ -892,7 +892,7 @@ kundi NonCallableMock(Base):
         different to the last call to the mock."""
         ikiwa self.call_args ni Tupu:
             expected = self._format_mock_call_signature(args, kwargs)
-            actual = 'not called.'
+            actual = 'sio called.'
             error_message = ('expected call sio found.\nExpected: %s\nActual: %s'
                     % (expected, actual))
             ashiria AssertionError(error_message)
@@ -1240,11 +1240,11 @@ kundi _patch(object):
         ikiwa new_callable ni sio Tupu:
             ikiwa new ni sio DEFAULT:
                 ashiria ValueError(
-                    "Cannot use 'new' na 'new_callable' together"
+                    "Cansio use 'new' na 'new_callable' together"
                 )
             ikiwa autospec ni sio Tupu:
                 ashiria ValueError(
-                    "Cannot use 'autospec' na 'new_callable' together"
+                    "Cansio use 'autospec' na 'new_callable' together"
                 )
 
         self.getter = getter
@@ -1469,7 +1469,7 @@ kundi _patch(object):
                 this_spec = spec
                 ikiwa spec_set ni sio Tupu:
                     this_spec = spec_set
-                ikiwa (sio _is_list(this_spec) na not
+                ikiwa (sio _is_list(this_spec) na sio
                     _instance_callable(this_spec)):
                     Klass = NonCallableMagicMock
 
@@ -1904,7 +1904,7 @@ eleza _get_method(name, func):
 
 
 _magics = {
-    '__%s__' % method kila method in
+    '__%s__' % method kila method kwenye
     ' '.join([magic_methods, numerics, inplace, right]).split()
 }
 

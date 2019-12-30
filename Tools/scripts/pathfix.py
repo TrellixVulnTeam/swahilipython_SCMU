@@ -99,7 +99,7 @@ eleza recursedown(dirname):
     jaribu:
         names = os.listdir(dirname)
     tatizo OSError kama msg:
-        err('%s: cannot list directory: %r\n' % (dirname, msg))
+        err('%s: cansio list directory: %r\n' % (dirname, msg))
         rudisha 1
     names.sort()
     subdirs = []
@@ -121,7 +121,7 @@ eleza fix(filename):
     jaribu:
         f = open(filename, 'rb')
     tatizo IOError kama msg:
-        err('%s: cannot open: %r\n' % (filename, msg))
+        err('%s: cansio open: %r\n' % (filename, msg))
         rudisha 1
     ukijumuisha f:
         line = f.readline()
@@ -134,7 +134,7 @@ eleza fix(filename):
         jaribu:
             g = open(tempname, 'wb')
         tatizo IOError kama msg:
-            err('%s: cannot create: %r\n' % (tempname, msg))
+            err('%s: cansio create: %r\n' % (tempname, msg))
             rudisha 1
         ukijumuisha g:
             rep(filename + ': updating\n')

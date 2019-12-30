@@ -441,7 +441,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     # "This kundi attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
-    # carry additional information, it must subkundi this exception in
+    # carry additional information, it must subkundi this exception kwenye
     # order to ``play fair'' ukijumuisha the framework.  The initial value of this
     # attribute ni AssertionError"
     eleza test_failureException__default(self):
@@ -453,7 +453,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     # "This kundi attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
-    # carry additional information, it must subkundi this exception in
+    # carry additional information, it must subkundi this exception kwenye
     # order to ``play fair'' ukijumuisha the framework."
     #
     # Make sure TestCase.run() respects the designated failureException
@@ -476,7 +476,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     # "This kundi attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
-    # carry additional information, it must subkundi this exception in
+    # carry additional information, it must subkundi this exception kwenye
     # order to ``play fair'' ukijumuisha the framework."
     #
     # Make sure TestCase.run() respects the designated failureException
@@ -971,7 +971,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertRaises(self.failureException, self.assertCountEqual,
                           [1, {'b': 2}, Tupu, Kweli], [{'b': 2}, Kweli, Tupu])
 
-        # Same elements which don't reliably compare, in
+        # Same elements which don't reliably compare, kwenye
         # different order, see issue 10242
         a = [{2,4}, {1,2}]
         b = a[::-1]

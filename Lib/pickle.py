@@ -1397,7 +1397,7 @@ kundi _Unpickler:
         jaribu:
             buf = next(self._buffers)
         tatizo StopIteration:
-            ashiria UnpicklingError("not enough out-of-band buffers")
+            ashiria UnpicklingError("sio enough out-of-band buffers")
         self.append(buf)
     dispatch[NEXT_BUFFER[0]] = load_next_buffer
 
@@ -1474,7 +1474,7 @@ kundi _Unpickler:
         self.append(d)
     dispatch[DICT[0]] = load_dict
 
-    # INST na OBJ differ only kwenye how they get a kundi object.  It's not
+    # INST na OBJ differ only kwenye how they get a kundi object.  It's sio
     # only sensible to do the rest kwenye a common routine, the two routines
     # previously diverged na grew different bugs.
     # klass ni the kundi to instantiate, na k points to the topmost mark

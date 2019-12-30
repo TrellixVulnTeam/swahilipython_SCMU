@@ -44,7 +44,7 @@ kundi DistutilsOptionError (DistutilsError):
     mutually conflicting options, ama inconsistent options,
     badly-spelled values, etc.  No distinction ni made between option
     values originating kwenye the setup script, the command line, config
-    files, ama what-have-you -- but ikiwa we *know* something originated in
+    files, ama what-have-you -- but ikiwa we *know* something originated kwenye
     the setup script, we'll ashiria DistutilsSetupError instead."""
     pita
 

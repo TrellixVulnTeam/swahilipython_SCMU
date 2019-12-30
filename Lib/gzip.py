@@ -127,7 +127,7 @@ kundi GzipFile(_compression.BaseStream):
     """
 
     # Overridden ukijumuisha internal file object to be closed, ikiwa only a filename
-    # ni pitaed in
+    # ni pitaed kwenye
     myfileobj = Tupu
 
     eleza __init__(self, filename=Tupu, mode=Tupu,
@@ -232,8 +232,8 @@ kundi GzipFile(_compression.BaseStream):
         self.fileobj.write(b'\037\213')             # magic header
         self.fileobj.write(b'\010')                 # compression method
         jaribu:
-            # RFC 1952 requires the FNAME field to be Latin-1. Do not
-            # include filenames that cannot be represented that way.
+            # RFC 1952 requires the FNAME field to be Latin-1. Do sio
+            # include filenames that cansio be represented that way.
             fname = os.path.basename(self.name)
             ikiwa sio isinstance(fname, bytes):
                 fname = fname.encode('latin-1')

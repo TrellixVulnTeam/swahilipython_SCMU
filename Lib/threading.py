@@ -143,7 +143,7 @@ kundi _RLock:
 
         When invoked ukijumuisha the floating-point timeout argument set to a positive
         value, block kila at most the number of seconds specified by timeout
-        na kama long kama the lock cannot be acquired.  Return true ikiwa the lock has
+        na kama long kama the lock cansio be acquired.  Return true ikiwa the lock has
         been acquired, false ikiwa the timeout has elapsed.
 
         """
@@ -176,7 +176,7 @@ kundi _RLock:
 
         """
         ikiwa self._owner != get_ident():
-            ashiria RuntimeError("cannot release un-acquired lock")
+            ashiria RuntimeError("cansio release un-acquired lock")
         self._count = count = self._count - 1
         ikiwa sio count:
             self._owner = Tupu
@@ -193,7 +193,7 @@ kundi _RLock:
 
     eleza _release_save(self):
         ikiwa self._count == 0:
-            ashiria RuntimeError("cannot release un-acquired lock")
+            ashiria RuntimeError("cansio release un-acquired lock")
         count = self._count
         self._count = 0
         owner = self._owner
@@ -291,7 +291,7 @@ kundi Condition:
 
         """
         ikiwa sio self._is_owned():
-            ashiria RuntimeError("cannot wait on un-acquired lock")
+            ashiria RuntimeError("cansio wait on un-acquired lock")
         waiter = _allocate_lock()
         waiter.acquire()
         self._waiters.append(waiter)
@@ -349,7 +349,7 @@ kundi Condition:
 
         """
         ikiwa sio self._is_owned():
-            ashiria RuntimeError("cannot notify on un-acquired lock")
+            ashiria RuntimeError("cansio notify on un-acquired lock")
         all_waiters = self._waiters
         waiters_to_notify = _deque(_islice(all_waiters, n))
         ikiwa sio waiters_to_notify:
@@ -399,7 +399,7 @@ kundi Semaphore:
         on entry, block, waiting until some other thread has called release() to
         make it larger than zero. This ni done ukijumuisha proper interlocking so that
         ikiwa multiple acquire() calls are blocked, release() will wake exactly one
-        of them up. The implementation may pick one at random, so the order in
+        of them up. The implementation may pick one at random, so the order kwenye
         which blocked threads are awakened should sio be relied on. There ni no
         rudisha value kwenye this case.
 
@@ -411,7 +411,7 @@ kundi Semaphore:
         same thing kama when called without arguments, na rudisha true.
 
         When invoked ukijumuisha a timeout other than Tupu, it will block kila at
-        most timeout seconds.  If acquire does sio complete successfully in
+        most timeout seconds.  If acquire does sio complete successfully kwenye
         that interval, rudisha false.  Return true otherwise.
 
         """
@@ -460,7 +460,7 @@ kundi BoundedSemaphore(Semaphore):
     initial value. If it does, ValueError ni raised. In most situations
     semaphores are used to guard resources ukijumuisha limited capacity.
 
-    If the semaphore ni released too many times it's a sign of a bug. If not
+    If the semaphore ni released too many times it's a sign of a bug. If sio
     given, value defaults to 1.
 
     Like regular semaphores, bounded semaphores manage a counter representing
@@ -878,11 +878,11 @@ kundi Thread:
         # exceptions during interpreter cleanup.  Those typically
         # happen when a daemon thread wakes up at an unfortunate
         # moment, finds the world around it destroyed, na raises some
-        # random exception *** wakati trying to report the exception in
+        # random exception *** wakati trying to report the exception kwenye
         # _bootstrap_inner() below ***.  Those random exceptions
         # don't help anybody, na they confuse users, so we suppress
         # them.  We suppress them only when it appears that the world
-        # indeed has already been destroyed, so that exceptions in
+        # indeed has already been destroyed, so that exceptions kwenye
         # _bootstrap_inner() during normal business hours are properly
         # reported.  Also, we only suppress them kila daemonic threads;
         # ikiwa a non-daemonic encounters this, something isipokua ni wrong.
@@ -949,7 +949,7 @@ kundi Thread:
         # (release_sentinel kwenye _threadmodule.c) releases ._tstate_lock, na
         # that's detected by our ._wait_for_tstate_lock(), called by .join()
         # na .is_alive().  Any number of threads _may_ call ._stop()
-        # simultaneously (kila example, ikiwa multiple threads are blocked in
+        # simultaneously (kila example, ikiwa multiple threads are blocked kwenye
         # .join() calls), na they're sio serialized.  That's harmless -
         # they'll just make redundant rebindings of ._is_stopped na
         # ._tstate_lock.  Obscure:  we rebind ._tstate_lock last so that the
@@ -1003,9 +1003,9 @@ kundi Thread:
         ikiwa sio self._initialized:
             ashiria RuntimeError("Thread.__init__() sio called")
         ikiwa sio self._started.is_set():
-            ashiria RuntimeError("cannot join thread before it ni started")
+            ashiria RuntimeError("cansio join thread before it ni started")
         ikiwa self ni current_thread():
-            ashiria RuntimeError("cannot join current thread")
+            ashiria RuntimeError("cansio join current thread")
 
         ikiwa timeout ni Tupu:
             self._wait_for_tstate_lock()
@@ -1098,7 +1098,7 @@ kundi Thread:
 
         This must be set before start() ni called, otherwise RuntimeError is
         raised. Its initial value ni inherited kutoka the creating thread; the
-        main thread ni sio a daemon thread na therefore all threads created in
+        main thread ni sio a daemon thread na therefore all threads created kwenye
         the main thread default to daemon = Uongo.
 
         The entire Python program exits when only daemon threads are left.
@@ -1112,7 +1112,7 @@ kundi Thread:
         ikiwa sio self._initialized:
             ashiria RuntimeError("Thread.__init__() sio called")
         ikiwa self._started.is_set():
-            ashiria RuntimeError("cannot set daemon status of active thread")
+            ashiria RuntimeError("cansio set daemon status of active thread")
         self._daemonic = daemonic
 
     eleza isDaemon(self):
@@ -1187,7 +1187,7 @@ eleza _make_invoke_excepthook():
         ashiria RuntimeError("sys.excepthook ni Tupu")
 
     sys_exc_info = _sys.exc_info
-    local_print = print
+    local_print = andika
     local_sys = _sys
 
     eleza invoke_excepthook(thread):
@@ -1298,7 +1298,7 @@ kundi _DummyThread(Thread):
         rudisha Kweli
 
     eleza join(self, timeout=Tupu):
-        assert Uongo, "cannot join a dummy thread"
+        assert Uongo, "cansio join a dummy thread"
 
 
 # Global API functions

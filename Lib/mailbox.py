@@ -1517,7 +1517,7 @@ kundi Message(email.message.Message):
         ikiwa isinstance(message, Message):
             rudisha  # There's nothing format-specific to explain.
         isipokua:
-            ashiria TypeError('Cannot convert to specified type')
+            ashiria TypeError('Cansio convert to specified type')
 
 
 kundi MaildirMessage(Message):
@@ -1625,7 +1625,7 @@ kundi MaildirMessage(Message):
         lasivyo isinstance(message, Message):
             pita
         isipokua:
-            ashiria TypeError('Cannot convert to specified type: %s' %
+            ashiria TypeError('Cansio convert to specified type: %s' %
                             type(message))
 
 
@@ -1738,7 +1738,7 @@ kundi _mboxMMDFMessage(Message):
         lasivyo isinstance(message, Message):
             pita
         isipokua:
-            ashiria TypeError('Cannot convert to specified type: %s' %
+            ashiria TypeError('Cansio convert to specified type: %s' %
                             type(message))
 
 
@@ -1814,7 +1814,7 @@ kundi MHMessage(Message):
         lasivyo isinstance(message, Message):
             pita
         isipokua:
-            ashiria TypeError('Cannot convert to specified type: %s' %
+            ashiria TypeError('Cansio convert to specified type: %s' %
                             type(message))
 
 
@@ -1909,7 +1909,7 @@ kundi BabylMessage(Message):
         lasivyo isinstance(message, Message):
             pita
         isipokua:
-            ashiria TypeError('Cannot convert to specified type: %s' %
+            ashiria TypeError('Cansio convert to specified type: %s' %
                             type(message))
 
 

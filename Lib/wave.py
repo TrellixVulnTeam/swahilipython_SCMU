@@ -17,12 +17,12 @@ This returns an instance of a kundi ukijumuisha the following public methods:
       getnframes()    -- returns number of audio frames
       getcomptype()   -- returns compression type ('NONE' kila linear samples)
       getcompname()   -- returns human-readable version of
-                         compression type ('not compressed' linear samples)
+                         compression type ('sio compressed' linear samples)
       getparams()     -- returns a namedtuple consisting of all of the
                          above kwenye the above order
       getmarkers()    -- returns Tupu (kila compatibility ukijumuisha the
                          aifc module)
-      getmark(id)     -- raises an error since the mark does not
+      getmark(id)     -- raises an error since the mark does sio
                          exist (kila compatibility ukijumuisha the aifc module)
       readframes(n)   -- returns at most n frames of audio
       rewind()        -- rewind to the beginning of the audio stream
@@ -130,7 +130,7 @@ kundi Wave_read:
         ikiwa self._file.getname() != b'RIFF':
             ashiria Error('file does sio start ukijumuisha RIFF id')
         ikiwa self._file.read(4) != b'WAVE':
-            ashiria Error('not a WAVE file')
+            ashiria Error('sio a WAVE file')
         self._fmt_chunk_read = 0
         self._data_chunk = Tupu
         wakati 1:
@@ -271,7 +271,7 @@ kundi Wave_read:
             ashiria Error('bad # of channels')
         self._framesize = self._nchannels * self._sampwidth
         self._comptype = 'NONE'
-        self._compname = 'not compressed'
+        self._compname = 'sio compressed'
 
 kundi Wave_write:
     """Variables used kwenye this class:
@@ -337,7 +337,7 @@ kundi Wave_write:
     #
     eleza setnchannels(self, nchannels):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         ikiwa nchannels < 1:
             ashiria Error('bad # of channels')
         self._nchannels = nchannels
@@ -349,7 +349,7 @@ kundi Wave_write:
 
     eleza setsampwidth(self, sampwidth):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         ikiwa sampwidth < 1 ama sampwidth > 4:
             ashiria Error('bad sample width')
         self._sampwidth = sampwidth
@@ -361,7 +361,7 @@ kundi Wave_write:
 
     eleza setframerate(self, framerate):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         ikiwa framerate <= 0:
             ashiria Error('bad frame rate')
         self._framerate = int(round(framerate))
@@ -373,7 +373,7 @@ kundi Wave_write:
 
     eleza setnframes(self, nframes):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         self._nframes = nframes
 
     eleza getnframes(self):
@@ -381,7 +381,7 @@ kundi Wave_write:
 
     eleza setcomptype(self, comptype, compname):
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         ikiwa comptype haiko kwenye ('NONE',):
             ashiria Error('unsupported compression type')
         self._comptype = comptype
@@ -396,7 +396,7 @@ kundi Wave_write:
     eleza setparams(self, params):
         nchannels, sampwidth, framerate, nframes, comptype, compname = params
         ikiwa self._datawritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         self.setnchannels(nchannels)
         self.setsampwidth(sampwidth)
         self.setframerate(framerate)
@@ -405,7 +405,7 @@ kundi Wave_write:
 
     eleza getparams(self):
         ikiwa sio self._nchannels ama sio self._sampwidth ama sio self._framerate:
-            ashiria Error('not all parameters set')
+            ashiria Error('sio all parameters set')
         rudisha _wave_params(self._nchannels, self._sampwidth, self._framerate,
               self._nframes, self._comptype, self._compname)
 

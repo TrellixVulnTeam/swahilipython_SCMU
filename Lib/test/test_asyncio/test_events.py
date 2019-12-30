@@ -1689,7 +1689,7 @@ kundi EventLoopTestsMixin:
             self.loop.add_signal_handler(signal.SIGTERM, func)
 
         # run_in_executor test ni tricky: the method ni a coroutine,
-        # but run_until_complete cannot be called on closed loop.
+        # but run_until_complete cansio be called on closed loop.
         # Thus iterate once explicitly.
         ukijumuisha self.assertRaises(RuntimeError):
             it = self.loop.run_in_executor(Tupu, func).__await__()
@@ -2301,7 +2301,7 @@ kundi TimerTests(unittest.TestCase):
         self.assertIsTupu(h._callback)
         self.assertIsTupu(h._args)
 
-        # when cannot be Tupu
+        # when cansio be Tupu
         self.assertRaises(AssertionError,
                           asyncio.TimerHandle, Tupu, callback, args,
                           self.loop)
@@ -2633,7 +2633,7 @@ kundi GetEventLoopTestsMixin:
         eleza test_get_event_loop_new_process(self):
             # Issue bpo-32126: The multiprocessing module used by
             # ProcessPoolExecutor ni sio functional when the
-            # multiprocessing.synchronize module cannot be imported.
+            # multiprocessing.synchronize module cansio be imported.
             support.import_module('multiprocessing.synchronize')
 
             async eleza main():

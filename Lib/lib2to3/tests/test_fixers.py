@@ -202,7 +202,7 @@ kundi Test_apply(FixerTestCase):
         a = """x = (f**g)(*args)"""
         self.check(b, a)
 
-    # But dotted names etc. not
+    # But dotted names etc. sio
 
     eleza test_dotted_name(self):
         b = """x = apply(f.g, args)"""
@@ -476,7 +476,7 @@ kundi Test_andika(FixerTestCase):
         self.check(b, a)
 
     eleza test_5(self):
-        b = """print; print whatever;"""
+        b = """print; andika whatever;"""
         a = """andika(); andika(whatever);"""
         self.check(b, a)
 
@@ -1383,13 +1383,13 @@ kundi Test_dict(FixerTestCase):
         self.check(b, a)
 
     eleza test_11(self):
-        b = "kila i kwenye d.keys(): print i"
-        a = "kila i kwenye list(d.keys()): print i"
+        b = "kila i kwenye d.keys(): andika i"
+        a = "kila i kwenye list(d.keys()): andika i"
         self.check(b, a)
 
     eleza test_12(self):
-        b = "kila i kwenye d.iterkeys(): print i"
-        a = "kila i kwenye d.keys(): print i"
+        b = "kila i kwenye d.iterkeys(): andika i"
+        a = "kila i kwenye d.keys(): andika i"
         self.check(b, a)
 
     eleza test_13(self):
@@ -1448,8 +1448,8 @@ kundi Test_dict(FixerTestCase):
         self.check(b, a)
 
     eleza test_24(self):
-        b = "kila x kwenye h.keys()[0]: print x"
-        a = "kila x kwenye list(h.keys())[0]: print x"
+        b = "kila x kwenye h.keys()[0]: andika x"
+        a = "kila x kwenye list(h.keys())[0]: andika x"
         self.check(b, a)
 
     eleza test_25(self):
@@ -1886,7 +1886,7 @@ kundi Test_urllib(FixerTestCase):
     eleza test_star(self):
         kila old kwenye self.modules:
             s = "kutoka %s agiza *" % old
-            self.warns_unchanged(s, "Cannot handle star imports")
+            self.warns_unchanged(s, "Cansio handle star imports")
 
     eleza test_indented(self):
         b = """
@@ -3059,7 +3059,7 @@ kundi Test_map(FixerTestCase):
 
     eleza test_Tupu_with_multiple_arguments(self):
         s = """x = map(Tupu, a, b, c)"""
-        self.warns_unchanged(s, "cannot convert map(Tupu, ...) ukijumuisha "
+        self.warns_unchanged(s, "cansio convert map(Tupu, ...) ukijumuisha "
                              "multiple arguments")
 
     eleza test_map_basic(self):
@@ -3366,7 +3366,7 @@ kundi Test_idioms(FixerTestCase):
 
     eleza test_is_not_simple(self):
         b = """type(x) ni sio T"""
-        a = """not isinstance(x, T)"""
+        a = """sio isinstance(x, T)"""
         self.check(b, a)
 
         b = """ikiwa   type(x) ni sio T: pita"""
@@ -3375,7 +3375,7 @@ kundi Test_idioms(FixerTestCase):
 
     eleza test_is_not_reverse(self):
         b = """T ni sio type(x)"""
-        a = """not isinstance(x, T)"""
+        a = """sio isinstance(x, T)"""
         self.check(b, a)
 
         b = """ikiwa   T ni sio type(x): pita"""
@@ -3384,16 +3384,16 @@ kundi Test_idioms(FixerTestCase):
 
     eleza test_is_not_expression(self):
         b = """type(x+y) ni sio d.get('T')"""
-        a = """not isinstance(x+y, d.get('T'))"""
+        a = """sio isinstance(x+y, d.get('T'))"""
         self.check(b, a)
 
         b = """type(   x  +  y) ni sio d.get('T')"""
-        a = """not isinstance(x  +  y, d.get('T'))"""
+        a = """sio isinstance(x  +  y, d.get('T'))"""
         self.check(b, a)
 
     eleza test_ne_simple(self):
         b = """type(x) != T"""
-        a = """not isinstance(x, T)"""
+        a = """sio isinstance(x, T)"""
         self.check(b, a)
 
         b = """ikiwa   type(x) != T: pita"""
@@ -3402,7 +3402,7 @@ kundi Test_idioms(FixerTestCase):
 
     eleza test_ne_reverse(self):
         b = """T != type(x)"""
-        a = """not isinstance(x, T)"""
+        a = """sio isinstance(x, T)"""
         self.check(b, a)
 
         b = """ikiwa   T != type(x): pita"""
@@ -3411,11 +3411,11 @@ kundi Test_idioms(FixerTestCase):
 
     eleza test_ne_expression(self):
         b = """type(x+y) != d.get('T')"""
-        a = """not isinstance(x+y, d.get('T'))"""
+        a = """sio isinstance(x+y, d.get('T'))"""
         self.check(b, a)
 
         b = """type(   x  +  y) != d.get('T')"""
-        a = """not isinstance(x  +  y, d.get('T'))"""
+        a = """sio isinstance(x  +  y, d.get('T'))"""
         self.check(b, a)
 
     eleza test_type_unchanged(self):

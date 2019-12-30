@@ -29,7 +29,7 @@ the -n na -p options to control the hostname na port used.
 Run "pydoc -w <name>" to write out the HTML documentation kila a module
 to a file named "<name>.html".
 
-Module docs kila core modules are assumed to be in
+Module docs kila core modules are assumed to be kwenye
 
     https://docs.python.org/X.Y/library/
 
@@ -48,7 +48,7 @@ Richard Chamberlain, kila the first implementation of textdoc.
 """
 
 # Known bugs that can't be fixed here:
-#   - synopsis() cannot be prevented kutoka clobbering existing
+#   - synopsis() cansio be prevented kutoka clobbering existing
 #     loaded modules.
 #   - If the __file__ attribute on a module ni a relative path na
 #     the current directory ni changed ukijumuisha os.chdir(), an incorrect
@@ -1588,7 +1588,7 @@ eleza ttypager(text):
             tty.tcsetattr(fd, tty.TCSAFLUSH, old)
 
 eleza plainpager(text):
-    """Simply print unformatted text.  This ni the ultimate fallback."""
+    """Simply andika unformatted text.  This ni the ultimate fallback."""
     sys.stdout.write(plain(_escape_stdout(text)))
 
 eleza describe(thing):
@@ -2535,7 +2535,7 @@ eleza _url_handler(url, content_type="text/html"):
         heading = html.heading(
             '<big><big><strong>Error</strong></big></big>',
             '#ffffff', '#7799ee')
-        contents = '<br>'.join(html.escape(line) kila line in
+        contents = '<br>'.join(html.escape(line) kila line kwenye
                                format_exception_only(type(exc), exc))
         contents = heading + html.bigsection(url, '#ffffff', '#bb0000',
                                              contents)
@@ -2637,7 +2637,7 @@ eleza ispath(x):
     rudisha isinstance(x, str) na x.find(os.sep) >= 0
 
 eleza _get_revised_path(given_path, argv0):
-    """Ensures current directory ni on returned path, na argv0 directory ni not
+    """Ensures current directory ni on returned path, na argv0 directory ni sio
 
     Exception: argv0 dir ni left alone ikiwa it's also pydoc's directory.
 
@@ -2750,7 +2750,7 @@ eleza cli():
 
 {cmd} -b
     Start an HTTP server on an arbitrary unused port na open a Web browser
-    to interactively browse documentation.  This option can be used in
+    to interactively browse documentation.  This option can be used kwenye
     combination ukijumuisha -n and/or -p.
 
 {cmd} -w <name> ...

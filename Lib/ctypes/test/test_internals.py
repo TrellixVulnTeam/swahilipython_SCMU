@@ -8,7 +8,7 @@ kutoka sys agiza getrefcount kama grc
 # ctypes' types are container types.
 #
 # They have an internal memory block, which only consists of some bytes,
-# but it has to keep references to other objects kama well. This ni not
+# but it has to keep references to other objects kama well. This ni sio
 # really needed kila trivial C types like int ama char, but it ni important
 # kila aggregate types like strings ama pointers kwenye particular.
 #
@@ -80,7 +80,7 @@ kundi ObjectsTestCase(unittest.TestCase):
         self.assertEqual(y._objects, {"0": {"0": s1, "1": s2}})
 ##        x = y.x
 ##        toa y
-##        print x._b_base_._objects
+##        andika x._b_base_._objects
 
     eleza test_ptr_struct(self):
         kundi X(Structure):
@@ -92,9 +92,9 @@ kundi ObjectsTestCase(unittest.TestCase):
 
         x = X()
         x.data = a
-##XXX        print x._objects
-##XXX        print x.data[0]
-##XXX        print x.data._objects
+##XXX        andika x._objects
+##XXX        andika x.data[0]
+##XXX        andika x.data._objects
 
 ikiwa __name__ == '__main__':
     unittest.main()

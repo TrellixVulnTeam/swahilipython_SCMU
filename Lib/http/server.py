@@ -22,7 +22,7 @@ SECURITY WARNING: DON'T USE THIS CODE UNLESS YOU ARE INSIDE A FIREWALL
 -- it may execute arbitrary Python code ama external programs.
 
 Note that status code 200 ni sent prior to execution of a CGI script, so
-scripts cannot send other status codes such kama 302 (redirect).
+scripts cansio send other status codes such kama 302 (redirect).
 
 XXX To do:
 
@@ -73,7 +73,7 @@ XXX To do:
 # |        request: The first line of the HTTP request kama sent by the client.
 # |        ddd: the status code returned by the server, - ikiwa sio available.
 # |        bbbb: the total number of bytes sent,
-# |              *not including the HTTP/1.0 header*, - ikiwa sio available
+# |              *sio including the HTTP/1.0 header*, - ikiwa sio available
 # |
 # | You can determine the name of the file accessed through request.
 #
@@ -296,7 +296,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 # RFC 2145 section 3.1 says there can be only one "." na
                 #   - major na minor numbers MUST be treated as
                 #      separate integers;
-                #   - HTTP/2.4 ni a lower version than HTTP/2.13, which in
+                #   - HTTP/2.4 ni a lower version than HTTP/2.13, which kwenye
                 #      turn ni lower than HTTP/12.3;
                 #   - Leading zeros MUST be ignored by recipients.
                 ikiwa len(version_number) != 2:
@@ -546,7 +546,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     eleza log_error(self, format, *args):
         """Log an error.
 
-        This ni called when a request cannot be fulfilled.  By
+        This ni called when a request cansio be fulfilled.  By
         default it pitaes the message on to log_message().
 
         Arguments are the same kama kila log_message().

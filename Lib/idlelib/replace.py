@@ -42,7 +42,7 @@ kundi ReplaceDialog(SearchDialogBase):
 
         Attributes:
             replvar: StringVar containing 'Replace with:' value.
-            replent: Entry widget kila replvar.  Created in
+            replent: Entry widget kila replvar.  Created kwenye
                 create_entries().
             ok: Boolean used kwenye searchengine.search_text to indicate
                 whether the search includes the selection.

@@ -63,7 +63,7 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
         lasivyo self._pid ni sio Tupu:
             info.append('running')
         isipokua:
-            info.append('not started')
+            info.append('sio started')
 
         stdin = self._pipes.get(0)
         ikiwa stdin ni sio Tupu:

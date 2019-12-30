@@ -739,7 +739,7 @@ kundi PosixTester(unittest.TestCase):
             ashiria unittest.SkipTest("Skipping because of non-standard chown() "
                                     "behavior")
         isipokua:
-            # non-root cannot chown to root, raises OSError
+            # non-root cansio chown to root, raises OSError
             self.assertRaises(OSError, chown_func, first_param, 0, 0)
             check_stat(uid, gid)
             self.assertRaises(OSError, chown_func, first_param, 0, -1)
@@ -996,14 +996,14 @@ kundi PosixTester(unittest.TestCase):
         tatizo:
             #  Just returning nothing instead of the SkipTest exception, because
             #  the test results kwenye Error kwenye that case.  Is that ok?
-            #  ashiria unittest.SkipTest("cannot create directory kila testing")
+            #  ashiria unittest.SkipTest("cansio create directory kila testing")
             rudisha
 
             eleza _create_and_do_getcwd(dirname, current_path_length = 0):
                 jaribu:
                     os.mkdir(dirname)
                 tatizo:
-                    ashiria unittest.SkipTest("mkdir cannot create directory sufficiently deep kila getcwd test")
+                    ashiria unittest.SkipTest("mkdir cansio create directory sufficiently deep kila getcwd test")
 
                 os.chdir(dirname)
                 jaribu:
@@ -1464,7 +1464,7 @@ kundi PosixGroupsTester(unittest.TestCase):
 
     eleza setUp(self):
         ikiwa posix.getuid() != 0:
-            ashiria unittest.SkipTest("not enough privileges")
+            ashiria unittest.SkipTest("sio enough privileges")
         ikiwa sio hasattr(posix, 'getgroups'):
             ashiria unittest.SkipTest("need posix.getgroups")
         ikiwa sys.platform == 'darwin':

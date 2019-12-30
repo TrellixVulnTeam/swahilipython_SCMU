@@ -179,14 +179,14 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
             pita
         isipokua:
             self.fail("__code__ ukijumuisha different numbers of free vars should "
-                      "not be possible")
+                      "sio be possible")
         jaribu:
             e.__code__ = d.__code__
         tatizo ValueError:
             pita
         isipokua:
             self.fail("__code__ ukijumuisha different numbers of free vars should "
-                      "not be possible")
+                      "sio be possible")
 
     eleza test_blank_func_defaults(self):
         self.assertEqual(self.b.__defaults__, Tupu)

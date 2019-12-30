@@ -17,7 +17,7 @@ kundi TZInfo:
     @classmethod
     eleza fromfile(cls, fileobj):
         ikiwa fileobj.read(4).decode() != "TZif":
-            ashiria ValueError("not a zoneinfo file")
+            ashiria ValueError("sio a zoneinfo file")
         fileobj.seek(20)
         header = fileobj.read(24)
         tzh = (tzh_ttisgmtcnt, tzh_ttisstdcnt, tzh_leapcnt,

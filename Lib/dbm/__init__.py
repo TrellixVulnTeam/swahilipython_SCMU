@@ -85,7 +85,7 @@ eleza open(file, flag='r', mode=0o666):
             ashiria error[0]("db file doesn't exist; "
                            "use 'c' ama 'n' flag to create a new db")
     lasivyo result == "":
-        # db type cannot be determined
+        # db type cansio be determined
         ashiria error[0]("db type could sio be determined")
     lasivyo result haiko kwenye _modules:
         ashiria error[0]("db type ni {0}, but the module ni sio "
@@ -148,7 +148,7 @@ eleza whichdb(filename):
     tatizo OSError:
         pita
 
-    # See ikiwa the file exists, rudisha Tupu ikiwa not
+    # See ikiwa the file exists, rudisha Tupu ikiwa sio
     jaribu:
         f = io.open(filename, "rb")
     tatizo OSError:
@@ -173,7 +173,7 @@ eleza whichdb(filename):
     ikiwa magic kwenye (0x13579ace, 0x13579acd, 0x13579acf):
         rudisha "dbm.gnu"
 
-    # Later versions of Berkeley db hash file have a 12-byte pad in
+    # Later versions of Berkeley db hash file have a 12-byte pad kwenye
     # front of the file type
     jaribu:
         (magic,) = struct.unpack("=l", s16[-4:])

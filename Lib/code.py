@@ -24,7 +24,7 @@ kundi InteractiveInterpreter:
     eleza __init__(self, locals=Tupu):
         """Constructor.
 
-        The optional 'locals' argument specifies the dictionary in
+        The optional 'locals' argument specifies the dictionary kwenye
         which code will be executed; it defaults to a newly created
         dictionary ukijumuisha key "__name__" set to "__console__" na key
         "__doc__" set to Tupu.
@@ -188,10 +188,10 @@ kundi InteractiveConsole(InteractiveInterpreter):
     eleza interact(self, banner=Tupu, exitmsg=Tupu):
         """Closely emulate the interactive Python console.
 
-        The optional banner argument specifies the banner to print
+        The optional banner argument specifies the banner to andika
         before the first interaction; by default it prints a banner
         similar to the one printed by the real Python interpreter,
-        followed by the current kundi name kwenye parentheses (so kama not
+        followed by the current kundi name kwenye parentheses (so kama sio
         to confuse this ukijumuisha the real interpreter -- since it's so
         close!).
 
@@ -306,7 +306,7 @@ ikiwa __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-q', action='store_true',
-                       help="don't print version na copyright messages")
+                       help="don't andika version na copyright messages")
     args = parser.parse_args()
     ikiwa args.q ama sys.flags.quiet:
         banner = ''

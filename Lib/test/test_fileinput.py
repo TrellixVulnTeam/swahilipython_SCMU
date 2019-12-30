@@ -260,7 +260,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
     eleza test_file_opening_hook(self):
         jaribu:
-            # cannot use openhook na inplace mode
+            # cansio use openhook na inplace mode
             fi = FileInput(inplace=1, openhook=lambda f, m: Tupu)
             self.fail("FileInput should ashiria ikiwa both inplace "
                              "and openhook arguments are given")
@@ -326,7 +326,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         ukijumuisha FileInput(temp_file, mode='rb', inplace=Kweli) kama fobj:
             line = fobj.readline()
             self.assertEqual(line, b'Initial text.')
-            # andika() cannot be used ukijumuisha files opened kwenye binary mode.
+            # andika() cansio be used ukijumuisha files opened kwenye binary mode.
             sys.stdout.write(b'New line.')
         ukijumuisha open(temp_file, 'rb') kama f:
             self.assertEqual(f.read(), b'New line.')

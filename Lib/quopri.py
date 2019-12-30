@@ -149,7 +149,7 @@ eleza decode(input, output, header=Uongo):
                 new = new + ESCAPE; i = i+2
             lasivyo i+2 < n na ishex(line[i+1:i+2]) na ishex(line[i+2:i+3]):
                 new = new + bytes((unhex(line[i+1:i+3]),)); i = i+3
-            isipokua: # Bad escape sequence -- leave it in
+            isipokua: # Bad escape sequence -- leave it kwenye
                 new = new + c; i = i+1
         ikiwa sio partial:
             output.write(new + b'\n')

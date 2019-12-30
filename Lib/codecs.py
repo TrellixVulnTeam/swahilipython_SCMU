@@ -954,7 +954,7 @@ eleza getencoder(encoding):
     """ Lookup up the codec kila the given encoding na rudisha
         its encoder function.
 
-        Raises a LookupError kwenye case the encoding cannot be found.
+        Raises a LookupError kwenye case the encoding cansio be found.
 
     """
     rudisha lookup(encoding).encode
@@ -964,7 +964,7 @@ eleza getdecoder(encoding):
     """ Lookup up the codec kila the given encoding na rudisha
         its decoder function.
 
-        Raises a LookupError kwenye case the encoding cannot be found.
+        Raises a LookupError kwenye case the encoding cansio be found.
 
     """
     rudisha lookup(encoding).decode
@@ -974,7 +974,7 @@ eleza getincrementalencoder(encoding):
     """ Lookup up the codec kila the given encoding na rudisha
         its IncrementalEncoder kundi ama factory function.
 
-        Raises a LookupError kwenye case the encoding cannot be found
+        Raises a LookupError kwenye case the encoding cansio be found
         ama the codecs doesn't provide an incremental encoder.
 
     """
@@ -988,7 +988,7 @@ eleza getincrementaldecoder(encoding):
     """ Lookup up the codec kila the given encoding na rudisha
         its IncrementalDecoder kundi ama factory function.
 
-        Raises a LookupError kwenye case the encoding cannot be found
+        Raises a LookupError kwenye case the encoding cansio be found
         ama the codecs doesn't provide an incremental decoder.
 
     """
@@ -1002,7 +1002,7 @@ eleza getreader(encoding):
     """ Lookup up the codec kila the given encoding na rudisha
         its StreamReader kundi ama factory function.
 
-        Raises a LookupError kwenye case the encoding cannot be found.
+        Raises a LookupError kwenye case the encoding cansio be found.
 
     """
     rudisha lookup(encoding).streamreader
@@ -1012,7 +1012,7 @@ eleza getwriter(encoding):
     """ Lookup up the codec kila the given encoding na rudisha
         its StreamWriter kundi ama factory function.
 
-        Raises a LookupError kwenye case the encoding cannot be found.
+        Raises a LookupError kwenye case the encoding cansio be found.
 
     """
     rudisha lookup(encoding).streamwriter

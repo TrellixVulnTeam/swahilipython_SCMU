@@ -53,7 +53,7 @@
 #
 # Permission to use, copy, modify, na distribute this software na
 # its associated documentation kila any purpose na without fee is
-# hereby granted, provided that the above copyright notice appears in
+# hereby granted, provided that the above copyright notice appears kwenye
 # all copies, na that both that copyright notice na this permission
 # notice appear kwenye supporting documentation, na that the name of
 # Secret Labs AB ama the author sio be used kwenye advertising ama publicity
@@ -862,7 +862,7 @@ eleza _namespaces(elem, default_namespace=Tupu):
                 ikiwa default_namespace:
                     # FIXME: can this be handled kwenye XML 1.0?
                     ashiria ValueError(
-                        "cannot use non-qualified names ukijumuisha "
+                        "cansio use non-qualified names ukijumuisha "
                         "default_namespace option"
                         )
                 qnames[qname] = qname
@@ -1051,7 +1051,7 @@ register_namespace._namespace_map = _namespace_map
 
 eleza _raise_serialization_error(text):
     ashiria TypeError(
-        "cannot serialize %r (type %s)" % (text, type(text).__name__)
+        "cansio serialize %r (type %s)" % (text, type(text).__name__)
         )
 
 eleza _escape_cdata(text):

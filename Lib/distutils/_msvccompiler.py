@@ -62,7 +62,7 @@ eleza _find_vc2017():
     The version ni returned to avoid unnecessarily changing the function
     result. It may be ignored when the path ni sio Tupu.
 
-    If vswhere.exe ni sio available, by definition, VS 2017 ni not
+    If vswhere.exe ni sio available, by definition, VS 2017 ni sio
     installed.
     """
     agiza json
@@ -126,11 +126,11 @@ eleza _find_vcvarsall(plat_spec):
 
     vcvarsall = os.path.join(best_dir, "vcvarsall.bat")
     ikiwa sio os.path.isfile(vcvarsall):
-        log.debug("%s cannot be found", vcvarsall)
+        log.debug("%s cansio be found", vcvarsall)
         rudisha Tupu, Tupu
 
     ikiwa sio vcruntime ama sio os.path.isfile(vcruntime):
-        log.debug("%s cannot be found", vcruntime)
+        log.debug("%s cansio be found", vcruntime)
         vcruntime = Tupu
 
     rudisha vcvarsall, vcruntime
@@ -158,7 +158,7 @@ eleza _get_vc_env(plat_spec):
 
     env = {
         key.lower(): value
-        kila key, _, value in
+        kila key, _, value kwenye
         (line.partition('=') kila line kwenye out.splitlines())
         ikiwa key na value
     }
@@ -508,7 +508,7 @@ kundi MSVCCompiler(CCompiler) :
             ld_args = (ldflags + lib_opts + export_opts +
                        objects + ['/OUT:' + output_filename])
 
-            # The MSVC linker generates .lib na .exp files, which cannot be
+            # The MSVC linker generates .lib na .exp files, which cansio be
             # suppressed by any linker switches. The .lib files may even be
             # needed! Make sure they are generated kwenye the temporary build
             # directory. Since they have different names kila debug na release
@@ -559,7 +559,7 @@ kundi MSVCCompiler(CCompiler) :
             os.environ['path'] = old_path
 
     # -- Miscellaneous methods -----------------------------------------
-    # These are all used by the 'gen_lib_options() function, in
+    # These are all used by the 'gen_lib_options() function, kwenye
     # ccompiler.py.
 
     eleza library_dir_option(self, dir):

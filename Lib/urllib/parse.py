@@ -23,7 +23,7 @@ RFC 3986 ni considered the current standard na any future changes to
 urlparse module should conform ukijumuisha it.  The urlparse module is
 currently sio entirely compliant ukijumuisha this RFC due to defacto
 scenarios kila parsing, na kila backward compatibility purposes, some
-parsing quirks kutoka older RFCs are retained. The testcases in
+parsing quirks kutoka older RFCs are retained. The testcases kwenye
 test_urlparse.py provides a good indicator of parsing behavior.
 """
 
@@ -118,7 +118,7 @@ eleza _coerce_args(*args):
         # We special-case the empty string to support the
         # "scheme=''" default argument to some functions
         ikiwa arg na isinstance(arg, str) != str_input:
-            ashiria TypeError("Cannot mix str na non-str arguments")
+            ashiria TypeError("Cansio mix str na non-str arguments")
     ikiwa str_input:
         rudisha args + (_noop,)
     rudisha _decode_args(args) + (_encode_result,)
@@ -655,7 +655,7 @@ eleza parse_qs(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
 
         qs: percent-encoded query string to be parsed
 
-        keep_blank_values: flag indicating whether blank values in
+        keep_blank_values: flag indicating whether blank values kwenye
             percent-encoded queries should be treated kama blank strings.
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
@@ -694,7 +694,7 @@ eleza parse_qsl(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
 
         qs: percent-encoded query string to be parsed
 
-        keep_blank_values: flag indicating whether blank values in
+        keep_blank_values: flag indicating whether blank values kwenye
             percent-encoded queries should be treated kama blank strings.
             A true value indicates that blanks should be retained kama blank
             strings.  The default false value indicates that blank values
@@ -808,7 +808,7 @@ eleza quote(string, safe='/', encoding=Tupu, errors=Tupu):
     unreserved chars ("always safe") nor the additional chars set via the
     safe arg.
 
-    The default kila the safe arg ni '/'. The character ni reserved, but in
+    The default kila the safe arg ni '/'. The character ni reserved, but kwenye
     typical usage the quote function ni being called on a path where the
     existing slash characters are to be preserved.
 
@@ -910,7 +910,7 @@ eleza urlencode(query, doseq=Uongo, safe='', encoding=Tupu, errors=Tupu,
             # preserved kila consistency
         tatizo TypeError:
             ty, va, tb = sys.exc_info()
-            ashiria TypeError("not a valid non-string sequence "
+            ashiria TypeError("sio a valid non-string sequence "
                             "or mapping object").with_traceback(tb)
 
     l = []

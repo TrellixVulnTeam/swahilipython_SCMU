@@ -54,7 +54,7 @@ eleza test():
     kila i kwenye range(NUMBER_OF_PROCESSES):
         Process(target=worker, args=(task_queue, done_queue)).start()
 
-    # Get na print results
+    # Get na andika results
     andika('Unordered results:')
     kila i kwenye range(len(TASKS1)):
         andika('\t', done_queue.get())
@@ -63,7 +63,7 @@ eleza test():
     kila task kwenye TASKS2:
         task_queue.put(task)
 
-    # Get na print some more results
+    # Get na andika some more results
     kila i kwenye range(len(TASKS2)):
         andika('\t', done_queue.get())
 

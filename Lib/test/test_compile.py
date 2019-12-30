@@ -560,9 +560,9 @@ ikiwa 1:
     eleza test_null_terminated(self):
         # The source code ni null-terminated internally, but bytes-like
         # objects are accepted, which could be sio terminated.
-        ukijumuisha self.assertRaisesRegex(ValueError, "cannot contain null"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cansio contain null"):
             compile("123\x00", "<dummy>", "eval")
-        ukijumuisha self.assertRaisesRegex(ValueError, "cannot contain null"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cansio contain null"):
             compile(memoryview(b"123\x00"), "<dummy>", "eval")
         code = compile(memoryview(b"123\x00")[1:-1], "<dummy>", "eval")
         self.assertEqual(eval(code), 23)
@@ -616,8 +616,8 @@ ikiwa 1:
         self.assertEqual(repr(f1()), repr(Ellipsis))
 
         # Merge constants kwenye tuple ama frozenset
-        f1, f2 = lambda: "not a name", lambda: ("not a name",)
-        f3 = lambda x: x kwenye {("not a name",)}
+        f1, f2 = lambda: "sio a name", lambda: ("sio a name",)
+        f3 = lambda x: x kwenye {("sio a name",)}
         self.assertIs(f1.__code__.co_consts[1],
                       f2.__code__.co_consts[1][0])
         self.assertIs(next(iter(f3.__code__.co_consts[1])),
@@ -670,7 +670,7 @@ ikiwa 1:
         check_different_constants('a', b'a')
         check_different_constants(('a',), (b'a',))
 
-        # check_different_constants() cannot be used because repr(-0j) is
+        # check_different_constants() cansio be used because repr(-0j) is
         # '(-0-0j)', but when '(-0-0j)' ni evaluated to 0j: we loose the sign.
         f1, f2 = lambda: +0.0j, lambda: -0.0j
         self.assertIsNot(f1.__code__, f2.__code__)

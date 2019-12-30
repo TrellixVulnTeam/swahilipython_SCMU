@@ -109,7 +109,7 @@ kundi DeletePointerTestCase(unittest.TestCase):
             x.p[0]
         andika(x.p[0])
 ##        toa x
-##        print "2?", grc(i)
+##        andika "2?", grc(i)
 ##        toa i
         agiza gc
         gc.collect()
@@ -118,10 +118,10 @@ kundi DeletePointerTestCase(unittest.TestCase):
             x.p[0]
         andika(x.p[0])
         andika(x.p.contents)
-##        print x._objects
+##        andika x._objects
 
         x.p[0] = "spam spam"
-##        print x.p[0]
+##        andika x.p[0]
         andika("+" * 42)
         andika(x._objects)
 

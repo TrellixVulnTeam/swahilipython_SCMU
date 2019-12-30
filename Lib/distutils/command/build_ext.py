@@ -308,14 +308,14 @@ kundi build_ext(Command):
                                      dry_run=self.dry_run,
                                      force=self.force)
         customize_compiler(self.compiler)
-        # If we are cross-compiling, init the compiler now (ikiwa we are not
+        # If we are cross-compiling, init the compiler now (ikiwa we are sio
         # cross-compiling, init would sio hurt, but people may rely on
         # late initialization of compiler even ikiwa they shouldn't...)
         ikiwa os.name == 'nt' na self.plat_name != get_platform():
             self.compiler.initialize(self.plat_name)
 
         # And make sure that any compile/link-related options (which might
-        # come kutoka the command-line ama kutoka the setup script) are set in
+        # come kutoka the command-line ama kutoka the setup script) are set kwenye
         # that CCompiler object -- that way, they automatically apply to
         # all compiling na linking done here.
         ikiwa self.include_dirs ni sio Tupu:
@@ -570,7 +570,7 @@ kundi build_ext(Command):
 
         # XXX this drops generated C/C++ files into the source tree, which
         # ni fine kila developers who want to distribute the generated
-        # source -- but there should be an option to put SWIG output in
+        # source -- but there should be an option to put SWIG output kwenye
         # the temp dir.
 
         ikiwa self.swig_cpp:
@@ -684,7 +684,7 @@ kundi build_ext(Command):
 
     eleza get_export_symbols(self, ext):
         """Return the list of symbols that a shared extension has to
-        export.  This either uses 'ext.export_symbols' or, ikiwa it's not
+        export.  This either uses 'ext.export_symbols' or, ikiwa it's sio
         provided, "PyInit_" + module_name.  Only relevant on Windows, where
         the .pyd file (DLL) must export the module "PyInit_" function.
         """
@@ -699,7 +699,7 @@ kundi build_ext(Command):
         on Windows, we add the Python library (eg. python20.dll).
         """
         # The python library ni always needed on Windows.  For MSVC, this
-        # ni redundant, since the library ni mentioned kwenye a pragma in
+        # ni redundant, since the library ni mentioned kwenye a pragma kwenye
         # pyconfig.h that MSVC groks.  The other Windows compilers all seem
         # to need it mentioned explicitly, though, so that's what we do.
         # Append '_d' to the python agiza library on debug builds.
@@ -721,7 +721,7 @@ kundi build_ext(Command):
             # libpython when python ni built ukijumuisha a shared python library (issue
             # bpo-21536).
             # On Cygwin (and ikiwa required, other POSIX-like platforms based on
-            # Windows like MinGW) it ni simply necessary that all symbols in
+            # Windows like MinGW) it ni simply necessary that all symbols kwenye
             # shared libraries are resolved at link time.
             kutoka distutils.sysconfig agiza get_config_var
             link_libpython = Uongo

@@ -33,7 +33,7 @@ kundi TypesTests(unittest.TestCase):
         ikiwa 0 ama 0: self.fail('0 ama 0 ni true instead of false')
         ikiwa 1 na 1: pita
         isipokua: self.fail('1 na 1 ni false instead of true')
-        ikiwa sio 1: self.fail('not 1 ni true instead of false')
+        ikiwa sio 1: self.fail('sio 1 ni true instead of false')
 
     eleza test_comparisons(self):
         ikiwa 0 < 1 <= 1 == 1 >= 1 > 0 != 1: pita
@@ -186,7 +186,7 @@ kundi TypesTests(unittest.TestCase):
         ikiwa 0*'abcde' != '': self.fail('string repetition 0*')
         ikiwa min('abc') != 'a' ama max('abc') != 'c': self.fail('min/max string')
         ikiwa 'a' kwenye 'abc' na 'b' kwenye 'abc' na 'c' kwenye 'abc' na 'd' haiko kwenye 'abc': pita
-        isipokua: self.fail('in/not kwenye string')
+        isipokua: self.fail('in/sio kwenye string')
         x = 'x'*103
         ikiwa '%s!'%x != x+'!': self.fail('nasty string formatting bug')
 

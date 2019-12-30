@@ -18,7 +18,7 @@ eleza main():
         ikiwa o == '-i':
             reflags = reflags | re.IGNORECASE
     ikiwa len(args) < 2:
-        usage("not enough arguments")
+        usage("sio enough arguments")
     ikiwa len(args) > 2:
         usage("exactly one file argument required")
     pattern, filename = args

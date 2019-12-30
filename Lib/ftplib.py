@@ -167,8 +167,8 @@ kundi FTP:
         '''Set the debugging level.
         The required argument level means:
         0: no debugging output (default)
-        1: print commands na responses but sio body text etc.
-        2: also print raw lines read na sent before stripping CR/LF'''
+        1: andika commands na responses but sio body text etc.
+        2: also andika raw lines read na sent before stripping CR/LF'''
         self.debugging = level
     debug = set_debuglevel
 
@@ -748,7 +748,7 @@ isipokua:
         eleza ccc(self):
             '''Switch back to a clear-text control connection.'''
             ikiwa sio isinstance(self.sock, ssl.SSLSocket):
-                ashiria ValueError("not using TLS")
+                ashiria ValueError("sio using TLS")
             resp = self.voidcmd('CCC')
             self.sock = self.sock.unwrap()
             rudisha resp
@@ -885,7 +885,7 @@ eleza parse257(resp):
 
 
 eleza print_line(line):
-    '''Default retrlines callback to print a line.'''
+    '''Default retrlines callback to andika a line.'''
     andika(line)
 
 

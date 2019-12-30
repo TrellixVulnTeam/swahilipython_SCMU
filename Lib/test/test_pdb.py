@@ -1517,7 +1517,7 @@ kundi PdbTestCase(unittest.TestCase):
                 kutoka . agiza top_var
                 kutoka .module agiza var
                 kutoka . agiza module
-                pita # We'll stop here na print the vars
+                pita # We'll stop here na andika the vars
             """))
         ukijumuisha open(module_file, 'w') kama f:
             f.write(textwrap.dedent("""
@@ -1553,7 +1553,7 @@ kundi PdbTestCase(unittest.TestCase):
         ukijumuisha open(main_file, 'w') kama f:
             f.write(textwrap.dedent("""
                 kutoka . agiza module
-                pita # We'll stop here na print the vars
+                pita # We'll stop here na andika the vars
             """))
         ukijumuisha open(module_file, 'w') kama f:
             f.write(textwrap.dedent("""

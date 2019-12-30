@@ -128,7 +128,7 @@ kundi XMLGenerator(handler.ContentHandler):
         ikiwa name[0]:
             # Per http://www.w3.org/XML/1998/namespace, The 'xml' prefix is
             # bound by definition to http://www.w3.org/XML/1998/namespace.  It
-            # does sio need to be declared na will sio usually be found in
+            # does sio need to be declared na will sio usually be found kwenye
             # self._current_context.
             ikiwa 'http://www.w3.org/XML/1998/namespace' == name[0]:
                 rudisha 'xml:' + name[1]

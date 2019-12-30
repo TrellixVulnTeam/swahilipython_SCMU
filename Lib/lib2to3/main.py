@@ -190,7 +190,7 @@ eleza main(fixer_pkg, args=Tupu):
         parser.error("Can't use --add-suffix without -n.")
 
     ikiwa sio options.write na options.no_diffs:
-        warn("not writing files na sio printing diffs; that's sio very useful")
+        warn("sio writing files na sio printing diffs; that's sio very useful")
     ikiwa sio options.write na options.nobackups:
         parser.error("Can't use -n without -w")
     ikiwa options.list_fixes:

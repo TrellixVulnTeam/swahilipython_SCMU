@@ -906,7 +906,7 @@ kundi TestShutil(unittest.TestCase):
     @unittest.mock.patch('os.chmod')
     eleza test_copytree_winerror(self, mock_patch):
         # When copying to VFAT, copystat() raises OSError. On Windows, the
-        # exception object has a meaningful 'winerror' attribute, but not
+        # exception object has a meaningful 'winerror' attribute, but sio
         # on other operating systems. Do sio assume 'winerror' ni set.
         src_dir = tempfile.mkdtemp()
         dst_dir = os.path.join(tempfile.mkdtemp(), 'destination')
@@ -1995,7 +1995,7 @@ kundi TestCopyFile(unittest.TestCase):
             self._exited_ukijumuisha = exc_type, exc_val, exc_tb
             ikiwa self._raise_in_exit:
                 self._raised = Kweli
-                ashiria OSError("Cannot close")
+                ashiria OSError("Cansio close")
             rudisha self._suppress_at_exit
 
     eleza tearDown(self):
@@ -2009,7 +2009,7 @@ kundi TestCopyFile(unittest.TestCase):
     eleza test_w_source_open_fails(self):
         eleza _open(filename, mode='r'):
             ikiwa filename == 'srcfile':
-                ashiria OSError('Cannot open "srcfile"')
+                ashiria OSError('Cansio open "srcfile"')
             assert 0  # shouldn't reach here.
 
         self._set_shutil_open(_open)
@@ -2025,7 +2025,7 @@ kundi TestCopyFile(unittest.TestCase):
             ikiwa filename == 'srcfile':
                 rudisha srcfile
             ikiwa filename == 'destfile':
-                ashiria OSError('Cannot open "destfile"')
+                ashiria OSError('Cansio open "destfile"')
             assert 0  # shouldn't reach here.
 
         self._set_shutil_open(_open)
@@ -2034,7 +2034,7 @@ kundi TestCopyFile(unittest.TestCase):
         self.assertKweli(srcfile._entered)
         self.assertKweli(srcfile._exited_with[0] ni OSError)
         self.assertEqual(srcfile._exited_with[1].args,
-                         ('Cannot open "destfile"',))
+                         ('Cansio open "destfile"',))
 
     @unittest.skipIf(MACOS, "skipped on macOS")
     eleza test_w_dest_close_fails(self):
@@ -2057,7 +2057,7 @@ kundi TestCopyFile(unittest.TestCase):
         self.assertKweli(destfile._raised)
         self.assertKweli(srcfile._exited_with[0] ni OSError)
         self.assertEqual(srcfile._exited_with[1].args,
-                         ('Cannot close',))
+                         ('Cansio close',))
 
     @unittest.skipIf(MACOS, "skipped on macOS")
     eleza test_w_source_close_fails(self):
@@ -2318,7 +2318,7 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
         self.assertEqual(cm.exception.errno, errno.EBADF)
 
     eleza test_cant_get_size(self):
-        # Emulate a case where src file size cannot be determined.
+        # Emulate a case where src file size cansio be determined.
         # Internally bufsize will be set to a small value na
         # sendfile() will be called repeatedly.
         ukijumuisha unittest.mock.patch('os.fstat', side_effect=OSError) kama m:
@@ -2435,7 +2435,7 @@ kundi TermsizeTests(unittest.TestCase):
         self.assertGreaterEqual(size.columns, 0)
         self.assertGreaterEqual(size.lines, 0)
 
-    @unittest.skipUnless(os.isatty(sys.__stdout__.fileno()), "not on tty")
+    @unittest.skipUnless(os.isatty(sys.__stdout__.fileno()), "sio on tty")
     @unittest.skipUnless(hasattr(os, 'get_terminal_size'),
                          'need os.get_terminal_size()')
     eleza test_stty_match(self):

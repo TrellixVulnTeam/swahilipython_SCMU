@@ -97,7 +97,7 @@ kundi RunTests(BaseTest):
                 coro.close()  # Suppress ResourceWarning
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot be called kutoka a running'):
+                                    'cansio be called kutoka a running'):
             asyncio.run(main())
 
     eleza test_asyncio_run_cancels_hanging_tasks(self):

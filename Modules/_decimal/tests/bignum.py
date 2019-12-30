@@ -1,6 +1,6 @@
 #
 # These tests require gmpy na test the limits of the 32-bit build. The
-# limits of the 64-bit build are so large that they cannot be tested
+# limits of the 64-bit build are so large that they cansio be tested
 # on accessible hardware.
 #
 

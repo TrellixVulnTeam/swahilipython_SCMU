@@ -35,7 +35,7 @@ and a detailed report of all examples tried ni printed to stdout, along
 ukijumuisha assorted summaries at the end.
 
 You can force verbose mode by pitaing "verbose=Kweli" to testmod, ama prohibit
-it by pitaing "verbose=Uongo".  In either of those cases, sys.argv ni not
+it by pitaing "verbose=Uongo".  In either of those cases, sys.argv ni sio
 examined by testmod.
 
 There are a variety of other ways to run doctests, including integration
@@ -291,7 +291,7 @@ eleza _ellipsis_match(want, got):
             rudisha Uongo
 
     ikiwa startpos > endpos:
-        # Exact end matches required more characters than we have, kama in
+        # Exact end matches required more characters than we have, kama kwenye
         # _ellipsis_match('aa...aa', 'aaa')
         rudisha Uongo
 
@@ -857,7 +857,7 @@ kundi DocTestFinder:
 
         If `module` ni Uongo, no attempt to find the module will be made.
         This ni obscure, of use mostly kwenye tests:  ikiwa `module` ni Uongo, ama
-        ni Tupu but cannot be found automatically, then all objects are
+        ni Tupu but cansio be found automatically, then all objects are
         considered to belong to the (non-existent) module, so all contained
         objects will (recursively) be searched kila doctests.
 
@@ -930,9 +930,9 @@ kundi DocTestFinder:
         # Recursively explore `obj`, extracting DocTests.
         tests = []
         self._find(tests, obj, name, module, source_lines, globs, {})
-        # Sort the tests by alpha order of names, kila consistency in
+        # Sort the tests by alpha order of names, kila consistency kwenye
         # verbose-mode output.  This was a feature of doctest kwenye Pythons
-        # <= 2.3 that got lost by accident kwenye 2.4.  It was repaired in
+        # <= 2.3 that got lost by accident kwenye 2.4.  It was repaired kwenye
         # 2.4.4 na 2.5.
         tests.sort()
         rudisha tests
@@ -1186,7 +1186,7 @@ kundi DocTestRunner:
         outputs of doctest examples.
 
         Optional keyword arg 'verbose' prints lots of stuff ikiwa true,
-        only failures ikiwa false; by default, it's true iff '-v' ni in
+        only failures ikiwa false; by default, it's true iff '-v' ni kwenye
         sys.argv.
 
         Optional argument `optionflags` can be used to control how the
@@ -1426,7 +1426,7 @@ kundi DocTestRunner:
         the test completes, then use `clear_globs=Uongo`.
 
         `compileflags` gives the set of flags that should be used by
-        the Python compiler when running the examples.  If not
+        the Python compiler when running the examples.  If sio
         specified, then it will default to the set of future-import
         flags that apply to `globs`.
 
@@ -1548,7 +1548,7 @@ kundi DocTestRunner:
         d = self._name2ft
         kila name, (f, t) kwenye other._name2ft.items():
             ikiwa name kwenye d:
-                # Don't print here by default, since doing
+                # Don't andika here by default, since doing
                 #     so komas some of the buildbots
                 #andika("*** DocTestRunner.merge: '" + name + "' kwenye both" \
                 #    " testers; summing outcomes.")
@@ -1972,7 +1972,7 @@ eleza testfile(filename, module_relative=Kweli, name=Tupu, package=Tupu,
          relative to the calling module's directory; but ikiwa the
          "package" argument ni specified, then it ni relative to that
          package.  To ensure os-independence, "filename" should use
-         "/" characters to separate path segments, na should not
+         "/" characters to separate path segments, na should sio
          be an absolute path (i.e., it may sio begin ukijumuisha "/").
 
       - If "module_relative" ni Uongo, then "filename" specifies an
@@ -2447,7 +2447,7 @@ eleza DocFileSuite(*paths, **kw):
       directory; but ikiwa the "package" argument ni specified, then
       they are relative to that package.  To ensure os-independence,
       "filename" should use "/" characters to separate path
-      segments, na may sio be an absolute path (i.e., it may not
+      segments, na may sio be an absolute path (i.e., it may sio
       begin ukijumuisha "/").
 
       If "module_relative" ni Uongo, then the given file paths are
@@ -2597,7 +2597,7 @@ eleza testsource(module, name):
     tests = DocTestFinder().find(module)
     test = [t kila t kwenye tests ikiwa t.name == name]
     ikiwa sio test:
-        ashiria ValueError(name, "not found kwenye tests")
+        ashiria ValueError(name, "sio found kwenye tests")
     test = test[0]
     testsrc = script_from_examples(test.docstring)
     rudisha testsrc

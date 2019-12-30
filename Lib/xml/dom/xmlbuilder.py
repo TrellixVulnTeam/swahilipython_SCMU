@@ -197,7 +197,7 @@ kundi DOMBuilder:
 
     eleza parseWithContext(self, input, cnode, action):
         ikiwa action haiko kwenye self._legal_actions:
-            ashiria ValueError("not a legal action")
+            ashiria ValueError("sio a legal action")
         ashiria NotImplementedError("Haven't written this yet...")
 
     eleza _parse_bytestream(self, stream, options):

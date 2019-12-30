@@ -92,7 +92,7 @@ kundi SelectorEventLoopSignalTests(test_utils.TestCase):
         self.addCleanup(coro_obj.close)
         kila func kwenye (coro_func, coro_obj):
             self.assertRaisesRegex(
-                TypeError, 'coroutines cannot be used ukijumuisha add_signal_handler',
+                TypeError, 'coroutines cansio be used ukijumuisha add_signal_handler',
                 self.loop.add_signal_handler,
                 signal.SIGINT, func)
 
@@ -529,7 +529,7 @@ kundi SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
         f = object()
         ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "not a regular file"):
+                                    "sio a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Tupu))
         self.assertEqual(self.file.tell(), 0)
@@ -538,7 +538,7 @@ kundi SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
         f = io.BytesIO()
         ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "not a regular file"):
+                                    "sio a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Tupu))
         self.assertEqual(self.file.tell(), 0)
@@ -548,7 +548,7 @@ kundi SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         f = mock.Mock()
         f.fileno.return_value = -1
         ukijumuisha self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
-                                    "not a regular file"):
+                                    "sio a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Tupu))
         self.assertEqual(self.file.tell(), 0)

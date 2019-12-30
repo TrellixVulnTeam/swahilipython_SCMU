@@ -118,7 +118,7 @@ kundi TestCase(unittest.TestCase):
         # But this one should generate an exception, because with
         #  unsafe_hash=Kweli, it's an error to have a __hash__ defined.
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __hash__'):
+                                    'Cansio overwrite attribute __hash__'):
             @dataclass(unsafe_hash=Kweli)
             kundi C:
                 eleza __hash__(self):
@@ -140,7 +140,7 @@ kundi TestCase(unittest.TestCase):
         #  __hash__ exists na ni sio Tupu, which it would be ikiwa it
         #  had been auto-generated due to __eq__ being defined.
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __hash__'):
+                                    'Cansio overwrite attribute __hash__'):
             @dataclass(unsafe_hash=Kweli)
             kundi C:
                 x: int
@@ -261,7 +261,7 @@ kundi TestCase(unittest.TestCase):
                                           lambda a, b: a >= b]):
                     ukijumuisha self.subTest(idx=idx):
                         ukijumuisha self.assertRaisesRegex(TypeError,
-                                                    f"not supported between instances of '{cls.__name__}' na '{cls.__name__}'"):
+                                                    f"sio supported between instances of '{cls.__name__}' na '{cls.__name__}'"):
                             fn(cls(), cls())
 
         @dataclass(order=Kweli)
@@ -290,7 +290,7 @@ kundi TestCase(unittest.TestCase):
                                           lambda a, b: a >= b]):
                     ukijumuisha self.subTest(idx=idx):
                         ukijumuisha self.assertRaisesRegex(TypeError,
-                                                    f"not supported between instances of '{cls.__name__}' na '{cls.__name__}'"):
+                                                    f"sio supported between instances of '{cls.__name__}' na '{cls.__name__}'"):
                             fn(cls(0), cls(0))
 
         @dataclass(order=Kweli)
@@ -327,7 +327,7 @@ kundi TestCase(unittest.TestCase):
                                           lambda a, b: a >= b]):
                     ukijumuisha self.subTest(idx=idx):
                         ukijumuisha self.assertRaisesRegex(TypeError,
-                                                    f"not supported between instances of '{cls.__name__}' na '{cls.__name__}'"):
+                                                    f"sio supported between instances of '{cls.__name__}' na '{cls.__name__}'"):
                             fn(cls(0, 0), cls(0, 0))
 
         @dataclass(order=Kweli)
@@ -379,7 +379,7 @@ kundi TestCase(unittest.TestCase):
                                   lambda a, b: a >= b]):
             ukijumuisha self.subTest(idx=idx):
                 ukijumuisha self.assertRaisesRegex(TypeError,
-                                            "not supported between instances of 'B' na 'C'"):
+                                            "sio supported between instances of 'B' na 'C'"):
                     fn(B(0), C(0))
 
     eleza test_eq_order(self):
@@ -735,7 +735,7 @@ kundi TestCase(unittest.TestCase):
         f = F()
 
         eleza validate_class(cls):
-            # First, check __annotations__, even though they're not
+            # First, check __annotations__, even though they're sio
             #  function annotations.
             self.assertEqual(cls.__annotations__['i'], int)
             self.assertEqual(cls.__annotations__['j'], str)
@@ -820,8 +820,8 @@ kundi TestCase(unittest.TestCase):
         self.assertNotIn('x', D.__dict__)
 
     eleza test_missing_default_factory(self):
-        # Test that MISSING works the same kama a default factory not
-        #  being specified (which ni really the same kama a default not
+        # Test that MISSING works the same kama a default factory sio
+        #  being specified (which ni really the same kama a default sio
         #  being specified, too).
         @dataclass
         kundi C:
@@ -1007,7 +1007,7 @@ kundi TestCase(unittest.TestCase):
         # It makes no sense kila a ClassVar to have a default factory. When
         #  would it be called? Call it yourself, since it's class-wide.
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'cannot have a default factory'):
+                                    'cansio have a default factory'):
             @dataclass
             kundi C:
                 x: ClassVar[int] = field(default_factory=int)
@@ -1065,7 +1065,7 @@ kundi TestCase(unittest.TestCase):
         # It makes no sense kila an InitVar to have a default factory. When
         #  would it be called? Call it yourself, since it's class-wide.
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'cannot have a default factory'):
+                                    'cansio have a default factory'):
             @dataclass
             kundi C:
                 x: InitVar[int] = field(default_factory=int)
@@ -1106,7 +1106,7 @@ kundi TestCase(unittest.TestCase):
                          'dataclasses.InitVar[typing.List[int]]')
 
     eleza test_init_var_inheritance(self):
-        # Note that this deliberately tests that a datakundi need not
+        # Note that this deliberately tests that a datakundi need sio
         #  have a __post_init__ function ikiwa it has an InitVar field.
         #  It could just be used kwenye a derived class, kama shown here.
         @dataclass
@@ -1270,7 +1270,7 @@ kundi TestCase(unittest.TestCase):
     eleza test_classvar_default_factory(self):
         # It's an error kila a ClassVar to have a factory function.
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'cannot have a default factory'):
+                                    'cansio have a default factory'):
             @dataclass
             kundi C:
                 x: ClassVar[int] = field(default_factory=int)
@@ -2264,7 +2264,7 @@ kundi TestOrdering(unittest.TestCase):
 
     eleza test_overwriting_order(self):
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __lt__'
+                                    'Cansio overwrite attribute __lt__'
                                     '.*using functools.total_ordering'):
             @dataclass(order=Kweli)
             kundi C:
@@ -2273,7 +2273,7 @@ kundi TestOrdering(unittest.TestCase):
                     pita
 
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __le__'
+                                    'Cansio overwrite attribute __le__'
                                     '.*using functools.total_ordering'):
             @dataclass(order=Kweli)
             kundi C:
@@ -2282,7 +2282,7 @@ kundi TestOrdering(unittest.TestCase):
                     pita
 
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __gt__'
+                                    'Cansio overwrite attribute __gt__'
                                     '.*using functools.total_ordering'):
             @dataclass(order=Kweli)
             kundi C:
@@ -2291,7 +2291,7 @@ kundi TestOrdering(unittest.TestCase):
                     pita
 
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __ge__'
+                                    'Cansio overwrite attribute __ge__'
                                     '.*using functools.total_ordering'):
             @dataclass(order=Kweli)
             kundi C:
@@ -2350,7 +2350,7 @@ kundi TestHash(unittest.TestCase):
                     # Creating the kundi should cause an exception.
                     #  This only happens ukijumuisha with_hash==Kweli.
                     assert(with_hash)
-                    ukijumuisha self.assertRaisesRegex(TypeError, 'Cannot overwrite attribute __hash__'):
+                    ukijumuisha self.assertRaisesRegex(TypeError, 'Cansio overwrite attribute __hash__'):
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
                         kundi C:
                             eleza __hash__(self):
@@ -2387,7 +2387,7 @@ kundi TestHash(unittest.TestCase):
 
     eleza test_eq_only(self):
         # If a kundi defines __eq__, __hash__ ni automatically added
-        #  na set to Tupu.  This ni normal Python behavior, not
+        #  na set to Tupu.  This ni normal Python behavior, sio
         #  related to dataclasses.  Make sure we don't interfere with
         #  that (see bpo=32546).
 
@@ -2454,7 +2454,7 @@ kundi TestHash(unittest.TestCase):
             eleza __hash__(self):
                 rudisha 301
 
-        # If frozen ama eq ni Tupu, then use the default value (do not
+        # If frozen ama eq ni Tupu, then use the default value (do sio
         #  specify any value kwenye the decorator).
         kila frozen, eq,    base,   expected       kwenye [
             (Tupu,  Tupu,  object, 'unhashable'),
@@ -2563,7 +2563,7 @@ kundi TestFrozen(unittest.TestCase):
                     I = C
 
                 ukijumuisha self.assertRaisesRegex(TypeError,
-                                            'cannot inherit non-frozen datakundi kutoka a frozen one'):
+                                            'cansio inherit non-frozen datakundi kutoka a frozen one'):
                     @dataclass
                     kundi D(I):
                         pita
@@ -2581,7 +2581,7 @@ kundi TestFrozen(unittest.TestCase):
                     I = C
 
                 ukijumuisha self.assertRaisesRegex(TypeError,
-                                            'cannot inherit frozen datakundi kutoka a non-frozen one'):
+                                            'cansio inherit frozen datakundi kutoka a non-frozen one'):
                     @dataclass(frozen=Kweli)
                     kundi D(I):
                         pita
@@ -2633,7 +2633,7 @@ kundi TestFrozen(unittest.TestCase):
     eleza test_overwriting_frozen(self):
         # frozen uses __setattr__ na __delattr__.
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __setattr__'):
+                                    'Cansio overwrite attribute __setattr__'):
             @dataclass(frozen=Kweli)
             kundi C:
                 x: int
@@ -2641,7 +2641,7 @@ kundi TestFrozen(unittest.TestCase):
                     pita
 
         ukijumuisha self.assertRaisesRegex(TypeError,
-                                    'Cannot overwrite attribute __delattr__'):
+                                    'Cansio overwrite attribute __delattr__'):
             @dataclass(frozen=Kweli)
             kundi C:
                 x: int
@@ -3131,7 +3131,7 @@ kundi TestReplace(unittest.TestCase):
             replace(c, x=3, z=20, t=50)
 
         # Make sure the result ni still frozen.
-        ukijumuisha self.assertRaisesRegex(FrozenInstanceError, "cannot assign to field 'x'"):
+        ukijumuisha self.assertRaisesRegex(FrozenInstanceError, "cansio assign to field 'x'"):
             c1.x = 3
 
         # Make sure we can't replace an attribute that doesn't exist,

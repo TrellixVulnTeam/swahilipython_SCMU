@@ -45,7 +45,7 @@ ikiwa sys.platform == 'win32':
                 # We have reopened a preexisting mmap.
                 buf.close()
             isipokua:
-                ashiria FileExistsError('Cannot find name kila new mmap')
+                ashiria FileExistsError('Cansio find name kila new mmap')
             self.name = name
             self.buffer = buf
             self._state = (self.size, self.name)
@@ -273,7 +273,7 @@ kundi Heap(object):
         # trylock ni used instead, na ikiwa the lock can't be acquired
         # immediately, the block ni added to a list of blocks to be freed
         # synchronously sometimes later kutoka malloc() ama free(), by calling
-        # _free_pending_blocks() (appending na retrieving kutoka a list ni not
+        # _free_pending_blocks() (appending na retrieving kutoka a list ni sio
         # strictly thread-safe but under CPython it's atomic thanks to the GIL).
         ikiwa os.getpid() != self._lastpid:
             ashiria ValueError(

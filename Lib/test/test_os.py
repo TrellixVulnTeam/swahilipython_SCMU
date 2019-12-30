@@ -450,7 +450,7 @@ kundi StatAttributeTests(unittest.TestCase):
         jaribu:
             fname = self.fname.encode(sys.getfilesystemencoding())
         tatizo UnicodeEncodeError:
-            self.skipTest("cannot encode %a kila the filesystem" % self.fname)
+            self.skipTest("cansio encode %a kila the filesystem" % self.fname)
         self.check_stat_attributes(fname)
 
     eleza test_stat_result_pickle(self):
@@ -911,13 +911,13 @@ kundi EnvironTests(mapping_tests.BasicTestMappingProtocol):
         self.assertSequenceEqual(test_path, os.get_exec_path(test_env))
 
         ikiwa os.supports_bytes_environ:
-            # env cannot contain 'PATH' na b'PATH' keys
+            # env cansio contain 'PATH' na b'PATH' keys
             jaribu:
                 # ignore BytesWarning warning
                 ukijumuisha warnings.catch_warnings(record=Kweli):
                     mixed_env = {'PATH': '1', b'PATH': b'2'}
             tatizo BytesWarning:
-                # mixed_env cannot be created ukijumuisha python -bb
+                # mixed_env cansio be created ukijumuisha python -bb
                 pita
             isipokua:
                 self.assertRaises(ValueError, os.get_exec_path, mixed_env)
@@ -1354,7 +1354,7 @@ kundi MakedirTests(unittest.TestCase):
             jaribu:
                 os.chmod(support.TESTFN, existing_testfn_mode | S_ISGID)
             tatizo PermissionError:
-                ashiria unittest.SkipTest('Cannot set S_ISGID kila dir.')
+                ashiria unittest.SkipTest('Cansio set S_ISGID kila dir.')
             ikiwa (os.lstat(support.TESTFN).st_mode & S_ISGID != S_ISGID):
                 ashiria unittest.SkipTest('No support kila S_ISGID dir mode.')
             # The os should apply S_ISGID kutoka the parent dir kila us, but
@@ -1986,36 +1986,36 @@ kundi PosixUidGidTests(unittest.TestCase):
     eleza test_setuid(self):
         ikiwa os.getuid() != 0:
             self.assertRaises(OSError, os.setuid, 0)
-        self.assertRaises(TypeError, os.setuid, 'not an int')
+        self.assertRaises(TypeError, os.setuid, 'sio an int')
         self.assertRaises(OverflowError, os.setuid, self.UID_OVERFLOW)
 
     @unittest.skipUnless(hasattr(os, 'setgid'), 'test needs os.setgid()')
     eleza test_setgid(self):
         ikiwa os.getuid() != 0 na sio HAVE_WHEEL_GROUP:
             self.assertRaises(OSError, os.setgid, 0)
-        self.assertRaises(TypeError, os.setgid, 'not an int')
+        self.assertRaises(TypeError, os.setgid, 'sio an int')
         self.assertRaises(OverflowError, os.setgid, self.GID_OVERFLOW)
 
     @unittest.skipUnless(hasattr(os, 'seteuid'), 'test needs os.seteuid()')
     eleza test_seteuid(self):
         ikiwa os.getuid() != 0:
             self.assertRaises(OSError, os.seteuid, 0)
-        self.assertRaises(TypeError, os.setegid, 'not an int')
+        self.assertRaises(TypeError, os.setegid, 'sio an int')
         self.assertRaises(OverflowError, os.seteuid, self.UID_OVERFLOW)
 
     @unittest.skipUnless(hasattr(os, 'setegid'), 'test needs os.setegid()')
     eleza test_setegid(self):
         ikiwa os.getuid() != 0 na sio HAVE_WHEEL_GROUP:
             self.assertRaises(OSError, os.setegid, 0)
-        self.assertRaises(TypeError, os.setegid, 'not an int')
+        self.assertRaises(TypeError, os.setegid, 'sio an int')
         self.assertRaises(OverflowError, os.setegid, self.GID_OVERFLOW)
 
     @unittest.skipUnless(hasattr(os, 'setreuid'), 'test needs os.setreuid()')
     eleza test_setreuid(self):
         ikiwa os.getuid() != 0:
             self.assertRaises(OSError, os.setreuid, 0, 0)
-        self.assertRaises(TypeError, os.setreuid, 'not an int', 0)
-        self.assertRaises(TypeError, os.setreuid, 0, 'not an int')
+        self.assertRaises(TypeError, os.setreuid, 'sio an int', 0)
+        self.assertRaises(TypeError, os.setreuid, 0, 'sio an int')
         self.assertRaises(OverflowError, os.setreuid, self.UID_OVERFLOW, 0)
         self.assertRaises(OverflowError, os.setreuid, 0, self.UID_OVERFLOW)
 
@@ -2031,8 +2031,8 @@ kundi PosixUidGidTests(unittest.TestCase):
     eleza test_setregid(self):
         ikiwa os.getuid() != 0 na sio HAVE_WHEEL_GROUP:
             self.assertRaises(OSError, os.setregid, 0, 0)
-        self.assertRaises(TypeError, os.setregid, 'not an int', 0)
-        self.assertRaises(TypeError, os.setregid, 0, 'not an int')
+        self.assertRaises(TypeError, os.setregid, 'sio an int', 0)
+        self.assertRaises(TypeError, os.setregid, 0, 'sio an int')
         self.assertRaises(OverflowError, os.setregid, self.GID_OVERFLOW, 0)
         self.assertRaises(OverflowError, os.setregid, 0, self.GID_OVERFLOW)
 
@@ -2452,7 +2452,7 @@ kundi Win32SymlinkTests(unittest.TestCase):
                             'Test directories sio found')
     eleza test_29248(self):
         # os.symlink() calls CreateSymbolicLink, which creates
-        # the reparse data buffer ukijumuisha the print name stored
+        # the reparse data buffer ukijumuisha the andika name stored
         # first, so the offset ni always 0. CreateSymbolicLink
         # stores the "PrintName" DOS path (e.g. "C:\") first,
         # ukijumuisha an offset of 0, followed by the "SubstituteName"
@@ -3303,7 +3303,7 @@ kundi TermsizeTests(unittest.TestCase):
         tatizo OSError kama e:
             ikiwa sys.platform == "win32" ama e.errno kwenye (errno.EINVAL, errno.ENOTTY):
                 # Under win32 a generic OSError can be thrown ikiwa the
-                # handle cannot be retrieved
+                # handle cansio be retrieved
                 self.skipTest("failed to query terminal size")
             raise
 
@@ -3329,7 +3329,7 @@ kundi TermsizeTests(unittest.TestCase):
         tatizo OSError kama e:
             ikiwa sys.platform == "win32" ama e.errno kwenye (errno.EINVAL, errno.ENOTTY):
                 # Under win32 a generic OSError can be thrown ikiwa the
-                # handle cannot be retrieved
+                # handle cansio be retrieved
                 self.skipTest("failed to query terminal size")
             raise
         self.assertEqual(expected, actual)
@@ -3790,7 +3790,7 @@ kundi TestScandir(unittest.TestCase):
         entry = self.get_entry('dir')
         os.rmdir(path)
 
-        # On POSIX, is_dir() result depends ikiwa scandir() filled d_type ama not
+        # On POSIX, is_dir() result depends ikiwa scandir() filled d_type ama sio
         ikiwa os.name == 'nt':
             self.assertKweli(entry.is_dir())
         self.assertUongo(entry.is_file())
@@ -3810,7 +3810,7 @@ kundi TestScandir(unittest.TestCase):
         os.unlink(entry.path)
 
         self.assertUongo(entry.is_dir())
-        # On POSIX, is_dir() result depends ikiwa scandir() filled d_type ama not
+        # On POSIX, is_dir() result depends ikiwa scandir() filled d_type ama sio
         ikiwa os.name == 'nt':
             self.assertKweli(entry.is_file())
         self.assertUongo(entry.is_symlink())
@@ -3826,7 +3826,7 @@ kundi TestScandir(unittest.TestCase):
 
     eleza test_broken_symlink(self):
         ikiwa sio support.can_symlink():
-            rudisha self.skipTest('cannot create symbolic link')
+            rudisha self.skipTest('cansio create symbolic link')
 
         filename = self.create_file("file.txt")
         os.symlink(filename,

@@ -81,7 +81,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
 
     eleza close(self):
         ikiwa self.is_running():
-            ashiria RuntimeError("Cannot close a running event loop")
+            ashiria RuntimeError("Cansio close a running event loop")
         ikiwa self.is_closed():
             rudisha
         self._close_self_pipe()
@@ -878,9 +878,9 @@ kundi _SelectorSocketTransport(_SelectorTransport):
     eleza write(self, data):
         ikiwa sio isinstance(data, (bytes, bytearray, memoryview)):
             ashiria TypeError(f'data argument must be a bytes-like object, '
-                            f'not {type(data).__name__!r}')
+                            f'sio {type(data).__name__!r}')
         ikiwa self._eof:
-            ashiria RuntimeError('Cannot call write() after write_eof()')
+            ashiria RuntimeError('Cansio call write() after write_eof()')
         ikiwa self._empty_waiter ni sio Tupu:
             ashiria RuntimeError('unable to write; sendfile ni kwenye progress')
         ikiwa sio data:
@@ -1011,7 +1011,7 @@ kundi _SelectorDatagramTransport(_SelectorTransport):
     eleza sendto(self, data, addr=Tupu):
         ikiwa sio isinstance(data, (bytes, bytearray, memoryview)):
             ashiria TypeError(f'data argument must be a bytes-like object, '
-                            f'not {type(data).__name__!r}')
+                            f'sio {type(data).__name__!r}')
         ikiwa sio data:
             rudisha
 

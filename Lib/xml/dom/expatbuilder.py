@@ -782,7 +782,7 @@ kundi Namespaces:
 
     ikiwa __debug__:
         # This only adds some asserts to the original
-        # end_element_handler(), so we only define this when -O ni not
+        # end_element_handler(), so we only define this when -O ni sio
         # used.  If changing one, be sure to check the other to see if
         # it needs to be changed kama well.
         #

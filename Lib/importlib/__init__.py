@@ -64,7 +64,7 @@ kutoka ._bootstrap agiza __import__
 
 
 eleza invalidate_caches():
-    """Call the invalidate_caches() method on all meta path finders stored in
+    """Call the invalidate_caches() method on all meta path finders stored kwenye
     sys.meta_path (where implemented)."""
     kila finder kwenye sys.meta_path:
         ikiwa hasattr(finder, 'invalidate_caches'):

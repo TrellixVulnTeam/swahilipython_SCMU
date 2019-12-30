@@ -313,7 +313,7 @@ kundi PyBuildExt(build_ext):
         self.srcdir = sysconfig.get_config_var('srcdir')
         ikiwa sio self.srcdir:
             # Maybe running on Windows but sio using CYGWIN?
-            ashiria ValueError("No source directory; cannot proceed.")
+            ashiria ValueError("No source directory; cansio proceed.")
         self.srcdir = os.path.abspath(self.srcdir)
 
         # Detect which modules should be compiled
@@ -483,7 +483,7 @@ kundi PyBuildExt(build_ext):
                 ext.name, level=1)
             rudisha
 
-        # Workaround kila Mac OS X: The Carbon-based modules cannot be
+        # Workaround kila Mac OS X: The Carbon-based modules cansio be
         # reliably imported into a command-line Python
         ikiwa 'Carbon' kwenye ext.extra_link_args:
             self.announce(
@@ -880,7 +880,7 @@ kundi PyBuildExt(build_ext):
         do_readline = self.compiler.find_library_file(self.lib_dirs, 'readline')
         readline_termcap_library = ""
         curses_library = ""
-        # Cannot use os.popen here kwenye py3k.
+        # Cansio use os.popen here kwenye py3k.
         tmpfile = os.path.join(self.build_temp, 'readline_termcap_lib')
         ikiwa sio os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
@@ -1237,7 +1237,7 @@ kundi PyBuildExt(build_ext):
                         dblib_dir = [ os.path.abspath(os.path.dirname(dblib_file)) ]
                         ashiria db_found
                     isipokua:
-                        ikiwa db_setup_debug: andika("db lib: ", dblib, "not found")
+                        ikiwa db_setup_debug: andika("db lib: ", dblib, "sio found")
 
         tatizo db_found:
             ikiwa db_setup_debug:
@@ -1653,7 +1653,7 @@ kundi PyBuildExt(build_ext):
 
         isipokua:
             multiprocessing_srcs = ['_multiprocessing/multiprocessing.c']
-            ikiwa (sysconfig.get_config_var('HAVE_SEM_OPEN') na not
+            ikiwa (sysconfig.get_config_var('HAVE_SEM_OPEN') na sio
                 sysconfig.get_config_var('POSIX_SEMAPHORES_NOT_ENABLED')):
                 multiprocessing_srcs.append('_multiprocessing/semaphore.c')
             ikiwa (sysconfig.get_config_var('HAVE_SHM_OPEN') na
@@ -1811,7 +1811,7 @@ kundi PyBuildExt(build_ext):
         ikiwa sio os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
 
-        # Note: cannot use os.popen ama subprocess here, that
+        # Note: cansio use os.popen ama subprocess here, that
         # requires extensions that are sio available here.
         ikiwa is_macosx_sdk_path(F):
             os.system("file %s/Tk.framework/Tk | grep 'kila architecture' > %s"%(os.path.join(sysroot, F[1:]), tmpfile))
@@ -1957,7 +1957,7 @@ kundi PyBuildExt(build_ext):
         rudisha Kweli
 
     eleza configure_ctypes_darwin(self, ext):
-        # Darwin (OS X) uses preconfigured files, in
+        # Darwin (OS X) uses preconfigured files, kwenye
         # the Modules/_ctypes/libffi_osx directory.
         ffi_srcdir = os.path.abspath(os.path.join(self.srcdir, 'Modules',
                                                   '_ctypes', 'libffi_osx'))

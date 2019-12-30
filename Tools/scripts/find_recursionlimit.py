@@ -6,7 +6,7 @@ platform.  If you need to change the recursion limit on your system,
 this script will tell you a safe upper bound.  To use the new limit,
 call sys.setrecursionlimit().
 
-This module implements several ways to create infinite recursion in
+This module implements several ways to create infinite recursion kwenye
 Python.  Different implementations end up pushing different numbers of
 C stack frames, depending on how many calls through Python's abstract
 C API occur.
@@ -75,7 +75,7 @@ eleza test_cpickle(_cache={}):
     jaribu:
         agiza _pickle
     tatizo ImportError:
-        andika("cannot agiza _pickle, skipped!")
+        andika("cansio agiza _pickle, skipped!")
         rudisha
     k, l = Tupu, Tupu
     kila n kwenye itertools.count():

@@ -59,8 +59,8 @@ because bar.pth comes alphabetically before foo.pth; na spam is
 omitted because it ni sio mentioned kwenye either path configuration file.
 
 The readline module ni also automatically configured to enable
-completion kila systems that support it.  This can be overridden in
-sitecustomize, usercustomize ama PYTHONSTARTUP.  Starting Python in
+completion kila systems that support it.  This can be overridden kwenye
+sitecustomize, usercustomize ama PYTHONSTARTUP.  Starting Python kwenye
 isolated mode (-I) disables automatic readline configuration.
 
 After these operations, an attempt ni made to agiza a module
@@ -188,7 +188,7 @@ eleza addpackage(sitedir, name, known_paths):
 
 
 eleza addsitedir(sitedir, known_paths=Tupu):
-    """Add 'sitedir' argument to sys.path ikiwa missing na handle .pth files in
+    """Add 'sitedir' argument to sys.path ikiwa missing na handle .pth files kwenye
     'sitedir'"""
     ikiwa known_paths ni Tupu:
         known_paths = _init_pathinfo()
@@ -583,8 +583,8 @@ eleza _script():
     help = """\
     %s [--user-base] [--user-site]
 
-    Without arguments print some useful information
-    With arguments print the value of USER_BASE and/or USER_SITE separated
+    Without arguments andika some useful information
+    With arguments andika the value of USER_BASE and/or USER_SITE separated
     by '%s'.
 
     Exit codes ukijumuisha --user-base ama --user-site:

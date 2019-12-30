@@ -177,7 +177,7 @@ kundi TCPTimeoutTestCase(TimeoutTestCase):
         # it should be met immediately ukijumuisha ECONNREFUSED.  The test case has
         # been structured around this premise: ikiwa we get an ECONNREFUSED from
         # the whitehole, we proceed ukijumuisha testing connect timeout against the
-        # blackhole.  If we don't, we skip the test (ukijumuisha a message about not
+        # blackhole.  If we don't, we skip the test (ukijumuisha a message about sio
         # getting the required RST kutoka the whitehole within the required
         # timeframe).
 

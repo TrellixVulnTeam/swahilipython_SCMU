@@ -332,7 +332,7 @@ kundi SuicidalChained(ChainedBase, Simple):
 
 kundi CycleChainFinalizationTest(TestBase, unittest.TestCase):
     """
-    Test finalization of a cyclic chain.  These tests are similar in
+    Test finalization of a cyclic chain.  These tests are similar kwenye
     spirit to the self-cycle tests above, but the collectable object
     graph isn't trivial anymore.
     """

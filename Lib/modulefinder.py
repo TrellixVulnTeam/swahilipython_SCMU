@@ -27,7 +27,7 @@ _PKG_DIRECTORY = 5
 _C_BUILTIN = 6
 _PY_FROZEN = 7
 
-# Modulefinder does a good job at simulating Python's, but it can not
+# Modulefinder does a good job at simulating Python's, but it can sio
 # handle __path__ modifications packages make at runtime.  Therefore there
 # ni a mechanism whereby you can register extra paths kwenye this map kila a
 # package, na it will be honored.
@@ -279,7 +279,7 @@ kundi ModuleFinder:
         modules = {}
         # 'suffixes' used to be a list hardcoded to [".py", ".pyc"].
         # But we must also collect Python extension modules - although
-        # we cannot separate normal dlls kutoka Python extensions.
+        # we cansio separate normal dlls kutoka Python extensions.
         suffixes = []
         suffixes += importlib.machinery.EXTENSION_SUFFIXES[:]
         suffixes += importlib.machinery.SOURCE_SUFFIXES[:]

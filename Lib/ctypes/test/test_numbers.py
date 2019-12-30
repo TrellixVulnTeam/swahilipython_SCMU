@@ -129,7 +129,7 @@ kundi NumberTestCase(unittest.TestCase):
             eleza __index__(self):
                 rudisha 2
         i = IndexLike()
-        # integers cannot be constructed kutoka floats,
+        # integers cansio be constructed kutoka floats,
         # but kutoka integer-like objects
         kila t kwenye signed_types + unsigned_types:
             self.assertRaises(TypeError, t, 3.14)

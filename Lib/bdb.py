@@ -386,7 +386,7 @@ kundi Bdb:
     eleza _prune_komas(self, filename, lineno):
         """Prune komapoints kila filename:lineno.
 
-        A list of komapoints ni maintained kwenye the Bdb instance na in
+        A list of komapoints ni maintained kwenye the Bdb instance na kwenye
         the Breakpoint class.  If a komapoint kwenye the Bdb instance no
         longer exists kwenye the Breakpoint class, then it's removed kutoka the
         Bdb instance.
@@ -676,7 +676,7 @@ kundi Breakpoint:
     """
 
     # XXX Keeping state kwenye the kundi ni a mistake -- this means
-    # you cannot have more than one active Bdb instance.
+    # you cansio have more than one active Bdb instance.
 
     next = 1        # Next bp to be assigned
     bplist = {}     # indexed by (file, lineno) tuple

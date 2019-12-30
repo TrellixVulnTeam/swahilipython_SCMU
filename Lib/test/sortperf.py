@@ -16,7 +16,7 @@ td = tempfile.gettempdir()
 
 eleza randfloats(n):
     """Return a list of n random floats kwenye [0, 1)."""
-    # Generating floats ni expensive, so this writes them out to a file in
+    # Generating floats ni expensive, so this writes them out to a file kwenye
     # a temp directory.  If the file already exists, it just reads them
     # back kwenye na shuffles them a bit.
     fn = os.path.join(td, "rr%06d" % n)

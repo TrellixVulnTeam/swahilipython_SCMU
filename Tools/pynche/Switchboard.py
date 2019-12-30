@@ -118,7 +118,7 @@ kundi Switchboard:
             jaribu:
                 fp = open(self.__initfile, 'wb')
             tatizo IOError:
-                andika('Cannot write options to file:', \
+                andika('Cansio write options to file:', \
                       self.__initfile, file=sys.stderr)
             isipokua:
                 marshal.dump(self.__optiondb, fp)

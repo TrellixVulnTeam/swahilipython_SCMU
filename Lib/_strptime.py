@@ -35,7 +35,7 @@ kundi LocaleTime(object):
         a_weekday -- abbreviated weekday names (7-item list)
         f_month -- full month names (13-item list; dummy value kwenye [0], which
                     ni added by code)
-        a_month -- abbreviated month names (13-item list, dummy value in
+        a_month -- abbreviated month names (13-item list, dummy value kwenye
                     [0], which ni added by code)
         am_pm -- AM/PM representation (2-item list)
         LC_date_time -- format string kila date/time representation (string)
@@ -55,7 +55,7 @@ kundi LocaleTime(object):
         exiting.  This ni to make sure that the attributes were sio set ukijumuisha a
         mix of information kutoka more than one locale.  This would most likely
         happen when using threads where one thread calls a locale-dependent
-        function wakati another thread changes the locale wakati the function in
+        function wakati another thread changes the locale wakati the function kwenye
         the other thread ni still running.  Proper coding would call for
         locks to prevent changing the locale wakati locale-dependent code is
         running.  The check here ni done kwenye case someone does sio think about
@@ -244,7 +244,7 @@ kundi TimeRE(dict):
         """
         processed_format = ''
         # The sub() call escapes all characters that might be misconstrued
-        # kama regex syntax.  Cannot use re.escape since we have to deal with
+        # kama regex syntax.  Cansio use re.escape since we have to deal with
         # format directives (%m, etc.).
         regex_chars = re_compile(r"([\\.^$*+?\(\){}\[\]|])")
         format = regex_chars.sub(r"\\\1", format)
@@ -280,7 +280,7 @@ eleza _calc_julian_from_U_or_W(year, week_of_year, day_of_week, week_starts_Mon)
     ikiwa sio week_starts_Mon:
         first_weekday = (first_weekday + 1) % 7
         day_of_week = (day_of_week + 1) % 7
-    # Need to watch out kila a week 0 (when the first day of the year ni not
+    # Need to watch out kila a week 0 (when the first day of the year ni sio
     # the same kama that specified by %U ama %W).
     week_0_length = (7 - first_weekday) % 7
     ikiwa week_of_year == 0:
@@ -527,7 +527,7 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             julian += yday
 
     ikiwa julian ni Tupu:
-        # Cannot pre-calculate datetime_date() since can change kwenye Julian
+        # Cansio pre-calculate datetime_date() since can change kwenye Julian
         # calculation na thus could have different value kila the day of
         # the week calculation.
         # Need to add 1 to result since first day of the year ni 1, sio 0.

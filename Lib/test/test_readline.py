@@ -35,7 +35,7 @@ eleza setUpModule():
 
 
 @unittest.skipUnless(hasattr(readline, "clear_history"),
-                     "The history update test cannot be run because the "
+                     "The history update test cansio be run because the "
                      "clear_history method ni sio available.")
 kundi TestHistoryManipulation (unittest.TestCase):
     """
@@ -111,7 +111,7 @@ kundi TestHistoryManipulation (unittest.TestCase):
         jaribu:
             readline.add_history("entrée 1")
         tatizo UnicodeEncodeError kama err:
-            self.skipTest("Locale cannot encode test data: " + format(err))
+            self.skipTest("Locale cansio encode test data: " + format(err))
         readline.add_history("entrée 2")
         readline.replace_history_item(1, "entrée 22")
         readline.write_history_file(TESTFN)
@@ -129,9 +129,9 @@ kundi TestHistoryManipulation (unittest.TestCase):
 kundi TestReadline(unittest.TestCase):
 
     @unittest.skipIf(readline._READLINE_VERSION < 0x0601 na sio is_editline,
-                     "not supported kwenye this library version")
+                     "sio supported kwenye this library version")
     eleza test_init(self):
-        # Issue #19884: Ensure that the ANSI sequence "\033[1034h" ni not
+        # Issue #19884: Ensure that the ANSI sequence "\033[1034h" ni sio
         # written into stdout when the readline module ni imported na stdout
         # ni redirected to a pipe.
         rc, stdout, stderr = assert_python_ok('-c', 'agiza readline',
@@ -164,7 +164,7 @@ andika("History length:", readline.get_current_history_length())
         jaribu:
             readline.add_history("\xEB\xEF")
         tatizo UnicodeEncodeError kama err:
-            self.skipTest("Locale cannot encode test data: " + format(err))
+            self.skipTest("Locale cansio encode test data: " + format(err))
 
         script = r"""agiza readline
 
@@ -296,7 +296,7 @@ eleza run_pty(script, input=b"dummy input\r", env=Tupu):
                 pita
         cleanup.callback(terminate, proc)
         cleanup.callback(os.close, master)
-        # Avoid using DefaultSelector na PollSelector. Kqueue() does not
+        # Avoid using DefaultSelector na PollSelector. Kqueue() does sio
         # work ukijumuisha pseudo-terminals on OS X < 10.9 (Issue 20365) na Open
         # BSD (Issue 20667). Poll() does sio work ukijumuisha OS X 10.6 ama 10.4
         # either (Issue 20472). Hopefully the file descriptor ni low enough

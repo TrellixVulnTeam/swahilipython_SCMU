@@ -260,7 +260,7 @@ kundi CommandLineTestsBase:
 
     eleza _skip_if_sys_path_not_writable(self):
         ikiwa sio self._sys_path_writable:
-            ashiria unittest.SkipTest('not all entries on sys.path are writable')
+            ashiria unittest.SkipTest('sio all entries on sys.path are writable')
 
     eleza _get_run_args(self, args):
         rudisha [*support.optim_args_from_interpreter_flags(),

@@ -28,7 +28,7 @@ func = CDLL(_ctypes_test.__file__).unpack_bitfields
 func.argtypes = POINTER(BITS), c_char
 
 ##kila n kwenye "ABCDEFGHIMNOPQRS":
-##    print n, hex(getattr(BITS, n).size), getattr(BITS, n).offset
+##    andika n, hex(getattr(BITS, n).size), getattr(BITS, n).offset
 
 kundi C_Test(unittest.TestCase):
 

@@ -232,7 +232,7 @@ eleza is_resource(package: Package, name: str) -> bool:
     ikiwa name haiko kwenye package_contents:
         rudisha Uongo
     # Just because the given file_name lives kama an entry kwenye the package's
-    # contents doesn't necessarily mean it's a resource.  Directories are not
+    # contents doesn't necessarily mean it's a resource.  Directories are sio
     # resources, so let's try to find out ikiwa it's a directory ama not.
     path = Path(package.__spec__.origin).parent / name
     rudisha path.is_file()
@@ -250,7 +250,7 @@ eleza contents(package: Package) -> Iterable[str]:
     ikiwa reader ni sio Tupu:
         rudisha reader.contents()
     # Is the package a namespace package?  By definition, namespace packages
-    # cannot have resources.  We could use _check_location() na catch the
+    # cansio have resources.  We could use _check_location() na catch the
     # exception, but that's extra work, so just inline the check.
     lasivyo package.__spec__.origin ni Tupu ama sio package.__spec__.has_location:
         rudisha ()

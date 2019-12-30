@@ -43,7 +43,7 @@ request. This diagram details these state transitions:
 
 This diagram presents the following rules:
   -- a second request may sio be started until {response-headers-read}
-  -- a response [object] cannot be retrieved until {request-sent}
+  -- a response [object] cansio be retrieved until {request-sent}
   -- there ni no differentiation between an unread response body na a
      partially read response body
 
@@ -55,7 +55,7 @@ Note: this enforcement ni applied by the HTTPConnection class. The
       connection-close behavior kila certain requests. For example, it
       ni impossible to tell whether the server will close the connection
       UNTIL the response headers have been read; this means that further
-      requests cannot be placed into the pipeline until it ni known that
+      requests cansio be placed into the pipeline until it ni known that
       the server will NOT be closing the connection.
 
 Logical State                  __state            __response
@@ -168,7 +168,7 @@ eleza _encode(data, name='data'):
 
 
 kundi HTTPMessage(email.message.Message):
-    # XXX The only usage of this method ni in
+    # XXX The only usage of this method ni kwenye
     # http.server.CGIHTTPRequestHandler.  Maybe move the code there so
     # that it doesn't need to be part of the public API.  The API has
     # never been defined so this could cause backwards compatibility
@@ -749,7 +749,7 @@ kundi HTTPResponse(io.BufferedIOBase):
         '''Return the real URL of the page.
 
         In some cases, the HTTP server redirects a client to another
-        URL. The urlopen() function handles this transparently, but in
+        URL. The urlopen() function handles this transparently, but kwenye
         some cases the caller needs to know which URL the client was
         redirected to. The geturl() method can be used to get at this
         redirected URL.
@@ -1062,13 +1062,13 @@ kundi HTTPConnection:
             self.__response = Tupu
 
 
-        # kwenye certain cases, we cannot issue another request on this connection.
+        # kwenye certain cases, we cansio issue another request on this connection.
         # this occurs when:
         #   1) we are kwenye the process of sending a request.   (_CS_REQ_STARTED)
         #   2) a response to a previous request has signalled that it ni going
         #      to close the connection upon completion.
         #   3) the headers kila the previous response have sio been read, thus
-        #      we cannot determine whether point (2) ni true.   (_CS_REQ_SENT)
+        #      we cansio determine whether point (2) ni true.   (_CS_REQ_SENT)
         #
         # ikiwa there ni no prior response, then we can request at will.
         #
@@ -1168,7 +1168,7 @@ kundi HTTPConnection:
             #self.putheader('Connection', 'TE')
 
         isipokua:
-            # For HTTP/1.0, the server will assume "not chunked"
+            # For HTTP/1.0, the server will assume "sio chunked"
             pita
 
     eleza _encode_request(self, request):
@@ -1252,7 +1252,7 @@ kundi HTTPConnection:
             # compatibility, assuming the client code ni already handling the
             # chunking
             ikiwa 'transfer-encoding' haiko kwenye header_names:
-                # ikiwa content-length cannot be automatically determined, fall
+                # ikiwa content-length cansio be automatically determined, fall
                 # back to chunked encoding
                 encode_chunked = Uongo
                 content_length = self._get_content_length(body, method)
@@ -1294,7 +1294,7 @@ kundi HTTPConnection:
             self.__response = Tupu
 
         # ikiwa a prior response exists, then it must be completed (otherwise, we
-        # cannot read this response's header to determine the connection-close
+        # cansio read this response's header to determine the connection-close
         # behavior)
         #
         # note: ikiwa a prior response existed, but was connection-close, then the

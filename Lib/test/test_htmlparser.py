@@ -265,7 +265,7 @@ text
     eleza test_cdata_content(self):
         contents = [
             '<!-- sio a comment --> &not-an-entity-ref;',
-            "<not a='start tag'>",
+            "<sio a='start tag'>",
             '<a href="" /> <p> <span></span>',
             'foo = "</scr" + "ipt>";',
             'foo = "</SCRIPT" + ">";',

@@ -84,10 +84,10 @@ kundi Debugger:
         #
         # This kind of nesting of event loops causes all kinds of problems
         # (see e.g. issue #24455) especially when dealing ukijumuisha running kama a
-        # subprocess, where there's all kinds of extra stuff happening in
+        # subprocess, where there's all kinds of extra stuff happening kwenye
         # there - insert a traceback.print_stack() to check it out.
         #
-        # By this point, we've already called restart_subprocess() in
+        # By this point, we've already called restart_subprocess() kwenye
         # ScriptBinding. However, we also need to unwind the stack back to
         # that outer event loop.  To accomplish this, we:
         #   - rudisha immediately kutoka the nested run()

@@ -100,7 +100,7 @@ kundi ValidationTest(unittest.TestCase):
 
     eleza test_bind_not_ok(self):
         self.assertUongo(self.dialog.bind_ok('<Control-Shift>'))
-        self.assertIn('not accepted', self.dialog.showerror.message)
+        self.assertIn('sio accepted', self.dialog.showerror.message)
 
 
 kundi ToggleLevelTest(unittest.TestCase):

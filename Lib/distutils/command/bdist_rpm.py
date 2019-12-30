@@ -200,7 +200,7 @@ kundi bdist_rpm(Command):
                    "distributions on platform %s" % os.name)
         ikiwa self.binary_only na self.source_only:
             ashiria DistutilsOptionError(
-                  "cannot supply both '--source-only' na '--binary-only'")
+                  "cansio supply both '--source-only' na '--binary-only'")
 
         # don't pita CFLAGS to pure python distributions
         ikiwa sio self.distribution.has_ext_modules():

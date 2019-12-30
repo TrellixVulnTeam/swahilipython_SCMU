@@ -106,7 +106,7 @@ eleza _python_exit():
 # Controls how many more calls than processes will be queued kwenye the call queue.
 # A smaller number will mean that processes spend more time idle waiting for
 # work wakati a larger number will make Future.cancel() succeed less frequently
-# (Futures kwenye the call queue cannot be cancelled).
+# (Futures kwenye the call queue cansio be cancelled).
 EXTRA_QUEUED_CALLS = 1
 
 
@@ -261,7 +261,7 @@ eleza _add_call_item_to_queue(pending_work_items,
             {5: <_WorkItem...>, 6: <_WorkItem...>, ...}
         work_ids: A queue.Queue of work ids e.g. Queue([5, 6, ...]). Work ids
             are consumed na the corresponding _WorkItems from
-            pending_work_items are transformed into _CallItems na put in
+            pending_work_items are transformed into _CallItems na put kwenye
             call_queue.
         call_queue: A multiprocessing.Queue that will be filled ukijumuisha _CallItems
             derived kutoka _WorkItems.
@@ -550,7 +550,7 @@ kundi ProcessPoolExecutor(_base.Executor):
         # Create communication channels kila the executor
         # Make the call queue slightly larger than the number of processes to
         # prevent the worker processes kutoka idling. But don't make it too big
-        # because futures kwenye the call queue cannot be cancelled.
+        # because futures kwenye the call queue cansio be cancelled.
         queue_size = self._max_workers + EXTRA_QUEUED_CALLS
         self._call_queue = _SafeQueue(
             max_size=queue_size, ctx=self._mp_context,
@@ -628,9 +628,9 @@ kundi ProcessPoolExecutor(_base.Executor):
             ikiwa self._broken:
                 ashiria BrokenProcessPool(self._broken)
             ikiwa self._shutdown_thread:
-                ashiria RuntimeError('cannot schedule new futures after shutdown')
+                ashiria RuntimeError('cansio schedule new futures after shutdown')
             ikiwa _global_shutdown:
-                ashiria RuntimeError('cannot schedule new futures after '
+                ashiria RuntimeError('cansio schedule new futures after '
                                    'interpreter shutdown')
 
             f = _base.Future()

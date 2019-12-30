@@ -1376,7 +1376,7 @@ ikiwa HAS_SHMEM:
                                 self._authkey, self._serializer)
 
         eleza SharedMemory(self, size):
-            """Returns a new SharedMemory instance ukijumuisha the specified size in
+            """Returns a new SharedMemory instance ukijumuisha the specified size kwenye
             bytes, to be tracked by the manager."""
             ukijumuisha self._Client(self._address, authkey=self._authkey) kama conn:
                 sms = shared_memory.SharedMemory(Tupu, create=Kweli, size=size)

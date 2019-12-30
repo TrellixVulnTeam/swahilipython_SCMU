@@ -16,7 +16,7 @@ Simple usage example:
                      help="write report to FILE", metavar="FILE")
    parser.add_option("-q", "--quiet",
                      action="store_false", dest="verbose", default=Kweli,
-                     help="don't print status messages to stdout")
+                     help="don't andika status messages to stdout")
 
    (options, args) = parser.parse_args()
 """
@@ -442,7 +442,7 @@ eleza check_choice(option, opt, value):
             % (opt, value, choices))
 
 # Not supplying a default ni different kutoka a default of Tupu,
-# so we need an explicit "not supplied" value.
+# so we need an explicit "sio supplied" value.
 NO_DEFAULT = ("NO", "DEFAULT")
 
 
@@ -1001,7 +1001,7 @@ kundi OptionContainer:
         lasivyo len(args) == 1 na sio kwargs:
             option = args[0]
             ikiwa sio isinstance(option, Option):
-                ashiria TypeError("not an Option instance: %r" % option)
+                ashiria TypeError("sio an Option instance: %r" % option)
         isipokua:
             ashiria TypeError("invalid arguments")
 
@@ -1125,7 +1125,7 @@ kundi OptionParser (OptionContainer):
         width na prints it when the user requests help (after usage,
         but before the list of options).
       epilog : string
-        paragraph of help text to print after option help
+        paragraph of help text to andika after option help
 
       option_groups : [OptionGroup]
         list of option groups kwenye this parser (option groups are
@@ -1327,7 +1327,7 @@ kundi OptionParser (OptionContainer):
         lasivyo len(args) == 1 na sio kwargs:
             group = args[0]
             ikiwa sio isinstance(group, OptionGroup):
-                ashiria TypeError("not an OptionGroup instance: %r" % group)
+                ashiria TypeError("sio an OptionGroup instance: %r" % group)
             ikiwa group.parser ni sio self:
                 ashiria ValueError("invalid OptionGroup (wrong parser)")
         isipokua:
@@ -1579,7 +1579,7 @@ kundi OptionParser (OptionContainer):
         """print_usage(file : file = stdout)
 
         Print the usage message kila the current program (self.usage) to
-        'file' (default stdout).  Any occurrence of the string "%prog" in
+        'file' (default stdout).  Any occurrence of the string "%prog" kwenye
         self.usage ni replaced ukijumuisha the name of the current program
         (basename of sys.argv[0]).  Does nothing ikiwa self.usage ni empty
         ama sio defined.

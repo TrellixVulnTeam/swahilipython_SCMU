@@ -616,7 +616,7 @@ kundi CoroutineTest(unittest.TestCase):
 
         ukijumuisha self.assertRaisesRegex(
                 TypeError,
-                "cannot 'tuma from' a coroutine object kwenye "
+                "cansio 'tuma from' a coroutine object kwenye "
                 "a non-coroutine generator"):
             list(foo())
 
@@ -751,7 +751,7 @@ kundi CoroutineTest(unittest.TestCase):
             reader(spammer_coro).send(Tupu)
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot reuse already awaited coroutine'):
+                                    'cansio reuse already awaited coroutine'):
             reader(spammer_coro).send(Tupu)
 
     eleza test_func_16(self):
@@ -778,11 +778,11 @@ kundi CoroutineTest(unittest.TestCase):
         reader = read(spammer)
         reader.send(Tupu)
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot reuse already awaited coroutine'):
+                                    'cansio reuse already awaited coroutine'):
             reader.send(Tupu)
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot reuse already awaited coroutine'):
+                                    'cansio reuse already awaited coroutine'):
             reader.throw(Exception('wat'))
 
     eleza test_func_17(self):
@@ -796,11 +796,11 @@ kundi CoroutineTest(unittest.TestCase):
             coro.send(Tupu)
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot reuse already awaited coroutine'):
+                                    'cansio reuse already awaited coroutine'):
             coro.send(Tupu)
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot reuse already awaited coroutine'):
+                                    'cansio reuse already awaited coroutine'):
             coro.throw(Exception('wat'))
 
         # Closing a coroutine shouldn't ashiria any exception even ikiwa it's
@@ -822,11 +822,11 @@ kundi CoroutineTest(unittest.TestCase):
             it.send(Tupu)
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot reuse already awaited coroutine'):
+                                    'cansio reuse already awaited coroutine'):
             it.send(Tupu)
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot reuse already awaited coroutine'):
+                                    'cansio reuse already awaited coroutine'):
             # Although the iterator protocol requires iterators to
             # ashiria another StopIteration here, we don't want to do
             # that.  In this particular case, the iterator will raise
@@ -836,11 +836,11 @@ kundi CoroutineTest(unittest.TestCase):
             next(it)
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot reuse already awaited coroutine'):
+                                    'cansio reuse already awaited coroutine'):
             it.throw(Exception('wat'))
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'cannot reuse already awaited coroutine'):
+                                    'cansio reuse already awaited coroutine'):
             it.throw(Exception('wat'))
 
         # Closing a coroutine shouldn't ashiria any exception even ikiwa it's
@@ -2113,7 +2113,7 @@ kundi CoroutineTest(unittest.TestCase):
 kundi CoroAsyncIOCompatTest(unittest.TestCase):
 
     eleza test_asyncio_1(self):
-        # asyncio cannot be imported when Python ni compiled without thread
+        # asyncio cansio be imported when Python ni compiled without thread
         # support
         asyncio = support.import_module('asyncio')
 

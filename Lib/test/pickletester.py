@@ -1911,7 +1911,7 @@ kundi AbstractPickleTests(unittest.TestCase):
     eleza test_newobj_proxies(self):
         # NEWOBJ should use the __class__ rather than the raw type
         classes = myclasses[:]
-        # Cannot create weakproxies to these classes
+        # Cansio create weakproxies to these classes
         kila c kwenye (MyInt, MyTuple):
             classes.remove(c)
         kila proto kwenye protocols:
@@ -2285,8 +2285,8 @@ kundi AbstractPickleTests(unittest.TestCase):
         """
         Check the arguments of FRAME opcodes kwenye a protocol 4+ pickle.
 
-        Note that binary objects that are larger than FRAME_SIZE_TARGET are not
-        framed by default na are therefore considered a frame by themselves in
+        Note that binary objects that are larger than FRAME_SIZE_TARGET are sio
+        framed by default na are therefore considered a frame by themselves kwenye
         the following consistency check.
         """
         frame_end = frameless_start = Tupu
@@ -2445,7 +2445,7 @@ kundi AbstractPickleTests(unittest.TestCase):
             self.pickler(writer, proto).dump(objects)
 
             # Actually read the binary content of the chunks after the end
-            # of the call to dump: any memoryview pitaed to write should not
+            # of the call to dump: any memoryview pitaed to write should sio
             # be released otherwise this delayed access would sio be possible.
             pickled = writer.concatenate_chunks()
             reconstructed = self.loads(pickled)
@@ -2684,7 +2684,7 @@ kundi AbstractPickleTests(unittest.TestCase):
                 self.assertIs(type(new), type(obj))
                 self.assertEqual(new, obj)
 
-    # XXX Unfortunately cannot test non-contiguous array
+    # XXX Unfortunately cansio test non-contiguous array
     # (see comment kwenye PicklableNDArray.__reduce_ex__)
 
     eleza test_oob_buffers(self):
@@ -2913,7 +2913,7 @@ kundi BigmemPickleTests(unittest.TestCase):
         mwishowe:
             data = Tupu
 
-    # BINUNICODE (protocols 1, 2 na 3) cannot carry more than 2**32 - 1 bytes
+    # BINUNICODE (protocols 1, 2 na 3) cansio carry more than 2**32 - 1 bytes
     # of utf-8 encoded unicode. BINUNICODE8 (protocol 4) supports these huge
     # unicode strings however.
 

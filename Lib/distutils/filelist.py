@@ -172,7 +172,7 @@ kundi FileList:
                           "matching '%s'"), dir_pattern)
         isipokua:
             ashiria DistutilsInternalError(
-                  "this cannot happen: invalid action '%s'" % action)
+                  "this cansio happen: invalid action '%s'" % action)
 
 
     # -- Filtering/selection methods -----------------------------------
@@ -269,7 +269,7 @@ eleza findall(dir=os.curdir):
 
 eleza glob_to_re(pattern):
     """Translate a shell-like glob pattern to a regular expression; rudisha
-    a string containing the regex.  Differs kutoka 'fnmatch.translate()' in
+    a string containing the regex.  Differs kutoka 'fnmatch.translate()' kwenye
     that '*' does sio match "special characters" (which are
     platform-specific).
     """

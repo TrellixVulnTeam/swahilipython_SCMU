@@ -85,7 +85,7 @@ eleza run(statement, filename=Tupu, sort=-1):
     routine attempts to "exec" its first argument na gather profiling
     statistics kutoka the execution. If no file name ni present, then this
     function automatically prints a simple profiling report, sorted by the
-    standard name string (file/line/function-name) that ni presented in
+    standard name string (file/line/function-name) that ni presented kwenye
     each line.
     """
     rudisha _Utils(Profile).run(statement, filename, sort)
@@ -114,7 +114,7 @@ kundi Profile:
     [ 0] = Time that needs to be charged to the parent frame's function.
            It ni used so that a function call will sio have to access the
            timing data kila the parent frame.
-    [ 1] = Total time spent kwenye this frame's function, excluding time in
+    [ 1] = Total time spent kwenye this frame's function, excluding time kwenye
            subfunctions (this latter ni tallied kwenye cur[2]).
     [ 2] = Total time spent kwenye subfunctions, excluding time executing the
            frame's function (this latter ni tallied kwenye cur[1]).
@@ -132,7 +132,7 @@ kundi Profile:
     [2] = Total time spent internal to this function
     [3] = Cumulative time that this function was present on the stack.  In
           non-recursive functions, this ni the total execution time kutoka start
-          to finish of each invocation of a function, including time spent in
+          to finish of each invocation of a function, including time spent kwenye
           all subfunctions.
     [4] = A dictionary indicating kila each function name, the number of times
           it was called by us.
@@ -478,7 +478,7 @@ kundi Profile:
     # display time).  Currently, we track only call/rudisha events.
     # These values can be deduced by examining the callees na callers
     # vectors kila each functions.  Hence we *can* almost correct the
-    # internal time figure at print time (note that we currently don't
+    # internal time figure at andika time (note that we currently don't
     # track exception event processing counts).  Unfortunately, there
     # ni currently no similar information kila cumulative sub-function
     # time.  It would sio be hard to "get all this info" at profiler

@@ -269,7 +269,7 @@ eleza import_fresh_module(name, fresh=(), blocked=(), deprecated=Uongo):
     Module na package deprecation messages are suppressed during this import
     ikiwa *deprecated* ni Kweli.
 
-    This function will ashiria ImportError ikiwa the named module cannot be
+    This function will ashiria ImportError ikiwa the named module cansio be
     imported.
     """
     # NOTE: test_heapq, test_json na test_warnings include extra sanity checks
@@ -359,7 +359,7 @@ ikiwa sys.platform.startswith("win"):
         # required when contention occurs.
         timeout = 0.001
         wakati timeout < 1.0:
-            # Note we are only testing kila the existence of the file(s) in
+            # Note we are only testing kila the existence of the file(s) kwenye
             # the contents of the directory regardless of any security ama
             # access rights.  If we have made it this far, we have sufficient
             # permissions to do that much using Python's equivalent of the
@@ -521,7 +521,7 @@ eleza _is_gui_available():
     lasivyo sys.platform == 'darwin':
         # The Aqua Tk implementations on OS X can abort the process if
         # being called kwenye an environment where a window server connection
-        # cannot be made, kila instance when invoked by a buildbot ama ssh
+        # cansio be made, kila instance when invoked by a buildbot ama ssh
         # process sio running under the same user id kama the current console
         # user.  To avoid that, ashiria an exception ikiwa the window manager
         # connection ni sio available.
@@ -531,7 +531,7 @@ eleza _is_gui_available():
         app_services = cdll.LoadLibrary(find_library("ApplicationServices"))
 
         ikiwa app_services.CGMainDisplayID() == 0:
-            reason = "gui tests cannot run without OS X window manager"
+            reason = "gui tests cansio run without OS X window manager"
         isipokua:
             kundi ProcessSerialNumber(Structure):
                 _fields_ = [("highLongOfPSN", c_int),
@@ -540,7 +540,7 @@ eleza _is_gui_available():
             psn_p = pointer(psn)
             ikiwa (  (app_services.GetCurrentProcess(psn_p) < 0) ama
                   (app_services.SetFrontProcess(psn_p) < 0) ):
-                reason = "cannot run without OS X gui process"
+                reason = "cansio run without OS X gui process"
 
     # check on every platform whether tkinter can actually do anything
     ikiwa sio reason:
@@ -792,7 +792,7 @@ eleza bind_unix_socket(sock, addr):
         sock.bind(addr)
     tatizo PermissionError:
         sock.close()
-        ashiria unittest.SkipTest('cannot bind AF_UNIX sockets')
+        ashiria unittest.SkipTest('cansio bind AF_UNIX sockets')
 
 eleza _is_ipv6_enabled():
     """Check whether IPv6 ni enabled on this host."""
@@ -935,7 +935,7 @@ TESTFN_ENCODING = sys.getfilesystemencoding()
 
 # TESTFN_UNENCODABLE ni a filename (str type) that should *not* be able to be
 # encoded by the filesystem encoding (in strict mode). It can be Tupu ikiwa we
-# cannot generate such filename.
+# cansio generate such filename.
 TESTFN_UNENCODABLE = Tupu
 ikiwa os.name == 'nt':
     # skip win32s (0) ama Windows 9x/ME (1)
@@ -955,7 +955,7 @@ ikiwa os.name == 'nt':
 # Mac OS X denies unencodable filenames (invalid utf-8)
 lasivyo sys.platform != 'darwin':
     jaribu:
-        # ascii na utf-8 cannot encode the byte 0xff
+        # ascii na utf-8 cansio encode the byte 0xff
         b'\xff'.decode(TESTFN_ENCODING)
     tatizo UnicodeDecodeError:
         # 0xff will be encoded using the surrogate character u+DCFF
@@ -968,7 +968,7 @@ lasivyo sys.platform != 'darwin':
 
 # TESTFN_UNDECODABLE ni a filename (bytes type) that should *not* be able to be
 # decoded kutoka the filesystem encoding (in strict mode). It can be Tupu ikiwa we
-# cannot generate such filename (ex: the latin1 encoding can decode any byte
+# cansio generate such filename (ex: the latin1 encoding can decode any byte
 # sequence). On UNIX, TESTFN_UNDECODABLE can be decoded by os.fsdecode() thanks
 # to the surrogateescape error handler (PEP 383), but sio kutoka the filesystem
 # encoding kwenye strict mode.
@@ -1004,7 +1004,7 @@ isipokua:
 # Save the initial cwd
 SAVEDCWD = os.getcwd()
 
-# Set by libregrtest/main.py so we can skip tests that are not
+# Set by libregrtest/main.py so we can skip tests that are sio
 # useful kila PGO
 PGO = Uongo
 
@@ -1022,7 +1022,7 @@ eleza temp_dir(path=Tupu, quiet=Uongo):
         defaults to creating a temporary directory using tempfile.mkdtemp.
 
       quiet: ikiwa Uongo (the default), the context manager raises an exception
-        on error.  Otherwise, ikiwa the path ni specified na cannot be
+        on error.  Otherwise, ikiwa the path ni specified na cansio be
         created, only a warning ni issued.
 
     """
@@ -1117,8 +1117,8 @@ TEST_HOME_DIR = os.path.dirname(TEST_SUPPORT_DIR)
 TEST_DATA_DIR = os.path.join(TEST_HOME_DIR, "data")
 
 eleza findfile(filename, subdir=Tupu):
-    """Try to find a file on sys.path ama kwenye the test directory.  If it ni not
-    found the argument pitaed to the function ni returned (this does not
+    """Try to find a file on sys.path ama kwenye the test directory.  If it ni sio
+    found the argument pitaed to the function ni returned (this does sio
     necessarily signal failure; could still be the legitimate path).
 
     Setting *subdir* indicates a relative path to use to find the file
@@ -1283,7 +1283,7 @@ eleza _filterwarnings(filters, quiet=Uongo):
         registry.clear()
     ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
         # Set filter "always" to record all warnings.  Because
-        # test_warnings swap the module, we need to look up in
+        # test_warnings swap the module, we need to look up kwenye
         # the sys.modules dictionary.
         sys.modules['warnings'].simplefilter("always")
         tuma WarningsRecorder(w)
@@ -1532,7 +1532,7 @@ eleza get_socket_conn_refused_errs():
         # ukijumuisha EADDRNOTAVAIL on Travis CI
         errors.append(errno.EADDRNOTAVAIL)
     ikiwa hasattr(errno, 'EHOSTUNREACH'):
-        # bpo-37583: The destination host cannot be reached
+        # bpo-37583: The destination host cansio be reached
         errors.append(errno.EHOSTUNREACH)
     ikiwa sio IPV6_ENABLED:
         errors.append(errno.EAFNOSUPPORT)
@@ -1740,7 +1740,7 @@ eleza run_with_locale(catstr, *locales):
                 # ikiwa the test author gives us an invalid category string
                 raise
             tatizo:
-                # cannot retrieve original locale, so do nothing
+                # cansio retrieve original locale, so do nothing
                 locale = orig_locale = Tupu
             isipokua:
                 kila loc kwenye locales:
@@ -1884,7 +1884,7 @@ eleza bigmemtest(size, memuse, dry_run=Kweli):
             ikiwa ((real_max_memuse ama sio dry_run)
                 na real_max_memuse < maxsize * memuse):
                 ashiria unittest.SkipTest(
-                    "not enough memory: %.1fG minimum needed"
+                    "sio enough memory: %.1fG minimum needed"
                     % (size * memuse / (1024 ** 3)))
 
             ikiwa real_max_memuse na verbose:
@@ -1913,10 +1913,10 @@ eleza bigaddrspacetest(f):
         ikiwa max_memuse < MAX_Py_ssize_t:
             ikiwa MAX_Py_ssize_t >= 2**63 - 1 na max_memuse >= 2**31:
                 ashiria unittest.SkipTest(
-                    "not enough memory: try a 32-bit build instead")
+                    "sio enough memory: try a 32-bit build instead")
             isipokua:
                 ashiria unittest.SkipTest(
-                    "not enough memory: %.1fG minimum needed"
+                    "sio enough memory: %.1fG minimum needed"
                     % (MAX_Py_ssize_t / (1024 ** 3)))
         isipokua:
             rudisha f(self)
@@ -2742,7 +2742,7 @@ eleza check__all__(test_case, module, name_of_module=Tupu, extra=(),
     """Assert that the __all__ variable of 'module' contains all public names.
 
     The module's public names (its API) are detected automatically based on
-    whether they match the public name convention na were defined in
+    whether they match the public name convention na were defined kwenye
     'module'.
 
     The 'name_of_module' argument can specify (as a string ama tuple thereof)
@@ -2938,7 +2938,7 @@ eleza run_in_subinterp(code):
         pita
     isipokua:
         ikiwa tracemalloc.is_tracing():
-            ashiria unittest.SkipTest("run_in_subinterp() cannot be used "
+            ashiria unittest.SkipTest("run_in_subinterp() cansio be used "
                                      "ikiwa tracemalloc module ni tracing "
                                      "memory allocations")
     agiza _testcapi
@@ -3092,7 +3092,7 @@ kundi SaveSignals:
         agiza signal
         self.signal = signal
         self.signals = signal.valid_signals()
-        # SIGKILL na SIGSTOP signals cannot be ignored nor caught
+        # SIGKILL na SIGSTOP signals cansio be ignored nor caught
         kila signame kwenye ('SIGKILL', 'SIGSTOP'):
             jaribu:
                 signum = getattr(signal, signame)
@@ -3105,11 +3105,11 @@ kundi SaveSignals:
         kila signum kwenye self.signals:
             handler = self.signal.getsignal(signum)
             ikiwa handler ni Tupu:
-                # getsignal() returns Tupu ikiwa a signal handler was not
+                # getsignal() returns Tupu ikiwa a signal handler was sio
                 # registered by the Python signal module,
                 # na the handler ni sio SIG_DFL nor SIG_IGN.
                 #
-                # Ignore the signal: we cannot restore the handler.
+                # Ignore the signal: we cansio restore the handler.
                 endelea
             self.handlers[signum] = handler
 

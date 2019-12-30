@@ -186,7 +186,7 @@ kundi Sheet:
             ikiwa sep:
                 sep += "+"
             sep += "-"*colwidth[x]
-        # Now print The full grid
+        # Now andika The full grid
         kila y kwenye range(height):
             line = ""
             kila x kwenye range(width):
@@ -810,7 +810,7 @@ eleza test_basic():
                 cell = FormulaCell(formula)
             a.setcell(x, y, cell)
 ##    ikiwa os.path.isfile("sheet1.xml"):
-##        print "Loading kutoka sheet1.xml"
+##        andika "Loading kutoka sheet1.xml"
 ##        a.load("sheet1.xml")
     a.display()
     a.save("sheet1.xml")

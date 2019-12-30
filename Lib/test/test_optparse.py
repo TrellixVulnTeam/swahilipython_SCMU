@@ -343,7 +343,7 @@ kundi TestOptionParser(BaseTest):
 
     eleza test_add_option_no_Option(self):
         self.assertTypeError(self.parser.add_option,
-                             "not an Option instance: Tupu", Tupu)
+                             "sio an Option instance: Tupu", Tupu)
 
     eleza test_add_option_invalid_arguments(self):
         self.assertTypeError(self.parser.add_option,
@@ -397,7 +397,7 @@ kundi TestOptionParser(BaseTest):
     @support.impl_detail('Relies on sys.getrefcount', cpython=Kweli)
     eleza test_refleak(self):
         # If an OptionParser ni carrying around a reference to a large
-        # object, various cycles can prevent it kutoka being GC'd in
+        # object, various cycles can prevent it kutoka being GC'd kwenye
         # a timely fashion.  destroy() komas the cycles to ensure stuff
         # can be cleaned up.
         big_thing = [42]
@@ -992,7 +992,7 @@ kundi TestOptionGroup(BaseTest):
 
     eleza test_add_group_no_group(self):
         self.assertTypeError(self.parser.add_option_group,
-                             "not an OptionGroup instance: Tupu", Tupu)
+                             "sio an OptionGroup instance: Tupu", Tupu)
 
     eleza test_add_group_invalid_arguments(self):
         self.assertTypeError(self.parser.add_option_group,

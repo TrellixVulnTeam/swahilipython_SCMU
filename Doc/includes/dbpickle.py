@@ -40,7 +40,7 @@ kundi DBUnpickler(pickle.Unpickler):
             key, task = cursor.fetchone()
             rudisha MemoRecord(key, task)
         isipokua:
-            # Always raises an error ikiwa you cannot rudisha the correct object.
+            # Always raises an error ikiwa you cansio rudisha the correct object.
             # Otherwise, the unpickler will think Tupu ni the object referenced
             # by the persistent ID.
             ashiria pickle.UnpicklingError("unsupported persistent object")

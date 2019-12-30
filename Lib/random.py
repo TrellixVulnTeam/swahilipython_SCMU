@@ -270,7 +270,7 @@ kundi Random(_random.Random):
                 "To remove the range limitation, add a getrandbits() method.")
             rudisha int(random() * n)
         ikiwa n == 0:
-            ashiria ValueError("Boundary cannot be zero")
+            ashiria ValueError("Boundary cansio be zero")
         rem = maxsize % n
         limit = (maxsize - rem) / maxsize   # int(limit * maxsize) % n == 0
         r = random()
@@ -287,7 +287,7 @@ kundi Random(_random.Random):
         jaribu:
             i = self._randbelow(len(seq))
         tatizo ValueError:
-            ashiria IndexError('Cannot choose kutoka an empty sequence') kutoka Tupu
+            ashiria IndexError('Cansio choose kutoka an empty sequence') kutoka Tupu
         rudisha seq[i]
 
     eleza shuffle(self, x, random=Tupu):
@@ -399,7 +399,7 @@ kundi Random(_random.Random):
                 rudisha [population[_int(random() * n)] kila i kwenye _repeat(Tupu, k)]
             cum_weights = list(_accumulate(weights))
         lasivyo weights ni sio Tupu:
-            ashiria TypeError('Cannot specify both weights na cumulative weights')
+            ashiria TypeError('Cansio specify both weights na cumulative weights')
         ikiwa len(cum_weights) != n:
             ashiria ValueError('The number of weights does sio match the population')
         bisect = _bisect

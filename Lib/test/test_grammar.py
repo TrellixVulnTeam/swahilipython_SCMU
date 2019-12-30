@@ -753,7 +753,7 @@ kundi GrammarTests(unittest.TestCase):
         check_syntax_error(self, "x + 1 = 1")
         check_syntax_error(self, "a + 1 = b + 2")
 
-    # Check the heuristic kila print & exec covers significant cases
+    # Check the heuristic kila andika & exec covers significant cases
     # As well kama placing some limits on false positives
     eleza test_former_statements_refer_to_builtins(self):
         keywords = "print", "exec"
@@ -1055,7 +1055,7 @@ kundi GrammarTests(unittest.TestCase):
         # Ordinary tuma accepts implicit tuples
         eleza g(): tuma 1, 1
         eleza g(): x = tuma 1, 1
-        # 'tuma from' does not
+        # 'tuma from' does sio
         check_syntax_error(self, "eleza g(): tuma kutoka (), 1")
         check_syntax_error(self, "eleza g(): x = tuma kutoka (), 1")
         # Requires parentheses kama subexpression

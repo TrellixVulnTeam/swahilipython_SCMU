@@ -31,9 +31,9 @@ kundi Test_ISO2022_KR(multibytecodec_support.TestBase, unittest.TestCase):
         (b'ab\x1BNdef', 'replace', 'ab\x1BNdef'),
     )
 
-    # iso2022_kr.txt cannot be used to test "chunk coding": the escape
+    # iso2022_kr.txt cansio be used to test "chunk coding": the escape
     # sequence ni only written on the first line
-    @unittest.skip('iso2022_kr.txt cannot be used to test "chunk coding"')
+    @unittest.skip('iso2022_kr.txt cansio be used to test "chunk coding"')
     eleza test_chunkcoding(self):
         pita
 

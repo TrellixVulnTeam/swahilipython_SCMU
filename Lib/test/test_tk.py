@@ -2,7 +2,7 @@ kutoka test agiza support
 # Skip test ikiwa _tkinter wasn't built.
 support.import_module('_tkinter')
 
-# Skip test ikiwa tk cannot be initialized.
+# Skip test ikiwa tk cansio be initialized.
 support.requires('gui')
 
 kutoka tkinter.test agiza runtktests

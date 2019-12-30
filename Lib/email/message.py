@@ -93,7 +93,7 @@ eleza _parseparam(s):
 eleza _unquotevalue(value):
     # This ni different than utils.collapse_rfc2231_value() because it doesn't
     # try to convert the value to a unicode.  Message.get_param() na
-    # Message.get_params() are both currently defined to rudisha the tuple in
+    # Message.get_params() are both currently defined to rudisha the tuple kwenye
     # the face of RFC 2231 parameters.
     ikiwa isinstance(value, tuple):
         rudisha value[0], value[1], utils.unquote(value[2])
@@ -141,7 +141,7 @@ kundi Message:
         header.  For backward compatibility reasons, ikiwa maxheaderlen is
         sio specified it defaults to 0, so you must override it explicitly
         ikiwa you want a different maxheaderlen.  'policy' ni pitaed to the
-        Generator instance used to serialize the mesasge; ikiwa it ni not
+        Generator instance used to serialize the mesasge; ikiwa it ni sio
         specified the policy associated ukijumuisha the message instance ni used.
 
         If the message object contains binary data that ni sio encoded
@@ -647,7 +647,7 @@ kundi Message:
 
         The elements of the returned list are 2-tuples of key/value pairs, as
         split on the `=' sign.  The left hand side of the `=' ni the key,
-        wakati the right hand side ni the value.  If there ni no `=' sign in
+        wakati the right hand side ni the value.  If there ni no `=' sign kwenye
         the parameter the value ni the empty string.  The value ni as
         described kwenye the get_param() method.
 
@@ -678,7 +678,7 @@ kundi Message:
         the form (CHARSET, LANGUAGE, VALUE).  Note that both CHARSET na
         LANGUAGE can be Tupu, kwenye which case you should consider VALUE to be
         encoded kwenye the us-ascii charset.  You can usually ignore LANGUAGE.
-        The parameter value (either the returned string, ama the VALUE item in
+        The parameter value (either the returned string, ama the VALUE item kwenye
         the 3-tuple) ni always unquoted, unless unquote ni set to Uongo.
 
         If your application doesn't care whether the parameter was RFC 2231
@@ -1105,7 +1105,7 @@ kundi MIMEPart(Message):
             existing_subtype = self.get_content_subtype()
             disallowed_subtypes = disallowed_subtypes + (subtype,)
             ikiwa existing_subtype kwenye disallowed_subtypes:
-                ashiria ValueError("Cannot convert {} to {}".format(
+                ashiria ValueError("Cansio convert {} to {}".format(
                     existing_subtype, subtype))
         keep_headers = []
         part_headers = []

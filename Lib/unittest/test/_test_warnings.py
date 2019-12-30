@@ -68,6 +68,6 @@ ikiwa __name__ == '__main__':
         isipokua:
             unittest.main(exit=Uongo)
 
-    # print all the warning messages collected
+    # andika all the warning messages collected
     kila w kwenye ws:
         andika(w.message)

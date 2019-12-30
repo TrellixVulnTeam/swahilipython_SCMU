@@ -424,7 +424,7 @@ kundi Telnet:
     eleza process_rawq(self):
         """Transfer kutoka raw queue to cooked queue.
 
-        Set self.eof when connection ni closed.  Don't block unless in
+        Set self.eof when connection ni closed.  Don't block unless kwenye
         the midst of an IAC sequence.
 
         """

@@ -82,7 +82,7 @@ eleza can_be_compiled(fullpath):
     jaribu:
         compile(code, fullpath, "exec")
     tatizo Exception kama err:
-        print_debug("%s: cannot compile: %s" % (fullpath, err))
+        print_debug("%s: cansio compile: %s" % (fullpath, err))
         rudisha Uongo
 
     rudisha Kweli
@@ -95,7 +95,7 @@ eleza walk_python_files(paths, is_python=looks_like_python, exclude_dirs=Tupu):
     paths: a list of files and/or directories to be checked.
     is_python: a function that takes a file name na checks whether it ni a
                Python source file
-    exclude_dirs: a list of directory base names that should be excluded in
+    exclude_dirs: a list of directory base names that should be excluded kwenye
                   the search
     """
     ikiwa exclude_dirs ni Tupu:

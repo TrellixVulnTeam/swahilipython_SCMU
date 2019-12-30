@@ -84,8 +84,8 @@ kundi GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('--abc', '')])
         self.assertEqual(args, [])
 
-        # Much like the preceding, tatizo ukijumuisha a non-alpha character ("-") in
-        # option name that precedes "="; failed in
+        # Much like the preceding, tatizo ukijumuisha a non-alpha character ("-") kwenye
+        # option name that precedes "="; failed kwenye
         # http://python.org/sf/126863
         opts, args = getopt.do_longs([], 'foo=42', ['foo-bar', 'foo=',], [])
         self.assertEqual(opts, [('--foo', '42')])

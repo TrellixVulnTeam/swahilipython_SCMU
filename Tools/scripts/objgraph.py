@@ -2,7 +2,7 @@
 
 # objgraph
 #
-# Read "nm -o" input of a set of libraries ama modules na print various
+# Read "nm -o" input of a set of libraries ama modules na andika various
 # interesting listings, such as:
 #
 # - which names are used but sio defined kwenye the set (and used where),
@@ -11,9 +11,9 @@
 # - which modules are used by which other modules.
 #
 # Usage: objgraph [-cdu] [file] ...
-# -c: print callers per objectfile
-# -d: print callees per objectfile
-# -u: print usage of undefined symbols
+# -c: andika callers per objectfile
+# -d: andika callees per objectfile
+# -u: andika usage of undefined symbols
 # If none of -cdu ni specified, all are assumed.
 # Use "nm -o" to generate the input
 # e.g.: nm -o /lib/libc.a | objgraph
@@ -157,9 +157,9 @@ eleza main():
         sys.stdout = sys.stderr
         andika('Usage:', os.path.basename(sys.argv[0]), end=' ')
         andika('[-cdu] [file] ...')
-        andika('-c: print callers per objectfile')
-        andika('-d: print callees per objectfile')
-        andika('-u: print usage of undefined symbols')
+        andika('-c: andika callers per objectfile')
+        andika('-d: andika callees per objectfile')
+        andika('-u: andika usage of undefined symbols')
         andika('If none of -cdu ni specified, all are assumed.')
         andika('Use "nm -o" to generate the input')
         andika('e.g.: nm -o /lib/libc.a | objgraph')

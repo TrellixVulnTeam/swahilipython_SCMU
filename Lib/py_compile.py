@@ -83,7 +83,7 @@ eleza compile(file, cfile=Tupu, dfile=Tupu, doraise=Uongo, optimize=-1,
     :param file: The source file name.
     :param cfile: The target byte compiled file name.  When sio given, this
         defaults to the PEP 3147/PEP 488 location.
-    :param dfile: Purported file name, i.e. the file name that shows up in
+    :param dfile: Purported file name, i.e. the file name that shows up kwenye
         error messages.  Defaults to the source file name.
     :param doraise: Flag indicating whether ama sio an exception should be
         raised when a compile error ni found.  If an exception occurs na this

@@ -76,7 +76,7 @@ kundi ModuleBrowser:
 
         Instance variables:
             name: Module name.
-            file: Full path na module ukijumuisha .py extension.  Used in
+            file: Full path na module ukijumuisha .py extension.  Used kwenye
                 creating ModuleBrowserTreeItem kama the rootnode for
                 the tree na subsequently kwenye the children.
         """

@@ -88,7 +88,7 @@ eleza approx_equal(x, y, tol=1e-12, rel=1e-7):
     x ni approximately equal to y ikiwa the difference between them ni less than
     an absolute error tol ama a relative error rel, whichever ni bigger.
 
-    If given, both tol na rel must be finite, non-negative numbers. If not
+    If given, both tol na rel must be finite, non-negative numbers. If sio
     given, default values are tol=1e-12 na rel=1e-7.
 
     >>> approx_equal(1.2589, 1.2587, tol=0.0003, rel=0)
@@ -789,7 +789,7 @@ kundi DecimalToRatioTest(unittest.TestCase):
         # Test that NANs are handled correctly.
         kila nan kwenye (Decimal('NAN'), Decimal('sNAN')):
             num, den = statistics._exact_ratio(nan)
-            # Because NANs always compare non-equal, we cannot use assertEqual.
+            # Because NANs always compare non-equal, we cansio use assertEqual.
             # Nor can we use an identity test, kama we don't guarantee anything
             # about the object identity.
             self.assertKweli(_nan_equal(num, nan))

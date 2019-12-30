@@ -225,7 +225,7 @@ eleza make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Tupu):
         zip_file.write(script_name, name_in_zip)
     #ikiwa test.support.verbose:
     #    ukijumuisha zipfile.ZipFile(zip_name, 'r') kama zip_file:
-    #        print 'Contents of %r:' % zip_name
+    #        andika 'Contents of %r:' % zip_name
     #        zip_file.printdir()
     rudisha zip_name, os.path.join(zip_name, name_in_zip)
 
@@ -258,6 +258,6 @@ eleza make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
         os.unlink(name)
     #ikiwa test.support.verbose:
     #    ukijumuisha zipfile.ZipFile(zip_name, 'r') kama zip_file:
-    #        print 'Contents of %r:' % zip_name
+    #        andika 'Contents of %r:' % zip_name
     #        zip_file.printdir()
     rudisha zip_name, os.path.join(zip_name, script_name_in_zip)

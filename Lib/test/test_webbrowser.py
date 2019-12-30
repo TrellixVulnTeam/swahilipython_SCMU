@@ -29,7 +29,7 @@ kundi CommandTestMixin:
         indicated instance method ukijumuisha the indicated arguments, na compares
         the resulting options na arguments pitaed to Popen by the browser
         instance against the 'options' na 'args' lists.  Options are compared
-        kwenye a position independent fashion, na the arguments are compared in
+        kwenye a position independent fashion, na the arguments are compared kwenye
         sequence order to whatever ni left over after removing the options.
 
         """

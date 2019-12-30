@@ -129,7 +129,7 @@ eleza splitdrive(p):
     na share up to but sio inluding the fourth directory separator character.
     e.g. splitdrive("//host/computer/dir") returns ("//host/computer", "/dir")
 
-    Paths cannot contain both a drive letter na a UNC path.
+    Paths cansio contain both a drive letter na a UNC path.
 
     """
     p = os.fspath(p)

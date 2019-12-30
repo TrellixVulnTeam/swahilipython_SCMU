@@ -100,7 +100,7 @@ kundi IsTestBase(unittest.TestCase):
                predicate == inspect.iscoroutinefunction) na \
                other == inspect.isfunction:
                 endelea
-            self.assertUongo(other(obj), 'not %s(%s)' % (other.__name__, exp))
+            self.assertUongo(other(obj), 'sio %s(%s)' % (other.__name__, exp))
 
 eleza generator_function_example(self):
     kila i kwenye range(2):
@@ -3203,10 +3203,10 @@ kundi TestParameterObject(unittest.TestCase):
         self.assertEqual(p.kind, inspect.Parameter.POSITIONAL_ONLY)
 
         ukijumuisha self.assertRaisesRegex(ValueError, "value '123' ni "
-                                    "not a valid Parameter.kind"):
+                                    "sio a valid Parameter.kind"):
             inspect.Parameter('foo', default=10, kind='123')
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'not a valid parameter name'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'sio a valid parameter name'):
             inspect.Parameter('1', kind=inspect.Parameter.VAR_KEYWORD)
 
         ukijumuisha self.assertRaisesRegex(TypeError, 'name must be a str'):
@@ -3220,17 +3220,17 @@ kundi TestParameterObject(unittest.TestCase):
                                     'is sio a valid parameter name'):
             inspect.Parameter('.a', kind=inspect.Parameter.VAR_KEYWORD)
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot have default values'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio have default values'):
             inspect.Parameter('a', default=42,
                               kind=inspect.Parameter.VAR_KEYWORD)
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot have default values'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio have default values'):
             inspect.Parameter('a', default=42,
                               kind=inspect.Parameter.VAR_POSITIONAL)
 
         p = inspect.Parameter('a', default=42,
                               kind=inspect.Parameter.POSITIONAL_OR_KEYWORD)
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot have default values'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio have default values'):
             p.replace(kind=inspect.Parameter.VAR_POSITIONAL)
 
         self.assertKweli(repr(p).startswith('<Parameter'))
@@ -3310,7 +3310,7 @@ kundi TestParameterObject(unittest.TestCase):
         ukijumuisha self.assertRaisesRegex(ValueError,
                                     'implicit arguments must be pitaed kama '
                                     'positional ama keyword arguments, '
-                                    'not positional-only'):
+                                    'sio positional-only'):
             inspect.Parameter('.0', kind=inspect.Parameter.POSITIONAL_ONLY)
 
         param = inspect.Parameter(

@@ -69,7 +69,7 @@
 #
 # Permission to use, copy, modify, na distribute this software na
 # its associated documentation kila any purpose na without fee is
-# hereby granted, provided that the above copyright notice appears in
+# hereby granted, provided that the above copyright notice appears kwenye
 # all copies, na that both that copyright notice na this permission
 # notice appear kwenye supporting documentation, na that the name of
 # Secret Labs AB ama the author sio be used kwenye advertising ama publicity
@@ -510,13 +510,13 @@ kundi Marshaller:
         tatizo KeyError:
             # check ikiwa this object can be marshalled kama a structure
             ikiwa sio hasattr(value, '__dict__'):
-                ashiria TypeError("cannot marshal %s objects" % type(value))
+                ashiria TypeError("cansio marshal %s objects" % type(value))
             # check ikiwa this kundi ni a sub-kundi of a basic type,
             # because we don't know how to marshal these types
             # (e.g. a string sub-class)
             kila type_ kwenye type(value).__mro__:
                 ikiwa type_ kwenye self.dispatch.keys():
-                    ashiria TypeError("cannot marshal %s objects" % type(value))
+                    ashiria TypeError("cansio marshal %s objects" % type(value))
             # XXX(twouters): using "_arbitrary_instance" kama key kama a quick-fix
             # kila the p3yk merge, this should probably be fixed more neatly.
             f = self.dispatch["_arbitrary_instance"]
@@ -524,7 +524,7 @@ kundi Marshaller:
 
     eleza dump_nil (self, value, write):
         ikiwa sio self.allow_none:
-            ashiria TypeError("cannot marshal Tupu unless allow_none ni enabled")
+            ashiria TypeError("cansio marshal Tupu unless allow_none ni enabled")
         write("<value><nil/></value>")
     dispatch[type(Tupu)] = dump_nil
 
@@ -568,7 +568,7 @@ kundi Marshaller:
     eleza dump_array(self, value, write):
         i = id(value)
         ikiwa i kwenye self.memo:
-            ashiria TypeError("cannot marshal recursive sequences")
+            ashiria TypeError("cansio marshal recursive sequences")
         self.memo[i] = Tupu
         dump = self.__dump
         write("<value><array><data>\n")
@@ -582,7 +582,7 @@ kundi Marshaller:
     eleza dump_struct(self, value, write, escape=escape):
         i = id(value)
         ikiwa i kwenye self.memo:
-            ashiria TypeError("cannot marshal recursive dictionaries")
+            ashiria TypeError("cansio marshal recursive dictionaries")
         self.memo[i] = Tupu
         dump = self.__dump
         write("<value><struct>\n")
@@ -1171,7 +1171,7 @@ kundi Transport:
         tatizo Fault:
             raise
         tatizo Exception:
-            #All unexpected errors leave connection in
+            #All unexpected errors leave connection kwenye
             # a strange state, so we clear it.
             self.close()
             raise

@@ -384,7 +384,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodstrictexceptions(self):
-        # "strict" complains about a non-exception pitaed in
+        # "strict" complains about a non-exception pitaed kwenye
         self.assertRaises(
             TypeError,
             codecs.strict_errors,
@@ -415,7 +415,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodignoreexceptions(self):
-        # "ignore" complains about a non-exception pitaed in
+        # "ignore" complains about a non-exception pitaed kwenye
         self.assertRaises(
            TypeError,
            codecs.ignore_errors,
@@ -445,7 +445,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodreplaceexceptions(self):
-        # "replace" complains about a non-exception pitaed in
+        # "replace" complains about a non-exception pitaed kwenye
         self.assertRaises(
            TypeError,
            codecs.replace_errors,
@@ -485,7 +485,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodxmlcharrefreplaceexceptions(self):
-        # "xmlcharrefreplace" complains about a non-exception pitaed in
+        # "xmlcharrefreplace" complains about a non-exception pitaed kwenye
         self.assertRaises(
            TypeError,
            codecs.xmlcharrefreplace_errors,
@@ -522,7 +522,7 @@ kundi CodecCallbackTest(unittest.TestCase):
         )
 
     eleza test_badandgoodbackslashreplaceexceptions(self):
-        # "backslashreplace" complains about a non-exception pitaed in
+        # "backslashreplace" complains about a non-exception pitaed kwenye
         self.assertRaises(
            TypeError,
            codecs.backslashreplace_errors,
@@ -580,7 +580,7 @@ kundi CodecCallbackTest(unittest.TestCase):
                 )
 
     eleza test_badandgoodnamereplaceexceptions(self):
-        # "namereplace" complains about a non-exception pitaed in
+        # "namereplace" complains about a non-exception pitaed kwenye
         self.assertRaises(
            TypeError,
            codecs.namereplace_errors,
@@ -627,7 +627,7 @@ kundi CodecCallbackTest(unittest.TestCase):
 
     eleza test_badandgoodsurrogateescapeexceptions(self):
         surrogateescape_errors = codecs.lookup_error('surrogateescape')
-        # "surrogateescape" complains about a non-exception pitaed in
+        # "surrogateescape" complains about a non-exception pitaed kwenye
         self.assertRaises(
            TypeError,
            surrogateescape_errors,
@@ -671,7 +671,7 @@ kundi CodecCallbackTest(unittest.TestCase):
 
     eleza test_badandgoodsurrogatepitaexceptions(self):
         surrogatepita_errors = codecs.lookup_error('surrogatepita')
-        # "surrogatepita" complains about a non-exception pitaed in
+        # "surrogatepita" complains about a non-exception pitaed kwenye
         self.assertRaises(
            TypeError,
            surrogatepita_errors,

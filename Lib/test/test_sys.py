@@ -104,7 +104,7 @@ kundi ExceptHookTest(unittest.TestCase):
         self.assertKweli("TypeError: print_exception(): Exception expected kila " \
                          "value, str found" kwenye stderr.getvalue())
 
-    # FIXME: testing the code kila a lost ama replaced excepthook in
+    # FIXME: testing the code kila a lost ama replaced excepthook kwenye
     # Python/pythonrun.c::PyErr_PrintEx() ni tricky.
 
 
@@ -258,7 +258,7 @@ kundi SysModuleTest(unittest.TestCase):
                 ukijumuisha self.assertRaises(RecursionError) kama cm:
                     sys.setrecursionlimit(limit)
                 self.assertRegex(str(cm.exception),
-                                 "cannot set the recursion limit to [0-9]+ "
+                                 "cansio set the recursion limit to [0-9]+ "
                                  "at the recursion depth [0-9]+: "
                                  "the limit ni too low")
             isipokua:
@@ -299,7 +299,7 @@ kundi SysModuleTest(unittest.TestCase):
                 err = sub.communicate()[1]
                 self.assertKweli(sub.returncode, sub.returncode)
                 self.assertIn(
-                    b"Fatal Python error: Cannot recover kutoka stack overflow",
+                    b"Fatal Python error: Cansio recover kutoka stack overflow",
                     err)
 
     eleza test_getwindowsversion(self):
@@ -798,7 +798,7 @@ kundi SysModuleTest(unittest.TestCase):
             jaribu:
                 alloc_name = _testcapi.pymem_getallocatorsname()
             tatizo RuntimeError kama exc:
-                # "cannot get allocators name" (ex: tracemalloc ni used)
+                # "cansio get allocators name" (ex: tracemalloc ni used)
                 with_pymalloc = Kweli
             isipokua:
                 with_pymalloc = (alloc_name kwenye ('pymalloc', 'pymalloc_debug'))
@@ -838,7 +838,7 @@ kundi SysModuleTest(unittest.TestCase):
 
             kundi AtExit:
                 is_finalizing = sys.is_finalizing
-                print = print
+                andika = andika
 
                 eleza __del__(self):
                     self.andika(self.is_finalizing(), flush=Kweli)

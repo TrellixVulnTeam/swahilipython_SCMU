@@ -757,9 +757,9 @@ kundi DictTest(unittest.TestCase):
 
     eleza test_resize1(self):
         # Dict resizing bug, found by Jack Jansen kwenye 2.2 CVS development.
-        # This version got an assert failure kwenye debug build, infinite loop in
+        # This version got an assert failure kwenye debug build, infinite loop kwenye
         # release build.  Unfortunately, provoking this kind of stuff requires
-        # a mix of inserts na deletes hitting exactly the right hash codes in
+        # a mix of inserts na deletes hitting exactly the right hash codes kwenye
         # exactly the right order, na I can't think of a randomized approach
         # that would be *likely* to hit a failing case kwenye reasonable time.
 

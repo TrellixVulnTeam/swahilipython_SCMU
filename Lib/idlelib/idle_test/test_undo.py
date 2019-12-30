@@ -72,7 +72,7 @@ kundi UndoDelegatorTest(unittest.TestCase):
 
     eleza test_dump_event(self):
         """
-        Dump_event cannot be tested directly without changing
+        Dump_event cansio be tested directly without changing
         environment variables. So, test statements kwenye dump_event
         indirectly
         """

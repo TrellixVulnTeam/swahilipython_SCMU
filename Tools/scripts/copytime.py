@@ -14,12 +14,12 @@ eleza main():
     jaribu:
         stat1 = os.stat(file1)
     tatizo OSError:
-        sys.stderr.write(file1 + ': cannot stat\n')
+        sys.stderr.write(file1 + ': cansio stat\n')
         sys.exit(1)
     jaribu:
         os.utime(file2, (stat1[ST_ATIME], stat1[ST_MTIME]))
     tatizo OSError:
-        sys.stderr.write(file2 + ': cannot change time\n')
+        sys.stderr.write(file2 + ': cansio change time\n')
         sys.exit(2)
 
 ikiwa __name__ == '__main__':

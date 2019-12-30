@@ -160,7 +160,7 @@ kundi scheduler:
 
         """
         # Use heapq to sort the queue rather than using 'sorted(self._queue)'.
-        # With heapq, two events scheduled at the same time will show in
+        # With heapq, two events scheduled at the same time will show kwenye
         # the actual order they would be retrieved.
         ukijumuisha self._lock:
             events = self._queue[:]

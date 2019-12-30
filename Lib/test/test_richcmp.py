@@ -48,10 +48,10 @@ kundi Vector:
     eleza __setitem__(self, i, v):
         self.data[i] = v
 
-    __hash__ = Tupu # Vectors cannot be hashed
+    __hash__ = Tupu # Vectors cansio be hashed
 
     eleza __bool__(self):
-        ashiria TypeError("Vectors cannot be used kwenye Boolean contexts")
+        ashiria TypeError("Vectors cansio be used kwenye Boolean contexts")
 
     eleza __cmp__(self, other):
         ashiria support.TestFailed("Vector.__cmp__() should sio be called")
@@ -81,7 +81,7 @@ kundi Vector:
         ikiwa isinstance(other, Vector):
             other = other.data
         ikiwa len(self.data) != len(other):
-            ashiria ValueError("Cannot compare vectors of different length")
+            ashiria ValueError("Cansio compare vectors of different length")
         rudisha other
 
 opmap = {
@@ -237,7 +237,7 @@ kundi MiscTest(unittest.TestCase):
 
         b.append(17)
         # Even recursive lists of different lengths are different,
-        # but they cannot be ordered
+        # but they cansio be ordered
         self.assertKweli(sio (a == b))
         self.assertKweli(a != b)
         self.assertRaises(RecursionError, operator.lt, a, b)

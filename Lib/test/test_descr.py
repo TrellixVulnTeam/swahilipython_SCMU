@@ -971,7 +971,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
 
     eleza test_mro_disagreement(self):
         # Testing error messages kila MRO disagreement...
-        mro_err_msg = """Cannot create a consistent method resolution
+        mro_err_msg = """Cansio create a consistent method resolution
 order (MRO) kila bases """
 
         eleza raises(exc, expected, callable, *args):
@@ -1052,7 +1052,7 @@ order (MRO) kila bases """
         # memory-layout compatible, na thus otherwise reasonable candidates
         # kila __class__ assignment.
 
-        # The following types have immutable instances, but are not
+        # The following types have immutable instances, but are sio
         # subclassable na thus don't need to be checked:
         #   TupuType, bool
 
@@ -1430,7 +1430,7 @@ order (MRO) kila bases """
             rudisha object.__setattr__(self, name, value)
         C.__setattr__ = mysetattr
         jaribu:
-            a.spam = "not spam"
+            a.spam = "sio spam"
         tatizo AttributeError:
             pita
         isipokua:
@@ -4431,7 +4431,7 @@ order (MRO) kila bases """
 
     eleza test_builtin_function_or_method(self):
         # Not really belonging to test_descr, but introspection na
-        # comparison on <type 'builtin_function_or_method'> seems not
+        # comparison on <type 'builtin_function_or_method'> seems sio
         # to be tested elsewhere
         l = []
         self.assertKweli(l.append == l.append)
@@ -5059,10 +5059,10 @@ kundi PicklingTests(unittest.TestCase):
 
         kundi C12:
             eleza __getstate__(self):
-                rudisha "not dict"
+                rudisha "sio dict"
         obj = C12()
         kila proto kwenye protocols:
-            self._check_reduce(proto, obj, state="not dict")
+            self._check_reduce(proto, obj, state="sio dict")
 
         kundi C13:
             eleza __getstate__(self):
@@ -5163,7 +5163,7 @@ kundi PicklingTests(unittest.TestCase):
                         .format(self.proto,
                                 self.dumps.__module__, self.dumps.__qualname__,
                                 self.loads.__module__, self.loads.__qualname__))
-        rudisha (PickleCopier(*args) kila args in
+        rudisha (PickleCopier(*args) kila args kwenye
                    itertools.product(range(pickle.HIGHEST_PROTOCOL + 1),
                                      {pickle.dumps, pickle._dumps},
                                      {pickle.loads, pickle._loads}))

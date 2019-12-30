@@ -6,7 +6,7 @@
 # If NumPy ni present, some tests check both ndarray implementations
 # against each other.
 #
-# Most ndarray tests also check that memoryview(ndarray) behaves in
+# Most ndarray tests also check that memoryview(ndarray) behaves kwenye
 # the same way kama the original. Thus, a substantial part of the
 # memoryview tests ni now kwenye this module.
 #
@@ -640,7 +640,7 @@ eleza cast_items(exporter, fmt, itemsize, shape=Tupu):
        be 1-D ukijumuisha n * itemsize = bytelen. If shape ni given, the usual
        constraint kila contiguous arrays prod(shape) * itemsize = bytelen
        applies. On success, rudisha (items, shape). If the constraints
-       cannot be met, rudisha (Tupu, Tupu). If a chunk of bytes ni interpreted
+       cansio be met, rudisha (Tupu, Tupu). If a chunk of bytes ni interpreted
        kama NaN kama a result of float conversion, rudisha ('nan', Tupu)."""
     bytelen = exporter.nbytes
     ikiwa shape:
@@ -971,7 +971,7 @@ kundi TestBufferProtocol(unittest.TestCase):
 
         ikiwa (# writable request to read-only exporter
             (ex.readonly na match(req, PyBUF_WRITABLE)) ama
-            # cannot match explicit contiguity request
+            # cansio match explicit contiguity request
             (match(req, PyBUF_C_CONTIGUOUS) na sio ex.c_contiguous) ama
             (match(req, PyBUF_F_CONTIGUOUS) na sio ex.f_contiguous) ama
             (match(req, PyBUF_ANY_CONTIGUOUS) na sio ex.contiguous) ama
@@ -1394,7 +1394,7 @@ kundi TestBufferProtocol(unittest.TestCase):
         self.assertEqual(mv, nd)
         self.assertRaises(TypeError, mv.__setitem__, 1, 8)
 
-        # cannot be deleted
+        # cansio be deleted
         nd = ndarray([1], shape=[1], flags=ND_WRITABLE)
         self.assertRaises(TypeError, nd.__delitem__, 1)
         mv = memoryview(nd)
@@ -1808,7 +1808,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                         tatizo Exception kama e:
                             nderr = e.__class__
 
-                        ikiwa diff_structure: # ndarray cannot change shape
+                        ikiwa diff_structure: # ndarray cansio change shape
                             self.assertIs(nderr, ValueError)
                         isipokua:
                             self.assertEqual(nd.tolist(), lst)
@@ -1823,7 +1823,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                         tatizo Exception kama e:
                             mverr = e.__class__
 
-                        ikiwa diff_structure: # memoryview cannot change shape
+                        ikiwa diff_structure: # memoryview cansio change shape
                             self.assertIs(mverr, ValueError)
                         isipokua:
                             self.assertEqual(mv.tolist(), lst)
@@ -3154,7 +3154,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                         tatizo Exception kama e:
                             m_err = e.__class__
 
-                        ikiwa have_resize: # memoryview cannot change shape
+                        ikiwa have_resize: # memoryview cansio change shape
                             self.assertIs(m_err, ValueError)
                         lasivyo m_err ama array_err:
                             self.assertIs(m_err, array_err)

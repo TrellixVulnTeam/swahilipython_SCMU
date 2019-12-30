@@ -441,7 +441,7 @@ kundi ScopeTests(unittest.TestCase):
 
             looked_up_by_load_name = Uongo
             kundi X:
-                # Implicit globals inside classes are be looked up by LOAD_NAME, not
+                # Implicit globals inside classes are be looked up by LOAD_NAME, sio
                 # LOAD_GLOBAL.
                 locals()['looked_up_by_load_name'] = Kweli
                 pitaed = looked_up_by_load_name

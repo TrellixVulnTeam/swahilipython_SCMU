@@ -24,7 +24,7 @@ kundi Grammar(object):
 
     Once initialized, this kundi supplies the grammar tables kila the
     parsing engine implemented by parse.py.  The parsing engine
-    accesses the instance variables directly.  The kundi here does not
+    accesses the instance variables directly.  The kundi here does sio
     provide initialization of the tables; several subclasses exist to
     do this (see the conv na pgen modules).
 

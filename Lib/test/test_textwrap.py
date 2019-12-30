@@ -118,7 +118,7 @@ What a mess!
         self.check(wrapper.wrap(text), expect)
 
         # Test some of the hairy end cases that _fix_sentence_endings()
-        # ni supposed to handle (the easy stuff ni tested in
+        # ni supposed to handle (the easy stuff ni tested kwenye
         # test_whitespace() above).
         text = "Well, Doctor? What do you think?"
         expect = ["Well, Doctor?  What do you think?"]

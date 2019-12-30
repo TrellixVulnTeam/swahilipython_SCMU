@@ -157,7 +157,7 @@ bytes_types = pickle.bytes_types
 # Some pickle opcodes have an argument, following the opcode kwenye the
 # bytestream.  An argument ni of a specific type, described by an instance
 # of ArgumentDescriptor.  These are sio to be confused ukijumuisha arguments taken
-# off the stack -- ArgumentDescriptor applies only to arguments embedded in
+# off the stack -- ArgumentDescriptor applies only to arguments embedded kwenye
 # the opcode stream, immediately following an opcode.
 
 # Represents the number of bytes consumed by an argument delimited by the
@@ -219,7 +219,7 @@ eleza read_uint1(f):
     data = f.read(1)
     ikiwa data:
         rudisha data[0]
-    ashiria ValueError("not enough data kwenye stream to read uint1")
+    ashiria ValueError("sio enough data kwenye stream to read uint1")
 
 uint1 = ArgumentDescriptor(
             name='uint1',
@@ -240,7 +240,7 @@ eleza read_uint2(f):
     data = f.read(2)
     ikiwa len(data) == 2:
         rudisha _unpack("<H", data)[0]
-    ashiria ValueError("not enough data kwenye stream to read uint2")
+    ashiria ValueError("sio enough data kwenye stream to read uint2")
 
 uint2 = ArgumentDescriptor(
             name='uint2',
@@ -261,7 +261,7 @@ eleza read_int4(f):
     data = f.read(4)
     ikiwa len(data) == 4:
         rudisha _unpack("<i", data)[0]
-    ashiria ValueError("not enough data kwenye stream to read int4")
+    ashiria ValueError("sio enough data kwenye stream to read int4")
 
 int4 = ArgumentDescriptor(
            name='int4',
@@ -282,7 +282,7 @@ eleza read_uint4(f):
     data = f.read(4)
     ikiwa len(data) == 4:
         rudisha _unpack("<I", data)[0]
-    ashiria ValueError("not enough data kwenye stream to read uint4")
+    ashiria ValueError("sio enough data kwenye stream to read uint4")
 
 uint4 = ArgumentDescriptor(
             name='uint4',
@@ -303,7 +303,7 @@ eleza read_uint8(f):
     data = f.read(8)
     ikiwa len(data) == 8:
         rudisha _unpack("<Q", data)[0]
-    ashiria ValueError("not enough data kwenye stream to read uint8")
+    ashiria ValueError("sio enough data kwenye stream to read uint8")
 
 uint8 = ArgumentDescriptor(
             name='uint8',
@@ -845,7 +845,7 @@ eleza read_float8(f):
     data = f.read(8)
     ikiwa len(data) == 8:
         rudisha _unpack(">d", data)[0]
-    ashiria ValueError("not enough data kwenye stream to read float8")
+    ashiria ValueError("sio enough data kwenye stream to read float8")
 
 
 float8 = ArgumentDescriptor(
@@ -888,7 +888,7 @@ eleza read_long1(f):
     n = read_uint1(f)
     data = f.read(n)
     ikiwa len(data) != n:
-        ashiria ValueError("not enough data kwenye stream to read long1")
+        ashiria ValueError("sio enough data kwenye stream to read long1")
     rudisha decode_long(data)
 
 long1 = ArgumentDescriptor(
@@ -922,7 +922,7 @@ eleza read_long4(f):
         ashiria ValueError("long4 byte count < 0: %d" % n)
     data = f.read(n)
     ikiwa len(data) != n:
-        ashiria ValueError("not enough data kwenye stream to read long4")
+        ashiria ValueError("sio enough data kwenye stream to read long4")
     rudisha decode_long(data)
 
 long4 = ArgumentDescriptor(
@@ -1213,7 +1213,7 @@ opcodes = [
       proto=1,
       doc="""Push a two-byte unsigned integer.
 
-      This ni a space optimization kila pickling small positive ints, in
+      This ni a space optimization kila pickling small positive ints, kwenye
       range(256, 2**16).  Integers kwenye range(256) can also be pickled via
       BININT2, but BININT1 instead saves a byte.
       """),
@@ -1482,7 +1482,7 @@ opcodes = [
       IEEE-754 double precision values, which ni what Python float maps to
       on most boxes).
 
-      In general, FLOAT cannot be used to transport infinities, NaNs, ama
+      In general, FLOAT cansio be used to transport infinities, NaNs, ama
       minus zero across boxes (or even on a single box, ikiwa the platform C
       library can't read the strings it produces kila such things -- Windows
       ni like that), but may do less damage than BINFLOAT on boxes with
@@ -1498,7 +1498,7 @@ opcodes = [
       doc="""Float stored kwenye binary form, ukijumuisha 8 bytes of data.
 
       This generally requires less than half the space of FLOAT encoding.
-      In general, BINFLOAT cannot be used to transport infinities, NaNs, ama
+      In general, BINFLOAT cansio be used to transport infinities, NaNs, ama
       minus zero, raises an exception ikiwa the exponent exceeds the range of
       an IEEE-754 double, na retains no more than 53 bits of precision (if
       there are more than that, "add a half na chop" rounding ni used to
@@ -1688,7 +1688,7 @@ opcodes = [
       Stack before:  ... pydict markobject key_1 value_1 ... key_n value_n
       Stack after:   ... pydict
 
-      where pydict has been modified via pydict[key_i] = value_i kila i in
+      where pydict has been modified via pydict[key_i] = value_i kila i kwenye
       1, 2, ..., n, na kwenye that order.
       """),
 
@@ -1718,7 +1718,7 @@ opcodes = [
       Stack before:  ... pyset markobject item_1 ... item_n
       Stack after:   ... pyset
 
-      where pyset has been modified via pyset.add(item_i) = item_i kila i in
+      where pyset has been modified via pyset.add(item_i) = item_i kila i kwenye
       1, 2, ..., n, na kwenye that order.
       """),
 
@@ -2032,7 +2032,7 @@ opcodes = [
         + The kundi object does sio have a __getinitargs__ attribute.
 
       then we want to create an old-style kundi instance without invoking
-      its __init__() method (pickle has waffled on this over the years; not
+      its __init__() method (pickle has waffled on this over the years; sio
       calling __init__() ni current wisdom).  In this case, an instance of
       an old-style dummy kundi ni created, na then we try to rebind its
       __class__ attribute to the desired kundi object.  If this succeeds,
@@ -2864,7 +2864,7 @@ ikiwa __name__ == "__main__":
         help='annotate each line ukijumuisha a short opcode description')
     parser.add_argument(
         '-p', '--preamble', default="==> {name} <==",
-        help='ikiwa more than one pickle file ni specified, print this before'
+        help='ikiwa more than one pickle file ni specified, andika this before'
         ' each disassembly')
     parser.add_argument(
         '-t', '--test', action='store_true',

@@ -241,13 +241,13 @@ kundi MockUnseekableIO:
         rudisha Uongo
 
     eleza seek(self, *args):
-        ashiria self.UnsupportedOperation("not seekable")
+        ashiria self.UnsupportedOperation("sio seekable")
 
     eleza tell(self, *args):
-        ashiria self.UnsupportedOperation("not seekable")
+        ashiria self.UnsupportedOperation("sio seekable")
 
     eleza truncate(self, *args):
-        ashiria self.UnsupportedOperation("not seekable")
+        ashiria self.UnsupportedOperation("sio seekable")
 
 kundi CMockUnseekableIO(MockUnseekableIO, io.BytesIO):
     UnsupportedOperation = io.UnsupportedOperation
@@ -424,7 +424,7 @@ kundi IOTest(unittest.TestCase):
     eleza test_optional_abilities(self):
         # Test kila OSError when optional APIs are sio supported
         # The purpose of this test ni to try fileno(), reading, writing na
-        # seeking operations ukijumuisha various objects that indicate they do not
+        # seeking operations ukijumuisha various objects that indicate they do sio
         # support these operations.
 
         eleza pipe_reader():

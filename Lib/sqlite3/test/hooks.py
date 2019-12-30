@@ -13,7 +13,7 @@
 # including commercial applications, na to alter it na redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must sio be misrepresented; you must not
+# 1. The origin of this software must sio be misrepresented; you must sio
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.

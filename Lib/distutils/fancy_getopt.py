@@ -395,7 +395,7 @@ eleza wrap_text(text, width):
 
         wakati chunks:
             l = len(chunks[0])
-            ikiwa cur_len + l <= width:    # can squeeze (at least) this chunk in
+            ikiwa cur_len + l <= width:    # can squeeze (at least) this chunk kwenye
                 cur_line.append(chunks[0])
                 toa chunks[0]
                 cur_len = cur_len + l
@@ -438,7 +438,7 @@ kundi OptionDummy:
     values kama instance attributes."""
 
     eleza __init__(self, options=[]):
-        """Create a new OptionDummy instance.  The attributes listed in
+        """Create a new OptionDummy instance.  The attributes listed kwenye
         'options' will be initialized to Tupu."""
         kila opt kwenye options:
             setattr(self, opt, Tupu)

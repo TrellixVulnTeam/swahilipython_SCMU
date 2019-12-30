@@ -514,7 +514,7 @@ _const_types = {
     NameConstant: (type(Tupu), bool),
     Ellipsis: (type(...),),
 }
-_const_types_not = {
+_const_types_sio = {
     Num: (bool,),
 }
 _const_node_type_names = {

@@ -182,7 +182,7 @@ kundi Pool(object):
 
     eleza __init__(self, processes=Tupu, initializer=Tupu, initargs=(),
                  maxtasksperchild=Tupu, context=Tupu):
-        # Attributes initialized early to make sure that they exist in
+        # Attributes initialized early to make sure that they exist kwenye
         # __del__() ikiwa __init__() raises an exception
         self._pool = []
         self._state = INIT
@@ -191,7 +191,7 @@ kundi Pool(object):
         self._setup_queues()
         self._taskqueue = queue.SimpleQueue()
         # The _change_notifier queue exist to wake up self._handle_workers()
-        # when the cache (self._cache) ni empty ama when there ni a change in
+        # when the cache (self._cache) ni empty ama when there ni a change kwenye
         # the _state variable of the thread that runs _handle_workers.
         self._change_notifier = self._ctx.SimpleQueue()
         self._cache = _PoolCache(notifier=self._change_notifier)
@@ -280,7 +280,7 @@ kundi Pool(object):
 
     @staticmethod
     eleza _get_worker_sentinels(workers):
-        rudisha [worker.sentinel kila worker in
+        rudisha [worker.sentinel kila worker kwenye
                 workers ikiwa hasattr(worker, "sentinel")]
 
     @staticmethod
@@ -528,7 +528,7 @@ kundi Pool(object):
         kila taskseq, set_length kwenye iter(taskqueue.get, Tupu):
             task = Tupu
             jaribu:
-                # iterating taskseq cannot fail
+                # iterating taskseq cansio fail
                 kila task kwenye taskseq:
                     ikiwa thread._state != RUN:
                         util.debug('task handler found thread._state != RUN')
@@ -638,7 +638,7 @@ kundi Pool(object):
 
     eleza __reduce__(self):
         ashiria NotImplementedError(
-              'pool objects cannot be pitaed between processes ama pickled'
+              'pool objects cansio be pitaed between processes ama pickled'
               )
 
     eleza close(self):
@@ -690,7 +690,7 @@ kundi Pool(object):
 
         ikiwa (sio result_handler.is_alive()) na (len(cache) != 0):
             ashiria AssertionError(
-                "Cannot have cache ukijumuisha result_hander sio alive")
+                "Cansio have cache ukijumuisha result_hander sio alive")
 
         result_handler._state = TERMINATE
         change_notifier.put(Tupu)

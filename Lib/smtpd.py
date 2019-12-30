@@ -39,7 +39,7 @@ Options:
 
 Version: %(__version__)s
 
-If localhost ni sio given then `localhost' ni used, na ikiwa localport ni not
+If localhost ni sio given then `localhost' ni used, na ikiwa localport ni sio
 given then 8025 ni used.  If remotehost ni sio given then `localhost' ni used,
 and ikiwa remoteport ni sio given, then 25 ni used.
 """
@@ -503,7 +503,7 @@ kundi SMTPChannel(asynchat.async_chat):
         ikiwa arg:
             address, params = self._getaddr(arg)
             ikiwa address:
-                self.push('252 Cannot VRFY user, but will accept message '
+                self.push('252 Cansio VRFY user, but will accept message '
                           'and attempt delivery')
             isipokua:
                 self.push('502 Could sio VRFY %s' % arg)
@@ -813,7 +813,7 @@ kundi MailmanProxy(PureProxy):
                     '', 'admin', 'owner', 'request', 'join', 'leave'):
                 endelea
             listnames.append((rcpt, listname, command))
-        # Remove all list recipients kutoka rcpttos na forward what we're not
+        # Remove all list recipients kutoka rcpttos na forward what we're sio
         # going to take care of ourselves.  Linear removal should be fine
         # since we don't expect a large number of recipients.
         kila rcpt, listname, command kwenye listnames:
@@ -951,13 +951,13 @@ ikiwa __name__ == '__main__':
         jaribu:
             agiza pwd
         tatizo ImportError:
-            andika('Cannot agiza module "pwd"; try running ukijumuisha -n option.', file=sys.stderr)
+            andika('Cansio agiza module "pwd"; try running ukijumuisha -n option.', file=sys.stderr)
             sys.exit(1)
         nobody = pwd.getpwnam('nobody')[2]
         jaribu:
             os.setuid(nobody)
         tatizo PermissionError:
-            andika('Cannot setuid "nobody"; try running ukijumuisha -n option.', file=sys.stderr)
+            andika('Cansio setuid "nobody"; try running ukijumuisha -n option.', file=sys.stderr)
             sys.exit(1)
     jaribu:
         asyncore.loop()

@@ -1,7 +1,7 @@
 """Drop-in replacement kila the thread module.
 
 Meant to be used kama a brain-dead substitute so that threaded code does
-not need to be rewritten kila when the thread module ni sio present.
+sio need to be rewritten kila when the thread module ni sio present.
 
 Suggested usage is::
 
@@ -65,7 +65,7 @@ eleza exit():
 eleza get_ident():
     """Dummy implementation of _thread.get_ident().
 
-    Since this module should only be used when _threadmodule ni not
+    Since this module should only be used when _threadmodule ni sio
     available, it ni safe to assume that the current process ni the
     only thread.  Thus a constant can be safely returned.
     """

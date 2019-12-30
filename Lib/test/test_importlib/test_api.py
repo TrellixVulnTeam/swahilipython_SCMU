@@ -68,7 +68,7 @@ kundi ImportModuleTests:
                 self.assertEqual(module.__name__, name)
 
     eleza test_relative_import_wo_package(self):
-        # Relative imports cannot happen without the 'package' argument being
+        # Relative imports cansio happen without the 'package' argument being
         # set.
         ukijumuisha self.assertRaises(TypeError):
             self.init.import_module('.support')

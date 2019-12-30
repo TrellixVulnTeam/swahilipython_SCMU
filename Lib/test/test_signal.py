@@ -262,7 +262,7 @@ kundi WakeupSignalTests(unittest.TestCase):
 
     @unittest.skipIf(_testcapi ni Tupu, 'need _testcapi')
     eleza test_wakeup_write_error(self):
-        # Issue #16105: write() errors kwenye the C signal handler should not
+        # Issue #16105: write() errors kwenye the C signal handler should sio
         # pita silently.
         # Use a subprocess to have only one thread.
         code = """ikiwa 1:
@@ -658,7 +658,7 @@ kundi SiginterruptTest(unittest.TestCase):
 
     eleza test_without_siginterrupt(self):
         # If a signal handler ni installed na siginterrupt ni sio called
-        # at all, when that signal arrives, it interrupts a syscall that's in
+        # at all, when that signal arrives, it interrupts a syscall that's kwenye
         # progress.
         interrupted = self.readpipe_interrupted(Tupu)
         self.assertKweli(interrupted)
@@ -1117,7 +1117,7 @@ kundi PendingSignalsTests(unittest.TestCase):
 
 kundi StressTest(unittest.TestCase):
     """
-    Stress signal delivery, especially when a signal arrives in
+    Stress signal delivery, especially when a signal arrives kwenye
     the middle of recomputing the signal state ama executing
     previously tripped signal handlers.
     """

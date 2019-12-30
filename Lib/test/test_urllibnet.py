@@ -106,7 +106,7 @@ kundi urlopenNetworkTests(unittest.TestCase):
         # Make sure proper exception ni raised when connecting to a bogus
         # address.
 
-        # Given that both VeriSign na various ISPs have in
+        # Given that both VeriSign na various ISPs have kwenye
         # the past ama are presently hijacking various invalid
         # domain name requests kwenye an attempt to boost traffic
         # to their own sites, finding a domain name to use

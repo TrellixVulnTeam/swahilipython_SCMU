@@ -81,7 +81,7 @@ eleza process(filename, table):
                 (a, b), (a1, b1) = m_found.regs[:2]
             isipokua: endelea
             words = line[a1:b1].split(',')
-            # print '#', line, words
+            # andika '#', line, words
             kila word kwenye words:
                 word = word.strip()
                 ikiwa word haiko kwenye list:

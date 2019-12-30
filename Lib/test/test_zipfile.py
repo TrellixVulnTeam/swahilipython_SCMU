@@ -599,7 +599,7 @@ kundi StoredTestsWithSourceFile(AbstractTestsWithSourceFile,
         jaribu:
             os.utime(TESTFN, (4386268800, 4386268800))
         tatizo OverflowError:
-            self.skipTest('Host fs cannot set timestamp to required value.')
+            self.skipTest('Host fs cansio set timestamp to required value.')
 
         ukijumuisha zipfile.ZipFile(TESTFN2, "w") kama zipfp:
             self.assertRaises(struct.error, zipfp.write, TESTFN)
@@ -1452,7 +1452,7 @@ kundi OtherTests(unittest.TestCase):
         # bug #403871.
 
         # The bug we're testing kila caused an AttributeError to be raised
-        # when a ZipFile instance was created kila a file that did not
+        # when a ZipFile instance was created kila a file that did sio
         # exist; the .fp member was sio intialized but was needed by the
         # __del__() method.  Since the AttributeError ni kwenye the __del__(),
         # it ni ignored, but the user should be sufficiently annoyed by
@@ -1843,7 +1843,7 @@ kundi LzmaBadCrcTests(AbstractBadCrcTests, unittest.TestCase):
 
 
 kundi DecryptionTests(unittest.TestCase):
-    """Check that ZIP decryption works. Since the library does not
+    """Check that ZIP decryption works. Since the library does sio
     support encryption at the moment, we use a pre-generated encrypted
     ZIP file."""
 

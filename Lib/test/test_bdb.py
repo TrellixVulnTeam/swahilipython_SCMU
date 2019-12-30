@@ -17,7 +17,7 @@
     Definitions of the members of the 'expect_tuple':
         event:
             Name of the trace event. The set methods that do sio give back
-            control to the tracer [1] do sio trigger a tracer event na in
+            control to the tracer [1] do sio trigger a tracer event na kwenye
             that case the next 'event' may be 'Tupu' by convention, its value
             ni sio checked.
             [1] Methods that trigger a trace event are set_step(), set_next(),
@@ -243,7 +243,7 @@ kundi Tracer(Bdb):
             self.expect = self.expected_list.pop(0)
         tatizo IndexError:
             ashiria BdbNotExpectedError(
-                'expect_set list exhausted, cannot pop item %d' %
+                'expect_set list exhausted, cansio pop item %d' %
                 self.expect_set_no)
         self.set_tuple = self.set_list.pop(0)
 
@@ -456,7 +456,7 @@ kundi TracerRun():
                 self.test_case.fail(not_empty)
 
 eleza run_test(modules, set_list, skip=Tupu):
-    """Run a test na print the dry-run results.
+    """Run a test na andika the dry-run results.
 
     'modules':  A dictionary mapping module names to their source code kama a
                 string. The dictionary MUST include one module named
@@ -714,7 +714,7 @@ kundi StateTestCase(BaseTestCase):
             tracer.runcall(tfunc_main)
 
     eleza test_skip(self):
-        # Check that tracing ni skipped over the agiza statement in
+        # Check that tracing ni skipped over the agiza statement kwenye
         # 'tfunc_import()'.
         code = """
             eleza main():

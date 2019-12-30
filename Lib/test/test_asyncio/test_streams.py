@@ -465,7 +465,7 @@ kundi StreamTests(test_utils.TestCase):
         stream = asyncio.StreamReader(loop=self.loop, limit=3)
         stream.feed_data(b'some dataAA')
         ukijumuisha self.assertRaisesRegex(asyncio.LimitOverrunError,
-                                    'not found') kama cm:
+                                    'sio found') kama cm:
             self.loop.run_until_complete(stream.readuntil(b'AAA'))
 
         self.assertEqual(b'some dataAA', stream._buffer)

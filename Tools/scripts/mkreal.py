@@ -52,7 +52,7 @@ eleza main():
     status = 0
     kila name kwenye args:
         ikiwa sio os.path.islink(name):
-            andika(progname+':', name+':', 'not a symlink')
+            andika(progname+':', name+':', 'sio a symlink')
             status = 1
         isipokua:
             ikiwa os.path.isdir(name):

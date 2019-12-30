@@ -36,7 +36,7 @@ kundi TestCase(unittest.TestCase):
 
         x = X()
 
-        # Add a bound __format__ method to the 'y' instance, but not
+        # Add a bound __format__ method to the 'y' instance, but sio
         #  the 'x' instance.
         y = X()
         y.__format__ = types.MethodType(lambda self, spec: 'instance', y)
@@ -352,7 +352,7 @@ non-important content
 
     eleza test_compile_time_concat_errors(self):
         self.assertAllRaise(SyntaxError,
-                            'cannot mix bytes na nonbytes literals',
+                            'cansio mix bytes na nonbytes literals',
                             [r"""f'' b''""",
                              r"""b'' f''""",
                              ])
@@ -465,7 +465,7 @@ non-important content
         self.assertEqual(f'{"#"}', '#')
         self.assertEqual(f'{d["#"]}', 'hash')
 
-        self.assertAllRaise(SyntaxError, "f-string expression part cannot include '#'",
+        self.assertAllRaise(SyntaxError, "f-string expression part cansio include '#'",
                             ["f'{1#}'",   # error because the expression becomes "(1#)"
                              "f'{3(#)}'",
                              "f'{#}'",
@@ -679,7 +679,7 @@ non-important content
                              ])
 
     eleza test_no_backslashes_in_expression_part(self):
-        self.assertAllRaise(SyntaxError, 'f-string expression part cannot include a backslash',
+        self.assertAllRaise(SyntaxError, 'f-string expression part cansio include a backslash',
                             [r"f'{\'a\'}'",
                              r"f'{\t3}'",
                              r"f'{\}'",

@@ -691,7 +691,7 @@ kundi BuiltinTest(unittest.TestCase):
 
     eleza test_exec_redirected(self):
         savestdout = sys.stdout
-        sys.stdout = Tupu # Whatever that cannot flush()
+        sys.stdout = Tupu # Whatever that cansio flush()
         jaribu:
             # Used to ashiria SystemError('error rudisha without exception set')
             exec('a')
@@ -1925,7 +1925,7 @@ kundi ShutdownTest(unittest.TestCase):
             """
         # Issue #20599: Force ASCII encoding to get a codec implemented kwenye C,
         # otherwise the codec may be unloaded before C.__del__() ni called, na
-        # so andika("before") fails because the codec cannot be used to encode
+        # so andika("before") fails because the codec cansio be used to encode
         # "before" to sys.stdout.encoding. For example, on Windows,
         # sys.stdout.encoding ni the OEM code page na these code pages are
         # implemented kwenye Python

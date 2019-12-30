@@ -77,7 +77,7 @@ kundi GrepDialog(SearchDialogBase):
         Attributes:
             flist: filelist.Filelist instance kila OutputWindow parent.
             globvar: String value of Entry widget kila path to search.
-            globent: Entry widget kila globvar.  Created in
+            globent: Entry widget kila globvar.  Created kwenye
                 create_entries().
             recvar: Boolean value of Checkbutton widget for
                 traversing through subdirectories.

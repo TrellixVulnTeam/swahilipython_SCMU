@@ -472,7 +472,7 @@ kundi _Stream:
 
         # taken kutoka gzip.GzipFile ukijumuisha some alterations
         ikiwa self.__read(2) != b"\037\213":
-            ashiria ReadError("not a gzip file")
+            ashiria ReadError("sio a gzip file")
         ikiwa self.__read(1) != b"\010":
             ashiria CompressionError("unsupported compression method")
 
@@ -855,7 +855,7 @@ kundi TarInfo(object):
         rudisha buf + self._create_header(info, GNU_FORMAT, encoding, errors)
 
     eleza create_pax_header(self, info, encoding):
-        """Return the object kama a ustar header block. If it cannot be
+        """Return the object kama a ustar header block. If it cansio be
            represented this way, prepend a pax extended header sequence
            ukijumuisha supplement information.
         """
@@ -1196,7 +1196,7 @@ kundi TarInfo(object):
         rudisha self
 
     eleza _proc_pax(self, tarfile):
-        """Process an extended ama global header kama described in
+        """Process an extended ama global header kama described kwenye
            POSIX.1-2008.
         """
         # Read the header information.
@@ -1664,7 +1664,7 @@ kundi TarFile(object):
             fileobj = gzip.GzipFile(name, mode + "b", compresslevel, fileobj)
         tatizo OSError:
             ikiwa fileobj ni sio Tupu na mode == 'r':
-                ashiria ReadError("not a gzip file")
+                ashiria ReadError("sio a gzip file")
             raise
 
         jaribu:
@@ -1672,7 +1672,7 @@ kundi TarFile(object):
         tatizo OSError:
             fileobj.close()
             ikiwa mode == 'r':
-                ashiria ReadError("not a gzip file")
+                ashiria ReadError("sio a gzip file")
             raise
         tatizo:
             fileobj.close()
@@ -1701,7 +1701,7 @@ kundi TarFile(object):
         tatizo (OSError, EOFError):
             fileobj.close()
             ikiwa mode == 'r':
-                ashiria ReadError("not a bzip2 file")
+                ashiria ReadError("sio a bzip2 file")
             raise
         tatizo:
             fileobj.close()
@@ -1729,7 +1729,7 @@ kundi TarFile(object):
         tatizo (lzma.LZMAError, EOFError):
             fileobj.close()
             ikiwa mode == 'r':
-                ashiria ReadError("not an lzma file")
+                ashiria ReadError("sio an lzma file")
             raise
         tatizo:
             fileobj.close()
@@ -2023,7 +2023,7 @@ kundi TarFile(object):
                 tarinfo = copy.copy(tarinfo)
                 tarinfo.mode = 0o700
             # Do sio set_attrs directories, kama we will do that further down
-            self.extract(tarinfo, path, set_attrs=not tarinfo.isdir(),
+            self.extract(tarinfo, path, set_attrs=sio tarinfo.isdir(),
                          numeric_owner=numeric_owner)
 
         # Reverse sort directories.
@@ -2049,7 +2049,7 @@ kundi TarFile(object):
            kama possible. `member' may be a filename ama a TarInfo object. You can
            specify a different directory using `path'. File attributes (owner,
            mtime, mode) are set unless `set_attrs' ni Uongo. If `numeric_owner`
-           ni Kweli, only the numbers kila user/group names are used na not
+           ni Kweli, only the numbers kila user/group names are used na sio
            the names.
         """
         self._check("r")
@@ -2103,7 +2103,7 @@ kundi TarFile(object):
                 # A small but ugly workaround kila the case that someone tries
                 # to extract a (sym)link kama a file-object kutoka a non-seekable
                 # stream of tar blocks.
-                ashiria StreamError("cannot extract (sym)link kama file object")
+                ashiria StreamError("cansio extract (sym)link kama file object")
             isipokua:
                 # A (sym)link's file object ni its target's file object.
                 rudisha self.extractfile(self._find_link_target(tarinfo))
@@ -2219,7 +2219,7 @@ kundi TarFile(object):
                  os.makedev(tarinfo.devmajor, tarinfo.devminor))
 
     eleza makelink(self, tarinfo, targetpath):
-        """Make a (symbolic) link called targetpath. If it cannot be created
+        """Make a (symbolic) link called targetpath. If it cansio be created
           (platform limitation), we try to make a copy of the referenced file
           instead of a link.
         """

@@ -13,7 +13,7 @@
 # including commercial applications, na to alter it na redistribute it
 # freely, subject to the following restrictions:
 #
-# 1. The origin of this software must sio be misrepresented; you must not
+# 1. The origin of this software must sio be misrepresented; you must sio
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
@@ -28,7 +28,7 @@ kids. It was part of the original Logo programming language developed
 by Wally Feurzig na Seymour Papert kwenye 1966.
 
 Imagine a robotic turtle starting at (0, 0) kwenye the x-y plane. After an ``agiza turtle``, give it
-the command turtle.forward(15), na it moves (on-screen!) 15 pixels in
+the command turtle.forward(15), na it moves (on-screen!) 15 pixels kwenye
 the direction it ni facing, drawing a line kama it moves. Give it the
 command turtle.right(25), na it rotates in-place 25 degrees clockwise.
 
@@ -230,7 +230,7 @@ eleza readconfig(cfgdict):
 jaribu:
     readconfig(_CFG)
 tatizo Exception:
-    print ("No configfile read, reason unknown")
+    andika ("No configfile read, reason unknown")
 
 
 kundi Vec2D(tuple):
@@ -908,7 +908,7 @@ kundi Shape(object):
         >>> # .. add more components na then use register_shape()
         """
         ikiwa self._type != "compound":
-            ashiria TurtleGraphicsError("Cannot add component to %s Shape"
+            ashiria TurtleGraphicsError("Cansio add component to %s Shape"
                                                                 % self._type)
         ikiwa outline ni Tupu:
             outline = fill
@@ -1039,7 +1039,7 @@ kundi TurtleScreen(TurtleScreenBase):
 
         Mode 'standard' ni compatible ukijumuisha turtle.py.
         Mode 'logo' ni compatible ukijumuisha most Logo-Turtle-Graphics.
-        Mode 'world' uses userdefined 'worldcoordinates'. *Attention*: in
+        Mode 'world' uses userdefined 'worldcoordinates'. *Attention*: kwenye
         this mode angles appear distorted ikiwa x/y unit-ratio doesn't equal 1.
         If mode ni sio given, rudisha the current mode.
 
@@ -1720,7 +1720,7 @@ kundi TNavigator(object):
         >>> reset()
         >>> turtle.left(60)
         >>> turtle.forward(100)
-        >>> print turtle.xcor()
+        >>> andika turtle.xcor()
         50.0
         """
         rudisha self._position[0]
@@ -1734,7 +1734,7 @@ kundi TNavigator(object):
         >>> reset()
         >>> turtle.left(60)
         >>> turtle.forward(100)
-        >>> print turtle.ycor()
+        >>> andika turtle.ycor()
         86.6025403784
         """
         rudisha self._position[1]
@@ -2328,7 +2328,7 @@ kundi TPen(object):
 
         Example (kila a Turtle instance named turtle):
         >>> turtle.hideturtle()
-        >>> print turtle.isvisible():
+        >>> andika turtle.isvisible():
         Uongo
         """
         rudisha self._shown
@@ -2505,7 +2505,7 @@ kundi _TurtleImage(object):
         lasivyo self._type == "image":
             self._item = screen._createimage(screen._shapes["blank"]._data)
         lasivyo self._type == "compound":
-            self._item = [screen._createpoly() kila item in
+            self._item = [screen._createpoly() kila item kwenye
                                           screen._shapes[shapeIndex]._data]
 
 
@@ -2744,7 +2744,7 @@ kundi RawTurtle(TPen, TNavigator):
         lasivyo ttype == "image":
             q.turtle._item = screen._createimage(screen._shapes["blank"]._data)
         lasivyo ttype == "compound":
-            q.turtle._item = [screen._createpoly() kila item in
+            q.turtle._item = [screen._createpoly() kila item kwenye
                               screen._shapes[self.turtle.shapeIndex]._data]
         q.currentLineItem = screen._createline()
         q._update()
@@ -3202,7 +3202,7 @@ kundi RawTurtle(TPen, TNavigator):
         cLI, cL, pl, items = coodata
         screen = self.screen
         ikiwa abs(self._position - new) > 0.5:
-            print ("undogoto: HALLO-DA-STIMMT-WAS-NICHT!")
+            andika ("undogoto: HALLO-DA-STIMMT-WAS-NICHT!")
         # restore former situation
         self.currentLineItem = cLI
         self.currentLine = cL
@@ -3874,9 +3874,9 @@ jaribu:
     ikiwa _LANGUAGE != "english":
         read_docstrings(_LANGUAGE)
 tatizo ImportError:
-    andika("Cannot find docsdict for", _LANGUAGE)
+    andika("Cansio find docsdict for", _LANGUAGE)
 tatizo Exception:
-    print ("Unknown Error when trying to agiza %s-docstring-dictionary" %
+    andika ("Unknown Error when trying to agiza %s-docstring-dictionary" %
                                                                   _LANGUAGE)
 
 
@@ -3884,7 +3884,7 @@ eleza getmethparlist(ob):
     """Get strings describing the arguments kila the given object
 
     Returns a pair of strings representing function parameter lists
-    including parenthesis.  The first string ni suitable kila use in
+    including parenthesis.  The first string ni suitable kila use kwenye
     function definition na the second ni suitable kila use kwenye function
     call.  The "self" parameter ni sio inluded.
     """

@@ -317,7 +317,7 @@ kundi RangeTest(unittest.TestCase):
         # User-defined kundi ukijumuisha an invalid __index__ method
         kundi IN:
             eleza __index__(self):
-                rudisha "not a number"
+                rudisha "sio a number"
 
         self.assertRaises(TypeError, range, IN())
 
@@ -503,7 +503,7 @@ kundi RangeTest(unittest.TestCase):
             self.assert_iterators_equal(iter1, iter2, test_id, limit=100)
 
     eleza test_range_iterators_invocation(self):
-        # verify range iterators instances cannot be created by
+        # verify range iterators instances cansio be created by
         # calling their type
         rangeiter_type = type(iter(range(0)))
         self.assertRaises(TypeError, rangeiter_type, 1, 3, 1)
@@ -597,7 +597,7 @@ kundi RangeTest(unittest.TestCase):
 
         # Check that != correctly gives the logical negation of ==
         ranges_ne = [a != b kila a kwenye test_ranges kila b kwenye test_ranges]
-        self.assertEqual(ranges_ne, [not x kila x kwenye ranges_eq])
+        self.assertEqual(ranges_ne, [sio x kila x kwenye ranges_eq])
 
         # Equal ranges should have equal hashes.
         kila a kwenye test_ranges:

@@ -309,7 +309,7 @@ kundi ComplexTest(unittest.TestCase):
         self.assertRaises(TypeError, float, 5+3j)
         self.assertRaises(ValueError, complex, "")
         self.assertRaises(TypeError, complex, Tupu)
-        self.assertRaisesRegex(TypeError, "not 'TupuType'", complex, Tupu)
+        self.assertRaisesRegex(TypeError, "sio 'TupuType'", complex, Tupu)
         self.assertRaises(ValueError, complex, "\0")
         self.assertRaises(ValueError, complex, "3\09")
         self.assertRaises(TypeError, complex, "1", "2")

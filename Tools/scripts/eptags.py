@@ -8,7 +8,7 @@ Tagged are:
  - functions (even inside other defs ama classes)
  - classes
 
-eptags warns about files it cannot open.
+eptags warns about files it cansio open.
 eptags will sio give warnings about duplicate tags.
 
 BUGS:
@@ -26,7 +26,7 @@ eleza treat_file(filename, outfp):
     jaribu:
         fp = open(filename, 'r')
     tatizo OSError:
-        sys.stderr.write('Cannot open %s\n'%filename)
+        sys.stderr.write('Cansio open %s\n'%filename)
         rudisha
     ukijumuisha fp:
         charno = 0

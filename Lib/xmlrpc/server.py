@@ -127,7 +127,7 @@ eleza resolve_dotted_attribute(obj, attr, allow_dotted_names=Kweli):
     Resolves a dotted attribute name to an object.  Raises
     an AttributeError ikiwa any attribute kwenye the chain starts ukijumuisha a '_'.
 
-    If the optional allow_dotted_names argument ni false, dots are not
+    If the optional allow_dotted_names argument ni false, dots are sio
     supported na this function operates similar to getattr(obj, attr).
     """
 
@@ -247,7 +247,7 @@ kundi SimpleXMLRPCDispatcher:
         XML-RPC methods are dispatched kutoka the marshalled (XML) data
         using the _dispatch method na the result ni returned as
         marshalled data. For backwards compatibility, a dispatch
-        function can be provided kama an argument (see comment in
+        function can be provided kama an argument (see comment kwenye
         SimpleXMLRPCRequestHandler.do_POST) but overriding the
         existing method through subclassing ni the preferred means
         of changing method dispatch behavior.
@@ -508,7 +508,7 @@ kundi SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
                 rudisha #response has been sent
 
             # In previous versions of SimpleXMLRPCServer, _dispatch
-            # could be overridden kwenye this class, instead of in
+            # could be overridden kwenye this class, instead of kwenye
             # SimpleXMLRPCDispatcher. To maintain backwards compatibility,
             # check to see ikiwa a subkundi implements _dispatch na dispatch
             # using that method ikiwa present.
@@ -590,7 +590,7 @@ kundi SimpleXMLRPCServer(socketserver.TCPServer,
 
     allow_reuse_address = Kweli
 
-    # Warning: this ni kila debugging purposes only! Never set this to Kweli in
+    # Warning: this ni kila debugging purposes only! Never set this to Kweli kwenye
     # production code, kama will be sending out sensitive information (exception
     # na stack trace details) when exceptions are raised inside
     # SimpleXMLRPCRequestHandler.do_POST
@@ -819,7 +819,7 @@ kundi ServerHTMLDoc(pydoc.HTMLDoc):
 kundi XMLRPCDocGenerator:
     """Generates documentation kila an XML-RPC server.
 
-    This kundi ni designed kama mix-in na should not
+    This kundi ni designed kama mix-in na should sio
     be constructed directly.
     """
 

@@ -403,7 +403,7 @@ frozenset2({0,
     @test.support.cpython_only
     eleza test_set_of_sets_reprs(self):
         # This test creates a complex arrangement of frozensets na
-        # compares the pretty-printed repr against a string hard-coded in
+        # compares the pretty-printed repr against a string hard-coded kwenye
         # the test.  The hard-coded repr depends on the sort order of
         # frozensets.
         #

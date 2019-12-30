@@ -504,7 +504,7 @@ kundi LiteralTests(BaseTestCase):
         Literal[b"foo", u"bar"]
 
     eleza test_illegal_parameters_do_not_raise_runtime_errors(self):
-        # Type checkers should reject these types, but we do not
+        # Type checkers should reject these types, but we do sio
         # ashiria errors at runtime to maintain maximium flexibility.
         Literal[int]
         Literal[3j + 2, ..., ()]
@@ -2832,7 +2832,7 @@ kundi GetTypeHintTests(BaseTestCase):
         @no_type_check
         kundi NoTpCheck:
             kundi Inn:
-                eleza __init__(self, x: 'not a type'): ...
+                eleza __init__(self, x: 'sio a type'): ...
         self.assertKweli(NoTpCheck.__no_type_check__)
         self.assertKweli(NoTpCheck.Inn.__init__.__no_type_check__)
         self.assertEqual(gth(ann_module2.NTC.meth), {})

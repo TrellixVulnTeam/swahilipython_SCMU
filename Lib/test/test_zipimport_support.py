@@ -47,7 +47,7 @@ eleza _run_object_doctest(obj, module):
     ikiwa f:
         ashiria test.support.TestFailed("%d of %d doctests failed" % (f, t))
     ikiwa verbose:
-        print ('doctest (%s) ... %d tests ukijumuisha zero failures' % (module.__name__, t))
+        andika ('doctest (%s) ... %d tests ukijumuisha zero failures' % (module.__name__, t))
     rudisha f, t
 
 
@@ -127,7 +127,7 @@ kundi ZipSupportTests(unittest.TestCase):
                     z.writestr(mod_name + ".py", src)
             ikiwa verbose:
                 ukijumuisha zipfile.ZipFile(zip_name, 'r') kama zip_file:
-                    print ('Contents of %r:' % zip_name)
+                    andika ('Contents of %r:' % zip_name)
                     zip_file.printdir()
             os.remove(script_name)
             sys.path.insert(0, zip_name)
@@ -197,18 +197,18 @@ kundi ZipSupportTests(unittest.TestCase):
             rc, out, err = assert_python_ok(script_name)
             expected = pattern % (script_name, "__main__.Test")
             ikiwa verbose:
-                print ("Expected line", expected)
-                print ("Got stdout:")
-                print (ascii(out))
+                andika ("Expected line", expected)
+                andika ("Got stdout:")
+                andika (ascii(out))
             self.assertIn(expected.encode('utf-8'), out)
             zip_name, run_name = make_zip_script(d, "test_zip",
                                                 script_name, '__main__.py')
             rc, out, err = assert_python_ok(zip_name)
             expected = pattern % (run_name, "__main__.Test")
             ikiwa verbose:
-                print ("Expected line", expected)
-                print ("Got stdout:")
-                print (ascii(out))
+                andika ("Expected line", expected)
+                andika ("Got stdout:")
+                andika (ascii(out))
             self.assertIn(expected.encode('utf-8'), out)
 
     eleza test_pdb_issue4201(self):

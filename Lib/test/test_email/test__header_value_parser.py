@@ -595,8 +595,8 @@ kundi TestParser(TestParserMixin, TestEmailBase):
     eleza test_encoded_word_inside_quotes(self):
         self._test_get_x(parser.get_bare_quoted_string,
             '"=?utf-8?Q?not_really_valid?="',
-            '"not really valid"',
-            'not really valid',
+            '"sio really valid"',
+            'sio really valid',
             [errors.InvalidHeaderDefect,
              errors.InvalidHeaderDefect],
             '')

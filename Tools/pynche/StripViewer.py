@@ -27,7 +27,7 @@ this can be slow.
 kutoka tkinter agiza *
 agiza ColorDB
 
-# Load this script into the Tcl interpreter na call it in
+# Load this script into the Tcl interpreter na call it kwenye
 # StripWidget.set_color().  This ni about kama fast kama it can be ukijumuisha the
 # current _tkinter.c interface, which doesn't support Tcl Objects.
 TCLPROC = '''\

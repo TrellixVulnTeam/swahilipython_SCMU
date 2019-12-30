@@ -81,7 +81,7 @@ eleza checkcache(filename=Tupu):
 
 eleza updatecache(filename, module_globals=Tupu):
     """Update a cache entry na rudisha its list of lines.
-    If something's wrong, print a message, discard the cache entry,
+    If something's wrong, andika a message, discard the cache entry,
     na rudisha an empty list."""
 
     ikiwa filename kwenye cache:
@@ -105,7 +105,7 @@ eleza updatecache(filename, module_globals=Tupu):
                 pita
             isipokua:
                 ikiwa data ni Tupu:
-                    # No luck, the PEP302 loader cannot find the source
+                    # No luck, the PEP302 loader cansio find the source
                     # kila this module.
                     rudisha []
                 cache[filename] = (

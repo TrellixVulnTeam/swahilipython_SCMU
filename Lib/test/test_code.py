@@ -72,7 +72,7 @@ consts: ('Tupu',)
 
 >>> eleza optimize_away():
 ...     'doc string'
-...     'not a docstring'
+...     'sio a docstring'
 ...     53
 ...     0x53
 

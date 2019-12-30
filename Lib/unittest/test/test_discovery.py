@@ -85,9 +85,9 @@ kundi TestDiscovery(unittest.TestCase):
 
         # The test suites found should be sorted alphabetically kila reliable
         # execution order.
-        expected = [[name + ' module tests'] kila name in
+        expected = [[name + ' module tests'] kila name kwenye
                     ('test1', 'test2', 'test_dir')]
-        expected.extend([[('test_dir.%s' % name) + ' module tests'] kila name in
+        expected.extend([[('test_dir.%s' % name) + ' module tests'] kila name kwenye
                     ('test3', 'test4')])
         self.assertEqual(suite, expected)
 
@@ -505,7 +505,7 @@ kundi TestDiscovery(unittest.TestCase):
         import_calls = []
         eleza _get_module_from_name(name):
             import_calls.append(name)
-            ashiria ImportError("Cannot agiza Name")
+            ashiria ImportError("Cansio agiza Name")
         loader = unittest.TestLoader()
         loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))

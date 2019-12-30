@@ -27,7 +27,7 @@ ikiwa TkVersion < 8.5:
     root.withdraw()
     kutoka idlelib.run agiza fix_scaling
     fix_scaling(root)
-    tkMessageBox.showerror("Idle Cannot Start",
+    tkMessageBox.showerror("Idle Cansio Start",
             "Idle requires tcl/tk 8.5+, sio %s." % TkVersion,
             parent=root)
     ashiria SystemExit(1)
@@ -1338,7 +1338,7 @@ USAGE: idle  [-deins] [-t title] [file]*
        idle  [-dns] [-t title] (-c cmd | -r file) [arg]*
        idle  [-dns] [-t title] - [arg]*
 
-  -h         print this help message na exit
+  -h         andika this help message na exit
   -n         run IDLE without a subprocess (DEPRECATED,
              see Help/IDLE Help kila details)
 
@@ -1378,7 +1378,7 @@ idle -c "agiza sys; andika(sys.argv)" "foo"
 
 idle -d -s -r foo.py "Hello World"
         Open a shell window, run a startup script, enable the debugger, na
-        run foo.py, pitaing "foo.py" kwenye sys.argv[0] na "Hello World" in
+        run foo.py, pitaing "foo.py" kwenye sys.argv[0] na "Hello World" kwenye
         sys.argv[1].
 
 echo "agiza sys; andika(sys.argv)" | idle - "foobar"
@@ -1542,7 +1542,7 @@ eleza main():
             shell.interp.execfile(script)
     lasivyo shell:
         # If there ni a shell window na no cmd ama script kwenye progress,
-        # check kila problematic issues na print warning message(s) in
+        # check kila problematic issues na andika warning message(s) kwenye
         # the IDLE shell window; this ni less intrusive than always
         # opening a separate window.
 

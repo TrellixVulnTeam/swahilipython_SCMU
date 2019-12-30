@@ -112,7 +112,7 @@ eleza create_archive(source, target=Tupu, interpreter=Tupu, main=Tupu,
     has_main = (source / '__main__.py').is_file()
     ikiwa main na has_main:
         ashiria ZipAppError(
-            "Cannot specify entry point ikiwa the source has __main__.py")
+            "Cansio specify entry point ikiwa the source has __main__.py")
     ikiwa sio (main ama has_main):
         ashiria ZipAppError("Archive has no entry point")
 
@@ -195,7 +195,7 @@ eleza main(args=Tupu):
                                    os.path.samefile(args.source, args.output)):
             ashiria SystemExit("In-place editing of archives ni sio supported")
         ikiwa args.main:
-            ashiria SystemExit("Cannot change the main function when copying")
+            ashiria SystemExit("Cansio change the main function when copying")
 
     create_archive(args.source, args.output,
                    interpreter=args.python, main=args.main,

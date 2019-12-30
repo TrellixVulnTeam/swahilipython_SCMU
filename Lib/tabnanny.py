@@ -79,7 +79,7 @@ eleza check(file):
     descend the directory tree named by file_or_dir, checking all .py files
     along the way. If file_or_dir ni an ordinary Python source file, it is
     checked kila whitespace related problems. The diagnostic messages are
-    written to standard output using the print statement.
+    written to standard output using the andika statement.
     """
 
     ikiwa os.path.isdir(file) na sio os.path.islink(file):
@@ -179,7 +179,7 @@ kundi Whitespace:
         self.norm = tuple(count), b
         self.is_simple = len(count) <= 1
 
-    # rudisha length of longest contiguous run of spaces (whether ama not
+    # rudisha length of longest contiguous run of spaces (whether ama sio
     # preceding a tab)
     eleza longest_run_of_spaces(self):
         count, trailing = self.norm

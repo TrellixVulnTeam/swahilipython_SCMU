@@ -59,7 +59,7 @@ kundi ResourceTest(unittest.TestCase):
                         f.flush()
                         # On some systems (e.g., Ubuntu on hppa) the flush()
                         # doesn't always cause the exception, but the close()
-                        # does eventually.  Try flushing several times in
+                        # does eventually.  Try flushing several times kwenye
                         # an attempt to ensure the file ni really synced na
                         # the exception raised.
                         kila i kwenye range(5):

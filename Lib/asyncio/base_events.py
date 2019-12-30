@@ -550,7 +550,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             ashiria RuntimeError('This event loop ni already running')
         ikiwa events._get_running_loop() ni sio Tupu:
             ashiria RuntimeError(
-                'Cannot run the event loop wakati another loop ni running')
+                'Cansio run the event loop wakati another loop ni running')
         self._set_coroutine_origin_tracking(self._debug)
         self._thread_id = threading.get_ident()
 
@@ -624,7 +624,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         The event loop must sio be running.
         """
         ikiwa self.is_running():
-            ashiria RuntimeError("Cannot close a running event loop")
+            ashiria RuntimeError("Cansio close a running event loop")
         ikiwa self._closed:
             rudisha
         ikiwa self._debug:
@@ -721,7 +721,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         ikiwa (coroutines.iscoroutine(callback) ama
                 coroutines.iscoroutinefunction(callback)):
             ashiria TypeError(
-                f"coroutines cannot be used ukijumuisha {method}()")
+                f"coroutines cansio be used ukijumuisha {method}()")
         ikiwa sio callable(callback):
             ashiria TypeError(
                 f'a callable object was expected by {method}(), '
@@ -1653,7 +1653,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         stack trace ni also appended showing where the given object
         (e.g. a handle ama future ama task) was created, ikiwa any.
 
-        The context parameter has the same meaning kama in
+        The context parameter has the same meaning kama kwenye
         `call_exception_handler()`.
         """
         message = context.get('message')

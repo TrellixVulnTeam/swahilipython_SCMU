@@ -85,7 +85,7 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
         self._make_tarball(tmpdir, 'archive', '.tar.xz', compress='xz')
 
     @unittest.skipUnless(can_fs_encode('årchiv'),
-        'File system cannot handle this filename')
+        'File system cansio handle this filename')
     eleza test_make_tarball_latin1(self):
         """
         Mirror test_make_tarball, tatizo filename contains latin characters.
@@ -93,7 +93,7 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
         self.test_make_tarball('årchiv') # note this isn't a real word
 
     @unittest.skipUnless(can_fs_encode('のアーカイブ'),
-        'File system cannot handle this filename')
+        'File system cansio handle this filename')
     eleza test_make_tarball_extended(self):
         """
         Mirror test_make_tarball, tatizo filename contains extended

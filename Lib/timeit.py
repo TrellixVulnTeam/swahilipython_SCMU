@@ -3,7 +3,7 @@
 """Tool kila measuring execution time of small code snippets.
 
 This module avoids a number of common traps kila measuring execution
-times.  See also Tim Peters' introduction to the Algorithms chapter in
+times.  See also Tim Peters' introduction to the Algorithms chapter kwenye
 the Python Cookbook, published by O'Reilly.
 
 Library usage: see the Timer class.
@@ -17,9 +17,9 @@ Options:
   -s/--setup S: statement to be executed once initially (default 'pita').
                 Execution time of this setup statement ni NOT timed.
   -p/--process: use time.process_time() (default ni time.perf_counter())
-  -v/--verbose: print raw timing results; repeat kila more digits precision
+  -v/--verbose: andika raw timing results; repeat kila more digits precision
   -u/--unit: set the output time unit (nsec, usec, msec, ama sec)
-  -h/--help: print this usage message na exit
+  -h/--help: andika this usage message na exit
   --: separate options kutoka statement, use when statement starts ukijumuisha -
   statement: statement to be timed (default 'pita')
 
@@ -133,7 +133,7 @@ kundi Timer:
         self.inner = local_ns["inner"]
 
     eleza print_exc(self, file=Tupu):
-        """Helper to print a traceback kutoka the timed code.
+        """Helper to andika a traceback kutoka the timed code.
 
         Typical use:
 
@@ -189,10 +189,10 @@ kundi Timer:
         to one million.
 
         Note: it's tempting to calculate mean na standard deviation
-        kutoka the result vector na report these.  However, this ni not
+        kutoka the result vector na report these.  However, this ni sio
         very useful.  In a typical case, the lowest value gives a
         lower bound kila how fast your machine can run the given code
-        snippet; higher values kwenye the result vector are typically not
+        snippet; higher values kwenye the result vector are typically sio
         caused by variability kwenye Python's speed, but by other
         processes interfering ukijumuisha your timing accuracy.  So the min()
         of the result ni probably the only number you should be

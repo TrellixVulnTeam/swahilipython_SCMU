@@ -846,7 +846,7 @@ kundi ParserStackLimitTestCase(unittest.TestCase):
         rudisha "["*level+"]"*level
 
     eleza test_deeply_nested_list(self):
-        # This has fluctuated between 99 levels kwenye 2.x, down to 93 levels in
+        # This has fluctuated between 99 levels kwenye 2.x, down to 93 levels kwenye
         # 3.7.X na back up to 99 kwenye 3.8.X. Related to MAXSTACK size kwenye Parser.h
         e = self._nested_expression(99)
         st = parser.expr(e)

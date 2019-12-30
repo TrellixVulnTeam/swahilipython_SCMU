@@ -24,7 +24,7 @@ traceback:
 The commands recognized by the debugger are listed kwenye the next
 section.  Most can be abbreviated kama indicated; e.g., h(elp) means
 that 'help' can be typed kama 'h' ama 'help' (but sio kama 'he' ama 'hel',
-nor kama 'H' ama 'Help' ama 'HELP').  Optional arguments are enclosed in
+nor kama 'H' ama 'Help' ama 'HELP').  Optional arguments are enclosed kwenye
 square brackets.  Alternatives kwenye the command syntax are separated
 by a vertical bar (|).
 
@@ -414,7 +414,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """Interpret the argument kama though it had been typed kwenye response
         to the prompt.
 
-        Checks whether this line ni typed at the normal prompt ama in
+        Checks whether this line ni typed at the normal prompt ama kwenye
         a komapoint command list definition.
         """
         ikiwa sio self.commands_defining:
@@ -497,7 +497,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         ns = {**self.curframe.f_globals, **self.curframe_locals}
         ikiwa '.' kwenye text:
             # Walk an attribute chain up to the last part, similar to what
-            # rlcompleter does.  This will bail ikiwa any of the parts are not
+            # rlcompleter does.  This will bail ikiwa any of the parts are sio
             # simple attribute access, which ni what we want.
             dotted = text.split('.')
             jaribu:
@@ -548,9 +548,9 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
         If you use the 'silent' command kwenye the command list, the usual
         message about stopping at a komapoint ni sio printed.  This
-        may be desirable kila komapoints that are to print a specific
+        may be desirable kila komapoints that are to andika a specific
         message na then endelea.  If none of the other commands
-        print anything, you will see no sign that the komapoint was
+        andika anything, you will see no sign that the komapoint was
         reached.
         """
         ikiwa sio arg:
@@ -618,7 +618,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                         self.message(bp.bpformat())
             rudisha
         # parse arguments; comma has lowest precedence
-        # na cannot occur kwenye filename
+        # na cansio occur kwenye filename
         filename = Tupu
         lineno = Tupu
         cond = Tupu
@@ -1059,7 +1059,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     eleza do_jump(self, arg):
         """j(ump) lineno
-        Set the next line that will be executed.  Only available in
+        Set the next line that will be executed.  Only available kwenye
         the bottom-most frame.  This lets you jump back na execute
         code again, ama jump forward to skip code that you don't want
         to run.
@@ -1365,7 +1365,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             jaribu:
                 toa self.displaying.get(self.curframe, {})[arg]
             tatizo KeyError:
-                self.error('not displaying %s' % arg)
+                self.error('sio displaying %s' % arg)
         isipokua:
             self.displaying.pop(self.curframe, Tupu)
 
@@ -1461,8 +1461,8 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     eleza do_help(self, arg):
         """h(elp)
-        Without argument, print the list of available commands.
-        With a command name kama argument, print help about that command.
+        Without argument, andika the list of available commands.
+        With a command name kama argument, andika help about that command.
         "help pdb" shows the full pdb documentation.
         "help exec" gives help on the ! command.
         """
@@ -1637,7 +1637,7 @@ TESTCMD = 'agiza x; x.main()'
 eleza test():
     run(TESTCMD)
 
-# print help
+# andika help
 eleza help():
     agiza pydoc
     pydoc.pager(__doc__)

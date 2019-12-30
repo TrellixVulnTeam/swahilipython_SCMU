@@ -126,7 +126,7 @@ kundi GeneratorTest(unittest.TestCase):
         self.assertEqual(gen.__name__, "name")
         self.assertEqual(gen.__qualname__, "qualname")
 
-        # generator names must be a string na cannot be deleted
+        # generator names must be a string na cansio be deleted
         self.assertRaises(TypeError, setattr, gen, '__name__', 123)
         self.assertRaises(TypeError, setattr, gen, '__qualname__', 123)
         self.assertRaises(TypeError, delattr, gen, '__name__')
@@ -469,7 +469,7 @@ pep_tests = """
 
 Specification:  Yield
 
-    Restriction:  A generator cannot be resumed wakati it ni actively
+    Restriction:  A generator cansio be resumed wakati it ni actively
     running:
 
     >>> eleza g():
@@ -523,7 +523,7 @@ Specification: Generators na Exception Propagation
       File "<stdin>", line 2, kwenye g
       File "<stdin>", line 2, kwenye f
     ZeroDivisionError: integer division ama modulo by zero
-    >>> next(k)  # na the generator cannot be resumed
+    >>> next(k)  # na the generator cansio be resumed
     Traceback (most recent call last):
       File "<stdin>", line 1, kwenye ?
     StopIteration
@@ -899,10 +899,10 @@ result sequence.  So this ni an example where lazy lists are more natural
 ...                    me_times5):
 ...         tuma i
 
-Don't print "too many" of these -- the implementation above ni extremely
-inefficient:  each call of m235() leads to 3 recursive calls, na in
+Don't andika "too many" of these -- the implementation above ni extremely
+inefficient:  each call of m235() leads to 3 recursive calls, na kwenye
 turn each of those 3 more, na so on, na so on, until we've descended
-enough levels to satisfy the print stmts.  Very odd:  when I printed 5
+enough levels to satisfy the andika stmts.  Very odd:  when I printed 5
 lines of results below, this managed to screw up Win98's malloc kwenye "the
 usual" way, i.e. the heap grew over 4Mb so Win98 started fragmenting
 address space, na it *looked* like a very slow leak.
@@ -1026,7 +1026,7 @@ m235 to share a single generator".
 
 The "tee" function does just what we want. It internally keeps a generated
 result kila kama long kama it has sio been "consumed" kutoka all of the duplicated
-iterators, whereupon it ni deleted. You can therefore print the hamming
+iterators, whereupon it ni deleted. You can therefore andika the hamming
 sequence during hours without increasing memory usage, ama very little.
 
 The beauty of it ni that recursive running-after-their-tail FP algorithms
@@ -1864,12 +1864,12 @@ SyntaxError: assignment to tuma expression sio possible
 >>> eleza f(): (tuma bar) = y
 Traceback (most recent call last):
   ...
-SyntaxError: cannot assign to tuma expression
+SyntaxError: cansio assign to tuma expression
 
 >>> eleza f(): (tuma bar) += y
 Traceback (most recent call last):
   ...
-SyntaxError: cannot assign to tuma expression
+SyntaxError: cansio assign to tuma expression
 
 
 Now check some throw() conditions:
@@ -2151,7 +2151,7 @@ was removed.
 
 
 This test isn't really generator related, but rather exception-in-cleanup
-related. The coroutine tests (above) just happen to cause an exception in
+related. The coroutine tests (above) just happen to cause an exception kwenye
 the generator's __del__ (tp_del) method. We can also test kila this
 explicitly, without generators. We do have to redirect stderr to avoid
 printing warnings na to doublecheck that we actually tested what we wanted

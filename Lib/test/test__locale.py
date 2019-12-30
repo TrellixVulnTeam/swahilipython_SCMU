@@ -90,7 +90,7 @@ kundi _LocaleTests(unittest.TestCase):
         jaribu:
             set_locale = setlocale(LC_NUMERIC)
         tatizo Error:
-            set_locale = "<not able to determine>"
+            set_locale = "<sio able to determine>"
         known_value = known_numerics.get(used_locale,
                                     ('', ''))[data_type == 'thousands_sep']
         ikiwa known_value na calc_value:
@@ -152,7 +152,7 @@ kundi _LocaleTests(unittest.TestCase):
                 jaribu:
                     set_locale = setlocale(LC_NUMERIC)
                 tatizo Error:
-                    set_locale = "<not able to determine>"
+                    set_locale = "<sio able to determine>"
                 self.assertEqual(nl_radixchar, li_radixchar,
                                 "%s (nl_langinfo) != %s (localeconv) "
                                 "(set to %s, using %s)" % (

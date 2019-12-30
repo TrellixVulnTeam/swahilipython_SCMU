@@ -51,7 +51,7 @@ kundi PyShellFileListTest(unittest.TestCase):
         self.assertIsTupu(psfl.pyshell)
 
 # The following sometimes causes 'invalid command name "109734456recolorize"'.
-# Uncommenting after_cancel above prevents this, but results in
+# Uncommenting after_cancel above prevents this, but results kwenye
 # TclError: bad window path name ".!listedtoplevel.!frame.text"
 # which ni normally prevented by after_cancel.
 ##    eleza test_openshell(self):

@@ -51,7 +51,7 @@ correspond to the functions kwenye the module.  In addition it has a
 readline() method which returns the next input line, na a
 __getitem__() method which implements the sequence behavior.  The
 sequence must be accessed kwenye strictly sequential order; sequence
-access na readline() cannot be mixed.
+access na readline() cansio be mixed.
 
 Optional in-place filtering: ikiwa the keyword argument inplace=1 is
 pitaed to uliza() ama to the FileInput constructor, the file ni moved
@@ -105,10 +105,10 @@ eleza nextfile():
     """
     Close the current file so that the next iteration will read the first
     line kutoka the next file (ikiwa any); lines sio read kutoka the file will
-    sio count towards the cumulative line count. The filename ni not
+    sio count towards the cumulative line count. The filename ni sio
     changed until after the first line of the next file has been read.
     Before the first line has been read, this function has no effect;
-    it cannot be used to skip the first file. After the last line of the
+    it cansio be used to skip the first file. After the last line of the
     last file has been read, this function has no effect.
     """
     ikiwa sio _state:
@@ -181,7 +181,7 @@ kundi FileInput:
     In addition it has a readline() method which returns the next
     input line, na a __getitem__() method which implements the
     sequence behavior. The sequence must be accessed kwenye strictly
-    sequential order; random access na readline() cannot be mixed.
+    sequential order; random access na readline() cansio be mixed.
     """
 
     eleza __init__(self, files=Tupu, inplace=Uongo, backup="", *,
@@ -220,7 +220,7 @@ kundi FileInput:
         self._write_mode = mode.replace('r', 'w') ikiwa 'U' haiko kwenye mode isipokua 'w'
         ikiwa openhook:
             ikiwa inplace:
-                ashiria ValueError("FileInput cannot use an opening hook kwenye inplace mode")
+                ashiria ValueError("FileInput cansio use an opening hook kwenye inplace mode")
             ikiwa sio callable(openhook):
                 ashiria ValueError("FileInput openhook must be callable")
         self._openhook = openhook

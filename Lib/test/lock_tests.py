@@ -280,7 +280,7 @@ kundi RLockTests(BaseLockTests):
         lock.release()
 
     eleza test_release_unacquired(self):
-        # Cannot release an unacquired lock
+        # Cansio release an unacquired lock
         lock = self.locktype()
         self.assertRaises(RuntimeError, lock.release)
         lock.acquire()
@@ -292,7 +292,7 @@ kundi RLockTests(BaseLockTests):
         self.assertRaises(RuntimeError, lock.release)
 
     eleza test_release_save_unacquired(self):
-        # Cannot _release_save an unacquired lock
+        # Cansio _release_save an unacquired lock
         lock = self.locktype()
         self.assertRaises(RuntimeError, lock._release_save)
         lock.acquire()
@@ -304,7 +304,7 @@ kundi RLockTests(BaseLockTests):
         self.assertRaises(RuntimeError, lock._release_save)
 
     eleza test_different_thread(self):
-        # Cannot release kutoka a different thread
+        # Cansio release kutoka a different thread
         lock = self.locktype()
         eleza f():
             lock.acquire()
@@ -467,7 +467,7 @@ kundi ConditionTests(BaseTestCase):
         # of the workers.
         # Secondly, this test assumes that condition variables are sio subject
         # to spurious wakeups.  The absence of spurious wakeups ni an implementation
-        # detail of Condition Variables kwenye current CPython, but kwenye general, not
+        # detail of Condition Variables kwenye current CPython, but kwenye general, sio
         # a guaranteed property of condition variables kama a programming
         # construct.  In particular, it ni possible that this can no longer
         # be conveniently guaranteed should their implementation ever change.
@@ -748,7 +748,7 @@ kundi BoundedSemaphoreTests(BaseSemaphoreTests):
     """
 
     eleza test_release_unacquired(self):
-        # Cannot go past the initial value
+        # Cansio go past the initial value
         sem = self.semtype()
         self.assertRaises(ValueError, sem.release)
         sem.acquire()

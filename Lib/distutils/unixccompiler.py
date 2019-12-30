@@ -134,7 +134,7 @@ kundi UnixCCompiler(CCompiler):
 
             # Not many Unices required ranlib anymore -- SunOS 4.x is, I
             # think the only major Unix that does.  Maybe we need some
-            # platform intelligence here to skip ranlib ikiwa it's not
+            # platform intelligence here to skip ranlib ikiwa it's sio
             # needed -- ama maybe Python's configure script took care of
             # it kila us, hence the check kila leading colon.
             ikiwa self.ranlib:
@@ -208,7 +208,7 @@ kundi UnixCCompiler(CCompiler):
             log.debug("skipping %s (up-to-date)", output_filename)
 
     # -- Miscellaneous methods -----------------------------------------
-    # These are all used by the 'gen_lib_options() function, in
+    # These are all used by the 'gen_lib_options() function, kwenye
     # ccompiler.py.
 
     eleza library_dir_option(self, dir):
@@ -244,7 +244,7 @@ kundi UnixCCompiler(CCompiler):
         isipokua:
             ikiwa self._is_gcc(compiler):
                 # gcc on non-GNU systems does sio need -Wl, but can
-                # use it anyway.  Since distutils has always pitaed in
+                # use it anyway.  Since distutils has always pitaed kwenye
                 # -Wl whenever gcc was used kwenye the past it ni probably
                 # safest to keep doing so.
                 ikiwa sysconfig.get_config_var("GNULD") == "yes":

@@ -137,7 +137,7 @@ Common commands: (see '--help-commands' kila more)
         """Construct a new Distribution instance: initialize all the
         attributes of a Distribution, na then use 'attrs' (a dictionary
         mapping attribute names to values) to assign some of those
-        attributes their "real" values.  (Any attributes sio mentioned in
+        attributes their "real" values.  (Any attributes sio mentioned kwenye
         'attrs' will be assigned to some null value: 0, Tupu, an empty list
         ama dictionary, etc.)  Most importantly, initialize the
         'command_obj' attribute to the empty dictionary; this will be
@@ -200,7 +200,7 @@ Common commands: (see '--help-commands' kila more)
         self.dist_files = []
 
         # These options are really the business of various commands, rather
-        # than of the Distribution itself.  We provide aliases kila them in
+        # than of the Distribution itself.  We provide aliases kila them kwenye
         # Distribution kama a convenience to the developer.
         self.packages = Tupu
         self.package_data = {}
@@ -676,7 +676,7 @@ Common commands: (see '--help-commands' kila more)
         """
         kutoka distutils.core agiza gen_usage
 
-        # User just wants a list of commands -- we'll print it out na stop
+        # User just wants a list of commands -- we'll andika it out na stop
         # processing now (ie. ikiwa they ran "setup --help-commands foo bar",
         # we ignore "foo bar").
         ikiwa self.help_commands:
@@ -760,8 +760,8 @@ Common commands: (see '--help-commands' kila more)
 
     eleza get_command_list(self):
         """Get a list of (command, description) tuples.
-        The list ni divided into "standard commands" (listed in
-        distutils.command.__all__) na "extra commands" (mentioned in
+        The list ni divided into "standard commands" (listed kwenye
+        distutils.command.__all__) na "extra commands" (mentioned kwenye
         self.cmdclass, but sio a standard command).  The descriptions come
         kutoka the command kundi attribute 'description'.
         """
@@ -874,7 +874,7 @@ Common commands: (see '--help-commands' kila more)
         this means copying elements of a dictionary ('option_dict') to
         attributes of an instance ('command').
 
-        'command_obj' must be a Command instance.  If 'option_dict' ni not
+        'command_obj' must be a Command instance.  If 'option_dict' ni sio
         supplied, uses the standard option dictionary kila this command
         (kutoka 'self.command_options').
         """

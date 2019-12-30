@@ -571,7 +571,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertUongo(dco.eof)
 
     eleza test_decompress_unused_data(self):
-        # Repeated calls to decompress() after EOF should accumulate data in
+        # Repeated calls to decompress() after EOF should accumulate data kwenye
         # dco.unused_data, instead of just storing the arg to the last call.
         source = b'abcdefghijklmnopqrstuvwxyz'
         remainder = b'0123456789'

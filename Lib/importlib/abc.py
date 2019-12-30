@@ -209,7 +209,7 @@ kundi InspectLoader(Loader):
         """Optional method which when implemented should rudisha whether the
         module ni a package.  The fullname ni a str.  Returns a bool.
 
-        Raises ImportError ikiwa the module cannot be found.
+        Raises ImportError ikiwa the module cansio be found.
         """
         ashiria ImportError
 
@@ -218,7 +218,7 @@ kundi InspectLoader(Loader):
 
         The fullname ni a str.  Returns a types.CodeType ikiwa possible, isipokua
         returns Tupu ikiwa a code object does sio make sense
-        (e.g. built-in module). Raises ImportError ikiwa the module cannot be
+        (e.g. built-in module). Raises ImportError ikiwa the module cansio be
         found.
         """
         source = self.get_source(fullname)
@@ -231,7 +231,7 @@ kundi InspectLoader(Loader):
         """Abstract method which should rudisha the source code kila the
         module.  The fullname ni a str.  Returns a str.
 
-        Raises ImportError ikiwa the module cannot be found.
+        Raises ImportError ikiwa the module cansio be found.
         """
         ashiria ImportError
 
@@ -263,7 +263,7 @@ kundi ExecutionLoader(InspectLoader):
         """Abstract method which should rudisha the value that __file__ ni to be
         set to.
 
-        Raises ImportError ikiwa the module cannot be found.
+        Raises ImportError ikiwa the module cansio be found.
         """
         ashiria ImportError
 
@@ -271,7 +271,7 @@ kundi ExecutionLoader(InspectLoader):
         """Method to rudisha the code object kila fullname.
 
         Should rudisha Tupu ikiwa sio applicable (e.g. built-in module).
-        Raise ImportError ikiwa the module cannot be found.
+        Raise ImportError ikiwa the module cansio be found.
         """
         source = self.get_source(fullname)
         ikiwa source ni Tupu:
@@ -335,7 +335,7 @@ kundi SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLo
         Accepts a str path na data kama bytes.
 
         Any needed intermediary directories are to be created. If kila some
-        reason the file cannot be written because of permissions, fail
+        reason the file cansio be written because of permissions, fail
         silently.
         """
 
@@ -358,7 +358,7 @@ kundi ResourceReader(metaclass=abc.ABCMeta):
         The 'resource' argument ni expected to represent only a file name
         na thus sio contain any subdirectory components.
 
-        If the resource cannot be found, FileNotFoundError ni raised.
+        If the resource cansio be found, FileNotFoundError ni raised.
         """
         ashiria FileNotFoundError
 

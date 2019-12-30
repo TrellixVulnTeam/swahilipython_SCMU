@@ -2,7 +2,7 @@
 A script that replaces an old file ukijumuisha a new one, only ikiwa the contents
 actually changed.  If not, the new file ni simply deleted.
 
-This avoids wholesale rebuilds when a code (re)generation phase does not
+This avoids wholesale rebuilds when a code (re)generation phase does sio
 actually change the in-tree generated code.
 """
 

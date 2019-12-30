@@ -76,7 +76,7 @@ kundi DecompressReader(io.RawIOBase):
         ikiwa sio size ama self._eof:
             rudisha b""
         data = Tupu  # Default ikiwa EOF ni encountered
-        # Depending on the input data, our call to the decompressor may not
+        # Depending on the input data, our call to the decompressor may sio
         # rudisha any data. In this case, try again after reading another block.
         wakati Kweli:
             ikiwa self._decompressor.eof:

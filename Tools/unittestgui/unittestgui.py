@@ -432,7 +432,7 @@ kundi TkTestRunner(BaseGUITestRunner):
 
 
 kundi ProgressBar(tk.Frame):
-    """A simple progress bar that shows a percentage progress in
+    """A simple progress bar that shows a percentage progress kwenye
     the given colour."""
 
     eleza __init__(self, *args, **kwargs):

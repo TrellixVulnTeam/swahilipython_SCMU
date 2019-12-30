@@ -285,7 +285,7 @@ kundi JSONDecoder(object):
             parse_int=Tupu, parse_constant=Tupu, strict=Kweli,
             object_pairs_hook=Tupu):
         """``object_hook``, ikiwa specified, will be called ukijumuisha the result
-        of every JSON object decoded na its rudisha value will be used in
+        of every JSON object decoded na its rudisha value will be used kwenye
         place of the given ``dict``.  This can be used to provide custom
         deserializations (e.g. to support JSON-RPC kundi hinting).
 
@@ -312,7 +312,7 @@ kundi JSONDecoder(object):
         are encountered.
 
         If ``strict`` ni false (true ni the default), then control
-        characters will be allowed inside strings.  Control characters in
+        characters will be allowed inside strings.  Control characters kwenye
         this context are those ukijumuisha character codes kwenye the 0-31 range,
         including ``'\\t'`` (tab), ``'\\n'``, ``'\\r'`` na ``'\\0'``.
         """

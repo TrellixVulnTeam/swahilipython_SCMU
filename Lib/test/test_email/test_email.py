@@ -382,7 +382,7 @@ kundi TestMessageAPI(TestEmailBase):
         eq(msg.get_param('foo', header='x-header'), '')
         eq(msg.get_param('bar', header='x-header'), 'one')
         eq(msg.get_param('baz', header='x-header'), 'two')
-        # XXX: We are sio RFC-2045 compliant!  We cannot parse:
+        # XXX: We are sio RFC-2045 compliant!  We cansio parse:
         # msg["Content-Type"] = 'text/plain; weird="hey; dolly? [you] @ <\\"home\\">?"'
         # msg.get_param("weird")
         # yet.
@@ -1591,7 +1591,7 @@ kundi TestMIMEApplication(unittest.TestCase):
 
     eleza test_binary_body_with_encode_noop(self):
         # Issue 16564: This does sio produce an RFC valid message, since to be
-        # valid it should have a CTE of binary.  But the below works in
+        # valid it should have a CTE of binary.  But the below works kwenye
         # Python2, na ni documented kama working this way.
         bytesdata = b'\xfa\xfb\xfc\xfd\xfe\xff'
         msg = MIMEApplication(bytesdata, _encoder=encoders.encode_noop)
@@ -2261,9 +2261,9 @@ counter to RFC 2822, there's no separating newline here
         # leading whitespace but no ':') ni to assume that the blank line that
         # separates the header kutoka the body ni missing, na to stop parsing
         # headers na start parsing the body.
-        msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')
+        msg = self._str_msg('Subject: test\nsio a header\nTo: abc\n\nb\n')
         self.assertEqual(msg.keys(), ['Subject'])
-        self.assertEqual(msg.get_payload(), 'not a header\nTo: abc\n\nb\n')
+        self.assertEqual(msg.get_payload(), 'sio a header\nTo: abc\n\nb\n')
         self.assertDefectsEqual(msg.defects,
                                 [errors.MissingHeaderBodySeparatorDefect])
 
@@ -2479,7 +2479,7 @@ This report relates to a message you sent ukijumuisha the following header field
   To: SoCal Raves <scr@socal-raves.org>
   Subject: [scr] yeah kila Ians!!
 
-Your message cannot be delivered to the following recipients:
+Your message cansio be delivered to the following recipients:
 
   Recipient address: jangel1@cougar.noc.ucla.edu
   Reason: recipient reached disk quota
@@ -3254,7 +3254,7 @@ Foo
         eq(msg.get_filename(), 'foo\\wacky"name')
 
     eleza test_get_body_encoding_with_bogus_charset(self):
-        charset = Charset('not a charset')
+        charset = Charset('sio a charset')
         self.assertEqual(charset.get_body_encoding(), 'base64')
 
     eleza test_get_body_encoding_with_uppercase_charset(self):
@@ -3799,7 +3799,7 @@ kundi Test8BitBytesHandling(TestEmailBase):
         # source byte really ni utf-8 this works.  This ni likely to fail
         # against real dirty data (ie: produce mojibake), but the data is
         # invalid anyway so it ni kama good a guess kama any.  But this means that
-        # this test just confirms the current behavior; that behavior ni not
+        # this test just confirms the current behavior; that behavior ni sio
         # necessarily the best possible behavior.  With 'decode' it is
         # returning the raw bytes, so that test should be of correct behavior,
         # ama at least produce the same result that email4 did.
@@ -3814,7 +3814,7 @@ kundi Test8BitBytesHandling(TestEmailBase):
     eleza test_invalid_8bit_in_non_8bit_cte_uses_replace(self):
         # This ni similar to the previous test, but proves that ikiwa the 8bit
         # byte ni undecodeable kwenye the specified charset, it gets replaced
-        # by the unicode 'unknown' character.  Again, this may ama may not
+        # by the unicode 'unknown' character.  Again, this may ama may sio
         # be the ideal behavior.  Note that ikiwa decode=Uongo none of the
         # decoders will get involved, so this ni the only test we need
         # kila this behavior.
@@ -3879,7 +3879,7 @@ kundi Test8BitBytesHandling(TestEmailBase):
                             From: {}
 
                             Yes, they are flying.
-                            """).format(*[expected[1] kila (_, expected) in
+                            """).format(*[expected[1] kila (_, expected) kwenye
                                         self.headertest_headers]))
 
     eleza test_values_with_8bit_headers(self):
@@ -4264,7 +4264,7 @@ kundi TestQuopri(unittest.TestCase):
             range(ord('A'), ord('Z') + 1),
             range(ord('0'), ord('9') + 1),
             (c kila c kwenye b'!*+-/')))
-        # Set of characters (as byte integers) that do need to be encoded in
+        # Set of characters (as byte integers) that do need to be encoded kwenye
         # headers.
         self.hnon = [c kila c kwenye range(256) ikiwa c haiko kwenye self.hlit]
         assert len(self.hlit) + len(self.hnon) == 256
@@ -4273,7 +4273,7 @@ kundi TestQuopri(unittest.TestCase):
         self.blit = list(range(ord(' '), ord('~') + 1))
         self.blit.append(ord('\t'))
         self.blit.remove(ord('='))
-        # Set of characters (as byte integers) that do need to be encoded in
+        # Set of characters (as byte integers) that do need to be encoded kwenye
         # bodies.
         self.bnon = [c kila c kwenye range(256) ikiwa c haiko kwenye self.blit]
         assert len(self.blit) + len(self.bnon) == 256

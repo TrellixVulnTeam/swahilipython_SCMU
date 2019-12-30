@@ -61,7 +61,7 @@ eleza _readline(fd):
 
 
 
-# Marginal testing of pty suite. Cannot do extensive 'do ama fail' testing
+# Marginal testing of pty suite. Cansio do extensive 'do ama fail' testing
 # because pty code ni sio too portable.
 # XXX(nnorwitz):  these tests leak fds when there ni an error.
 kundi PtyTest(unittest.TestCase):
@@ -168,7 +168,7 @@ kundi PtyTest(unittest.TestCase):
             # X even the small writes kwenye the child above will block it.  Also
             # on Linux, the read() will ashiria an OSError (input/output error)
             # when it tries to read past the end of the buffer but the child's
-            # already exited, so catch na discard those exceptions.  It's not
+            # already exited, so catch na discard those exceptions.  It's sio
             # worth checking kila EIO.
             wakati Kweli:
                 jaribu:

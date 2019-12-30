@@ -71,7 +71,7 @@ eleza _bootstrap(*, root=Tupu, upgrade=Uongo, user=Uongo,
     Note that calling this function will alter both sys.path na os.environ.
     """
     ikiwa altinstall na default_pip:
-        ashiria ValueError("Cannot use altinstall na default_pip together")
+        ashiria ValueError("Cansio use altinstall na default_pip together")
 
     sys.audit("ensurepip.bootstrap", root)
 

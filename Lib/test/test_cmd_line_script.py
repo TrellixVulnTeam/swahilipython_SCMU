@@ -348,7 +348,7 @@ kundi CmdLineTest(unittest.TestCase):
         ukijumuisha support.temp_dir() kama script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
-            msg = ("'test_pkg' ni a package na cannot "
+            msg = ("'test_pkg' ni a package na cansio "
                    "be directly executed")
             self._check_import_error(["-m", "test_pkg"], msg, cwd=script_dir)
 
@@ -358,8 +358,8 @@ kundi CmdLineTest(unittest.TestCase):
             make_pkg(pkg_dir)
             main_dir = os.path.join(pkg_dir, '__main__')
             make_pkg(main_dir)
-            msg = ("Cannot use package kama __main__ module; "
-                   "'test_pkg' ni a package na cannot "
+            msg = ("Cansio use package kama __main__ module; "
+                   "'test_pkg' ni a package na cansio "
                    "be directly executed")
             self._check_import_error(["-m", "test_pkg"], msg, cwd=script_dir)
 
@@ -458,10 +458,10 @@ kundi CmdLineTest(unittest.TestCase):
             ('builtins.x', br'Error wakati finding module specification.*'
                 br'ModuleNotFoundError'),
             ('builtins.x.y', br'Error wakati finding module specification.*'
-                br'ModuleNotFoundError.*No module named.*not a package'),
-            ('os.path', br'loader.*cannot handle'),
+                br'ModuleNotFoundError.*No module named.*sio a package'),
+            ('os.path', br'loader.*cansio handle'),
             ('importlib', br'No module named.*'
-                br'is a package na cannot be directly executed'),
+                br'is a package na cansio be directly executed'),
             ('importlib.nonexistent', br'No module named'),
             ('.unittest', br'Relative module names sio supported'),
         )
@@ -531,7 +531,7 @@ kundi CmdLineTest(unittest.TestCase):
     eleza test_non_ascii(self):
         # Mac OS X denies the creation of a file ukijumuisha an invalid UTF-8 name.
         # Windows allows creating a name ukijumuisha an arbitrary bytes name, but
-        # Python cannot a undecodable bytes argument to a subprocess.
+        # Python cansio a undecodable bytes argument to a subprocess.
         ikiwa (support.TESTFN_UNDECODABLE
         na sys.platform haiko kwenye ('win32', 'darwin')):
             name = os.fsdecode(support.TESTFN_UNDECODABLE)

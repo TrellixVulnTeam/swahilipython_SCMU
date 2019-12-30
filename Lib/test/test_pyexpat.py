@@ -181,7 +181,7 @@ kundi ParseTest(unittest.TestCase):
 
     eleza _hookup_callbacks(self, parser, handler):
         """
-        Set each of the callbacks defined on handler na named in
+        Set each of the callbacks defined on handler na named kwenye
         self.handler_names on the given parser.
         """
         kila name kwenye self.handler_names:

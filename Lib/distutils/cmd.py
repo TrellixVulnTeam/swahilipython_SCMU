@@ -64,7 +64,7 @@ kundi Command:
         # Per-command versions of the global flags, so that the user can
         # customize Distutils' behaviour command-by-command na let some
         # commands fall back on the Distribution's behaviour.  Tupu means
-        # "not defined, check self.distribution's copy", wakati 0 ama 1 mean
+        # "sio defined, check self.distribution's copy", wakati 0 ama 1 mean
         # false na true (duh).  Note that this means figuring out the real
         # value of each flag ni a touch complicated -- hence "self._dry_run"
         # will be handled by __getattr__, below.
@@ -139,7 +139,7 @@ kundi Command:
         assignments kutoka the command-line ama kutoka other commands have been
         done.  Thus, this ni the place to code option dependencies: if
         'foo' depends on 'bar', then it ni safe to set 'foo' kutoka 'bar' as
-        long kama 'foo' still has the same value it was assigned in
+        long kama 'foo' still has the same value it was assigned kwenye
         'initialize_options()'.
 
         This method must be implemented by all command classes.
@@ -164,9 +164,9 @@ kundi Command:
 
     eleza run(self):
         """A command's raison d'etre: carry out the action it exists to
-        perform, controlled by the options initialized in
+        perform, controlled by the options initialized kwenye
         'initialize_options()', customized by other commands, the setup
-        script, the command-line, na config files, na finalized in
+        script, the command-line, na config files, na finalized kwenye
         'finalize_options()'.  All terminal output na filesystem
         interaction should be done by 'run()'.
 
@@ -177,7 +177,7 @@ kundi Command:
 
     eleza announce(self, msg, level=1):
         """If the current verbosity level ni of greater than ama equal to
-        'level' print 'msg' to stdout.
+        'level' andika 'msg' to stdout.
         """
         log.log(level, msg)
 
@@ -398,6 +398,6 @@ kundi Command:
         # perform the action that presumably regenerates it
         ikiwa self.force ama dep_util.newer_group(infiles, outfile):
             self.execute(func, args, exec_msg, level)
-        # Otherwise, print the "skip" message
+        # Otherwise, andika the "skip" message
         isipokua:
             log.debug(skip_msg)

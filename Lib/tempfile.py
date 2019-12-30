@@ -377,7 +377,7 @@ eleza mktemp(suffix="", prefix=template, dir=Tupu):
     file ni sio created.
 
     Arguments are similar to mkstemp, tatizo that the 'text' argument is
-    sio accepted, na suffix=Tupu, prefix=Tupu na bytes file names are not
+    sio accepted, na suffix=Tupu, prefix=Tupu na bytes file names are sio
     supported.
 
     THIS FUNCTION IS UNSAFE AND SHOULD NOT BE USED.  The file name may
@@ -550,7 +550,7 @@ eleza NamedTemporaryFile(mode='w+b', buffering=-1, encoding=Tupu,
         raise
 
 ikiwa _os.name != 'posix' ama _sys.platform == 'cygwin':
-    # On non-POSIX na Cygwin systems, assume that we cannot unlink a file
+    # On non-POSIX na Cygwin systems, assume that we cansio unlink a file
     # wakati it ni open.
     TemporaryFile = NamedTemporaryFile
 
@@ -589,7 +589,7 @@ isipokua:
                 # Linux kernel older than 3.11 ignores the O_TMPFILE flag:
                 # O_TMPFILE ni read kama O_DIRECTORY. Trying to open a directory
                 # ukijumuisha O_RDWR|O_DIRECTORY fails ukijumuisha IsADirectoryError, a
-                # directory cannot be open to write. Set flag to Uongo to not
+                # directory cansio be open to write. Set flag to Uongo to sio
                 # try again.
                 _O_TMPFILE_WORKS = Uongo
             tatizo OSError:
@@ -669,7 +669,7 @@ kundi SpooledTemporaryFile:
     # Context management protocol
     eleza __enter__(self):
         ikiwa self._file.closed:
-            ashiria ValueError("Cannot enter context ukijumuisha closed file")
+            ashiria ValueError("Cansio enter context ukijumuisha closed file")
         rudisha self
 
     eleza __exit__(self, exc, value, tb):

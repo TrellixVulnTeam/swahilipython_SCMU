@@ -13,7 +13,7 @@ eleza main():
     jaribu:
         opts, args = getopt.getopt(sys.argv[1:], '')
         ikiwa len(args) < 2:
-            ashiria getopt.GetoptError('not enough arguments', Tupu)
+            ashiria getopt.GetoptError('sio enough arguments', Tupu)
     tatizo getopt.GetoptError kama msg:
         sys.stdout = sys.stderr
         andika(msg)

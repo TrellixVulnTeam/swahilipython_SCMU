@@ -8,7 +8,7 @@ graphics. (See example wikipedia1 kila URLs)
 
 First we create (ne-1) (i.e. 35 kwenye this
 example) copies of our first turtle p.
-Then we let them perform their steps in
+Then we let them perform their steps kwenye
 parallel.
 
 Followed by a complete undo().

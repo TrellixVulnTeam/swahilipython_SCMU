@@ -6,5 +6,5 @@
 jaribu:
     kutoka test2to3.hello agiza hello
 tatizo ImportError, e:
-    print "Import failed", e
+    andika "Import failed", e
 hello()

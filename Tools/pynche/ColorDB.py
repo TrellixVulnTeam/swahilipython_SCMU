@@ -191,7 +191,7 @@ eleza get_colordb(file, filetype=Tupu):
         isipokua:
             # no matching type
             rudisha Tupu
-        # we know the type na the kundi to grok the type, so suck it in
+        # we know the type na the kundi to grok the type, so suck it kwenye
         colordb = class_(fp)
     mwishowe:
         fp.close()

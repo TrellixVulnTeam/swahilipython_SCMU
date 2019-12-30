@@ -43,7 +43,7 @@ kundi RelativeImports:
       kutoka ...... agiza attr
 
     To prevent someone kutoka accessing code that ni outside of a package, one
-    cannot reach the location containing the root package itself::
+    cansio reach the location containing the root package itself::
 
       # From pkg.__init__ [too high kutoka package]
       kutoka .. agiza top_level

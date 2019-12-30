@@ -170,7 +170,7 @@ eval_tests = [
   # BinOp
   "a + b",
   # UnaryOp
-  "not v",
+  "sio v",
   # Lambda
   "lambda:Tupu",
   # Dict
@@ -758,26 +758,26 @@ kundi ASTHelpers_Test(unittest.TestCase):
 
     eleza test_get_docstring_none(self):
         self.assertIsTupu(ast.get_docstring(ast.parse('')))
-        node = ast.parse('x = "not docstring"')
+        node = ast.parse('x = "sio docstring"')
         self.assertIsTupu(ast.get_docstring(node))
         node = ast.parse('eleza foo():\n  pita')
         self.assertIsTupu(ast.get_docstring(node))
 
         node = ast.parse('kundi foo:\n  pita')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
-        node = ast.parse('kundi foo:\n  x = "not docstring"')
+        node = ast.parse('kundi foo:\n  x = "sio docstring"')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
         node = ast.parse('kundi foo:\n  eleza bar(self): pita')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
 
         node = ast.parse('eleza foo():\n  pita')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
-        node = ast.parse('eleza foo():\n  x = "not docstring"')
+        node = ast.parse('eleza foo():\n  x = "sio docstring"')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
 
         node = ast.parse('async eleza foo():\n  pita')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
-        node = ast.parse('async eleza foo():\n  x = "not docstring"')
+        node = ast.parse('async eleza foo():\n  x = "sio docstring"')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
 
     eleza test_multi_line_docstring_col_offset_and_lineno_issue16806(self):

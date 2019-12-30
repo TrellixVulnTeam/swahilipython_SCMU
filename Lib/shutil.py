@@ -77,7 +77,7 @@ kundi ExecError(OSError):
     """Raised when a command could sio be executed"""
 
 kundi ReadError(OSError):
-    """Raised when an archive cannot be read"""
+    """Raised when an archive cansio be read"""
 
 kundi RegistryError(Exception):
     """Raised when a registry operation ukijumuisha the archiving
@@ -116,7 +116,7 @@ eleza _fastcopy_sendfile(fsrc, fdst):
     # Note: copyfileobj() ni left alone kwenye order to sio inroduce any
     # unexpected komaage. Possible risks by using zero-copy calls
     # kwenye copyfileobj() are:
-    # - fdst cannot be open kwenye "a"(ppend) mode
+    # - fdst cansio be open kwenye "a"(ppend) mode
     # - fsrc na fdst may be open kwenye "t"(ext) mode
     # - fsrc may be a BufferedReader (which hides unread data kwenye a buffer),
     #   GzipFile (which decompresses data), HTTPResponse (which decodes
@@ -378,7 +378,7 @@ eleza copystat(src, dst, *, follow_symlinks=Kweli):
         #       * fchownat() ni unavailable ama
         #       * fchownat() doesn't implement AT_SYMLINK_NOFOLLOW.
         #         (it returned ENOSUP.)
-        # therefore we're out of options--we simply cannot chown the
+        # therefore we're out of options--we simply cansio chown the
         # symlink.  give up, suppress the error.
         # (which ni what shutil always did kwenye this circumstance.)
         pita
@@ -471,7 +471,7 @@ eleza _copytree(entries, src, dst, symlinks, ignore, copy_function,
                     # code ukijumuisha a custom `copy_function` may rely on copytree
                     # doing the right thing.
                     os.symlink(linkto, dstname)
-                    copystat(srcobj, dstname, follow_symlinks=not symlinks)
+                    copystat(srcobj, dstname, follow_symlinks=sio symlinks)
                 isipokua:
                     # ignore dangling symlink ikiwa the flag ni on
                     ikiwa sio os.path.exists(linkto) na ignore_dangling_symlinks:
@@ -517,7 +517,7 @@ eleza copytree(src, dst, symlinks=Uongo, ignore=Tupu, copy_function=copy2,
     source tree result kwenye symbolic links kwenye the destination tree; if
     it ni false, the contents of the files pointed to by symbolic
     links are copied. If the file pointed by the symlink doesn't
-    exist, an exception will be added kwenye the list of errors raised in
+    exist, an exception will be added kwenye the list of errors raised kwenye
     an Error exception at the end of the copy process.
 
     You can set the optional ignore_dangling_symlinks flag to true ikiwa you
@@ -556,7 +556,7 @@ ikiwa hasattr(os.stat_result, 'st_file_attributes'):
     eleza _rmtree_isdir(entry):
         jaribu:
             st = entry.stat(follow_symlinks=Uongo)
-            rudisha (stat.S_ISDIR(st.st_mode) na not
+            rudisha (stat.S_ISDIR(st.st_mode) na sio
                 (st.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT
                  na st.st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT))
         tatizo OSError:
@@ -596,7 +596,7 @@ eleza _rmtree_unsafe(path, onerror):
                     # This can only happen ikiwa someone replaces
                     # a directory ukijumuisha a symlink after the call to
                     # os.scandir ama entry.is_dir above.
-                    ashiria OSError("Cannot call rmtree on a symbolic link")
+                    ashiria OSError("Cansio call rmtree on a symbolic link")
             tatizo OSError:
                 onerror(os.path.islink, fullname, sys.exc_info())
                 endelea
@@ -652,7 +652,7 @@ eleza _rmtree_safe_fd(topfd, path, onerror):
                             # This can only happen ikiwa someone replaces
                             # a directory ukijumuisha a symlink after the call to
                             # os.scandir ama stat.S_ISDIR above.
-                            ashiria OSError("Cannot call rmtree on a symbolic "
+                            ashiria OSError("Cansio call rmtree on a symbolic "
                                           "link")
                         tatizo OSError:
                             onerror(os.path.islink, fullname, sys.exc_info())
@@ -713,7 +713,7 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
             isipokua:
                 jaribu:
                     # symlinks to directories are forbidden, see bug #1669
-                    ashiria OSError("Cannot call rmtree on a symbolic link")
+                    ashiria OSError("Cansio call rmtree on a symbolic link")
                 tatizo OSError:
                     onerror(os.path.islink, path, sys.exc_info())
         mwishowe:
@@ -722,7 +722,7 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
         jaribu:
             ikiwa _rmtree_islink(path):
                 # symlinks to directories are forbidden, see bug #1669
-                ashiria OSError("Cannot call rmtree on a symbolic link")
+                ashiria OSError("Cansio call rmtree on a symbolic link")
         tatizo OSError:
             onerror(os.path.islink, path, sys.exc_info())
             # can't endelea even ikiwa onerror hook returns
@@ -785,7 +785,7 @@ eleza move(src, dst, copy_function=copy2):
             os.unlink(src)
         lasivyo os.path.isdir(src):
             ikiwa _destinsrc(src, dst):
-                ashiria Error("Cannot move a directory '%s' into itself"
+                ashiria Error("Cansio move a directory '%s' into itself"
                             " '%s'." % (src, dst))
             copytree(src, real_dst, copy_function=copy_function,
                      symlinks=Kweli)
@@ -959,7 +959,7 @@ eleza get_archive_formats():
 
     Each element of the returned sequence ni a tuple (name, description)
     """
-    formats = [(name, registry[2]) kila name, registry in
+    formats = [(name, registry[2]) kila name, registry kwenye
                _ARCHIVE_FORMATS.items()]
     formats.sort()
     rudisha formats
@@ -1050,7 +1050,7 @@ eleza get_unpack_formats():
     Each element of the returned sequence ni a tuple
     (name, extensions, description)
     """
-    formats = [(name, info[0], info[3]) kila name, info in
+    formats = [(name, info[0], info[3]) kila name, info kwenye
                _UNPACK_FORMATS.items()]
     formats.sort()
     rudisha formats
@@ -1295,8 +1295,8 @@ eleza get_terminal_size(fallback=(80, 24)):
     the terminal connected to sys.__stdout__ ni queried
     by invoking os.get_terminal_size.
 
-    If the terminal size cannot be successfully queried, either because
-    the system doesn't support querying, ama because we are not
+    If the terminal size cansio be successfully queried, either because
+    the system doesn't support querying, ama because we are sio
     connected to a terminal, the value given kwenye fallback parameter
     ni used. Fallback defaults to (80, 24) which ni the default
     size used by many terminal emulators.

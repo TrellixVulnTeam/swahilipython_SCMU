@@ -1,8 +1,8 @@
-# This module ni used to map the old Python 2 names to the new names used in
+# This module ni used to map the old Python 2 names to the new names used kwenye
 # Python 3 kila the pickle module.  This needed to make pickle streams
 # generated ukijumuisha Python 2 loadable by Python 3.
 
-# This ni a copy of lib2to3.fixes.fix_imports.MAPPING.  We cannot import
+# This ni a copy of lib2to3.fixes.fix_imports.MAPPING.  We cansio import
 # lib2to3 na use the mapping defined there, because lib2to3 uses pickle.
 # Thus, this could cause the module to be imported recursively.
 IMPORT_MAPPING = {

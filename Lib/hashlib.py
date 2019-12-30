@@ -18,7 +18,7 @@ More algorithms may be available on your platform but the above are guaranteed
 to exist.  See the algorithms_guaranteed na algorithms_available attributes
 to find out what algorithm names can be pitaed to new().
 
-NOTE: If you want the adler32 ama crc32 hash functions they are available in
+NOTE: If you want the adler32 ama crc32 hash functions they are available kwenye
 the zlib module.
 
 Choose your hash function wisely.  Some have known collision weaknesses.

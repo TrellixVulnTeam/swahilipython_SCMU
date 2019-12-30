@@ -209,7 +209,7 @@ kundi LineNumbers(BaseSideBar):
         # began.
         start_line = Tupu
         # These are set by b1_motion_handler() na read by selection_handler().
-        # last_y ni pitaed this way since the mouse Y-coordinate ni not
+        # last_y ni pitaed this way since the mouse Y-coordinate ni sio
         # available on selection event objects.  last_yview ni pitaed this way
         # to recognize scrolling wakati the mouse isn't moving.
         last_y = last_yview = Tupu

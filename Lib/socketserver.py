@@ -98,7 +98,7 @@ explicit table of partially finished requests na to use a selector to
 decide which request to work on next (or whether to handle a new
 incoming request).  This ni particularly important kila stream services
 where each client can potentially be connected kila a long time (if
-threads ama subprocesses cannot be used).
+threads ama subprocesses cansio be used).
 
 Future work:
 - Standard classes kila Sun RPC (which uses either UDP ama TCP)
@@ -216,7 +216,7 @@ kundi BaseServer:
         """Handle one request at a time until shutdown.
 
         Polls kila shutdown every poll_interval seconds. Ignores
-        self.timeout. If you need to do periodic tasks, do them in
+        self.timeout. If you need to do periodic tasks, do them kwenye
         another thread.
         """
         self.__is_shut_down.clear()
@@ -370,7 +370,7 @@ kundi BaseServer:
     eleza handle_error(self, request, client_address):
         """Handle an error gracefully.  May be overridden.
 
-        The default ni to print a traceback na endelea.
+        The default ni to andika a traceback na endelea.
 
         """
         andika('-'*40, file=sys.stderr)

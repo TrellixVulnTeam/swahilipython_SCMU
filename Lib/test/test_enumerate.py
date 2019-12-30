@@ -205,7 +205,7 @@ kundi TestReversed(unittest.TestCase, PickleTest):
 
     @unittest.skipUnless(hasattr(sys, 'getrefcount'), 'test needs sys.getrefcount()')
     eleza test_bug1229429(self):
-        # this bug was never kwenye reversed, it was in
+        # this bug was never kwenye reversed, it was kwenye
         # PyObject_CallMethod, na reversed_new calls that sometimes.
         eleza f():
             pita

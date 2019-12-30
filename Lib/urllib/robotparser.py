@@ -6,7 +6,7 @@
     1) GNU GPLv2
     2) PSF license kila Python 2.2
 
-    The robots.txt Exclusion Protocol ni implemented kama specified in
+    The robots.txt Exclusion Protocol ni implemented kama specified kwenye
     http://www.robotstxt.org/norobots-rfc.txt
 """
 
@@ -157,7 +157,7 @@ kundi RobotFileParser:
             rudisha Uongo
         ikiwa self.allow_all:
             rudisha Kweli
-        # Until the robots.txt file has been read ama found not
+        # Until the robots.txt file has been read ama found sio
         # to exist, we must assume that no url ni allowable.
         # This prevents false positives when a user erroneously
         # calls can_fetch() before calling read().

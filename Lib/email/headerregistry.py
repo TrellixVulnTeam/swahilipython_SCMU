@@ -117,7 +117,7 @@ kundi Group:
         lists that are a combination of Groups na individual Addresses.  In
         this case the display_name should be set to Tupu.  In particular, the
         string representation of a Group whose display_name ni Tupu ni the same
-        kama the Address object, ikiwa there ni one na only one Address object in
+        kama the Address object, ikiwa there ni one na only one Address object kwenye
         the addresses list.
 
         """

@@ -307,7 +307,7 @@ kundi TestContentTypeHeader(TestHeaderBase):
 
         # But unknown names are OK.  We could make non-IANA names a defect, but
         # by sio doing so we make ourselves future proof.  The fact that they
-        # are unknown will be detectable by the fact that they don't appear in
+        # are unknown will be detectable by the fact that they don't appear kwenye
         # the mime_registry...and the application ni free to extend that list
         # to handle them even ikiwa the core library doesn't.
 
@@ -1191,8 +1191,8 @@ kundi TestAddressHeader(TestHeaderBase):
 
         }
 
-        # XXX: Need many more examples, na kwenye particular some ukijumuisha names in
-        # trailing comments, which aren't currently handled.  comments in
+        # XXX: Need many more examples, na kwenye particular some ukijumuisha names kwenye
+        # trailing comments, which aren't currently handled.  comments kwenye
         # general are sio handled yet.
 
     eleza example_as_address(self, source, defects, decoded, display_name,
@@ -1636,7 +1636,7 @@ kundi TestFolding(TestHeaderBase):
         # The old wrapper would fold this at the commas.
         h = self.make_header('Subject', "This header ni intended to "
             "demonstrate, kwenye a fairly succinct way, that we now do "
-            "not give a , special treatment kwenye unstructured headers.")
+            "sio give a , special treatment kwenye unstructured headers.")
         self.assertEqual(
             h.fold(policy=policy.default.clone(max_line_length=60)),
             textwrap.dedent("""\

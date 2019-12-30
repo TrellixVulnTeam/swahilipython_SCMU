@@ -158,7 +158,7 @@ eleza urlopen(url, data=Tupu, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
     The optional *cafile* na *capath* parameters specify a set of trusted CA
     certificates kila HTTPS requests. cafile should point to a single file
     containing a bundle of CA certificates, whereas capath should point to a
-    directory of hashed certificate files. More information can be found in
+    directory of hashed certificate files. More information can be found kwenye
     ssl.SSLContext.load_verify_locations().
 
     The *cadefault* parameter ni ignored.
@@ -1034,7 +1034,7 @@ kundi ProxyBasicAuthHandler(AbstractBasicAuthHandler, BaseHandler):
     auth_header = 'Proxy-authorization'
 
     eleza http_error_407(self, req, fp, code, msg, headers):
-        # http_error_auth_reqed requires that there ni no userinfo component in
+        # http_error_auth_reqed requires that there ni no userinfo component kwenye
         # authority.  Assume there isn't one, since urllib.request does sio (and
         # should not, RFC 3986 s. 3.2.1) support requests kila URLs containing
         # userinfo.
@@ -1244,7 +1244,7 @@ kundi AbstractHTTPHandler(BaseHandler):
             data = request.data
             ikiwa isinstance(data, str):
                 msg = "POST data should be bytes, an iterable of bytes, " \
-                      "or a file object. It cannot be of type str."
+                      "or a file object. It cansio be of type str."
                 ashiria TypeError(msg)
             ikiwa sio request.has_header('Content-type'):
                 request.add_unredirected_header(
@@ -2464,7 +2464,7 @@ eleza getproxies_environment():
 
     """
     proxies = {}
-    # kwenye order to prefer lowercase variables, process environment in
+    # kwenye order to prefer lowercase variables, process environment kwenye
     # two pitaes: first matches any, second pita matches lowercase only
     kila name, value kwenye os.environ.items():
         name = name.lower()

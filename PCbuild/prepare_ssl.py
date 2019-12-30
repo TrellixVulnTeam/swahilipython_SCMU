@@ -10,7 +10,7 @@
 #   Zachary Ware
 
 # THEORETICALLY, you can:
-# * Unpack the latest OpenSSL release where $(opensslDir) in
+# * Unpack the latest OpenSSL release where $(opensslDir) kwenye
 #   PCbuild\pyproject.props expects it to be.
 # * Install ActivePerl na ensure it ni somewhere on your path.
 # * Run this script ukijumuisha the OpenSSL source dir kama the only argument.

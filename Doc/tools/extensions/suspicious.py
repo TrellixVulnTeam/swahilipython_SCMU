@@ -229,7 +229,7 @@ eleza extract_line(text, index):
     >>> extract_line("abc\ndefgh\ni", 6)
     >>> 'defgh'
     >>> kila i kwenye (0, 2, 3, 4, 10):
-    ...   print extract_line("abc\ndefgh\ni", i)
+    ...   andika extract_line("abc\ndefgh\ni", i)
     abc
     abc
     abc

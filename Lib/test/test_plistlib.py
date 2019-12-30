@@ -168,7 +168,7 @@ kundi TestPlistlib(unittest.TestCase):
 
     eleza test_invalid_uid(self):
         ukijumuisha self.assertRaises(TypeError):
-            UID("not an int")
+            UID("sio an int")
         ukijumuisha self.assertRaises(ValueError):
             UID(2 ** 64)
         ukijumuisha self.assertRaises(ValueError):
@@ -243,7 +243,7 @@ kundi TestPlistlib(unittest.TestCase):
     eleza test_uid_eq(self):
         self.assertEqual(UID(1), UID(1))
         self.assertNotEqual(UID(1), UID(2))
-        self.assertNotEqual(UID(1), "not uid")
+        self.assertNotEqual(UID(1), "sio uid")
 
     eleza test_uid_hash(self):
         self.assertEqual(hash(UID(1)), hash(UID(1)))
@@ -480,11 +480,11 @@ kundi TestPlistlib(unittest.TestCase):
 
     eleza test_invalidinteger(self):
         self.assertRaises(ValueError, plistlib.loads,
-                          b"<plist><integer>not integer</integer></plist>")
+                          b"<plist><integer>sio integer</integer></plist>")
 
     eleza test_invalidreal(self):
         self.assertRaises(ValueError, plistlib.loads,
-                          b"<plist><integer>not real</integer></plist>")
+                          b"<plist><integer>sio real</integer></plist>")
 
     eleza test_xml_encodings(self):
         base = TESTDATA[plistlib.FMT_XML]

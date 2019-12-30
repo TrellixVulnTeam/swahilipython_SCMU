@@ -74,7 +74,7 @@ cmprog = re.compile('^@([a-z]+)([ \t]|$)')        # Command (line-oriented)
 blprog = re.compile('^[ \t]*$')                   # Blank line
 kwprog = re.compile('@[a-z]+')                    # Keyword (embedded, usually
                                                   # ukijumuisha {} args)
-spprog = re.compile('[\n@{}&<>]')                 # Special characters in
+spprog = re.compile('[\n@{}&<>]')                 # Special characters kwenye
                                                   # running text
                                                   #
                                                   # menu item (Yuck!)
@@ -209,7 +209,7 @@ kundi TexinfoParser:
         self.unknown = {}       # statistics about unknown @-commands
         self.filenames = {}     # Check kila identical filenames
         self.debugging = 0      # larger values produce more output
-        self.print_headers = 0  # always print headers?
+        self.print_headers = 0  # always andika headers?
         self.nodefp = Tupu      # open file we're writing to
         self.nodelineno = 0     # Linenumber relative to node
         self.links = Tupu       # Links kutoka current node
@@ -320,7 +320,7 @@ kundi TexinfoParser:
     eleza startsaving(self):
         ikiwa self.savetext ni sio Tupu:
             self.savestack.append(self.savetext)
-            # print '*** Recursively saving text, expect trouble'
+            # andika '*** Recursively saving text, expect trouble'
         self.savetext = ''
 
     # Return the text saved so far na start writing to file again
@@ -417,7 +417,7 @@ kundi TexinfoParser:
     # find 'menu' (we might be inside 'ifset' ama 'ifclear')
     eleza inmenu(self):
         #ikiwa 'menu' kwenye self.stack:
-        #    print 'inmenu   :', self.skip, self.stack, self.stackinfo
+        #    andika 'inmenu   :', self.skip, self.stack, self.stackinfo
         stack = self.stack
         wakati stack na stack[-1] kwenye ('ifset','ifclear'):
             jaribu:
@@ -474,7 +474,7 @@ kundi TexinfoParser:
                 method()
                 endelea
             ikiwa c != '@':
-                # Cannot happen unless spprog ni changed
+                # Cansio happen unless spprog ni changed
                 ashiria RuntimeError('unexpected funny %r' % c)
             start = i
             wakati i < n na text[i] kwenye string.ascii_letters: i = i+1
@@ -764,7 +764,7 @@ kundi TexinfoParser:
         lasivyo os.path.exists(imagelocation+'.gif'):   # MySQL uses GIF files
             filename += '.gif'
         isipokua:
-            andika("*** Cannot find image " + imagelocation)
+            andika("*** Cansio find image " + imagelocation)
         #TODO: what ni 'ext'?
         self.write('<IMG SRC="', filename, '"',                     \
                     width  na (' WIDTH="'  + width  + '"') ama "",  \
@@ -804,7 +804,7 @@ kundi TexinfoParser:
 
     eleza open_footnote(self):
         # ikiwa self.savetext ni sio Tupu:
-        #       print '*** Recursive footnote -- expect weirdness'
+        #       andika '*** Recursive footnote -- expect weirdness'
         id = len(self.footnotes) + 1
         self.write(self.FN_SOURCE_PATTERN % {'id': repr(id)})
         self.startsaving()

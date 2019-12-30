@@ -104,7 +104,7 @@ kundi _ModuleLock:
         tid = _thread.get_ident()
         ukijumuisha self.lock:
             ikiwa self.owner != tid:
-                ashiria RuntimeError('cannot release un-acquired lock')
+                ashiria RuntimeError('cansio release un-acquired lock')
             assert self.count > 0
             self.count -= 1
             ikiwa self.count == 0:
@@ -131,7 +131,7 @@ kundi _DummyModuleLock:
 
     eleza release(self):
         ikiwa self.count == 0:
-            ashiria RuntimeError('cannot release un-acquired lock')
+            ashiria RuntimeError('cansio release un-acquired lock')
         self.count -= 1
 
     eleza __repr__(self):
@@ -1031,7 +1031,7 @@ eleza _handle_fromlist(module, fromlist, import_, *, recursive=Uongo):
             isipokua:
                 where = "``kutoka list''"
             ashiria TypeError(f"Item kwenye {where} must be str, "
-                            f"not {type(x).__name__}")
+                            f"sio {type(x).__name__}")
         lasivyo x == '*':
             ikiwa sio recursive na hasattr(module, '__all__'):
                 _handle_fromlist(module, module.__all__, import_,

@@ -54,7 +54,7 @@ kundi TestImaplib(unittest.TestCase):
                 '"18-May-2033 05:33:20 +0200"']
 
     @run_with_locale('LC_ALL', 'de_DE', 'fr_FR')
-    # DST rules included to work around quirk where the Gnu C library may not
+    # DST rules included to work around quirk where the Gnu C library may sio
     # otherwise restore the previous time zone
     @run_with_tz('STD-1DST,M3.2.0,M11.1.0')
     eleza test_Time2Internaldate(self):
@@ -77,7 +77,7 @@ kundi TestImaplib(unittest.TestCase):
             jaribu:
                 s.connect(('', imaplib.IMAP4_PORT))
                 self.skipTest(
-                    "Cannot run the test ukijumuisha local IMAP server running.")
+                    "Cansio run the test ukijumuisha local IMAP server running.")
             tatizo socket.error:
                 pita
 

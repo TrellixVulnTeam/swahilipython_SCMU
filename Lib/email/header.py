@@ -162,7 +162,7 @@ eleza make_header(decoded_seq, maxlinelen=Tupu, header_name=Tupu,
     name of the character set.
 
     This function takes one of those sequence of pairs na returns a Header
-    instance.  Optional maxlinelen, header_name, na continuation_ws are kama in
+    instance.  Optional maxlinelen, header_name, na continuation_ws are kama kwenye
     the Header constructor.
     """
     h = Header(maxlinelen=maxlinelen, header_name=header_name,
@@ -273,11 +273,11 @@ kundi Header:
         s may be a byte string ama a Unicode string.  If it ni a byte string
         (i.e. isinstance(s, str) ni false), then charset ni the encoding of
         that byte string, na a UnicodeError will be raised ikiwa the string
-        cannot be decoded ukijumuisha that charset.  If s ni a Unicode string, then
-        charset ni a hint specifying the character set of the characters in
+        cansio be decoded ukijumuisha that charset.  If s ni a Unicode string, then
+        charset ni a hint specifying the character set of the characters kwenye
         the string.  In either case, when producing an RFC 2822 compliant
         header using RFC 2047 rules, the string will be encoded using the
-        output codec of the charset.  If the string cannot be encoded to the
+        output codec of the charset.  If the string cansio be encoded to the
         output codec, a UnicodeError will be raised.
 
         Optional `errors' ni pitaed kama the errors argument to the decode
@@ -313,7 +313,7 @@ kundi Header:
     eleza encode(self, splitchars=';, \t', maxlinelen=Tupu, linesep='\n'):
         r"""Encode a message header into an RFC-compliant format.
 
-        There are many issues involved kwenye converting a given string kila use in
+        There are many issues involved kwenye converting a given string kila use kwenye
         an email header.  Only certain character sets are readable kwenye most
         email clients, na kama header strings can only contain a subset of
         7-bit ASCII, care must be taken to properly convert na encode (with
@@ -323,7 +323,7 @@ kundi Header:
 
         Optional maxlinelen specifies the maximum length of each generated
         line, exclusive of the linesep string.  Individual lines may be longer
-        than maxlinelen ikiwa a folding point cannot be found.  The first line
+        than maxlinelen ikiwa a folding point cansio be found.  The first line
         will be shorter by the length of the header name plus ": " ikiwa a header
         name was specified at Header construction time.  The default value for
         maxlinelen ni determined at header construction time.
@@ -332,7 +332,7 @@ kundi Header:
         given extra weight by the splitting algorithm during normal header
         wrapping.  This ni kwenye very rough support of RFC 2822's `higher level
         syntactic komas':  split points preceded by a splitchar are preferred
-        during line splitting, ukijumuisha the characters preferred kwenye the order in
+        during line splitting, ukijumuisha the characters preferred kwenye the order kwenye
         which they appear kwenye the string.  Space na tab may be included kwenye the
         string to indicate whether preference should be given to one over the
         other kama a split point when other split chars do sio appear kwenye the line

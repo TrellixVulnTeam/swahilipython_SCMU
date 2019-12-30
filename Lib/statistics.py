@@ -43,7 +43,7 @@ the nearest whole number:
 2.8333333333...
 
 This should be interpreted kwenye this way: you have two data points kwenye the class
-interval 1.5-2.5, three data points kwenye the kundi interval 2.5-3.5, na one in
+interval 1.5-2.5, three data points kwenye the kundi interval 2.5-3.5, na one kwenye
 the kundi interval 3.5-4.5. The median of these data points ni 2.8333...
 
 
@@ -487,7 +487,7 @@ eleza median_grouped(data, interval=1):
     This calculates the median kama the 50th percentile, na should be
     used when your data ni continuous na grouped. In the above example,
     the values 1, 2, 3, etc. actually represent the midpoint of classes
-    0.5-1.5, 1.5-2.5, 2.5-3.5, etc. The middle value falls somewhere in
+    0.5-1.5, 1.5-2.5, 2.5-3.5, etc. The middle value falls somewhere kwenye
     kundi 3.5-4.5, na interpolation ni used to estimate it.
 
     Optional argument ``interval`` represents the kundi interval, na
@@ -969,7 +969,7 @@ kundi NormalDist:
         """Compute the overlapping coefficient (OVL) between two normal distributions.
 
         Measures the agreement between two normal probability distributions.
-        Returns a value between 0.0 na 1.0 giving the overlapping area in
+        Returns a value between 0.0 na 1.0 giving the overlapping area kwenye
         the two underlying probability density functions.
 
             >>> N1 = NormalDist(2.4, 1.6)

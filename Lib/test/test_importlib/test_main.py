@@ -105,7 +105,7 @@ kundi NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     @staticmethod
     eleza pkg_with_non_ascii_description(site_dir):
         """
-        Create minimal metadata kila a package ukijumuisha non-ASCII in
+        Create minimal metadata kila a package ukijumuisha non-ASCII kwenye
         the description.
         """
         metadata_dir = site_dir / 'portend.dist-info'

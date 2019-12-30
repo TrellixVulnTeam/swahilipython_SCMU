@@ -146,7 +146,7 @@ kundi _ArgParser(argparse.ArgumentParser):
 
 
 eleza _create_parser():
-    # Set prog to prevent the uninformative "__main__.py" kutoka displaying in
+    # Set prog to prevent the uninformative "__main__.py" kutoka displaying kwenye
     # error messages when using "python -m test ...".
     parser = _ArgParser(prog='regrtest.py',
                         usage=USAGE,
@@ -155,7 +155,7 @@ eleza _create_parser():
                         add_help=Uongo,
                         formatter_class=argparse.RawDescriptionHelpFormatter)
 
-    # Arguments ukijumuisha this clause added to its help are described further in
+    # Arguments ukijumuisha this clause added to its help are described further kwenye
     # the epilog's "Additional option details" section.
     more_details = '  See the section at bottom kila more details.'
 

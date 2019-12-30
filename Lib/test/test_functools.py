@@ -109,7 +109,7 @@ kundi TestPartial:
         self.assertEqual(p(3,4), ((1,2,3,4), {}))
 
     eleza test_kw_combinations(self):
-        # exercise special code paths kila no keyword args in
+        # exercise special code paths kila no keyword args kwenye
         # either the partial object ama the caller
         p = self.partial(capture)
         self.assertEqual(p.keywords, {})
@@ -2503,7 +2503,7 @@ kundi TestCachedProperty(unittest.TestCase):
 
         self.assertEqual(
             str(ctx.exception.__context__),
-            str(TypeError("Cannot assign the same cached_property to two different names ('a' na 'b')."))
+            str(TypeError("Cansio assign the same cached_property to two different names ('a' na 'b')."))
         )
 
     eleza test_reuse_same_name(self):
@@ -2538,7 +2538,7 @@ kundi TestCachedProperty(unittest.TestCase):
 
         ukijumuisha self.assertRaisesRegex(
                 TypeError,
-                "Cannot use cached_property instance without calling __set_name__ on it.",
+                "Cansio use cached_property instance without calling __set_name__ on it.",
         ):
             Foo().cp
 

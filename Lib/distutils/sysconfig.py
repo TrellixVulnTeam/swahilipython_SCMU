@@ -66,7 +66,7 @@ python_build = _python_build()
 
 
 # Calculate the build qualifier flags ikiwa they are defined.  Adding the flags
-# to the include na lib directories only makes sense kila an installation, not
+# to the include na lib directories only makes sense kila an installation, sio
 # an in-source build.
 build_flags = ''
 jaribu:
@@ -403,7 +403,7 @@ eleza parse_makefile(fn, g=Tupu):
 
 
 eleza expand_makefile_vars(s, vars):
-    """Expand Makefile-style variables -- "${foo}" ama "$(foo)" -- in
+    """Expand Makefile-style variables -- "${foo}" ama "$(foo)" -- kwenye
     'string' according to 'vars' (a dictionary mapping variable names to
     values).  Variables sio present kwenye 'vars' are silently expanded to the
     empty string.  The variable values kwenye 'vars' should sio contain further

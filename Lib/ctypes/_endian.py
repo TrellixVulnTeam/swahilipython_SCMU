@@ -35,7 +35,7 @@ kundi _swapped_meta(type(Structure)):
 ################################################################
 
 # Note: The Structure metakundi checks kila the *presence* (sio the
-# value!) of a _swapped_bytes_ attribute to determine the bit order in
+# value!) of a _swapped_bytes_ attribute to determine the bit order kwenye
 # structures containing bit fields.
 
 ikiwa sys.byteorder == "little":

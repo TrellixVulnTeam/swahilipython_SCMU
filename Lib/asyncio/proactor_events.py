@@ -332,7 +332,7 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
         ikiwa sio isinstance(data, (bytes, bytearray, memoryview)):
             ashiria TypeError(
                 f"data argument must be a bytes-like object, "
-                f"not {type(data).__name__}")
+                f"sio {type(data).__name__}")
         ikiwa self._eof_written:
             ashiria RuntimeError('write_eof() already called')
         ikiwa self._empty_waiter ni sio Tupu:
@@ -672,7 +672,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
 
     eleza close(self):
         ikiwa self.is_running():
-            ashiria RuntimeError("Cannot close a running event loop")
+            ashiria RuntimeError("Cansio close a running event loop")
         ikiwa self.is_closed():
             rudisha
 
@@ -708,11 +708,11 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
         jaribu:
             fileno = file.fileno()
         tatizo (AttributeError, io.UnsupportedOperation) kama err:
-            ashiria exceptions.SendfileNotAvailableError("not a regular file")
+            ashiria exceptions.SendfileNotAvailableError("sio a regular file")
         jaribu:
             fsize = os.fstat(fileno).st_size
         tatizo OSError kama err:
-            ashiria exceptions.SendfileNotAvailableError("not a regular file")
+            ashiria exceptions.SendfileNotAvailableError("sio a regular file")
         blocksize = count ikiwa count isipokua fsize
         ikiwa sio blocksize:
             rudisha 0  # empty file

@@ -596,7 +596,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
         self.loop.run_until_complete(main())
 
     eleza test_handshake_timeout(self):
-        # bpo-29970: Check that a connection ni aborted ikiwa handshake ni not
+        # bpo-29970: Check that a connection ni aborted ikiwa handshake ni sio
         # completed kwenye timeout period, instead of remaining open indefinitely
         client_sslctx = test_utils.simple_client_sslcontext()
 

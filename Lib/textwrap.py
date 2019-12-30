@@ -49,7 +49,7 @@ kundi TextWrapper:
         by two spaces.  Off by default because the algorithm is
         (unavoidably) imperfect.
       koma_long_words (default: true)
-        Break words longer than 'width'.  If false, those words will not
+        Break words longer than 'width'.  If false, those words will sio
         be broken, na some lines might be longer than 'width'.
       koma_on_hyphens (default: true)
         Allow komaing hyphenated words. If true, wrapping will occur
@@ -309,7 +309,7 @@ kundi TextWrapper:
                      self.drop_whitespace na
                      len(chunks) == 1 na
                      sio chunks[0].strip()) na cur_len <= width):
-                    # Convert current line back to a string na store it in
+                    # Convert current line back to a string na store it kwenye
                     # list of all lines (rudisha value).
                     lines.append(indent + ''.join(cur_line))
                 isipokua:
@@ -393,7 +393,7 @@ eleza fill(text, width=70, **kwargs):
 eleza shorten(text, width, **kwargs):
     """Collapse na truncate the given text to fit kwenye the given width.
 
-    The text first has its whitespace collapsed.  If it then fits in
+    The text first has its whitespace collapsed.  If it then fits kwenye
     the *width*, it ni returned kama is.  Otherwise, kama many words
     kama possible are joined na then the placeholder ni appended::
 
@@ -467,7 +467,7 @@ eleza indent(text, prefix, predicate=Tupu):
 
     If 'predicate' ni provided, 'prefix' will only be added to the lines
     where 'predicate(line)' ni Kweli. If 'predicate' ni sio provided,
-    it will default to adding 'prefix' to all non-empty lines that do not
+    it will default to adding 'prefix' to all non-empty lines that do sio
     consist solely of whitespace characters.
     """
     ikiwa predicate ni Tupu:

@@ -344,7 +344,7 @@ eleza generate_source_files(ns):
             zip_path.unlink()
         lasivyo zip_path.is_dir():
             log_error(
-                "Cannot create zip file because a directory exists by the same name"
+                "Cansio create zip file because a directory exists by the same name"
             )
             rudisha
         log_info("Generating {} kwenye {}", zip_name, ns.temp)
@@ -387,7 +387,7 @@ eleza _create_zip_file(ns):
             log_exception("Unable to remove {}", ns.zip)
             sys.exit(8)
     lasivyo ns.zip.is_dir():
-        log_error("Cannot create ZIP file because {} ni a directory", ns.zip)
+        log_error("Cansio create ZIP file because {} ni a directory", ns.zip)
         sys.exit(8)
 
     ns.zip.parent.mkdir(parents=Kweli, exist_ok=Kweli)

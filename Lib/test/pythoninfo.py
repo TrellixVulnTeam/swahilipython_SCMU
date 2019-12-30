@@ -171,7 +171,7 @@ eleza collect_urandom(info_add):
                 os.getrandom(1, os.GRND_NONBLOCK)
                 state = 'ready (initialized)'
             tatizo BlockingIOError kama exc:
-                state = 'not seeded yet (%s)' % exc
+                state = 'sio seeded yet (%s)' % exc
             info_add('os.getrandom', state)
         tatizo OSError kama exc:
             # Python was compiled on a more recent Linux version
@@ -639,7 +639,7 @@ eleza collect_cc(info_add):
                                 stderr=subprocess.STDOUT,
                                 universal_newlines=Kweli)
     tatizo OSError:
-        # Cannot run the compiler, kila example when Python has been
+        # Cansio run the compiler, kila example when Python has been
         # cross-compiled na installed on the target platform where the
         # compiler ni missing.
         rudisha

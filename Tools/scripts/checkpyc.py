@@ -25,7 +25,7 @@ eleza main():
         jaribu:
             names = os.listdir(dirname)
         tatizo OSError:
-            andika('Cannot list directory', repr(dirname))
+            andika('Cansio list directory', repr(dirname))
             endelea
         ikiwa sio silent:
             andika('Checking ', repr(dirname), '...')
@@ -35,7 +35,7 @@ eleza main():
                 jaribu:
                     st = os.stat(name)
                 tatizo OSError:
-                    andika('Cannot stat', repr(name))
+                    andika('Cansio stat', repr(name))
                     endelea
                 ikiwa verbose:
                     andika('Check', repr(name), '...')
@@ -45,7 +45,7 @@ eleza main():
                         magic_str = f.read(4)
                         mtime_str = f.read(4)
                 tatizo IOError:
-                    andika('Cannot open', repr(name_c))
+                    andika('Cansio open', repr(name_c))
                     endelea
                 ikiwa magic_str != MAGIC:
                     andika('Bad MAGIC word kwenye ".pyc" file', end=' ')

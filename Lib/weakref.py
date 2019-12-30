@@ -502,7 +502,7 @@ kundi finalize:
 
     # Finalizer objects don't have any state of their own.  They are
     # just used kama keys to lookup _Info objects kwenye the registry.  This
-    # ensures that they cannot be part of a ref-cycle.
+    # ensures that they cansio be part of a ref-cycle.
 
     __slots__ = ()
     _registry = {}
@@ -636,7 +636,7 @@ kundi finalize:
                     f = pending.pop()
                     jaribu:
                         # gc ni disabled, so (assuming no daemonic
-                        # threads) the following ni the only line in
+                        # threads) the following ni the only line kwenye
                         # this function which might trigger creation
                         # of a new finalizer
                         f()

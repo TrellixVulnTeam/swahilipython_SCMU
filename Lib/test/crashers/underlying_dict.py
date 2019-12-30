@@ -17,4 +17,4 @@ kila i kwenye range(10):
     a.f()
 dct["f"] = lambda self: 2
 
-andika(a.f()) # should print 1
+andika(a.f()) # should andika 1

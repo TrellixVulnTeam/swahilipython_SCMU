@@ -19,7 +19,7 @@ kundi FinderTests(abc.FinderTests):
     """For a top-level module, it should just be found directly kwenye the
     directory being searched. This ni true kila a directory ukijumuisha source
     [top-level source], bytecode [top-level bc], ama both [top-level both].
-    There ni also the possibility that it ni a package [top-level package], in
+    There ni also the possibility that it ni a package [top-level package], kwenye
     which case there will be a directory ukijumuisha the module name na an
     __init__.py file. If there ni a directory without an __init__.py an
     ImportWarning ni returned [empty dir].
@@ -50,7 +50,7 @@ kundi FinderTests(abc.FinderTests):
         rudisha self._find(finder, module, loader_only=Kweli)
 
     eleza run_test(self, test, create=Tupu, *, compile_=Tupu, unlink=Tupu):
-        """Test the finding of 'test' ukijumuisha the creation of modules listed in
+        """Test the finding of 'test' ukijumuisha the creation of modules listed kwenye
         'create'.
 
         Any names listed kwenye 'compile_' are byte-compiled. Modules

@@ -129,7 +129,7 @@ eleza uncache(*names):
     kila name kwenye names:
         ikiwa name kwenye ('sys', 'marshal', 'imp'):
             ashiria ValueError(
-                "cannot uncache {0}".format(name))
+                "cansio uncache {0}".format(name))
         jaribu:
             toa sys.modules[name]
         tatizo KeyError:
@@ -498,12 +498,12 @@ kundi CommonResourceTests(abc.ABC):
         self.execute(data01.__name__, 'utf-8.file')
 
     eleza test_non_package_by_name(self):
-        # The anchor package cannot be a module.
+        # The anchor package cansio be a module.
         ukijumuisha self.assertRaises(TypeError):
             self.execute(__name__, 'utf-8.file')
 
     eleza test_non_package_by_package(self):
-        # The anchor package cannot be a module.
+        # The anchor package cansio be a module.
         ukijumuisha self.assertRaises(TypeError):
             module = sys.modules['test.test_importlib.util']
             self.execute(module, 'utf-8.file')

@@ -45,7 +45,7 @@ kundi LocaleTime_Tests(unittest.TestCase):
                          (error_msg, comparison, strftime_output))
 
     eleza test_weekday(self):
-        # Make sure that full na abbreviated weekday names are correct in
+        # Make sure that full na abbreviated weekday names are correct kwenye
         # both string na position ukijumuisha tuple
         self.compare_against_time(self.LT_ins.f_weekday, '%A', 6,
                                   "Testing of full weekday name failed")
@@ -98,7 +98,7 @@ kundi LocaleTime_Tests(unittest.TestCase):
                          strftime_output, "LC_time incorrect")
         LT = _strptime.LocaleTime()
         LT.am_pm = ('', '')
-        self.assertKweli(LT.LC_time, "LocaleTime's LC directives cannot handle "
+        self.assertKweli(LT.LC_time, "LocaleTime's LC directives cansio handle "
                                     "empty strings")
 
     eleza test_lang(self):
@@ -226,10 +226,10 @@ kundi StrptimeTests(unittest.TestCase):
         # instead of %G
         ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("1999 50", "%Y %V")
-        # 2. ISO year (%G) na ISO week (%V) are specified, but weekday ni not
+        # 2. ISO year (%G) na ISO week (%V) are specified, but weekday ni sio
         ukijumuisha self.assertRaises(ValueError):
             _strptime._strptime("1999 51", "%G %V")
-        # 3. ISO year (%G) na weekday are specified, but ISO week (%V) ni not
+        # 3. ISO year (%G) na weekday are specified, but ISO week (%V) ni sio
         kila w kwenye ('A', 'a', 'w', 'u'):
             ukijumuisha self.assertRaises(ValueError):
                 _strptime._strptime("1999 51","%G %{}".format(w))
@@ -452,7 +452,7 @@ kundi StrptimeTests(unittest.TestCase):
     eleza test_escaping(self):
         # Make sure all characters that have regex significance are escaped.
         # Parentheses are kwenye a purposeful order; will cause an error of
-        # unbalanced parentheses when the regex ni compiled ikiwa they are not
+        # unbalanced parentheses when the regex ni compiled ikiwa they are sio
         # escaped.
         # Test instigated by bug #796149 .
         need_escaping = r".^$*+?{}\[]|)("

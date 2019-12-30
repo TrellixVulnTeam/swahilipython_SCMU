@@ -150,7 +150,7 @@ kundi IMAP4:
     either parentheses ama double quotes) each string ni quoted.
     However, the 'pitaword' argument to the LOGIN command ni always
     quoted.  If you want to avoid having an argument string quoted
-    (eg: the 'flags' argument to STORE) then enclose the string in
+    (eg: the 'flags' argument to STORE) then enclose the string kwenye
     parentheses (eg: "(\Deleted)").
 
     Each command returns a tuple: (type, [data, ...]) where 'type'

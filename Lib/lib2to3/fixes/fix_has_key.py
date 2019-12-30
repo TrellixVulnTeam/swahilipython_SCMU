@@ -94,7 +94,7 @@ kundi FixHasKey(fixer_base.BaseFix):
         before.prefix = " "
         n_op = Name("in", prefix=" ")
         ikiwa negation:
-            n_not = Name("not", prefix=" ")
+            n_sio = Name("not", prefix=" ")
             n_op = pytree.Node(syms.comp_op, (n_not, n_op))
         new = pytree.Node(syms.comparison, (arg, n_op, before))
         ikiwa after:

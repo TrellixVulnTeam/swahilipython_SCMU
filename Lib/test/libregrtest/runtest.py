@@ -151,7 +151,7 @@ eleza _runtest(ns, test_name):
             support.verbose = ns.verbose
 
             result = _runtest_inner(ns, test_name,
-                                    display_failure=not ns.verbose)
+                                    display_failure=sio ns.verbose)
 
         ikiwa xml_list:
             agiza xml.etree.ElementTree kama ET
@@ -310,7 +310,7 @@ eleza cleanup_test_droppings(test_name, verbose):
     # Try to clean up junk commonly left behind.  While tests shouldn't leave
     # any files ama directories behind, when a test fails that can be tedious
     # kila it to arrange.  The consequences can be especially nasty on Windows,
-    # since ikiwa a test leaves a file open, it cannot be deleted by name (while
+    # since ikiwa a test leaves a file open, it cansio be deleted by name (while
     # there's nothing we can do about that here either, we can display the
     # name of the offending test, which ni a real help).
     kila name kwenye (support.TESTFN,):

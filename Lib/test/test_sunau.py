@@ -20,7 +20,7 @@ kundi SunauPCM8Test(SunauTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = 'NONE'
-    compname = 'not compressed'
+    compname = 'sio compressed'
     frames = bytes.fromhex("""\
       02FF 4B00 3104 8008 CB06 4803 BF01 03FE B8FA B4F3 29EB 1AE6 \
       EDE4 C6E2 0EE0 EFE0 57E2 FBE8 13EF D8F7 97FB F5FC 08FB DFFB \
@@ -37,7 +37,7 @@ kundi SunauPCM16Test(SunauTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = 'NONE'
-    compname = 'not compressed'
+    compname = 'sio compressed'
     frames = bytes.fromhex("""\
       022EFFEA 4B5C00F9 311404EF 80DB0844 CBE006B0 48AB03F3 BFE601B5 0367FE80 \
       B853FA42 B4AFF351 2997EBCD 1A5AE6DC EDF9E492 C627E277 0E06E0B7 EF29E029 \
@@ -56,7 +56,7 @@ kundi SunauPCM24Test(SunauTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = 'NONE'
-    compname = 'not compressed'
+    compname = 'sio compressed'
     frames = bytes.fromhex("""\
       022D65FFEB9D 4B5A0F00FA54 3113C304EE2B 80DCD6084303 \
       CBDEC006B261 48A99803F2F8 BFE82401B07D 036BFBFE7B5D \
@@ -81,7 +81,7 @@ kundi SunauPCM32Test(SunauTest, unittest.TestCase):
     framerate = 11025
     nframes = 48
     comptype = 'NONE'
-    compname = 'not compressed'
+    compname = 'sio compressed'
     frames = bytes.fromhex("""\
       022D65BCFFEB9D92 4B5A0F8000FA549C 3113C34004EE2BC0 80DCD680084303E0 \
       CBDEC0C006B26140 48A9980003F2F8FC BFE8248001B07D92 036BFB60FE7B5D34 \

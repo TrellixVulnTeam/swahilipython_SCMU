@@ -33,17 +33,17 @@ eleza main():
     jaribu:
         os.mkdir(newtree, 0o777)
     tatizo OSError kama msg:
-        andika(newtree + ': cannot mkdir:', msg)
+        andika(newtree + ': cansio mkdir:', msg)
         rudisha 1
     linkname = os.path.join(newtree, link)
     jaribu:
         os.symlink(os.path.join(os.pardir, oldtree), linkname)
     tatizo OSError kama msg:
         ikiwa sio link_may_fail:
-            andika(linkname + ': cannot symlink:', msg)
+            andika(linkname + ': cansio symlink:', msg)
             rudisha 1
         isipokua:
-            andika(linkname + ': warning: cannot symlink:', msg)
+            andika(linkname + ': warning: cansio symlink:', msg)
     linknames(oldtree, newtree, link)
     rudisha 0
 
@@ -52,7 +52,7 @@ eleza linknames(old, new, link):
     jaribu:
         names = os.listdir(old)
     tatizo OSError kama msg:
-        andika(old + ': warning: cannot listdir:', msg)
+        andika(old + ': warning: cansio listdir:', msg)
         rudisha
     kila name kwenye names:
         ikiwa name haiko kwenye (os.curdir, os.pardir):
@@ -67,7 +67,7 @@ eleza linknames(old, new, link):
                     ok = 1
                 tatizo:
                     andika(newname + \
-                          ': warning: cannot mkdir:', msg)
+                          ': warning: cansio mkdir:', msg)
                     ok = 0
                 ikiwa ok:
                     linkname = os.path.join(os.pardir,

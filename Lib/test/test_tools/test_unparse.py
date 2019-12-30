@@ -161,7 +161,7 @@ kundi UnparseTestCase(ASTTestCase):
         self.check_roundtrip("(-1)**7")
         self.check_roundtrip("(-1.)**8")
         self.check_roundtrip("(-1j)**6")
-        self.check_roundtrip("not Kweli ama Uongo")
+        self.check_roundtrip("sio Kweli ama Uongo")
         self.check_roundtrip("Kweli ama sio Uongo")
 
     eleza test_integer_parens(self):

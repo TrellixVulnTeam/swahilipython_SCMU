@@ -602,7 +602,7 @@ kundi DisTests(unittest.TestCase):
 
 kundi DisWithFileTests(DisTests):
 
-    # Run the tests again, using the file arg instead of print
+    # Run the tests again, using the file arg instead of andika
     eleza get_disassembly(self, func, lasti=-1, wrapper=Kweli, **kwargs):
         output = io.StringIO()
         ikiwa wrapper:
@@ -683,7 +683,7 @@ Flags:             OPTIMIZED, NEWLOCALS, NESTED
 Constants:
    0: Tupu
 Names:
-   0: print
+   0: andika
 Variable names:
    0: c
 Free variables:

@@ -360,7 +360,7 @@ kundi OrderedDictTests:
         od = OrderedDict()
         od[42] = od.values()
         r = repr(od)
-        # Cannot perform a stronger test, kama the contents of the repr
+        # Cansio perform a stronger test, kama the contents of the repr
         # are implementation-dependent.  All we can say ni that we
         # want a str result, sio an exception of any sort.
         self.assertIsInstance(r, str)

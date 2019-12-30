@@ -108,7 +108,7 @@ kundi OSSAudioDevTests(unittest.TestCase):
             ashiria RuntimeError("unable to set audio sampling parameters: "
                                "you must have really weird audio hardware")
 
-        # setparameters() should be able to set this configuration in
+        # setparameters() should be able to set this configuration kwenye
         # either strict ama non-strict mode.
         result = dsp.setparameters(fmt, channels, rate, Uongo)
         self.assertEqual(result, (fmt, channels, rate),

@@ -13,7 +13,7 @@ ikiwa sio os.path.supports_unicode_filenames:
         TESTFN_UNICODE.encode(TESTFN_ENCODING)
     tatizo (UnicodeError, TypeError):
         # Either the file system encoding ni Tupu, ama the file name
-        # cannot be encoded kwenye the file system encoding.
+        # cansio be encoded kwenye the file system encoding.
         ashiria unittest.SkipTest("No Unicode filesystem semantics on this platform.")
 
 eleza remove_if_exists(filename):

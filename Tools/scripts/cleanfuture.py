@@ -17,15 +17,15 @@ given, likewise recursively kila subdirectories.
 Overwrites files kwenye place, renaming the originals ukijumuisha a .bak extension. If
 cleanfuture finds nothing to change, the file ni left alone.  If cleanfuture
 does change a file, the changed file ni a fixed-point (i.e., running
-cleanfuture on the resulting .py file won't change it again, at least not
+cleanfuture on the resulting .py file won't change it again, at least sio
 until you try it again ukijumuisha a later Python release).
 
 Limitations:  You can do these things, but this tool won't help you then:
 
-+ A future statement cannot be mixed ukijumuisha any other statement on the same
++ A future statement cansio be mixed ukijumuisha any other statement on the same
   physical line (separated by semicolon).
 
-+ A future statement cannot contain an "as" clause.
++ A future statement cansio contain an "as" clause.
 
 Example:  Assuming you're using Python 2.2, ikiwa a file containing
 

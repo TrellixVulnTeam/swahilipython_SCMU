@@ -50,12 +50,12 @@ This returns an instance of a kundi ukijumuisha the following public methods:
         getnframes()    -- returns number of audio frames
         getcomptype()   -- returns compression type ('NONE' ama 'ULAW')
         getcompname()   -- returns human-readable version of
-                           compression type ('not compressed' matches 'NONE')
+                           compression type ('sio compressed' matches 'NONE')
         getparams()     -- returns a namedtuple consisting of all of the
                            above kwenye the above order
         getmarkers()    -- returns Tupu (kila compatibility ukijumuisha the
                            aifc module)
-        getmark(id)     -- raises an error since the mark does not
+        getmark(id)     -- raises an error since the mark does sio
                            exist (kila compatibility ukijumuisha the aifc module)
         readframes(n)   -- returns at most n frames of audio
         rewind()        -- rewind to the beginning of the audio stream
@@ -254,7 +254,7 @@ kundi Au_read:
         lasivyo self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
             rudisha 'CCITT G.711 A-law'
         isipokua:
-            rudisha 'not compressed'
+            rudisha 'sio compressed'
 
     eleza getparams(self):
         rudisha _sunau_params(self.getnchannels(), self.getsampwidth(),
@@ -278,11 +278,11 @@ kundi Au_read:
                 agiza audioop
                 data = audioop.ulaw2lin(data, self._sampwidth)
             rudisha data
-        rudisha Tupu             # XXX--not implemented yet
+        rudisha Tupu             # XXX--sio implemented yet
 
     eleza rewind(self):
         ikiwa self._data_pos ni Tupu:
-            ashiria OSError('cannot seek')
+            ashiria OSError('cansio seek')
         self._file.seek(self._data_pos)
         self._soundpos = 0
 
@@ -293,7 +293,7 @@ kundi Au_read:
         ikiwa pos < 0 ama pos > self.getnframes():
             ashiria Error('position haiko kwenye range')
         ikiwa self._data_pos ni Tupu:
-            ashiria OSError('cannot seek')
+            ashiria OSError('cansio seek')
         self._file.seek(self._data_pos + pos * self._framesize)
         self._soundpos = pos
 
@@ -341,7 +341,7 @@ kundi Au_write:
 
     eleza setnchannels(self, nchannels):
         ikiwa self._nframeswritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         ikiwa nchannels haiko kwenye (1, 2, 4):
             ashiria Error('only 1, 2, ama 4 channels supported')
         self._nchannels = nchannels
@@ -353,7 +353,7 @@ kundi Au_write:
 
     eleza setsampwidth(self, sampwidth):
         ikiwa self._nframeswritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         ikiwa sampwidth haiko kwenye (1, 2, 3, 4):
             ashiria Error('bad sample width')
         self._sampwidth = sampwidth
@@ -365,7 +365,7 @@ kundi Au_write:
 
     eleza setframerate(self, framerate):
         ikiwa self._nframeswritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         self._framerate = framerate
 
     eleza getframerate(self):
@@ -375,9 +375,9 @@ kundi Au_write:
 
     eleza setnframes(self, nframes):
         ikiwa self._nframeswritten:
-            ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cansio change parameters after starting to write')
         ikiwa nframes < 0:
-            ashiria Error('# of frames cannot be negative')
+            ashiria Error('# of frames cansio be negative')
         self._nframes = nframes
 
     eleza getnframes(self):
@@ -398,7 +398,7 @@ kundi Au_write:
         lasivyo self._comptype == 'ALAW':
             rudisha 'CCITT G.711 A-law'
         isipokua:
-            rudisha 'not compressed'
+            rudisha 'sio compressed'
 
     eleza setparams(self, params):
         nchannels, sampwidth, framerate, nframes, comptype, compname = params
@@ -506,7 +506,7 @@ kundi Au_write:
 
     eleza _patchheader(self):
         ikiwa self._form_length_pos ni Tupu:
-            ashiria OSError('cannot seek')
+            ashiria OSError('cansio seek')
         self._file.seek(self._form_length_pos)
         _write_u32(self._file, self._datawritten)
         self._datalength = self._datawritten

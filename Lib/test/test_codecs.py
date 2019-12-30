@@ -284,7 +284,7 @@ kundi ReadTest(MixInCheckStateHandling):
             '        rudisha [ frog.objects.BlogEntry.load(storageEngine, date, Id) kila Id kwenye entryids ]\r\n',
             '    tatizo StorageError,x:\r\n',
             '        log.error("Error loading articles: "+str(x))\r\n',
-            '        self.abort("cannot load articles")\r\n',
+            '        self.abort("cansio load articles")\r\n',
             '\r\n',
             'showdate=Tupu\r\n',
             '\r\n',
@@ -2868,15 +2868,15 @@ kundi ExceptionChainingTest(unittest.TestCase):
         # sure the case where an inappropriate output type ni produced is
         # handled appropriately
         eleza encode_to_str(*args, **kwds):
-            rudisha "not bytes!", 0
+            rudisha "sio bytes!", 0
         eleza decode_to_bytes(*args, **kwds):
-            rudisha b"not str!", 0
+            rudisha b"sio str!", 0
         self.set_codec(encode_to_str, decode_to_bytes)
         # No input ama output type checks on the codecs module functions
         encoded = codecs.encode(Tupu, self.codec_name)
-        self.assertEqual(encoded, "not bytes!")
+        self.assertEqual(encoded, "sio bytes!")
         decoded = codecs.decode(Tupu, self.codec_name)
-        self.assertEqual(decoded, b"not str!")
+        self.assertEqual(decoded, b"sio str!")
         # Text motoa methods should complain
         fmt = (r"^{!r} encoder returned 'str' instead of 'bytes'; "
                r"use codecs.encode\(\) to encode to arbitrary types$")

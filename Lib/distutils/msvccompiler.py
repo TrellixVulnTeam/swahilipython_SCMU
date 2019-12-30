@@ -147,7 +147,7 @@ you can try compiling ukijumuisha MingW32, by pitaing "-c mingw32" to setup.py."
 eleza get_build_version():
     """Return the version of MSVC that was used to build Python.
 
-    For Python 2.3 na up, the version number ni included in
+    For Python 2.3 na up, the version number ni included kwenye
     sys.version.  For earlier versions, assume the compiler ni MSVC 6.
     """
     prefix = "MSC v."
@@ -501,7 +501,7 @@ kundi MSVCCompiler(CCompiler) :
             ld_args = (ldflags + lib_opts + export_opts +
                        objects + ['/OUT:' + output_filename])
 
-            # The MSVC linker generates .lib na .exp files, which cannot be
+            # The MSVC linker generates .lib na .exp files, which cansio be
             # suppressed by any linker switches. The .lib files may even be
             # needed! Make sure they are generated kwenye the temporary build
             # directory. Since they have different names kila debug na release
@@ -530,7 +530,7 @@ kundi MSVCCompiler(CCompiler) :
 
 
     # -- Miscellaneous methods -----------------------------------------
-    # These are all used by the 'gen_lib_options() function, in
+    # These are all used by the 'gen_lib_options() function, kwenye
     # ccompiler.py.
 
     eleza library_dir_option(self, dir):

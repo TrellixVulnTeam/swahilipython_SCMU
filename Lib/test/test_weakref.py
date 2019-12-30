@@ -563,7 +563,7 @@ kundi ReferencesTestCase(TestBase):
         # reference to J, which triggers the weakref callback.  The callback
         # tries to do "self.J", na instances of new-style classes look up
         # attributes ("J") kwenye the kundi dict first.  The kundi (II) wants to
-        # search II.__mro__, but that's NULL.   The result was a segfault in
+        # search II.__mro__, but that's NULL.   The result was a segfault kwenye
         # a release build, na an assert failure kwenye a debug build.
         toa I, J, II
         gc.collect()
@@ -831,7 +831,7 @@ kundi ReferencesTestCase(TestBase):
         self.assertEqual(a != d, a ni sio d)
 
     eleza test_ordering(self):
-        # weakrefs cannot be ordered, even ikiwa the underlying objects can.
+        # weakrefs cansio be ordered, even ikiwa the underlying objects can.
         ops = [operator.lt, operator.gt, operator.le, operator.ge]
         x = Object(1)
         y = Object(1)
@@ -856,7 +856,7 @@ kundi ReferencesTestCase(TestBase):
         gc.collect()
         # Dead weakrefs:
         # - retain their hash ni they were hashed when alive;
-        # - otherwise, cannot be hashed.
+        # - otherwise, cansio be hashed.
         self.assertEqual(hash(a), hash(42))
         self.assertRaises(TypeError, hash, b)
 
@@ -1147,7 +1147,7 @@ kundi WeakMethodTestCase(unittest.TestCase):
         gc.collect()
         self.assertEqual(hash(a), ha)
         self.assertEqual(hash(b), ha)
-        # If it wasn't hashed when alive, a dead WeakMethod cannot be hashed.
+        # If it wasn't hashed when alive, a dead WeakMethod cansio be hashed.
         self.assertRaises(TypeError, hash, c)
 
 

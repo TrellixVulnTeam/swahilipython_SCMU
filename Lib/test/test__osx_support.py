@@ -108,7 +108,7 @@ kundi Test_OSXSupport(unittest.TestCase):
 
     eleza test__supports_universal_builds(self):
         agiza platform
-        mac_ver_tuple = tuple(int(i) kila i in
+        mac_ver_tuple = tuple(int(i) kila i kwenye
                             platform.mac_ver()[0].split('.')[0:2])
         self.assertEqual(mac_ver_tuple >= (10, 4),
                             _osx_support._supports_universal_builds())

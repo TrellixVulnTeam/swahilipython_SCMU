@@ -523,7 +523,7 @@ kundi BaseTestUUID:
 
         u = self.uuid.uuid1()
         # uuid_generate_time_safe() may rudisha 0 ama -1 but what it returns is
-        # dependent on the underlying platform support.  At least it cannot be
+        # dependent on the underlying platform support.  At least it cansio be
         # unknown (unless I suppose the platform ni buggy).
         self.assertNotEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 

@@ -3,7 +3,7 @@
 # Permission to use, copy, modify, na distribute this software na its
 # documentation kila any purpose na without fee ni hereby granted,
 # provided that the above copyright notice appear kwenye all copies na that
-# both that copyright notice na this permission notice appear in
+# both that copyright notice na this permission notice appear kwenye
 # supporting documentation, na that the name of Vinay Sajip
 # sio be used kwenye advertising ama publicity pertaining to distribution
 # of the software without specific, written prior permission.
@@ -972,7 +972,7 @@ kundi TestHTTPServer(ControlMixin, HTTPServer):
             ikiwa self.sslctx:
                 sock = self.sslctx.wrap_socket(sock, server_side=Kweli)
         tatizo OSError kama e:
-            # socket errors are silenced by the caller, print them here
+            # socket errors are silenced by the caller, andika them here
             sys.stderr.write("Got an error:\n%s\n" % e)
             raise
         rudisha sock, addr
@@ -3591,7 +3591,7 @@ ikiwa hasattr(logging.handlers, 'QueueListener'):
         @patch.object(logging.handlers.QueueListener, 'handle')
         eleza test_handle_called_with_mp_queue(self, mock_handle):
             # Issue 28668: The multiprocessing (mp) module ni sio functional
-            # when the mp.synchronize module cannot be imported.
+            # when the mp.synchronize module cansio be imported.
             support.import_module('multiprocessing.synchronize')
             kila i kwenye range(self.repeat):
                 log_queue = multiprocessing.Queue()
@@ -3617,7 +3617,7 @@ ikiwa hasattr(logging.handlers, 'QueueListener'):
             _after_ the QueueListener stopped.
             """
             # Issue 28668: The multiprocessing (mp) module ni sio functional
-            # when the mp.synchronize module cannot be imported.
+            # when the mp.synchronize module cansio be imported.
             support.import_module('multiprocessing.synchronize')
             kila i kwenye range(self.repeat):
                 queue = multiprocessing.Queue()
@@ -3784,7 +3784,7 @@ kundi FormatterTest(unittest.TestCase):
         f = logging.Formatter("$bar $$", style="$")
         self.assertEqual(f._fmt, "$bar $$")
         f = logging.Formatter("$bar $$$$", style="$")
-        self.assertEqual(f._fmt, "$bar $$$$")  # this would print two $($$)
+        self.assertEqual(f._fmt, "$bar $$$$")  # this would andika two $($$)
 
         # Testing when ValueError being raised kutoka incorrect format
         # Percentage Style
@@ -4234,7 +4234,7 @@ kundi ModuleLevelMiscTest(BaseTest):
             rec()"""
         rc, out, err = assert_python_failure("-c", code)
         err = err.decode()
-        self.assertNotIn("Cannot recover kutoka stack overflow.", err)
+        self.assertNotIn("Cansio recover kutoka stack overflow.", err)
         self.assertEqual(rc, 1)
 
 
@@ -4989,7 +4989,7 @@ kundi TimedRotatingFileHandlerTest(BaseFileTest):
                 koma
         msg = 'No rotated files found, went back %d seconds' % GO_BACK
         ikiwa sio found:
-            # print additional diagnostics
+            # andika additional diagnostics
             dn, fn = os.path.split(self.fn)
             files = [f kila f kwenye os.listdir(dn) ikiwa f.startswith(fn)]
             andika('Test time: %s' % now.strftime("%Y-%m-%d %H-%M-%S"), file=sys.stderr)

@@ -15,7 +15,7 @@ kutoka idlelib.idle_test.mock_idle agiza Func
 
 # Tests should sio depend on fortuitous user configurations.
 # They must sio affect actual user .cfg files.
-# Replace user parsers ukijumuisha empty parsers that cannot be saved
+# Replace user parsers ukijumuisha empty parsers that cansio be saved
 # due to getting '' kama the filename when created.
 
 idleConf = config.idleConf
@@ -77,7 +77,7 @@ kundi IdleConfParserTest(unittest.TestCase):
         get_list = parser.GetOptionList
         self.assertCountEqual(get_list('one'), ['one', 'two', 'three'])
         self.assertCountEqual(get_list('two'), ['one', 'two', 'three'])
-        self.assertEqual(get_list('not exist'), [])
+        self.assertEqual(get_list('sio exist'), [])
 
     eleza test_load_nothing(self):
         parser = config.IdleConfParser('')

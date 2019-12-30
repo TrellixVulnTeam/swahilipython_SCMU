@@ -112,7 +112,7 @@ kundi BaseProcess(object):
         Start child process
         '''
         self._check_closed()
-        assert self._popen ni Tupu, 'cannot start a process twice'
+        assert self._popen ni Tupu, 'cansio start a process twice'
         assert self._parent_pid == os.getpid(), \
                'can only start a process object created by current process'
         assert sio _current_process._config.get('daemon'), \
@@ -178,7 +178,7 @@ kundi BaseProcess(object):
         '''
         ikiwa self._popen ni sio Tupu:
             ikiwa self._popen.poll() ni Tupu:
-                ashiria ValueError("Cannot close a process wakati it ni still running. "
+                ashiria ValueError("Cansio close a process wakati it ni still running. "
                                  "You should first call join() ama terminate().")
             self._popen.close()
             self._popen = Tupu

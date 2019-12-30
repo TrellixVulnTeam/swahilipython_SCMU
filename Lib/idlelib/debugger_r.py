@@ -15,7 +15,7 @@ Some ASCII art to describe the structure:
                 oid='idb_adapter'      #
 
 The purpose of the Proxy na Adapter classes ni to translate certain
-arguments na rudisha values that cannot be transported through the RPC
+arguments na rudisha values that cansio be transported through the RPC
 barrier, kwenye particular frame na traceback objects.
 
 """

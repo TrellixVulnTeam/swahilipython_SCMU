@@ -27,7 +27,7 @@ kundi _WritelnDecorator(object):
 
 
 kundi TextTestResult(result.TestResult):
-    """A test result kundi that can print formatted text results to a stream.
+    """A test result kundi that can andika formatted text results to a stream.
 
     Used by TextTestRunner.
     """

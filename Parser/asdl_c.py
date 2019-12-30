@@ -679,7 +679,7 @@ ast_type_init(PyObject *self, PyObject *args, PyObject *kw)
         goto cleanup;
     }
     kila (i = 0; i < PyTuple_GET_SIZE(args); i++) {
-        /* cannot be reached when fields ni NULL */
+        /* cansio be reached when fields ni NULL */
         PyObject *name = PySequence_GetItem(fields, i);
         ikiwa (!name) {
             res = -1;
@@ -1167,7 +1167,7 @@ kundi ObjVisitor(PickleVisitor):
                 self.emit("value = PyList_New(n);", depth+1)
                 self.emit("ikiwa (!value) goto failed;", depth+1)
                 self.emit("for(i = 0; i < n; i++)", depth+1)
-                # This cannot fail, so no need kila error handling
+                # This cansio fail, so no need kila error handling
                 self.emit("PyList_SET_ITEM(value, i, ast2obj_cmpop((cmpop_ty)asdl_seq_GET(%s, i)));" % value,
                           depth+2, reflow=Uongo)
                 self.emit("}", depth)

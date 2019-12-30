@@ -77,14 +77,14 @@ kundi ThreadSignals(unittest.TestCase):
         ashiria KeyboardInterrupt
 
     @unittest.skipIf(USING_PTHREAD_COND,
-                     'POSIX condition variables cannot be interrupted')
+                     'POSIX condition variables cansio be interrupted')
     @unittest.skipIf(sys.platform.startswith('linux') na
                      sio sys.thread_info.version,
                      'Issue 34004: musl does sio allow interruption of locks '
                      'by signals.')
-    # Issue #20564: sem_timedwait() cannot be interrupted on OpenBSD
+    # Issue #20564: sem_timedwait() cansio be interrupted on OpenBSD
     @unittest.skipIf(sys.platform.startswith('openbsd'),
-                     'lock cannot be interrupted on OpenBSD')
+                     'lock cansio be interrupted on OpenBSD')
     eleza test_lock_acquire_interruption(self):
         # Mimic receiving a SIGINT (KeyboardInterrupt) ukijumuisha SIGALRM wakati stuck
         # kwenye a deadlock.
@@ -108,14 +108,14 @@ kundi ThreadSignals(unittest.TestCase):
             signal.signal(signal.SIGALRM, oldalrm)
 
     @unittest.skipIf(USING_PTHREAD_COND,
-                     'POSIX condition variables cannot be interrupted')
+                     'POSIX condition variables cansio be interrupted')
     @unittest.skipIf(sys.platform.startswith('linux') na
                      sio sys.thread_info.version,
                      'Issue 34004: musl does sio allow interruption of locks '
                      'by signals.')
-    # Issue #20564: sem_timedwait() cannot be interrupted on OpenBSD
+    # Issue #20564: sem_timedwait() cansio be interrupted on OpenBSD
     @unittest.skipIf(sys.platform.startswith('openbsd'),
-                     'lock cannot be interrupted on OpenBSD')
+                     'lock cansio be interrupted on OpenBSD')
     eleza test_rlock_acquire_interruption(self):
         # Mimic receiving a SIGINT (KeyboardInterrupt) ukijumuisha SIGALRM wakati stuck
         # kwenye a deadlock.

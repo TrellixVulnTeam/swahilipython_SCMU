@@ -104,7 +104,7 @@ kundi Chunk:
         ikiwa self.closed:
             ashiria ValueError("I/O operation on closed file")
         ikiwa sio self.seekable:
-            ashiria OSError("cannot seek")
+            ashiria OSError("cansio seek")
         ikiwa whence == 1:
             pos = pos + self.size_read
         lasivyo whence == 2:

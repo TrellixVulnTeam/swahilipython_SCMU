@@ -165,7 +165,7 @@ kundi EmailPolicy(Policy):
     eleza fold(self, name, value):
         """+
         Header folding ni controlled by the refold_source policy setting.  A
-        value ni considered to be a 'source value' ikiwa na only ikiwa it does not
+        value ni considered to be a 'source value' ikiwa na only ikiwa it does sio
         have a 'name' attribute (having a 'name' attribute means it ni a header
         object of some sort).  If a source value needs to be refolded according
         to the policy, it ni converted into a custom header object by pitaing

@@ -21,7 +21,7 @@ eleza mkpath(name, mode=0o777, verbose=1, dry_run=0):
     means the current directory, which of course exists), then do nothing.
     Raise DistutilsFileError ikiwa unable to create some directory along the way
     (eg. some sub-path exists, but ni a file rather than a directory).
-    If 'verbose' ni true, print a one-line summary of each mkdir to stdout.
+    If 'verbose' ni true, andika a one-line summary of each mkdir to stdout.
     Return the list of directories actually created.
     """
 
@@ -32,7 +32,7 @@ eleza mkpath(name, mode=0o777, verbose=1, dry_run=0):
         ashiria DistutilsInternalError(
               "mkpath: 'name' must be a string (got %r)" % (name,))
 
-    # XXX what's the better way to handle verbosity? print kama we create
+    # XXX what's the better way to handle verbosity? andika kama we create
     # each directory kwenye the path (the current behaviour), ama only announce
     # the creation of the whole path? (quite easy to do the latter since
     # we're sio using a recursive algorithm)
@@ -121,7 +121,7 @@ eleza copy_tree(src, dst, preserve_mode=1, preserve_times=1,
 
     ikiwa sio dry_run na sio os.path.isdir(src):
         ashiria DistutilsFileError(
-              "cannot copy tree '%s': sio a directory" % src)
+              "cansio copy tree '%s': sio a directory" % src)
     jaribu:
         names = os.listdir(src)
     tatizo OSError kama e:

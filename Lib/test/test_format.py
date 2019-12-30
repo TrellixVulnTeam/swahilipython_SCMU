@@ -297,7 +297,7 @@ kundi FormatTest(unittest.TestCase):
         #         "unsupported format character '?' (0x3000) at index 5")
         test_exc('%g', '1', TypeError, "must be real number, sio str")
         test_exc('no format', '1', TypeError,
-                 "not all arguments converted during string formatting")
+                 "sio all arguments converted during string formatting")
         test_exc('%c', -1, OverflowError, "%c arg haiko kwenye range(0x110000)")
         test_exc('%c', sys.maxunicode+1, OverflowError,
                  "%c arg haiko kwenye range(0x110000)")
@@ -356,11 +356,11 @@ kundi FormatTest(unittest.TestCase):
         test_exc(b'%g', '1', TypeError, "float argument required, sio str")
         test_exc(b'%g', b'1', TypeError, "float argument required, sio bytes")
         test_exc(b'no format', 7, TypeError,
-                 "not all arguments converted during bytes formatting")
+                 "sio all arguments converted during bytes formatting")
         test_exc(b'no format', b'1', TypeError,
-                 "not all arguments converted during bytes formatting")
+                 "sio all arguments converted during bytes formatting")
         test_exc(b'no format', bytearray(b'1'), TypeError,
-                 "not all arguments converted during bytes formatting")
+                 "sio all arguments converted during bytes formatting")
         test_exc(b"%c", -1, OverflowError,
                 "%c arg haiko kwenye range(256)")
         test_exc(b"%c", 256, OverflowError,
@@ -422,7 +422,7 @@ kundi FormatTest(unittest.TestCase):
             oldloc = locale.setlocale(locale.LC_ALL)
             locale.setlocale(locale.LC_ALL, '')
         tatizo locale.Error kama err:
-            self.skipTest("Cannot set locale: {}".format(err))
+            self.skipTest("Cansio set locale: {}".format(err))
         jaribu:
             localeconv = locale.localeconv()
             sep = localeconv['thousands_sep']

@@ -297,7 +297,7 @@ kundi Mingw32CCompiler(CygwinCCompiler):
 
         ikiwa is_cygwingcc():
             ashiria CCompilerError(
-                'Cygwin gcc cannot be used ukijumuisha --compiler=mingw32')
+                'Cygwin gcc cansio be used ukijumuisha --compiler=mingw32')
 
         self.set_executables(compiler='gcc -O -Wall',
                              compiler_so='gcc -mdll -O -Wall',
@@ -322,7 +322,7 @@ kundi Mingw32CCompiler(CygwinCCompiler):
 # version.
 
 CONFIG_H_OK = "ok"
-CONFIG_H_NOTOK = "not ok"
+CONFIG_H_NOTOK = "sio ok"
 CONFIG_H_UNCERTAIN = "uncertain"
 
 eleza check_config_h():

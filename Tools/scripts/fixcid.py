@@ -98,7 +98,7 @@ eleza recursedown(dirname):
     jaribu:
         names = os.listdir(dirname)
     tatizo OSError kama msg:
-        err(dirname + ': cannot list directory: ' + str(msg) + '\n')
+        err(dirname + ': cansio list directory: ' + str(msg) + '\n')
         rudisha 1
     names.sort()
     subdirs = []
@@ -125,7 +125,7 @@ eleza fix(filename):
         jaribu:
             f = open(filename, 'r')
         tatizo IOError kama msg:
-            err(filename + ': cannot open: ' + str(msg) + '\n')
+            err(filename + ': cansio open: ' + str(msg) + '\n')
             rudisha 1
         head, tail = os.path.split(filename)
         tempname = os.path.join(head, '@' + tail)
@@ -150,7 +150,7 @@ eleza fix(filename):
                     g = open(tempname, 'w')
                 tatizo IOError kama msg:
                     f.close()
-                    err(tempname+': cannot create: '+
+                    err(tempname+': cansio create: '+
                         str(msg)+'\n')
                     rudisha 1
                 f.seek(0)
@@ -279,7 +279,7 @@ eleza addsubst(substfile):
     jaribu:
         fp = open(substfile, 'r')
     tatizo IOError kama msg:
-        err(substfile + ': cannot read substfile: ' + str(msg) + '\n')
+        err(substfile + ': cansio read substfile: ' + str(msg) + '\n')
         sys.exit(1)
     ukijumuisha fp:
         lineno = 0

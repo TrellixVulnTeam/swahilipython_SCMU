@@ -142,7 +142,7 @@ kundi SampleNewStyleClass(object):
 kundi _FakeInput:
     """
     A fake input stream kila pdb's interactive debugger.  Whenever a
-    line ni read, print it (to simulate the user typing it), na then
+    line ni read, andika it (to simulate the user typing it), na then
     rudisha it.  The set of lines to rudisha ni specified kwenye the
     constructor; they should sio have trailing newlines.
     """
@@ -369,7 +369,7 @@ will ashiria a ValueError:
 Compare `DocTest`:
 
     >>> docstring = '''
-    ...     >>> print 12
+    ...     >>> andika 12
     ...     12
     ... '''
     >>> test = parser.get_doctest(docstring, globs, 'some_test',
@@ -383,7 +383,7 @@ Compare `DocTest`:
     >>> hash(test) == hash(same_test)
     Kweli
     >>> docstring = '''
-    ...     >>> print 42
+    ...     >>> andika 42
     ...     42
     ... '''
     >>> other_test = parser.get_doctest(docstring, globs, 'other_test',
@@ -656,7 +656,7 @@ DocTestFinder finds the line number of each example:
 Finding Doctests kwenye Modules Not Written kwenye Python
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DocTestFinder can also find doctests kwenye most modules sio written kwenye Python.
-We'll use builtins kama an example, since it almost certainly isn't written in
+We'll use builtins kama an example, since it almost certainly isn't written kwenye
 plain ol' Python na ni guaranteed to be available.
 
     >>> agiza builtins
@@ -1901,7 +1901,7 @@ ikiwa sio hasattr(sys, 'gettrace') ama sio sys.gettrace():
 
           >>> real_stdin = sys.stdin
           >>> sys.stdin = _FakeInput([
-          ...    'andika(x)',  # print data defined by the example
+          ...    'andika(x)',  # andika data defined by the example
           ...    'endelea', # stop debugging
           ...    ''])
 
@@ -1928,9 +1928,9 @@ ikiwa sio hasattr(sys, 'gettrace') ama sio sys.gettrace():
           >>> test = parser.get_doctest(doc, globals(), "foo-bar@baz", "foo-bar@baz.py", 0)
           >>> real_stdin = sys.stdin
           >>> sys.stdin = _FakeInput([
-          ...    'andika(y)',  # print data defined kwenye the function
+          ...    'andika(y)',  # andika data defined kwenye the function
           ...    'up',       # out of function
-          ...    'andika(x)',  # print data defined by the example
+          ...    'andika(x)',  # andika data defined by the example
           ...    'endelea', # stop debugging
           ...    ''])
 
@@ -2037,7 +2037,7 @@ ikiwa sio hasattr(sys, 'gettrace') ama sio sys.gettrace():
         >>> test = parser.get_doctest(doc, globals(), "foo-bar@baz", "foo-bar@baz.py", 0)
         >>> real_stdin = sys.stdin
         >>> sys.stdin = _FakeInput([
-        ...    'andika(y)',  # print data defined kwenye the function
+        ...    'andika(y)',  # andika data defined kwenye the function
         ...    'step', 'step', 'step', 'step', 'step', 'step', 'andika(z)',
         ...    'up', 'andika(x)',
         ...    'up', 'andika(y)',
@@ -2343,7 +2343,7 @@ eleza test_DocFileSuite():
          AttributeError: module 'test.test_doctest' has no attribute 'sillySetup'
 
        The setUp na tearDown functions are pitaed test objects.
-       Here, we'll use a setUp function to set the favorite color in
+       Here, we'll use a setUp function to set the favorite color kwenye
        test_doctest.txt:
 
          >>> eleza setUp(test):
@@ -2738,7 +2738,7 @@ The doctest module can be used to run doctests against an arbitrary file.
 These tests test this CLI functionality.
 
 We'll use the support module's script_helpers kila this, na write a test files
-to a temp dir to run the command against.  Due to a current limitation in
+to a temp dir to run the command against.  Due to a current limitation kwenye
 script_helpers, though, we need a little utility function to turn the returned
 output into something we can doctest against:
 
@@ -2793,7 +2793,7 @@ With the verbose flag, we should see the test output, but no error output:
 
 Now we'll write a couple files, one ukijumuisha three tests, the other a python module
 ukijumuisha two tests, both of the files having "errors" kwenye the tests that can be made
-non-errors by applying the appropriate doctest options to the run (ELLIPSIS in
+non-errors by applying the appropriate doctest options to the run (ELLIPSIS kwenye
 the first file, NORMALIZE_WHITESPACE kwenye the second).  This combination will
 allow thoroughly testing the -f na -o flags, kama well kama the doctest command's
 ability to process more than one file on the command line and, since the second
@@ -2839,7 +2839,7 @@ text files).
 
 Our first test run will show the errors kutoka the first file (doctest stops ikiwa a
 file has errors).  Note that doctest test-run error output appears on stdout,
-not stderr:
+sio stderr:
 
     >>> rc1, err1
     (1, b'')
@@ -2997,7 +2997,7 @@ eleza test_no_trailing_whitespace_stripping():
     TestResults(failed=1, attempted=1)
 
     *NOTE*: `\x20` ni kila checking the trailing whitespace on the +a line above.
-    We cannot use actual spaces there, kama a commit hook prevents kutoka committing
+    We cansio use actual spaces there, kama a commit hook prevents kutoka committing
     patches that contain trailing whitespace. More info on Issue 24746.
     """
 

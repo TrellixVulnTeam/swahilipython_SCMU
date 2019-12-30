@@ -6,7 +6,7 @@ of each IDLE edit window which provides block structure hints.  These hints are
 the lines which contain the block opening keywords, e.g. 'if', kila the
 enclosing block.  The number of hint lines ni determined by the maxlines
 variable kwenye the codecontext section of config-extensions.def. Lines which do
-not open blocks are sio shown kwenye the context hints pane.
+sio open blocks are sio shown kwenye the context hints pane.
 
 """
 agiza re

@@ -52,7 +52,7 @@ kundi PyclbrTest(TestCase):
 
     eleza checkModule(self, moduleName, module=Tupu, ignore=()):
         ''' succeed iff pyclbr.readmodule_ex(modulename) corresponds
-            to the actual module object, module.  Any identifiers in
+            to the actual module object, module.  Any identifiers kwenye
             ignore are ignored.   If no module ni provided, the appropriate
             module ni loaded ukijumuisha __import__.'''
 

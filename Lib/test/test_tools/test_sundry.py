@@ -1,6 +1,6 @@
 """Tests kila scripts kwenye the Tools directory.
 
-This file contains extremely basic regression tests kila the scripts found in
+This file contains extremely basic regression tests kila the scripts found kwenye
 the Tools directory of a Python checkout ama tarball which don't have separate
 tests of their own, such kama h2py.py.
 """

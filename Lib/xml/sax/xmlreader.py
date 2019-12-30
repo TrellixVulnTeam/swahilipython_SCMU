@@ -67,7 +67,7 @@ kundi XMLReader:
         """Allow an application to set the locale kila errors na warnings.
 
         SAX parsers are sio required to provide localization kila errors
-        na warnings; ikiwa they cannot support the requested locale,
+        na warnings; ikiwa they cansio support the requested locale,
         however, they must ashiria a SAX exception. Applications may
         request a locale change kwenye the middle of a parse."""
         ashiria SAXNotSupportedException("Locale support sio implemented")
@@ -198,7 +198,7 @@ kundi InputSource:
     XMLReader.parse method na kila returning from
     EntityResolver.resolveEntity.
 
-    An InputSource belongs to the application, the XMLReader ni not
+    An InputSource belongs to the application, the XMLReader ni sio
     allowed to modify InputSource objects pitaed to it kutoka the
     application, although it may make copies na modify those."""
 

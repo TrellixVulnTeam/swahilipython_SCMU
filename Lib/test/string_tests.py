@@ -20,7 +20,7 @@ kundi BadSeq2(Sequence):
     eleza __len__(self): rudisha 8
 
 kundi BaseTest:
-    # These tests are kila buffers of values (bytes) na not
+    # These tests are kila buffers of values (bytes) na sio
     # specific to character interpretation, used kila bytes objects
     # na various string implementations
 
@@ -28,7 +28,7 @@ kundi BaseTest:
     # Change kwenye subclasses to change the behaviour of fixtesttype()
     type2test = Tupu
 
-    # Whether the "contained items" of the container are integers in
+    # Whether the "contained items" of the container are integers kwenye
     # range(0, 256) (i.e. bytes, bytearray) ama strings of length 1
     # (str)
     contains_bytes = Uongo

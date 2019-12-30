@@ -130,7 +130,7 @@ kundi CMathTests(unittest.TestCase):
                 self.fail(msg ama 'zero has wrong sign: expected {!r}, '
                           'got {!r}'.format(a, b))
 
-        # ikiwa a-b overflows, ama b ni infinite, rudisha Uongo.  Again, in
+        # ikiwa a-b overflows, ama b ni infinite, rudisha Uongo.  Again, kwenye
         # theory there are examples where a ni within a few ulps of the
         # max representable float, na then b could legitimately be
         # infinite.  In practice these examples are rare.
@@ -185,7 +185,7 @@ kundi CMathTests(unittest.TestCase):
 
         # a variety of non-complex numbers, used to check that
         # non-complex rudisha values kutoka __complex__ give an error
-        non_complexes = ["not complex", 1, 5, 2., Tupu,
+        non_complexes = ["sio complex", 1, 5, 2., Tupu,
                          object(), NotImplemented]
 
         # Now we introduce a variety of classes whose instances might

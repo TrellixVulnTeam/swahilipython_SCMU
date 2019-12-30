@@ -221,7 +221,7 @@ kundi ReTests(unittest.TestCase):
                                "redefinition of group name 'a' kama group 2; "
                                "was group 1")
         self.checkPatternError(r'(?P<a>(?P=a))',
-                               "cannot refer to an open group", 10)
+                               "cansio refer to an open group", 10)
         self.checkPatternError(r'(?Pxy)', 'unknown extension ?Px')
         self.checkPatternError(r'(?P<a>)(?P=a', 'missing ), unterminated name', 11)
         self.checkPatternError(r'(?P=', 'missing group name', 4)
@@ -475,7 +475,7 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(m[2], Tupu)
         self.assertEqual(m[3], 'c')
 
-        # Cannot assign.
+        # Cansio assign.
         ukijumuisha self.assertRaises(TypeError):
             m[0] = 1
 
@@ -568,7 +568,7 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(re.match(r'^(?:(a)|c)(\1)?$', 'c').groups(),
                          (Tupu, Tupu))
 
-        self.checkPatternError(r'(abc\1)', 'cannot refer to an open group', 4)
+        self.checkPatternError(r'(abc\1)', 'cansio refer to an open group', 4)
 
     eleza test_groupdict(self):
         self.assertEqual(re.match('(?P<first>first) (?P<second>second)',
@@ -1614,7 +1614,7 @@ kundi ReTests(unittest.TestCase):
         self.assertKweli(re.match(r'\W(?u:\w)\W', '\xe0\xe0\xe0', re.ASCII))
 
         self.checkPatternError(r'(?a)(?-a:\w)',
-                "bad inline flags: cannot turn off flags 'a', 'u' na 'L'", 8)
+                "bad inline flags: cansio turn off flags 'a', 'u' na 'L'", 8)
         self.checkPatternError(r'(?i-i:a)',
                 'bad inline flags: flag turned on na off', 5)
         self.checkPatternError(r'(?au:a)',

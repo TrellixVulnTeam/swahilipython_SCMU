@@ -9,7 +9,7 @@ agiza test.support
 
 ikiwa getattr(sys, 'float_repr_style', '') != 'short':
     ashiria unittest.SkipTest('correctly-rounded string->float conversions '
-                            'not available on this system')
+                            'sio available on this system')
 
 # Correctly rounded str -> float kwenye pure Python, kila comparison.
 
@@ -305,7 +305,7 @@ kundi StrtodTests(unittest.TestCase):
             # dtoa.c bug kila numbers just smaller than a power of 2 (issue
             # 7632, bug 4)
             '99999999999999994487665465554760717039532578546e-47',
-            # failing case kila off-by-one error introduced by METD in
+            # failing case kila off-by-one error introduced by METD kwenye
             # r77483 (dtoa.c cleanup), fixed kwenye r77490
             '965437176333654931799035513671997118345570045914469' #...
             '6213413350821416312194420007991306908470147322020121018368e0',

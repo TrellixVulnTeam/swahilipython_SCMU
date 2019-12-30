@@ -132,7 +132,7 @@ eleza check(file):
 
     newline = spec_newline ikiwa spec_newline isipokua r.newlines
     ikiwa isinstance(newline, tuple):
-        errandika("%s: mixed newlines detected; cannot endelea without --newline" % file)
+        errandika("%s: mixed newlines detected; cansio endelea without --newline" % file)
         rudisha
 
     ikiwa r.run():
@@ -161,7 +161,7 @@ eleza _rstrip(line, JUNK='\n \t'):
     """Return line stripped of trailing spaces, tabs, newlines.
 
     Note that line.rstrip() instead also strips sundry control characters,
-    but at least one known Emacs user expects to keep junk like that, not
+    but at least one known Emacs user expects to keep junk like that, sio
     mentioning Barry by name ama anything <wink>.
     """
 

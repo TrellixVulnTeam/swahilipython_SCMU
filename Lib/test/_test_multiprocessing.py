@@ -196,7 +196,7 @@ kundi BaseTestCase(object):
         isipokua:
             rudisha self.assertEqual(value, res)
 
-    # For the sanity of Windows users, rather than crashing ama freezing in
+    # For the sanity of Windows users, rather than crashing ama freezing kwenye
     # multiple ways.
     eleza __reduce__(self, *args):
         ashiria NotImplementedError("shouldn't try to pickle a test case")
@@ -312,7 +312,7 @@ kundi _TestProcess(BaseTestCase):
         ikiwa sio rconn.poll(timeout=60):
             ashiria AssertionError("Could sio communicate ukijumuisha child process")
         parent_process_status = rconn.recv()
-        self.assertEqual(parent_process_status, "not alive")
+        self.assertEqual(parent_process_status, "sio alive")
 
     @classmethod
     eleza _test_create_grandchild_process(cls, wconn):
@@ -323,9 +323,9 @@ kundi _TestProcess(BaseTestCase):
     @classmethod
     eleza _test_report_parent_status(cls, wconn):
         kutoka multiprocessing.process agiza parent_process
-        wconn.send("alive" ikiwa parent_process().is_alive() isipokua "not alive")
+        wconn.send("alive" ikiwa parent_process().is_alive() isipokua "sio alive")
         parent_process().join(timeout=5)
-        wconn.send("alive" ikiwa parent_process().is_alive() isipokua "not alive")
+        wconn.send("alive" ikiwa parent_process().is_alive() isipokua "sio alive")
 
     eleza test_process(self):
         q = self.Queue(1)
@@ -522,7 +522,7 @@ kundi _TestProcess(BaseTestCase):
         p.daemon = Kweli
         p.start()
         self.assertEqual(p.is_alive(), Kweli)
-        # Child ni still alive, cannot close
+        # Child ni still alive, cansio close
         ukijumuisha self.assertRaises(ValueError):
             p.close()
 
@@ -1009,7 +1009,7 @@ kundi _TestQueue(BaseTestCase):
         kila i kwenye range(10, 20):
             queue.put(i)
         # note that at this point the items may only be buffered, so the
-        # process cannot shutdown until the feeder thread has finished
+        # process cansio shutdown until the feeder thread has finished
         # pushing items onto the pipe.
 
     eleza test_fork(self):
@@ -1583,7 +1583,7 @@ kundi _TestEvent(BaseTestCase):
         event = self.Event()
         wait = TimingWrapper(event.wait)
 
-        # Removed temporarily, due to API shear, this does not
+        # Removed temporarily, due to API shear, this does sio
         # work ukijumuisha threading._Event objects. is_set == isSet
         self.assertEqual(event.is_set(), Uongo)
 
@@ -2368,7 +2368,7 @@ kundi _TestPool(BaseTestCase):
             self.skipTest('test sio appropriate kila {}'.format(self.TYPE))
         kundi A(object):
             eleza __reduce__(self):
-                ashiria RuntimeError('cannot pickle')
+                ashiria RuntimeError('cansio pickle')
         ukijumuisha self.assertRaises(RuntimeError):
             self.pool.map(sqr, [A()]*10)
 
@@ -3201,7 +3201,7 @@ kundi _TestConnection(BaseTestCase):
     @unittest.skipUnless(HAS_REDUCTION, "test needs multiprocessing.reduction")
     @unittest.skipIf(sys.platform == "win32", "doesn't make sense on Windows")
     eleza test_missing_fd_transfer(self):
-        # Check that exception ni raised when received data ni not
+        # Check that exception ni raised when received data ni sio
         # accompanied by a file descriptor kwenye ancillary data.
         ikiwa self.TYPE != 'processes':
             self.skipTest("only makes sense ukijumuisha processes")
@@ -3755,7 +3755,7 @@ kundi _TestSharedMemory(BaseTestCase):
 
         ikiwa shared_memory._USE_POSIX:
             # Requesting creation of a shared memory segment ukijumuisha the option
-            # to attach to an existing segment, ikiwa that name ni currently in
+            # to attach to an existing segment, ikiwa that name ni currently kwenye
             # use, should sio trigger an exception.
             # Note:  Using a smaller size could possibly cause truncation of
             # the existing segment but ni OS platform dependent.  In the
@@ -3800,7 +3800,7 @@ kundi _TestSharedMemory(BaseTestCase):
 
         sms.close()
 
-    @unittest.skipIf(os.name != "posix", "not feasible kwenye non-posix platforms")
+    @unittest.skipIf(os.name != "posix", "sio feasible kwenye non-posix platforms")
     eleza test_shared_memory_SharedMemoryServer_ignores_sigint(self):
         # bpo-36368: protect SharedMemoryManager server process from
         # KeyboardInterrupt signals.
@@ -5532,7 +5532,7 @@ kundi ManagerMixin(BaseMixin):
 
         gc.collect()                       # do garbage collection
         ikiwa cls.manager._number_of_objects() != 0:
-            # This ni sio really an error since some tests do not
+            # This ni sio really an error since some tests do sio
             # ensure that all processes which hold a reference to a
             # managed object have been joined.
             test.support.environment_altered = Kweli

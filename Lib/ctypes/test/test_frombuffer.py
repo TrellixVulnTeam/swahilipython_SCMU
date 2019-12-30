@@ -38,11 +38,11 @@ kundi Test(unittest.TestCase):
         toa a; gc.collect(); gc.collect(); gc.collect()
         self.assertEqual(x[:], expected)
 
-        ukijumuisha self.assertRaisesRegex(TypeError, "not writable"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "sio writable"):
             (c_char * 16).from_buffer(b"a" * 16)
-        ukijumuisha self.assertRaisesRegex(TypeError, "not writable"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "sio writable"):
             (c_char * 16).from_buffer(memoryview(b"a" * 16))
-        ukijumuisha self.assertRaisesRegex(TypeError, "not C contiguous"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "sio C contiguous"):
             (c_char * 16).from_buffer(memoryview(bytearray(b"a" * 16))[::-1])
         msg = "bytes-like object ni required"
         ukijumuisha self.assertRaisesRegex(TypeError, msg):
@@ -56,12 +56,12 @@ kundi Test(unittest.TestCase):
         flags = _testbuffer.ND_WRITABLE | _testbuffer.ND_FORTRAN
         array = _testbuffer.ndarray(
             [97] * 16, format="B", shape=[4, 4], flags=flags)
-        ukijumuisha self.assertRaisesRegex(TypeError, "not C contiguous"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "sio C contiguous"):
             (c_char * 16).from_buffer(array)
         array = memoryview(array)
         self.assertKweli(array.f_contiguous)
         self.assertUongo(array.c_contiguous)
-        ukijumuisha self.assertRaisesRegex(TypeError, "not C contiguous"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "sio C contiguous"):
             (c_char * 16).from_buffer(array)
 
     eleza test_from_buffer_with_offset(self):

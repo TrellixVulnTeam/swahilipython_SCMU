@@ -23,7 +23,7 @@ kundi BadSpecFinderLoader:
     @staticmethod
     eleza exec_module(module):
         ikiwa module.__name__ == SUBMOD_NAME:
-            ashiria ImportError('I cannot be loaded!')
+            ashiria ImportError('I cansio be loaded!')
 
 
 kundi BadLoaderFinder:
@@ -35,7 +35,7 @@ kundi BadLoaderFinder:
     @classmethod
     eleza load_module(cls, fullname):
         ikiwa fullname == SUBMOD_NAME:
-            ashiria ImportError('I cannot be loaded!')
+            ashiria ImportError('I cansio be loaded!')
 
 
 kundi APITest:
@@ -67,10 +67,10 @@ kundi APITest:
         ukijumuisha util.import_state(meta_path=[self.bad_finder_loader]):
             ukijumuisha util.uncache(PKG_NAME):
                 sys.modules[PKG_NAME] = mod
-                self.__import__(PKG_NAME, fromlist=['not here'])
+                self.__import__(PKG_NAME, fromlist=['sio here'])
 
     eleza test_fromlist_load_error_propagates(self):
-        # If something kwenye fromlist triggers an exception sio related to not
+        # If something kwenye fromlist triggers an exception sio related to sio
         # existing, let that exception propagate.
         # issue15316
         mod = types.ModuleType(PKG_NAME)

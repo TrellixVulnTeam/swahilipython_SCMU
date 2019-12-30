@@ -358,13 +358,13 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
             ashiria ValueError('Type names na field names must be valid '
                              f'identifiers: {name!r}')
         ikiwa _iskeyword(name):
-            ashiria ValueError('Type names na field names cannot be a '
+            ashiria ValueError('Type names na field names cansio be a '
                              f'keyword: {name!r}')
 
     seen = set()
     kila name kwenye field_names:
         ikiwa name.startswith('_') na sio rename:
-            ashiria ValueError('Field names cannot start ukijumuisha an underscore: '
+            ashiria ValueError('Field names cansio start ukijumuisha an underscore: '
                              f'{name!r}')
         ikiwa name kwenye seen:
             ashiria ValueError(f'Encountered duplicate field name: {name!r}')
@@ -457,7 +457,7 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
 
     # For pickling to work, the __module__ variable needs to be set to the frame
     # where the named tuple ni created.  Bypita this step kwenye environments where
-    # sys._getframe ni sio defined (Jython kila example) ama sys._getframe ni not
+    # sys._getframe ni sio defined (Jython kila example) ama sys._getframe ni sio
     # defined kila arguments greater than 0 (IronPython), ama where the user has
     # specified a particular module.
     ikiwa module ni Tupu:

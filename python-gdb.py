@@ -9,7 +9,7 @@ http://sourceware.org/gdb/current/onlinedocs/gdb/Python-API.html
 This python module deals ukijumuisha the case when the process being debugged (the
 "inferior process" kwenye gdb parlance) ni itself python, ama more specifically,
 linked against libpython.  In this situation, almost every item of data ni a
-(PyObject*), na having the debugger merely print their addresses ni sio very
+(PyObject*), na having the debugger merely andika their addresses ni sio very
 enlightening.
 
 This module embeds knowledge about the implementation details of libpython so
@@ -30,11 +30,11 @@ of the data to a file-like object.  This allows us to stop the traversal by
 having the file-like object ashiria an exception ikiwa it gets too much data.
 
 With both "proxyval" na "write_repr" we keep track of the set of all addresses
-visited so far kwenye the traversal, to avoid infinite recursion due to cycles in
+visited so far kwenye the traversal, to avoid infinite recursion due to cycles kwenye
 the graph of object references.
 
 We try to defer gdb.lookup_type() invocations kila python types until kama late as
-possible: kila a dynamically linked python binary, when the process starts in
+possible: kila a dynamically linked python binary, when the process starts kwenye
 the debugger, the libpython.so hasn't been dynamically loaded yet, so none of
 the type names are known to the debugger
 
@@ -337,7 +337,7 @@ kundi PyObjectPtr(object):
 
         Ideally, we would look up the symbols kila the global types, but that
         isn't working yet:
-          (gdb) python print gdb.lookup_symbol('PyList_Type')[0].value
+          (gdb) python andika gdb.lookup_symbol('PyList_Type')[0].value
           Traceback (most recent call last):
             File "<string>", line 1, kwenye <module>
           NotImplementedError: Symbol type sio yet supported kwenye Python scripts.
@@ -643,7 +643,7 @@ kundi PyCodeObjectPtr(PyObjectPtr):
         '''
         Get the line number kila a given bytecode offset
 
-        Analogous to PyCode_Addr2Line; translated kutoka pseudocode in
+        Analogous to PyCode_Addr2Line; translated kutoka pseudocode kwenye
         Objects/lnotab_notes.txt
         '''
         co_lnotab = self.pyop_field('co_lnotab').proxyval(set())
@@ -1492,7 +1492,7 @@ kundi Frame(object):
         Not all builds have a gdb.Frame.select method; seems to be present on Fedora 12
         onwards, but absent on Ubuntu buildbot'''
         ikiwa sio hasattr(self._gdbframe, 'select'):
-            print ('Unable to select frame: '
+            andika ('Unable to select frame: '
                    'this build of gdb does sio expose a gdb.Frame.select method')
             rudisha Uongo
         self._gdbframe.select()
@@ -1812,7 +1812,7 @@ eleza move_in_stack(move_up):
         andika('Unable to find a newer python frame')
 
 kundi PyUp(gdb.Command):
-    'Select na print the python stack frame that called this one (ikiwa any)'
+    'Select na andika the python stack frame that called this one (ikiwa any)'
     eleza __init__(self):
         gdb.Command.__init__ (self,
                               "py-up",
@@ -1824,7 +1824,7 @@ kundi PyUp(gdb.Command):
         move_in_stack(move_up=Kweli)
 
 kundi PyDown(gdb.Command):
-    'Select na print the python stack frame called by this one (ikiwa any)'
+    'Select na andika the python stack frame called by this one (ikiwa any)'
     eleza __init__(self):
         gdb.Command.__init__ (self,
                               "py-down",
@@ -1886,7 +1886,7 @@ kundi PyBacktrace(gdb.Command):
 PyBacktrace()
 
 kundi PyPrint(gdb.Command):
-    'Look up the given python variable name, na print it'
+    'Look up the given python variable name, na andika it'
     eleza __init__(self):
         gdb.Command.__init__ (self,
                               "py-print",
@@ -1920,7 +1920,7 @@ kundi PyPrint(gdb.Command):
 PyPrint()
 
 kundi PyLocals(gdb.Command):
-    'Look up the given python variable name, na print it'
+    'Look up the given python variable name, na andika it'
     eleza __init__(self):
         gdb.Command.__init__ (self,
                               "py-locals",

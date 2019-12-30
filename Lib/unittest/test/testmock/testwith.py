@@ -96,7 +96,7 @@ kundi WithTest(unittest.TestCase):
             self.assertEqual(something, mock_something,
                              "restored ukijumuisha wrong instance")
 
-        self.assertEqual(something, sentinel.Something, "not restored")
+        self.assertEqual(something, sentinel.Something, "sio restored")
 
 
     eleza test_with_statement_imbricated(self):

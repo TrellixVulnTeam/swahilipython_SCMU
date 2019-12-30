@@ -38,7 +38,7 @@ HKEYS = (winreg.HKEY_USERS,
 
 NATIVE_WIN64 = (sys.platform == 'win32' na sys.maxsize > 2**32)
 ikiwa NATIVE_WIN64:
-    # Visual C++ ni a 32-bit application, so we need to look in
+    # Visual C++ ni a 32-bit application, so we need to look kwenye
     # the corresponding registry branch, ikiwa we're running a
     # 64-bit Python on Win64
     VS_BASE = r"Software\Wow6432Node\Microsoft\VisualStudio\%0.1f"
@@ -168,7 +168,7 @@ you can try compiling ukijumuisha MingW32, by pitaing "-c mingw32" to setup.py."
 eleza get_build_version():
     """Return the version of MSVC that was used to build Python.
 
-    For Python 2.3 na up, the version number ni included in
+    For Python 2.3 na up, the version number ni included kwenye
     sys.version.  For earlier versions, assume the compiler ni MSVC 6.
     """
     prefix = "MSC v."
@@ -614,7 +614,7 @@ kundi MSVCCompiler(CCompiler) :
             ld_args = (ldflags + lib_opts + export_opts +
                        objects + ['/OUT:' + output_filename])
 
-            # The MSVC linker generates .lib na .exp files, which cannot be
+            # The MSVC linker generates .lib na .exp files, which cansio be
             # suppressed by any linker switches. The .lib files may even be
             # needed! Make sure they are generated kwenye the temporary build
             # directory. Since they have different names kila debug na release
@@ -734,7 +734,7 @@ kundi MSVCCompiler(CCompiler) :
             pita
 
     # -- Miscellaneous methods -----------------------------------------
-    # These are all used by the 'gen_lib_options() function, in
+    # These are all used by the 'gen_lib_options() function, kwenye
     # ccompiler.py.
 
     eleza library_dir_option(self, dir):

@@ -6,7 +6,7 @@ kutoka string agiza Template
 kundi ModuleTest(unittest.TestCase):
 
     eleza test_attrs(self):
-        # While the exact order of the items kwenye these attributes ni not
+        # While the exact order of the items kwenye these attributes ni sio
         # technically part of the "language spec", kwenye practice there ni almost
         # certainly user code that depends on the order, so de-facto it *is*
         # part of the spec.

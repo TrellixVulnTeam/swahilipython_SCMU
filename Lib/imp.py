@@ -77,7 +77,7 @@ eleza cache_from_source(path, debug_override=Tupu):
     The .py file does sio need to exist; this simply returns the path to the
     .pyc file calculated kama ikiwa the .py file were imported.
 
-    If debug_override ni sio Tupu, then it must be a boolean na ni used in
+    If debug_override ni sio Tupu, then it must be a boolean na ni used kwenye
     place of sys.flags.optimize.
 
     If sys.implementation.cache_tag ni Tupu then NotImplementedError ni raised.
@@ -267,7 +267,7 @@ eleza find_module(name, path=Tupu):
     lasivyo sio isinstance(path, (type(Tupu), list)):
         # Backwards-compatibility
         ashiria RuntimeError("'path' must be Tupu ama a list, "
-                           "not {}".format(type(path)))
+                           "sio {}".format(type(path)))
 
     ikiwa path ni Tupu:
         ikiwa is_builtin(name):

@@ -251,7 +251,7 @@ kundi Test_Csv(unittest.TestCase):
         self._read_test([''], [[]])
         self.assertRaises(csv.Error, self._read_test,
                           ['"ab"c'], Tupu, strict = 1)
-        # cannot handle null bytes kila the moment
+        # cansio handle null bytes kila the moment
         self.assertRaises(csv.Error, self._read_test,
                           ['ab\0c'], Tupu, strict = 1)
         self._read_test(['"ab"c'], [['abc']], doublequote = 0)

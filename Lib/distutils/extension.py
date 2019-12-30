@@ -13,7 +13,7 @@ agiza warnings
 # better error-checking ("foo.c" actually exists).
 #
 # Also, putting this kwenye build_ext.py means every setup script would have to
-# agiza that large-ish module (indirectly, through distutils.core) in
+# agiza that large-ish module (indirectly, through distutils.core) kwenye
 # order to do anything.
 
 kundi Extension:

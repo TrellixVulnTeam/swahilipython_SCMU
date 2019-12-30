@@ -298,11 +298,11 @@ eleza warn(message, category=Tupu, stacklevel=1, source=Tupu):
         category = UserWarning
     ikiwa sio (isinstance(category, type) na issubclass(category, Warning)):
         ashiria TypeError("category must be a Warning subclass, "
-                        "not '{:s}'".format(type(category).__name__))
+                        "sio '{:s}'".format(type(category).__name__))
     # Get context information
     jaribu:
         ikiwa stacklevel <= 1 ama _is_internal_frame(sys._getframe(1)):
-            # If frame ni too small to care ama ikiwa the warning originated in
+            # If frame ni too small to care ama ikiwa the warning originated kwenye
             # internal code, then do sio try to hide any frames.
             frame = sys._getframe(stacklevel)
         isipokua:
@@ -461,7 +461,7 @@ kundi catch_warnings(object):
 
     eleza __enter__(self):
         ikiwa self._entered:
-            ashiria RuntimeError("Cannot enter %r twice" % self)
+            ashiria RuntimeError("Cansio enter %r twice" % self)
         self._entered = Kweli
         self._filters = self._module.filters
         self._module.filters = self._filters[:]
@@ -480,7 +480,7 @@ kundi catch_warnings(object):
 
     eleza __exit__(self, *exc_info):
         ikiwa sio self._entered:
-            ashiria RuntimeError("Cannot exit %r without entering first" % self)
+            ashiria RuntimeError("Cansio exit %r without entering first" % self)
         self._module.filters = self._filters
         self._module._filters_mutated()
         self._module.showwarning = self._showwarning

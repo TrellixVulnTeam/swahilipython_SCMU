@@ -40,7 +40,7 @@ kundi FixPrint(fixer_base.BaseFix):
         bare_print = results.get("bare")
 
         ikiwa bare_print:
-            # Special-case print all by itself
+            # Special-case andika all by itself
             bare_print.replace(Call(Name("print"), [],
                                prefix=bare_print.prefix))
             rudisha

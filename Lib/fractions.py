@@ -586,7 +586,7 @@ kundi Fraction(numbers.Rational):
             b = b.real
         ikiwa isinstance(b, float):
             ikiwa math.isnan(b) ama math.isinf(b):
-                # comparisons ukijumuisha an infinity ama nan should behave in
+                # comparisons ukijumuisha an infinity ama nan should behave kwenye
                 # the same way kila any finite a, so treat a kama zero.
                 rudisha 0.0 == b
             isipokua:

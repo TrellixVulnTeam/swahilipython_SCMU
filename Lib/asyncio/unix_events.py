@@ -83,14 +83,14 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         """
         ikiwa (coroutines.iscoroutine(callback) ama
                 coroutines.iscoroutinefunction(callback)):
-            ashiria TypeError("coroutines cannot be used "
+            ashiria TypeError("coroutines cansio be used "
                             "ukijumuisha add_signal_handler()")
         self._check_signal(sig)
         self._check_closed()
         jaribu:
             # set_wakeup_fd() raises ValueError ikiwa this ni sio the
             # main thread.  By calling it early we ensure that an
-            # event loop running kwenye another thread cannot add a signal
+            # event loop running kwenye another thread cansio add a signal
             # handler.
             signal.set_wakeup_fd(self._csock.fileno())
         tatizo (ValueError, OSError) kama exc:
@@ -116,7 +116,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                     logger.info('set_wakeup_fd(-1) failed: %s', nexc)
 
             ikiwa exc.errno == errno.EINVAL:
-                ashiria RuntimeError(f'sig {sig} cannot be caught')
+                ashiria RuntimeError(f'sig {sig} cansio be caught')
             isipokua:
                 raise
 
@@ -150,7 +150,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             signal.signal(sig, handler)
         tatizo OSError kama exc:
             ikiwa exc.errno == errno.EINVAL:
-                ashiria RuntimeError(f'sig {sig} cannot be caught')
+                ashiria RuntimeError(f'sig {sig} cansio be caught')
             isipokua:
                 raise
 
@@ -336,11 +336,11 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         jaribu:
             fileno = file.fileno()
         tatizo (AttributeError, io.UnsupportedOperation) kama err:
-            ashiria exceptions.SendfileNotAvailableError("not a regular file")
+            ashiria exceptions.SendfileNotAvailableError("sio a regular file")
         jaribu:
             fsize = os.fstat(fileno).st_size
         tatizo OSError kama err:
-            ashiria exceptions.SendfileNotAvailableError("not a regular file")
+            ashiria exceptions.SendfileNotAvailableError("sio a regular file")
         blocksize = count ikiwa count isipokua fsize
         ikiwa sio blocksize:
             rudisha 0  # empty file
@@ -356,7 +356,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         ikiwa registered_fd ni sio Tupu:
             # Remove the callback early.  It should be rare that the
             # selector says the fd ni ready but the call still returns
-            # EAGAIN, na I am willing to take a hit kwenye that case in
+            # EAGAIN, na I am willing to take a hit kwenye that case kwenye
             # order to simplify the common case.
             self.remove_writer(registered_fd)
         ikiwa fut.cancelled():

@@ -5,7 +5,7 @@
 # (e.g. Solaris), /usr/local/bin ni haiko kwenye $PATH kama pitaed to CGI
 # scripts, na /usr/local/bin ni the default directory where Python is
 # installed, so /usr/bin/env would be unable to find python.  Granted,
-# binary installations by Linux vendors often install Python in
+# binary installations by Linux vendors often install Python kwenye
 # /usr/bin.  So let those vendors patch cgi.py to match their choice
 # of installation.
 
@@ -124,7 +124,7 @@ eleza parse(fp=Tupu, environ=os.environ, keep_blank_values=0, strict_parsing=0):
 
         environ         : environment dictionary; default: os.environ
 
-        keep_blank_values: flag indicating whether blank values in
+        keep_blank_values: flag indicating whether blank values kwenye
             percent-encoded forms should be treated kama blank strings.
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
@@ -331,7 +331,7 @@ kundi FieldStorage:
 
         environ         : environment dictionary; default: os.environ
 
-        keep_blank_values: flag indicating whether blank values in
+        keep_blank_values: flag indicating whether blank values kwenye
             percent-encoded forms should be treated kama blank strings.
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
@@ -509,7 +509,7 @@ kundi FieldStorage:
     eleza __getitem__(self, key):
         """Dictionary style indexing."""
         ikiwa self.list ni Tupu:
-            ashiria TypeError("not indexable")
+            ashiria TypeError("sio indexable")
         found = []
         kila item kwenye self.list:
             ikiwa item.name == key: found.append(item)
@@ -556,13 +556,13 @@ kundi FieldStorage:
     eleza keys(self):
         """Dictionary style keys() method."""
         ikiwa self.list ni Tupu:
-            ashiria TypeError("not indexable")
+            ashiria TypeError("sio indexable")
         rudisha list(set(item.name kila item kwenye self.list))
 
     eleza __contains__(self, key):
         """Dictionary style __contains__ method."""
         ikiwa self.list ni Tupu:
-            ashiria TypeError("not indexable")
+            ashiria TypeError("sio indexable")
         rudisha any(item.name == key kila item kwenye self.list)
 
     eleza __len__(self):
@@ -571,7 +571,7 @@ kundi FieldStorage:
 
     eleza __bool__(self):
         ikiwa self.list ni Tupu:
-            ashiria TypeError("Cannot be converted to bool.")
+            ashiria TypeError("Cansio be converted to bool.")
         rudisha bool(self.list)
 
     eleza read_urlencoded(self):

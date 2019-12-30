@@ -1385,7 +1385,7 @@ kundi Test_TestLoader(unittest.TestCase):
     ### Tests kila TestLoader.sortTestMethodsUsing
     ################################################################
 
-    # "Function to be used to compare method names when sorting them in
+    # "Function to be used to compare method names when sorting them kwenye
     # getTestCaseNames() na all the loadTestsFromX() methods"
     eleza test_sortTestMethodsUsing__loadTestsFromTestCase(self):
         eleza reversed_cmp(x, y):
@@ -1401,7 +1401,7 @@ kundi Test_TestLoader(unittest.TestCase):
         tests = loader.suiteClass([Foo('test_2'), Foo('test_1')])
         self.assertEqual(loader.loadTestsFromTestCase(Foo), tests)
 
-    # "Function to be used to compare method names when sorting them in
+    # "Function to be used to compare method names when sorting them kwenye
     # getTestCaseNames() na all the loadTestsFromX() methods"
     eleza test_sortTestMethodsUsing__loadTestsFromModule(self):
         eleza reversed_cmp(x, y):
@@ -1419,7 +1419,7 @@ kundi Test_TestLoader(unittest.TestCase):
         tests = [loader.suiteClass([Foo('test_2'), Foo('test_1')])]
         self.assertEqual(list(loader.loadTestsFromModule(m)), tests)
 
-    # "Function to be used to compare method names when sorting them in
+    # "Function to be used to compare method names when sorting them kwenye
     # getTestCaseNames() na all the loadTestsFromX() methods"
     eleza test_sortTestMethodsUsing__loadTestsFromName(self):
         eleza reversed_cmp(x, y):
@@ -1437,7 +1437,7 @@ kundi Test_TestLoader(unittest.TestCase):
         tests = loader.suiteClass([Foo('test_2'), Foo('test_1')])
         self.assertEqual(loader.loadTestsFromName('Foo', m), tests)
 
-    # "Function to be used to compare method names when sorting them in
+    # "Function to be used to compare method names when sorting them kwenye
     # getTestCaseNames() na all the loadTestsFromX() methods"
     eleza test_sortTestMethodsUsing__loadTestsFromNames(self):
         eleza reversed_cmp(x, y):
@@ -1455,7 +1455,7 @@ kundi Test_TestLoader(unittest.TestCase):
         tests = [loader.suiteClass([Foo('test_2'), Foo('test_1')])]
         self.assertEqual(list(loader.loadTestsFromNames(['Foo'], m)), tests)
 
-    # "Function to be used to compare method names when sorting them in
+    # "Function to be used to compare method names when sorting them kwenye
     # getTestCaseNames()"
     #
     # Does it actually affect getTestCaseNames()?

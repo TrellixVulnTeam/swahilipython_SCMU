@@ -424,7 +424,7 @@ kundi SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
             dispatcher._dispatch('method', ('param',))
 
     eleza test_cannot_locate_func(self):
-        """Calls a function that the dispatcher cannot locate"""
+        """Calls a function that the dispatcher cansio locate"""
 
         dispatcher = xmlrpc.server.SimpleXMLRPCDispatcher()
         ukijumuisha self.assertRaisesRegex(Exception, 'method'):
@@ -1238,7 +1238,7 @@ kundi HeadersServerTestCase(BaseServerTestCase):
 kundi ServerProxyTestCase(unittest.TestCase):
     eleza setUp(self):
         unittest.TestCase.setUp(self)
-        # Actual value of the URL doesn't matter ikiwa it ni a string in
+        # Actual value of the URL doesn't matter ikiwa it ni a string kwenye
         # the correct format.
         self.url = 'http://fake.localhost'
 

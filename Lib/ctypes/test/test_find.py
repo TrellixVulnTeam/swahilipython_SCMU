@@ -107,7 +107,7 @@ kundi LibPathFindTest(unittest.TestCase):
                 isipokua:
                     v = '%s:%s' % (env[KEY], d)
                 env.set(KEY, v)
-                # now check that the .so can be found (since in
+                # now check that the .so can be found (since kwenye
                 # LD_LIBRARY_PATH)
                 self.assertEqual(find_library(libname), 'lib%s.so' % libname)
 

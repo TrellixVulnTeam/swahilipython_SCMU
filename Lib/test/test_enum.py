@@ -2198,9 +2198,9 @@ kundi TestFlag(unittest.TestCase):
         self.assertEqual(Color.green.value, 4)
 
     eleza test_auto_number_garbage(self):
-        ukijumuisha self.assertRaisesRegex(TypeError, 'Invalid Flag value: .not an int.'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'Invalid Flag value: .sio an int.'):
             kundi Color(Flag):
-                red = 'not an int'
+                red = 'sio an int'
                 blue = auto()
 
     eleza test_cascading_failure(self):
@@ -2907,7 +2907,7 @@ kundi TestStdLib(unittest.TestCase):
                         ('=' * 75, k, result[k], values[k], '=' * 75), sep='')
                 failed = Kweli
         ikiwa failed:
-            self.fail("result does sio equal expected, see print above")
+            self.fail("result does sio equal expected, see andika above")
 
     eleza test_inspect_classify_class_attrs(self):
         # indirectly test __objclass__
@@ -2941,7 +2941,7 @@ kundi TestStdLib(unittest.TestCase):
                 andika('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
                 failed = Kweli
         ikiwa failed:
-            self.fail("result does sio equal expected, see print above")
+            self.fail("result does sio equal expected, see andika above")
 
 
 kundi MiscTestCase(unittest.TestCase):

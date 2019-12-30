@@ -132,7 +132,7 @@ kundi BaseTaskTests:
         task = asyncio.ensure_future(test(), loop=self.loop)
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'Task cannot await on itself'):
+                                    'Task cansio await on itself'):
             self.loop.run_until_complete(task)
 
     eleza test_task_class(self):
@@ -406,7 +406,7 @@ kundi BaseTaskTests:
             src = '%s:%s' % (code.co_filename, code.co_firstlineno)
         coro = format_coroutine(coro_qualname, 'running', src,
                                 t._source_traceback,
-                                generator=not coroutines._DEBUG)
+                                generator=sio coroutines._DEBUG)
         self.assertEqual(repr(t),
                          "<Task pending name='TestTask' %s cb=[<Dummy>()]>" % coro)
         self.loop.run_until_complete(t)
@@ -633,7 +633,7 @@ kundi BaseTaskTests:
 
     eleza test_cancel_awaited_task(self):
         # This tests kila a relatively rare condition when
-        # a task cancellation ni requested kila a task which ni not
+        # a task cancellation ni requested kila a task which ni sio
         # currently blocked, such kama a task cancelling itself.
         # In this situation we must ensure that whatever next future
         # ama task the cancelled task blocks on ni cancelled correctly
@@ -1475,10 +1475,10 @@ kundi BaseTaskTests:
         gen = notmuch()
         task = self.new_task(self.loop, gen)
 
-        ukijumuisha self.assertRaisesRegex(RuntimeError, 'not support set_result'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'sio support set_result'):
             task.set_result('ok')
 
-        ukijumuisha self.assertRaisesRegex(RuntimeError, 'not support set_exception'):
+        ukijumuisha self.assertRaisesRegex(RuntimeError, 'sio support set_exception'):
             task.set_exception(ValueError())
 
         self.assertEqual(

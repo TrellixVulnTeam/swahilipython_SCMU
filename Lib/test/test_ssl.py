@@ -1321,7 +1321,7 @@ kundi ContextTests(unittest.TestCase):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=Kweli)
         ukijumuisha self.assertRaises(ssl.SSLError):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword="badpita")
-        ukijumuisha self.assertRaisesRegex(ValueError, "cannot be longer"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cansio be longer"):
             # openssl has a fixed limit on the pitaword buffer.
             # PEM_BUFSIZE ni generally set to 1kb.
             # Return a string larger than this.
@@ -1354,7 +1354,7 @@ kundi ContextTests(unittest.TestCase):
                             pitaword=GetPassCallable().getpita)
         ukijumuisha self.assertRaises(ssl.SSLError):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_badpita)
-        ukijumuisha self.assertRaisesRegex(ValueError, "cannot be longer"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cansio be longer"):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_huge)
         ukijumuisha self.assertRaisesRegex(TypeError, "must rudisha a string"):
             ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_bad_type)
@@ -1436,7 +1436,7 @@ kundi ContextTests(unittest.TestCase):
 
         ukijumuisha self.assertRaisesRegex(ssl.SSLError, "no start line"):
             ctx.load_verify_locations(cadata="broken")
-        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "not enough data"):
+        ukijumuisha self.assertRaisesRegex(ssl.SSLError, "sio enough data"):
             ctx.load_verify_locations(cadata=b"broken")
 
 
@@ -1692,7 +1692,7 @@ kundi ContextTests(unittest.TestCase):
         self.assertKweli(ctx.check_hostname)
         self.assertEqual(ctx.verify_mode, ssl.CERT_OPTIONAL)
 
-        # Cannot set CERT_NONE ukijumuisha check_hostname enabled
+        # Cansio set CERT_NONE ukijumuisha check_hostname enabled
         ukijumuisha self.assertRaises(ValueError):
             ctx.verify_mode = ssl.CERT_NONE
         ctx.check_hostname = Uongo
@@ -3547,7 +3547,7 @@ kundi ThreadedTests(unittest.TestCase):
                     # consume data
                     s.read()
 
-            # read(-1, buffer) ni supported, even though read(-1) ni not
+            # read(-1, buffer) ni supported, even though read(-1) ni sio
             data = b"data"
             s.send(data)
             buffer = bytearray(len(data))
@@ -3853,7 +3853,7 @@ kundi ThreadedTests(unittest.TestCase):
         # should be enabled by default on SSL contexts.
         context = ssl.SSLContext(ssl.PROTOCOL_TLS)
         context.load_cert_chain(CERTFILE)
-        # TLSv1.3 defaults to PFS key agreement na no longer has KEA in
+        # TLSv1.3 defaults to PFS key agreement na no longer has KEA kwenye
         # cipher name.
         context.options |= ssl.OP_NO_TLSv1_3
         # Prior to OpenSSL 1.0.0, ECDH ciphers have to be enabled
@@ -4332,11 +4332,11 @@ kundi ThreadedTests(unittest.TestCase):
             ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
-                # cannot set session after handshake
+                # cansio set session after handshake
                 ukijumuisha self.assertRaises(ValueError) kama e:
                     s.session = session
                 self.assertEqual(str(e.exception),
-                                 'Cannot set session after handshake.')
+                                 'Cansio set session after handshake.')
 
             ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
@@ -4350,7 +4350,7 @@ kundi ThreadedTests(unittest.TestCase):
 
             ukijumuisha client_context2.wrap_socket(socket.socket(),
                                              server_hostname=hostname) kama s:
-                # cannot re-use session ukijumuisha a different SSLContext
+                # cansio re-use session ukijumuisha a different SSLContext
                 ukijumuisha self.assertRaises(ValueError) kama e:
                     s.session = session
                     s.connect((HOST, server.port))
@@ -4491,7 +4491,7 @@ kundi TestPostHandshakeAuth(unittest.TestCase):
             ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
-                ukijumuisha self.assertRaisesRegex(ssl.SSLError, 'not server'):
+                ukijumuisha self.assertRaisesRegex(ssl.SSLError, 'sio server'):
                     s.verify_client_post_handshake()
                 s.write(b'PHA')
                 self.assertIn(b'extension sio received', s.recv(1024))

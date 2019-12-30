@@ -36,7 +36,7 @@ kundi CompressorDecompressorTestCase(unittest.TestCase):
         self.assertRaises(TypeError, LZMADecompressor, memlimit=b"qw")
         ukijumuisha self.assertRaises(TypeError):
             LZMADecompressor(lzma.FORMAT_RAW, filters="zzz")
-        # Cannot specify a memory limit ukijumuisha FILTER_RAW.
+        # Cansio specify a memory limit ukijumuisha FILTER_RAW.
         ukijumuisha self.assertRaises(ValueError):
             LZMADecompressor(lzma.FORMAT_RAW, memlimit=0x1000000)
         # Can only specify a custom filter chain ukijumuisha FILTER_RAW.
@@ -399,7 +399,7 @@ kundi CompressDecompressFunctionTestCase(unittest.TestCase):
         self.assertRaises(TypeError, lzma.decompress, b"", memlimit=7.3e9)
         ukijumuisha self.assertRaises(TypeError):
             lzma.decompress(b"", format=lzma.FORMAT_RAW, filters={})
-        # Cannot specify a memory limit ukijumuisha FILTER_RAW.
+        # Cansio specify a memory limit ukijumuisha FILTER_RAW.
         ukijumuisha self.assertRaises(ValueError):
             lzma.decompress(b"", format=lzma.FORMAT_RAW, memlimit=0x1000000)
         # Can only specify a custom filter chain ukijumuisha FILTER_RAW.
@@ -616,7 +616,7 @@ kundi FileTestCase(unittest.TestCase):
             LZMAFile(BytesIO(), "w", check=lzma.CHECK_UNKNOWN)
         ukijumuisha self.assertRaises(LZMAError):
             LZMAFile(BytesIO(), "w", check=lzma.CHECK_ID_MAX + 3)
-        # Cannot specify a check ukijumuisha mode="r".
+        # Cansio specify a check ukijumuisha mode="r".
         ukijumuisha self.assertRaises(ValueError):
             LZMAFile(BytesIO(COMPRESSED_XZ), check=lzma.CHECK_NONE)
         ukijumuisha self.assertRaises(ValueError):
@@ -641,7 +641,7 @@ kundi FileTestCase(unittest.TestCase):
             LZMAFile(BytesIO(), "w", preset=-7)
         ukijumuisha self.assertRaises(TypeError):
             LZMAFile(BytesIO(), "w", preset="foo")
-        # Cannot specify a preset ukijumuisha mode="r".
+        # Cansio specify a preset ukijumuisha mode="r".
         ukijumuisha self.assertRaises(ValueError):
             LZMAFile(BytesIO(COMPRESSED_XZ), preset=3)
 
@@ -1355,7 +1355,7 @@ kundi MiscellaneousTestCase(unittest.TestCase):
         self.assertKweli(lzma.is_check_supported(lzma.CHECK_NONE))
         self.assertKweli(lzma.is_check_supported(lzma.CHECK_CRC32))
 
-        # The .xz format spec cannot store check IDs above this value.
+        # The .xz format spec cansio store check IDs above this value.
         self.assertUongo(lzma.is_check_supported(lzma.CHECK_ID_MAX + 1))
 
         # This value should sio be a valid check ID.
@@ -1363,7 +1363,7 @@ kundi MiscellaneousTestCase(unittest.TestCase):
 
     eleza test__encode_filter_properties(self):
         ukijumuisha self.assertRaises(TypeError):
-            lzma._encode_filter_properties(b"not a dict")
+            lzma._encode_filter_properties(b"sio a dict")
         ukijumuisha self.assertRaises(ValueError):
             lzma._encode_filter_properties({"id": 0x100})
         ukijumuisha self.assertRaises(ValueError):

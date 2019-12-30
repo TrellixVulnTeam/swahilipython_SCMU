@@ -138,7 +138,7 @@ kundi _WindowsFlavour(_Flavour):
 
     # Interesting findings about extended paths:
     # - '\\?\c:\a', '//?/c:\a' na '//?/c:/a' are all supported
-    #   but '\\?\c:/a' ni not
+    #   but '\\?\c:/a' ni sio
     # - extended paths are always absolute; "relative" extended paths will
     #   fail.
 
@@ -349,7 +349,7 @@ kundi _PosixFlavour(_Flavour):
                     seen[newpath] = path # resolved symlink
 
             rudisha path
-        # NOTE: according to POSIX, getcwd() cannot contain path components
+        # NOTE: according to POSIX, getcwd() cansio contain path components
         # which are symlinks.
         base = '' ikiwa path.is_absolute() isipokua os.getcwd()
         rudisha _resolve(base, str(path)) ama sep
@@ -856,7 +856,7 @@ kundi PurePath(object):
 
     eleza relative_to(self, *other):
         """Return the relative path to another path identified by the pitaed
-        arguments.  If the operation ni sio possible (because this ni not
+        arguments.  If the operation ni sio possible (because this ni sio
         a subpath of the other path), ashiria ValueError.
         """
         # For the purpose of this method, drive na root are considered
@@ -1005,7 +1005,7 @@ kundi Path(PurePath):
     methods to do system calls on path objects. Depending on your system,
     instantiating a Path will rudisha either a PosixPath ama a WindowsPath
     object. You can also instantiate a PosixPath ama WindowsPath directly,
-    but cannot instantiate a WindowsPath on a POSIX system ama vice versa.
+    but cansio instantiate a WindowsPath on a POSIX system ama vice versa.
     """
     __slots__ = (
         '_accessor',
@@ -1017,7 +1017,7 @@ kundi Path(PurePath):
             cls = WindowsPath ikiwa os.name == 'nt' isipokua PosixPath
         self = cls._from_parts(args, init=Uongo)
         ikiwa sio self._flavour.is_supported:
-            ashiria NotImplementedError("cannot instantiate %r on your system"
+            ashiria NotImplementedError("cansio instantiate %r on your system"
                                       % (cls.__name__,))
         self._init()
         rudisha self
@@ -1119,7 +1119,7 @@ kundi Path(PurePath):
 
     eleza rglob(self, pattern):
         """Recursively tuma all existing files (of any kind, including
-        directories) matching the given relative pattern, anywhere in
+        directories) matching the given relative pattern, anywhere kwenye
         this subtree.
         """
         pattern = self._flavour.casefold(pattern)
@@ -1270,7 +1270,7 @@ kundi Path(PurePath):
             self.parent.mkdir(parents=Kweli, exist_ok=Kweli)
             self.mkdir(mode, parents=Uongo, exist_ok=exist_ok)
         tatizo OSError:
-            # Cannot rely on checking kila EEXIST, since the operating system
+            # Cansio rely on checking kila EEXIST, since the operating system
             # could give priority to other errors like EACCES ama EROFS
             ikiwa sio exist_ok ama sio self.is_dir():
                 raise

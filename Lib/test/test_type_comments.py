@@ -281,7 +281,7 @@ kundi TypeCommentTests(unittest.TestCase):
 
     eleza test_redundantdef(self):
         kila tree kwenye self.parse_all(redundantdef, maxver=0,
-                                expected_regex="^Cannot have two type comments on def"):
+                                expected_regex="^Cansio have two type comments on def"):
             pita
 
     eleza test_nonasciidef(self):

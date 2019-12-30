@@ -1293,7 +1293,7 @@ eleza _get_big_s(STR):
     ikiwa STR ni BYTES: rudisha big_s_bytes
     ashiria AssertionError
 
-# The older replace implementation counted all matches in
+# The older replace implementation counted all matches kwenye
 # the string even when it only needed to make one replacement.
 @bench('("A" + ("Z"*128*1024)).replace("A", "BB", 1)',
        'quick replace single character match', 10)

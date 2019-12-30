@@ -3,7 +3,7 @@
 There ni additional configuration information kwenye the EditorWindow kundi (and
 subclasses): the menus are created there based on the menu_specs (class)
 variable, na menus sio created are silently skipped kwenye the code here.  This
-makes it possible, kila example, to define a Debug menu which ni only present in
+makes it possible, kila example, to define a Debug menu which ni only present kwenye
 the PythonShell window, na a Format menu which ni only present kwenye the Editor
 windows.
 
@@ -14,7 +14,7 @@ kutoka idlelib.config agiza idleConf
 
 #   Warning: menudefs ni altered kwenye macosx.overrideRootMenu()
 #   after it ni determined that an OS X Aqua Tk ni kwenye use,
-#   which cannot be done until after Tk() ni first called.
+#   which cansio be done until after Tk() ni first called.
 #   Do sio alter the 'file', 'options', ama 'help' cascades here
 #   without altering overrideRootMenu() kama well.
 #       TODO: Make this more robust

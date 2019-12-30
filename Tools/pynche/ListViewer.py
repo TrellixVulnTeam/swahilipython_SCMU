@@ -107,14 +107,14 @@ kundi ListViewer:
             ikiwa boxid kwenye self.__bboxes:
                 koma
         isipokua:
-##            print 'No box found!'
+##            andika 'No box found!'
             rudisha
         tags = self.__canvas.gettags(boxid)
         kila t kwenye tags:
             ikiwa t[0] == '#':
                 koma
         isipokua:
-##            print 'No color tag found!'
+##            andika 'No color tag found!'
             rudisha
         red, green, blue = ColorDB.rrggbb_to_triplet(t)
         self.__dontcenter = 1

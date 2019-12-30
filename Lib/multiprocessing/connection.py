@@ -552,7 +552,7 @@ isipokua:
             _winapi.PIPE_TYPE_MESSAGE | _winapi.PIPE_READMODE_MESSAGE |
             _winapi.PIPE_WAIT,
             1, obsize, ibsize, _winapi.NMPWAIT_WAIT_FOREVER,
-            # default security descriptor: the handle cannot be inherited
+            # default security descriptor: the handle cansio be inherited
             _winapi.NULL
             )
         h2 = _winapi.CreateFile(

@@ -39,7 +39,7 @@ kundi TestPickleCopyHeader(TestEmailBase):
 @parameterize
 kundi TestPickleCopyMessage(TestEmailBase):
 
-    # Message objects are a sequence, so we have to make them a one-tuple in
+    # Message objects are a sequence, so we have to make them a one-tuple kwenye
     # msg_params so they get pitaed to the parameterized test method kama a
     # single argument instead of kama a list of headers.
     msg_params = {}

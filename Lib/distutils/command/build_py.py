@@ -66,7 +66,7 @@ kundi build_py (Command):
 
     eleza run(self):
         # XXX copy_file by default preserves atime na mtime.  IMHO this is
-        # the right thing to do, but perhaps it should be an option -- in
+        # the right thing to do, but perhaps it should be an option -- kwenye
         # particular, a site administrator might want installed files to
         # reflect the time of installation rather than the last
         # modification time before the installed release.
@@ -82,7 +82,7 @@ kundi build_py (Command):
         # installing).
 
         # Two options control which modules will be installed: 'packages'
-        # na 'py_modules'.  The former lets us work ukijumuisha whole packages, not
+        # na 'py_modules'.  The former lets us work ukijumuisha whole packages, sio
         # specifying individual modules at all; the latter ni for
         # specifying modules one-at-a-time.
 

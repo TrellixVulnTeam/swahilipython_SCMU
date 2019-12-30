@@ -54,7 +54,7 @@ kundi TextViewer:
         self.__text.insert(0.0, optiondb.get('TEXT', '''\
 Insert some stuff here na play
 ukijumuisha the buttons below to see
-how the colors interact in
+how the colors interact kwenye
 textual displays.
 
 See how the selection can also

@@ -236,7 +236,7 @@ kundi LongReprTest(unittest.TestCase):
         # Remember where we are
         self.here = os.getcwd()
         sys.path.insert(0, self.here)
-        # When regrtest ni run ukijumuisha its -j option, this command alone ni not
+        # When regrtest ni run ukijumuisha its -j option, this command alone ni sio
         # enough.
         importlib.invalidate_caches()
 

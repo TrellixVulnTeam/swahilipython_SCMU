@@ -113,7 +113,7 @@ eleza main(args):
         andika('+:', f2name)
     rudisha fcompare(f1name, f2name)
 
-# read ndiff output kutoka stdin, na print file1 (which=='1') ama
+# read ndiff output kutoka stdin, na andika file1 (which=='1') ama
 # file2 (which=='2') to stdout
 
 eleza restore(which):

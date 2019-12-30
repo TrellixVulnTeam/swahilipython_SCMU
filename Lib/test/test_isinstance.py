@@ -96,7 +96,7 @@ kundi TestIsInstanceExceptions(unittest.TestCase):
         self.assertRaises(RuntimeError, isinstance, c, D)
 
 
-# These tests are similar to above, but tickle certain code paths in
+# These tests are similar to above, but tickle certain code paths kwenye
 # issubclass() instead of isinstance() -- really PyObject_IsSubclass()
 # vs. PyObject_IsInstance().
 kundi TestIsSubclassExceptions(unittest.TestCase):

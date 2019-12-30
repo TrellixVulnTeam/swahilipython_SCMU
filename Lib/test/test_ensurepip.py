@@ -173,7 +173,7 @@ kundi TestUninstall(EnsurepipMixin, unittest.TestCase):
         self.assertUongo(self.run_pip.called)
 
     eleza test_uninstall_skipped_with_warning_for_wrong_version(self):
-        ukijumuisha fake_pip("not a valid version"):
+        ukijumuisha fake_pip("sio a valid version"):
             ukijumuisha test.support.captured_stderr() kama stderr:
                 ensurepip._uninstall_helper()
         warning = stderr.getvalue().strip()

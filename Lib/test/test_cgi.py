@@ -204,7 +204,7 @@ Content-Length: 3
     eleza test_fieldstorage_readline(self):
         # FieldStorage uses readline, which has the capacity to read all
         # contents of the input file into memory; we use readline's size argument
-        # to prevent that kila files that do sio contain any newlines in
+        # to prevent that kila files that do sio contain any newlines kwenye
         # non-GET/HEAD requests
         kundi TestReadlineFile:
             eleza __init__(self, file):

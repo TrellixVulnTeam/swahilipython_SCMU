@@ -83,7 +83,7 @@ eleza grepValue(fn, variable):
         ikiwa ln.startswith(variable):
             value = ln[len(variable):].strip()
             rudisha value.strip("\"'")
-    ashiria RuntimeError("Cannot find variable %s" % variable[:-1])
+    ashiria RuntimeError("Cansio find variable %s" % variable[:-1])
 
 _cache_getVersion = Tupu
 
@@ -108,7 +108,7 @@ eleza getFullVersion():
         ikiwa 'PY_VERSION' kwenye ln:
             _cache_getFullVersion = ln.split()[-1][1:-1]
             rudisha _cache_getFullVersion
-    ashiria RuntimeError("Cannot find full version??")
+    ashiria RuntimeError("Cansio find full version??")
 
 FW_PREFIX = ["Library", "Frameworks", "Python.framework"]
 FW_VERSION_PREFIX = "--undefined--" # initialized kwenye parseOptions
@@ -210,7 +210,7 @@ eleza library_recipes():
     LT_10_5 = bool(getDeptargetTuple() < (10, 5))
 
     # Since Apple removed the header files kila the deprecated system
-    # OpenSSL kama of the Xcode 7 release (kila OS X 10.10+), we do not
+    # OpenSSL kama of the Xcode 7 release (kila OS X 10.10+), we do sio
     # have much choice but to build our own copy here, too.
 
     result.extend([
@@ -705,7 +705,7 @@ eleza extractArchive(builddir, archiveName):
 
     XXX: This function assumes that archives contain a toplevel directory
     that ni has the same name kama the basename of the archive. This is
-    safe enough kila almost anything we use.  Unfortunately, it does not
+    safe enough kila almost anything we use.  Unfortunately, it does sio
     work kila current Tcl na Tk source releases where the basename of
     the archive ends ukijumuisha "-src" but the uncompressed directory does not.
     For now, just special case Tcl na Tk tar.gz downloads.
@@ -744,7 +744,7 @@ eleza extractArchive(builddir, archiveName):
         xit = fp.close()
         ikiwa xit ni sio Tupu:
             sys.stdout.write(data)
-            ashiria RuntimeError("Cannot extract %s"%(archiveName,))
+            ashiria RuntimeError("Cansio extract %s"%(archiveName,))
 
         rudisha os.path.join(builddir, retval)
 

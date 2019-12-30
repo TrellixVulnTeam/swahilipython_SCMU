@@ -457,7 +457,7 @@ eleza _check_name(method):
         ikiwa name ni Tupu:
             name = self.name
         lasivyo self.name != name:
-            ashiria ImportError('loader kila %s cannot handle %s' %
+            ashiria ImportError('loader kila %s cansio handle %s' %
                                 (self.name, name), name=name)
         rudisha method(self, name, *args, **kwargs)
     jaribu:
@@ -552,7 +552,7 @@ eleza _validate_timestamp_pyc(data, source_mtime, source_size, name,
 
 
 eleza _validate_hash_pyc(data, source_hash, name, exc_details):
-    """Validate a hash-based pyc by checking the real source hash against the one in
+    """Validate a hash-based pyc by checking the real source hash against the one kwenye
     the pyc header.
 
     *data* ni the contents of the pyc file. (Only the first 16 bytes are
@@ -653,7 +653,7 @@ eleza spec_from_file_location(name, location=Tupu, *, loader=Tupu,
         location = _os.fspath(location)
 
     # If the location ni on the filesystem, but doesn't actually exist,
-    # we could rudisha Tupu here, indicating that the location ni not
+    # we could rudisha Tupu here, indicating that the location ni sio
     # valid.  However, we don't have a good way of testing since an
     # indirect location (e.g. a zip file ama URL) will look like a
     # non-existent file relative to the filesystem.
@@ -778,7 +778,7 @@ kundi _LoaderBasics:
         """Execute the module."""
         code = self.get_code(module.__name__)
         ikiwa code ni Tupu:
-            ashiria ImportError('cannot load module {!r} when get_code() '
+            ashiria ImportError('cansio load module {!r} when get_code() '
                               'returns Tupu'.format(module.__name__))
         _bootstrap._call_with_frames_removed(exec, code, module.__dict__)
 
@@ -793,7 +793,7 @@ kundi SourceLoader(_LoaderBasics):
         """Optional method that returns the modification time (an int) kila the
         specified path (a str).
 
-        Raises OSError when the path cannot be handled.
+        Raises OSError when the path cansio be handled.
         """
         ashiria OSError
 
@@ -807,7 +807,7 @@ kundi SourceLoader(_LoaderBasics):
         - 'size' (optional) ni the size kwenye bytes of the source code.
 
         Implementing this method allows the loader to read bytecode files.
-        Raises OSError when the path cannot be handled.
+        Raises OSError when the path cansio be handled.
         """
         rudisha {'mtime': self.path_mtime(path)}
 
@@ -1117,7 +1117,7 @@ kundi ExtensionFileLoader(FileLoader, _LoaderBasics):
                    kila suffix kwenye EXTENSION_SUFFIXES)
 
     eleza get_code(self, fullname):
-        """Return Tupu kama an extension module cannot create a code object."""
+        """Return Tupu kama an extension module cansio create a code object."""
         rudisha Tupu
 
     eleza get_source(self, fullname):

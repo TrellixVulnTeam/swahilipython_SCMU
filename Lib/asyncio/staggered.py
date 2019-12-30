@@ -60,7 +60,7 @@ async eleza staggered_race(
         - *winner_result*: the result of the winning coroutine, ama ``Tupu``
           ikiwa no coroutines won.
 
-        - *winner_index*: the index of the winning coroutine in
+        - *winner_index*: the index of the winning coroutine kwenye
           ``coro_fns``, ama ``Tupu`` ikiwa no coroutines won. If the winning
           coroutine may rudisha Tupu on success, *winner_index* can be used
           to definitively determine whether any coroutine won.
@@ -121,7 +121,7 @@ async eleza staggered_race(
             # here na CancelledError are usually thrown at one, we will
             # encounter a curious corner case where the current task will end
             # up kama done() == Kweli, cancelled() == Uongo, exception() ==
-            # asyncio.CancelledError. This behavior ni specified in
+            # asyncio.CancelledError. This behavior ni specified kwenye
             # https://bugs.python.org/issue30048
             kila i, t kwenye enumerate(running_tasks):
                 ikiwa i != this_index:

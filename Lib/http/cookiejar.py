@@ -7,7 +7,7 @@ Docstrings, comments na debug strings kwenye this code refer to the
 attributes of the HTTP cookie system kama cookie-attributes, to distinguish
 them clearly kutoka Python attributes.
 
-Class diagram (note that BSDDBCookieJar na the MSIE* classes are not
+Class diagram (note that BSDDBCookieJar na the MSIE* classes are sio
 distributed ukijumuisha the Python standard library, but are available from
 http://wwwsearch.sf.net/):
 

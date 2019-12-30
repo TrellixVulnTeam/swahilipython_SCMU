@@ -31,7 +31,7 @@ dispatch = {
 }
 
 
-# Class used to test __str__ na print
+# Class used to test __str__ na andika
 kundi ClassWith__str__:
     eleza __init__(self, x):
         self.x = x
@@ -41,11 +41,11 @@ kundi ClassWith__str__:
 
 
 kundi TestPrint(unittest.TestCase):
-    """Test correct operation of the print function."""
+    """Test correct operation of the andika function."""
 
     eleza check(self, expected, args,
               sep=NotDefined, end=NotDefined, file=NotDefined):
-        # Capture sys.stdout kwenye a StringIO.  Call print ukijumuisha args,
+        # Capture sys.stdout kwenye a StringIO.  Call andika ukijumuisha args,
         # na ukijumuisha sep, end, na file, ikiwa they're defined.  Result
         # must match expected.
 
@@ -132,7 +132,7 @@ kundi TestPrint(unittest.TestCase):
 
 kundi TestPy2MigrationHint(unittest.TestCase):
     """Test that correct hint ni produced analogous to Python3 syntax,
-    ikiwa print statement ni executed kama kwenye Python 2.
+    ikiwa andika statement ni executed kama kwenye Python 2.
     """
 
     eleza test_normal_string(self):
@@ -158,14 +158,14 @@ kundi TestPy2MigrationHint(unittest.TestCase):
 
     eleza test_string_with_leading_whitespace(self):
         python2_print_str = '''ikiwa 1:
-            print "Hello World"
+            andika "Hello World"
         '''
         ukijumuisha self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
         self.assertIn('andika("Hello World")', str(context.exception))
 
-    # bpo-32685: Suggestions kila print statement should be proper when
+    # bpo-32685: Suggestions kila andika statement should be proper when
     # it ni kwenye the same line kama the header of a compound statement
     # and/or followed by a semicolon
     eleza test_string_with_semicolon(self):
@@ -176,7 +176,7 @@ kundi TestPy2MigrationHint(unittest.TestCase):
         self.assertIn('andika(p)', str(context.exception))
 
     eleza test_string_in_loop_on_same_line(self):
-        python2_print_str = 'kila i kwenye s: print i'
+        python2_print_str = 'kila i kwenye s: andika i'
         ukijumuisha self.assertRaises(SyntaxError) kama context:
             exec(python2_print_str)
 
@@ -185,25 +185,25 @@ kundi TestPy2MigrationHint(unittest.TestCase):
     eleza test_stream_redirection_hint_for_py2_migration(self):
         # Test correct hint produced kila Py2 redirection syntax
         ukijumuisha self.assertRaises(TypeError) kama context:
-            print >> sys.stderr, "message"
+            andika >> sys.stderr, "message"
         self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
         # Test correct hint ni produced kwenye the case where RHS implements
         # __rrshift__ but returns NotImplemented
         ukijumuisha self.assertRaises(TypeError) kama context:
-            print >> 42
+            andika >> 42
         self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
-        # Test stream redirection hint ni specific to print
+        # Test stream redirection hint ni specific to andika
         ukijumuisha self.assertRaises(TypeError) kama context:
             max >> sys.stderr
         self.assertNotIn('Did you mean ', str(context.exception))
 
         # Test stream redirection hint ni specific to rshift
         ukijumuisha self.assertRaises(TypeError) kama context:
-            print << sys.stderr
+            andika << sys.stderr
         self.assertNotIn('Did you mean', str(context.exception))
 
         # Ensure right operand implementing rrshift still works

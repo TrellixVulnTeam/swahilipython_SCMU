@@ -897,7 +897,7 @@ kundi QuotingTests(unittest.TestCase):
                          "using quote_plus(): %r != %r" % (expected, result))
 
     eleza test_quoting_space(self):
-        # Make sure quote() na quote_plus() handle spaces kama specified in
+        # Make sure quote() na quote_plus() handle spaces kama specified kwenye
         # their unique way
         result = urllib.parse.quote(' ')
         self.assertEqual(result, hexescape(' '),
@@ -1202,7 +1202,7 @@ kundi urlencode_Tests(unittest.TestCase):
             * 2nd, 2
             * 3rd, 3
 
-        Test cannot assume anything about order.  Docs make no guarantee na
+        Test cansio assume anything about order.  Docs make no guarantee na
         have possible dictionary input.
 
         """
@@ -1615,7 +1615,7 @@ kundi URL2PathNameTests(unittest.TestCase):
         self.assertEqual(url2pathname("///C|/"), 'C:\\')
 
     eleza test_converting_when_no_drive_letter(self):
-        # cannot end a raw string kwenye \
+        # cansio end a raw string kwenye \
         self.assertEqual(url2pathname("///C/test/"), r'\\\C\test' '\\')
         self.assertEqual(url2pathname("////C/test/"), r'\\C\test' '\\')
 

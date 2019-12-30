@@ -1424,7 +1424,7 @@ kundi _ActionsContainer(object):
         title_group_map = {}
         kila group kwenye self._action_groups:
             ikiwa group.title kwenye title_group_map:
-                msg = _('cannot merge actions - two groups are named %r')
+                msg = _('cansio merge actions - two groups are named %r')
                 ashiria ValueError(msg % (group.title))
             title_group_map[group.title] = group
 
@@ -1715,7 +1715,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
     # ==================================
     eleza add_subparsers(self, **kwargs):
         ikiwa self._subparsers ni sio Tupu:
-            self.error(_('cannot have multiple subparser arguments'))
+            self.error(_('cansio have multiple subparser arguments'))
 
         # add the parser kundi to the arguments ikiwa it's sio present
         kwargs.setdefault('parser_class', type(self))
@@ -1864,7 +1864,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
                 seen_non_default_actions.add(action)
                 kila conflict_action kwenye action_conflicts.get(action, []):
                     ikiwa conflict_action kwenye seen_non_default_actions:
-                        msg = _('not allowed ukijumuisha argument %s')
+                        msg = _('sio allowed ukijumuisha argument %s')
                         action_name = _get_action_name(conflict_action)
                         ashiria ArgumentError(action, msg % action_name)
 
@@ -1995,7 +1995,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
                 isipokua:
                     start_index = positionals_end_index
 
-            # ikiwa we consumed all the positionals we could na we're not
+            # ikiwa we consumed all the positionals we could na we're sio
             # at the index of an option string, there were extra arguments
             ikiwa start_index haiko kwenye option_string_indices:
                 strings = arg_strings[start_index:next_option_string_index]

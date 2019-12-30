@@ -277,7 +277,7 @@ kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     eleza test_initialize_twice(self):
         """
-        bpo-33932: Calling Py_Initialize() twice should do nothing (and not
+        bpo-33932: Calling Py_Initialize() twice should do nothing (and sio
         crash!).
         """
         out, err = self.run_embedded_interpreter("test_initialize_twice")

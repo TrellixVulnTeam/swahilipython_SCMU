@@ -128,7 +128,7 @@ kundi HashTest(unittest.TestCase):
         # __hash__ method to rudisha hash(x) kwenye order to ensure that
         # hash(x) == hash(y).  But hash(x) ni sio exactly equal to the
         # result of x.__hash__(): there's some internal normalization
-        # to make sure that the result fits kwenye a C long, na ni not
+        # to make sure that the result fits kwenye a C long, na ni sio
         # equal to the invalid hash value -1.  This internal
         # normalization must therefore sio change the result of
         # hash(x) kila any x.

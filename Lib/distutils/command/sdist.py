@@ -375,12 +375,12 @@ kundi sdist(Command):
         self.filelist.exclude_pattern(vcs_ptrn, is_regex=1)
 
     eleza write_manifest(self):
-        """Write the file list kwenye 'self.filelist' (presumably kama filled in
+        """Write the file list kwenye 'self.filelist' (presumably kama filled kwenye
         by 'add_defaults()' na 'read_template()') to the manifest file
         named by 'self.manifest'.
         """
         ikiwa self._manifest_is_not_generated():
-            log.info("not writing to manually maintained "
+            log.info("sio writing to manually maintained "
                      "manifest file '%s'" % self.manifest)
             rudisha
 
@@ -417,7 +417,7 @@ kundi sdist(Command):
 
     eleza make_release_tree(self, base_dir, files):
         """Create the directory tree that will become the source
-        distribution archive.  All directories implied by the filenames in
+        distribution archive.  All directories implied by the filenames kwenye
         'files' are created under 'base_dir', na then we hard link ama copy
         (ikiwa hard linking ni unavailable) those files into place.
         Essentially, this duplicates the developer's source tree, but kwenye a

@@ -475,7 +475,7 @@ kundi TestCommandLine(unittest.TestCase):
     eleza test_failures(self):
         _errors = (
             (b'progname ni missing: required ukijumuisha the main options', '-l', '-T'),
-            (b'cannot specify both --listfuncs na (--trace ama --count)', '-lc'),
+            (b'cansio specify both --listfuncs na (--trace ama --count)', '-lc'),
             (b'argument -R/--no-report: sio allowed ukijumuisha argument -r/--report', '-rR'),
             (b'must specify one of --trace, --count, --report, --listfuncs, ama --trackcalls', '-g'),
             (b'-r/--report requires -f/--file', '-r'),

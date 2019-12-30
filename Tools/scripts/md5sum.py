@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-"""Python utility to print MD5 checksums of argument files.
+"""Python utility to andika MD5 checksums of argument files.
 """
 
 
@@ -12,7 +12,7 @@ usage = """
 usage: md5sum.py [-b] [-t] [-l] [-s bufsize] [file ...]
 -b        : read files kwenye binary mode (default)
 -t        : read files kwenye text mode (you almost certainly don't want this!)
--l        : print last pathname component only
+-l        : andika last pathname component only
 -s bufsize: read buffer size (default %d)
 file ...  : files to sum; '-' ama no files means stdin
 """ % bufsize

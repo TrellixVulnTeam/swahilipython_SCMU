@@ -112,7 +112,7 @@ eleza copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
 
     ikiwa update na sio newer(src, dst):
         ikiwa verbose >= 1:
-            log.debug("not copying %s (output up-to-date)", src)
+            log.debug("sio copying %s (output up-to-date)", src)
         rudisha (dst, 0)
 
     jaribu:

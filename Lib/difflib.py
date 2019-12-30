@@ -61,7 +61,7 @@ kundi SequenceMatcher:
     notion, pairing up elements that appear uniquely kwenye each sequence.
     That, na the method here, appear to tuma more intuitive difference
     reports than does diff.  This method appears to be the least vulnerable
-    to synching up on blocks of "junk lines", though (like blank lines in
+    to synching up on blocks of "junk lines", though (like blank lines kwenye
     ordinary text files, ama maybe "<P>" lines kwenye HTML files).  That may be
     because this ni the only method of the 3 that has a *concept* of
     "junk" <wink>.
@@ -278,7 +278,7 @@ kundi SequenceMatcher:
         self.fullbcount = Tupu
         self.__chain_b()
 
-    # For each element x kwenye b, set b2j[x] to a list of the indices in
+    # For each element x kwenye b, set b2j[x] to a list of the indices kwenye
     # b where x appears; the indices are kwenye increasing order; note that
     # the number of times x appears kwenye b ni len(b2j[x]) ...
     # when self.isjunk ni defined, junk elements don't show up kwenye this
@@ -447,7 +447,7 @@ kundi SequenceMatcher:
         """Return list of triples describing matching subsequences.
 
         Each triple ni of the form (i, j, n), na means that
-        a[i:i+n] == b[j:j+n].  The triples are monotonically increasing in
+        a[i:i+n] == b[j:j+n].  The triples are monotonically increasing kwenye
         i na kwenye j.  New kwenye Python 2.5, it's also guaranteed that if
         (i, j, n) na (i', j', n') are adjacent triples kwenye the list, na
         the second ni sio the last triple kwenye the list, then i+n != i' ama
@@ -980,7 +980,7 @@ kundi Differ:
             # there's a close pair, so forget the identical pair (ikiwa any)
             eqi = Tupu
 
-        # a[best_i] very similar to b[best_j]; eqi ni Tupu iff they're not
+        # a[best_i] very similar to b[best_j]; eqi ni Tupu iff they're sio
         # identical
 
         # pump out diffs kutoka before the synch point

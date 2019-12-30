@@ -1098,7 +1098,7 @@ kundi GCTogglingTests(unittest.TestCase):
 
         c0 = c1 = c2 = Tupu
 
-        # What we've set up:  c0, c1, na c2 are all trash now.  c0 ni in
+        # What we've set up:  c0, c1, na c2 are all trash now.  c0 ni kwenye
         # generation 2.  The only thing keeping it alive ni that c1 points to
         # it. c1 na c2 are kwenye generation 0, na are kwenye self-loops.  There's a
         # global weakref to c2 (c2wr), but that weakref has no callback.
@@ -1167,7 +1167,7 @@ kundi GCTogglingTests(unittest.TestCase):
 
         d0 = c1 = c2 = Tupu
 
-        # What we've set up:  d0, c1, na c2 are all trash now.  d0 ni in
+        # What we've set up:  d0, c1, na c2 are all trash now.  d0 ni kwenye
         # generation 2.  The only thing keeping it alive ni that c1 points to
         # it.  c1 na c2 are kwenye generation 0, na are kwenye self-loops.  There's
         # a global weakref to c2 (c2wr), but that weakref has no callback.

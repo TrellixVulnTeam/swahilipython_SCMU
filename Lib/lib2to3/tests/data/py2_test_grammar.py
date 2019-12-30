@@ -345,31 +345,31 @@ kundi GrammarTests(unittest.TestCase):
         save_stdout = sys.stdout
         sys.stdout = StringIO.StringIO()
 
-        print 1, 2, 3
-        print 1, 2, 3,
-        print
-        print 0 ama 1, 0 ama 1,
-        print 0 ama 1
+        andika 1, 2, 3
+        andika 1, 2, 3,
+        andika
+        andika 0 ama 1, 0 ama 1,
+        andika 0 ama 1
 
         # 'print' '>>' test ','
-        print >> sys.stdout, 1, 2, 3
-        print >> sys.stdout, 1, 2, 3,
-        print >> sys.stdout
-        print >> sys.stdout, 0 ama 1, 0 ama 1,
-        print >> sys.stdout, 0 ama 1
+        andika >> sys.stdout, 1, 2, 3
+        andika >> sys.stdout, 1, 2, 3,
+        andika >> sys.stdout
+        andika >> sys.stdout, 0 ama 1, 0 ama 1,
+        andika >> sys.stdout, 0 ama 1
 
         # test printing to an instance
         kundi Gulp:
             eleza write(self, msg): pita
 
         gulp = Gulp()
-        print >> gulp, 1, 2, 3
-        print >> gulp, 1, 2, 3,
-        print >> gulp
-        print >> gulp, 0 ama 1, 0 ama 1,
-        print >> gulp, 0 ama 1
+        andika >> gulp, 1, 2, 3
+        andika >> gulp, 1, 2, 3,
+        andika >> gulp
+        andika >> gulp, 0 ama 1, 0 ama 1,
+        andika >> gulp, 0 ama 1
 
-        # test print >> Tupu
+        # test andika >> Tupu
         eleza driver():
             oldstdout = sys.stdout
             sys.stdout = Gulp()
@@ -381,13 +381,13 @@ kundi GrammarTests(unittest.TestCase):
 
         # we should see this once
         eleza tellme(file=sys.stdout):
-            print >> file, 'hello world'
+            andika >> file, 'hello world'
 
         driver()
 
         # we should sio see this at all
         eleza tellme(file=Tupu):
-            print >> file, 'goodbye universe'
+            andika >> file, 'goodbye universe'
 
         driver()
 
@@ -944,7 +944,7 @@ hello world
         # Test ifelse expressions kwenye various cases
         eleza _checkeval(msg, ret):
             "helper to check that evaluation of expressions ni done correctly"
-            print x
+            andika x
             rudisha ret
 
         self.assertEqual([ x() kila x kwenye lambda: Kweli, lambda: Uongo ikiwa x() ], [Kweli])

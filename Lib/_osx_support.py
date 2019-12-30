@@ -171,9 +171,9 @@ eleza _find_appropriate_compiler(_config_vars):
         # another location via CC).  If sio found, try using xcrun
         # to find an uninstalled clang (within a selected Xcode).
 
-        # NOTE: Cannot use subprocess here because of bootstrap
+        # NOTE: Cansio use subprocess here because of bootstrap
         # issues when building Python itself (and os.popen is
-        # implemented on top of subprocess na ni therefore not
+        # implemented on top of subprocess na ni therefore sio
         # usable kama well)
 
         cc = _find_build_tool('clang')
@@ -188,7 +188,7 @@ eleza _find_appropriate_compiler(_config_vars):
 
     ikiwa sio cc:
         ashiria SystemError(
-               "Cannot locate working compiler")
+               "Cansio locate working compiler")
 
     ikiwa cc != oldcc:
         # Found a replacement compiler.
@@ -233,7 +233,7 @@ eleza _remove_unsupported_archs(_config_vars):
         rudisha _config_vars
 
     ikiwa re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) ni sio Tupu:
-        # NOTE: Cannot use subprocess here because of bootstrap
+        # NOTE: Cansio use subprocess here because of bootstrap
         # issues when building Python itself
         status = os.system(
             """echo 'int main{};' | """
@@ -281,7 +281,7 @@ eleza _check_for_unavailable_sdk(_config_vars):
     # on the current machine it ni better to sio use an SDK
     # than to fail.  This ni particularly important with
     # the standalone Command Line Tools alternative to a
-    # full-blown Xcode install since the CLT packages do not
+    # full-blown Xcode install since the CLT packages do sio
     # provide SDKs.  If the SDK ni sio present, it ni assumed
     # that the header files na dev libs have been installed
     # to /usr na /System/Library by either a standalone CLT

@@ -111,7 +111,7 @@ kundi FunctionTestCase(unittest.TestCase):
         self.assertEqual(result, 21)
         self.assertEqual(type(result), int)
 
-        # You cannot assign character format codes kama restype any longer
+        # You cansio assign character format codes kama restype any longer
         self.assertRaises(TypeError, setattr, f, "restype", "i")
 
     eleza test_floatresult(self):
@@ -216,7 +216,7 @@ kundi FunctionTestCase(unittest.TestCase):
         kundi X(Structure):
             _fields_ = [("y", c_int)]
 
-        self.assertRaises(TypeError, f, X()) #cannot convert parameter
+        self.assertRaises(TypeError, f, X()) #cansio convert parameter
 
     ################################################################
     eleza test_shorts(self):

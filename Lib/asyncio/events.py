@@ -336,14 +336,14 @@ kundi AbstractEventLoop:
         ssl can be set to an SSLContext to enable SSL over the
         accepted connections.
 
-        reuse_address tells the kernel to reuse a local socket in
+        reuse_address tells the kernel to reuse a local socket kwenye
         TIME_WAIT state, without waiting kila its natural timeout to
         expire. If sio specified will automatically be set to Kweli on
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
         the same port kama other existing endpoints are bound to, so long as
-        they all set this flag when being created. This option ni not
+        they all set this flag when being created. This option ni sio
         supported on Windows.
 
         ssl_handshake_timeout ni the time kwenye seconds that an SSL server
@@ -430,14 +430,14 @@ kundi AbstractEventLoop:
         socket family AF_INET, socket.AF_INET6 ama socket.AF_UNIX depending on
         host (or family ikiwa specified), socket type SOCK_DGRAM.
 
-        reuse_address tells the kernel to reuse a local socket in
+        reuse_address tells the kernel to reuse a local socket kwenye
         TIME_WAIT state, without waiting kila its natural timeout to
         expire. If sio specified it will automatically be set to Kweli on
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
         the same port kama other existing endpoints are bound to, so long as
-        they all set this flag when being created. This option ni not
+        they all set this flag when being created. This option ni sio
         supported on Windows na some UNIX's. If the
         :py:data:`~socket.SO_REUSEPORT` constant ni sio defined then this
         capability ni unsupported.

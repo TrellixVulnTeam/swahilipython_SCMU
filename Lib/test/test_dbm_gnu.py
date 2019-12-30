@@ -136,11 +136,11 @@ kundi TestGdbm(unittest.TestCase):
             db[b'bytes key'] = b'bytes value'
         ukijumuisha gdbm.open(filename, 'r') kama db:
             ukijumuisha self.assertRaises(gdbm.error):
-                toa db[b'not exist key']
+                toa db[b'sio exist key']
             ukijumuisha self.assertRaises(gdbm.error):
                 toa db[b'bytes key']
             ukijumuisha self.assertRaises(gdbm.error):
-                db[b'not exist key'] = b'not exist value'
+                db[b'sio exist key'] = b'sio exist value'
 
     @unittest.skipUnless(TESTFN_NONASCII,
                          'requires OS support of non-ASCII encodings')

@@ -169,7 +169,7 @@ eleza main(del_exitfunc=Uongo):
                 print_exception()
                 rpc.response_queue.put((seq, Tupu))
             tatizo:
-                # Link didn't work, print same exception to __stderr__
+                # Link didn't work, andika same exception to __stderr__
                 traceback.print_exception(type, value, tb, file=sys.__stderr__)
                 exit()
             isipokua:

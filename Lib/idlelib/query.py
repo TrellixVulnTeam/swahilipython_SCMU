@@ -213,7 +213,7 @@ kundi ModuleName(Query):
             self.showerror("module sio found")
             rudisha Tupu
         ikiwa sio isinstance(spec.loader, importlib.abc.SourceLoader):
-            self.showerror("not a source-based module")
+            self.showerror("sio a source-based module")
             rudisha Tupu
         jaribu:
             file_path = spec.loader.get_filename(name)
@@ -263,7 +263,7 @@ kundi HelpSource(Query):
 
     eleza askfilename(self, filetypes, initdir, initfile):  # htest #
         # Extracted kutoka browse_file so can mock kila unittests.
-        # Cannot unittest kama cannot simulate button clicks.
+        # Cansio unittest kama cansio simulate button clicks.
         # Test by running htest, such kama by running this file.
         rudisha filedialog.Open(parent=self, filetypes=filetypes)\
                .show(initialdir=initdir, initialfile=initfile)

@@ -622,7 +622,7 @@ kundi TestNtpath(NtpathTestCase):
             #
             # Make sure the current folder isn't the root folder
             # (or any other volume root). The drive-relative
-            # locations below cannot then refer to mount points
+            # locations below cansio then refer to mount points
             #
             drive, path = ntpath.splitdrive(sys.executable)
             ukijumuisha support.change_cwd(ntpath.dirname(sys.executable)):

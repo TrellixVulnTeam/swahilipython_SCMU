@@ -1229,7 +1229,7 @@ kundi TestCase(object):
 
         standardMsg = ''
         ikiwa missing:
-            standardMsg = 'Missing: %s' % ','.join(safe_repr(m) kila m in
+            standardMsg = 'Missing: %s' % ','.join(safe_repr(m) kila m kwenye
                                                     missing)
         ikiwa mismatched:
             ikiwa standardMsg:
@@ -1492,7 +1492,7 @@ kundi _SubTest(TestCase):
         self.failureException = test_case.failureException
 
     eleza runTest(self):
-        ashiria NotImplementedError("subtests cannot be run directly")
+        ashiria NotImplementedError("subtests cansio be run directly")
 
     eleza _subDescription(self):
         parts = []

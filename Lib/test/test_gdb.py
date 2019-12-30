@@ -52,7 +52,7 @@ ikiwa 'Clang' kwenye platform.python_compiler() na sys.platform == 'darwin':
     ashiria unittest.SkipTest("test_gdb doesn't work correctly when python is"
                             " built ukijumuisha LLVM clang")
 
-ikiwa ((sysconfig.get_config_var('PGO_PROF_USE_FLAG') ama 'xxx') in
+ikiwa ((sysconfig.get_config_var('PGO_PROF_USE_FLAG') ama 'xxx') kwenye
     (sysconfig.get_config_var('PY_CORE_CFLAGS') ama '')):
     ashiria unittest.SkipTest("test_gdb ni sio reliable on PGO builds")
 
@@ -130,7 +130,7 @@ HAS_PYUP_PYDOWN = gdb_has_frame_select()
 
 BREAKPOINT_FN='builtin_id'
 
-@unittest.skipIf(support.PGO, "not useful kila PGO")
+@unittest.skipIf(support.PGO, "sio useful kila PGO")
 kundi DebuggerTests(unittest.TestCase):
 
     """Test that the debugger can debug Python."""
@@ -158,7 +158,7 @@ kundi DebuggerTests(unittest.TestCase):
         # emitted to stderr each time, alas.
 
         # Initially I had "--eval-command=endelea" here, but removed it to
-        # avoid repeated print komapoints when traversing hierarchical data
+        # avoid repeated andika komapoints when traversing hierarchical data
         # structures
 
         # Generate a list of commands kwenye gdb's language:
@@ -168,12 +168,12 @@ kundi DebuggerTests(unittest.TestCase):
                     # The tests assume that the first frame of printed
                     #  backtrace will sio contain program counter,
                     #  that ni however sio guaranteed by gdb
-                    #  therefore we need to use 'set print address off' to
+                    #  therefore we need to use 'set andika address off' to
                     #  make sure the counter ni sio there. For example:
                     # #0 kwenye PyObject_Print ...
                     #  ni assumed, but sometimes this can be e.g.
                     # #0 0x00003fffb7dd1798 kwenye PyObject_Print ...
-                    'set print address off',
+                    'set andika address off',
 
                     'run']
 
@@ -184,7 +184,7 @@ kundi DebuggerTests(unittest.TestCase):
         #   AssertionError: 'v@entry=()' != '()'
         # Disable this:
         ikiwa (gdb_major_version, gdb_minor_version) >= (7, 4):
-            commands += ['set print entry-values no']
+            commands += ['set andika entry-values no']
 
         ikiwa cmds_after_komapoint:
             ikiwa CET_PROTECTION:
@@ -197,7 +197,7 @@ kundi DebuggerTests(unittest.TestCase):
         isipokua:
             commands += ['backtrace']
 
-        # print commands
+        # andika commands
 
         # Use "commands" to generate the arguments ukijumuisha which to invoke "gdb":
         args = ['--eval-command=%s' % cmd kila cmd kwenye commands]
@@ -226,7 +226,7 @@ kundi DebuggerTests(unittest.TestCase):
         # frames back. When this happens, the Python bindings of gdb raise
         # an exception, making the test impossible to succeed.
         ikiwa "PC sio saved" kwenye err:
-            ashiria unittest.SkipTest("gdb cannot walk the frame object"
+            ashiria unittest.SkipTest("gdb cansio walk the frame object"
                                     " because the Program Counter is"
                                     " sio present")
 
@@ -338,7 +338,7 @@ kundi PrettyPrintTests(DebuggerTests):
 
     eleza test_strings(self):
         'Verify the pretty-printing of unicode strings'
-        # We cannot simply call locale.getpreferredencoding() here,
+        # We cansio simply call locale.getpreferredencoding() here,
         # kama GDB might have been linked against a different version
         # of Python ukijumuisha a different encoding na coercion policy
         # ukijumuisha respect to PEP 538 na PEP 540.
@@ -495,7 +495,7 @@ id(foo)''')
                               cmds_after_komapoint=cmds_after_komapoint)
         ikiwa exprepr:
             ikiwa gdb_repr == exprepr:
-                # gdb managed to print the value kwenye spite of the corruption;
+                # gdb managed to andika the value kwenye spite of the corruption;
                 # this ni good (see http://bugs.python.org/issue8330)
                 rudisha
 
@@ -547,7 +547,7 @@ id(foo)''')
         ikiwa sys.flags.no_site:
             self.skipTest("need site module, but -S option was used")
 
-        # (this was the issue causing tracebacks in
+        # (this was the issue causing tracebacks kwenye
         #  http://bugs.python.org/issue8032#msg100537 )
         gdb_repr, gdb_output = self.get_gdb_repr('id(__builtins__.help)', import_site=Kweli)
 
@@ -823,7 +823,7 @@ id(42)
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled ukijumuisha optimizations")
     # Some older versions of gdb will fail with
-    #  "Cannot find new threads: generic error"
+    #  "Cansio find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 kama a workaround
     eleza test_gc(self):
         'Verify that "py-bt" indicates ikiwa a thread ni garbage-collecting'
@@ -849,7 +849,7 @@ id(42)
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled ukijumuisha optimizations")
     # Some older versions of gdb will fail with
-    #  "Cannot find new threads: generic error"
+    #  "Cansio find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 kama a workaround
     eleza test_pycfunction(self):
         'Verify that "py-bt" displays invocations of PyCFunction instances'

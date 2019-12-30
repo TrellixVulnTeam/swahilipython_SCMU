@@ -1,7 +1,7 @@
 """
 Tests of regrtest.py.
 
-Note: test_regrtest cannot be run twice kwenye parallel.
+Note: test_regrtest cansio be run twice kwenye parallel.
 """
 
 agiza contextlib
@@ -364,7 +364,7 @@ kundi BaseTestCase(unittest.TestCase):
                             pita
                 """)
 
-        # test_regrtest cannot be run twice kwenye parallel because
+        # test_regrtest cansio be run twice kwenye parallel because
         # of setUp() na create_test()
         name = self.TESTNAME_PREFIX + name
         path = os.path.join(self.tmptestdir, name + '.py')
@@ -376,7 +376,7 @@ kundi BaseTestCase(unittest.TestCase):
                 fp.write(code)
         tatizo PermissionError kama exc:
             ikiwa sio sysconfig.is_python_build():
-                self.skipTest("cannot write %s: %s" % (path, exc))
+                self.skipTest("cansio write %s: %s" % (path, exc))
             raise
         rudisha name
 

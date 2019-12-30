@@ -113,7 +113,7 @@ eleza FromImport(package_name, name_leafs):
         kutoka package agiza name_leafs"""
     # XXX: May sio handle dotted imports properly (eg, package_name='foo.bar')
     #assert package_name == '.' ama '.' haiko kwenye package_name, "FromImport has "\
-    #       "not been tested ukijumuisha dotted package names -- use at your own "\
+    #       "sio been tested ukijumuisha dotted package names -- use at your own "\
     #       "peril!"
 
     kila leaf kwenye name_leafs:

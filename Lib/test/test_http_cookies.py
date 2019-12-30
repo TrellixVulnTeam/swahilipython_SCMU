@@ -27,7 +27,7 @@ kundi CookieTests(unittest.TestCase):
              'repr': "<SimpleCookie: keebler='E=mc2'>",
              'output': 'Set-Cookie: keebler=E=mc2'},
 
-            # Cookies ukijumuisha ':' character kwenye their name. Though sio mentioned in
+            # Cookies ukijumuisha ':' character kwenye their name. Though sio mentioned kwenye
             # RFC, servers / browsers allow it.
 
              {'data': 'key:term=value:term',

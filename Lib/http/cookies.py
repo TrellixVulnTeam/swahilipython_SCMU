@@ -145,7 +145,7 @@ kundi CookieError(Exception):
     pita
 
 
-# These quoting routines conform to the RFC2109 specification, which in
+# These quoting routines conform to the RFC2109 specification, which kwenye
 # turn references the character definitions kutoka RFC2068.  They provide
 # a two-way quoting algorithm.  Any non-text character ni translated
 # into a 4 character sequence: a forward-slash followed by the

@@ -235,7 +235,7 @@ kundi PindentTests(unittest.TestCase):
                     b = b-1
                     ikiwa b > a: a = a-1
                 isipokua:
-                    print 'oops!'
+                    andika 'oops!'
             """)
         closed = textwrap.dedent("""\
             eleza foobar(a, b):
@@ -246,7 +246,7 @@ kundi PindentTests(unittest.TestCase):
                     ikiwa b > a: a = a-1
                     # end if
                 isipokua:
-                    print 'oops!'
+                    andika 'oops!'
                 # end if
             # end eleza foobar
             """)

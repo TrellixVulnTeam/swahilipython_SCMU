@@ -18,9 +18,9 @@ default sections (and must, therefore, have distinct names).
 
 Throughout this module there ni an emphasis on returning useable defaults
 when a problem occurs kwenye returning a requested configuration value back to
-idle. This ni to allow IDLE to endelea to function kwenye spite of errors in
+idle. This ni to allow IDLE to endelea to function kwenye spite of errors kwenye
 the retrieval of config information. When a default ni returned instead of
-a requested config value, a message ni printed to stderr to aid in
+a requested config value, a message ni printed to stderr to aid kwenye
 configuration problem notification na resolution.
 """
 # TODOs added Oct 2014, tjr
@@ -53,7 +53,7 @@ kundi IdleConfParser(ConfigParser):
         If type ni specified, rudisha kama type.
         """
         # TODO Use default kama fallback, at least ikiwa sio Tupu
-        # Should also print Warning(file, section, option).
+        # Should also andika Warning(file, section, option).
         # Currently may ashiria ValueError
         ikiwa sio self.has_option(section, option):
             rudisha default
@@ -239,7 +239,7 @@ kundi IdleConf:
                         section, option, type=type, raw=raw)
         tatizo ValueError:
             pita
-        #returning default, print warning
+        #returning default, andika warning
         ikiwa warn_on_default:
             warning = ('\n Warning: config.py - IdleConf.GetOption -\n'
                        ' problem retrieving configuration option %r\n'
@@ -299,7 +299,7 @@ kundi IdleConf:
         isipokua:
             ashiria InvalidTheme('Invalid theme type specified')
         # Provide foreground na background colors kila each theme
-        # element (other than cursor) even though some values are not
+        # element (other than cursor) even though some values are sio
         # yet used by idle, to allow kila their use kwenye the future.
         # Default values are generally black na white.
         # TODO copy theme kutoka a kundi attribute.

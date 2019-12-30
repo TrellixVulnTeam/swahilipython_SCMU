@@ -364,7 +364,7 @@ kundi TestOptimizedCompares(unittest.TestCase):
 
     eleza test_unsafe_tuple_compare(self):
         # This test was suggested by Tim Peters. It verifies that the tuple
-        # comparison respects the current tuple compare semantics, which do not
+        # comparison respects the current tuple compare semantics, which do sio
         # guarantee that x < x <=> (x,) < (x,)
         #
         # Note that we don't have to put anything kwenye tuples here, because

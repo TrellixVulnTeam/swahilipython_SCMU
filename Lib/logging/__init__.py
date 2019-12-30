@@ -3,7 +3,7 @@
 # Permission to use, copy, modify, na distribute this software na its
 # documentation kila any purpose na without fee ni hereby granted,
 # provided that the above copyright notice appear kwenye all copies na that
-# both that copyright notice na this permission notice appear in
+# both that copyright notice na this permission notice appear kwenye
 # supporting documentation, na that the name of Vinay Sajip
 # sio be used kwenye advertising ama publicity pertaining to distribution
 # of the software without specific, written prior permission.
@@ -15,7 +15,7 @@
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 """
-Logging package kila Python. Based on PEP 282 na comments thereto in
+Logging package kila Python. Based on PEP 282 na comments thereto kwenye
 comp.lang.python.
 
 Copyright (C) 2001-2017 Vinay Sajip. All Rights Reserved.
@@ -806,7 +806,7 @@ kundi Filterer(object):
             ikiwa hasattr(f, 'filter'):
                 result = f.filter(record)
             isipokua:
-                result = f(record) # assume callable - will ashiria ikiwa not
+                result = f(record) # assume callable - will ashiria ikiwa sio
             ikiwa sio result:
                 rv = Uongo
                 koma
@@ -991,7 +991,7 @@ kundi Handler(Filterer):
         This method should be called kutoka handlers when an exception is
         encountered during an emit() call. If raiseExceptions ni false,
         exceptions get silently ignored. This ni what ni mostly wanted
-        kila a logging system - most users will sio care about errors in
+        kila a logging system - most users will sio care about errors kwenye
         the logging system, they are more interested kwenye application errors.
         You could, however, replace this ukijumuisha a custom handler ikiwa you wish.
         The record which was being processed ni pitaed kwenye to this method.
@@ -1003,7 +1003,7 @@ kundi Handler(Filterer):
                 traceback.print_exception(t, v, tb, Tupu, sys.stderr)
                 sys.stderr.write('Call stack:\n')
                 # Walk the stack frame up until we're out of logging,
-                # so kama to print the calling context.
+                # so kama to andika the calling context.
                 frame = tb.tb_frame
                 wakati (frame na os.path.dirname(frame.f_code.co_filename) ==
                        __path__[0]):
@@ -1022,7 +1022,7 @@ kundi Handler(Filterer):
                 tatizo RecursionError:  # See issue 36272
                     raise
                 tatizo Exception:
-                    sys.stderr.write('Unable to print the message na arguments'
+                    sys.stderr.write('Unable to andika the message na arguments'
                                      ' - possible formatting error.\nUse the'
                                      ' traceback above to help find the error.\n'
                                     )
@@ -1126,7 +1126,7 @@ kundi FileHandler(StreamHandler):
         """
         Open the specified file na use it kama the stream kila logging.
         """
-        # Issue #27493: add support kila Path objects to be pitaed in
+        # Issue #27493: add support kila Path objects to be pitaed kwenye
         filename = os.fspath(filename)
         #keep the absolute path, otherwise derived classes which use this
         #may come a cropper when the current directory changes
@@ -1721,14 +1721,14 @@ kundi Logger(Filterer):
         # However, the root logger's kundi has its own __reduce__ method.
         ikiwa getLogger(self.name) ni sio self:
             agiza pickle
-            ashiria pickle.PicklingError('logger cannot be pickled')
+            ashiria pickle.PicklingError('logger cansio be pickled')
         rudisha getLogger, (self.name,)
 
 
 kundi RootLogger(Logger):
     """
     A root logger ni sio that different to any other logger, tatizo that
-    it must have a logging level na there ni only one instance of it in
+    it must have a logging level na there ni only one instance of it kwenye
     the hierarchy.
     """
     eleza __init__(self, level):

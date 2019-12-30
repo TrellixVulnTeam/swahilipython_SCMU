@@ -334,7 +334,7 @@ kundi ExecutorShutdownTest:
                        context=getattr(self, "ctx", "")))
         # Errors kwenye atexit hooks don't change the process exit code, check
         # stderr manually.
-        self.assertIn("RuntimeError: cannot schedule new futures", err.decode())
+        self.assertIn("RuntimeError: cansio schedule new futures", err.decode())
         self.assertEqual(out.strip(), b"runtime-error")
 
     eleza test_hang_issue12364(self):
@@ -960,7 +960,7 @@ kundi ExecutorDeadlockTest:
         # extensive testing kila deadlock caused by crashes kwenye a pool.
         self.executor.shutdown(wait=Kweli)
         crash_cases = [
-            # Check problem occurring wakati pickling a task in
+            # Check problem occurring wakati pickling a task kwenye
             # the task_handler thread
             (id, (ErrorAtPickle(),), PicklingError, "error at task pickle"),
             # Check problem occurring wakati unpickling a task on workers
@@ -985,7 +985,7 @@ kundi ExecutorDeadlockTest:
              "exit during result pickle on worker"),
             (_return_instance, (ErrorAtPickle,), PicklingError,
              "error during result pickle on worker"),
-            # Check problem occurring wakati unpickling a task in
+            # Check problem occurring wakati unpickling a task kwenye
             # the result_handler thread
             (_return_instance, (ErrorAtUnpickle,), BrokenProcessPool,
              "error during result unpickle kwenye result_handler"),

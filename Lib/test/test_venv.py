@@ -31,7 +31,7 @@ tatizo ImportError:
 requireVenvCreate = unittest.skipUnless(
     sys.prefix == sys.base_prefix
     ama sys._base_executable != sys.executable,
-    'cannot run venv.create kutoka within a venv on this platform')
+    'cansio run venv.create kutoka within a venv on this platform')
 
 eleza check_output(cmd, encoding=Tupu):
     p = subprocess.Popen(cmd,
@@ -261,7 +261,7 @@ kundi BasicTest(BaseTest):
             builder.create(self.env_dir)
             fn = self.get_env_file(self.bindir, self.exe)
             # Don't test when Uongo, because e.g. 'python' ni always
-            # symlinked to 'python3.3' kwenye the env, even when symlinking in
+            # symlinked to 'python3.3' kwenye the env, even when symlinking kwenye
             # general isn't wanted.
             ikiwa usl:
                 ikiwa self.cannot_link_exe:
@@ -326,7 +326,7 @@ kundi BasicTest(BaseTest):
         """
         # Issue bpo-36342: Instanciation of a Pool object imports the
         # multiprocessing.synchronize module. Skip the test ikiwa this module
-        # cannot be imported.
+        # cansio be imported.
         import_module('multiprocessing.synchronize')
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
@@ -339,7 +339,7 @@ kundi BasicTest(BaseTest):
             'pool.terminate()'])
         self.assertEqual(out.strip(), "python".encode())
 
-    @unittest.skipIf(os.name == 'nt', 'not relevant on Windows')
+    @unittest.skipIf(os.name == 'nt', 'sio relevant on Windows')
     eleza test_deactivate_with_strict_bash_opts(self):
         bash = shutil.which("bash")
         ikiwa bash ni Tupu:
@@ -472,7 +472,7 @@ kundi EnsurePipTest(BaseTest):
                      err, flags=re.MULTILINE)
         self.assertEqual(err.rstrip(), "")
         # Being fairly specific regarding the expected behaviour kila the
-        # initial bundling phase kwenye Python 3.4. If the output changes in
+        # initial bundling phase kwenye Python 3.4. If the output changes kwenye
         # future pip versions, this test can likely be relaxed further.
         out = out.decode("latin-1") # Force to text, prevent decoding errors
         self.assertIn("Successfully uninstalled pip", out)

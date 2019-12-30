@@ -86,7 +86,7 @@ kundi StringprepTests(unittest.TestCase):
         #     data = "".join(data)
         #     h = hashlib.sha1()
         #     h.update(data)
-        #     print p, h.hexdigest()
+        #     andika p, h.hexdigest()
 
 ikiwa __name__ == '__main__':
     unittest.main()

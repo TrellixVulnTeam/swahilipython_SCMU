@@ -116,7 +116,7 @@ eleza _parse(tokens, priority=-1):
     result = ''
     nexttok = next(tokens)
     wakati nexttok == '!':
-        result += 'not '
+        result += 'sio '
         nexttok = next(tokens)
 
     ikiwa nexttok == '(':
@@ -773,7 +773,7 @@ eleza npgettext(context, msgid1, msgid2, n):
 #    agiza gettext
 #    cat = gettext.Catalog(PACKAGE, localedir=LOCALEDIR)
 #    _ = cat.gettext
-#    print _('Hello World')
+#    andika _('Hello World')
 
 # The resulting catalog object currently don't support access through a
 # dictionary API, which was supported (but apparently unused) kwenye GNOME

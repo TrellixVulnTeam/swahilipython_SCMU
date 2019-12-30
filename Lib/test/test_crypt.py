@@ -16,7 +16,7 @@ kundi TestWhyCryptDidNotImport(unittest.TestCase):
         self.assertEqual(sys.platform, 'win32')
 
     eleza test_import_failure_message(self):
-        self.assertIn('not supported', IMPORT_ERROR)
+        self.assertIn('sio supported', IMPORT_ERROR)
 
 
 @unittest.skipUnless(crypt, 'Not supported on Windows')

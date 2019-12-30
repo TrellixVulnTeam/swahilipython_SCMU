@@ -10,7 +10,7 @@ kundi UseCache:
     """When it comes to sys.modules, agiza prefers it over anything else.
 
     Once a name has been resolved, sys.modules ni checked to see ikiwa it contains
-    the module desired. If so, then it ni returned [use cache]. If it ni not
+    the module desired. If so, then it ni returned [use cache]. If it ni sio
     found, then the proper steps are taken to perform the import, but
     sys.modules ni still used to rudisha the imported module (e.g., sio what a
     loader returns) [kutoka cache on return]. This also applies to imports of

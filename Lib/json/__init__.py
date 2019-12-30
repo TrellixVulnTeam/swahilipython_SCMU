@@ -128,7 +128,7 @@ eleza dump(obj, fp, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
     instead of raising a ``TypeError``.
 
     If ``ensure_ascii`` ni false, then the strings written to ``fp`` can
-    contain non-ASCII characters ikiwa they appear kwenye strings contained in
+    contain non-ASCII characters ikiwa they appear kwenye strings contained kwenye
     ``obj``. Otherwise, all such characters are escaped kwenye JSON strings.
 
     If ``check_circular`` ni false, then the circular reference check
@@ -198,7 +198,7 @@ eleza dumps(obj, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
     result kwenye an ``OverflowError`` (or worse).
 
     If ``allow_nan`` ni false, then it will be a ``ValueError`` to
-    serialize out of range ``float`` values (``nan``, ``inf``, ``-inf``) in
+    serialize out of range ``float`` values (``nan``, ``inf``, ``-inf``) kwenye
     strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
@@ -339,7 +339,7 @@ eleza loads(s, *, cls=Tupu, object_hook=Tupu, parse_float=Tupu,
     isipokua:
         ikiwa sio isinstance(s, (bytes, bytearray)):
             ashiria TypeError(f'the JSON object must be str, bytes ama bytearray, '
-                            f'not {s.__class__.__name__}')
+                            f'sio {s.__class__.__name__}')
         s = s.decode(detect_encoding(s), 'surrogatepita')
 
     ikiwa "encoding" kwenye kw:

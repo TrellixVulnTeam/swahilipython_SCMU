@@ -574,7 +574,7 @@ kundi TestSupport(unittest.TestCase):
             self.assertUongo(support.match_test(test_chdir))
 
     eleza test_fd_count(self):
-        # We cannot test the absolute value of fd_count(): on old Linux
+        # We cansio test the absolute value of fd_count(): on old Linux
         # kernel ama glibc versions, os.urandom() keeps a FD open on
         # /dev/urandom device na Python has 4 FD opens instead of 3.
         start = support.fd_count()

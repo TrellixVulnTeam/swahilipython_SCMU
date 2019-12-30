@@ -113,7 +113,7 @@ kundi Lock(_ContextManagerMixin):
     It ni created kwenye the unlocked state.  It has two basic methods,
     acquire() na release().  When the state ni unlocked, acquire()
     changes the state to locked na returns immediately.  When the
-    state ni locked, acquire() blocks until a call to release() in
+    state ni locked, acquire() blocks until a call to release() kwenye
     another coroutine changes it to unlocked, then the acquire() call
     resets it to locked na returns.  The release() method should only
     be called kwenye the locked state; it changes the state to unlocked
@@ -363,7 +363,7 @@ kundi Condition(_ContextManagerMixin):
         awakened, it re-acquires the lock na returns Kweli.
         """
         ikiwa sio self.locked():
-            ashiria RuntimeError('cannot wait on un-acquired lock')
+            ashiria RuntimeError('cansio wait on un-acquired lock')
 
         self.release()
         jaribu:
@@ -414,7 +414,7 @@ kundi Condition(_ContextManagerMixin):
         sio release the lock, its caller should.
         """
         ikiwa sio self.locked():
-            ashiria RuntimeError('cannot notify on un-acquired lock')
+            ashiria RuntimeError('cansio notify on un-acquired lock')
 
         idx = 0
         kila fut kwenye self._waiters:

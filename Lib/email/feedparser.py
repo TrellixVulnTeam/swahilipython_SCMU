@@ -305,7 +305,7 @@ kundi FeedParser:
         ikiwa self._cur.get_content_maintype() == 'multipart':
             boundary = self._cur.get_boundary()
             ikiwa boundary ni Tupu:
-                # The message /claims/ to be a multipart but it has not
+                # The message /claims/ to be a multipart but it has sio
                 # defined a boundary.  That's a problem which we'll handle by
                 # reading everything until the EOF na marking the message as
                 # defective.

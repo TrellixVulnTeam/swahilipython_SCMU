@@ -113,7 +113,7 @@ kundi PrettyPrinter:
             Attempted maximum number of columns kwenye the output.
 
         depth
-            The maximum depth to print out nested structures.
+            The maximum depth to andika out nested structures.
 
         stream
             The desired output stream.  If omitted (or false), the standard

@@ -121,5 +121,5 @@ ikiwa __name__ == '__main__':
     t = Tester()
     t.run()
     # simpler
-##    print 'color:', askcolor()
-##    print 'color:', askcolor()
+##    andika 'color:', askcolor()
+##    andika 'color:', askcolor()

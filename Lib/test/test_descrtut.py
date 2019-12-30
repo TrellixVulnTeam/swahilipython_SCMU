@@ -67,7 +67,7 @@ statement ama the built-in function eval():
 
     >>> andika(sorted(a.keys()))
     [1, 2]
-    >>> a['print'] = print              # need the print function here
+    >>> a['print'] = andika              # need the andika function here
     >>> exec("x = 3; andika(x)", a)
     3
     >>> andika(sorted(a.keys(), key=lambda x: (str(type(x)), x)))
@@ -126,7 +126,7 @@ test_2 = """
 
 The __slots__ declaration takes a list of instance variables, na reserves
 space kila exactly these kwenye the instance. When __slots__ ni used, other
-instance variables cannot be assigned to:
+instance variables cansio be assigned to:
 
     >>> a = defaultdict2(default=0.0)
     >>> a[1]
@@ -212,7 +212,7 @@ You can get the information kutoka the list type:
      'reverse',
      'sort']
 
-The new introspection API gives more information than the old one:  in
+The new introspection API gives more information than the old one:  kwenye
 addition to the regular methods, it also shows the methods that are
 normally invoked through special notations, e.g. __iadd__ (+=), __len__
 (len), __ne__ (!=). You can invoke any method kutoka this list directly:

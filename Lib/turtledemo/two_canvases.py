@@ -2,7 +2,7 @@
 
 Use TurtleScreen na RawTurtle to draw on two
 distinct canvases kwenye a separate windows. The
-new window must be separately closed in
+new window must be separately closed kwenye
 addition to pressing the STOP button.
 """
 

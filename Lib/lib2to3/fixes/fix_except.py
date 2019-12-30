@@ -63,7 +63,7 @@ kundi FixExcept(fixer_base.BaseFix):
                     N.replace(new_N)
                     new_N = new_N.clone()
 
-                    # Insert "old_N = new_N" kama the first statement in
+                    # Insert "old_N = new_N" kama the first statement kwenye
                     #  the tatizo body. This loop skips leading whitespace
                     #  na indents
                     #TODO(cwinter) suite-cleanup

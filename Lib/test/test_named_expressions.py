@@ -32,7 +32,7 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
     eleza test_named_expression_invalid_06(self):
         code = """((a, b) := (1, 2))"""
 
-        ukijumuisha self.assertRaisesRegex(SyntaxError, "cannot use named assignment ukijumuisha tuple"):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, "cansio use named assignment ukijumuisha tuple"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_07(self):
@@ -90,7 +90,7 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
         code = """(lambda: x := 1)"""
 
         ukijumuisha self.assertRaisesRegex(SyntaxError,
-            "cannot use named assignment ukijumuisha lambda"):
+            "cansio use named assignment ukijumuisha lambda"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_16(self):
@@ -111,7 +111,7 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
         """
 
         ukijumuisha self.assertRaisesRegex(SyntaxError,
-            "assignment expression within a comprehension cannot be used kwenye a kundi body"):
+            "assignment expression within a comprehension cansio be used kwenye a kundi body"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_rebinding_comprehension_iteration_variable(self):
@@ -126,7 +126,7 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
                 "[(i, j) kila i kwenye range(5) kila j kwenye range(5) ikiwa Kweli ama (i:=10)]"),
         ]
         kila case, target, code kwenye cases:
-            msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
+            msg = f"assignment expression cansio rebind comprehension iteration variable '{target}'"
             ukijumuisha self.subTest(case=case):
                 ukijumuisha self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {})
@@ -137,7 +137,7 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
             ("Inner unpacking reuse", 'j', "[i kila i kwenye range(5) ikiwa (j := 0) kila j, k kwenye [(0, 1)]]"),
         ]
         kila case, target, code kwenye cases:
-            msg = f"comprehension inner loop cannot rebind assignment expression target '{target}'"
+            msg = f"comprehension inner loop cansio rebind assignment expression target '{target}'"
             ukijumuisha self.subTest(case=case):
                 ukijumuisha self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
@@ -158,7 +158,7 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
             ("Nested comprehension condition", "[i kila i kwenye [j kila j kwenye range(5) ikiwa (j := Kweli)]]"),
             ("Nested comprehension body", "[i kila i kwenye [(j := Kweli) kila j kwenye range(5)]]"),
         ]
-        msg = "assignment expression cannot be used kwenye a comprehension iterable expression"
+        msg = "assignment expression cansio be used kwenye a comprehension iterable expression"
         kila case, code kwenye cases:
             ukijumuisha self.subTest(case=case):
                 ukijumuisha self.assertRaisesRegex(SyntaxError, msg):

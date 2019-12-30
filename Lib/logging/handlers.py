@@ -3,7 +3,7 @@
 # Permission to use, copy, modify, na distribute this software na its
 # documentation kila any purpose na without fee ni hereby granted,
 # provided that the above copyright notice appear kwenye all copies na that
-# both that copyright notice na this permission notice appear in
+# both that copyright notice na this permission notice appear kwenye
 # supporting documentation, na that the name of Vinay Sajip
 # sio be used kwenye advertising ama publicity pertaining to distribution
 # of the software without specific, written prior permission.
@@ -125,7 +125,7 @@ kundi RotatingFileHandler(BaseRotatingHandler):
         values of maxBytes na backupCount to allow the file to rollover at
         a predetermined size.
 
-        Rollover occurs whenever the current log file ni nearly maxBytes in
+        Rollover occurs whenever the current log file ni nearly maxBytes kwenye
         length. If backupCount ni >= 1, the system will successively create
         new files ukijumuisha the same pathname kama the base file, but ukijumuisha extensions
         ".1", ".2" etc. appended to it. For example, ukijumuisha a backupCount of 5
@@ -423,7 +423,7 @@ kundi WatchedFileHandler(logging.FileHandler):
     opened to get a new stream.
 
     This handler ni sio appropriate kila use under Windows, because
-    under Windows open files cannot be moved ama renamed - logging
+    under Windows open files cansio be moved ama renamed - logging
     opens the files ukijumuisha exclusive locks - na so there ni no need
     kila such a handler. Furthermore, ST_INO ni sio supported under
     Windows; stat always returns zero kila this value.
@@ -1083,10 +1083,10 @@ kundi NTEventLogHandler(logging.Handler):
         Return the event type kila the record.
 
         Override this ikiwa you want to specify your own types. This version does
-        a mapping using the handler's typemap attribute, which ni set up in
+        a mapping using the handler's typemap attribute, which ni set up kwenye
         __init__() to a dictionary which contains mappings kila DEBUG, INFO,
         WARNING, ERROR na CRITICAL. If you are using your own levels you will
-        either need to override this method ama place a suitable dictionary in
+        either need to override this method ama place a suitable dictionary kwenye
         the handler's typemap attribute.
         """
         rudisha self.typemap.get(record.levelno, self.deftype)

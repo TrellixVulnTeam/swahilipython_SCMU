@@ -427,7 +427,7 @@ eleza main(args=Tupu):
                            help='Try to use symlinks rather than copies, '
                                 'when symlinks are sio the default kila '
                                 'the platform.')
-        group.add_argument('--copies', default=not use_symlinks,
+        group.add_argument('--copies', default=sio use_symlinks,
                            action='store_false', dest='symlinks',
                            help='Try to use copies rather than symlinks, '
                                 'even when symlinks are the default kila '
@@ -452,7 +452,7 @@ eleza main(args=Tupu):
                                  'this environment.')
         options = parser.parse_args(args)
         ikiwa options.upgrade na options.clear:
-            ashiria ValueError('you cannot supply --upgrade na --clear together.')
+            ashiria ValueError('you cansio supply --upgrade na --clear together.')
         builder = EnvBuilder(system_site_packages=options.system_site,
                              clear=options.clear,
                              symlinks=options.symlinks,

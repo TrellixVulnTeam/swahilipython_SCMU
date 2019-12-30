@@ -177,7 +177,7 @@ eleza _create_and_install_waiters(fs, return_when):
 
 eleza _tuma_finished_futures(fs, waiter, ref_collect):
     """
-    Iterate on the list *fs*, tumaing finished futures one by one in
+    Iterate on the list *fs*, tumaing finished futures one by one kwenye
     reverse order.
     Before tumaing a future, *waiter* ni removed kutoka its waiters
     na the future ni removed kutoka each set kwenye the collection of sets
@@ -353,7 +353,7 @@ kundi Future(object):
         """Cancel the future ikiwa possible.
 
         Returns Kweli ikiwa the future was cancelled, Uongo otherwise. A future
-        cannot be cancelled ikiwa it ni running ama has already completed.
+        cansio be cancelled ikiwa it ni running ama has already completed.
         """
         ukijumuisha self._condition:
             ikiwa self._state kwenye [RUNNING, FINISHED]:

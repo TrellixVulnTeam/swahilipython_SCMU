@@ -386,9 +386,9 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
         rudisha body
 
     @unittest.skipIf(sys.platform == 'darwin',
-                     'undecodable name cannot always be decoded on macOS')
+                     'undecodable name cansio always be decoded on macOS')
     @unittest.skipIf(sys.platform == 'win32',
-                     'undecodable name cannot be decoded on win32')
+                     'undecodable name cansio be decoded on win32')
     @unittest.skipUnless(support.TESTFN_UNDECODABLE,
                          'need support.TESTFN_UNDECODABLE')
     eleza test_undecodable_filename(self):
@@ -619,7 +619,7 @@ kundi CGIHTTPServerTestCase(BaseTestCase):
 
         jaribu:
             # The python executable path ni written kama the first line of the
-            # CGI Python script. The encoding cookie cannot be used, na so the
+            # CGI Python script. The encoding cookie cansio be used, na so the
             # path should be encodable to the default script encoding (utf-8)
             self.pythonexe.encode('utf-8')
         tatizo UnicodeEncodeError:

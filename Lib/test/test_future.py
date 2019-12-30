@@ -78,17 +78,17 @@ kundi FutureTest(unittest.TestCase):
         # test that the parser.c::future_hack function works kama expected
         # Note: although this test must pita, it's sio testing the original
         #       bug kama of 2.6 since the ukijumuisha statement ni sio optional na
-        #       the parser hack disabled. If a new keyword ni introduced in
+        #       the parser hack disabled. If a new keyword ni introduced kwenye
         #       2.6, change this to refer to the new future import.
         jaribu:
-            exec("kutoka __future__ agiza print_function; print 0")
+            exec("kutoka __future__ agiza print_function; andika 0")
         tatizo SyntaxError:
             pita
         isipokua:
             self.fail("syntax error didn't occur")
 
         jaribu:
-            exec("kutoka __future__ agiza (print_function); print 0")
+            exec("kutoka __future__ agiza (print_function); andika 0")
         tatizo SyntaxError:
             pita
         isipokua:
@@ -169,8 +169,8 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
         eq('1 >> v2')
         eq('1 % finished')
         eq('1 + v2 - v3 * 4 ^ 5 ** v6 / 7 // 8')
-        eq('not great')
-        eq('not sio great')
+        eq('sio great')
+        eq('sio sio great')
         eq('~great')
         eq('+value')
         eq('++value')

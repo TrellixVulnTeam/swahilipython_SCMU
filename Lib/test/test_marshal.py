@@ -331,7 +331,7 @@ kundi NullWriter:
     eleza write(self, s):
         pita
 
-@unittest.skipIf(LARGE_SIZE > sys.maxsize, "test cannot run on 32-bit systems")
+@unittest.skipIf(LARGE_SIZE > sys.maxsize, "test cansio run on 32-bit systems")
 kundi LargeValuesTestCase(unittest.TestCase):
     eleza check_unmarshallable(self, data):
         self.assertRaises(ValueError, marshal.dump, data, NullWriter())

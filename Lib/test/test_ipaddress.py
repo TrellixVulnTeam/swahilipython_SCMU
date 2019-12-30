@@ -29,7 +29,7 @@ kundi BaseTestCase(unittest.TestCase):
     # move the affected examples to the newly appropriate test case.
 
     # There ni some duplication between the original relatively ad hoc
-    # test suite na the new systematic tests. While some redundancy in
+    # test suite na the new systematic tests. While some redundancy kwenye
     # testing ni considered preferable to accidentally deleting a valid
     # test, the original test suite will likely be reduced over time as
     # redundant tests are identified.
@@ -72,7 +72,7 @@ kundi BaseTestCase(unittest.TestCase):
 kundi CommonTestMixin:
 
     eleza test_empty_address(self):
-        ukijumuisha self.assertAddressError("Address cannot be empty"):
+        ukijumuisha self.assertAddressError("Address cansio be empty"):
             self.factory("")
 
     eleza test_floats_rejected(self):
@@ -418,8 +418,8 @@ kundi NetmaskTestMixin_v4(CommonTestMixin_v4):
             ukijumuisha self.assertAddressError(details):
                 self.factory(addr)
 
-        assertBadAddress("/", "Address cannot be empty")
-        assertBadAddress("/8", "Address cannot be empty")
+        assertBadAddress("/", "Address cansio be empty")
+        assertBadAddress("/8", "Address cansio be empty")
         assertBadAddress("bogus", "Expected 4 octets")
         assertBadAddress("google.com", "Expected 4 octets")
         assertBadAddress("10/8", "Expected 4 octets")
@@ -561,15 +561,15 @@ kundi NetmaskTestMixin_v6(CommonTestMixin_v6):
             ukijumuisha self.assertAddressError(details):
                 self.factory(addr)
 
-        assertBadAddress("/", "Address cannot be empty")
-        assertBadAddress("/8", "Address cannot be empty")
+        assertBadAddress("/", "Address cansio be empty")
+        assertBadAddress("/8", "Address cansio be empty")
         assertBadAddress("google.com", "At least 3 parts")
         assertBadAddress("1.2.3.4", "At least 3 parts")
         assertBadAddress("10/8", "At least 3 parts")
         assertBadAddress("1234:axy::b", "Only hex digits")
 
     eleza test_valid_netmask(self):
-        # We only support CIDR kila IPv6, because expanded netmasks are not
+        # We only support CIDR kila IPv6, because expanded netmasks are sio
         # standard notation.
         self.assertEqual(str(self.factory('2001:db8::/32')), '2001:db8::/32')
         kila i kwenye range(0, 129):

@@ -58,7 +58,7 @@ kundi PyPIRCCommand(Command):
             ikiwa 'distutils' kwenye sections:
                 # let's get the list of servers
                 index_servers = config.get('distutils', 'index-servers')
-                _servers = [server.strip() kila server in
+                _servers = [server.strip() kila server kwenye
                             index_servers.split('\n')
                             ikiwa server.strip() != '']
                 ikiwa _servers == []:

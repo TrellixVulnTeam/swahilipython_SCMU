@@ -256,7 +256,7 @@ kundi BCPPCompiler(CCompiler) :
             # 'spawn()', so constructing the argument list ni a bit
             # awkward.  Note that doing the obvious thing na jamming all
             # the filenames na commas into one argument would be wrong,
-            # because 'spawn()' would quote any filenames ukijumuisha spaces in
+            # because 'spawn()' would quote any filenames ukijumuisha spaces kwenye
             # them.  Arghghh!.  Apparently it works fine kama coded...
 
             # name of dll/exe file

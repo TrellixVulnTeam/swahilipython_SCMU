@@ -15,7 +15,7 @@ kila fieldDesc kwenye cur.description:
 andika() # Finish the header ukijumuisha a newline.
 andika('-' * 78)
 
-# For each row, print the value of each field left-justified within
+# For each row, andika the value of each field left-justified within
 # the maximum possible width of that field.
 fieldIndices = range(len(cur.description))
 kila row kwenye cur:

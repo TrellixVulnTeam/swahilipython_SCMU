@@ -102,9 +102,9 @@ kundi EncodingDetails(_EncodingDetails):
         "andika(sys.stdin.encoding + ':' + sys.stdin.errors)",
         "andika(sys.stdout.encoding + ':' + sys.stdout.errors)",
         "andika(sys.stderr.encoding + ':' + sys.stderr.errors)",
-        "andika(os.environ.get('LANG', 'not set'))",
-        "andika(os.environ.get('LC_CTYPE', 'not set'))",
-        "andika(os.environ.get('LC_ALL', 'not set'))",
+        "andika(os.environ.get('LANG', 'sio set'))",
+        "andika(os.environ.get('LC_CTYPE', 'sio set'))",
+        "andika(os.environ.get('LC_ALL', 'sio set'))",
     ])
 
     @classmethod
@@ -116,12 +116,12 @@ kundi EncodingDetails(_EncodingDetails):
         stream_info = 2*[_stream.format("surrogateescape")]
         # stderr should always use backslashreplace
         stream_info.append(_stream.format("backslashreplace"))
-        expected_lang = env_vars.get("LANG", "not set")
+        expected_lang = env_vars.get("LANG", "sio set")
         ikiwa coercion_expected:
             expected_lc_ctype = CLI_COERCION_TARGET
         isipokua:
-            expected_lc_ctype = env_vars.get("LC_CTYPE", "not set")
-        expected_lc_all = env_vars.get("LC_ALL", "not set")
+            expected_lc_ctype = env_vars.get("LC_CTYPE", "sio set")
+        expected_lc_all = env_vars.get("LC_ALL", "sio set")
         env_info = expected_lang, expected_lc_ctype, expected_lc_all
         rudisha dict(cls(fs_encoding, *stream_info, *env_info)._asdict())
 

@@ -34,7 +34,7 @@ kundi FinderTests(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     eleza test_failure(self):
-        # Test trying to find a module that cannot be handled.
+        # Test trying to find a module that cansio be handled.
         pita
 
 

@@ -131,7 +131,7 @@ kundi WindowsLoadTracker():
         # bpo-36670: typeperf only writes a newline *before* writing a value,
         # sio after. Sometimes, the written line kwenye incomplete (ex: only
         # timestamp, without the process queue length). Only pita the last line
-        # to the parser ikiwa it's a valid value, otherwise store it in
+        # to the parser ikiwa it's a valid value, otherwise store it kwenye
         # self._buffer.
         jaribu:
             self._parse_line(lines[-1])

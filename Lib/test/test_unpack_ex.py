@@ -141,22 +141,22 @@ List comprehension element unpacking
     >>> [*item kila item kwenye l]
     Traceback (most recent call last):
     ...
-    SyntaxError: iterable unpacking cannot be used kwenye comprehension
+    SyntaxError: iterable unpacking cansio be used kwenye comprehension
 
     >>> [*[0, 1] kila i kwenye range(10)]
     Traceback (most recent call last):
     ...
-    SyntaxError: iterable unpacking cannot be used kwenye comprehension
+    SyntaxError: iterable unpacking cansio be used kwenye comprehension
 
     >>> [*'a' kila i kwenye range(10)]
     Traceback (most recent call last):
     ...
-    SyntaxError: iterable unpacking cannot be used kwenye comprehension
+    SyntaxError: iterable unpacking cansio be used kwenye comprehension
 
     >>> [*[] kila i kwenye range(10)]
     Traceback (most recent call last):
     ...
-    SyntaxError: iterable unpacking cannot be used kwenye comprehension
+    SyntaxError: iterable unpacking cansio be used kwenye comprehension
 
 Generator expression kwenye function arguments
 
@@ -263,7 +263,7 @@ Unpacking non-sequence
     >>> a, *b = 7
     Traceback (most recent call last):
       ...
-    TypeError: cannot unpack non-iterable int object
+    TypeError: cansio unpack non-iterable int object
 
 Unpacking sequence too short
 

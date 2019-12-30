@@ -22,7 +22,7 @@ eleza app(environ, respond):
         rudisha util.FileWrapper(open(fn, "rb"))
     isipokua:
         respond('404 Not Found', [('Content-Type', 'text/plain')])
-        rudisha [b'not found']
+        rudisha [b'sio found']
 
 ikiwa __name__ == '__main__':
     path = sys.argv[1] ikiwa len(sys.argv) > 1 isipokua os.getcwd()

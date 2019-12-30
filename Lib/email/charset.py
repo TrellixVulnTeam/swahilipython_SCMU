@@ -124,7 +124,7 @@ eleza add_charset(charset, header_enc=Tupu, body_enc=Tupu, output_charset=Tupu):
     output charset when the method Charset.convert() ni called.  The default
     ni to output kwenye the same character set kama the input.
 
-    Both input_charset na output_charset must have Unicode codec entries in
+    Both input_charset na output_charset must have Unicode codec entries kwenye
     the module's charset-to-codec mapping; use add_codec(charset, codecname)
     to add codecs the module does sio know about.  See the codecs module's
     documentation kila more information.

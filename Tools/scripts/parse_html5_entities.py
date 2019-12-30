@@ -30,7 +30,7 @@ eleza create_dict(entities):
     rudisha new_html5
 
 eleza compare_dicts(old, new):
-    """Compare the old na new dicts na print the differences."""
+    """Compare the old na new dicts na andika the differences."""
     added = new.keys() - old.keys()
     ikiwa added:
         andika('{} entitie(s) have been added:'.format(len(added)))
@@ -69,8 +69,8 @@ eleza write_items(entities, file=sys.stdout):
 
 
 ikiwa __name__ == '__main__':
-    # without args print a diff between html.entities.html5 na new_html5
-    # ukijumuisha --create print the new html5 dict
+    # without args andika a diff between html.entities.html5 na new_html5
+    # ukijumuisha --create andika the new html5 dict
     # ukijumuisha --patch patch the Lib/html/entities.py file
     new_html5 = create_dict(get_json(entities_url))
     ikiwa '--create' kwenye sys.argv:

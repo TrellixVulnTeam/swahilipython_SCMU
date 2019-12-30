@@ -39,7 +39,7 @@ Instances of kundi _Feature have two corresponding methods,
 .getOptionalRelease() na .getMandatoryRelease().
 
 CompilerFlag ni the (bitfield) flag that should be pitaed kwenye the fourth
-argument to the builtin function compile() to enable the feature in
+argument to the builtin function compile() to enable the feature kwenye
 dynamically compiled code.  This flag ni stored kwenye the .compiler_flag
 attribute on _Future instances.  These values must match the appropriate
 #defines of CO_xxx flags kwenye Include/compile.h.
@@ -62,7 +62,7 @@ all_feature_names = [
 
 __all__ = ["all_feature_names"] + all_feature_names
 
-# The CO_xxx symbols are defined here under the same names defined in
+# The CO_xxx symbols are defined here under the same names defined kwenye
 # code.h na used by compile.h, so that an editor search will find them here.
 # However, they're sio exported kwenye __all__, because they don't really belong to
 # this module.
@@ -71,7 +71,7 @@ CO_GENERATOR_ALLOWED = 0        # generators (obsolete, was 0x1000)
 CO_FUTURE_DIVISION   = 0x2000   # division
 CO_FUTURE_ABSOLUTE_IMPORT = 0x4000 # perform absolute imports by default
 CO_FUTURE_WITH_STATEMENT  = 0x8000   # ukijumuisha statement
-CO_FUTURE_PRINT_FUNCTION  = 0x10000   # print function
+CO_FUTURE_PRINT_FUNCTION  = 0x10000   # andika function
 CO_FUTURE_UNICODE_LITERALS = 0x20000 # unicode string literals
 CO_FUTURE_BARRY_AS_BDFL = 0x40000
 CO_FUTURE_GENERATOR_STOP  = 0x80000 # StopIteration becomes RuntimeError kwenye generators

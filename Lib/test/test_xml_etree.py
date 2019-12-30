@@ -28,7 +28,7 @@ kutoka test.support agiza TESTFN, findfile, import_fresh_module, gc_collect, swa
 
 # pyET ni the pure-Python implementation.
 #
-# ET ni pyET kwenye test_xml_etree na ni the C accelerated version in
+# ET ni pyET kwenye test_xml_etree na ni the C accelerated version kwenye
 # test_xml_etree_c.
 pyET = Tupu
 ET = Tupu
@@ -206,7 +206,7 @@ kundi ElementTreeTest(unittest.TestCase):
                     msg="expected value string, got %r" % mapping["key"])
 
         eleza check_element(element):
-            self.assertKweli(ET.iselement(element), msg="not an element")
+            self.assertKweli(ET.iselement(element), msg="sio an element")
             direlem = dir(element)
             kila attr kwenye 'tag', 'attrib', 'text', 'tail':
                 self.assertKweli(hasattr(element, attr),
@@ -808,7 +808,7 @@ kundi ElementTreeTest(unittest.TestCase):
 
     eleza test_tostring_default_namespace_original_no_namespace(self):
         elem = ET.XML('<body><tag/></body>')
-        EXPECTED_MSG = '^cannot use non-qualified names ukijumuisha default_namespace option$'
+        EXPECTED_MSG = '^cansio use non-qualified names ukijumuisha default_namespace option$'
         ukijumuisha self.assertRaisesRegex(ValueError, EXPECTED_MSG):
             ET.tostring(elem, encoding='unicode', default_namespace='foobar')
 
@@ -1686,14 +1686,14 @@ kundi XIncludeTest(unittest.TestCase):
         ukijumuisha self.assertRaises(ElementInclude.FatalIncludeError) kama cm:
             ElementInclude.include(document, loader=self.none_loader)
         self.assertEqual(str(cm.exception),
-                "cannot load 'disclaimer.xml' kama 'xml'")
+                "cansio load 'disclaimer.xml' kama 'xml'")
 
         # Test failure to locate included text file.
         document = ET.XML(XINCLUDE["C2.xml"])
         ukijumuisha self.assertRaises(ElementInclude.FatalIncludeError) kama cm:
             ElementInclude.include(document, loader=self.none_loader)
         self.assertEqual(str(cm.exception),
-                "cannot load 'count.txt' kama 'text'")
+                "cansio load 'count.txt' kama 'text'")
 
         # Test bad parse type.
         document = ET.XML(XINCLUDE_BAD["B1.xml"])
@@ -1722,7 +1722,7 @@ kundi BugsTest(unittest.TestCase):
             ukijumuisha self.assertRaises(TypeError) kama cm:
                 serialize(elem)
             self.assertEqual(str(cm.exception),
-                    'cannot serialize 123 (type int)')
+                    'cansio serialize 123 (type int)')
 
         elem = ET.Element(123)
         check(elem) # tag
@@ -1896,7 +1896,7 @@ kundi BugsTest(unittest.TestCase):
         ukijumuisha self.assertRaises(ValueError) kama cm:
             serialize(e, default_namespace="default") # 3
         self.assertEqual(str(cm.exception),
-                'cannot use non-qualified names ukijumuisha default_namespace option')
+                'cansio use non-qualified names ukijumuisha default_namespace option')
 
     eleza test_bug_200709_register_namespace(self):
         e = ET.Element("{http://namespace.invalid/does/not/exist/}title")
@@ -2559,7 +2559,7 @@ kundi ElementFindTest(unittest.TestCase):
         self.assertEqual(e.findtext('section/nexttag'), '')
         self.assertEqual(e.findtext('section/nexttag', 'default'), '')
 
-        # tog doesn't exist na 'default' kicks in
+        # tog doesn't exist na 'default' kicks kwenye
         self.assertIsTupu(e.findtext('tog'))
         self.assertEqual(e.findtext('tog', 'default'), 'default')
 
@@ -2738,7 +2738,7 @@ kundi ElementFindTest(unittest.TestCase):
 
     eleza test_bad_find(self):
         e = ET.XML(SAMPLE_XML)
-        ukijumuisha self.assertRaisesRegex(SyntaxError, 'cannot use absolute path'):
+        ukijumuisha self.assertRaisesRegex(SyntaxError, 'cansio use absolute path'):
             e.findall('/tag')
 
     eleza test_find_through_ElementTree(self):

@@ -1,6 +1,6 @@
 """Helper to provide extensibility kila pickle.
 
-This ni only useful to add pickle support kila extension types defined in
+This ni only useful to add pickle support kila extension types defined kwenye
 C, sio kila instances of user-defined classes.
 """
 
@@ -63,16 +63,16 @@ eleza _reduce_ex(self, proto):
         state = Tupu
     isipokua:
         ikiwa base ni cls:
-            ashiria TypeError(f"cannot pickle {cls.__name__!r} object")
+            ashiria TypeError(f"cansio pickle {cls.__name__!r} object")
         state = base(self)
     args = (cls, base, state)
     jaribu:
         getstate = self.__getstate__
     tatizo AttributeError:
         ikiwa getattr(self, "__slots__", Tupu):
-            ashiria TypeError(f"cannot pickle {cls.__name__!r} object: "
+            ashiria TypeError(f"cansio pickle {cls.__name__!r} object: "
                             f"a kundi that defines __slots__ without "
-                            f"defining __getstate__ cannot be pickled "
+                            f"defining __getstate__ cansio be pickled "
                             f"ukijumuisha protocol {proto}") kutoka Tupu
         jaribu:
             dict = self.__dict__

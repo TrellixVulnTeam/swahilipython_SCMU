@@ -366,7 +366,7 @@ kundi ThreadTests(BaseTestCase):
         self.assertEqual(err, b"")
 
     eleza test_enumerate_after_join(self):
-        # Try hard to trigger #1703448: a thread ni still returned in
+        # Try hard to trigger #1703448: a thread ni still returned kwenye
         # threading.enumerate() after it has been join()ed.
         enum = threading.enumerate
         old_interval = sys.getswitchinterval()
@@ -838,8 +838,8 @@ kundi ThreadJoinOnShutdown(BaseTestCase):
 
     @unittest.skipIf(sys.platform kwenye platforms_to_skip, "due to known OS bug")
     eleza test_4_daemon_threads(self):
-        # Check that a daemon thread cannot crash the interpreter on shutdown
-        # by manipulating internal structures that are being disposed of in
+        # Check that a daemon thread cansio crash the interpreter on shutdown
+        # by manipulating internal structures that are being disposed of kwenye
         # the main thread.
         script = """ikiwa Kweli:
             agiza os
@@ -1019,7 +1019,7 @@ kundi SubinterpThreadingTests(BaseTestCase):
         ukijumuisha test.support.SuppressCrashReport():
             rc, out, err = assert_python_failure("-c", script)
         self.assertIn("Fatal Python error: Py_EndInterpreter: "
-                      "not the last thread", err.decode())
+                      "sio the last thread", err.decode())
 
 
 kundi ThreadingExceptionTests(BaseTestCase):
