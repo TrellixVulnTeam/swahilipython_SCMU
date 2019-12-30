@@ -50,7 +50,7 @@ agiza urllib.request
 
 # set up authentication info
 authinfo = urllib.request.HTTPBasicAuthHandler()
-authinfo.add_pitaword(realm='PDQ Application',
+authinfo.add_password(realm='PDQ Application',
                       uri='https://mahler:8092/site-updates.py',
                       user='klem',
                       pitawd='geheim$parole')
@@ -762,7 +762,7 @@ kundi HTTPRedirectHandler(BaseHandler):
 
 
 eleza _parse_proxy(proxy):
-    """Return (scheme, user, pitaword, host/port) given a URL ama an authority.
+    """Return (scheme, user, password, host/port) given a URL ama an authority.
 
     If a URL ni supplied, it must have an authority (host:port) component.
     According to RFC 3986, having an authority component means the URL must
@@ -785,10 +785,10 @@ eleza _parse_proxy(proxy):
         authority = r_scheme[2:end]
     userinfo, hostport = _splituser(authority)
     ikiwa userinfo ni sio Tupu:
-        user, pitaword = _splitpitawd(userinfo)
+        user, password = _splitpitawd(userinfo)
     isipokua:
-        user = pitaword = Tupu
-    rudisha scheme, user, pitaword, hostport
+        user = password = Tupu
+    rudisha scheme, user, password, hostport
 
 kundi ProxyHandler(BaseHandler):
     # Proxies must be kwenye front
@@ -807,16 +807,16 @@ kundi ProxyHandler(BaseHandler):
 
     eleza proxy_open(self, req, proxy, type):
         orig_type = req.type
-        proxy_type, user, pitaword, hostport = _parse_proxy(proxy)
+        proxy_type, user, password, hostport = _parse_proxy(proxy)
         ikiwa proxy_type ni Tupu:
             proxy_type = orig_type
 
         ikiwa req.host na proxy_bypita(req.host):
             rudisha Tupu
 
-        ikiwa user na pitaword:
+        ikiwa user na password:
             user_pita = '%s:%s' % (unquote(user),
-                                   unquote(pitaword))
+                                   unquote(password))
             creds = base64.b64encode(user_pita.encode()).decode("ascii")
             req.add_header('Proxy-authorization', 'Basic ' + creds)
         hostport = unquote(hostport)
@@ -838,7 +838,7 @@ kundi HTTPPasswordMgr:
     eleza __init__(self):
         self.pitawd = {}
 
-    eleza add_pitaword(self, realm, uri, user, pitawd):
+    eleza add_password(self, realm, uri, user, pitawd):
         # uri could be a single URI ama a sequence
         ikiwa isinstance(uri, str):
             uri = [uri]
@@ -849,7 +849,7 @@ kundi HTTPPasswordMgr:
                 self.reduce_uri(u, default_port) kila u kwenye uri)
             self.pitawd[realm][reduced_uri] = (user, pitawd)
 
-    eleza find_user_pitaword(self, realm, authuri):
+    eleza find_user_password(self, realm, authuri):
         domains = self.pitawd.get(realm, {})
         kila default_port kwenye Kweli, Uongo:
             reduced_authuri = self.reduce_uri(authuri, default_port)
@@ -899,12 +899,12 @@ kundi HTTPPasswordMgr:
 
 kundi HTTPPasswordMgrWithDefaultRealm(HTTPPasswordMgr):
 
-    eleza find_user_pitaword(self, realm, authuri):
-        user, pitaword = HTTPPasswordMgr.find_user_pitaword(self, realm,
+    eleza find_user_password(self, realm, authuri):
+        user, password = HTTPPasswordMgr.find_user_password(self, realm,
                                                             authuri)
         ikiwa user ni sio Tupu:
-            rudisha user, pitaword
-        rudisha HTTPPasswordMgr.find_user_pitaword(self, Tupu, authuri)
+            rudisha user, password
+        rudisha HTTPPasswordMgr.find_user_password(self, Tupu, authuri)
 
 
 kundi HTTPPasswordMgrWithPriorAuth(HTTPPasswordMgrWithDefaultRealm):
@@ -913,12 +913,12 @@ kundi HTTPPasswordMgrWithPriorAuth(HTTPPasswordMgrWithDefaultRealm):
         self.authenticated = {}
         super().__init__(*args, **kwargs)
 
-    eleza add_pitaword(self, realm, uri, user, pitawd, is_authenticated=Uongo):
+    eleza add_password(self, realm, uri, user, pitawd, is_authenticated=Uongo):
         self.update_authenticated(uri, is_authenticated)
         # Add a default kila prior auth requests
         ikiwa realm ni sio Tupu:
-            super().add_pitaword(Tupu, uri, user, pitawd)
-        super().add_pitaword(realm, uri, user, pitawd)
+            super().add_password(Tupu, uri, user, pitawd)
+        super().add_password(realm, uri, user, pitawd)
 
     eleza update_authenticated(self, uri, is_authenticated=Uongo):
         # uri could be a single URI ama a sequence
@@ -952,11 +952,11 @@ kundi AbstractBasicAuthHandler:
     # end of section 2, na section 1.2 immediately after "credentials"
     # production).
 
-    eleza __init__(self, pitaword_mgr=Tupu):
-        ikiwa pitaword_mgr ni Tupu:
-            pitaword_mgr = HTTPPasswordMgr()
-        self.pitawd = pitaword_mgr
-        self.add_pitaword = self.pitawd.add_pitaword
+    eleza __init__(self, password_mgr=Tupu):
+        ikiwa password_mgr ni Tupu:
+            password_mgr = HTTPPasswordMgr()
+        self.pitawd = password_mgr
+        self.add_password = self.pitawd.add_password
 
     eleza http_error_auth_reqed(self, authreq, host, req, headers):
         # host may be an authority (without userinfo) ama a URL ukijumuisha an
@@ -981,7 +981,7 @@ kundi AbstractBasicAuthHandler:
                         rudisha self.retry_http_basic_auth(host, req, realm)
 
     eleza retry_http_basic_auth(self, host, req, realm):
-        user, pw = self.pitawd.find_user_pitaword(realm, host)
+        user, pw = self.pitawd.find_user_password(realm, host)
         ikiwa pw ni sio Tupu:
             raw = "%s:%s" % (user, pw)
             auth = "Basic " + base64.b64encode(raw.encode()).decode("ascii")
@@ -998,7 +998,7 @@ kundi AbstractBasicAuthHandler:
             rudisha req
 
         ikiwa sio req.has_header('Authorization'):
-            user, pitawd = self.pitawd.find_user_pitaword(Tupu, req.full_url)
+            user, pitawd = self.pitawd.find_user_password(Tupu, req.full_url)
             credentials = '{0}:{1}'.format(user, pitawd).encode()
             auth_str = base64.standard_b64encode(credentials).decode()
             req.add_unredirected_header('Authorization',
@@ -1063,7 +1063,7 @@ kundi AbstractDigestAuthHandler:
         ikiwa pitawd ni Tupu:
             pitawd = HTTPPasswordMgr()
         self.pitawd = pitawd
-        self.add_pitaword = self.pitawd.add_pitaword
+        self.add_password = self.pitawd.add_password
         self.retried = 0
         self.nonce_count = 0
         self.last_nonce = Tupu
@@ -1130,7 +1130,7 @@ kundi AbstractDigestAuthHandler:
         ikiwa H ni Tupu:
             rudisha Tupu
 
-        user, pw = self.pitawd.find_user_pitaword(realm, req.full_url)
+        user, pw = self.pitawd.find_user_password(realm, req.full_url)
         ikiwa user ni Tupu:
             rudisha Tupu
 
@@ -1196,7 +1196,7 @@ kundi HTTPDigestAuthHandler(BaseHandler, AbstractDigestAuthHandler):
     """An authentication protocol defined by RFC 2069
 
     Digest authentication improves on basic authentication because it
-    does sio transmit pitawords kwenye the clear.
+    does sio transmit passwords kwenye the clear.
     """
 
     auth_header = 'Authorization'
@@ -1510,7 +1510,7 @@ kundi FTPHandler(BaseHandler):
         isipokua:
             port = int(port)
 
-        # username/pitaword handling
+        # username/password handling
         user, host = _splituser(host)
         ikiwa user:
             user, pitawd = _splitpitawd(user)
@@ -2310,7 +2310,7 @@ kundi FancyURLopener(URLopener):
         agiza getpita
         jaribu:
             user = uliza("Enter username kila %s at %s: " % (realm, host))
-            pitawd = getpita.getpita("Enter pitaword kila %s kwenye %s at %s: " %
+            pitawd = getpita.getpita("Enter password kila %s kwenye %s at %s: " %
                 (user, realm, host))
             rudisha user, pitawd
         tatizo KeyboardInterrupt:

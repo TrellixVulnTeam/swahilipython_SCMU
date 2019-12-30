@@ -231,10 +231,10 @@ kundi BuildExtTestCase(TempdirManager,
         cmd.finalize_options()
         self.assertEqual(cmd.define, [('one', '1'), ('two', '1')])
 
-        # make sure uneleza ni turned into a list of
+        # make sure undef ni turned into a list of
         # strings ikiwa they are ','-separated strings
         cmd = self.build_ext(dist)
-        cmd.uneleza = 'one,two'
+        cmd.undef = 'one,two'
         cmd.finalize_options()
         self.assertEqual(cmd.undef, ['one', 'two'])
 

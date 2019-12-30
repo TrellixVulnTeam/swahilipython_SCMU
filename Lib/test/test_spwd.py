@@ -18,7 +18,7 @@ kundi TestSpwdRoot(unittest.TestCase):
     eleza test_getspnam(self):
         entries = spwd.getspall()
         ikiwa sio entries:
-            self.skipTest('empty shadow pitaword database')
+            self.skipTest('empty shadow password database')
         random_name = entries[0].sp_namp
         entry = spwd.getspnam(random_name)
         self.assertIsInstance(entry, spwd.struct_spwd)

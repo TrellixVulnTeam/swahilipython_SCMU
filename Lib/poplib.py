@@ -201,13 +201,13 @@ kundi POP3:
     eleza user(self, user):
         """Send user name, rudisha response
 
-        (should indicate pitaword required).
+        (should indicate password required).
         """
         rudisha self._shortcmd('USER %s' % user)
 
 
     eleza pita_(self, pswd):
-        """Send pitaword, rudisha response
+        """Send password, rudisha response
 
         (response includes message count, mailbox size).
 
@@ -313,18 +313,18 @@ kundi POP3:
 
     timestamp = re.compile(br'\+OK.[^<]*(<.*>)')
 
-    eleza apop(self, user, pitaword):
+    eleza apop(self, user, password):
         """Authorisation
 
         - only possible ikiwa server has supplied a timestamp kwenye initial greeting.
 
         Args:
                 user     - mailbox user;
-                pitaword - mailbox pitaword.
+                password - mailbox password.
 
         NB: mailbox ni locked by server kutoka here to 'quit()'
         """
-        secret = bytes(pitaword, self.encoding)
+        secret = bytes(password, self.encoding)
         m = self.timestamp.match(self.welcome)
         ikiwa sio m:
             ashiria error_proto('-ERR APOP sio supported by server')

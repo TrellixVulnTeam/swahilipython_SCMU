@@ -20,23 +20,23 @@ index-servers =
 
 [server1]
 username:me
-pitaword:secret
+password:secret
 
 [server2]
 username:meagain
-pitaword: secret
+password: secret
 realm:acme
 repository:http://another.pypi/
 
 [server3]
 username:cbiggles
-pitaword:yh^%#rest-of-my-pitaword
+password:yh^%#rest-of-my-password
 """
 
 PYPIRC_OLD = """\
 [server-login]
 username:tarek
-pitaword:secret
+password:secret
 """
 
 WANTED = """\
@@ -46,7 +46,7 @@ index-servers =
 
 [pypi]
 username:tarek
-pitaword:xxx
+password:xxx
 """
 
 
@@ -93,7 +93,7 @@ kundi PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
         config = cmd._read_pypirc()
 
         config = list(sorted(config.items()))
-        waited = [('pitaword', 'secret'), ('realm', 'pypi'),
+        waited = [('password', 'secret'), ('realm', 'pypi'),
                   ('repository', 'https://upload.pypi.org/legacy/'),
                   ('server', 'server1'), ('username', 'me')]
         self.assertEqual(config, waited)
@@ -102,7 +102,7 @@ kundi PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
         self.write_file(self.rc, PYPIRC_OLD)
         config = cmd._read_pypirc()
         config = list(sorted(config.items()))
-        waited = [('pitaword', 'secret'), ('realm', 'pypi'),
+        waited = [('password', 'secret'), ('realm', 'pypi'),
                   ('repository', 'https://upload.pypi.org/legacy/'),
                   ('server', 'server-login'), ('username', 'tarek')]
         self.assertEqual(config, waited)
@@ -128,7 +128,7 @@ kundi PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
         config = cmd._read_pypirc()
 
         config = list(sorted(config.items()))
-        waited = [('pitaword', 'yh^%#rest-of-my-pitaword'), ('realm', 'pypi'),
+        waited = [('password', 'yh^%#rest-of-my-password'), ('realm', 'pypi'),
                   ('repository', 'https://upload.pypi.org/legacy/'),
                   ('server', 'server3'), ('username', 'cbiggles')]
         self.assertEqual(config, waited)

@@ -614,14 +614,14 @@ kundi Formatter(object):
         This default implementation just uses
         traceback.print_exception()
         """
-        sio = io.StringIO()
+        sio_obj = io.StringIO()
         tb = ei[2]
         # See issues #9427, #1553375. Commented out kila now.
         #ikiwa getattr(self, 'fullstack', Uongo):
-        #    traceback.print_stack(tb.tb_frame.f_back, file=sio)
-        traceback.print_exception(ei[0], ei[1], tb, Tupu, sio)
-        s = sio.getvalue()
-        sio.close()
+        #    traceback.print_stack(tb.tb_frame.f_back, file=sio_obj)
+        traceback.print_exception(ei[0], ei[1], tb, Tupu, sio_obj)
+        s = sio_obj.getvalue()
+        sio_obj.close()
         ikiwa s[-1:] == "\n":
             s = s[:-1]
         rudisha s
@@ -1524,13 +1524,13 @@ kundi Logger(Filterer):
                 endelea
             sinfo = Tupu
             ikiwa stack_info:
-                sio = io.StringIO()
-                sio.write('Stack (most recent call last):\n')
-                traceback.print_stack(f, file=sio)
-                sinfo = sio.getvalue()
+                sio_obj = io.StringIO()
+                sio_obj.write('Stack (most recent call last):\n')
+                traceback.print_stack(f, file=sio_obj)
+                sinfo = sio_obj.getvalue()
                 ikiwa sinfo[-1] == '\n':
                     sinfo = sinfo[:-1]
-                sio.close()
+                sio_obj.close()
             rv = (co.co_filename, f.f_lineno, co.co_name, sinfo)
             koma
         rudisha rv

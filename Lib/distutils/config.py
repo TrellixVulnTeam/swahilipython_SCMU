@@ -15,7 +15,7 @@ index-servers =
 
 [pypi]
 username:%s
-pitaword:%s
+password:%s
 """
 
 kundi PyPIRCCommand(Command):
@@ -39,11 +39,11 @@ kundi PyPIRCCommand(Command):
         """Returns rc file path."""
         rudisha os.path.join(os.path.expanduser('~'), '.pypirc')
 
-    eleza _store_pypirc(self, username, pitaword):
+    eleza _store_pypirc(self, username, password):
         """Creates a default .pypirc file."""
         rc = self._get_rc_file()
         ukijumuisha os.fdopen(os.open(rc, os.O_CREAT | os.O_WRONLY, 0o600), 'w') kama f:
-            f.write(DEFAULT_PYPIRC % (username, pitaword))
+            f.write(DEFAULT_PYPIRC % (username, password))
 
     eleza _read_pypirc(self):
         """Reads the .pypirc file."""
@@ -77,7 +77,7 @@ kundi PyPIRCCommand(Command):
                     kila key, default kwenye (('repository',
                                           self.DEFAULT_REPOSITORY),
                                          ('realm', self.DEFAULT_REALM),
-                                         ('pitaword', Tupu)):
+                                         ('password', Tupu)):
                         ikiwa config.has_option(server, key):
                             current[key] = config.get(server, key)
                         isipokua:
@@ -102,7 +102,7 @@ kundi PyPIRCCommand(Command):
                 isipokua:
                     repository = self.DEFAULT_REPOSITORY
                 rudisha {'username': config.get(server, 'username'),
-                        'pitaword': config.get(server, 'pitaword'),
+                        'password': config.get(server, 'password'),
                         'repository': repository,
                         'server': server,
                         'realm': self.DEFAULT_REALM}

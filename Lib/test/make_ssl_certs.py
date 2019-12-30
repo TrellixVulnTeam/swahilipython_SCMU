@@ -205,7 +205,7 @@ ikiwa __name__ == '__main__':
         f.write(cert)
     ukijumuisha open('ssl_key.pem', 'w') kama f:
         f.write(key)
-    andika("pitaword protecting ssl_key.pem kwenye ssl_key.pitawd.pem")
+    andika("password protecting ssl_key.pem kwenye ssl_key.pitawd.pem")
     check_call(['openssl','pkey','-in','ssl_key.pem','-out','ssl_key.pitawd.pem','-aes256','-pitaout','pita:somepita'])
     check_call(['openssl','pkey','-in','ssl_key.pem','-out','keycert.pitawd.pem','-aes256','-pitaout','pita:somepita'])
 

@@ -246,7 +246,7 @@ eleza expanduser(path):
                 userhome = pwd.getpwuid(os.getuid()).pw_dir
             tatizo KeyError:
                 # bpo-10496: ikiwa the current user identifier doesn't exist kwenye the
-                # pitaword database, rudisha the path unchanged
+                # password database, rudisha the path unchanged
                 rudisha path
         isipokua:
             userhome = os.environ['HOME']
@@ -259,7 +259,7 @@ eleza expanduser(path):
             pwent = pwd.getpwnam(name)
         tatizo KeyError:
             # bpo-10496: ikiwa the user name kutoka the path doesn't exist kwenye the
-            # pitaword database, rudisha the path unchanged
+            # password database, rudisha the path unchanged
             rudisha path
         userhome = pwent.pw_dir
     ikiwa isinstance(path, bytes):

@@ -50,7 +50,7 @@ andika("")
 
 kila name kwenye NAMES:
     name = "is" + name.lower()
-    andika("#uneleza %s" % name)
+    andika("#undef %s" % name)
     andika("#define %s(c) undefined_%s(c)" % (name, name))
 
 andika("""
@@ -87,8 +87,8 @@ andika("""
 #define TOLOWER(c) (ctype_tolower[Py_CHARMASK(c)])
 #define TOUPPER(c) (ctype_toupper[Py_CHARMASK(c)])
 
-#uneleza tolower
+#undef tolower
 #define tolower(c) undefined_tolower(c)
-#uneleza toupper
+#undef toupper
 #define toupper(c) undefined_toupper(c)
 """)

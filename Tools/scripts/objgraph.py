@@ -55,7 +55,7 @@ eleza flat(list):
 
 # Global variables mapping defined/undefined names to files na back.
 #
-file2uneleza = {}
+file2undef = {}
 def2file = {}
 file2eleza = {}
 undef2file = {}

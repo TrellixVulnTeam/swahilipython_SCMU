@@ -135,35 +135,35 @@ kundi RequestHdrsTests(unittest.TestCase):
         req.remove_header("Unredirected-spam")
         self.assertUongo(req.has_header("Unredirected-spam"))
 
-    eleza test_pitaword_manager(self):
+    eleza test_password_manager(self):
         mgr = urllib.request.HTTPPasswordMgr()
-        add = mgr.add_pitaword
-        find_user_pita = mgr.find_user_pitaword
+        add = mgr.add_password
+        find_user_pita = mgr.find_user_password
 
-        add("Some Realm", "http://example.com/", "joe", "pitaword")
+        add("Some Realm", "http://example.com/", "joe", "password")
         add("Some Realm", "http://example.com/ni", "ni", "ni")
         add("Some Realm", "http://c.example.com:3128", "3", "c")
         add("Some Realm", "d.example.com", "4", "d")
         add("Some Realm", "e.example.com:3128", "5", "e")
 
-        # For the same realm, pitaword set the highest path ni the winner.
+        # For the same realm, password set the highest path ni the winner.
         self.assertEqual(find_user_pita("Some Realm", "example.com"),
-                         ('joe', 'pitaword'))
+                         ('joe', 'password'))
         self.assertEqual(find_user_pita("Some Realm", "http://example.com/ni"),
-                         ('joe', 'pitaword'))
+                         ('joe', 'password'))
         self.assertEqual(find_user_pita("Some Realm", "http://example.com"),
-                         ('joe', 'pitaword'))
+                         ('joe', 'password'))
         self.assertEqual(find_user_pita("Some Realm", "http://example.com/"),
-                         ('joe', 'pitaword'))
+                         ('joe', 'password'))
         self.assertEqual(find_user_pita("Some Realm",
                                         "http://example.com/spam"),
-                         ('joe', 'pitaword'))
+                         ('joe', 'password'))
 
         self.assertEqual(find_user_pita("Some Realm",
                                         "http://example.com/spam/spam"),
-                         ('joe', 'pitaword'))
+                         ('joe', 'password'))
 
-        # You can have different pitawords kila different paths.
+        # You can have different passwords kila different paths.
 
         add("c", "http://example.com/foo", "foo", "ni")
         add("c", "http://example.com/bar", "bar", "nini")
@@ -174,7 +174,7 @@ kundi RequestHdrsTests(unittest.TestCase):
         self.assertEqual(find_user_pita("c", "http://example.com/bar"),
                          ('bar', 'nini'))
 
-        # For the same path, newer pitaword should be considered.
+        # For the same path, newer password should be considered.
 
         add("b", "http://example.com/", "first", "blah")
         add("b", "http://example.com/", "second", "spam")
@@ -205,15 +205,15 @@ kundi RequestHdrsTests(unittest.TestCase):
         self.assertEqual(find_user_pita("Some Realm", "e.example.com:3128"),
                          ('5', 'e'))
 
-    eleza test_pitaword_manager_default_port(self):
+    eleza test_password_manager_default_port(self):
         """
         The point to note here ni that we can't guess the default port if
-        there's no scheme.  This applies to both add_pitaword na
-        find_user_pitaword.
+        there's no scheme.  This applies to both add_password na
+        find_user_password.
         """
         mgr = urllib.request.HTTPPasswordMgr()
-        add = mgr.add_pitaword
-        find_user_pita = mgr.find_user_pitaword
+        add = mgr.add_password
+        find_user_pita = mgr.find_user_password
         add("f", "http://g.example.com:80", "10", "j")
         add("g", "http://h.example.com", "11", "k")
         add("h", "i.example.com:80", "12", "l")
@@ -521,16 +521,16 @@ kundi MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
 
 
 kundi MockPasswordManager:
-    eleza add_pitaword(self, realm, uri, user, pitaword):
+    eleza add_password(self, realm, uri, user, password):
         self.realm = realm
         self.url = uri
         self.user = user
-        self.pitaword = pitaword
+        self.password = password
 
-    eleza find_user_pitaword(self, realm, authuri):
+    eleza find_user_password(self, realm, authuri):
         self.target_realm = realm
         self.target_url = authuri
-        rudisha self.user, self.pitaword
+        rudisha self.user, self.password
 
 
 kundi OpenerDirectorTests(unittest.TestCase):
@@ -1446,8 +1446,8 @@ kundi HandlerTests(unittest.TestCase):
 
     eleza test_basic_auth(self, quote_char='"'):
         opener = OpenerDirector()
-        pitaword_manager = MockPasswordManager()
-        auth_handler = urllib.request.HTTPBasicAuthHandler(pitaword_manager)
+        password_manager = MockPasswordManager()
+        auth_handler = urllib.request.HTTPBasicAuthHandler(password_manager)
         realm = "ACME Widget Store"
         http_handler = MockHTTPHandler(
             401, 'WWW-Authenticate: Basic realm=%s%s%s\r\n\r\n' %
@@ -1455,7 +1455,7 @@ kundi HandlerTests(unittest.TestCase):
         opener.add_handler(auth_handler)
         opener.add_handler(http_handler)
         self._test_basic_auth(opener, auth_handler, "Authorization",
-                              realm, http_handler, pitaword_manager,
+                              realm, http_handler, password_manager,
                               "http://acme.example.com/protected",
                               "http://acme.example.com/protected",
                               )
@@ -1465,8 +1465,8 @@ kundi HandlerTests(unittest.TestCase):
 
     eleza test_basic_auth_with_unquoted_realm(self):
         opener = OpenerDirector()
-        pitaword_manager = MockPasswordManager()
-        auth_handler = urllib.request.HTTPBasicAuthHandler(pitaword_manager)
+        password_manager = MockPasswordManager()
+        auth_handler = urllib.request.HTTPBasicAuthHandler(password_manager)
         realm = "ACME Widget Store"
         http_handler = MockHTTPHandler(
             401, 'WWW-Authenticate: Basic realm=%s\r\n\r\n' % realm)
@@ -1474,7 +1474,7 @@ kundi HandlerTests(unittest.TestCase):
         opener.add_handler(http_handler)
         ukijumuisha self.assertWarns(UserWarning):
             self._test_basic_auth(opener, auth_handler, "Authorization",
-                                realm, http_handler, pitaword_manager,
+                                realm, http_handler, password_manager,
                                 "http://acme.example.com/protected",
                                 "http://acme.example.com/protected",
                                 )
@@ -1483,15 +1483,15 @@ kundi HandlerTests(unittest.TestCase):
         opener = OpenerDirector()
         ph = urllib.request.ProxyHandler(dict(http="proxy.example.com:3128"))
         opener.add_handler(ph)
-        pitaword_manager = MockPasswordManager()
-        auth_handler = urllib.request.ProxyBasicAuthHandler(pitaword_manager)
+        password_manager = MockPasswordManager()
+        auth_handler = urllib.request.ProxyBasicAuthHandler(password_manager)
         realm = "ACME Networks"
         http_handler = MockHTTPHandler(
             407, 'Proxy-Authenticate: Basic realm="%s"\r\n\r\n' % realm)
         opener.add_handler(auth_handler)
         opener.add_handler(http_handler)
         self._test_basic_auth(opener, auth_handler, "Proxy-authorization",
-                              realm, http_handler, pitaword_manager,
+                              realm, http_handler, password_manager,
                               "http://acme.example.com:3128/protected",
                               "proxy.example.com:3128",
                               )
@@ -1526,9 +1526,9 @@ kundi HandlerTests(unittest.TestCase):
                                                             *args, **kwds)
 
         opener = RecordingOpenerDirector()
-        pitaword_manager = MockPasswordManager()
-        digest_handler = TestDigestAuthHandler(pitaword_manager)
-        basic_handler = TestBasicAuthHandler(pitaword_manager)
+        password_manager = MockPasswordManager()
+        digest_handler = TestDigestAuthHandler(password_manager)
+        basic_handler = TestBasicAuthHandler(password_manager)
         realm = "ACME Networks"
         http_handler = MockHTTPHandler(
             401, 'WWW-Authenticate: Basic realm="%s"\r\n\r\n' % realm)
@@ -1538,7 +1538,7 @@ kundi HandlerTests(unittest.TestCase):
 
         # check basic auth isn't blocked by digest handler failing
         self._test_basic_auth(opener, basic_handler, "Authorization",
-                              realm, http_handler, pitaword_manager,
+                              realm, http_handler, password_manager,
                               "http://acme.example.com/protected",
                               "http://acme.example.com/protected",
                               )
@@ -1567,37 +1567,37 @@ kundi HandlerTests(unittest.TestCase):
         self.assertRaises(ValueError, opener.open, "http://www.example.com")
 
     eleza _test_basic_auth(self, opener, auth_handler, auth_header,
-                         realm, http_handler, pitaword_manager,
+                         realm, http_handler, password_manager,
                          request_url, protected_url):
         agiza base64
-        user, pitaword = "wile", "coyote"
+        user, password = "wile", "coyote"
 
-        # .add_pitaword() fed through to pitaword manager
-        auth_handler.add_pitaword(realm, request_url, user, pitaword)
-        self.assertEqual(realm, pitaword_manager.realm)
-        self.assertEqual(request_url, pitaword_manager.url)
-        self.assertEqual(user, pitaword_manager.user)
-        self.assertEqual(pitaword, pitaword_manager.pitaword)
+        # .add_password() fed through to password manager
+        auth_handler.add_password(realm, request_url, user, password)
+        self.assertEqual(realm, password_manager.realm)
+        self.assertEqual(request_url, password_manager.url)
+        self.assertEqual(user, password_manager.user)
+        self.assertEqual(password, password_manager.password)
 
         opener.open(request_url)
 
-        # should have asked the pitaword manager kila the username/pitaword
-        self.assertEqual(pitaword_manager.target_realm, realm)
-        self.assertEqual(pitaword_manager.target_url, protected_url)
+        # should have asked the password manager kila the username/password
+        self.assertEqual(password_manager.target_realm, realm)
+        self.assertEqual(password_manager.target_url, protected_url)
 
         # expect one request without authorization, then one with
         self.assertEqual(len(http_handler.requests), 2)
         self.assertUongo(http_handler.requests[0].has_header(auth_header))
-        userpita = bytes('%s:%s' % (user, pitaword), "ascii")
+        userpita = bytes('%s:%s' % (user, password), "ascii")
         auth_hdr_value = ('Basic ' +
             base64.encodebytes(userpita).strip().decode())
         self.assertEqual(http_handler.requests[1].get_header(auth_header),
                          auth_hdr_value)
         self.assertEqual(http_handler.requests[1].unredirected_hdrs[auth_header],
                          auth_hdr_value)
-        # ikiwa the pitaword manager can't find a pitaword, the handler won't
+        # ikiwa the password manager can't find a password, the handler won't
         # handle the HTTP auth error
-        pitaword_manager.user = pitaword_manager.pitaword = Tupu
+        password_manager.user = password_manager.password = Tupu
         http_handler.reset()
         opener.open(request_url)
         self.assertEqual(len(http_handler.requests), 1)
@@ -1607,15 +1607,15 @@ kundi HandlerTests(unittest.TestCase):
         # Assume already authenticated ikiwa is_authenticated=Kweli
         # kila APIs like Github that don't rudisha 401
 
-        user, pitaword = "wile", "coyote"
+        user, password = "wile", "coyote"
         request_url = "http://acme.example.com/protected"
 
         http_handler = MockHTTPHandlerCheckAuth(200)
 
         pwd_manager = HTTPPasswordMgrWithPriorAuth()
         auth_prior_handler = HTTPBasicAuthHandler(pwd_manager)
-        auth_prior_handler.add_pitaword(
-            Tupu, request_url, user, pitaword, is_authenticated=Kweli)
+        auth_prior_handler.add_password(
+            Tupu, request_url, user, password, is_authenticated=Kweli)
 
         is_auth = pwd_manager.is_authenticated(request_url)
         self.assertKweli(is_auth)
@@ -1632,13 +1632,13 @@ kundi HandlerTests(unittest.TestCase):
     eleza test_basic_prior_auth_send_after_first_success(self):
         # Auto send auth header after authentication ni successful once
 
-        user, pitaword = 'wile', 'coyote'
+        user, password = 'wile', 'coyote'
         request_url = 'http://acme.example.com/protected'
         realm = 'ACME'
 
         pwd_manager = HTTPPasswordMgrWithPriorAuth()
         auth_prior_handler = HTTPBasicAuthHandler(pwd_manager)
-        auth_prior_handler.add_pitaword(realm, request_url, user, pitaword)
+        auth_prior_handler.add_password(realm, request_url, user, password)
 
         is_auth = pwd_manager.is_authenticated(request_url)
         self.assertUongo(is_auth)
@@ -1791,26 +1791,26 @@ kundi MiscTests(unittest.TestCase):
             ('proxy.example.com:3128',
              (Tupu, Tupu, Tupu, 'proxy.example.com:3128')),
             # The authority component may optionally include userinfo
-            # (assumed to be # username:pitaword):
-            ('joe:pitaword@proxy.example.com',
-             (Tupu, 'joe', 'pitaword', 'proxy.example.com')),
-            ('joe:pitaword@proxy.example.com:3128',
-             (Tupu, 'joe', 'pitaword', 'proxy.example.com:3128')),
+            # (assumed to be # username:password):
+            ('joe:password@proxy.example.com',
+             (Tupu, 'joe', 'password', 'proxy.example.com')),
+            ('joe:password@proxy.example.com:3128',
+             (Tupu, 'joe', 'password', 'proxy.example.com:3128')),
             #Examples ukijumuisha URLS
             ('http://proxy.example.com/',
              ('http', Tupu, Tupu, 'proxy.example.com')),
             ('http://proxy.example.com:3128/',
              ('http', Tupu, Tupu, 'proxy.example.com:3128')),
-            ('http://joe:pitaword@proxy.example.com/',
-             ('http', 'joe', 'pitaword', 'proxy.example.com')),
-            ('http://joe:pitaword@proxy.example.com:3128',
-             ('http', 'joe', 'pitaword', 'proxy.example.com:3128')),
+            ('http://joe:password@proxy.example.com/',
+             ('http', 'joe', 'password', 'proxy.example.com')),
+            ('http://joe:password@proxy.example.com:3128',
+             ('http', 'joe', 'password', 'proxy.example.com:3128')),
             # Everything after the authority ni ignored
-            ('ftp://joe:pitaword@proxy.example.com/rubbish:3128',
-             ('ftp', 'joe', 'pitaword', 'proxy.example.com')),
+            ('ftp://joe:password@proxy.example.com/rubbish:3128',
+             ('ftp', 'joe', 'password', 'proxy.example.com')),
             # Test kila no trailing '/' case
-            ('http://joe:pitaword@proxy.example.com',
-             ('http', 'joe', 'pitaword', 'proxy.example.com'))
+            ('http://joe:password@proxy.example.com',
+             ('http', 'joe', 'password', 'proxy.example.com'))
         ]
 
         kila tc, expected kwenye parse_proxy_test_cases:

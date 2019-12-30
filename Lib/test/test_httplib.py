@@ -641,7 +641,7 @@ kundi BasicTest(TestCase):
     eleza test_host_port(self):
         # Check invalid host_port
 
-        kila hp kwenye ("www.python.org:abc", "user:pitaword@www.python.org"):
+        kila hp kwenye ("www.python.org:abc", "user:password@www.python.org"):
             self.assertRaises(client.InvalidURL, client.HTTPConnection, hp)
 
         kila hp, h, p kwenye (("[fe80::207:e9ff:fe9b]:8000",
@@ -1761,7 +1761,7 @@ kundi HTTPSTest(TestCase):
     eleza test_host_port(self):
         # Check invalid host_port
 
-        kila hp kwenye ("www.python.org:abc", "user:pitaword@www.python.org"):
+        kila hp kwenye ("www.python.org:abc", "user:password@www.python.org"):
             self.assertRaises(client.InvalidURL, client.HTTPSConnection, hp)
 
         kila hp, h, p kwenye (("[fe80::207:e9ff:fe9b]:8000",

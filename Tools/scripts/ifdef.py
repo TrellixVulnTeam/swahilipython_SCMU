@@ -1,10 +1,10 @@
 #! /usr/bin/env python3
 
-# Selectively preprocess #ifeleza / #ifneleza statements.
+# Selectively preprocess #ifdef / #ifndef statements.
 # Usage:
-# ifeleza [-Dname] ... [-Uname] ... [file] ...
+# ifdef [-Dname] ... [-Uname] ... [file] ...
 #
-# This scans the file(s), looking kila #ifeleza na #ifneleza preprocessor
+# This scans the file(s), looking kila #ifdef na #ifndef preprocessor
 # commands that test kila one of the names mentioned kwenye the -D na -U
 # options.  On standard output it writes a copy of the input file(s)
 # minus those code sections that are suppressed by the selected
@@ -18,7 +18,7 @@
 # little.  It does accept whitespace around the '#' character.
 
 # Restrictions: There should be no comments ama other symbols on the
-# #if(n)eleza lines.  The effect of #define/#uneleza commands kwenye the input
+# #if(n)eleza lines.  The effect of #define/#undef commands kwenye the input
 # file ama kwenye included files ni sio taken into account.  Tests using
 # #ikiwa na the defined() pseudo function are sio recognized.  The #elif
 # command ni sio recognized.  Improperly nesting ni sio detected.

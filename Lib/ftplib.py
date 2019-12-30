@@ -390,7 +390,7 @@ kundi FTP:
         ikiwa sio acct:
             acct = ''
         ikiwa user == 'anonymous' na pitawd kwenye {'', '-'}:
-            # If there ni no anonymous ftp pitaword specified
+            # If there ni no anonymous ftp password specified
             # then we'll just use anonymous@
             # We don't send any other thing because:
             # - We want to remain anonymous
@@ -528,9 +528,9 @@ kundi FTP:
                 conn.unwrap()
         rudisha self.voidresp()
 
-    eleza acct(self, pitaword):
+    eleza acct(self, password):
         '''Send new account name.'''
-        cmd = 'ACCT ' + pitaword
+        cmd = 'ACCT ' + password
         rudisha self.voidcmd(cmd)
 
     eleza nlst(self, *args):
@@ -917,7 +917,7 @@ eleza test():
 
     -d dir
     -l list
-    -p pitaword
+    -p password
     '''
 
     ikiwa len(sys.argv) < 2:

@@ -939,13 +939,13 @@ kundi _NNTPBase:
             self._close()
         rudisha resp
 
-    eleza login(self, user=Tupu, pitaword=Tupu, usenetrc=Kweli):
+    eleza login(self, user=Tupu, password=Tupu, usenetrc=Kweli):
         ikiwa self.authenticated:
             ashiria ValueError("Already logged in.")
         ikiwa sio user na sio usenetrc:
             ashiria ValueError(
                 "At least one of `user` na `usenetrc` must be specified")
-        # If no login/pitaword was specified but netrc was requested,
+        # If no login/password was specified but netrc was requested,
         # try to get them kutoka ~/.netrc
         # Presume that ikiwa .netrc has an entry, NNRP authentication ni required.
         jaribu:
@@ -955,7 +955,7 @@ kundi _NNTPBase:
                 auth = credentials.authenticators(self.host)
                 ikiwa auth:
                     user = auth[0]
-                    pitaword = auth[2]
+                    password = auth[2]
         tatizo OSError:
             pita
         # Perform NNTP authentication ikiwa needed.
@@ -963,10 +963,10 @@ kundi _NNTPBase:
             rudisha
         resp = self._shortcmd('authinfo user ' + user)
         ikiwa resp.startswith('381'):
-            ikiwa sio pitaword:
+            ikiwa sio password:
                 ashiria NNTPReplyError(resp)
             isipokua:
-                resp = self._shortcmd('authinfo pita ' + pitaword)
+                resp = self._shortcmd('authinfo pita ' + password)
                 ikiwa sio resp.startswith('281'):
                     ashiria NNTPPermanentError(resp)
         # Capabilities might have changed after login
@@ -1020,17 +1020,17 @@ kundi _NNTPBase:
 
 kundi NNTP(_NNTPBase):
 
-    eleza __init__(self, host, port=NNTP_PORT, user=Tupu, pitaword=Tupu,
+    eleza __init__(self, host, port=NNTP_PORT, user=Tupu, password=Tupu,
                  readermode=Tupu, usenetrc=Uongo,
                  timeout=_GLOBAL_DEFAULT_TIMEOUT):
         """Initialize an instance.  Arguments:
         - host: hostname to connect to
         - port: port to connect to (default the standard NNTP port)
         - user: username to authenticate with
-        - pitaword: pitaword to use ukijumuisha username
+        - password: password to use ukijumuisha username
         - readermode: ikiwa true, send 'mode reader' command after
                       connecting.
-        - usenetrc: allow loading username na pitaword kutoka ~/.netrc file
+        - usenetrc: allow loading username na password kutoka ~/.netrc file
                     ikiwa sio specified explicitly
         - timeout: timeout (in seconds) used kila socket connections
 
@@ -1050,7 +1050,7 @@ kundi NNTP(_NNTPBase):
             _NNTPBase.__init__(self, file, host,
                                readermode, timeout)
             ikiwa user ama usenetrc:
-                self.login(user, pitaword, usenetrc)
+                self.login(user, password, usenetrc)
         tatizo:
             ikiwa file:
                 file.close()
@@ -1068,7 +1068,7 @@ ikiwa _have_ssl:
     kundi NNTP_SSL(_NNTPBase):
 
         eleza __init__(self, host, port=NNTP_SSL_PORT,
-                    user=Tupu, pitaword=Tupu, ssl_context=Tupu,
+                    user=Tupu, password=Tupu, ssl_context=Tupu,
                     readermode=Tupu, usenetrc=Uongo,
                     timeout=_GLOBAL_DEFAULT_TIMEOUT):
             """This works identically to NNTP.__init__, tatizo kila the change
@@ -1083,7 +1083,7 @@ ikiwa _have_ssl:
                 _NNTPBase.__init__(self, file, host,
                                    readermode=readermode, timeout=timeout)
                 ikiwa user ama usenetrc:
-                    self.login(user, pitaword, usenetrc)
+                    self.login(user, password, usenetrc)
             tatizo:
                 ikiwa file:
                     file.close()

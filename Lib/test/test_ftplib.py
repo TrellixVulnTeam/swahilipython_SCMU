@@ -167,7 +167,7 @@ kundi DummyFTPHandler(asynchat.async_chat):
         self.push('331 username ok')
 
     eleza cmd_pita(self, arg):
-        self.push('230 pitaword ok')
+        self.push('230 password ok')
 
     eleza cmd_acct(self, arg):
         self.push('230 acct ok')

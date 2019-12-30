@@ -174,7 +174,7 @@ eleza check_environ ():
             os.environ['HOME'] = pwd.getpwuid(os.getuid())[5]
         tatizo (ImportError, KeyError):
             # bpo-10496: ikiwa the current user identifier doesn't exist kwenye the
-            # pitaword database, do nothing
+            # password database, do nothing
             pita
 
     ikiwa 'PLAT' haiko kwenye os.environ:

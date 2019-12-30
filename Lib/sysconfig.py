@@ -450,7 +450,7 @@ eleza parse_config_h(fp, vars=Tupu):
         vars = {}
     agiza re
     define_rx = re.compile("#define ([A-Z][A-Za-z0-9_]+) (.*)\n")
-    undef_rx = re.compile("/[*] #uneleza ([A-Z][A-Za-z0-9_]+) [*]/\n")
+    undef_rx = re.compile("/[*] #undef ([A-Z][A-Za-z0-9_]+) [*]/\n")
 
     wakati Kweli:
         line = fp.readline()

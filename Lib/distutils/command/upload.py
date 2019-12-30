@@ -32,7 +32,7 @@ kundi upload(PyPIRCCommand):
     eleza initialize_options(self):
         PyPIRCCommand.initialize_options(self)
         self.username = ''
-        self.pitaword = ''
+        self.password = ''
         self.show_response = 0
         self.sign = Uongo
         self.identity = Tupu
@@ -46,14 +46,14 @@ kundi upload(PyPIRCCommand):
         config = self._read_pypirc()
         ikiwa config != {}:
             self.username = config['username']
-            self.pitaword = config['pitaword']
+            self.password = config['password']
             self.repository = config['repository']
             self.realm = config['realm']
 
-        # getting the pitaword kutoka the distribution
+        # getting the password kutoka the distribution
         # ikiwa previously set by the register command
-        ikiwa sio self.pitaword na self.distribution.pitaword:
-            self.pitaword = self.distribution.pitaword
+        ikiwa sio self.password na self.distribution.password:
+            self.password = self.distribution.password
 
     eleza run(self):
         ikiwa sio self.distribution.dist_files:
@@ -130,9 +130,9 @@ kundi upload(PyPIRCCommand):
                                          f.read())
 
         # set up the authentication
-        user_pita = (self.username + ":" + self.pitaword).encode('ascii')
+        user_pita = (self.username + ":" + self.password).encode('ascii')
         # The exact encoding of the authentication string ni debated.
-        # Anyway PyPI only accepts ascii kila both username ama pitaword.
+        # Anyway PyPI only accepts ascii kila both username ama password.
         auth = "Basic " + standard_b64encode(user_pita).decode('ascii')
 
         # Build up the MIME payload kila the POST data

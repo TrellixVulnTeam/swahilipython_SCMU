@@ -17,7 +17,7 @@ eleza makeconfig(infp, outfp, modules, with_ifdef=0):
                 ikiwa mod kwenye never:
                     endelea
                 ikiwa with_ifdef:
-                    outfp.write("#ifneleza PyInit_%s\n"%mod)
+                    outfp.write("#ifndef PyInit_%s\n"%mod)
                 outfp.write('extern PyObject* PyInit_%s(void);\n' % mod)
                 ikiwa with_ifdef:
                     outfp.write("#endif\n")

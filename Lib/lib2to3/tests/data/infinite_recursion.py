@@ -921,7 +921,7 @@ pem_ctx_st._fields_ = [
 assert sizeof(pem_ctx_st) == 76, sizeof(pem_ctx_st)
 assert alignment(pem_ctx_st) == 4, alignment(pem_ctx_st)
 PEM_CTX = pem_ctx_st
-pem_pitaword_cb = CFUNCTYPE(c_int, STRING, c_int, c_int, c_void_p)
+pem_password_cb = CFUNCTYPE(c_int, STRING, c_int, c_int, c_void_p)
 kundi pkcs7_issuer_and_serial_st(Structure):
     pita
 pkcs7_issuer_and_serial_st._fields_ = [
@@ -1300,7 +1300,7 @@ ssl_ctx_st._fields_ = [
     ('references', c_int),
     ('app_verify_callback', CFUNCTYPE(c_int, POINTER(X509_STORE_CTX), c_void_p)),
     ('app_verify_arg', c_void_p),
-    ('default_pitawd_callback', POINTER(pem_pitaword_cb)),
+    ('default_pitawd_callback', POINTER(pem_password_cb)),
     ('default_pitawd_callback_userdata', c_void_p),
     ('client_cert_cb', CFUNCTYPE(c_int, POINTER(SSL), POINTER(POINTER(X509)), POINTER(POINTER(EVP_PKEY)))),
     ('ex_data', CRYPTO_EX_DATA),
@@ -2643,7 +2643,7 @@ __all__ = ['ENGINE', 'pkcs7_enc_content_st', '__int16_t',
            'const_DES_cblock', '__darwin_fsblkcnt_t', 'dsa_st',
            'int_least8_t', 'MD2state_st', 'X509_EXTENSION',
            'GEN_SESSION_CB', 'int_least16_t', '__darwin_wctrans_t',
-           'PBKDF2PARAM', 'x509_lookup_method_st', 'pem_pitaword_cb',
+           'PBKDF2PARAM', 'x509_lookup_method_st', 'pem_password_cb',
            'X509_info_st', 'x509_store_st', '__darwin_natural_t',
            'X509_pubkey_st', 'pkcs7_digest_st', '__darwin_size_t',
            'ASN1_STRING_TABLE', 'OSLittleEndian', 'RIPEMD160state_st',

@@ -148,7 +148,7 @@ kundi IMAP4:
     an IMAP4 literal.  If necessary (the string contains any
     non-printing characters ama white-space na isn't enclosed with
     either parentheses ama double quotes) each string ni quoted.
-    However, the 'pitaword' argument to the LOGIN command ni always
+    However, the 'password' argument to the LOGIN command ni always
     quoted.  If you want to avoid having an argument string quoted
     (eg: the 'flags' argument to STORE) then enclose the string kwenye
     parentheses (eg: "(\Deleted)").
@@ -591,34 +591,34 @@ kundi IMAP4:
         rudisha self._untagged_response(typ, dat, name)
 
 
-    eleza login(self, user, pitaword):
-        """Identify client using plaintext pitaword.
+    eleza login(self, user, password):
+        """Identify client using plaintext password.
 
-        (typ, [data]) = <instance>.login(user, pitaword)
+        (typ, [data]) = <instance>.login(user, password)
 
-        NB: 'pitaword' will be quoted.
+        NB: 'password' will be quoted.
         """
-        typ, dat = self._simple_command('LOGIN', user, self._quote(pitaword))
+        typ, dat = self._simple_command('LOGIN', user, self._quote(password))
         ikiwa typ != 'OK':
             ashiria self.error(dat[-1])
         self.state = 'AUTH'
         rudisha typ, dat
 
 
-    eleza login_cram_md5(self, user, pitaword):
+    eleza login_cram_md5(self, user, password):
         """ Force use of CRAM-MD5 authentication.
 
-        (typ, [data]) = <instance>.login_cram_md5(user, pitaword)
+        (typ, [data]) = <instance>.login_cram_md5(user, password)
         """
-        self.user, self.pitaword = user, pitaword
+        self.user, self.password = user, password
         rudisha self.authenticate('CRAM-MD5', self._CRAM_MD5_AUTH)
 
 
     eleza _CRAM_MD5_AUTH(self, challenge):
         """ Authobject to use ukijumuisha CRAM-MD5 authentication. """
         agiza hmac
-        pwd = (self.pitaword.encode('utf-8') ikiwa isinstance(self.pitaword, str)
-                                             isipokua self.pitaword)
+        pwd = (self.password.encode('utf-8') ikiwa isinstance(self.password, str)
+                                             isipokua self.password)
         rudisha self.user + " " + hmac.HMAC(pwd, challenge, 'md5').hexdigest()
 
 
@@ -1542,7 +1542,7 @@ ikiwa __name__ == '__main__':
     host = args[0]
 
     USER = getpita.getuser()
-    PASSWD = getpita.getpita("IMAP pitaword kila %s on %s: " % (USER, host ama "localhost"))
+    PASSWD = getpita.getpita("IMAP password kila %s on %s: " % (USER, host ama "localhost"))
 
     test_mesg = 'From: %(user)s@localhost%(lf)sSubject: IMAP4 test%(lf)s%(lf)sdata...%(lf)s' % {'user':USER, 'lf':'\n'}
     test_seq1 = (

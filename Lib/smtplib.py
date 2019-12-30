@@ -138,7 +138,7 @@ kundi SMTPHeloError(SMTPResponseException):
 kundi SMTPAuthenticationError(SMTPResponseException):
     """Authentication error.
 
-    Most probably the server didn't accept the username/pitaword
+    Most probably the server didn't accept the username/password
     combination provided.
     """
 
@@ -647,32 +647,32 @@ kundi SMTP:
 
     eleza auth_cram_md5(self, challenge=Tupu):
         """ Authobject to use ukijumuisha CRAM-MD5 authentication. Requires self.user
-        na self.pitaword to be set."""
+        na self.password to be set."""
         # CRAM-MD5 does sio support initial-response.
         ikiwa challenge ni Tupu:
             rudisha Tupu
         rudisha self.user + " " + hmac.HMAC(
-            self.pitaword.encode('ascii'), challenge, 'md5').hexdigest()
+            self.password.encode('ascii'), challenge, 'md5').hexdigest()
 
     eleza auth_plain(self, challenge=Tupu):
         """ Authobject to use ukijumuisha PLAIN authentication. Requires self.user na
-        self.pitaword to be set."""
-        rudisha "\0%s\0%s" % (self.user, self.pitaword)
+        self.password to be set."""
+        rudisha "\0%s\0%s" % (self.user, self.password)
 
     eleza auth_login(self, challenge=Tupu):
         """ Authobject to use ukijumuisha LOGIN authentication. Requires self.user na
-        self.pitaword to be set."""
+        self.password to be set."""
         ikiwa challenge ni Tupu:
             rudisha self.user
         isipokua:
-            rudisha self.pitaword
+            rudisha self.password
 
-    eleza login(self, user, pitaword, *, initial_response_ok=Kweli):
+    eleza login(self, user, password, *, initial_response_ok=Kweli):
         """Log kwenye on an SMTP server that requires authentication.
 
         The arguments are:
             - user:         The user name to authenticate with.
-            - pitaword:     The pitaword kila the authentication.
+            - password:     The password kila the authentication.
 
         Keyword arguments:
             - initial_response_ok: Allow sending the RFC 4954 initial-response
@@ -688,7 +688,7 @@ kundi SMTP:
          SMTPHeloError            The server didn't reply properly to
                                   the helo greeting.
          SMTPAuthenticationError  The server didn't accept the username/
-                                  pitaword combination.
+                                  password combination.
          SMTPNotSupportedError    The AUTH command ni sio supported by the
                                   server.
          SMTPException            No suitable authentication method was
@@ -716,7 +716,7 @@ kundi SMTP:
         # Some servers advertise authentication methods they don't really
         # support, so ikiwa authentication fails, we endelea until we've tried
         # all methods.
-        self.user, self.pitaword = user, pitaword
+        self.user, self.password = user, password
         kila authmethod kwenye authlist:
             method_name = 'auth_' + authmethod.lower().replace('-', '_')
             jaribu:

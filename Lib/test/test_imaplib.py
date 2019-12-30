@@ -915,7 +915,7 @@ kundi RemoteIMAPTest(unittest.TestCase):
     host = 'cyrus.andrew.cmu.edu'
     port = 143
     username = 'anonymous'
-    pitaword = 'pita'
+    password = 'pita'
     imap_class = imaplib.IMAP4
 
     eleza setUp(self):
@@ -933,7 +933,7 @@ kundi RemoteIMAPTest(unittest.TestCase):
                 self.assertIsInstance(cap, str)
             self.assertIn('LOGINDISABLED', self.server.capabilities)
             self.assertIn('AUTH=ANONYMOUS', self.server.capabilities)
-            rs = self.server.login(self.username, self.pitaword)
+            rs = self.server.login(self.username, self.password)
             self.assertEqual(rs[0], 'OK')
 
     eleza test_logout(self):
@@ -984,7 +984,7 @@ kundi RemoteIMAP_SSLTest(RemoteIMAPTest):
                 self.assertIsInstance(cap, str)
             self.assertNotIn('LOGINDISABLED', server.capabilities)
             self.assertIn('AUTH=PLAIN', server.capabilities)
-            rs = server.login(self.username, self.pitaword)
+            rs = server.login(self.username, self.password)
             self.assertEqual(rs[0], 'OK')
         mwishowe:
             server.logout()

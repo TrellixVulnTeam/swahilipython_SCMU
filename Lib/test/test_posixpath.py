@@ -282,7 +282,7 @@ kundi PosixPathTest(unittest.TestCase):
         self.assertIsInstance(posixpath.expanduser(b"~foo/"), bytes)
 
         ukijumuisha support.EnvironmentVarGuard() kama env:
-            # expanduser should fall back to using the pitaword database
+            # expanduser should fall back to using the password database
             toa env['HOME']
 
             home = pwd.getpwuid(os.getuid()).pw_dir
@@ -292,7 +292,7 @@ kundi PosixPathTest(unittest.TestCase):
 
             # bpo-10496: If the HOME environment variable ni sio set na the
             # user (current identifier ama name kwenye the path) doesn't exist kwenye
-            # the pitaword database (pwd.getuid() ama pwd.getpwnam() fail),
+            # the password database (pwd.getuid() ama pwd.getpwnam() fail),
             # expanduser() must rudisha the path unchanged.
             ukijumuisha mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \
                  mock.patch.object(pwd, 'getpwnam', side_effect=KeyError):

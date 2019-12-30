@@ -34,16 +34,16 @@ eleza process(filename):
             isipokua: magic = magic + '_'
         andika('#ifndef', magic, file=f)
         andika('#define', magic, file=f)
-        andika('#ifeleza __cplusplus', file=f)
+        andika('#ifdef __cplusplus', file=f)
         andika('extern "C" {', file=f)
         andika('#endif', file=f)
         andika(file=f)
         f.write(data)
         andika(file=f)
-        andika('#ifeleza __cplusplus', file=f)
+        andika('#ifdef __cplusplus', file=f)
         andika('}', file=f)
         andika('#endif', file=f)
-        andika('#endikiwa /*', '!'+magic, '*/', file=f)
+        andika('#endif /*', '!'+magic, '*/', file=f)
 
 ikiwa __name__ == '__main__':
     main()

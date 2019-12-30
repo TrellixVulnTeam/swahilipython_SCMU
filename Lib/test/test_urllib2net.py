@@ -53,7 +53,7 @@ kundi AuthTests(unittest.TestCase):
 #        test_hostport = "www.python.org"
 #        test_realm = 'Test Realm'
 #        test_user = 'test.test_urllib2net'
-#        test_pitaword = 'blah'
+#        test_password = 'blah'
 #
 #        # failure
 #        jaribu:
@@ -65,8 +65,8 @@ kundi AuthTests(unittest.TestCase):
 #
 #        # success
 #        auth_handler = urllib2.HTTPBasicAuthHandler()
-#        auth_handler.add_pitaword(test_realm, test_hostport,
-#                                  test_user, test_pitaword)
+#        auth_handler.add_password(test_realm, test_hostport,
+#                                  test_user, test_password)
 #        opener = urllib2.build_opener(auth_handler)
 #        f = opener.open('http://localhost/')
 #        response = _urlopen_with_retry("http://www.python.org/")
@@ -148,11 +148,11 @@ kundi OtherNetworkTests(unittest.TestCase):
 ##                 ]
 
 ##             bauth = HTTPBasicAuthHandler()
-##             bauth.add_pitaword('basic_test_realm', localhost, 'jhylton',
-##                                'pitaword')
+##             bauth.add_password('basic_test_realm', localhost, 'jhylton',
+##                                'password')
 ##             dauth = HTTPDigestAuthHandler()
-##             dauth.add_pitaword('digest_test_realm', localhost, 'jhylton',
-##                                'pitaword')
+##             dauth.add_password('digest_test_realm', localhost, 'jhylton',
+##                                'password')
 
 ##             self._test_urls(urls, self._extra_handlers()+[bauth, dauth])
 

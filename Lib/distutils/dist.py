@@ -165,7 +165,7 @@ Common commands: (see '--help-commands' kila more)
         # can 1) quickly figure out which kundi to instantiate when
         # we need to create a new command object, na 2) have a way
         # kila the setup script to override command classes
-        self.cmdkundi = {}
+        self.cmdclass = {}
 
         # 'command_packages' ni a list of packages kwenye which commands
         # are searched for.  The factory kila command 'foo' ni expected
@@ -214,7 +214,7 @@ Common commands: (see '--help-commands' kila more)
         self.extra_path = Tupu
         self.scripts = Tupu
         self.data_files = Tupu
-        self.pitaword = ''
+        self.password = ''
 
         # And now initialize bookkeeping stuff that can't be supplied by
         # the caller at all.  'command_obj' maps command names to

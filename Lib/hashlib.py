@@ -180,18 +180,18 @@ tatizo ImportError:
     _trans_5C = bytes((x ^ 0x5C) kila x kwenye range(256))
     _trans_36 = bytes((x ^ 0x36) kila x kwenye range(256))
 
-    eleza pbkdf2_hmac(hash_name, pitaword, salt, iterations, dklen=Tupu):
+    eleza pbkdf2_hmac(hash_name, password, salt, iterations, dklen=Tupu):
         """Password based key derivation function 2 (PKCS #5 v2.0)
 
         This Python implementations based on the hmac module about kama fast
-        kama OpenSSL's PKCS5_PBKDF2_HMAC kila short pitawords na much faster
-        kila long pitawords.
+        kama OpenSSL's PKCS5_PBKDF2_HMAC kila short passwords na much faster
+        kila long passwords.
         """
         ikiwa sio isinstance(hash_name, str):
             ashiria TypeError(hash_name)
 
-        ikiwa sio isinstance(pitaword, (bytes, bytearray)):
-            pitaword = bytes(memoryview(pitaword))
+        ikiwa sio isinstance(password, (bytes, bytearray)):
+            password = bytes(memoryview(password))
         ikiwa sio isinstance(salt, (bytes, bytearray)):
             salt = bytes(memoryview(salt))
 
@@ -199,14 +199,14 @@ tatizo ImportError:
         inner = new(hash_name)
         outer = new(hash_name)
         blocksize = getattr(inner, 'block_size', 64)
-        ikiwa len(pitaword) > blocksize:
-            pitaword = new(hash_name, pitaword).digest()
-        pitaword = pitaword + b'\x00' * (blocksize - len(pitaword))
-        inner.update(pitaword.translate(_trans_36))
-        outer.update(pitaword.translate(_trans_5C))
+        ikiwa len(password) > blocksize:
+            password = new(hash_name, password).digest()
+        password = password + b'\x00' * (blocksize - len(password))
+        inner.update(password.translate(_trans_36))
+        outer.update(password.translate(_trans_5C))
 
         eleza prf(msg, inner=inner, outer=outer):
-            # PBKDF2_HMAC uses the pitaword kama key. We can re-use the same
+            # PBKDF2_HMAC uses the password kama key. We can re-use the same
             # digest objects na just update copies to skip initialization.
             icpy = inner.copy()
             ocpy = outer.copy()

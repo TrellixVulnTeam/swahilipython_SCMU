@@ -222,10 +222,10 @@ kundi NetworkedNNTPTestsMixin:
         # This test must be the penultimate because further commands will be
         # refused.
         baduser = "notarealuser"
-        badpw = "notarealpitaword"
+        badpw = "notarealpassword"
         # Check that bogus credentials cause failure
         self.assertRaises(nntplib.NNTPError, self.server.login,
-                          user=baduser, pitaword=badpw, usenetrc=Uongo)
+                          user=baduser, password=badpw, usenetrc=Uongo)
         # FIXME: We should check that correct credentials succeed, but that
         # would require valid details kila some server somewhere to be kwenye the
         # test suite, I think. Gmane ni anonymous, at least kama used kila the
@@ -1462,7 +1462,7 @@ kundi MockSocketTests(unittest.TestCase):
     eleza check_constructor_error_conditions(
             self, handler_class,
             expected_error_type, expected_error_msg,
-            login=Tupu, pitaword=Tupu):
+            login=Tupu, password=Tupu):
 
         kundi mock_socket_module:
             eleza create_connection(address, timeout):
@@ -1483,7 +1483,7 @@ kundi MockSocketTests(unittest.TestCase):
         files = []
         ukijumuisha patch('nntplib.socket', mock_socket_module), \
              self.assertRaisesRegex(expected_error_type, expected_error_msg):
-            self.nntp_class('dummy', user=login, pitaword=pitaword)
+            self.nntp_class('dummy', user=login, password=password)
         self.assertKweli(socket_closed)
         kila f kwenye files:
             self.assertKweli(f.closed)
@@ -1521,14 +1521,14 @@ kundi MockSocketTests(unittest.TestCase):
     eleza test_login_aborted(self):
         #Test a bad authinfo response
         login = 't@e.com'
-        pitaword = 'python'
+        password = 'python'
         kundi Handler(NNTPv1Handler):
             eleza handle_AUTHINFO(self, *args):
                 self.push_lit(authinfo_response)
         authinfo_response = '503 Mechanism sio recognized'
         self.check_constructor_error_conditions(
             Handler, nntplib.NNTPPermanentError, authinfo_response,
-            login, pitaword)
+            login, password)
 
 kundi bypita_context:
     """Bypita encryption na actual SSL module"""

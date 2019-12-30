@@ -52,10 +52,10 @@ kundi KeywordOnlyArgTestCase(unittest.TestCase):
 
     eleza testSyntaxForManyArguments(self):
         # more than 255 positional arguments, should compile ok
-        funeleza = "eleza f(%s):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
+        fundef = "eleza f(%s):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
         compile(fundef, "<test>", "single")
         # more than 255 keyword-only arguments, should compile ok
-        funeleza = "eleza f(*, %s):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
+        fundef = "eleza f(*, %s):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
         compile(fundef, "<test>", "single")
 
     eleza testTooManyPositionalErrorMessage(self):

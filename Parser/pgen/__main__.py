@@ -6,20 +6,20 @@ kutoka .pgen agiza ParserGenerator
 eleza main():
     parser = argparse.ArgumentParser(description="Parser generator main program.")
     parser.add_argument(
-        "grammar", type=str, help="The file ukijumuisha the grammar definition kwenye EBNF format"
+        "grammar", type=str, help="The file with the grammar definition in EBNF format"
     )
     parser.add_argument(
-        "tokens", type=str, help="The file ukijumuisha the token definitions"
+        "tokens", type=str, help="The file with the token definitions"
     )
     parser.add_argument(
         "graminit_h",
         type=argparse.FileType('w'),
-        help="The path to write the grammar's non-terminals kama #defines",
+        help="The path to write the grammar's non-terminals as #defines",
     )
     parser.add_argument(
         "graminit_c",
         type=argparse.FileType('w'),
-        help="The path to write the grammar kama initialized data",
+        help="The path to write the grammar as initialized data",
     )
 
     parser.add_argument("--verbose", "-v", action="count")

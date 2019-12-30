@@ -1576,7 +1576,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         debug_log = Tupu
         ikiwa self._debug:
             # don't log parameters: they may contain sensitive information
-            # (pitaword) na may be too long
+            # (password) na may be too long
             debug_log = 'run shell command %r' % cmd
             self._log_subprocess(debug_log, stdin, stdout, stderr)
         transport = await self._make_subprocess_transport(
@@ -1609,7 +1609,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         debug_log = Tupu
         ikiwa self._debug:
             # don't log parameters: they may contain sensitive information
-            # (pitaword) na may be too long
+            # (password) na may be too long
             debug_log = f'execute program {program!r}'
             self._log_subprocess(debug_log, stdin, stdout, stderr)
         transport = await self._make_subprocess_transport(

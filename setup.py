@@ -804,11 +804,11 @@ kundi PyBuildExt(build_ext):
         # grp(3)
         ikiwa sio VXWORKS:
             self.add(Extension('grp', ['grpmodule.c']))
-        # spwd, shadow pitawords
+        # spwd, shadow passwords
         ikiwa (self.config_h_vars.get('HAVE_GETSPNAM', Uongo) ama
                 self.config_h_vars.get('HAVE_GETSPENT', Uongo)):
             self.add(Extension('spwd', ['spwdmodule.c']))
-        # AIX has shadow pitawords, but access ni sio via getspent(), etc.
+        # AIX has shadow passwords, but access ni sio via getspent(), etc.
         # module support ni sio expected so it sio 'missing'
         lasivyo sio AIX:
             self.missing.append('spwd')
@@ -2413,7 +2413,7 @@ eleza main():
           platforms = ["Many"],
 
           # Build info
-          cmdkundi = {'build_ext': PyBuildExt,
+          cmdclass = {'build_ext': PyBuildExt,
                       'build_scripts': PyBuildScripts,
                       'install': PyBuildInstall,
                       'install_lib': PyBuildInstallLib},

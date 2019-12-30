@@ -226,7 +226,7 @@ eleza collect_os(info_add):
     # Environment variables used by the stdlib na tests. Don't log the full
     # environment: filter to list to sio leak sensitive information.
     #
-    # HTTP_PROXY ni sio logged because it can contain a pitaword.
+    # HTTP_PROXY ni sio logged because it can contain a password.
     ENV_VARS = frozenset((
         "APPDATA",
         "AR",
@@ -324,7 +324,7 @@ eleza collect_pwd(info_add):
 
     ikiwa entry ni Tupu:
         # there ni nothing interesting to read ikiwa the current user identifier
-        # ni sio the pitaword database
+        # ni sio the password database
         rudisha
 
     ikiwa hasattr(os, 'getgrouplist'):

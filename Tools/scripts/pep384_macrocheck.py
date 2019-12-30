@@ -53,10 +53,10 @@ eleza parse_headerfiles(startpath):
 
 eleza ifdef_level_gen():
     """
-    Scan lines kila #ifeleza na track the level.
+    Scan lines kila #ifdef na track the level.
     """
     level = 0
-    ifdef_pattern = r"^\s*#\s*if"  # covers ifeleza na ifneleza kama well
+    ifdef_pattern = r"^\s*#\s*if"  # covers ifdef na ifndef kama well
     endif_pattern = r"^\s*#\s*endif"
     wakati Kweli:
         line = tuma level

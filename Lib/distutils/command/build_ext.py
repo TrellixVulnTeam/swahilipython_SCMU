@@ -113,7 +113,7 @@ kundi build_ext(Command):
 
         self.include_dirs = Tupu
         self.define = Tupu
-        self.uneleza = Tupu
+        self.undef = Tupu
         self.libraries = Tupu
         self.library_dirs = Tupu
         self.rpath = Tupu
@@ -252,7 +252,7 @@ kundi build_ext(Command):
         # option parsing, but has to be a list.  Multiple symbols can also
         # be separated ukijumuisha commas here.
         ikiwa self.undef:
-            self.uneleza = self.undef.split(',')
+            self.undef = self.undef.split(',')
 
         ikiwa self.swig_opts ni Tupu:
             self.swig_opts = []
@@ -324,7 +324,7 @@ kundi build_ext(Command):
             # 'define' option ni a list of (name,value) tuples
             kila (name, value) kwenye self.define:
                 self.compiler.define_macro(name, value)
-        ikiwa self.uneleza ni sio Tupu:
+        ikiwa self.undef ni sio Tupu:
             kila macro kwenye self.undef:
                 self.compiler.undefine_macro(macro)
         ikiwa self.libraries ni sio Tupu:
@@ -522,7 +522,7 @@ kundi build_ext(Command):
         extra_args = ext.extra_compile_args ama []
 
         macros = ext.define_macros[:]
-        kila uneleza kwenye ext.undef_macros:
+        kila undef kwenye ext.undef_macros:
             macros.append((undef,))
 
         objects = self.compiler.compile(sources,

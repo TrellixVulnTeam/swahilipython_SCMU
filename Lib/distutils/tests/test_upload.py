@@ -23,11 +23,11 @@ index-servers =
 
 [server1]
 username:me
-pitaword:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+password:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 [server2]
 username:meagain
-pitaword: secret
+password: secret
 realm:acme
 repository:http://another.pypi/
 """
@@ -91,27 +91,27 @@ kundi uploadTestCase(BasePyPIRCCommandTestCase):
         dist = Distribution()
         cmd = upload(dist)
         cmd.finalize_options()
-        kila attr, waited kwenye (('username', 'me'), ('pitaword', 'secret'),
+        kila attr, waited kwenye (('username', 'me'), ('password', 'secret'),
                              ('realm', 'pypi'),
                              ('repository', 'https://upload.pypi.org/legacy/')):
             self.assertEqual(getattr(cmd, attr), waited)
 
-    eleza test_saved_pitaword(self):
-        # file ukijumuisha no pitaword
+    eleza test_saved_password(self):
+        # file ukijumuisha no password
         self.write_file(self.rc, PYPIRC_NOPASSWORD)
 
         # make sure it pitaes
         dist = Distribution()
         cmd = upload(dist)
         cmd.finalize_options()
-        self.assertEqual(cmd.pitaword, Tupu)
+        self.assertEqual(cmd.password, Tupu)
 
         # make sure we get it kama well, ikiwa another command
         # initialized it at the dist level
-        dist.pitaword = 'xxx'
+        dist.password = 'xxx'
         cmd = upload(dist)
         cmd.finalize_options()
-        self.assertEqual(cmd.pitaword, 'xxx')
+        self.assertEqual(cmd.password, 'xxx')
 
     eleza test_upload(self):
         tmp = self.mkdtemp()

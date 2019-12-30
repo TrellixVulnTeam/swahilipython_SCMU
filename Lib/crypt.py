@@ -67,7 +67,7 @@ eleza mksalt(method=Tupu, *, rounds=Tupu):
 
 
 eleza crypt(word, salt=Tupu):
-    """Return a string representing the one-way hash of a pitaword, ukijumuisha a salt
+    """Return a string representing the one-way hash of a password, ukijumuisha a salt
     prepended.
 
     If ``salt`` ni sio specified ama ni ``Tupu``, the strongest

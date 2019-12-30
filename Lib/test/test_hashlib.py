@@ -859,19 +859,19 @@ kundi HashLibTestCase(unittest.TestCase):
 kundi KDFTests(unittest.TestCase):
 
     pbkdf2_test_vectors = [
-        (b'pitaword', b'salt', 1, Tupu),
-        (b'pitaword', b'salt', 2, Tupu),
-        (b'pitaword', b'salt', 4096, Tupu),
+        (b'password', b'salt', 1, Tupu),
+        (b'password', b'salt', 2, Tupu),
+        (b'password', b'salt', 4096, Tupu),
         # too slow, it takes over a minute on a fast CPU.
-        #(b'pitaword', b'salt', 16777216, Tupu),
-        (b'pitawordPASSWORDpitaword', b'saltSALTsaltSALTsaltSALTsaltSALTsalt',
+        #(b'password', b'salt', 16777216, Tupu),
+        (b'passwordPASSWORDpassword', b'saltSALTsaltSALTsaltSALTsaltSALTsalt',
          4096, -1),
         (b'pita\0word', b'sa\0lt', 4096, 16),
     ]
 
     scrypt_test_vectors = [
         (b'', b'', 16, 1, 1, unhexlify('77d6576238657b203b19ca42c18a0497f16b4844e3074ae8dfdffa3fede21442fcd0069ded0948f8326a753a0fc81f17e8d3e0fb2e0d3628cf35e20c38d18906')),
-        (b'pitaword', b'NaCl', 1024, 8, 16, unhexlify('fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640')),
+        (b'password', b'NaCl', 1024, 8, 16, unhexlify('fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640')),
         (b'pleaseletmein', b'SodiumChloride', 16384, 8, 1, unhexlify('7023bdcb3afd7348461c06cd81fd38ebfda8fbba904f8e3ea9b543f6545da1f2d5432955613f0fcf62d49705242a9af9e61e85dc0d651e40dfcf017b45575887')),
    ]
 
@@ -916,22 +916,22 @@ kundi KDFTests(unittest.TestCase):
     eleza _test_pbkdf2_hmac(self, pbkdf2):
         kila digest_name, results kwenye self.pbkdf2_results.items():
             kila i, vector kwenye enumerate(self.pbkdf2_test_vectors):
-                pitaword, salt, rounds, dklen = vector
+                password, salt, rounds, dklen = vector
                 expected, overwrite_dklen = results[i]
                 ikiwa overwrite_dklen:
                     dklen = overwrite_dklen
-                out = pbkdf2(digest_name, pitaword, salt, rounds, dklen)
+                out = pbkdf2(digest_name, password, salt, rounds, dklen)
                 self.assertEqual(out, expected,
-                                 (digest_name, pitaword, salt, rounds, dklen))
-                out = pbkdf2(digest_name, memoryview(pitaword),
+                                 (digest_name, password, salt, rounds, dklen))
+                out = pbkdf2(digest_name, memoryview(password),
                              memoryview(salt), rounds, dklen)
-                out = pbkdf2(digest_name, bytearray(pitaword),
+                out = pbkdf2(digest_name, bytearray(password),
                              bytearray(salt), rounds, dklen)
                 self.assertEqual(out, expected)
                 ikiwa dklen ni Tupu:
-                    out = pbkdf2(digest_name, pitaword, salt, rounds)
+                    out = pbkdf2(digest_name, password, salt, rounds)
                     self.assertEqual(out, expected,
-                                     (digest_name, pitaword, salt, rounds))
+                                     (digest_name, password, salt, rounds))
 
         self.assertRaises(TypeError, pbkdf2, b'sha1', b'pita', b'salt', 1)
         self.assertRaises(TypeError, pbkdf2, 'sha1', 'pita', 'salt', 1)
@@ -941,7 +941,7 @@ kundi KDFTests(unittest.TestCase):
         self.assertRaises(ValueError, pbkdf2, 'sha1', b'pita', b'salt', 1, -1)
         ukijumuisha self.assertRaisesRegex(ValueError, 'unsupported hash type'):
             pbkdf2('unknown', b'pita', b'salt', 1)
-        out = pbkdf2(hash_name='sha1', pitaword=b'pitaword', salt=b'salt',
+        out = pbkdf2(hash_name='sha1', password=b'password', salt=b'salt',
             iterations=1, dklen=Tupu)
         self.assertEqual(out, self.pbkdf2_results['sha1'][0][0])
 
@@ -957,40 +957,40 @@ kundi KDFTests(unittest.TestCase):
     @unittest.skipUnless(hasattr(c_hashlib, 'scrypt'),
                      '   test requires OpenSSL > 1.1')
     eleza test_scrypt(self):
-        kila pitaword, salt, n, r, p, expected kwenye self.scrypt_test_vectors:
-            result = hashlib.scrypt(pitaword, salt=salt, n=n, r=r, p=p)
+        kila password, salt, n, r, p, expected kwenye self.scrypt_test_vectors:
+            result = hashlib.scrypt(password, salt=salt, n=n, r=r, p=p)
             self.assertEqual(result, expected)
 
         # this values should work
-        hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1)
-        # pitaword na salt must be bytes-like
+        hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=1)
+        # password na salt must be bytes-like
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt('pitaword', salt=b'salt', n=2, r=8, p=1)
+            hashlib.scrypt('password', salt=b'salt', n=2, r=8, p=1)
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt(b'pitaword', salt='salt', n=2, r=8, p=1)
+            hashlib.scrypt(b'password', salt='salt', n=2, r=8, p=1)
         # require keyword args
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt(b'pitaword')
+            hashlib.scrypt(b'password')
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt(b'pitaword', b'salt')
+            hashlib.scrypt(b'password', b'salt')
         ukijumuisha self.assertRaises(TypeError):
-            hashlib.scrypt(b'pitaword', 2, 8, 1, salt=b'salt')
+            hashlib.scrypt(b'password', 2, 8, 1, salt=b'salt')
         kila n kwenye [-1, 0, 1, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=n, r=8, p=1)
+                hashlib.scrypt(b'password', salt=b'salt', n=n, r=8, p=1)
         kila r kwenye [-1, 0, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=r, p=1)
+                hashlib.scrypt(b'password', salt=b'salt', n=2, r=r, p=1)
         kila p kwenye [-1, 0, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=p)
+                hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=p)
         kila maxmem kwenye [-1, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1,
+                hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=1,
                                maxmem=maxmem)
         kila dklen kwenye [-1, Tupu]:
             ukijumuisha self.assertRaises((ValueError, OverflowError, TypeError)):
-                hashlib.scrypt(b'pitaword', salt=b'salt', n=2, r=8, p=1,
+                hashlib.scrypt(b'password', salt=b'salt', n=2, r=8, p=1,
                                dklen=dklen)
 
     eleza test_normalized_name(self):

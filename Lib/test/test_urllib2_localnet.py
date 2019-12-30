@@ -120,13 +120,13 @@ kundi DigestAuthHandler:
             auth_dict[name] = value
         rudisha auth_dict
 
-    eleza _validate_auth(self, auth_dict, pitaword, method, uri):
+    eleza _validate_auth(self, auth_dict, password, method, uri):
         final_dict = {}
         final_dict.update(auth_dict)
-        final_dict["pitaword"] = pitaword
+        final_dict["password"] = password
         final_dict["method"] = method
         final_dict["uri"] = uri
-        HA1_str = "%(username)s:%(realm)s:%(pitaword)s" % final_dict
+        HA1_str = "%(username)s:%(realm)s:%(password)s" % final_dict
         HA1 = hashlib.md5(HA1_str.encode("ascii")).hexdigest()
         HA2_str = "%(method)s:%(uri)s" % final_dict
         HA2 = hashlib.md5(HA2_str.encode("ascii")).hexdigest()
@@ -172,7 +172,7 @@ kundi DigestAuthHandler:
                 request_handler.headers["Proxy-Authorization"]
                 )
             ikiwa auth_dict["username"] kwenye self._users:
-                pitaword = self._users[ auth_dict["username"] ]
+                password = self._users[ auth_dict["username"] ]
             isipokua:
                 rudisha self._return_auth_challenge(request_handler)
             ikiwa sio auth_dict.get("nonce") kwenye self._nonces:
@@ -188,7 +188,7 @@ kundi DigestAuthHandler:
 
             kila path kwenye [request_handler.path, request_handler.short_path]:
                 ikiwa self._validate_auth(auth_dict,
-                                       pitaword,
+                                       password,
                                        request_handler.command,
                                        path):
                     auth_validated = Kweli
@@ -301,7 +301,7 @@ kundi BasicAuthTests(unittest.TestCase):
 
     eleza test_basic_auth_success(self):
         ah = urllib.request.HTTPBasicAuthHandler()
-        ah.add_pitaword(self.REALM, self.server_url, self.USER, self.PASSWD)
+        ah.add_password(self.REALM, self.server_url, self.USER, self.PASSWD)
         urllib.request.install_opener(urllib.request.build_opener(ah))
         jaribu:
             self.assertKweli(urllib.request.urlopen(self.server_url))
@@ -310,7 +310,7 @@ kundi BasicAuthTests(unittest.TestCase):
 
     eleza test_basic_auth_httperror(self):
         ah = urllib.request.HTTPBasicAuthHandler()
-        ah.add_pitaword(self.REALM, self.server_url, self.USER, self.INCORRECT_PASSWD)
+        ah.add_password(self.REALM, self.server_url, self.USER, self.INCORRECT_PASSWD)
         urllib.request.install_opener(urllib.request.build_opener(ah))
         self.assertRaises(urllib.error.HTTPError, urllib.request.urlopen, self.server_url)
 
@@ -354,22 +354,22 @@ kundi ProxyAuthTests(unittest.TestCase):
         self.server.stop()
         self.server = Tupu
 
-    eleza test_proxy_with_bad_pitaword_raises_httperror(self):
-        self.proxy_digest_handler.add_pitaword(self.REALM, self.URL,
+    eleza test_proxy_with_bad_password_raises_httperror(self):
+        self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD+"bad")
         self.digest_auth_handler.set_qop("auth")
         self.assertRaises(urllib.error.HTTPError,
                           self.opener.open,
                           self.URL)
 
-    eleza test_proxy_with_no_pitaword_raises_httperror(self):
+    eleza test_proxy_with_no_password_raises_httperror(self):
         self.digest_auth_handler.set_qop("auth")
         self.assertRaises(urllib.error.HTTPError,
                           self.opener.open,
                           self.URL)
 
     eleza test_proxy_qop_auth_works(self):
-        self.proxy_digest_handler.add_pitaword(self.REALM, self.URL,
+        self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth")
         ukijumuisha self.opener.open(self.URL) kama result:
@@ -377,7 +377,7 @@ kundi ProxyAuthTests(unittest.TestCase):
                 pita
 
     eleza test_proxy_qop_auth_int_works_or_throws_urlerror(self):
-        self.proxy_digest_handler.add_pitaword(self.REALM, self.URL,
+        self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth-int")
         jaribu:

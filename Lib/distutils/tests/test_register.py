@@ -36,7 +36,7 @@ index-servers =
 
 [pypi]
 username:tarek
-pitaword:pitaword
+password:password
 """
 
 kundi Inputs(object):
@@ -76,10 +76,10 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
 
     eleza setUp(self):
         super(RegisterTestCase, self).setUp()
-        # patching the pitaword prompt
+        # patching the password prompt
         self._old_getpita = getpita.getpita
         eleza _getpita(prompt):
-            rudisha 'pitaword'
+            rudisha 'password'
         getpita.getpita = _getpita
         urllib.request._opener = Tupu
         self.old_opener = urllib.request.build_opener
@@ -115,7 +115,7 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
         # Here's what we are faking :
         # use your existing login (choice 1.)
         # Username : 'tarek'
-        # Password : 'pitaword'
+        # Password : 'password'
         # Save your login (y/N)? : 'y'
         inputs = Inputs('1', 'tarek', 'y')
         register_module.input = inputs.__call__
@@ -156,7 +156,7 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(req2['Content-length'], '1374')
         self.assertIn(b'xxx', self.conn.reqs[1].data)
 
-    eleza test_pitaword_not_in_file(self):
+    eleza test_password_not_in_file(self):
 
         self.write_file(self.rc, PYPIRC_NOPASSWORD)
         cmd = self._get_cmd()
@@ -164,9 +164,9 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
         cmd.finalize_options()
         cmd.send_metadata()
 
-        # dist.pitaword should be set
+        # dist.password should be set
         # therefore used afterwards by other commands
-        self.assertEqual(cmd.distribution.pitaword, 'pitaword')
+        self.assertEqual(cmd.distribution.password, 'password')
 
     eleza test_registering(self):
         # this test runs choice 2
@@ -186,7 +186,7 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(headers['Content-length'], '608')
         self.assertIn(b'tarek', req.data)
 
-    eleza test_pitaword_reset(self):
+    eleza test_password_reset(self):
         # this test runs choice 3
         cmd = self._get_cmd()
         inputs = Inputs('3', 'tarek@ziade.org')

@@ -93,7 +93,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
     eleza test_syntax_for_many_positional_only(self):
         # more than 255 positional only arguments, should compile ok
-        funeleza = "eleza f(%s, /):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
+        fundef = "eleza f(%s, /):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
         compile(fundef, "<test>", "single")
 
     eleza test_pos_only_definition(self):
@@ -330,7 +330,7 @@ kundi PositionalOnlyTestCase(unittest.TestCase):
 
     eleza test_too_many_arguments(self):
         # more than 255 positional-only arguments, should compile ok
-        funeleza = "eleza f(%s, /):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
+        fundef = "eleza f(%s, /):\n  pita\n" % ', '.join('i%d' % i kila i kwenye range(300))
         compile(fundef, "<test>", "single")
 
     eleza test_serialization(self):

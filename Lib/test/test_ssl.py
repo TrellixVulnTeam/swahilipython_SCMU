@@ -1309,23 +1309,23 @@ kundi ContextTests(unittest.TestCase):
         ukijumuisha self.assertRaisesRegex(ssl.SSLError, "key values mismatch"):
             ctx.load_cert_chain(CAFILE_CACERT, ONLYKEY)
         # Password protected key na cert
-        ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=KEY_PASSWORD)
-        ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=KEY_PASSWORD.encode())
+        ctx.load_cert_chain(CERTFILE_PROTECTED, password=KEY_PASSWORD)
+        ctx.load_cert_chain(CERTFILE_PROTECTED, password=KEY_PASSWORD.encode())
         ctx.load_cert_chain(CERTFILE_PROTECTED,
-                            pitaword=bytearray(KEY_PASSWORD.encode()))
+                            password=bytearray(KEY_PASSWORD.encode()))
         ctx.load_cert_chain(ONLYCERT, ONLYKEY_PROTECTED, KEY_PASSWORD)
         ctx.load_cert_chain(ONLYCERT, ONLYKEY_PROTECTED, KEY_PASSWORD.encode())
         ctx.load_cert_chain(ONLYCERT, ONLYKEY_PROTECTED,
                             bytearray(KEY_PASSWORD.encode()))
         ukijumuisha self.assertRaisesRegex(TypeError, "should be a string"):
-            ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=Kweli)
+            ctx.load_cert_chain(CERTFILE_PROTECTED, password=Kweli)
         ukijumuisha self.assertRaises(ssl.SSLError):
-            ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword="badpita")
+            ctx.load_cert_chain(CERTFILE_PROTECTED, password="badpita")
         ukijumuisha self.assertRaisesRegex(ValueError, "cansio be longer"):
-            # openssl has a fixed limit on the pitaword buffer.
+            # openssl has a fixed limit on the password buffer.
             # PEM_BUFSIZE ni generally set to 1kb.
             # Return a string larger than this.
-            ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=b'a' * 102400)
+            ctx.load_cert_chain(CERTFILE_PROTECTED, password=b'a' * 102400)
         # Password callback
         eleza getpita_unicode():
             rudisha KEY_PASSWORD
@@ -1346,22 +1346,22 @@ kundi ContextTests(unittest.TestCase):
                 rudisha KEY_PASSWORD
             eleza getpita(self):
                 rudisha KEY_PASSWORD
-        ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_unicode)
-        ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_bytes)
-        ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_bytearray)
-        ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=GetPassCallable())
+        ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_unicode)
+        ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_bytes)
+        ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_bytearray)
+        ctx.load_cert_chain(CERTFILE_PROTECTED, password=GetPassCallable())
         ctx.load_cert_chain(CERTFILE_PROTECTED,
-                            pitaword=GetPassCallable().getpita)
+                            password=GetPassCallable().getpita)
         ukijumuisha self.assertRaises(ssl.SSLError):
-            ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_badpita)
+            ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_badpita)
         ukijumuisha self.assertRaisesRegex(ValueError, "cansio be longer"):
-            ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_huge)
+            ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_huge)
         ukijumuisha self.assertRaisesRegex(TypeError, "must rudisha a string"):
-            ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_bad_type)
+            ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_bad_type)
         ukijumuisha self.assertRaisesRegex(Exception, "getpita error"):
-            ctx.load_cert_chain(CERTFILE_PROTECTED, pitaword=getpita_exception)
-        # Make sure the pitaword function isn't called ikiwa it isn't needed
-        ctx.load_cert_chain(CERTFILE, pitaword=getpita_exception)
+            ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_exception)
+        # Make sure the password function isn't called ikiwa it isn't needed
+        ctx.load_cert_chain(CERTFILE, password=getpita_exception)
 
     eleza test_load_verify_locations(self):
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)

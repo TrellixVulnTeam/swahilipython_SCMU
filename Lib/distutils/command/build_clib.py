@@ -59,7 +59,7 @@ kundi build_clib(Command):
         # Compilation options kila all libraries
         self.include_dirs = Tupu
         self.define = Tupu
-        self.uneleza = Tupu
+        self.undef = Tupu
         self.debug = Tupu
         self.force = 0
         self.compiler = Tupu
@@ -108,7 +108,7 @@ kundi build_clib(Command):
             # 'define' option ni a list of (name,value) tuples
             kila (name,value) kwenye self.define:
                 self.compiler.define_macro(name, value)
-        ikiwa self.uneleza ni sio Tupu:
+        ikiwa self.undef ni sio Tupu:
             kila macro kwenye self.undef:
                 self.compiler.undefine_macro(macro)
 

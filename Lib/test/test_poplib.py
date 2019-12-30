@@ -85,11 +85,11 @@ kundi DummyPOP3Handler(asynchat.async_chat):
     eleza cmd_user(self, arg):
         ikiwa arg != "guido":
             self.push("-ERR no such user")
-        self.push('+OK pitaword required')
+        self.push('+OK password required')
 
     eleza cmd_pita(self, arg):
         ikiwa arg != "python":
-            self.push("-ERR wrong pitaword")
+            self.push("-ERR wrong password")
         self.push('+OK 10 messages')
 
     eleza cmd_stat(self, arg):
@@ -311,7 +311,7 @@ kundi TestPOP3Class(TestCase):
 
     @test_support.requires_hashdigest('md5')
     eleza test_apop_normal(self):
-        self.assertOK(self.client.apop('foo', 'dummypitaword'))
+        self.assertOK(self.client.apop('foo', 'dummypassword'))
 
     @test_support.requires_hashdigest('md5')
     eleza test_apop_REDOS(self):

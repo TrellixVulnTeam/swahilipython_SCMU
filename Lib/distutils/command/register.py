@@ -71,7 +71,7 @@ kundi register(PyPIRCCommand):
         config = self._read_pypirc()
         ikiwa config != {}:
             self.username = config['username']
-            self.pitaword = config['pitaword']
+            self.password = config['password']
             self.repository = config['repository']
             self.realm = config['realm']
             self.has_config = Kweli
@@ -103,9 +103,9 @@ kundi register(PyPIRCCommand):
             1. figure who the user is, na then
             2. send the data kama a Basic auth'ed POST.
 
-            First we try to read the username/pitaword kutoka $HOME/.pypirc,
+            First we try to read the username/password kutoka $HOME/.pypirc,
             which ni a ConfigParser-formatted file ukijumuisha a section
-            [distutils] containing username na pitaword entries (both
+            [distutils] containing username na password entries (both
             kwenye clear text). Eg:
 
                 [distutils]
@@ -114,25 +114,25 @@ kundi register(PyPIRCCommand):
 
                 [pypi]
                 username: fred
-                pitaword: sekrit
+                password: sekrit
 
             Otherwise, to figure who the user is, we offer the user three
             choices:
 
              1. use existing login,
              2. register kama a new user, ama
-             3. set the pitaword to a random string na email the user.
+             3. set the password to a random string na email the user.
 
         '''
-        # see ikiwa we can short-cut na get the username/pitaword kutoka the
+        # see ikiwa we can short-cut na get the username/password kutoka the
         # config
         ikiwa self.has_config:
             choice = '1'
             username = self.username
-            pitaword = self.pitaword
+            password = self.password
         isipokua:
             choice = 'x'
-            username = pitaword = ''
+            username = password = ''
 
         # get the user's login info
         choices = '1 2 3 4'.split()
@@ -141,7 +141,7 @@ kundi register(PyPIRCCommand):
 We need to know who you are, so please choose either:
  1. use your existing login,
  2. register kama a new user,
- 3. have the server generate a new pitaword kila you (and email it to you), ama
+ 3. have the server generate a new password kila you (and email it to you), ama
  4. quit
 Your selection [default 1]: ''', log.INFO)
             choice = uliza()
@@ -151,16 +151,16 @@ Your selection [default 1]: ''', log.INFO)
                 andika('Please choose one of the four options!')
 
         ikiwa choice == '1':
-            # get the username na pitaword
+            # get the username na password
             wakati sio username:
                 username = uliza('Username: ')
-            wakati sio pitaword:
-                pitaword = getpita.getpita('Password: ')
+            wakati sio password:
+                password = getpita.getpita('Password: ')
 
             # set up the authentication
             auth = urllib.request.HTTPPasswordMgr()
             host = urllib.parse.urlparse(self.repository)[1]
-            auth.add_pitaword(self.realm, host, username, pitaword)
+            auth.add_password(self.realm, host, username, password)
             # send the info to the server na report the result
             code, result = self.post_to_server(self.build_post_data('submit'),
                 auth)
@@ -170,9 +170,9 @@ Your selection [default 1]: ''', log.INFO)
             # possibly save the login
             ikiwa code == 200:
                 ikiwa self.has_config:
-                    # sharing the pitaword kwenye the distribution instance
+                    # sharing the password kwenye the distribution instance
                     # so the upload command can reuse it
-                    self.distribution.pitaword = pitaword
+                    self.distribution.password = password
                 isipokua:
                     self.announce(('I can store your PyPI login so future '
                                    'submissions will be faster.'), log.INFO)
@@ -184,21 +184,21 @@ Your selection [default 1]: ''', log.INFO)
                         ikiwa sio choice:
                             choice = 'n'
                     ikiwa choice.lower() == 'y':
-                        self._store_pypirc(username, pitaword)
+                        self._store_pypirc(username, password)
 
         lasivyo choice == '2':
             data = {':action': 'user'}
-            data['name'] = data['pitaword'] = data['email'] = ''
+            data['name'] = data['password'] = data['email'] = ''
             data['confirm'] = Tupu
             wakati sio data['name']:
                 data['name'] = uliza('Username: ')
-            wakati data['pitaword'] != data['confirm']:
-                wakati sio data['pitaword']:
-                    data['pitaword'] = getpita.getpita('Password: ')
+            wakati data['password'] != data['confirm']:
+                wakati sio data['password']:
+                    data['password'] = getpita.getpita('Password: ')
                 wakati sio data['confirm']:
                     data['confirm'] = getpita.getpita(' Confirm: ')
-                ikiwa data['pitaword'] != data['confirm']:
-                    data['pitaword'] = ''
+                ikiwa data['password'] != data['confirm']:
+                    data['password'] = ''
                     data['confirm'] = Tupu
                     andika("Password na confirm don't match!")
             wakati sio data['email']:
@@ -211,7 +211,7 @@ Your selection [default 1]: ''', log.INFO)
                 log.info(('Follow the instructions kwenye it to '
                           'complete registration.'))
         lasivyo choice == '3':
-            data = {':action': 'pitaword_reset'}
+            data = {':action': 'password_reset'}
             data['email'] = ''
             wakati sio data['email']:
                 data['email'] = uliza('Your email address: ')
@@ -283,7 +283,7 @@ Your selection [default 1]: ''', log.INFO)
 
         # handle HTTP na include the Basic Auth handler
         opener = urllib.request.build_opener(
-            urllib.request.HTTPBasicAuthHandler(pitaword_mgr=auth)
+            urllib.request.HTTPBasicAuthHandler(password_mgr=auth)
         )
         data = ''
         jaribu:

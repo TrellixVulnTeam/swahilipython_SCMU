@@ -72,7 +72,7 @@ kundi Monitor:
 
         eleza pop_stack():
             ikiwa sio self.stack:
-                self.fail("#" + token + " without matching #ikiwa / #ifeleza / #ifndef!")
+                self.fail("#" + token + " without matching #ikiwa / #ifdef / #ifndef!")
             rudisha self.stack.pop()
 
         ikiwa self.continuation:

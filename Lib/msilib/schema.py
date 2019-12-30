@@ -952,7 +952,7 @@ _Validation_records = [
 ('ServiceInstall','DisplayName','Y',Tupu, Tupu, Tupu, Tupu, 'Formatted',Tupu, 'External Name of the Service',),
 ('ServiceInstall','ErrorControl','N',-2147483647,2147483647,Tupu, Tupu, Tupu, Tupu, 'Severity of error ikiwa service fails to start',),
 ('ServiceInstall','LoadOrderGroup','Y',Tupu, Tupu, Tupu, Tupu, 'Formatted',Tupu, 'LoadOrderGroup',),
-('ServiceInstall','Password','Y',Tupu, Tupu, Tupu, Tupu, 'Formatted',Tupu, 'pitaword to run service with.  (ukijumuisha StartName)',),
+('ServiceInstall','Password','Y',Tupu, Tupu, Tupu, Tupu, 'Formatted',Tupu, 'password to run service with.  (ukijumuisha StartName)',),
 ('ServiceInstall','ServiceType','N',-2147483647,2147483647,Tupu, Tupu, Tupu, Tupu, 'Type of the service',),
 ('ServiceInstall','StartName','Y',Tupu, Tupu, Tupu, Tupu, 'Formatted',Tupu, 'User ama object name to run service as',),
 ('ServiceInstall','StartType','N',0,4,Tupu, Tupu, Tupu, Tupu, 'Type of the service',),

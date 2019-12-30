@@ -149,7 +149,7 @@ kundi _NetlocResultMixinBase(object):
         rudisha self._userinfo[0]
 
     @property
-    eleza pitaword(self):
+    eleza password(self):
         rudisha self._userinfo[1]
 
     @property
@@ -185,12 +185,12 @@ kundi _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
         netloc = self.netloc
         userinfo, have_info, hostinfo = netloc.rpartition('@')
         ikiwa have_info:
-            username, have_pitaword, pitaword = userinfo.partition(':')
-            ikiwa sio have_pitaword:
-                pitaword = Tupu
+            username, have_password, password = userinfo.partition(':')
+            ikiwa sio have_password:
+                password = Tupu
         isipokua:
-            username = pitaword = Tupu
-        rudisha username, pitaword
+            username = password = Tupu
+        rudisha username, password
 
     @property
     eleza _hostinfo(self):
@@ -215,12 +215,12 @@ kundi _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
         netloc = self.netloc
         userinfo, have_info, hostinfo = netloc.rpartition(b'@')
         ikiwa have_info:
-            username, have_pitaword, pitaword = userinfo.partition(b':')
-            ikiwa sio have_pitaword:
-                pitaword = Tupu
+            username, have_password, password = userinfo.partition(b':')
+            ikiwa sio have_password:
+                password = Tupu
         isipokua:
-            username = pitaword = Tupu
-        rudisha username, pitaword
+            username = password = Tupu
+        rudisha username, password
 
     @property
     eleza _hostinfo(self):

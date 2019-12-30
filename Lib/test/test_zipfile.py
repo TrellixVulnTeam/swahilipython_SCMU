@@ -1882,27 +1882,27 @@ kundi DecryptionTests(unittest.TestCase):
         self.zip2.close()
         os.unlink(TESTFN2)
 
-    eleza test_no_pitaword(self):
-        # Reading the encrypted file without pitaword
+    eleza test_no_password(self):
+        # Reading the encrypted file without password
         # must generate a RunTime exception
         self.assertRaises(RuntimeError, self.zip.read, "test.txt")
         self.assertRaises(RuntimeError, self.zip2.read, "zero")
 
-    eleza test_bad_pitaword(self):
-        self.zip.setpitaword(b"perl")
+    eleza test_bad_password(self):
+        self.zip.setpassword(b"perl")
         self.assertRaises(RuntimeError, self.zip.read, "test.txt")
-        self.zip2.setpitaword(b"perl")
+        self.zip2.setpassword(b"perl")
         self.assertRaises(RuntimeError, self.zip2.read, "zero")
 
     @requires_zlib
-    eleza test_good_pitaword(self):
-        self.zip.setpitaword(b"python")
+    eleza test_good_password(self):
+        self.zip.setpassword(b"python")
         self.assertEqual(self.zip.read("test.txt"), self.plain)
-        self.zip2.setpitaword(b"12345")
+        self.zip2.setpassword(b"12345")
         self.assertEqual(self.zip2.read("zero"), self.plain2)
 
-    eleza test_unicode_pitaword(self):
-        self.assertRaises(TypeError, self.zip.setpitaword, "unicode")
+    eleza test_unicode_password(self):
+        self.assertRaises(TypeError, self.zip.setpassword, "unicode")
         self.assertRaises(TypeError, self.zip.read, "test.txt", "python")
         self.assertRaises(TypeError, self.zip.open, "test.txt", pwd="python")
         self.assertRaises(TypeError, self.zip.extract, "test.txt", pwd="python")

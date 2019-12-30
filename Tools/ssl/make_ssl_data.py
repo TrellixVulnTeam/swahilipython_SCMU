@@ -76,7 +76,7 @@ ikiwa __name__ == "__main__":
 
     w("static struct py_ssl_error_code error_codes[] = {")
     kila errcode, (libcode, name, num) kwenye sorted(codes.items()):
-        w('  #ifeleza %s' % (errcode))
+        w('  #ifdef %s' % (errcode))
         w('    {"%s", %s, %s},' % (name, libcode, errcode))
         w('  #else')
         w('    {"%s", %s, %d},' % (name, libcode, num))

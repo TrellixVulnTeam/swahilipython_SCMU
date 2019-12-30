@@ -955,7 +955,7 @@ kundi SMTPHandler(logging.Handler):
         Initialize the instance ukijumuisha the kutoka na to addresses na subject
         line of the email. To specify a non-standard SMTP port, use the
         (host, port) tuple format kila the mailhost argument. To specify
-        authentication credentials, supply a (username, pitaword) tuple
+        authentication credentials, supply a (username, password) tuple
         kila the credentials argument. To specify the use of a secure
         protocol (TLS), pita kwenye a tuple kila the secure argument. This will
         only be used when authentication credentials are supplied. The tuple
@@ -971,7 +971,7 @@ kundi SMTPHandler(logging.Handler):
         isipokua:
             self.mailhost, self.mailport = mailhost, Tupu
         ikiwa isinstance(credentials, (list, tuple)):
-            self.username, self.pitaword = credentials
+            self.username, self.password = credentials
         isipokua:
             self.username = Tupu
         self.fromaddr = fromaddr
@@ -1017,7 +1017,7 @@ kundi SMTPHandler(logging.Handler):
                     smtp.ehlo()
                     smtp.starttls(*self.secure)
                     smtp.ehlo()
-                smtp.login(self.username, self.pitaword)
+                smtp.login(self.username, self.password)
             smtp.send_message(msg)
             smtp.quit()
         tatizo Exception:

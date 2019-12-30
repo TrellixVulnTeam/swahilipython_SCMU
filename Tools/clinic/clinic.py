@@ -1049,20 +1049,20 @@ kundi CLanguage(Language):
         methoddef_define = methoddef_define.replace('{methoddef_flags}', flags)
         methoddef_define = methoddef_define.replace('{methoddef_cast}', methoddef_cast)
 
-        methoddef_ifneleza = ''
+        methoddef_ifndef = ''
         conditional = self.cpp.condition()
         ikiwa sio conditional:
-            cpp_ikiwa = cpp_endikiwa = ''
+            cpp_ikiwa = cpp_endif = ''
         isipokua:
             cpp_ikiwa = "#ikiwa " + conditional
-            cpp_endikiwa = "#endikiwa /* " + conditional + " */"
+            cpp_endif = "#endif /* " + conditional + " */"
 
             ikiwa methoddef_define na f.full_name haiko kwenye clinic.ifndef_symbols:
                 clinic.ifndef_symbols.add(f.full_name)
-                methoddef_ifneleza = normalize_snippet("""
-                    #ifneleza {methoddef_name}
+                methoddef_ifndef = normalize_snippet("""
+                    #ifndef {methoddef_name}
                         #define {methoddef_name}
-                    #endikiwa /* !defined({methoddef_name}) */
+                    #endif /* !defined({methoddef_name}) */
                     """)
 
 
@@ -1762,30 +1762,30 @@ kundi Clinic:
     presets_text = """
 preset block
 everything block
-methoddef_ifneleza buffer 1
+methoddef_ifndef buffer 1
 docstring_prototype suppress
 parser_prototype suppress
 cpp_ikiwa suppress
-cpp_endikiwa suppress
+cpp_endif suppress
 
 preset original
 everything block
-methoddef_ifneleza buffer 1
+methoddef_ifndef buffer 1
 docstring_prototype suppress
 parser_prototype suppress
 cpp_ikiwa suppress
-cpp_endikiwa suppress
+cpp_endif suppress
 
 preset file
 everything file
-methoddef_ifneleza file 1
+methoddef_ifndef file 1
 docstring_prototype suppress
 parser_prototype suppress
 impl_definition block
 
 preset buffer
 everything buffer
-methoddef_ifneleza buffer 1
+methoddef_ifndef buffer 1
 impl_definition block
 docstring_prototype suppress
 impl_prototype suppress
@@ -1793,7 +1793,7 @@ parser_prototype suppress
 
 preset partial-buffer
 everything buffer
-methoddef_ifneleza buffer 1
+methoddef_ifndef buffer 1
 docstring_prototype block
 impl_prototype suppress
 methoddef_define block

@@ -87,7 +87,7 @@ kundi GetpitaRawinputTest(unittest.TestCase):
 
 
 # Some of these tests are a bit white-box.  The functional requirement ni that
-# the pitaword input be taken directly kutoka the tty, na that it sio be echoed
+# the password input be taken directly kutoka the tty, na that it sio be echoed
 # on the screen, unless we are falling back to stderr/stdin.
 
 # Some of these might run on platforms without termios, but play it safe.

@@ -550,7 +550,7 @@ eleza _gen_crc(crc):
             crc >>= 1
     rudisha crc
 
-# ZIP supports a pitaword-based form of encryption. Even though known
+# ZIP supports a password-based form of encryption. Even though known
 # plaintext attacks have been found against it, it ni still useful
 # to be able to get data out of such a file.
 #
@@ -811,7 +811,7 @@ kundi ZipExtFile(io.BufferedIOBase):
         self.newlines = Tupu
 
         # Adjust read size kila encrypted files since the first 12 bytes
-        # are kila the encryption/pitaword information.
+        # are kila the encryption/password information.
         ikiwa self._decrypter ni sio Tupu:
             self._compress_left -= 12
 
@@ -1408,8 +1408,8 @@ kundi ZipFile:
 
         rudisha info
 
-    eleza setpitaword(self, pwd):
-        """Set default pitaword kila encrypted files."""
+    eleza setpassword(self, pwd):
+        """Set default password kila encrypted files."""
         ikiwa pwd na sio isinstance(pwd, bytes):
             ashiria TypeError("pwd: expected bytes, got %s" % type(pwd).__name__)
         ikiwa pwd:
@@ -1449,7 +1449,7 @@ kundi ZipFile:
         mode should be 'r' to read a file already kwenye the ZIP file, ama 'w' to
         write to a file newly added to the archive.
 
-        pwd ni the pitaword to decrypt files (only used kila reading).
+        pwd ni the password to decrypt files (only used kila reading).
 
         When writing, ikiwa the file size ni sio known kwenye advance but may exceed
         2 GiB, pita force_zip64 to use the ZIP64 format, which can handle large
@@ -1522,14 +1522,14 @@ kundi ZipFile:
                     'File name kwenye directory %r na header %r differ.'
                     % (zinfo.orig_filename, fname))
 
-            # check kila encrypted flag & handle pitaword
+            # check kila encrypted flag & handle password
             is_encrypted = zinfo.flag_bits & 0x1
             zd = Tupu
             ikiwa is_encrypted:
                 ikiwa sio pwd:
                     pwd = self.pwd
                 ikiwa sio pwd:
-                    ashiria RuntimeError("File %r ni encrypted, pitaword "
+                    ashiria RuntimeError("File %r ni encrypted, password "
                                        "required kila extraction" % name)
 
                 zd = _ZipDecrypter(pwd)
@@ -1537,7 +1537,7 @@ kundi ZipFile:
                 #  used to strengthen the algorithm. The first 11 bytes are
                 #  completely random, wakati the 12th contains the MSB of the CRC,
                 #  ama the MSB of the file time depending on the header type
-                #  na ni used to check the correctness of the pitaword.
+                #  na ni used to check the correctness of the password.
                 header = zef_file.read(12)
                 h = zd(header[0:12])
                 ikiwa zinfo.flag_bits & 0x8:
@@ -1547,7 +1547,7 @@ kundi ZipFile:
                     # compare against the CRC otherwise
                     check_byte = (zinfo.CRC >> 24) & 0xff
                 ikiwa h[11] != check_byte:
-                    ashiria RuntimeError("Bad pitaword kila file %r" % name)
+                    ashiria RuntimeError("Bad password kila file %r" % name)
 
             rudisha ZipExtFile(zef_file, mode, zinfo, zd, Kweli)
         tatizo:

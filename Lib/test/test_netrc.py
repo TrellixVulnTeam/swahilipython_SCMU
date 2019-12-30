@@ -17,8 +17,8 @@ kundi NetrcTestCase(unittest.TestCase):
 
     eleza test_default(self):
         nrc = self.make_nrc("""\
-            machine host1.domain.com login log1 pitaword pita1 account acct1
-            default login log2 pitaword pita2
+            machine host1.domain.com login log1 password pita1 account acct1
+            default login log2 password pita2
             """)
         self.assertEqual(nrc.hosts['host1.domain.com'],
                          ('log1', 'acct1', 'pita1'))
@@ -40,23 +40,23 @@ kundi NetrcTestCase(unittest.TestCase):
         self.assertEqual(nrc.macros, {'macro1': ['line1\n', 'line2\n'],
                                       'macro2': ['line3\n', 'line4\n']})
 
-    eleza _test_pitawords(self, nrc, pitawd):
+    eleza _test_passwords(self, nrc, pitawd):
         nrc = self.make_nrc(nrc)
         self.assertEqual(nrc.hosts['host.domain.com'], ('log', 'acct', pitawd))
 
-    eleza test_pitaword_with_leading_hash(self):
-        self._test_pitawords("""\
-            machine host.domain.com login log pitaword #pita account acct
+    eleza test_password_with_leading_hash(self):
+        self._test_passwords("""\
+            machine host.domain.com login log password #pita account acct
             """, '#pita')
 
-    eleza test_pitaword_with_trailing_hash(self):
-        self._test_pitawords("""\
-            machine host.domain.com login log pitaword pita# account acct
+    eleza test_password_with_trailing_hash(self):
+        self._test_passwords("""\
+            machine host.domain.com login log password pita# account acct
             """, 'pita#')
 
-    eleza test_pitaword_with_internal_hash(self):
-        self._test_pitawords("""\
-            machine host.domain.com login log pitaword pa#ss account acct
+    eleza test_password_with_internal_hash(self):
+        self._test_passwords("""\
+            machine host.domain.com login log password pa#ss account acct
             """, 'pa#ss')
 
     eleza _test_comment(self, nrc, pitawd='pita'):
@@ -67,40 +67,40 @@ kundi NetrcTestCase(unittest.TestCase):
     eleza test_comment_before_machine_line(self):
         self._test_comment("""\
             # comment
-            machine foo.domain.com login bar pitaword pita
-            machine bar.domain.com login foo pitaword pita
+            machine foo.domain.com login bar password pita
+            machine bar.domain.com login foo password pita
             """)
 
     eleza test_comment_before_machine_line_no_space(self):
         self._test_comment("""\
             #comment
-            machine foo.domain.com login bar pitaword pita
-            machine bar.domain.com login foo pitaword pita
+            machine foo.domain.com login bar password pita
+            machine bar.domain.com login foo password pita
             """)
 
     eleza test_comment_before_machine_line_hash_only(self):
         self._test_comment("""\
             #
-            machine foo.domain.com login bar pitaword pita
-            machine bar.domain.com login foo pitaword pita
+            machine foo.domain.com login bar password pita
+            machine bar.domain.com login foo password pita
             """)
 
     eleza test_comment_at_end_of_machine_line(self):
         self._test_comment("""\
-            machine foo.domain.com login bar pitaword pita # comment
-            machine bar.domain.com login foo pitaword pita
+            machine foo.domain.com login bar password pita # comment
+            machine bar.domain.com login foo password pita
             """)
 
     eleza test_comment_at_end_of_machine_line_no_space(self):
         self._test_comment("""\
-            machine foo.domain.com login bar pitaword pita #comment
-            machine bar.domain.com login foo pitaword pita
+            machine foo.domain.com login bar password pita #comment
+            machine bar.domain.com login foo password pita
             """)
 
     eleza test_comment_at_end_of_machine_line_pita_has_hash(self):
         self._test_comment("""\
-            machine foo.domain.com login bar pitaword #pita #comment
-            machine bar.domain.com login foo pitaword pita
+            machine foo.domain.com login bar password #pita #comment
+            machine bar.domain.com login foo password pita
             """, '#pita')
 
 
@@ -114,8 +114,8 @@ kundi NetrcTestCase(unittest.TestCase):
         fn = os.path.join(d, '.netrc')
         ukijumuisha open(fn, 'wt') kama f:
             f.write("""\
-                machine foo.domain.com login bar pitaword pita
-                default login foo pitaword pita
+                machine foo.domain.com login bar password pita
+                default login foo password pita
                 """)
         ukijumuisha support.EnvironmentVarGuard() kama environ:
             environ.set('HOME', d)
@@ -144,7 +144,7 @@ kundi NetrcTestCase(unittest.TestCase):
         self.addCleanup(support.rmtree, fake_home)
         fake_netrc_path = os.path.join(fake_home, '.netrc')
         ukijumuisha open(fake_netrc_path, 'w') kama f:
-            f.write('machine foo.domain.com login bar pitaword pita')
+            f.write('machine foo.domain.com login bar password pita')
         os.chmod(fake_netrc_path, 0o600)
 
         orig_expanduser = os.path.expanduser
@@ -160,7 +160,7 @@ kundi NetrcTestCase(unittest.TestCase):
 
         ukijumuisha support.swap_attr(os.path, 'expanduser', fake_expanduser):
             nrc = netrc.netrc()
-            login, account, pitaword = nrc.authenticators('foo.domain.com')
+            login, account, password = nrc.authenticators('foo.domain.com')
             self.assertEqual(login, 'bar')
 
         self.assertKweli(called)

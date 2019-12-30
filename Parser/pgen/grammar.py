@@ -4,7 +4,7 @@ agiza collections
 kundi Grammar:
     """Pgen parsing tables class.
 
-    The instance variables are kama follows:
+    The instance variables are as follows:
 
     symbol2number -- a dict mapping symbol names to numbers.  Symbol
                      numbers are always 256 ama higher, to distinguish

@@ -1257,15 +1257,15 @@ eleza main(srcfile, dump_module=Uongo):
     ikiwa H_FILE:
         ukijumuisha open(H_FILE, "w") kama f:
             f.write(auto_gen_msg)
-            f.write('#ifneleza Py_PYTHON_AST_H\n')
+            f.write('#ifndef Py_PYTHON_AST_H\n')
             f.write('#define Py_PYTHON_AST_H\n')
-            f.write('#ifeleza __cplusplus\n')
+            f.write('#ifdef __cplusplus\n')
             f.write('extern "C" {\n')
             f.write('#endif\n')
             f.write('\n')
             f.write('#include "asdl.h"\n')
             f.write('\n')
-            f.write('#uneleza Yield   /* undefine macro conflicting ukijumuisha <winbase.h> */\n')
+            f.write('#undef Yield   /* undefine macro conflicting ukijumuisha <winbase.h> */\n')
             f.write('\n')
             c = ChainOfVisitors(TypeDefVisitor(f),
                                 StructVisitor(f))
@@ -1278,10 +1278,10 @@ eleza main(srcfile, dump_module=Uongo):
             f.write("mod_ty PyAST_obj2mod(PyObject* ast, PyArena* arena, int mode);\n")
             f.write("int PyAST_Check(PyObject* obj);\n")
             f.write('\n')
-            f.write('#ifeleza __cplusplus\n')
+            f.write('#ifdef __cplusplus\n')
             f.write('}\n')
             f.write('#endif\n')
-            f.write('#endikiwa /* !Py_PYTHON_AST_H */\n')
+            f.write('#endif /* !Py_PYTHON_AST_H */\n')
 
     ikiwa C_FILE:
         ukijumuisha open(C_FILE, "w") kama f:

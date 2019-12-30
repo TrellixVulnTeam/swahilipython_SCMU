@@ -696,7 +696,7 @@ sim_users = {'Mr.A@somewhere.com':'John A',
              'Mrs.C@somewhereesle.com':'Ruth C',
             }
 
-sim_auth = ('Mr.A@somewhere.com', 'somepitaword')
+sim_auth = ('Mr.A@somewhere.com', 'somepassword')
 sim_cram_md5_challenge = ('PENCeUxFREJoU0NnbmhNWitOMjNGNn'
                           'dAZWx3b29kLmlubm9zb2Z0LmNvbT4=')
 sim_lists = {'list-1':['Mr.A@somewhere.com','Mrs.C@somewhereesle.com'],
@@ -779,12 +779,12 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
         isipokua:
             logpita = self._decode_base64(arg)
             jaribu:
-                *_, user, pitaword = logpita.split('\0')
+                *_, user, password = logpita.split('\0')
             tatizo ValueError kama e:
-                self.push('535 Splitting response {!r} into user na pitaword'
+                self.push('535 Splitting response {!r} into user na password'
                           ' failed: {}'.format(logpita, e))
                 rudisha
-            self._authenticated(user, pitaword == sim_auth[1])
+            self._authenticated(user, password == sim_auth[1])
 
     eleza _auth_login(self, arg=Tupu):
         ikiwa arg ni Tupu:
@@ -795,8 +795,8 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
             # base64 encoded 'Password:'
             self.push('334 UGFzc3dvcmQ6')
         isipokua:
-            pitaword = self._decode_base64(arg)
-            self._authenticated(self._auth_login_user, pitaword == sim_auth[1])
+            password = self._decode_base64(arg)
+            self._authenticated(self._auth_login_user, password == sim_auth[1])
             toa self._auth_login_user
 
     eleza _auth_cram_md5(self, arg=Tupu):
@@ -807,7 +807,7 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
             jaribu:
                 user, hashed_pita = logpita.split()
             tatizo ValueError kama e:
-                self.push('535 Splitting response {!r} into user na pitaword '
+                self.push('535 Splitting response {!r} into user na password '
                           'failed: {}'.format(logpita, e))
                 rudisha Uongo
             valid_hashed_pita = hmac.HMAC(
@@ -1042,7 +1042,7 @@ kundi SMTPSimTests(unittest.TestCase):
                 smtp = smtplib.SMTP(HOST, self.port,
                                     local_hostname='localhost', timeout=15)
                 smtp.ehlo('foo')
-                smtp.user, smtp.pitaword = sim_auth[0], sim_auth[1]
+                smtp.user, smtp.password = sim_auth[0], sim_auth[1]
                 method = 'auth_' + mechanism.lower().replace('-', '_')
                 resp = smtp.auth(mechanism, getattr(smtp, method))
                 self.assertEqual(resp, (235, b'Authentication Succeeded'))
@@ -1376,7 +1376,7 @@ kundi SMTPAUTHInitialResponseSimTests(unittest.TestCase):
         smtp = smtplib.SMTP(HOST, self.port,
                             local_hostname='localhost', timeout=15)
         smtp.user = 'psu'
-        smtp.pitaword = 'doesnotexist'
+        smtp.password = 'doesnotexist'
         code, response = smtp.auth('plain', smtp.auth_plain)
         smtp.close()
         self.assertEqual(code, 235)

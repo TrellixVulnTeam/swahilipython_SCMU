@@ -1,10 +1,10 @@
-"""Utilities to get a pitaword and/or the current user name.
+"""Utilities to get a password and/or the current user name.
 
-getpita(prompt[, stream]) - Prompt kila a pitaword, ukijumuisha echo turned off.
-getuser() - Get the user name kutoka the environment ama pitaword database.
+getpita(prompt[, stream]) - Prompt kila a password, ukijumuisha echo turned off.
+getuser() - Get the user name kutoka the environment ama password database.
 
 GetPassWarning - This UserWarning ni issued when getpita() cansio prevent
-                 echoing of the pitaword contents wakati reading.
+                 echoing of the password contents wakati reading.
 
 On Windows, the msvcrt module will be used.
 
@@ -27,7 +27,7 @@ kundi GetPassWarning(UserWarning): pita
 
 
 eleza unix_getpita(prompt='Password: ', stream=Tupu):
-    """Prompt kila a pitaword, ukijumuisha echo turned off.
+    """Prompt kila a password, ukijumuisha echo turned off.
 
     Args:
       prompt: Written on stream to ask kila the input.  Default: 'Password: '
@@ -95,7 +95,7 @@ eleza unix_getpita(prompt='Password: ', stream=Tupu):
 
 
 eleza win_getpita(prompt='Password: ', stream=Tupu):
-    """Prompt kila pitaword ukijumuisha echo off, using Windows getch()."""
+    """Prompt kila password ukijumuisha echo off, using Windows getch()."""
     ikiwa sys.stdin ni sio sys.__stdin__:
         rudisha fallback_getpita(prompt, stream)
 
@@ -152,9 +152,9 @@ eleza _raw_uliza(prompt="", stream=Tupu, input=Tupu):
 
 
 eleza getuser():
-    """Get the username kutoka the environment ama pitaword database.
+    """Get the username kutoka the environment ama password database.
 
-    First try various environment variables, then the pitaword
+    First try various environment variables, then the password
     database.  This works on Windows kama long kama USERNAME ni set.
 
     """

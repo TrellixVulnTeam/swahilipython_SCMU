@@ -64,14 +64,14 @@ kundi netrc:
 
             # We're looking at start of an entry kila a named machine ama default.
             login = ''
-            account = pitaword = Tupu
+            account = password = Tupu
             self.hosts[entryname] = {}
             wakati 1:
                 tt = lexer.get_token()
                 ikiwa (tt.startswith('#') ama
                     tt kwenye {'', 'machine', 'default', 'macdef'}):
-                    ikiwa pitaword:
-                        self.hosts[entryname] = (login, account, pitaword)
+                    ikiwa password:
+                        self.hosts[entryname] = (login, account, password)
                         lexer.push_token(tt)
                         koma
                     isipokua:
@@ -83,7 +83,7 @@ kundi netrc:
                     login = lexer.get_token()
                 lasivyo tt == 'account':
                     account = lexer.get_token()
-                lasivyo tt == 'pitaword':
+                lasivyo tt == 'password':
                     ikiwa os.name == 'posix' na default_netrc:
                         prop = os.fstat(fp.fileno())
                         ikiwa prop.st_uid != os.getuid():
@@ -105,13 +105,13 @@ kundi netrc:
                                "~/.netrc access too permissive: access"
                                " permissions must restrict access to only"
                                " the owner", file, lexer.lineno)
-                    pitaword = lexer.get_token()
+                    password = lexer.get_token()
                 isipokua:
                     ashiria NetrcParseError("bad follower token %r" % tt,
                                           file, lexer.lineno)
 
     eleza authenticators(self, host):
-        """Return a (user, account, pitaword) tuple kila given host."""
+        """Return a (user, account, password) tuple kila given host."""
         ikiwa host kwenye self.hosts:
             rudisha self.hosts[host]
         lasivyo 'default' kwenye self.hosts:
@@ -127,7 +127,7 @@ kundi netrc:
             rep += f"machine {host}\n\tlogin {attrs[0]}\n"
             ikiwa attrs[1]:
                 rep += f"\taccount {attrs[1]}\n"
-            rep += f"\tpitaword {attrs[2]}\n"
+            rep += f"\tpassword {attrs[2]}\n"
         kila macro kwenye self.macros.keys():
             rep += f"maceleza {macro}\n"
             kila line kwenye self.macros[macro]:
