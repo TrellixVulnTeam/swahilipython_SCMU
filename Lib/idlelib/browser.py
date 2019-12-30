@@ -162,9 +162,9 @@ kundi ModuleBrowserTreeItem(TreeItem):
     eleza OnDoubleClick(self):
         "Open a module kwenye an editor window when double clicked."
         ikiwa os.path.normcase(self.file[-3:]) != ".py":
-            return
+            rudisha
         ikiwa sio os.path.exists(self.file):
-            return
+            rudisha
         file_open(self.file)
 
     eleza IsExpandable(self):

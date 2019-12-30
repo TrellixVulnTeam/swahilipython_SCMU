@@ -350,7 +350,7 @@ kundi PthFile(object):
         os.mkdir(self.good_dir_path)
 
     eleza cleanup(self, prep=Uongo):
-        """Make sure that the .pth file ni deleted, self.imported ni sio in
+        """Make sure that the .pth file ni deleted, self.imported ni haiko kwenye
         sys.modules, na that both self.good_dirname na self.bad_dirname are
         sio existing directories."""
         ikiwa os.path.exists(self.file_path):

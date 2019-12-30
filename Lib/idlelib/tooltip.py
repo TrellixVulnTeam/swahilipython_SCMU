@@ -26,7 +26,7 @@ kundi TooltipBase(object):
     eleza showtip(self):
         """display the tooltip"""
         ikiwa self.tipwindow:
-            return
+            rudisha
         self.tipwindow = tw = Toplevel(self.anchor_widget)
         # show no border on the top level window
         tw.wm_overrideredirect(1)

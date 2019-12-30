@@ -177,7 +177,7 @@ kundi _AsyncGeneratorContextManager(_GeneratorContextManagerBase,
             jaribu:
                 await self.gen.__anext__()
             tatizo StopAsyncIteration:
-                return
+                rudisha
             isipokua:
                 ashiria RuntimeError("generator didn't stop")
         isipokua:
@@ -491,7 +491,7 @@ kundi ExitStack(_BaseExitStack, AbstractContextManager):
                 exc_context = new_exc.__context__
                 ikiwa exc_context ni old_exc:
                     # Context ni already set correctly (see issue 20317)
-                    return
+                    rudisha
                 ikiwa exc_context ni Tupu ama exc_context ni frame_exc:
                     koma
                 new_exc = exc_context
@@ -641,7 +641,7 @@ kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
                 exc_context = new_exc.__context__
                 ikiwa exc_context ni old_exc:
                     # Context ni already set correctly (see issue 20317)
-                    return
+                    rudisha
                 ikiwa exc_context ni Tupu ama exc_context ni frame_exc:
                     koma
                 new_exc = exc_context

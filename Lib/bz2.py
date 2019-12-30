@@ -117,7 +117,7 @@ kundi BZ2File(_compression.BaseStream):
         """
         ukijumuisha self._lock:
             ikiwa self._mode == _MODE_CLOSED:
-                return
+                rudisha
             jaribu:
                 ikiwa self._mode == _MODE_READ:
                     self._buffer.close()

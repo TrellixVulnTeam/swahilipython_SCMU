@@ -210,7 +210,7 @@ kundi Dialog(Toplevel):
 
         ikiwa sio self.validate():
             self.initial_focus.focus_set() # put focus back
-            return
+            rudisha
 
         self.withdraw()
         self.update_idletasks()

@@ -51,7 +51,7 @@ eleza inflatekite(l, n):
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = Kweli
-        return
+        rudisha
     fl = f * l
     lt(36)
     inflatedart(fl, n-1)
@@ -73,7 +73,7 @@ eleza inflatedart(l, n):
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = Uongo
-        return
+        rudisha
     fl = f * l
     inflatekite(fl, n-1)
     lt(36)

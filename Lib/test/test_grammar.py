@@ -9,7 +9,7 @@ agiza warnings
 # testing agiza *
 kutoka sys agiza *
 
-# different agiza patterns to check that __annotations__ does sio interfere
+# different agiza patterns to check that __annotations__ does sio inerfere
 # ukijumuisha agiza machinery
 agiza test.ann_module kama ann_module
 agiza typing
@@ -852,7 +852,7 @@ kundi GrammarTests(unittest.TestCase):
 
     eleza test_return(self):
         # 'return' [testlist_star_expr]
-        eleza g1(): return
+        eleza g1(): rudisha
         eleza g2(): rudisha 1
         eleza g3():
             z = [2, 3]
@@ -1704,7 +1704,7 @@ kundi GrammarTests(unittest.TestCase):
         self.assertUongo(Uongo ni x ni y)
 
     eleza test_matrix_mul(self):
-        # This ni sio intended to be a comprehensive test, rather just to be few
+        # This ni sio inended to be a comprehensive test, rather just to be few
         # samples of the @ operator kwenye test_grammar.py.
         kundi M:
             eleza __matmul__(self, o):

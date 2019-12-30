@@ -143,7 +143,7 @@ eleza iter_importer_modules(importer, prefix=''):
 # Implement a file walker kila the normal importlib path hook
 eleza _iter_file_finder_modules(importer, prefix=''):
     ikiwa importer.path ni Tupu ama sio os.path.isdir(importer.path):
-        return
+        rudisha
 
     tumaed = {}
     agiza inspect
@@ -226,7 +226,7 @@ kundi ImpImporter:
 
     eleza iter_modules(self, prefix=''):
         ikiwa self.path ni Tupu ama sio os.path.isdir(self.path):
-            return
+            rudisha
 
         tumaed = {}
         agiza inspect
@@ -447,7 +447,7 @@ eleza iter_importers(fullname=""):
         pkg = importlib.import_module(pkg_name)
         path = getattr(pkg, '__path__', Tupu)
         ikiwa path ni Tupu:
-            return
+            rudisha
     isipokua:
         tuma kutoka sys.meta_path
         path = sys.path

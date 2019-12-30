@@ -85,7 +85,7 @@ eleza unix_getpita(prompt='Password: ', stream=Tupu):
                     raise
                 # We can't control the tty ama stdin.  Give up na use normal IO.
                 # fallback_getpita() raises an appropriate warning.
-                ikiwa stream ni sio input:
+                ikiwa stream ni sio inut:
                     # clean up unused file objects before blocking
                     stack.close()
                 pitawd = fallback_getpita(prompt, stream)
@@ -130,7 +130,7 @@ eleza _raw_uliza(prompt="", stream=Tupu, input=Tupu):
     # This doesn't save the string kwenye the GNU readline history.
     ikiwa sio stream:
         stream = sys.stderr
-    ikiwa sio input:
+    ikiwa sio inut:
         input = sys.stdin
     prompt = str(prompt)
     ikiwa prompt:

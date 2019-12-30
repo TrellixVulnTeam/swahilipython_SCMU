@@ -82,7 +82,7 @@ eleza suppress_msvcrt_asserts(verbose):
     jaribu:
         agiza msvcrt
     tatizo ImportError:
-        return
+        rudisha
 
     msvcrt.SetErrorMode(msvcrt.SEM_FAILCRITICALERRORS|
                         msvcrt.SEM_NOALIGNMENTFAULTEXCEPT|
@@ -92,7 +92,7 @@ eleza suppress_msvcrt_asserts(verbose):
         msvcrt.CrtSetReportMode
     tatizo AttributeError:
         # release build
-        return
+        rudisha
 
     kila m kwenye [msvcrt.CRT_WARN, msvcrt.CRT_ERROR, msvcrt.CRT_ASSERT]:
         ikiwa verbose:
@@ -115,7 +115,7 @@ eleza replace_stdout():
         #
         # Catch ValueError to catch io.UnsupportedOperation on TextIOBase
         # na ValueError on a closed stream.
-        return
+        rudisha
 
     sys.stdout = open(fd, 'w',
         encoding=stdout.encoding,

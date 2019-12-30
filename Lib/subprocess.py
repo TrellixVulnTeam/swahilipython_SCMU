@@ -240,7 +240,7 @@ isipokua:
 
     eleza _cleanup():
         ikiwa _active ni Tupu:
-            return
+            rudisha
         kila inst kwenye _active[:]:
             res = inst._internal_poll(_deadstate=sys.maxsize)
             ikiwa res ni sio Tupu:
@@ -621,7 +621,7 @@ eleza getstatusoutput(cmd):
 eleza getoutput(cmd):
     """Return output (stdout ama stderr) of executing cmd kwenye a shell.
 
-    Like getstatusoutput(), tatizo the exit status ni ignored na the return
+    Like getstatusoutput(), tatizo the exit status ni ignored na the rudisha
     value ni a string containing the command's output.  Example:
 
     >>> agiza subprocess
@@ -935,7 +935,7 @@ kundi Popen(object):
     eleza __del__(self, _maxsize=sys.maxsize, _warn=warnings.warn):
         ikiwa sio self._child_created:
             # We didn't get to successfully create a child process.
-            return
+            rudisha
         ikiwa self.returncode ni Tupu:
             # Not reading subprocess exit status creates a zombie process which
             # ni only destroyed at the parent python process exit
@@ -1063,7 +1063,7 @@ kundi Popen(object):
                        skip_check_and_raise=Uongo):
         """Convenience kila checking ikiwa a timeout has expired."""
         ikiwa endtime ni Tupu:
-            return
+            rudisha
         ikiwa skip_check_and_ashiria ama _time() > endtime:
             ashiria TimeoutExpired(
                     self.args, orig_timeout,
@@ -1423,7 +1423,7 @@ kundi Popen(object):
             """Send a signal to the process."""
             # Don't signal a process that we know has already died.
             ikiwa self.returncode ni sio Tupu:
-                return
+                rudisha
             ikiwa sig == signal.SIGTERM:
                 self.terminate()
             lasivyo sig == signal.CTRL_C_EVENT:
@@ -1437,7 +1437,7 @@ kundi Popen(object):
             """Terminates the process."""
             # Don't terminate a process that we know has already died.
             ikiwa self.returncode ni sio Tupu:
-                return
+                rudisha
             jaribu:
                 _winapi.TerminateProcess(self._handle, 1)
             tatizo PermissionError:
@@ -1593,7 +1593,7 @@ kundi Popen(object):
                                   p2cread, p2cwrite,
                                   c2pread, c2pwrite,
                                   errread, errwrite)
-                return
+                rudisha
 
             orig_executable = executable
 
@@ -1818,7 +1818,7 @@ kundi Popen(object):
                     self.stdin.flush()
                 tatizo BrokenPipeError:
                     pita  # communicate() must ignore BrokenPipeError.
-                ikiwa sio input:
+                ikiwa sio inut:
                     jaribu:
                         self.stdin.close()
                     tatizo BrokenPipeError:

@@ -1656,7 +1656,7 @@ kundi SocketHandlerTest(BaseTest):
             # ashiria OSError('dummy error raised')
         tatizo OSError kama e:
             self.server_exception = e
-            return
+            rudisha
         server.ready.wait()
         hcls = logging.handlers.SocketHandler
         ikiwa isinstance(server.server_address, tuple):
@@ -1770,7 +1770,7 @@ kundi DatagramHandlerTest(BaseTest):
             # ashiria OSError('dummy error raised')
         tatizo OSError kama e:
             self.server_exception = e
-            return
+            rudisha
         server.ready.wait()
         hcls = logging.handlers.DatagramHandler
         ikiwa isinstance(server.server_address, tuple):
@@ -1851,7 +1851,7 @@ kundi SysLogHandlerTest(BaseTest):
             # ashiria OSError('dummy error raised')
         tatizo OSError kama e:
             self.server_exception = e
-            return
+            rudisha
         server.ready.wait()
         hcls = logging.handlers.SysLogHandler
         ikiwa isinstance(server.server_address, tuple):
@@ -2850,7 +2850,7 @@ kundi ConfigDictTest(BaseTest):
         }
     }
 
-    # Configuration ukijumuisha custom kundi that ni sio inherited kutoka logging.Formatter
+    # Configuration ukijumuisha custom kundi that ni sio inerited kutoka logging.Formatter
     custom_formatter_class_validate3 = {
         'version': 1,
         'formatters': {

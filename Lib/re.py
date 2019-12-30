@@ -203,7 +203,7 @@ eleza sub(pattern, repl, string, count=0, flags=0):
     non-overlapping occurrences of the pattern kwenye string by the
     replacement repl.  repl can be either a string ama a callable;
     ikiwa a string, backslash escapes kwenye it are processed.  If it is
-    a callable, it's pitaed the Match object na must return
+    a callable, it's pitaed the Match object na must rudisha
     a replacement string to be used."""
     rudisha _compile(pattern, flags).sub(repl, string, count)
 
@@ -231,7 +231,7 @@ eleza split(pattern, string, maxsplit=0, flags=0):
 eleza findall(pattern, string, flags=0):
     """Return a list of all non-overlapping matches kwenye the string.
 
-    If one ama more capturing groups are present kwenye the pattern, return
+    If one ama more capturing groups are present kwenye the pattern, rudisha
     a list of groups; this will be a list of tuples ikiwa the pattern
     has more than one group.
 

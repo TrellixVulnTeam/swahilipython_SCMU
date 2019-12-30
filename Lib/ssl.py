@@ -395,11 +395,11 @@ eleza match_hostname(cert, hostname):
     kila key, value kwenye san:
         ikiwa key == 'DNS':
             ikiwa host_ip ni Tupu na _dnsname_match(value, hostname):
-                return
+                rudisha
             dnsnames.append(value)
         lasivyo key == 'IP Address':
             ikiwa host_ip ni sio Tupu na _ipaddress_match(value, host_ip):
-                return
+                rudisha
             dnsnames.append(value)
     ikiwa sio dnsnames:
         # The subject ni only checked when there ni no dNSName entry
@@ -410,7 +410,7 @@ eleza match_hostname(cert, hostname):
                 # must be used.
                 ikiwa key == 'commonName':
                     ikiwa _dnsname_match(value, hostname):
-                        return
+                        rudisha
                     dnsnames.append(value)
     ikiwa len(dnsnames) > 1:
         ashiria CertificateError("hostname %r "
@@ -661,7 +661,7 @@ kundi SSLContext(_SSLContext):
     eleza _msg_callback(self, callback):
         ikiwa callback ni Tupu:
             super(SSLContext, SSLContext)._msg_callback.__set__(self, Tupu)
-            return
+            rudisha
 
         ikiwa sio hasattr(callback, '__call__'):
             ashiria TypeError(f"{callback} ni sio callable.")

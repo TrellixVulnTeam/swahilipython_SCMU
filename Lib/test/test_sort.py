@@ -26,7 +26,7 @@ eleza check(tag, expected, raw, compare=Tupu):
         andika(orig)
         andika(raw)
         nerrors += 1
-        return
+        rudisha
 
     kila i, good kwenye enumerate(expected):
         maybe = raw[i]
@@ -37,7 +37,7 @@ eleza check(tag, expected, raw, compare=Tupu):
             andika(orig)
             andika(raw)
             nerrors += 1
-            return
+            rudisha
 
 kundi TestBase(unittest.TestCase):
     eleza testStressfully(self):

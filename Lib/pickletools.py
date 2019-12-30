@@ -1065,7 +1065,7 @@ generally don't embed the count of objects kwenye the opcode,
 or pull it off the stack.  Instead the MARK opcode ni used
 to push a special marker object on the stack, na then
 some other opcodes grab all the objects kutoka the top of
-the stack down to (but sio including) the topmost marker
+the stack down to (but sio inluding) the topmost marker
 object.
 """)
 

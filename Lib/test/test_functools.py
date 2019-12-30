@@ -2150,7 +2150,7 @@ kundi TestSingleDispatch(unittest.TestCase):
                              functools._find_impl(list, g.registry))
             kundi X:
                 pita
-            c.MutableMapping.register(X)   # Will sio invalidate the cache,
+            c.MutableMapping.register(X)   # Will sio inalidate the cache,
                                            # sio using ABCs yet.
             self.assertEqual(g(d), "base")
             self.assertEqual(g(l), "list")

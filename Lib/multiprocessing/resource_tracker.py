@@ -64,7 +64,7 @@ kundi ResourceTracker(object):
                 # resource tracker was launched before, ni it still running?
                 ikiwa self._check_alive():
                     # => still alive
-                    return
+                    rudisha
                 # => dead, launch it again
                 os.close(self._fd)
 

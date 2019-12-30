@@ -246,7 +246,7 @@ kundi SequenceMatcher:
         """
 
         ikiwa a ni self.a:
-            return
+            rudisha
         self.a = a
         self.matching_blocks = self.opcodes = Tupu
 
@@ -272,7 +272,7 @@ kundi SequenceMatcher:
         """
 
         ikiwa b ni self.b:
-            return
+            rudisha
         self.b = b
         self.matching_blocks = self.opcodes = Tupu
         self.fullbcount = Tupu
@@ -973,7 +973,7 @@ kundi Differ:
             ikiwa eqi ni Tupu:
                 # no identical pair either -- treat it kama a straight replace
                 tuma kutoka self._plain_replace(a, alo, ahi, b, blo, bhi)
-                return
+                rudisha
             # no close pair, but an identical pair -- synch up on that
             best_i, best_j, best_ratio = eqi, eqj, 1.0
         isipokua:
@@ -1549,7 +1549,7 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
                 num_blanks_to_tuma -= 1
                 tuma ('','\n'),Tupu,Kweli
             ikiwa s.startswith('X'):
-                return
+                rudisha
             isipokua:
                 tuma from_line,to_line,Kweli
 
@@ -1574,7 +1574,7 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
                 jaribu:
                     from_line, to_line, found_diff = next(line_iterator)
                 tatizo StopIteration:
-                    return
+                    rudisha
                 ikiwa from_line ni sio Tupu:
                     fromlines.append((from_line,found_diff))
                 ikiwa to_line ni sio Tupu:
@@ -1604,7 +1604,7 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
                 jaribu:
                     from_line, to_line, found_diff = next(line_pair_iterator)
                 tatizo StopIteration:
-                    return
+                    rudisha
                 i = index % context
                 contextLines[i] = (from_line, to_line, found_diff)
                 index += 1
@@ -1634,7 +1634,7 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
                     tuma from_line, to_line, found_diff
             tatizo StopIteration:
                 # Catch exception kutoka next() na rudisha normally
-                return
+                rudisha
 
 
 _file_template = """
@@ -1794,14 +1794,14 @@ kundi HtmlDiff(object):
         # ikiwa blank line ama context separator, just add it to the output list
         ikiwa sio line_num:
             data_list.append((line_num,text))
-            return
+            rudisha
 
         # ikiwa line text doesn't need wrapping, just add it to the output list
         size = len(text)
         max = self._wrapcolumn
         ikiwa (size <= max) ama ((size -(text.count('\0')*3)) <= max):
             data_list.append((line_num,text))
-            return
+            rudisha
 
         # scan text looking kila the wrap point, keeping track ikiwa the wrap
         # point ni inside markers
@@ -1933,7 +1933,7 @@ kundi HtmlDiff(object):
         last = 0
         kila i,flag kwenye enumerate(flaglist):
             ikiwa flag:
-                ikiwa sio in_change:
+                ikiwa haiko kwenye_change:
                     in_change = Kweli
                     last = i
                     # at the beginning of a change, drop an anchor a few lines

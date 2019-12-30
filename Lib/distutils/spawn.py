@@ -87,7 +87,7 @@ ikiwa sys.platform == 'darwin':
 eleza _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
     log.info(' '.join(cmd))
     ikiwa dry_run:
-        return
+        rudisha
     executable = cmd[0]
     exec_fn = search_path na os.execvp ama os.execv
     env = Tupu

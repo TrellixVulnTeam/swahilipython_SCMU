@@ -122,13 +122,13 @@ kundi TestProgram(object):
         ikiwa self.module ni Tupu:
             ikiwa len(argv) > 1 na argv[1].lower() == 'discover':
                 self._do_discovery(argv[2:])
-                return
+                rudisha
             self._main_parser.parse_args(argv[1:], self)
             ikiwa sio self.tests:
                 # this allows "python -m unittest -v" to still work for
                 # test discovery.
                 self._do_discovery([])
-                return
+                rudisha
         isipokua:
             self._main_parser.parse_args(argv[1:], self)
 

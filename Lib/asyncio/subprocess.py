@@ -82,7 +82,7 @@ kundi SubprocessStreamProtocol(streams.FlowControlMixin,
                 self._stdin_closed.set_result(Tupu)
             isipokua:
                 self._stdin_closed.set_exception(exc)
-            return
+            rudisha
         ikiwa fd == 1:
             reader = self.stdout
         lasivyo fd == 2:

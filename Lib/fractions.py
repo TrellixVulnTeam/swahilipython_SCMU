@@ -601,7 +601,7 @@ kundi Fraction(numbers.Rational):
 
         Implement comparison between a Rational instance `self`, na
         either another Rational instance ama a float `other`.  If
-        `other` ni sio a Rational instance ama a float, return
+        `other` ni sio a Rational instance ama a float, rudisha
         NotImplemented. `op` should be one of the six standard
         comparison operators.
 

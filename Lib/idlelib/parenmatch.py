@@ -85,10 +85,10 @@ kundi ParenMatch:
         # If user bound non-closer to <<paren-closed>>, quit.
         closer = self.text.get("insert-1c")
         ikiwa closer haiko kwenye _openers:
-            return
+            rudisha
         hp = HyperParser(self.editwin, "insert-1c")
         ikiwa sio hp.is_in_code():
-            return
+            rudisha
         indices = hp.get_surrounding_brackets(_openers[closer], Kweli)
         self.finish_paren_event(indices)
         rudisha  # Allow calltips to see ')'
@@ -96,7 +96,7 @@ kundi ParenMatch:
     eleza finish_paren_event(self, indices):
         ikiwa indices ni Tupu na self.BELL:
             self.text.bell()
-            return
+            rudisha
         self.activate_restore()
         # self.create_tag(indices)
         self.tagfuncs.get(self.STYLE, self.create_tag_expression)(self, indices)

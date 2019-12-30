@@ -381,7 +381,7 @@ kundi _OutputRedirectingPdb(pdb.Pdb):
 
 # [XX] Normalize ukijumuisha respect to os.path.pardir?
 eleza _module_relative_path(module, test_path):
-    ikiwa sio inspect.ismodule(module):
+    ikiwa sio inpect.ismodule(module):
         ashiria TypeError('Expected a module: %r' % module)
     ikiwa test_path.startswith('/'):
         ashiria ValueError('Module-relative files may sio have absolute paths')
@@ -670,7 +670,7 @@ kundi DocTestParser:
 
     eleza get_examples(self, string, name='<string>'):
         """
-        Extract all doctest examples kutoka the given string, na return
+        Extract all doctest examples kutoka the given string, na rudisha
         them kama a list of `Example` objects.  Line numbers are
         0-based, because it's most common kwenye doctests that nothing
         interesting appears on the same line kama opening triple-quote,
@@ -975,7 +975,7 @@ kundi DocTestFinder:
 
         # If we've already processed this object, then ignore it.
         ikiwa id(obj) kwenye seen:
-            return
+            rudisha
         seen[id(obj)] = 1
 
         # Find a test kila this object, na add it to the list of tests.
@@ -1595,7 +1595,7 @@ kundi OutputChecker:
         ikiwa got == want:
             rudisha Kweli
 
-        # The values Kweli na Uongo replaced 1 na 0 kama the return
+        # The values Kweli na Uongo replaced 1 na 0 kama the rudisha
         # value kila boolean comparisons kwenye Python 2.3.
         ikiwa sio (optionflags & DONT_ACCEPT_TRUE_FOR_1):
             ikiwa (got,want) == ("Kweli\n", "1\n"):
@@ -1929,7 +1929,7 @@ eleza testmod(m=Tupu, name=Tupu, globs=Tupu, verbose=Tupu,
         m = sys.modules.get('__main__')
 
     # Check that we were actually given a module.
-    ikiwa sio inspect.ismodule(m):
+    ikiwa sio inpect.ismodule(m):
         ashiria TypeError("testmod: module required; %r" % (m,))
 
     # If no name was given, then use the module's name.

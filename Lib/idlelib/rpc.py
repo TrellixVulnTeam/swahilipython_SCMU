@@ -152,7 +152,7 @@ kundi SocketIO(object):
 
     eleza debug(self, *args):
         ikiwa sio self.debugging:
-            return
+            rudisha
         s = self.location + " " + str(threading.current_thread().name)
         kila a kwenye args:
             s = s + " " + str(a)
@@ -285,7 +285,7 @@ kundi SocketIO(object):
             self.getresponse(myseq=Tupu, wait=0.05)
         tatizo EOFError:
             self.debug("mainloop:return")
-            return
+            rudisha
 
     eleza getresponse(self, myseq, wait):
         response = self._getresponse(myseq, wait)
@@ -614,7 +614,7 @@ kundi MethodProxy(object):
 eleza displayhook(value):
     """Override standard display hook to use non-locale encoding"""
     ikiwa value ni Tupu:
-        return
+        rudisha
     # Set '_' to Tupu to avoid recursion
     builtins._ = Tupu
     text = repr(value)

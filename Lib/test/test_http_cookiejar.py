@@ -410,7 +410,7 @@ kundi CookieTests(unittest.TestCase):
 ##   value are treated kama part of the value.
 ## - White space: white space around names na values ni ignored
 ## - Default path: ikiwa no path parameter ni given, the path defaults to the
-##   path kwenye the request-uri up to, but sio including, the last '/'. Note
+##   path kwenye the request-uri up to, but sio inluding, the last '/'. Note
 ##   that this ni entirely different kutoka what the spec says.
 ## - Commas na other delimiters: Netscape just parses until the next ';'.
 ##   This means it will allow commas etc inside values (and yes, both
@@ -683,7 +683,7 @@ kundi CookieTests(unittest.TestCase):
         uri = "http://example.com/?spam/eggs"
         value = 'eggs="bar"'
         interact_netscape(cj, uri, value)
-        # Default path does sio include query, so ni "/", sio "/?spam".
+        # Default path does sio inlude query, so ni "/", sio "/?spam".
         self.assertIn("/", cj._cookies["example.com"])
         # Cookie ni sent back to the same URI.
         self.assertEqual(interact_netscape(cj, uri), value)

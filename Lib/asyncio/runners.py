@@ -53,7 +53,7 @@ eleza run(main, *, debug=Uongo):
 eleza _cancel_all_tasks(loop):
     to_cancel = tasks.all_tasks(loop)
     ikiwa sio to_cancel:
-        return
+        rudisha
 
     kila task kwenye to_cancel:
         task.cancel()

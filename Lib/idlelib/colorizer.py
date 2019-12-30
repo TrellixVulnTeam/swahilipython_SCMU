@@ -146,14 +146,14 @@ kundi ColorDelegator(Delegator):
         self.tag_add("TODO", index1, index2)
         ikiwa self.after_id:
             ikiwa DEBUG: andika("colorizing already scheduled")
-            return
+            rudisha
         ikiwa self.colorizing:
             self.stop_colorizing = Kweli
             ikiwa DEBUG: andika("stop colorizing")
         ikiwa self.allow_colorizing:
             ikiwa DEBUG: andika("schedule colorizing")
             self.after_id = self.after(1, self.recolorize)
-        return
+        rudisha
 
     eleza close(self):
         ikiwa self.after_id:
@@ -201,13 +201,13 @@ kundi ColorDelegator(Delegator):
         self.after_id = Tupu
         ikiwa sio self.delegate:
             ikiwa DEBUG: andika("no delegate")
-            return
+            rudisha
         ikiwa sio self.allow_colorizing:
             ikiwa DEBUG: andika("auto colorizing ni off")
-            return
+            rudisha
         ikiwa self.colorizing:
             ikiwa DEBUG: andika("already colorizing")
-            return
+            rudisha
         jaribu:
             self.stop_colorizing = Uongo
             self.colorizing = Kweli
@@ -250,7 +250,7 @@ kundi ColorDelegator(Delegator):
                 line = self.get(mark, next)
                 ##print head, "get", mark, next, "->", repr(line)
                 ikiwa sio line:
-                    return
+                    rudisha
                 kila tag kwenye self.tagdefs:
                     self.tag_remove(tag, mark, next)
                 chars = chars + line
@@ -286,7 +286,7 @@ kundi ColorDelegator(Delegator):
                 self.update()
                 ikiwa self.stop_colorizing:
                     ikiwa DEBUG: andika("colorizing stopped")
-                    return
+                    rudisha
 
     eleza removecolors(self):
         "Remove all colorizing tags."

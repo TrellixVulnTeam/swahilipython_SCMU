@@ -260,7 +260,7 @@ kundi GetKeysDialog(Toplevel):
         ikiwa sio keys:
             self.showerror(title=self.keyerror_title, parent=self,
                            message="No key specified.")
-            return
+            rudisha
         ikiwa (self.advanced ama self.keys_ok(keys)) na self.bind_ok(keys):
             self.result = keys
         self.grab_release()
@@ -290,7 +290,7 @@ kundi GetKeysDialog(Toplevel):
             self.showerror(title=title, parent=self,
                            message='No modifier key(s) specified.')
         lasivyo (modifiers == ['Shift']) \
-                 na (final_key sio in
+                 na (final_key haiko kwenye
                       FUNCTION_KEYS + MOVE_KEYS + ('Tab', 'Space')):
             msg = 'The shift modifier by itself may sio be used with'\
                   ' this key symbol.'

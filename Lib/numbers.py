@@ -24,7 +24,7 @@ kundi Number(metaclass=ABCMeta):
 ## Notes on Decimal
 ## ----------------
 ## Decimal has all of the methods specified by the Real abc, but it should
-## sio be registered kama a Real because decimals do sio interoperate with
+## sio be registered kama a Real because decimals do sio ineroperate with
 ## binary floats (i.e.  Decimal('3.14') + 2.71828 ni undefined).  But,
 ## abstract reals are expected to interoperate (i.e. R1 + R2 should be
 ## expected to work ikiwa R1 na R2 are both Reals).

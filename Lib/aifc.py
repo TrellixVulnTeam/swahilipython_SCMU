@@ -21,7 +21,7 @@ An AIFF-C file has the following structure.
 An AIFF file has the string "AIFF" instead of "AIFC".
 
 A chunk consists of an identifier (4 bytes) followed by a size (4 bytes,
-big endian order), followed by the data.  The size field does sio include
+big endian order), followed by the data.  The size field does sio inlude
 the size of the 8 byte header.
 
 The following chunk types are recognized.
@@ -704,7 +704,7 @@ kundi Aifc_write:
         kila i kwenye range(len(self._markers)):
             ikiwa id == self._markers[i][0]:
                 self._markers[i] = id, pos, name
-                return
+                rudisha
         self._markers.append((id, pos, name))
 
     eleza getmark(self, id):
@@ -740,7 +740,7 @@ kundi Aifc_write:
 
     eleza close(self):
         ikiwa self._file ni Tupu:
-            return
+            rudisha
         jaribu:
             self._ensure_header_written(0)
             ikiwa self._datawritten & 1:
@@ -877,7 +877,7 @@ kundi Aifc_write:
               self._nframes == self._nframeswritten na \
               self._marklength == 0:
             self._file.seek(curpos, 0)
-            return
+            rudisha
         self._file.seek(self._form_length_pos, 0)
         dummy = self._write_form_length(datalength)
         self._file.seek(self._nframes_pos, 0)
@@ -890,7 +890,7 @@ kundi Aifc_write:
 
     eleza _writemarkers(self):
         ikiwa len(self._markers) == 0:
-            return
+            rudisha
         self._file.write(b'MARK')
         length = 2
         kila marker kwenye self._markers:

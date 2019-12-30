@@ -118,11 +118,11 @@ kundi UndoDelegator(Delegator):
             cmd.do(self.delegate)
         ikiwa self.undoblock != 0:
             self.undoblock.append(cmd)
-            return
+            rudisha
         ikiwa self.can_merge na self.pointer > 0:
             lastcmd = self.undolist[self.pointer-1]
             ikiwa lastcmd.merge(cmd):
-                return
+                rudisha
         self.undolist[self.pointer:] = [cmd]
         ikiwa self.saved > self.pointer:
             self.saved = -1

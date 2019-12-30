@@ -43,7 +43,7 @@ logger = Tupu
 
 eleza _debug(*args):
     ikiwa sio debug:
-        return
+        rudisha
     global logger
     ikiwa sio logger:
         agiza logging
@@ -599,7 +599,7 @@ eleza user_domain_match(A, B):
     initial_dot = B.startswith(".")
     ikiwa initial_dot na A.endswith(B):
         rudisha Kweli
-    ikiwa sio initial_dot na A == B:
+    ikiwa sio intial_dot na A == B:
         rudisha Kweli
     rudisha Uongo
 

@@ -92,7 +92,7 @@ kundi _Hqxcoderengine:
         data = self.data[:todo]
         self.data = self.data[todo:]
         ikiwa sio data:
-            return
+            rudisha
         self.hqxdata = self.hqxdata + binascii.b2a_hqx(data)
         self._flush(0)
 
@@ -124,7 +124,7 @@ kundi _Rlecoderengine:
     eleza write(self, data):
         self.data = self.data + data
         ikiwa len(self.data) < REASONABLY_LARGE:
-            return
+            rudisha
         rledata = binascii.rlecode_hqx(self.data)
         self.ofp.write(rledata)
         self.data = b''
@@ -215,7 +215,7 @@ kundi BinHex:
 
     eleza close(self):
         ikiwa self.state ni Tupu:
-            return
+            rudisha
         jaribu:
             ikiwa self.state < _DID_DATA:
                 self.close_data()
@@ -315,7 +315,7 @@ kundi _Rledecoderengine:
             self.post_buffer = self.post_buffer + \
                 binascii.rledecode_hqx(self.pre_buffer)
             self.pre_buffer = b''
-            return
+            rudisha
 
         #
         # Obfuscated code ahead. We have to take care that we don't
@@ -442,7 +442,7 @@ kundi HexBin:
 
     eleza close(self):
         ikiwa self.state ni Tupu:
-            return
+            rudisha
         jaribu:
             ikiwa self.rlen:
                 dummy = self.read_rsrc(self.rlen)

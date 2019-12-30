@@ -412,7 +412,7 @@ kundi BasicInterpolation(Interpolation):
             p = rest.find("%")
             ikiwa p < 0:
                 accum.append(rest)
-                return
+                rudisha
             ikiwa p > 0:
                 accum.append(rest[:p])
                 rest = rest[p:]
@@ -473,7 +473,7 @@ kundi ExtendedInterpolation(Interpolation):
             p = rest.find("$")
             ikiwa p < 0:
                 accum.append(rest)
-                return
+                rudisha
             ikiwa p > 0:
                 accum.append(rest[:p])
                 rest = rest[p:]
@@ -964,7 +964,7 @@ kundi RawConfigParser(MutableMapping):
         # To conform ukijumuisha the mapping protocol, overwrites existing values in
         # the section.
         ikiwa key kwenye self na self[key] ni value:
-            return
+            rudisha
         # XXX this ni sio atomic ikiwa read_dict fails at any point. Then again,
         # no update method kwenye configparser ni atomic kwenye this implementation.
         ikiwa key == self.default_section:

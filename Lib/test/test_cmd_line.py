@@ -747,7 +747,7 @@ kundi IgnoreEnvironmentTest(unittest.TestCase):
     eleza run_ignoring_vars(self, predicate, **env_vars):
         # Runs a subprocess ukijumuisha -E set, even though we're pitaing
         # specific environment variables
-        # Logical inversion to match predicate check to a zero return
+        # Logical inversion to match predicate check to a zero rudisha
         # code indicating success
         code = "agiza sys; sys.stderr.write(str(sys.flags)); sys.exit(sio ({}))".format(predicate)
         rudisha assert_python_ok('-E', '-c', code, **env_vars)

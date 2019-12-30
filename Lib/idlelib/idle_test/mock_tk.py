@@ -182,7 +182,7 @@ kundi Text:
         "Insert chars before the character at index."
 
         ikiwa sio chars:  # ''.splitlines() ni [], sio ['']
-            return
+            rudisha
         chars = chars.splitlines(Kweli)
         ikiwa chars[-1][-1] == '\n':
             chars.append('')
@@ -229,7 +229,7 @@ kundi Text:
                 endline, endchar = startline+1, 0
             isipokua:
                 # do sio delete terminal \n ikiwa index1 == 'insert'
-                return
+                rudisha
         isipokua:
             endline, endchar = self._decode(index2, -1)
             # restricting end position to insert position excludes terminal \n

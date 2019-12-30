@@ -448,7 +448,7 @@ kundi NNTPv1Handler:
             wakati Kweli:
                 line = self._readline()
                 ikiwa sio line:
-                    return
+                    rudisha
                 self.body.append(line)
                 ikiwa line == b".\r\n":
                     koma
@@ -462,7 +462,7 @@ kundi NNTPv1Handler:
         wakati Kweli:
             line = self._decode(self._readline())
             ikiwa sio line:
-                return
+                rudisha
             ikiwa sio line.endswith("\r\n"):
                 ashiria ValueError("line doesn't end ukijumuisha \\r\\n: {!r}".format(line))
             line = line[:-2]
@@ -704,7 +704,7 @@ kundi NNTPv1Handler:
             self.push_lit("220 3000234 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
-            return
+            rudisha
         self.push_lit(self.sample_article)
         self.push_lit(".")
 
@@ -717,7 +717,7 @@ kundi NNTPv1Handler:
             self.push_lit("221 3000234 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
-            return
+            rudisha
         self.push_lit(self.sample_head)
         self.push_lit(".")
 
@@ -730,7 +730,7 @@ kundi NNTPv1Handler:
             self.push_lit("222 3000234 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
-            return
+            rudisha
         self.push_lit(self.sample_body)
         self.push_lit(".")
 

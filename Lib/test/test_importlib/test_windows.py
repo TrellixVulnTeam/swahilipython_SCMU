@@ -22,7 +22,7 @@ eleza delete_registry_tree(root, subkey):
         hkey = OpenKey(root, subkey, access=KEY_ALL_ACCESS)
     tatizo OSError:
         # subkey does sio exist
-        return
+        rudisha
     wakati Kweli:
         jaribu:
             subsubkey = EnumKey(hkey, 0)

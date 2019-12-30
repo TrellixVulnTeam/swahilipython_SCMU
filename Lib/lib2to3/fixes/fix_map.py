@@ -63,7 +63,7 @@ kundi FixMap(fixer_base.ConditionalFix):
 
     eleza transform(self, node, results):
         ikiwa self.should_skip(node):
-            return
+            rudisha
 
         trailers = []
         ikiwa 'extra_trailers' kwenye results:
@@ -95,7 +95,7 @@ kundi FixMap(fixer_base.ConditionalFix):
                         self.warning(node, "cannot convert map(Tupu, ...) "
                                      "ukijumuisha multiple arguments because map() "
                                      "now truncates to the shortest sequence")
-                        return
+                        rudisha
 
                     new = Node(syms.power, [Name("map"), args.clone()])
                     new.prefix = ""

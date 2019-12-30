@@ -77,13 +77,13 @@ kundi CMathTests(unittest.TestCase):
 
         ikiwa math.isnan(x) ama math.isnan(y):
             ikiwa math.isnan(x) na math.isnan(y):
-                return
+                rudisha
         lasivyo x == y:
             ikiwa x != 0.0:
-                return
+                rudisha
             # both zero; check that signs match
             lasivyo math.copysign(1.0, x) == math.copysign(1.0, y):
-                return
+                rudisha
             isipokua:
                 msg += ': zeros have different signs'
         self.fail(msg.format(x, y))
@@ -112,12 +112,12 @@ kundi CMathTests(unittest.TestCase):
         # special values testing
         ikiwa math.isnan(a):
             ikiwa math.isnan(b):
-                return
+                rudisha
             self.fail(msg ama '{!r} should be nan'.format(b))
 
         ikiwa math.isinf(a):
             ikiwa a == b:
-                return
+                rudisha
             self.fail(msg ama 'finite result where infinity expected: '
                       'expected {!r}, got {!r}'.format(a, b))
 
@@ -144,7 +144,7 @@ kundi CMathTests(unittest.TestCase):
             # error of between 9 ulps na 19 ulps on an IEEE-754 compliant
             # machine.
             ikiwa absolute_error <= max(abs_err, rel_err * abs(a)):
-                return
+                rudisha
         self.fail(msg ama
                   '{!r} na {!r} are sio sufficiently close'.format(a, b))
 

@@ -58,7 +58,7 @@ Some of the things this checks:
 
 * That the items of the headers are tuples of strings.
 
-* That there ni no 'status' header (that ni used kwenye CGI, but sio in
+* That there ni no 'status' header (that ni used kwenye CGI, but haiko kwenye
   WSGI).
 
 * That the headers don't contain newlines ama colons, end kwenye _ ama -, ama
@@ -217,7 +217,7 @@ kundi InputWrapper:
         wakati 1:
             line = self.readline()
             ikiwa sio line:
-                return
+                rudisha
             tuma line
 
     eleza close(self):
@@ -421,7 +421,7 @@ eleza check_content_type(status, headers):
         name = check_string_type(name, "Header name")
         ikiwa name.lower() == 'content-type':
             ikiwa code haiko kwenye NO_MESSAGE_BODY:
-                return
+                rudisha
             assert_(0, ("Content-Type header found kwenye a %s response, "
                         "which must sio rudisha content.") % code)
     ikiwa code haiko kwenye NO_MESSAGE_BODY:

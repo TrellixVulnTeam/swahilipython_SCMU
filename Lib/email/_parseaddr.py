@@ -27,7 +27,7 @@ _monthnames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul',
 
 _daynames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
-# The timezone table does sio include the military time zones defined
+# The timezone table does sio inlude the military time zones defined
 # kwenye RFC822, other than Z.  According to RFC1123, the description in
 # RFC822 gets the signs wrong, so we can't rely on any such time
 # zones.  RFC1123 recommends that numeric timezone indicators be used
@@ -49,7 +49,7 @@ eleza parsedate_tz(data):
     """
     res = _parsedate_tz(data)
     ikiwa sio res:
-        return
+        rudisha
     ikiwa res[9] ni Tupu:
         res[9] = 0
     rudisha tuple(res)
@@ -65,7 +65,7 @@ eleza _parsedate_tz(data):
 
     """
     ikiwa sio data:
-        return
+        rudisha
     data = data.split()
     # The FWS after the comma after the day-of-week ni optional, so search na
     # adjust kila this.
@@ -322,7 +322,7 @@ kundi AddrlistClass:
         This method just skips all the route stuff na returns the addrspec.
         """
         ikiwa self.field[self.pos] != '<':
-            return
+            rudisha
 
         expectroute = Uongo
         self.pos += 1
@@ -463,7 +463,7 @@ kundi AddrlistClass:
 
         Optional atomends specifies a different set of end token delimiters
         (the default ni to use self.atomends).  This ni used e.g. in
-        getphraselist() since phrase endings must sio include the `.' (which
+        getphraselist() since phrase endings must sio inlude the `.' (which
         ni legal kwenye phrases)."""
         atomlist = ['']
         ikiwa atomends ni Tupu:

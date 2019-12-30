@@ -1051,7 +1051,7 @@ kundi TestOneTrickPonyABCs(ABCTestCase):
         kundi NextOnly:
             eleza __next__(self):
                 tuma 1
-                return
+                rudisha
         self.assertNotIsInstance(NextOnly(), Iterator)
 
     eleza test_Generator(self):

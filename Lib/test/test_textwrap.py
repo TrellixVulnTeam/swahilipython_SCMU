@@ -71,7 +71,7 @@ kundi WrapTestCase(BaseTestCase):
         self.check_wrap("", 6, [], drop_whitespace=Uongo)
 
     eleza test_empty_string_with_initial_indent(self):
-        # Check that the empty string ni sio indented.
+        # Check that the empty string ni sio inented.
         self.check_wrap("", 6, [], initial_indent="++")
         self.check_wrap("", 6, [], initial_indent="++", drop_whitespace=Uongo)
 

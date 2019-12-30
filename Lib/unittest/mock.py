@@ -112,7 +112,7 @@ eleza _get_signature_object(func, as_instance, eat_self):
 eleza _check_signature(func, mock, skipfirst, instance=Uongo):
     sig = _get_signature_object(func, instance, skipfirst)
     ikiwa sig ni Tupu:
-        return
+        rudisha
     func, sig = sig
     eleza checksig(self, /, *args, **kwargs):
         sig.bind(*args, **kwargs)
@@ -580,7 +580,7 @@ kundi NonCallableMock(Base):
         ikiwa visited ni Tupu:
             visited = []
         ikiwa id(self) kwenye visited:
-            return
+            rudisha
         visited.append(id(self))
 
         self.called = Uongo
@@ -759,7 +759,7 @@ kundi NonCallableMock(Base):
                 self._mock_children[name] = value
         lasivyo name == '__class__':
             self._spec_class = value
-            return
+            rudisha
         isipokua:
             ikiwa _check_and_set_parent(self, value, name, name):
                 self._mock_children[name] = value
@@ -777,7 +777,7 @@ kundi NonCallableMock(Base):
             ikiwa name haiko kwenye self.__dict__:
                 # kila magic methods that are still MagicProxy objects na
                 # sio set on the instance itself
-                return
+                rudisha
 
         obj = self._mock_children.get(name, _missing)
         ikiwa name kwenye self.__dict__:
@@ -946,7 +946,7 @@ kundi NonCallableMock(Base):
                     f'Expected: {_CallList(calls)}'
                     f'{self._calls_repr(prefix="Actual").rstrip(".")}'
                 ) kutoka cause
-            return
+            rudisha
 
         all_calls = list(all_calls)
 
@@ -1174,10 +1174,10 @@ kundi Mock(CallableMixin, NonCallableMock):
     * `side_effect`: A function to be called whenever the Mock ni called. See
       the `side_effect` attribute. Useful kila raising exceptions ama
       dynamically changing rudisha values. The function ni called ukijumuisha the same
-      arguments kama the mock, na unless it returns `DEFAULT`, the return
+      arguments kama the mock, na unless it returns `DEFAULT`, the rudisha
       value of this function ni used kama the rudisha value.
 
-      If `side_effect` ni an iterable then each call to the mock will return
+      If `side_effect` ni an iterable then each call to the mock will rudisha
       the next value kutoka the iterable. If any of the members of the iterable
       are exceptions they will be raised instead of returned.
 
@@ -1519,7 +1519,7 @@ kundi _patch(object):
     eleza __exit__(self, *exc_info):
         """Undo the patch."""
         ikiwa sio _is_started(self):
-            return
+            rudisha
 
         ikiwa self.is_local na self.temp_original ni sio DEFAULT:
             setattr(self.target, self.attribute, self.temp_original)
@@ -1882,7 +1882,7 @@ numerics = (
 inplace = ' '.join('i%s' % n kila n kwenye numerics.split())
 right = ' '.join('r%s' % n kila n kwenye numerics.split())
 
-# sio including __prepare__, __instancecheck__, __subclasscheck__
+# sio inluding __prepare__, __instancecheck__, __subclasscheck__
 # (as they are metakundi methods)
 # __del__ ni sio supported at all kama it causes problems ikiwa it exists
 
@@ -1998,13 +1998,13 @@ eleza _set_return_value(mock, method, name):
     fixed = _return_values.get(name, DEFAULT)
     ikiwa fixed ni sio DEFAULT:
         method.return_value = fixed
-        return
+        rudisha
 
     return_calculator = _calculate_return_value.get(name)
     ikiwa return_calculator ni sio Tupu:
         return_value = return_calculator(mock)
         method.return_value = return_value
-        return
+        rudisha
 
     side_effector = _side_effect_methods.get(name)
     ikiwa side_effector ni sio Tupu:
@@ -2234,7 +2234,7 @@ kundi AsyncMockMixin(Base):
                     f'Expected: {_CallList(calls)}\n'
                     f'Actual: {self.await_args_list}'
                 ) kutoka cause
-            return
+            rudisha
 
         all_awaits = list(all_awaits)
 
@@ -2581,7 +2581,7 @@ eleza create_autospec(spec, spec_set=Uongo, instance=Uongo, _parent=Tupu,
     Klass = MagicMock
     ikiwa inspect.isdatadescriptor(spec):
         # descriptors don't have a spec
-        # because we don't know what type they return
+        # because we don't know what type they rudisha
         _kwargs = {}
     lasivyo is_async_func:
         ikiwa instance:
@@ -2612,10 +2612,10 @@ eleza create_autospec(spec, spec_set=Uongo, instance=Uongo, _parent=Tupu,
     isipokua:
         _check_signature(spec, mock, is_type, instance)
 
-    ikiwa _parent ni sio Tupu na sio instance:
+    ikiwa _parent ni sio Tupu na sio intance:
         _parent._mock_children[_name] = mock
 
-    ikiwa is_type na sio instance na 'return_value' haiko kwenye kwargs:
+    ikiwa is_type na sio intance na 'return_value' haiko kwenye kwargs:
         mock.return_value = create_autospec(spec, spec_set, instance=Kweli,
                                             _name='()', _parent=mock)
 

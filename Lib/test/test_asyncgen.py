@@ -384,7 +384,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             await asyncio.sleep(0.01)
             tuma 2
             await asyncio.sleep(0.01)
-            return
+            rudisha
             tuma 3
 
         res = self.loop.run_until_complete(self.to_list(gen()))
@@ -756,7 +756,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
                 await asyncio.sleep(0.01)
                 tuma v * 2
                 await asyncio.sleep(0.01)
-                return
+                rudisha
             mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
@@ -875,7 +875,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
                     await asyncio.sleep(0.01)
                 tuma v * 2
                 await asyncio.sleep(0.01)
-                # return
+                # rudisha
             mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)
@@ -918,7 +918,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
                     await sleep_n_crash(0.01)
                 tuma v * 2
                 await asyncio.sleep(0.01)
-                # return
+                # rudisha
             mwishowe:
                 await asyncio.sleep(0.01)
                 await asyncio.sleep(0.01)

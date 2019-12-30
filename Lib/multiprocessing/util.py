@@ -253,7 +253,7 @@ eleza _run_finalizers(minpriority=Tupu):
         # This function may be called after this module's globals are
         # destroyed.  See the _exit_function function kwenye this module kila more
         # notes.
-        return
+        rudisha
 
     ikiwa minpriority ni Tupu:
         f = lambda p : p[0] ni sio Tupu
@@ -386,7 +386,7 @@ eleza close_all_fds_except(fds):
 
 eleza _close_stdin():
     ikiwa sys.stdin ni Tupu:
-        return
+        rudisha
 
     jaribu:
         sys.stdin.close()

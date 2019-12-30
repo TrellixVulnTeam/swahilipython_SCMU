@@ -46,7 +46,7 @@ eleza main():
         opts, args = getopt.getopt(sys.argv[1:], "qv")
     tatizo getopt.error kama msg:
         errandika(msg)
-        return
+        rudisha
     kila o, a kwenye opts:
         ikiwa o == '-q':
             filename_only = filename_only + 1
@@ -54,7 +54,7 @@ eleza main():
             verbose = verbose + 1
     ikiwa sio args:
         errandika("Usage:", sys.argv[0], "[-v] file_or_directory ...")
-        return
+        rudisha
     kila arg kwenye args:
         check(arg)
 
@@ -92,13 +92,13 @@ eleza check(file):
                 sio os.path.islink(fullname) ama
                 os.path.normcase(name[-3:]) == ".py"):
                 check(fullname)
-        return
+        rudisha
 
     jaribu:
         f = tokenize.open(file)
     tatizo OSError kama msg:
         errandika("%r: I/O Error: %s" % (file, msg))
-        return
+        rudisha
 
     ikiwa verbose > 1:
         andika("checking %r ..." % file)
@@ -108,11 +108,11 @@ eleza check(file):
 
     tatizo tokenize.TokenError kama msg:
         errandika("%r: Token Error: %s" % (file, msg))
-        return
+        rudisha
 
     tatizo IndentationError kama msg:
         errandika("%r: Indentation Error: %s" % (file, msg))
-        return
+        rudisha
 
     tatizo NannyNag kama nag:
         badline = nag.get_lineno()
@@ -125,7 +125,7 @@ eleza check(file):
             ikiwa ' ' kwenye file: file = '"' + file + '"'
             ikiwa filename_only: andika(file)
             isipokua: andika(file, badline, repr(line))
-        return
+        rudisha
 
     mwishowe:
         f.close()
@@ -294,7 +294,7 @@ eleza process_tokens(tokens):
         lasivyo type == INDENT:
             check_equal = 0
             thisguy = Whitespace(token)
-            ikiwa sio indents[-1].less(thisguy):
+            ikiwa sio inents[-1].less(thisguy):
                 witness = indents[-1].not_less_witness(thisguy)
                 msg = "indent sio greater e.g. " + format_witnesses(witness)
                 ashiria NannyNag(start[0], msg, line)
@@ -323,7 +323,7 @@ eleza process_tokens(tokens):
             # "indents" stack was seeded
             check_equal = 0
             thisguy = Whitespace(line)
-            ikiwa sio indents[-1].equal(thisguy):
+            ikiwa sio inents[-1].equal(thisguy):
                 witness = indents[-1].not_equal_witness(thisguy)
                 msg = "indent sio equal e.g. " + format_witnesses(witness)
                 ashiria NannyNag(start[0], msg, line)

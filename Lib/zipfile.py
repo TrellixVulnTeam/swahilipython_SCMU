@@ -918,7 +918,7 @@ kundi ZipExtFile(io.BufferedIOBase):
         # Update the CRC using the given data.
         ikiwa self._expected_crc ni Tupu:
             # No need to compute the CRC ikiwa we don't have a reference value
-            return
+            rudisha
         self._running_crc = crc32(newdata, self._running_crc)
         # Check the CRC ikiwa we're at the end of the file
         ikiwa self._eof na self._running_crc != self._expected_crc:
@@ -1108,7 +1108,7 @@ kundi _ZipWriteFile(io.BufferedIOBase):
 
     eleza close(self):
         ikiwa self.closed:
-            return
+            rudisha
         jaribu:
             super().close()
             # Flush any data kutoka the compressor, na update header info
@@ -1805,7 +1805,7 @@ kundi ZipFile:
         """Close the file, na kila mode 'w', 'x' na 'a' write the ending
         records."""
         ikiwa self.fp ni Tupu:
-            return
+            rudisha
 
         ikiwa self._writing:
             ashiria ValueError("Can't close the ZIP file wakati there ni "
@@ -1960,7 +1960,7 @@ kundi PyZipFile(ZipFile):
             ikiwa self.debug:
                 label = 'path' ikiwa os.path.isdir(pathname) isipokua 'file'
                 andika('%s %r skipped by filterfunc' % (label, pathname))
-            return
+            rudisha
         dir, name = os.path.split(pathname)
         ikiwa os.path.isdir(pathname):
             initname = os.path.join(pathname, "__init__.py")

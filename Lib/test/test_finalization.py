@@ -411,7 +411,7 @@ kundi LegacyBase(SimpleBase):
 
     eleza __del__(self):
         jaribu:
-            # Do sio invoke side_effect here, since we are now exercising
+            # Do sio inoke side_effect here, since we are now exercising
             # the tp_toa slot.
             ikiwa sio self._cleaning:
                 self.del_calls.append(id(self))

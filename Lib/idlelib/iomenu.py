@@ -99,7 +99,7 @@ eleza coding_spec(data):
     jaribu:
         codecs.lookup(name)
     tatizo LookupError:
-        # The standard encoding error does sio indicate the encoding
+        # The standard encoding error does sio inicate the encoding
         ashiria LookupError("Unknown encoding: "+name)
     rudisha name
 

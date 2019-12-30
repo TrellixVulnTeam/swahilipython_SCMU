@@ -243,7 +243,7 @@ kundi DefaultContext(BaseContext):
             ashiria RuntimeError('context has already been set')
         ikiwa method ni Tupu na force:
             self._actual_context = Tupu
-            return
+            rudisha
         self._actual_context = self.get_context(method)
 
     eleza get_start_method(self, allow_none=Uongo):

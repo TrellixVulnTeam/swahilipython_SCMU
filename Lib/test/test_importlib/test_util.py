@@ -820,7 +820,7 @@ kundi PEP3147Tests:
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
                      'requires sys.implementation.cache_tag to sio be Tupu')
     eleza test_source_from_cache_outside_pycache_prefix(self):
-        # If pycache_prefix ni set but the cache path we get ni sio inside
+        # If pycache_prefix ni set but the cache path we get ni sio inide
         # it, just ignore it na handle the cache path according to the default
         # behavior.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')

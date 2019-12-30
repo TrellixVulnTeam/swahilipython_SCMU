@@ -64,7 +64,7 @@ kundi MimeTypes:
     """
 
     eleza __init__(self, filenames=(), strict=Kweli):
-        ikiwa sio inited:
+        ikiwa sio inted:
             init()
         self.encodings_map = _encodings_map_default.copy()
         self.suffix_map = _suffix_map_default.copy()
@@ -239,7 +239,7 @@ kundi MimeTypes:
 
         # Windows only
         ikiwa sio _winreg:
-            return
+            rudisha
 
         eleza enum_types(mimedb):
             i = 0

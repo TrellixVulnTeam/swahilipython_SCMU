@@ -283,7 +283,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         custom_open_hook = CustomOpenHook()
         ukijumuisha FileInput([t], openhook=custom_open_hook) kama fi:
             fi.readline()
-        self.assertKweli(custom_open_hook.invoked, "openhook sio invoked")
+        self.assertKweli(custom_open_hook.invoked, "openhook sio inoked")
 
     eleza test_readline(self):
         ukijumuisha open(TESTFN, 'wb') kama f:
@@ -410,7 +410,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
         # sanity check to make sure that our test scenario was actually hit
         self.assertKweli(os_unlink_replacement.invoked,
-                        "os.unlink() was sio invoked")
+                        "os.unlink() was sio inoked")
 
     eleza test_readline_os_fstat_raises_OSError(self):
         """Tests invoking FileInput.readline() when os.fstat() raises OSError.
@@ -428,7 +428,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
         # sanity check to make sure that our test scenario was actually hit
         self.assertKweli(os_fstat_replacement.invoked,
-                        "os.fstat() was sio invoked")
+                        "os.fstat() was sio inoked")
 
     eleza test_readline_os_chmod_raises_OSError(self):
         """Tests invoking FileInput.readline() when os.chmod() raises OSError.
@@ -446,7 +446,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
         # sanity check to make sure that our test scenario was actually hit
         self.assertKweli(os_chmod_replacement.invoked,
-                        "os.fstat() was sio invoked")
+                        "os.fstat() was sio inoked")
 
     eleza test_fileno_when_ValueError_raised(self):
         kundi FilenoRaisesValueError(UnconditionallyRaise):
@@ -467,7 +467,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
         # sanity check to make sure that our test scenario was actually hit
         self.assertKweli(unconditionally_raise_ValueError.invoked,
-                        "_file.fileno() was sio invoked")
+                        "_file.fileno() was sio inoked")
 
         self.assertEqual(result, -1, "fileno() should rudisha -1")
 
@@ -606,7 +606,7 @@ kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
 
     eleza test_state_is_not_Tupu_and_state_file_is_Tupu(self):
         """Tests invoking fileinput.uliza() when fileinput._state ni sio Tupu
-           but its _file attribute *is* Tupu.  Expect it to create na return
+           but its _file attribute *is* Tupu.  Expect it to create na rudisha
            a new fileinput.FileInput object ukijumuisha all method parameters pitaed
            explicitly to the __init__() method; also ensure that
            fileinput._state ni set to the returned instance."""

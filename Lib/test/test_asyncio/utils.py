@@ -468,7 +468,7 @@ kundi TestLoop(base_events.BaseEventLoop):
         rudisha super().call_at(when, callback, *args, context=context)
 
     eleza _process_events(self, event_list):
-        return
+        rudisha
 
     eleza _write_to_self(self):
         pita

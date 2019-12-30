@@ -572,7 +572,7 @@ eleza _load_system_functions():
     global _generate_time_safe, _UuidCreate, _has_uuid_generate_time_safe
 
     ikiwa _has_uuid_generate_time_safe ni sio Tupu:
-        return
+        rudisha
 
     _has_uuid_generate_time_safe = Uongo
 
@@ -588,7 +588,7 @@ eleza _load_system_functions():
     lasivyo _uuid ni sio Tupu:
         _generate_time_safe = _uuid.generate_time_safe
         _has_uuid_generate_time_safe = _uuid.has_uuid_generate_time_safe
-        return
+        rudisha
 
     jaribu:
         # If we couldn't find an extension module, try ctypes to find

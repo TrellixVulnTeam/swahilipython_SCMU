@@ -383,7 +383,7 @@ kundi _SSLProtocolTransport(transports._FlowControlMixin,
             ashiria TypeError(f"data: expecting a bytes-like instance, "
                             f"got {type(data).__name__}")
         ikiwa sio data:
-            return
+            rudisha
         self._ssl_protocol._write_appdata(data)
 
     eleza can_write_eof(self):
@@ -461,7 +461,7 @@ kundi SSLProtocol(protocols.Protocol):
 
     eleza _wakeup_waiter(self, exc=Tupu):
         ikiwa self._waiter ni Tupu:
-            return
+            rudisha
         ikiwa sio self._waiter.cancelled():
             ikiwa exc ni sio Tupu:
                 self._waiter.set_exception(exc)
@@ -523,7 +523,7 @@ kundi SSLProtocol(protocols.Protocol):
         """
         ikiwa self._sslpipe ni Tupu:
             # transport closing, sslpipe ni destroyed
-            return
+            rudisha
 
         jaribu:
             ssldata, appdata = self._sslpipe.feed_ssldata(data)
@@ -531,7 +531,7 @@ kundi SSLProtocol(protocols.Protocol):
             raise
         tatizo BaseException kama e:
             self._fatal_error(e, 'SSL error kwenye data received')
-            return
+            rudisha
 
         kila chunk kwenye ssldata:
             self._transport.write(chunk)
@@ -549,7 +549,7 @@ kundi SSLProtocol(protocols.Protocol):
                 tatizo BaseException kama ex:
                     self._fatal_error(
                         ex, 'application protocol failed to receive SSL data')
-                    return
+                    rudisha
             isipokua:
                 self._start_shutdown()
                 koma
@@ -586,7 +586,7 @@ kundi SSLProtocol(protocols.Protocol):
 
     eleza _start_shutdown(self):
         ikiwa self._in_shutdown:
-            return
+            rudisha
         ikiwa self._in_handshake:
             self._abort()
         isipokua:
@@ -640,7 +640,7 @@ kundi SSLProtocol(protocols.Protocol):
             isipokua:
                 msg = 'SSL handshake failed'
             self._fatal_error(exc, msg)
-            return
+            rudisha
 
         ikiwa self._loop.get_debug():
             dt = self._loop.time() - self._handshake_start_time
@@ -666,7 +666,7 @@ kundi SSLProtocol(protocols.Protocol):
     eleza _process_write_backlog(self):
         # Try to make progress on the write backlog.
         ikiwa self._transport ni Tupu ama self._sslpipe ni Tupu:
-            return
+            rudisha
 
         jaribu:
             kila i kwenye range(len(self._write_backlog)):

@@ -797,7 +797,7 @@ kundi TestPEP380Operation(unittest.TestCase):
                 tuma
                 trace.append("Exit f")
             tatizo GeneratorExit:
-                return
+                rudisha
         eleza g():
             trace.append("Enter g")
             tuma kutoka f()

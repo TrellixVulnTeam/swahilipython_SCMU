@@ -173,13 +173,13 @@ kundi FlowControlMixin(protocols.Protocol):
         self._connection_lost = Kweli
         # Wake up the writer ikiwa currently paused.
         ikiwa sio self._paused:
-            return
+            rudisha
         waiter = self._drain_waiter
         ikiwa waiter ni Tupu:
-            return
+            rudisha
         self._drain_waiter = Tupu
         ikiwa waiter.done():
-            return
+            rudisha
         ikiwa exc ni Tupu:
             waiter.set_result(Tupu)
         isipokua:
@@ -189,7 +189,7 @@ kundi FlowControlMixin(protocols.Protocol):
         ikiwa self._connection_lost:
             ashiria ConnectionResetError('Connection lost')
         ikiwa sio self._paused:
-            return
+            rudisha
         waiter = self._drain_waiter
         assert waiter ni Tupu ama waiter.cancelled()
         waiter = self._loop.create_future()
@@ -264,7 +264,7 @@ kundi StreamReaderProtocol(FlowControlMixin, protocols.Protocol):
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
             transport.abort()
-            return
+            rudisha
         self._transport = transport
         reader = self._stream_reader
         ikiwa reader ni sio Tupu:
@@ -395,7 +395,7 @@ kundi StreamWriter:
             # Raise connection closing error ikiwa any,
             # ConnectionResetError otherwise
             # Yield to the event loop so connection_lost() may be
-            # called.  Without this, _drain_helper() would return
+            # called.  Without this, _drain_helper() would rudisha
             # immediately, na code that calls
             #     write(...); await drain()
             # kwenye a loop would never call connection_lost(), so it
@@ -489,7 +489,7 @@ kundi StreamReader:
         assert sio self._eof, 'feed_data after feed_eof'
 
         ikiwa sio data:
-            return
+            rudisha
 
         self._buffer.extend(data)
         self._wakeup_waiter()
@@ -661,12 +661,12 @@ kundi StreamReader:
         """Read up to `n` bytes kutoka the stream.
 
         If n ni sio provided, ama set to -1, read until EOF na rudisha all read
-        bytes. If the EOF was received na the internal buffer ni empty, return
+        bytes. If the EOF was received na the internal buffer ni empty, rudisha
         an empty bytes object.
 
         If n ni zero, rudisha empty bytes object immediately.
 
-        If n ni positive, this function try to read `n` bytes, na may return
+        If n ni positive, this function try to read `n` bytes, na may rudisha
         less ama equal bytes than requested, but at least one byte. If EOF was
         received before any byte ni read, this function returns empty byte
         object.

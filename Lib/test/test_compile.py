@@ -970,7 +970,7 @@ kundi TestStackSizeStability(unittest.TestCase):
         snippet = """
             jaribu:
                 ikiwa z:
-                    return
+                    rudisha
                 isipokua:
                     a
             mwishowe:
@@ -984,7 +984,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 t
             mwishowe:
                 ikiwa z:
-                    return
+                    rudisha
                 isipokua:
                     a
             """
@@ -996,7 +996,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 t
             tatizo:
                 ikiwa z:
-                    return
+                    rudisha
                 isipokua:
                     a
             """
@@ -1006,7 +1006,7 @@ kundi TestStackSizeStability(unittest.TestCase):
         snippet = """
             ukijumuisha c:
                 ikiwa z:
-                    return
+                    rudisha
                 isipokua:
                     a
             """
@@ -1054,7 +1054,7 @@ kundi TestStackSizeStability(unittest.TestCase):
         snippet = """
             async ukijumuisha c:
                 ikiwa z:
-                    return
+                    rudisha
                 isipokua:
                     a
             """

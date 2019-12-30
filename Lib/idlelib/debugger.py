@@ -18,7 +18,7 @@ kundi Idb(bdb.Bdb):
     eleza user_line(self, frame):
         ikiwa self.in_rpc_code(frame):
             self.set_step()
-            return
+            rudisha
         message = self.__frame2message(frame)
         jaribu:
             self.gui.interaction(message, frame)
@@ -28,7 +28,7 @@ kundi Idb(bdb.Bdb):
     eleza user_exception(self, frame, info):
         ikiwa self.in_rpc_code(frame):
             self.set_step()
-            return
+            rudisha
         message = self.__frame2message(frame)
         self.gui.interaction(message, frame, info)
 
@@ -102,7 +102,7 @@ kundi Debugger:
         ikiwa self.nesting_level > 0:
             self.abort_loop()
             self.root.after(100, lambda: self.run(*args))
-            return
+            rudisha
         jaribu:
             self.interacting = 1
             rudisha self.idb.run(*args)
@@ -116,7 +116,7 @@ kundi Debugger:
             pita
         ikiwa self.interacting:
             self.top.bell()
-            return
+            rudisha
         ikiwa self.stackviewer:
             self.stackviewer.close(); self.stackviewer = Tupu
         # Clean up pyshell ikiwa user clicked debugger control close widget.
@@ -253,7 +253,7 @@ kundi Debugger:
     eleza sync_source_line(self):
         frame = self.frame
         ikiwa sio frame:
-            return
+            rudisha
         filename, lineno = self.__frame2fileline(frame)
         ikiwa filename[:1] + filename[-1:] != "<>" na os.path.exists(filename):
             self.flist.gotofileline(filename, lineno)
@@ -445,7 +445,7 @@ kundi StackViewer(ScrolledList):
 
     eleza show_source(self, index):
         ikiwa sio (0 <= index < len(self.stack)):
-            return
+            rudisha
         frame, lineno = self.stack[index]
         code = frame.f_code
         filename = code.co_filename
@@ -488,7 +488,7 @@ kundi NamespaceViewer:
 
     eleza load_dict(self, dict, force=0, rpc_client=Tupu):
         ikiwa dict ni self.dict na sio force:
-            return
+            rudisha
         subframe = self.subframe
         frame = self.frame
         kila c kwenye list(subframe.children.values()):

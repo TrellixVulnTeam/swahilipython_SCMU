@@ -277,14 +277,14 @@ kundi ExpatBuilder:
             ikiwa (  self._cdata_endelea
                   na childNodes[-1].nodeType == CDATA_SECTION_NODE):
                 childNodes[-1].appendData(data)
-                return
+                rudisha
             node = self.document.createCDATASection(data)
             self._cdata_endelea = Kweli
         lasivyo childNodes na childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             value = node.data + data
             node.data = value
-            return
+            rudisha
         isipokua:
             node = minidom.Text()
             node.data = data
@@ -296,7 +296,7 @@ kundi ExpatBuilder:
         ikiwa childNodes na childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             node.data = node.data + data
-            return
+            rudisha
         node = minidom.Text()
         node.data = node.data + data
         node.ownerDocument = self.document
@@ -306,9 +306,9 @@ kundi ExpatBuilder:
                             base, systemId, publicId, notationName):
         ikiwa is_parameter_entity:
             # we don't care about parameter entities kila the DOM
-            return
+            rudisha
         ikiwa sio self._options.entities:
-            return
+            rudisha
         node = self.document._create_entity(entityName, publicId,
                                             systemId, notationName)
         ikiwa value ni sio Tupu:
@@ -371,7 +371,7 @@ kundi ExpatBuilder:
             # To be general, we'd have to call isSameNode(), but this
             # ni sufficient kila minidom:
             ikiwa node ni self.document.documentElement:
-                return
+                rudisha
             filt = self._filter.startContainer(node)
             ikiwa filt == FILTER_REJECT:
                 # ignore this node & all descendents
@@ -381,7 +381,7 @@ kundi ExpatBuilder:
                 # children of the parent node
                 Skipper(self)
             isipokua:
-                return
+                rudisha
             self.curNode = node.parentNode
             node.parentNode.removeChild(node)
             node.unlink()
@@ -400,15 +400,15 @@ kundi ExpatBuilder:
             self._handle_white_text_nodes(curNode, info)
         ikiwa self._filter:
             ikiwa curNode ni self.document.documentElement:
-                return
+                rudisha
             ikiwa self._filter.acceptNode(curNode) == FILTER_REJECT:
                 self.curNode.removeChild(curNode)
                 curNode.unlink()
 
     eleza _handle_white_text_nodes(self, node, info):
         ikiwa (self._options.whitespace_in_element_content
-            ama sio info.isElementContent()):
-            return
+            ama sio ino.isElementContent()):
+            rudisha
 
         # We have element type information na should remove ignorable
         # whitespace; identify kila text nodes which contain only
@@ -692,7 +692,7 @@ kundi FragmentBuilder(ExpatBuilder):
             old_document = self.document
             old_cur_node = self.curNode
             parser = self._parser.ExternalEntityParserCreate(context)
-            # put the real document back, parse into the fragment to return
+            # put the real document back, parse into the fragment to rudisha
             self.document = self.originalDocument
             self.fragment = self.document.createDocumentFragment()
             self.curNode = self.fragment

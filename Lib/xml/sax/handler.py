@@ -89,7 +89,7 @@ kundi ContentHandler:
 
         The SAX parser will invoke this method only once, na it will
         be the last method invoked during the parse. The parser shall
-        sio invoke this method until it has either abandoned parsing
+        sio inoke this method until it has either abandoned parsing
         (because of an unrecoverable error) ama reached the end of
         input."""
 
@@ -267,13 +267,13 @@ feature_validation = "http://xml.org/sax/features/validation"
 
 feature_external_ges = "http://xml.org/sax/features/external-general-entities"
 # true: Include all external general (text) entities.
-# false: Do sio include external general entities.
+# false: Do sio inlude external general entities.
 # access: (parsing) read-only; (sio parsing) read/write
 
 feature_external_pes = "http://xml.org/sax/features/external-parameter-entities"
 # true: Include all external parameter entities, including the external
 #       DTD subset.
-# false: Do sio include any external parameter entities, even the external
+# false: Do sio inlude any external parameter entities, even the external
 #        DTD subset.
 # access: (parsing) read-only; (sio parsing) read/write
 

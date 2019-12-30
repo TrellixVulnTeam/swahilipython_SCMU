@@ -1543,7 +1543,7 @@ kundi TNavigator(object):
         ikiwa mode ni Tupu:
             rudisha self._mode
         ikiwa mode haiko kwenye ["standard", "logo", "world"]:
-            return
+            rudisha
         self._mode = mode
         ikiwa mode kwenye ["standard", "world"]:
             self._angleOffset = 0
@@ -2103,7 +2103,7 @@ kundi TPen(object):
         >>> turtle.penup()
         """
         ikiwa sio self._drawing:
-            return
+            rudisha
         self.pen(pendown=Uongo)
 
     eleza pendown(self):
@@ -2117,7 +2117,7 @@ kundi TPen(object):
         >>> turtle.pendown()
         """
         ikiwa self._drawing:
-            return
+            rudisha
         self.pen(pendown=Kweli)
 
     eleza isdown(self):
@@ -2251,7 +2251,7 @@ kundi TPen(object):
         ikiwa args:
             color = self._colorstr(args)
             ikiwa color == self._pencolor:
-                return
+                rudisha
             self.pen(pencolor=color)
         isipokua:
             rudisha self._color(self._pencolor)
@@ -2287,7 +2287,7 @@ kundi TPen(object):
         ikiwa args:
             color = self._colorstr(args)
             ikiwa color == self._fillcolor:
-                return
+                rudisha
             self.pen(fillcolor=color)
         isipokua:
             rudisha self._color(self._fillcolor)
@@ -2491,9 +2491,9 @@ kundi _TurtleImage(object):
         screen = self.screen
         self.shapeIndex = shapeIndex
         ikiwa self._type == "polygon" == screen._shapes[shapeIndex]._type:
-            return
+            rudisha
         ikiwa self._type == "image" == screen._shapes[shapeIndex]._type:
-            return
+            rudisha
         ikiwa self._type kwenye ["image", "polygon"]:
             screen._delete(self._item)
         lasivyo self._type == "compound":
@@ -2645,7 +2645,7 @@ kundi RawTurtle(TPen, TNavigator):
     eleza _update_data(self):
         self.screen._incrementudc()
         ikiwa self.screen._updatecounter != 0:
-            return
+            rudisha
         ikiwa len(self.currentLine)>1:
             self.screen._drawline(self.currentLineItem, self.currentLine,
                                   self._pencolor, self._pensize)
@@ -2655,7 +2655,7 @@ kundi RawTurtle(TPen, TNavigator):
         """
         screen = self.screen
         ikiwa screen._tracing == 0:
-            return
+            rudisha
         lasivyo screen._tracing == 1:
             self._update_data()
             self._drawturtle()
@@ -3018,7 +3018,7 @@ kundi RawTurtle(TPen, TNavigator):
                                      outline=self._cc(oc), width=self._outlinewidth, top=Kweli)
         isipokua:
             ikiwa self._hidden_from_screen:
-                return
+                rudisha
             ikiwa ttype == "polygon":
                 screen._drawpoly(titem, ((0, 0), (0, 0), (0, 0)), "", "")
             lasivyo ttype == "image":
@@ -3091,7 +3091,7 @@ kundi RawTurtle(TPen, TNavigator):
         item = ("stamp", stampid)
         buf = self.undobuffer
         ikiwa item haiko kwenye buf.buffer:
-            return
+            rudisha
         index = buf.buffer.index(item)
         buf.buffer.remove(item)
         ikiwa index <= buf.ptr:
@@ -3591,7 +3591,7 @@ kundi RawTurtle(TPen, TNavigator):
         """Does the main part of the work kila undo()
         """
         ikiwa self.undobuffer ni Tupu:
-            return
+            rudisha
         ikiwa action == "rot":
             angle, degPAU = data
             self._rotate(-angle*degPAU/self._degreesPerAU)
@@ -3637,7 +3637,7 @@ kundi RawTurtle(TPen, TNavigator):
         ...
         """
         ikiwa self.undobuffer ni Tupu:
-            return
+            rudisha
         item = self.undobuffer.pop()
         action = item[0]
         data = item[1:]
@@ -3716,7 +3716,7 @@ kundi _Screen(TurtleScreen):
         sets window to 75% of screen by 50% of screen na centers
         """
         ikiwa sio hasattr(self._root, "set_geometry"):
-            return
+            rudisha
         sw = self._root.win_width()
         sh = self._root.win_height()
         ikiwa isinstance(width, float) na 0 <= width <= 1:
@@ -3789,7 +3789,7 @@ kundi _Screen(TurtleScreen):
             self.bye()
         self.onclick(exitGracefully)
         ikiwa _CFG["using_IDLE"]:
-            return
+            rudisha
         jaribu:
             mainloop()
         tatizo AttributeError:
@@ -3886,7 +3886,7 @@ eleza getmethparlist(ob):
     Returns a pair of strings representing function parameter lists
     including parenthesis.  The first string ni suitable kila use in
     function definition na the second ni suitable kila use kwenye function
-    call.  The "self" parameter ni sio included.
+    call.  The "self" parameter ni sio inluded.
     """
     defText = callText = ""
     # bit of a hack kila methods - turn it into a function

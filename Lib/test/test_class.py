@@ -593,7 +593,7 @@ kundi ClassTests(unittest.TestCase):
             rudisha 'summa'
 
         name = str(b'__add__', 'ascii')  # shouldn't be optimized
-        self.assertIsNot(name, '__add__')  # sio interned
+        self.assertIsNot(name, '__add__')  # sio inerned
         type.__setattr__(A, name, add)
         self.assertEqual(A() + 1, 'summa')
 

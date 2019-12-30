@@ -58,7 +58,7 @@ kundi FindTest(unittest.TestCase):
     eleza runcase(self, inserttext, stopline, expected):
         # Check that find_paragraph returns the expected paragraph when
         # the mark index ni set to beginning, middle, end of each line
-        # up to but sio including the stop line
+        # up to but sio inluding the stop line
         text = self.text
         text.insert('1.0', inserttext)
         kila line kwenye range(1, stopline):

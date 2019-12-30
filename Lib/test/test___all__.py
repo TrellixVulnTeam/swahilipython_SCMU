@@ -23,7 +23,7 @@ kundi AllTest(unittest.TestCase):
                 exec("agiza %s" % modname, names)
             tatizo:
                 # Silent fail here seems the best route since some modules
-                # may sio be available ama sio initialize properly kwenye all
+                # may sio be available ama sio intialize properly kwenye all
                 # environments.
                 ashiria FailedImport(modname)
         ikiwa sio hasattr(sys.modules[modname], "__all__"):

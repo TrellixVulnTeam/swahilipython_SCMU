@@ -144,11 +144,11 @@ kundi SimpleIMAPHandler(socketserver.StreamRequestHandler):
                     part = self.rfile.read(1)
                     ikiwa part == b'':
                         # Naked sockets rudisha empty strings..
-                        return
+                        rudisha
                     line += part
                 tatizo OSError:
                     # ..but SSLSockets ashiria exceptions.
-                    return
+                    rudisha
                 ikiwa line.endswith(b'\r\n'):
                     koma
 

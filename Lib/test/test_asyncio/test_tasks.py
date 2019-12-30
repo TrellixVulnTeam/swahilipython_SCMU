@@ -2219,7 +2219,7 @@ kundi BaseTaskTests:
                                      return_exceptions=Kweli,
                                      loop=loop)
                 ikiwa time > 1:
-                    return
+                    rudisha
 
         async eleza main():
             qwe = self.new_task(loop, test())

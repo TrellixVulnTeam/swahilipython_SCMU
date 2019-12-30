@@ -403,7 +403,7 @@ kundi Future(object):
         ukijumuisha self._condition:
             ikiwa self._state haiko kwenye [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]:
                 self._done_callbacks.append(fn)
-                return
+                rudisha
         jaribu:
             fn(self)
         tatizo Exception:

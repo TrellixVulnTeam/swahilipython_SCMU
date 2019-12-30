@@ -537,7 +537,7 @@ kundi StreamReader(Codec):
             read() method.
 
         """
-        # If we have lines cached kutoka an earlier read, return
+        # If we have lines cached kutoka an earlier read, rudisha
         # them unconditionally
         ikiwa self.linebuffer:
             line = self.linebuffer[0]
@@ -569,7 +569,7 @@ kundi StreamReader(Codec):
             ikiwa lines:
                 ikiwa len(lines) > 1:
                     # More than one line result; the first line ni a full line
-                    # to return
+                    # to rudisha
                     line = lines[0]
                     toa lines[0]
                     ikiwa len(lines) > 1:
@@ -870,7 +870,7 @@ kundi StreamRecoder:
 
 eleza open(filename, mode='r', encoding=Tupu, errors='strict', buffering=-1):
 
-    """ Open an encoded file using the given mode na return
+    """ Open an encoded file using the given mode na rudisha
         a wrapped version providing transparent encoding/decoding.
 
         Note: The wrapped version will only accept the object format
@@ -951,7 +951,7 @@ eleza EncodedFile(file, data_encoding, file_encoding=Tupu, errors='strict'):
 
 eleza getencoder(encoding):
 
-    """ Lookup up the codec kila the given encoding na return
+    """ Lookup up the codec kila the given encoding na rudisha
         its encoder function.
 
         Raises a LookupError kwenye case the encoding cannot be found.
@@ -961,7 +961,7 @@ eleza getencoder(encoding):
 
 eleza getdecoder(encoding):
 
-    """ Lookup up the codec kila the given encoding na return
+    """ Lookup up the codec kila the given encoding na rudisha
         its decoder function.
 
         Raises a LookupError kwenye case the encoding cannot be found.
@@ -971,7 +971,7 @@ eleza getdecoder(encoding):
 
 eleza getincrementalencoder(encoding):
 
-    """ Lookup up the codec kila the given encoding na return
+    """ Lookup up the codec kila the given encoding na rudisha
         its IncrementalEncoder kundi ama factory function.
 
         Raises a LookupError kwenye case the encoding cannot be found
@@ -985,7 +985,7 @@ eleza getincrementalencoder(encoding):
 
 eleza getincrementaldecoder(encoding):
 
-    """ Lookup up the codec kila the given encoding na return
+    """ Lookup up the codec kila the given encoding na rudisha
         its IncrementalDecoder kundi ama factory function.
 
         Raises a LookupError kwenye case the encoding cannot be found
@@ -999,7 +999,7 @@ eleza getincrementaldecoder(encoding):
 
 eleza getreader(encoding):
 
-    """ Lookup up the codec kila the given encoding na return
+    """ Lookup up the codec kila the given encoding na rudisha
         its StreamReader kundi ama factory function.
 
         Raises a LookupError kwenye case the encoding cannot be found.
@@ -1009,7 +1009,7 @@ eleza getreader(encoding):
 
 eleza getwriter(encoding):
 
-    """ Lookup up the codec kila the given encoding na return
+    """ Lookup up the codec kila the given encoding na rudisha
         its StreamWriter kundi ama factory function.
 
         Raises a LookupError kwenye case the encoding cannot be found.

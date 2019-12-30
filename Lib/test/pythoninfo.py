@@ -26,7 +26,7 @@ kundi PythonInfo:
             ashiria ValueError("duplicate key: %r" % key)
 
         ikiwa value ni Tupu:
-            return
+            rudisha
 
         ikiwa sio isinstance(value, int):
             ikiwa sio isinstance(value, str):
@@ -35,7 +35,7 @@ kundi PythonInfo:
 
             value = value.strip()
             ikiwa sio value:
-                return
+                rudisha
 
         self.info[key] = value
 
@@ -61,7 +61,7 @@ eleza copy_attr(info_add, name, mod, attr_name):
     jaribu:
         value = getattr(mod, attr_name)
     tatizo AttributeError:
-        return
+        rudisha
     info_add(name, value)
 
 
@@ -69,7 +69,7 @@ eleza call_func(info_add, name, mod, func_name, *, formatter=Tupu):
     jaribu:
         func = getattr(mod, func_name)
     tatizo AttributeError:
-        return
+        rudisha
     value = func()
     ikiwa formatter ni sio Tupu:
         value = formatter(value)
@@ -310,7 +310,7 @@ eleza collect_pwd(info_add):
     jaribu:
         agiza pwd
     tatizo ImportError:
-        return
+        rudisha
     agiza os
 
     uid = os.getuid()
@@ -325,7 +325,7 @@ eleza collect_pwd(info_add):
     ikiwa entry ni Tupu:
         # there ni nothing interesting to read ikiwa the current user identifier
         # ni sio the pitaword database
-        return
+        rudisha
 
     ikiwa hasattr(os, 'getgrouplist'):
         groups = os.getgrouplist(entry.pw_name, entry.pw_gid)
@@ -337,7 +337,7 @@ eleza collect_readline(info_add):
     jaribu:
         agiza readline
     tatizo ImportError:
-        return
+        rudisha
 
     eleza format_attr(attr, value):
         ikiwa isinstance(value, int):
@@ -372,7 +372,7 @@ eleza collect_gdb(info_add):
                                 universal_newlines=Kweli)
         version = proc.communicate()[0]
     tatizo OSError:
-        return
+        rudisha
 
     # Only keep the first line
     version = version.splitlines()[0]
@@ -429,7 +429,7 @@ eleza collect_datetime(info_add):
     jaribu:
         agiza datetime
     tatizo ImportError:
-        return
+        rudisha
 
     info_add('datetime.datetime.now', datetime.datetime.now())
 
@@ -474,7 +474,7 @@ eleza collect_ssl(info_add):
     jaribu:
         agiza ssl
     tatizo ImportError:
-        return
+        rudisha
     jaribu:
         agiza _ssl
     tatizo ImportError:
@@ -533,7 +533,7 @@ eleza collect_sqlite(info_add):
     jaribu:
         agiza sqlite3
     tatizo ImportError:
-        return
+        rudisha
 
     attributes = ('version', 'sqlite_version')
     copy_attributes(info_add, sqlite3, 'sqlite3.%s', attributes)
@@ -543,7 +543,7 @@ eleza collect_zlib(info_add):
     jaribu:
         agiza zlib
     tatizo ImportError:
-        return
+        rudisha
 
     attributes = ('ZLIB_VERSION', 'ZLIB_RUNTIME_VERSION')
     copy_attributes(info_add, zlib, 'zlib.%s', attributes)
@@ -553,7 +553,7 @@ eleza collect_expat(info_add):
     jaribu:
         kutoka xml.parsers agiza expat
     tatizo ImportError:
-        return
+        rudisha
 
     attributes = ('EXPAT_VERSION',)
     copy_attributes(info_add, expat, 'expat.%s', attributes)
@@ -563,7 +563,7 @@ eleza collect_decimal(info_add):
     jaribu:
         agiza _decimal
     tatizo ImportError:
-        return
+        rudisha
 
     attributes = ('__libmpdec_version__',)
     copy_attributes(info_add, _decimal, '_decimal.%s', attributes)
@@ -573,7 +573,7 @@ eleza collect_testcapi(info_add):
     jaribu:
         agiza _testcapi
     tatizo ImportError:
-        return
+        rudisha
 
     call_func(info_add, 'pymem.allocator', _testcapi, 'pymem_getallocatorsname')
     copy_attr(info_add, 'pymem.with_pymalloc', _testcapi, 'WITH_PYMALLOC')
@@ -583,7 +583,7 @@ eleza collect_resource(info_add):
     jaribu:
         agiza resource
     tatizo ImportError:
-        return
+        rudisha
 
     limits = [attr kila attr kwenye dir(resource) ikiwa attr.startswith('RLIMIT_')]
     kila name kwenye limits:
@@ -598,7 +598,7 @@ eleza collect_test_socket(info_add):
     jaribu:
         kutoka test agiza test_socket
     tatizo ImportError:
-        return
+        rudisha
 
     # all check attributes like HAVE_SOCKET_CAN
     attributes = [name kila name kwenye dir(test_socket)
@@ -610,7 +610,7 @@ eleza collect_test_support(info_add):
     jaribu:
         kutoka test agiza support
     tatizo ImportError:
-        return
+        rudisha
 
     attributes = ('IPV6_ENABLED',)
     copy_attributes(info_add, support, 'test_support.%s', attributes)
@@ -625,7 +625,7 @@ eleza collect_cc(info_add):
 
     CC = sysconfig.get_config_var('CC')
     ikiwa sio CC:
-        return
+        rudisha
 
     jaribu:
         agiza shlex
@@ -642,12 +642,12 @@ eleza collect_cc(info_add):
         # Cannot run the compiler, kila example when Python has been
         # cross-compiled na installed on the target platform where the
         # compiler ni missing.
-        return
+        rudisha
 
     stdout = proc.communicate()[0]
     ikiwa proc.returncode:
         # CC --version failed: ignore error
-        return
+        rudisha
 
     text = stdout.splitlines()[0]
     text = normalize_text(text)
@@ -658,7 +658,7 @@ eleza collect_gdbm(info_add):
     jaribu:
         kutoka _gdbm agiza _GDBM_VERSION
     tatizo ImportError:
-        return
+        rudisha
 
     info_add('gdbm.GDBM_VERSION', '.'.join(map(str, _GDBM_VERSION)))
 
@@ -668,7 +668,7 @@ eleza collect_get_config(info_add):
     jaribu:
         kutoka _testinternalcapi agiza get_configs
     tatizo ImportError:
-        return
+        rudisha
 
     all_configs = get_configs()
     kila config_type kwenye sorted(all_configs):
@@ -686,10 +686,10 @@ eleza collect_windows(info_add):
     jaribu:
         agiza ctypes
     tatizo ImportError:
-        return
+        rudisha
 
     ikiwa sio hasattr(ctypes, 'WinDLL'):
-        return
+        rudisha
 
     ntdll = ctypes.WinDLL('ntdll')
     BOOLEAN = ctypes.c_ubyte

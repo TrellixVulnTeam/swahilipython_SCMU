@@ -124,7 +124,7 @@ eleza _grouping_intervals(grouping):
     kila interval kwenye grouping:
         # ikiwa grouping ni -1, we are done
         ikiwa interval == CHAR_MAX:
-            return
+            rudisha
         # 0: re-use last group ad infinitum
         ikiwa interval == 0:
             ikiwa last_interval ni Tupu:

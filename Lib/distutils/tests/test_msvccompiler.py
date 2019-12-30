@@ -52,7 +52,7 @@ kundi msvccompilerTestCase(support.TempdirManager,
     eleza test_vcruntime_copy(self):
         agiza distutils._msvccompiler kama _msvccompiler
         # force path to a known file - it doesn't matter
-        # what we copy kama long kama its name ni sio in
+        # what we copy kama long kama its name ni haiko kwenye
         # _msvccompiler._BUNDLED_DLLS
         old_find_vcvarsall = _msvccompiler._find_vcvarsall
         eleza _find_vcvarsall(plat_spec):
@@ -111,7 +111,7 @@ kundi msvccompilerTestCase(support.TempdirManager,
             self.assertGreaterEqual(version, 15)
             self.assertKweli(os.path.isdir(path))
         isipokua:
-            ashiria unittest.SkipTest("VS 2017 ni sio installed")
+            ashiria unittest.SkipTest("VS 2017 ni sio intalled")
 
     eleza test_get_vc2015(self):
         agiza distutils._msvccompiler kama _msvccompiler
@@ -123,7 +123,7 @@ kundi msvccompilerTestCase(support.TempdirManager,
             self.assertGreaterEqual(version, 14)
             self.assertKweli(os.path.isdir(path))
         isipokua:
-            ashiria unittest.SkipTest("VS 2015 ni sio installed")
+            ashiria unittest.SkipTest("VS 2015 ni sio intalled")
 
 eleza test_suite():
     rudisha unittest.makeSuite(msvccompilerTestCase)

@@ -503,7 +503,7 @@ eleza localcontext(ctx=Tupu):
 ##### Decimal kundi #######################################################
 
 # Do sio subkundi Decimal kutoka numbers.Real na do sio register it kama such
-# (because Decimals are sio interoperable ukijumuisha floats).  See the notes in
+# (because Decimals are sio ineroperable ukijumuisha floats).  See the notes in
 # numbers.py kila more detail.
 
 kundi Decimal(object):
@@ -6026,7 +6026,7 @@ eleza _convert_other(other, raiseit=Uongo, allow_float=Uongo):
     rudisha NotImplemented
 
 eleza _convert_for_comparison(self, other, equality_op=Uongo):
-    """Given a Decimal instance self na a Python object other, return
+    """Given a Decimal instance self na a Python object other, rudisha
     a pair (s, o) of Decimal instances such that "s op o" is
     equivalent to "self op other" kila any of the 6 comparison
     operators "op".
@@ -6104,7 +6104,7 @@ ExtendedContext = Context(
 # whitespace.  But note that the specification disallows whitespace in
 # a numeric string.
 #
-# 2. For finite numbers (sio infinities na NaNs) the body of the
+# 2. For finite numbers (sio ininities na NaNs) the body of the
 # number between the optional sign na the optional exponent must have
 # at least one decimal digit, possibly after the decimal point.  The
 # lookahead expression '(?=\d|\.\d)' checks this.

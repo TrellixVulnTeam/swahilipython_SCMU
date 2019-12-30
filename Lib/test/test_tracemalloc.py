@@ -882,9 +882,9 @@ kundi TestCommandLine(unittest.TestCase):
                 PYTHONTRACEMALLOC=str(nframe))
 
         ikiwa b'ValueError: the number of frames must be kwenye range' kwenye stderr:
-            return
+            rudisha
         ikiwa b'PYTHONTRACEMALLOC: invalid number of frames' kwenye stderr:
-            return
+            rudisha
         self.fail(f"unexpected output: {stderr!a}")
 
 
@@ -911,9 +911,9 @@ kundi TestCommandLine(unittest.TestCase):
             ok, stdout, stderr = assert_python_failure(*args)
 
         ikiwa b'ValueError: the number of frames must be kwenye range' kwenye stderr:
-            return
+            rudisha
         ikiwa b'-X tracemalloc=NFRAME: invalid number of frames' kwenye stderr:
-            return
+            rudisha
         self.fail(f"unexpected output: {stderr!a}")
 
     eleza test_sys_xoptions_invalid(self):

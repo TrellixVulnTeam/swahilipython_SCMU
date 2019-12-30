@@ -149,7 +149,7 @@ eleza _find_appropriate_compiler(_config_vars):
     #    (or rather Xcode) releases.  With older releases (up-to 10.5)
     #    the compiler ni kwenye /usr/bin, ukijumuisha newer releases the compiler
     #    can only be found inside Xcode.app ikiwa the "Command Line Tools"
-    #    are sio installed.
+    #    are sio intalled.
     #
     #    Furthermore, the compiler that can be used varies between
     #    Xcode releases. Up to Xcode 4 it was possible to use 'gcc-4.2'

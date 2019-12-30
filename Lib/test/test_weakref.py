@@ -868,7 +868,7 @@ kundi ReferencesTestCase(TestBase):
         kundi C:
             eleza __init__(self, parent):
                 ikiwa sio parent:
-                    return
+                    rudisha
                 wself = weakref.ref(self)
                 eleza cb(wparent):
                     o = wself()

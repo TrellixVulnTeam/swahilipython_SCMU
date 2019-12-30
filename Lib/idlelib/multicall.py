@@ -379,7 +379,7 @@ eleza MultiCallCreator(widget):
 
         eleza event_delete(self, virtual, *sequences):
             ikiwa virtual haiko kwenye self.__eventinfo:
-                return
+                rudisha
             func, triplets = self.__eventinfo[virtual]
             kila seq kwenye sequences:
                 triplet = _parse_sequence(seq)

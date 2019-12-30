@@ -1567,7 +1567,7 @@ kundi GetRandomTests(unittest.TestCase):
         jaribu:
             os.getrandom(1, os.GRND_NONBLOCK)
         tatizo BlockingIOError:
-            # System urandom ni sio initialized yet
+            # System urandom ni sio intialized yet
             pita
 
     eleza test_getrandom_value(self):
@@ -2060,7 +2060,7 @@ kundi Pep383Tests(unittest.TestCase):
             jaribu:
                 fn = os.fsencode(fn)
             tatizo UnicodeEncodeError:
-                return
+                rudisha
             bytesfn.append(fn)
         add_filename(support.TESTFN_UNICODE)
         ikiwa support.TESTFN_UNENCODABLE:

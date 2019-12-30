@@ -43,13 +43,13 @@ kundi FixPrint(fixer_base.BaseFix):
             # Special-case print all by itself
             bare_print.replace(Call(Name("print"), [],
                                prefix=bare_print.prefix))
-            return
+            rudisha
         assert node.children[0] == Name("print")
         args = node.children[1:]
         ikiwa len(args) == 1 na parend_expr.match(args[0]):
             # We don't want to keep sticking parens around an
             # already-parenthesised expression.
-            return
+            rudisha
 
         sep = end = file = Tupu
         ikiwa args na args[-1] == Comma():

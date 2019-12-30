@@ -244,7 +244,7 @@ kundi DOMEventStream:
         wakati event:
             token, cur_node = event
             ikiwa cur_node ni node:
-                return
+                rudisha
             ikiwa token != END_ELEMENT:
                 parents[-1].appendChild(cur_node)
             ikiwa token == START_ELEMENT:

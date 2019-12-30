@@ -290,7 +290,7 @@ kundi JSONDecoder(object):
         deserializations (e.g. to support JSON-RPC kundi hinting).
 
         ``object_pairs_hook``, ikiwa specified will be called ukijumuisha the result of
-        every JSON object decoded ukijumuisha an ordered list of pairs.  The return
+        every JSON object decoded ukijumuisha an ordered list of pairs.  The rudisha
         value of ``object_pairs_hook`` will be used instead of the ``dict``.
         This feature can be used to implement custom decoders.
         If ``object_hook`` ni also defined, the ``object_pairs_hook`` takes

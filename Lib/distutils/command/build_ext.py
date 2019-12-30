@@ -291,7 +291,7 @@ kundi build_ext(Command):
         # instances kama needed.
 
         ikiwa sio self.extensions:
-            return
+            rudisha
 
         # If we were asked to build any C/C++ libraries, make sure that the
         # directory where we put them ni kwenye the library search path for
@@ -459,7 +459,7 @@ kundi build_ext(Command):
 
         ikiwa workers ni Tupu:
             self._build_extensions_serial()
-            return
+            rudisha
 
         ukijumuisha ThreadPoolExecutor(max_workers=workers) kama executor:
             futures = [executor.submit(self.build_extension, ext)
@@ -496,7 +496,7 @@ kundi build_ext(Command):
         depends = sources + ext.depends
         ikiwa sio (self.force ama newer_group(depends, ext_path, 'newer')):
             log.debug("skipping '%s' extension (up-to-date)", ext.name)
-            return
+            rudisha
         isipokua:
             log.info("building '%s' extension", ext.name)
 

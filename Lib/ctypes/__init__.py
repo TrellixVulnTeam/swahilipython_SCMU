@@ -414,7 +414,7 @@ ikiwa _os.name == "nt":
         # raises an OSError ikiwa it ni set.
         #
         # The _check_retval_ method ni implemented kwenye C, so that the
-        # method definition itself ni sio included kwenye the traceback
+        # method definition itself ni sio inluded kwenye the traceback
         # when it raises an error - that ni what we want (and Python
         # doesn't have a way to ashiria an exception kwenye the caller's
         # frame).

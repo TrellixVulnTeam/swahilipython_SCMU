@@ -63,7 +63,7 @@ ciBUQUgKdHJnZ3JrZyB6cmZmbnRyIHBuZ255YnQgeXZvZW5lbC4AYmFjb24Ad2luayB3aW5rAA==
 
 # This data contains an invalid minor version number (7)
 # An unexpected minor version number only indicates that some of the file's
-# contents may sio be able to be read. It does sio indicate an error.
+# contents may sio be able to be read. It does sio inicate an error.
 
 GNU_MO_DATA_BAD_MINOR_VERSION = b'''\
 3hIElQcAAAAGAAAAHAAAAEwAAAALAAAAfAAAAAAAAACoAAAAFQAAAKkAAAAjAAAAvwAAAKEAAADj

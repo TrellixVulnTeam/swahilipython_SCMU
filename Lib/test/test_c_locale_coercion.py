@@ -176,7 +176,7 @@ eleza setUpModule():
 
     ikiwa AVAILABLE_TARGETS ni sio Tupu:
         # initialization already done
-        return
+        rudisha
     AVAILABLE_TARGETS = []
 
     # Find the target locales available kwenye the current system

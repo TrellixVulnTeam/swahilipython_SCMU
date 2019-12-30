@@ -42,7 +42,7 @@ kundi FixRaise(fixer_base.BaseFix):
         ikiwa exc.type == token.STRING:
             msg = "Python 3 does sio support string exceptions"
             self.cannot_convert(node, msg)
-            return
+            rudisha
 
         # Python 2 supports
         #  ashiria ((((E1, E2), E3), E4), E5), V

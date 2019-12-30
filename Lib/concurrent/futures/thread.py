@@ -51,7 +51,7 @@ kundi _WorkItem(object):
 
     eleza run(self):
         ikiwa sio self.future.set_running_or_notify_cancel():
-            return
+            rudisha
 
         jaribu:
             result = self.fn(*self.args, **self.kwargs)
@@ -72,7 +72,7 @@ eleza _worker(executor_reference, work_queue, initializer, initargs):
             executor = executor_reference()
             ikiwa executor ni sio Tupu:
                 executor._initializer_failed()
-            return
+            rudisha
     jaribu:
         wakati Kweli:
             work_item = work_queue.get(block=Kweli)
@@ -100,7 +100,7 @@ eleza _worker(executor_reference, work_queue, initializer, initargs):
                     executor._shutdown = Kweli
                 # Notice other workers
                 work_queue.put(Tupu)
-                return
+                rudisha
             toa executor
     tatizo BaseException:
         _base.LOGGER.critical('Exception kwenye worker', exc_info=Kweli)
@@ -193,7 +193,7 @@ kundi ThreadPoolExecutor(_base.Executor):
     eleza _adjust_thread_count(self):
         # ikiwa idle threads are available, don't spin new threads
         ikiwa self._idle_semaphore.acquire(timeout=0):
-            return
+            rudisha
 
         # When the executor gets lost, the weakref callback will wake up
         # the worker threads.

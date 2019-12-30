@@ -84,7 +84,7 @@ eleza body_check(octet):
 eleza header_length(bytearray):
     """Return a header quoted-printable encoding length.
 
-    Note that this does sio include any RFC 2047 chrome added by
+    Note that this does sio inlude any RFC 2047 chrome added by
     `header_encode()`.
 
     :param bytearray: An array of bytes (a.k.a. octets).

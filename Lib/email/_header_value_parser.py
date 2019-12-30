@@ -2068,7 +2068,7 @@ eleza get_msg_id(value):
         msg_id.defects.append(errors.InvalidHeaderDefect(
             "msg-id ukijumuisha no id-right"))
         # Even though there ni no id-right, ikiwa the local part
-        # ends ukijumuisha `>` let's just parse it too na return
+        # ends ukijumuisha `>` let's just parse it too na rudisha
         # along ukijumuisha the defect.
         ikiwa value na value[0] == '>':
             msg_id.append(ValueTerminal('>', 'msg-id-end'))
@@ -2477,7 +2477,7 @@ eleza get_parameter(value):
             rudisha param, value
         param.defects.append(errors.InvalidHeaderDefect(
             "Apparent initial-extended-value but attribute "
-            "was sio marked kama extended ama was sio initial section"))
+            "was sio marked kama extended ama was sio intial section"))
     ikiwa sio value:
         # Assume the charset/lang ni missing na the token ni the value.
         param.defects.append(errors.InvalidHeaderDefect(
@@ -2592,7 +2592,7 @@ eleza _find_mime_parameters(tokenlist, value):
             token, value = get_phrase(value)
             tokenlist.append(token)
     ikiwa sio value:
-        return
+        rudisha
     tokenlist.append(ValueTerminal(';', 'parameter-separator'))
     tokenlist.append(parse_mime_parameters(value[1:]))
 

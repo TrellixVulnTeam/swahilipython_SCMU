@@ -997,7 +997,7 @@ kundi PosixTester(unittest.TestCase):
             #  Just returning nothing instead of the SkipTest exception, because
             #  the test results kwenye Error kwenye that case.  Is that ok?
             #  ashiria unittest.SkipTest("cannot create directory kila testing")
-            return
+            rudisha
 
             eleza _create_and_do_getcwd(dirname, current_path_length = 0):
                 jaribu:

@@ -100,7 +100,7 @@ kundi _PaddedFile:
             self._buffer = prepend
         isipokua:  # Assume data was read since the last prepend() call
             self._read -= len(prepend)
-            return
+            rudisha
         self._length = len(self._buffer)
         self._read = 0
 
@@ -146,7 +146,7 @@ kundi GzipFile(_compression.BaseStream):
         included kwenye the gzip file header, which may include the original
         filename of the uncompressed file.  It defaults to the filename of
         fileobj, ikiwa discernible; otherwise, it defaults to the empty string,
-        na kwenye this case the original filename ni sio included kwenye the header.
+        na kwenye this case the original filename ni sio inluded kwenye the header.
 
         The mode argument can be any of 'r', 'rb', 'a', 'ab', 'w', 'wb', 'x', ama
         'xb' depending on whether the file will be read ama written.  The default
@@ -312,7 +312,7 @@ kundi GzipFile(_compression.BaseStream):
     eleza close(self):
         fileobj = self.fileobj
         ikiwa fileobj ni Tupu:
-            return
+            rudisha
         self.fileobj = Tupu
         jaribu:
             ikiwa self.mode == WRITE:
@@ -453,7 +453,7 @@ kundi _GzipReader(_compression.DecompressReader):
             rudisha b""
 
         # For certain input data, a single
-        # call to decompress() may sio return
+        # call to decompress() may sio rudisha
         # any data. In this case, retry until we get some data ama reach EOF.
         wakati Kweli:
             ikiwa self._decompressor.eof:

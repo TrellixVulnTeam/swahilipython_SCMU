@@ -61,7 +61,7 @@ kundi BaseWinregTests(unittest.TestCase):
             hkey = OpenKey(root, subkey, 0, KEY_ALL_ACCESS)
         tatizo OSError:
             # subkey does sio exist
-            return
+            rudisha
         wakati Kweli:
             jaribu:
                 subsubkey = EnumKey(hkey, 0)

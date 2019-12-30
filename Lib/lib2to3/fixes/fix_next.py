@@ -68,7 +68,7 @@ kundi FixNext(fixer_base.BaseFix):
                 head = results["head"]
                 ikiwa "".join([str(n) kila n kwenye head]).strip() == '__builtin__':
                     self.warning(node, bind_warning)
-                return
+                rudisha
             attr.replace(Name("__next__"))
         lasivyo "global" kwenye results:
             self.warning(node, bind_warning)

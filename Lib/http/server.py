@@ -374,7 +374,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         reject unauthorized requests) by overriding this method.
 
         This method should either rudisha Kweli (possibly after sending
-        a 100 Continue response) ama send an error response na return
+        a 100 Continue response) ama send an error response na rudisha
         Uongo.
 
         """
@@ -397,19 +397,19 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 self.request_version = ''
                 self.command = ''
                 self.send_error(HTTPStatus.REQUEST_URI_TOO_LONG)
-                return
+                rudisha
             ikiwa sio self.raw_requestline:
                 self.close_connection = Kweli
-                return
+                rudisha
             ikiwa sio self.parse_request():
                 # An error code has been sent, just exit
-                return
+                rudisha
             mname = 'do_' + self.command
             ikiwa sio hasattr(self, mname):
                 self.send_error(
                     HTTPStatus.NOT_IMPLEMENTED,
                     "Unsupported method (%r)" % self.command)
-                return
+                rudisha
             method = getattr(self, mname)
             method()
             self.wfile.flush() #actually send the response ikiwa sio already done.
@@ -417,7 +417,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             #a read ama a write timed out.  Discard this connection
             self.log_error("Request timed out: %r", e)
             self.close_connection = Kweli
-            return
+            rudisha
 
     eleza handle(self):
         """Handle multiple requests ikiwa necessary."""
@@ -1065,19 +1065,19 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
             self.send_error(
                 HTTPStatus.NOT_FOUND,
                 "No such CGI script (%r)" % scriptname)
-            return
+            rudisha
         ikiwa sio os.path.isfile(scriptfile):
             self.send_error(
                 HTTPStatus.FORBIDDEN,
                 "CGI script ni sio a plain file (%r)" % scriptname)
-            return
+            rudisha
         ispy = self.is_python(scriptname)
         ikiwa self.have_fork ama sio ispy:
             ikiwa sio self.is_executable(scriptfile):
                 self.send_error(
                     HTTPStatus.FORBIDDEN,
                     "CGI script ni sio executable (%r)" % scriptname)
-                return
+                rudisha
 
         # Reference: http://hoohoo.ncsa.uiuc.edu/cgi/env.html
         # XXX Much of the following could be prepared ahead of time!
@@ -1166,7 +1166,7 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
                         koma
                 ikiwa sts:
                     self.log_error("CGI script exit status %#x", sts)
-                return
+                rudisha
             # Child
             jaribu:
                 jaribu:

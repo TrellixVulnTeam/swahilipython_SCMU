@@ -184,7 +184,7 @@ kundi CodeContext:
         """
         new_topvisible = self.editwin.getlineno("@0,0")
         ikiwa self.topvisible == new_topvisible:      # Haven't scrolled.
-            return
+            rudisha
         ikiwa self.topvisible < new_topvisible:       # Scroll down.
             lines, lastindent = self.get_context(new_topvisible,
                                                  self.topvisible)

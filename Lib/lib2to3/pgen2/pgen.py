@@ -180,7 +180,7 @@ kundi ParserGenerator(object):
         eleza addclosure(state, base):
             assert isinstance(state, NFAState)
             ikiwa state kwenye base:
-                return
+                rudisha
             base[state] = 1
             kila label, next kwenye state.arcs:
                 ikiwa label ni Tupu:

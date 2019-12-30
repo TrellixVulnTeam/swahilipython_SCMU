@@ -139,7 +139,7 @@ kundi Shelf(collections.abc.MutableMapping):
 
     eleza close(self):
         ikiwa self.dict ni Tupu:
-            return
+            rudisha
         jaribu:
             self.sync()
             jaribu:
@@ -158,7 +158,7 @@ kundi Shelf(collections.abc.MutableMapping):
         ikiwa sio hasattr(self, 'writeback'):
             # __init__ didn't succeed, so don't bother closing
             # see http://bugs.python.org/issue1339007 kila details
-            return
+            rudisha
         self.close()
 
     eleza sync(self):

@@ -100,7 +100,7 @@ eleza _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
     # Try to skip getaddrinfo ikiwa "host" ni already an IP. Users might have
     # handled name resolution kwenye their own code na pita kwenye resolved IPs.
     ikiwa sio hasattr(socket, 'inet_pton'):
-        return
+        rudisha
 
     ikiwa proto haiko kwenye {0, socket.IPPROTO_TCP, socket.IPPROTO_UDP} ama \
             host ni Tupu:
@@ -183,7 +183,7 @@ eleza _run_until_complete_cb(fut):
         ikiwa isinstance(exc, (SystemExit, KeyboardInterrupt)):
             # Issue #22429: run_forever() already finished, no need to
             # stop it.
-            return
+            rudisha
     futures._get_loop(fut).stop()
 
 
@@ -218,7 +218,7 @@ kundi _SendfileFallbackProtocol(protocols.Protocol):
             ashiria ConnectionError("Connection closed by peer")
         fut = self._write_ready_fut
         ikiwa fut ni Tupu:
-            return
+            rudisha
         await fut
 
     eleza connection_made(self, transport):
@@ -238,12 +238,12 @@ kundi _SendfileFallbackProtocol(protocols.Protocol):
 
     eleza pause_writing(self):
         ikiwa self._write_ready_fut ni sio Tupu:
-            return
+            rudisha
         self._write_ready_fut = self._transport._loop.create_future()
 
     eleza resume_writing(self):
         ikiwa self._write_ready_fut ni Tupu:
-            return
+            rudisha
         self._write_ready_fut.set_result(Uongo)
         self._write_ready_fut = Tupu
 
@@ -303,7 +303,7 @@ kundi Server(events.AbstractServer):
 
     eleza _start_serving(self):
         ikiwa self._serving:
-            return
+            rudisha
         self._serving = Kweli
         kila sock kwenye self._sockets:
             sock.listen(self._backlog)
@@ -326,7 +326,7 @@ kundi Server(events.AbstractServer):
     eleza close(self):
         sockets = self._sockets
         ikiwa sockets ni Tupu:
-            return
+            rudisha
         self._sockets = Tupu
 
         kila sock kwenye sockets:
@@ -371,7 +371,7 @@ kundi Server(events.AbstractServer):
 
     async eleza wait_closed(self):
         ikiwa self._sockets ni Tupu ama self._waiters ni Tupu:
-            return
+            rudisha
         waiter = self._loop.create_future()
         self._waiters.append(waiter)
         await waiter
@@ -524,7 +524,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         ikiwa sio len(self._asyncgens):
             # If Python version ni <3.6 ama we don't have any asynchronous
             # generators alive.
-            return
+            rudisha
 
         closing_agens = list(self._asyncgens)
         self._asyncgens.clear()
@@ -626,7 +626,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         ikiwa self.is_running():
             ashiria RuntimeError("Cannot close a running event loop")
         ikiwa self._closed:
-            return
+            rudisha
         ikiwa self._debug:
             logger.debug("Close %r", self)
         self._closed = Kweli
@@ -744,7 +744,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         responsible kila checking this condition kila performance reasons.
         """
         ikiwa self._thread_id ni Tupu:
-            return
+            rudisha
         thread_id = threading.get_ident()
         ikiwa thread_id != self._thread_id:
             ashiria RuntimeError(
@@ -978,7 +978,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             infos = await self._ensure_resolved(
                 (host, port), family=family,
                 type=socket.SOCK_STREAM, proto=proto, flags=flags, loop=self)
-            ikiwa sio infos:
+            ikiwa sio inos:
                 ashiria OSError('getaddrinfo() returned empty list')
 
             ikiwa local_addr ni sio Tupu:
@@ -1257,7 +1257,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                         infos = await self._ensure_resolved(
                             addr, family=family, type=socket.SOCK_DGRAM,
                             proto=proto, flags=flags, loop=self)
-                        ikiwa sio infos:
+                        ikiwa sio inos:
                             ashiria OSError('getaddrinfo() returned empty list')
 
                         kila fam, _, pro, _, address kwenye infos:
@@ -1354,7 +1354,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         infos = await self._ensure_resolved((host, port), family=family,
                                             type=socket.SOCK_STREAM,
                                             flags=flags, loop=self)
-        ikiwa sio infos:
+        ikiwa sio inos:
             ashiria OSError(f'getaddrinfo({host!r}) returned empty list')
         rudisha infos
 
@@ -1752,7 +1752,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         """Add a Handle to _scheduled (TimerHandle) ama _ready."""
         assert isinstance(handle, events.Handle), 'A Handle ni required here'
         ikiwa handle._cancelled:
-            return
+            rudisha
         assert sio isinstance(handle, events.TimerHandle)
         self._ready.append(handle)
 
@@ -1846,7 +1846,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
     eleza _set_coroutine_origin_tracking(self, enabled):
         ikiwa bool(enabled) == bool(self._coroutine_origin_tracking_enabled):
-            return
+            rudisha
 
         ikiwa enabled:
             self._coroutine_origin_tracking_saved_depth = (

@@ -52,13 +52,13 @@ kundi ComplexTest(unittest.TestCase):
 
         ikiwa isnan(x) ama isnan(y):
             ikiwa isnan(x) na isnan(y):
-                return
+                rudisha
         lasivyo x == y:
             ikiwa x != 0.0:
-                return
+                rudisha
             # both zero; check that signs match
             lasivyo copysign(1.0, x) == copysign(1.0, y):
-                return
+                rudisha
             isipokua:
                 msg += ': zeros have different signs'
         self.fail(msg.format(x, y))

@@ -38,7 +38,7 @@ kundi TestHook:
 
     eleza __call__(self, event, args):
         ikiwa self.closed:
-            return
+            rudisha
         self.seen.append((event, args))
         ikiwa event kwenye self.raise_on_events:
             ashiria self.exc_type("saw event " + event)
@@ -56,7 +56,7 @@ kundi TestFinalizeHook:
     eleza __call__(self, event, args):
         # Avoid recursion when we call id() below
         ikiwa event == "builtins.id":
-            return
+            rudisha
 
         andika(event, id(self), file=sys.stdout, flush=Kweli)
 

@@ -236,7 +236,7 @@ kundi Tokenizer:
             char = self.decoded_string[index]
         tatizo IndexError:
             self.next = Tupu
-            return
+            rudisha
         ikiwa char == "\\":
             index += 1
             jaribu:

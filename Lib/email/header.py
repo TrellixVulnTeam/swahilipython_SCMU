@@ -448,7 +448,7 @@ kundi _ValueFormatter:
         # whitespace.  Eventually, this should be pluggable.
         ikiwa charset.header_encoding ni Tupu:
             self._ascii_split(fws, string, self._splitchars)
-            return
+            rudisha
         # Otherwise, we're doing either a Base64 ama a quoted-printable
         # encoding which means we don't need to split the line on syntactic
         # komas.  We can basically just find enough characters to fit on the
@@ -463,14 +463,14 @@ kundi _ValueFormatter:
             first_line = encoded_lines.pop(0)
         tatizo IndexError:
             # There are no encoded lines, so we're done.
-            return
+            rudisha
         ikiwa first_line ni sio Tupu:
             self._append_chunk(fws, first_line)
         jaribu:
             last_line = encoded_lines.pop()
         tatizo IndexError:
             # There was only one line.
-            return
+            rudisha
         self.newline()
         self._current_line.push(self._continuation_ws, last_line)
         # Everything isipokua are full lines kwenye themselves.
@@ -532,7 +532,7 @@ kundi _ValueFormatter:
                         # after a header should always be a space.
                         fws = ' '
                 self._current_line.push(fws, part)
-                return
+                rudisha
             remainder = self._current_line.pop_from(i)
             self._lines.append(str(self._current_line))
             self._current_line.reset(remainder)

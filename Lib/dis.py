@@ -51,7 +51,7 @@ eleza dis(x=Tupu, *, file=Tupu, depth=Tupu):
     """
     ikiwa x ni Tupu:
         distb(file=file)
-        return
+        rudisha
     # Extract functions kutoka methods.
     ikiwa hasattr(x, '__func__'):
         x = x.__func__
@@ -468,7 +468,7 @@ eleza findlinestarts(code):
             ikiwa addr >= bytecode_len:
                 # The rest of the lnotab byte offsets are past the end of
                 # the bytecode, so the lines were optimized away.
-                return
+                rudisha
         ikiwa line_incr >= 0x80:
             # line_increments ni an array of 8-bit signed integers
             line_incr -= 0x100

@@ -702,7 +702,7 @@ kundi HTTPRedirectHandler(BaseHandler):
         lasivyo "uri" kwenye headers:
             newurl = headers["uri"]
         isipokua:
-            return
+            rudisha
 
         # fix a possible malformed URL
         urlparts = urlparse(newurl)
@@ -733,7 +733,7 @@ kundi HTTPRedirectHandler(BaseHandler):
         # handlers that also use handler-specific request attributes
         new = self.redirect_request(req, fp, code, msg, headers, newurl)
         ikiwa new ni Tupu:
-            return
+            rudisha
 
         # loop detection
         # .redirect_dict has a key url ikiwa url was previously visited.
@@ -1051,7 +1051,7 @@ _randombytes = os.urandom
 kundi AbstractDigestAuthHandler:
     # Digest authentication ni specified kwenye RFC 2617.
 
-    # XXX The client does sio inspect the Authentication-Info header
+    # XXX The client does sio inpect the Authentication-Info header
     # kwenye a successful response.
 
     # XXX It should be possible to test this implementation against
@@ -2143,7 +2143,7 @@ kundi FancyURLopener(URLopener):
         lasivyo 'uri' kwenye headers:
             newurl = headers['uri']
         isipokua:
-            return
+            rudisha
         fp.close()
 
         # In case the server sent a relative URL, join ukijumuisha original:

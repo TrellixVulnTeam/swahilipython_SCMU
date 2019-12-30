@@ -159,7 +159,7 @@ kundi Regrtest:
 
     eleza display_progress(self, test_index, text):
         ikiwa self.ns.quiet:
-            return
+            rudisha
 
         # "[ 51/405/1] test_tcl pitaed"
         line = f"{test_index:{self.test_count_width}}{self.test_count}"
@@ -331,7 +331,7 @@ kundi Regrtest:
     eleza display_result(self):
         # If running the test suite kila PGO then no one cares about results.
         ikiwa self.ns.pgo:
-            return
+            rudisha
 
         andika()
         andika("== Tests result: %s ==" % self.get_tests_result())
@@ -444,9 +444,9 @@ kundi Regrtest:
             kila test_name kwenye tests:
                 tuma test_name
                 ikiwa self.bad:
-                    return
+                    rudisha
                 ikiwa self.ns.fail_env_changed na self.environment_changed:
-                    return
+                    rudisha
 
     eleza display_header(self):
         # Print basic platform information
@@ -537,7 +537,7 @@ kundi Regrtest:
 
     eleza save_xml_result(self):
         ikiwa sio self.ns.xmlpath na sio self.testsuite_xml:
-            return
+            rudisha
 
         agiza xml.etree.ElementTree kama ET
         root = ET.Element("testsuites")

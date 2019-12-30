@@ -186,7 +186,7 @@ eleza path(package: Package, resource: Resource) -> Iterator[Path]:
     ikiwa reader ni sio Tupu:
         jaribu:
             tuma Path(reader.resource_path(resource))
-            return
+            rudisha
         tatizo FileNotFoundError:
             pita
     isipokua:

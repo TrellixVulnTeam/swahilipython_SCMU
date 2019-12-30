@@ -23,7 +23,7 @@ kundi FixItertoolsImports(fixer_base.BaseFix):
                 name_node = child
             lasivyo child.type == token.STAR:
                 # Just leave the agiza kama is.
-                return
+                rudisha
             isipokua:
                 assert child.type == syms.import_as_name
                 name_node = child.children[0]

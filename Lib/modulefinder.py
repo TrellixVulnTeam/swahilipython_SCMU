@@ -275,7 +275,7 @@ kundi ModuleFinder:
 
     eleza find_all_submodules(self, m):
         ikiwa sio m.__path__:
-            return
+            rudisha
         modules = {}
         # 'suffixes' used to be a list hardcoded to [".py", ".pyc"].
         # But we must also collect Python extension modules - although
@@ -373,7 +373,7 @@ kundi ModuleFinder:
         # wrapper kila self.import_hook() that won't ashiria ImportError
         ikiwa name kwenye self.badmodules:
             self._add_badmodule(name, caller)
-            return
+            rudisha
         jaribu:
             self.import_hook(name, caller, level=level)
         tatizo ImportError kama msg:
@@ -629,7 +629,7 @@ eleza test():
         opts, args = getopt.getopt(sys.argv[1:], "dmp:qx:")
     tatizo getopt.error kama msg:
         andika(msg)
-        return
+        rudisha
 
     # Process options
     debug = 1

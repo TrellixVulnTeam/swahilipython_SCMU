@@ -301,7 +301,7 @@ kundi DateHeader:
             kwds['datetime'] = Tupu
             kwds['decoded'] = ''
             kwds['parse_tree'] = parser.TokenList()
-            return
+            rudisha
         ikiwa isinstance(value, str):
             value = utils.parsedate_to_datetime(value)
         kwds['datetime'] = value

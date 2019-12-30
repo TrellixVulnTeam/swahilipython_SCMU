@@ -618,7 +618,7 @@ kundi SMTP:
                 data = authobject(challenge)
 
         It will be called to process the server's challenge response; the
-        challenge argument it ni pitaed will be a bytes.  It should return
+        challenge argument it ni pitaed will be a bytes.  It should rudisha
         an ASCII string that will be base64 encoded na sent to the server.
 
         Keyword arguments:

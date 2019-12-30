@@ -733,32 +733,32 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
             tatizo ResponseException kama e:
                 self.smtp_state = self.COMMAND
                 self.push('%s %s' % (e.smtp_code, e.smtp_error))
-                return
+                rudisha
         super().found_terminator()
 
 
     eleza smtp_AUTH(self, arg):
         ikiwa sio self.seen_greeting:
             self.push('503 Error: send EHLO first')
-            return
+            rudisha
         ikiwa sio self.extended_smtp ama 'AUTH' haiko kwenye self._extrafeatures:
             self.push('500 Error: command "AUTH" sio recognized')
-            return
+            rudisha
         ikiwa self.authenticated_user ni sio Tupu:
             self.push(
                 '503 Bad sequence of commands: already authenticated')
-            return
+            rudisha
         args = arg.split()
         ikiwa len(args) haiko kwenye [1, 2]:
             self.push('501 Syntax: AUTH <mechanism> [initial-response]')
-            return
+            rudisha
         auth_object_name = '_auth_%s' % args[0].lower().replace('-', '_')
         jaribu:
             self.auth_object = getattr(self, auth_object_name)
         tatizo AttributeError:
             self.push('504 Command parameter sio implemented: unsupported '
                       ' authentication mechanism {!r}'.format(auth_object_name))
-            return
+            rudisha
         self.smtp_state = self.AUTH
         self.auth_object(args[1] ikiwa len(args) == 2 isipokua Tupu)
 
@@ -783,7 +783,7 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
             tatizo ValueError kama e:
                 self.push('535 Splitting response {!r} into user na pitaword'
                           ' failed: {}'.format(logpita, e))
-                return
+                rudisha
             self._authenticated(user, pitaword == sim_auth[1])
 
     eleza _auth_login(self, arg=Tupu):
@@ -866,7 +866,7 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
     eleza smtp_RCPT(self, arg):
         ikiwa self.rcpt_response ni Tupu:
             super().smtp_RCPT(arg)
-            return
+            rudisha
         self.rcpt_count += 1
         self.push(self.rcpt_response[self.rcpt_count-1])
 
@@ -1326,7 +1326,7 @@ kundi SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
                 # encoded.  Hard code the expected response kila the test.
                 ikiwa args[1] == EXPECTED_RESPONSE:
                     self.push('235 Ok')
-                    return
+                    rudisha
         self.push('571 Bad authentication')
 
 kundi SimSMTPAUTHInitialResponseServer(SimSMTPServer):

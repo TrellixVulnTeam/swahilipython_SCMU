@@ -270,7 +270,7 @@ kundi StringlikeHashRandomizationTests(HashRandomizationTests):
     @skip_unless_internalhash
     eleza test_long_fixed_hash(self):
         ikiwa self.repr_long ni Tupu:
-            return
+            rudisha
         h = self.get_expected_hash(2, 11)
         self.assertEqual(self.get_hash(self.repr_long, seed=42), h)
 

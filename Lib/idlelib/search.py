@@ -71,7 +71,7 @@ kundi SearchDialog(SearchDialogBase):
     eleza default_command(self, event=Tupu):
         "Handle the Find Next button kama the default command."
         ikiwa sio self.engine.getprog():
-            return
+            rudisha
         self.find_again(self.text)
 
     eleza find_again(self, text):

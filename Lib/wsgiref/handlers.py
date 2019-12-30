@@ -139,7 +139,7 @@ kundi BaseHandler:
         tatizo (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
             # We expect the client to close the connection abruptly kutoka time
             # to time.
-            return
+            rudisha
         tatizo:
             jaribu:
                 self.handle_error()
@@ -210,7 +210,7 @@ kundi BaseHandler:
         isipokua:
             ikiwa blocks==1:
                 self.headers['Content-Length'] = str(self.bytes_sent)
-                return
+                rudisha
         # XXX Try kila chunked encoding ikiwa origin server na client ni 1.1
 
 
@@ -466,7 +466,7 @@ kundi SimpleHandler(BaseHandler):
     eleza _write(self,data):
         result = self.stdout.write(data)
         ikiwa result ni Tupu ama result == len(data):
-            return
+            rudisha
         kutoka warnings agiza warn
         warn("SimpleHandler.stdout.write() should sio do partial writes",
             DeprecationWarning)

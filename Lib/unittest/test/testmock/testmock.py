@@ -52,29 +52,29 @@ kundi MockTest(unittest.TestCase):
     eleza test_constructor(self):
         mock = Mock()
 
-        self.assertUongo(mock.called, "called sio initialised correctly")
+        self.assertUongo(mock.called, "called sio intialised correctly")
         self.assertEqual(mock.call_count, 0,
-                         "call_count sio initialised correctly")
+                         "call_count sio intialised correctly")
         self.assertKweli(is_instance(mock.return_value, Mock),
-                        "return_value sio initialised correctly")
+                        "return_value sio intialised correctly")
 
         self.assertEqual(mock.call_args, Tupu,
-                         "call_args sio initialised correctly")
+                         "call_args sio intialised correctly")
         self.assertEqual(mock.call_args_list, [],
-                         "call_args_list sio initialised correctly")
+                         "call_args_list sio intialised correctly")
         self.assertEqual(mock.method_calls, [],
-                          "method_calls sio initialised correctly")
+                          "method_calls sio intialised correctly")
 
         # Can't use hasattr kila this test kama it always returns Kweli on a mock
         self.assertNotIn('_items', mock.__dict__,
                          "default mock should sio have '_items' attribute")
 
         self.assertIsTupu(mock._mock_parent,
-                          "parent sio initialised correctly")
+                          "parent sio intialised correctly")
         self.assertIsTupu(mock._mock_methods,
-                          "methods sio initialised correctly")
+                          "methods sio intialised correctly")
         self.assertEqual(mock._mock_children, {},
-                         "children sio initialised incorrectly")
+                         "children sio intialised incorrectly")
 
 
     eleza test_return_value_in_constructor(self):
@@ -223,7 +223,7 @@ kundi MockTest(unittest.TestCase):
         self.assertEqual(mock.call_args, Tupu, "call_args sio reset")
         self.assertEqual(mock.call_args_list, [], "call_args_list sio reset")
         self.assertEqual(mock.method_calls, [],
-                        "method_calls sio initialised correctly: %r != %r" %
+                        "method_calls sio intialised correctly: %r != %r" %
                         (mock.method_calls, []))
         self.assertEqual(mock.mock_calls, [])
 
@@ -270,7 +270,7 @@ kundi MockTest(unittest.TestCase):
         self.assertEqual(mock.call_args.kwargs, {},
                          "call_args sio set")
         self.assertEqual(mock.call_args_list, [((sentinel.Arg,), {})],
-                         "call_args_list sio initialised correctly")
+                         "call_args_list sio intialised correctly")
 
         mock.return_value = sentinel.ReturnValue
         ret_val = mock(sentinel.Arg, key=sentinel.KeyArg)
@@ -998,7 +998,7 @@ kundi MockTest(unittest.TestCase):
     eleza test_mock_calls(self):
         mock = MagicMock()
 
-        # need to do this because MagicMock.mock_calls used to just return
+        # need to do this because MagicMock.mock_calls used to just rudisha
         # a MagicMock which also returned a MagicMock when __eq__ was called
         self.assertIs(mock.mock_calls == [], Kweli)
 

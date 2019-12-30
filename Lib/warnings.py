@@ -24,7 +24,7 @@ eleza _showwarnmsg_impl(msg):
         ikiwa file ni Tupu:
             # sys.stderr ni Tupu when run ukijumuisha pythonw.exe:
             # warnings get lost
-            return
+            rudisha
     text = _formatwarnmsg(msg)
     jaribu:
         file.write(text)
@@ -108,7 +108,7 @@ eleza _showwarnmsg(msg):
 
             sw(msg.message, msg.category, msg.filename, msg.lineno,
                msg.file, msg.line)
-            return
+            rudisha
     _showwarnmsg_impl(msg)
 
 # Keep a reference to check ikiwa the function was replaced
@@ -350,7 +350,7 @@ eleza warn_explicit(message, category, filename, lineno,
     key = (text, category, lineno)
     # Quick test kila common case
     ikiwa registry.get(key):
-        return
+        rudisha
     # Search the filters
     kila item kwenye filters:
         action, msg, cat, mod, ln = item
@@ -363,7 +363,7 @@ eleza warn_explicit(message, category, filename, lineno,
         action = defaultaction
     # Early exit actions
     ikiwa action == "ignore":
-        return
+        rudisha
 
     # Prime the linecache kila formatting, kwenye case the
     # "file" ni actually kwenye a zipfile ama something.
@@ -377,7 +377,7 @@ eleza warn_explicit(message, category, filename, lineno,
         registry[key] = 1
         oncekey = (text, category)
         ikiwa onceregistry.get(oncekey):
-            return
+            rudisha
         onceregistry[oncekey] = 1
     lasivyo action == "always":
         pita
@@ -385,7 +385,7 @@ eleza warn_explicit(message, category, filename, lineno,
         registry[key] = 1
         altkey = (text, category, 0)
         ikiwa registry.get(altkey):
-            return
+            rudisha
         registry[altkey] = 1
     lasivyo action == "default":
         registry[key] = 1

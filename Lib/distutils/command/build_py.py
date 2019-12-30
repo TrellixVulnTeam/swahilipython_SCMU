@@ -246,7 +246,7 @@ kundi build_py (Command):
         #   ni valid (exists, contains __init__.py, ... ?)
         packages = {}
 
-        # List of (package, module, filename) tuples to return
+        # List of (package, module, filename) tuples to rudisha
         modules = []
 
         # We treat modules-in-packages almost the same kama toplevel modules,
@@ -374,7 +374,7 @@ kundi build_py (Command):
     eleza byte_compile(self, files):
         ikiwa sys.dont_write_bytecode:
             self.warn('byte-compiling ni disabled, skipping.')
-            return
+            rudisha
 
         kutoka distutils.util agiza byte_compile
         prefix = self.build_lib

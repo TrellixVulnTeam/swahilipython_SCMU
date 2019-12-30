@@ -233,7 +233,7 @@ kundi Queue(object):
                         ikiwa obj ni sentinel:
                             debug('feeder thread got sentinel -- exiting')
                             close()
-                            return
+                            rudisha
 
                         # serialize the data before acquiring the lock
                         obj = _ForkingPickler.dumps(obj)
@@ -249,14 +249,14 @@ kundi Queue(object):
                     pita
             tatizo Exception kama e:
                 ikiwa ignore_epipe na getattr(e, 'errno', 0) == errno.EPIPE:
-                    return
+                    rudisha
                 # Since this runs kwenye a daemon thread the resources it uses
                 # may be become unusable wakati the process ni cleaning up.
                 # We ignore errors which happen after the process has
                 # started to cleanup.
                 ikiwa is_exiting():
                     info('error kwenye queue thread: %s', e)
-                    return
+                    rudisha
                 isipokua:
                     # Since the object has sio been sent kwenye the queue, we need
                     # to decrease the size of the queue. The error acts as

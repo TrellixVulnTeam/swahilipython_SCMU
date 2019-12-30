@@ -26,7 +26,7 @@ kundi FixZip(fixer_base.ConditionalFix):
 
     eleza transform(self, node, results):
         ikiwa self.should_skip(node):
-            return
+            rudisha
 
         ikiwa in_special_context(node):
             rudisha Tupu

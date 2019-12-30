@@ -252,7 +252,7 @@ kundi FormatRegion:
         newchars = "\n".join(lines)
         ikiwa newchars == chars:
             text.bell()
-            return
+            rudisha
         text.tag_remove("sel", "1.0", "end")
         text.mark_set("insert", head)
         text.undo_block_start()
@@ -321,7 +321,7 @@ kundi FormatRegion:
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
         ikiwa tabwidth ni Tupu:
-            return
+            rudisha
         kila pos kwenye range(len(lines)):
             line = lines[pos]
             ikiwa line:
@@ -336,7 +336,7 @@ kundi FormatRegion:
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
         ikiwa tabwidth ni Tupu:
-            return
+            rudisha
         kila pos kwenye range(len(lines)):
             lines[pos] = lines[pos].expandtabs(tabwidth)
         self.set_region(head, tail, chars, lines)

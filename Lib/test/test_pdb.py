@@ -175,7 +175,7 @@ eleza test_pdb_basic_commands():
     (Pdb) jump 8
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(8)test_function_2()
     -> andika('after for')
-    (Pdb) return
+    (Pdb) rudisha
     after for
     ...
     --Return--
@@ -193,7 +193,7 @@ eleza test_pdb_basic_commands():
     (Pdb) args
     arg = Tupu
     kwonly = Kweli
-    (Pdb) return
+    (Pdb) rudisha
     --Return--
     > <doctest test.test_pdb.test_pdb_basic_commands[1]>(2)test_function3()->Tupu
     -> pita
@@ -678,7 +678,7 @@ eleza test_next_until_return_at_return_event():
     (Pdb) endelea
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(2)test_function_2()
     -> x = 1
-    (Pdb) return
+    (Pdb) rudisha
     --Return--
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Tupu
     -> x = 2
@@ -688,7 +688,7 @@ eleza test_next_until_return_at_return_event():
     (Pdb) endelea
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(2)test_function_2()
     -> x = 1
-    (Pdb) return
+    (Pdb) rudisha
     --Return--
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Tupu
     -> x = 2
@@ -698,11 +698,11 @@ eleza test_next_until_return_at_return_event():
     (Pdb) endelea
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(2)test_function_2()
     -> x = 1
-    (Pdb) return
+    (Pdb) rudisha
     --Return--
     > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Tupu
     -> x = 2
-    (Pdb) return
+    (Pdb) rudisha
     > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(6)test_function()
     -> end = 1
     (Pdb) endelea
@@ -925,7 +925,7 @@ eleza test_pdb_return_command_for_generator():
     --Call--
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[0]>(1)test_gen()
     -> eleza test_gen():
-    (Pdb) return
+    (Pdb) rudisha
     StopIteration: 1
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(7)test_function()
     -> next(it)

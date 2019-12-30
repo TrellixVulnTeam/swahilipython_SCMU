@@ -44,7 +44,7 @@ kundi AbstractWidgetTest(AbstractTkTest):
 
     eleza assertEqual2(self, actual, expected, msg=Tupu, eq=object.__eq__):
         ikiwa eq(actual, expected):
-            return
+            rudisha
         self.assertEqual(actual, expected, msg)
 
     eleza checkParam(self, widget, name, value, *, expected=_sentinel,

@@ -296,7 +296,7 @@ kundi HTTPResponse(io.BufferedIOBase):
     eleza begin(self):
         ikiwa self.headers ni sio Tupu:
             # we've already started reading the response
-            return
+            rudisha
 
         # read until we get a non-100 response
         wakati Kweli:
@@ -960,7 +960,7 @@ kundi HTTPConnection:
                 ikiwa encode:
                     datablock = datablock.encode("iso-8859-1")
                 self.sock.sendall(datablock)
-            return
+            rudisha
         jaribu:
             self.sock.sendall(data)
         tatizo TypeError:

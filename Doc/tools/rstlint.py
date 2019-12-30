@@ -85,7 +85,7 @@ def check_suspicious_constructs(fn, lines):
         if seems_directive_re.search(line):
             yield lno+1, 'comment seems to be intended as a directive'
         if '.. productionlist::' in line:
-            inprod = True
+            inprod = Kweli
         elif not inprod and default_role_re.search(line):
             yield lno+1, 'default role used'
         elif inprod and not line.strip():
@@ -118,7 +118,7 @@ def check_line_length(fn, lines):
                 yield lno+1, "line too long"
 
 
-@checker('.html', severity=2, falsepositives=True)
+@checker('.html', severity=2, falsepositives=Kweli)
 def check_leaked_markup(fn, lines):
     """Check HTML files for leaked reST markup; this only works if
     the HTML files have been built.
@@ -149,9 +149,9 @@ Options:  -v       verbose (print all checked file names)
     falsepos = False
     for opt, val in gopts:
         if opt == '-v':
-            verbose = True
+            verbose = Kweli
         elif opt == '-f':
-            falsepos = True
+            falsepos = Kweli
         elif opt == '-s':
             severity = int(val)
         elif opt == '-i':

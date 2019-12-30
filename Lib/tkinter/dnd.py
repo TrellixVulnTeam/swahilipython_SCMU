@@ -121,7 +121,7 @@ kundi DndHandler:
 
     eleza __init__(self, source, event):
         ikiwa event.num > 5:
-            return
+            rudisha
         root = event.widget._root()
         jaribu:
             root.__dnd
@@ -213,11 +213,11 @@ kundi Icon:
     eleza attach(self, canvas, x=10, y=10):
         ikiwa canvas ni self.canvas:
             self.canvas.coords(self.id, x, y)
-            return
+            rudisha
         ikiwa self.canvas:
             self.detach()
         ikiwa sio canvas:
-            return
+            rudisha
         label = tkinter.Label(canvas, text=self.name,
                               borderwidth=2, relief="raised")
         id = canvas.create_window(x, y, window=label, anchor="nw")
@@ -229,7 +229,7 @@ kundi Icon:
     eleza detach(self):
         canvas = self.canvas
         ikiwa sio canvas:
-            return
+            rudisha
         id = self.id
         label = self.label
         self.canvas = self.label = self.id = Tupu

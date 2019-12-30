@@ -32,7 +32,7 @@ __name__ = "collections.abc"
 #       assert isinstance(it, Iterable)
 # Note:  kwenye other implementations, these types might sio be distinct
 # na they may have their own implementation specific types that
-# are sio included on this list.
+# are sio inluded on this list.
 bytes_iterator = type(iter(b''))
 bytearray_iterator = type(iter(bytearray()))
 #callable_iterator = ???
@@ -875,7 +875,7 @@ kundi Sequence(Reversible, Collection):
                 tuma v
                 i += 1
         tatizo IndexError:
-            return
+            rudisha
 
     eleza __contains__(self, value):
         kila v kwenye self:

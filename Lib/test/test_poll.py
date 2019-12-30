@@ -199,7 +199,7 @@ kundi PollTests(unittest.TestCase):
             pollster.register(w, select.POLLOUT)
             self.assertRaises(RuntimeError, pollster.poll)
         mwishowe:
-            # na make the call to poll() kutoka the thread return
+            # na make the call to poll() kutoka the thread rudisha
             os.write(w, b'spam')
             t.join()
 

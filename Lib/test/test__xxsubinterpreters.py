@@ -151,7 +151,7 @@ kundi ChannelAction(namedtuple('ChannelAction', 'action end interp')):
     eleza __new__(cls, action, end=Tupu, interp=Tupu):
         ikiwa sio end:
             end = 'both'
-        ikiwa sio interp:
+        ikiwa sio inerp:
             interp = 'main'
         self = super().__new__(cls, action, end, interp)
         rudisha self
@@ -1779,10 +1779,10 @@ kundi ChannelCloseFixture(namedtuple('ChannelCloseFixture',
 
     eleza _prep_interpreter(self, interp):
         ikiwa interp.id kwenye self._prepped:
-            return
+            rudisha
         self._prepped.add(interp.id)
         ikiwa interp.name == 'main':
-            return
+            rudisha
         run_interp(interp.id, f"""
             agiza _xxsubinterpreters kama interpreters
             agiza test.test__xxsubinterpreters kama helpers
@@ -2068,7 +2068,7 @@ kundi ExhaustiveChannelTests(TestBase):
             kila fix kwenye self.iter_fixtures():
                 i += 1
                 ikiwa i > 1000:
-                    return
+                    rudisha
                 ikiwa verbose:
                     ikiwa (i - 1) % 6 == 0:
                         andika()

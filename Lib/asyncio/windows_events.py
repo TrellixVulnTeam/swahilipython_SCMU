@@ -61,7 +61,7 @@ kundi _OverlappedFuture(futures.Future):
 
     eleza _cancel_overlapped(self):
         ikiwa self._ov ni Tupu:
-            return
+            rudisha
         jaribu:
             self._ov.cancel()
         tatizo OSError kama exc:
@@ -127,7 +127,7 @@ kundi _BaseWaitHandleFuture(futures.Future):
 
     eleza _unregister_wait(self):
         ikiwa sio self._registered:
-            return
+            rudisha
         self._registered = Uongo
 
         wait_handle = self._wait_handle
@@ -144,7 +144,7 @@ kundi _BaseWaitHandleFuture(futures.Future):
                 ikiwa self._source_traceback:
                     context['source_traceback'] = self._source_traceback
                 self._loop.call_exception_handler(context)
-                return
+                rudisha
             # ERROR_IO_PENDING means that the unregister ni pending
 
         self._unregister_wait_cb(Tupu)
@@ -214,7 +214,7 @@ kundi _WaitHandleFuture(_BaseWaitHandleFuture):
 
     eleza _unregister_wait(self):
         ikiwa sio self._registered:
-            return
+            rudisha
         self._registered = Uongo
 
         wait_handle = self._wait_handle
@@ -231,7 +231,7 @@ kundi _WaitHandleFuture(_BaseWaitHandleFuture):
                 ikiwa self._source_traceback:
                     context['source_traceback'] = self._source_traceback
                 self._loop.call_exception_handler(context)
-                return
+                rudisha
             # ERROR_IO_PENDING ni sio an error, the wait was unregistered
 
         self._event_fut = self._proactor._wait_cancel(self._event,
@@ -346,7 +346,7 @@ kundi ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                         # A client connected before the server was closed:
                         # drop the client (close the pipe) na exit
                         pipe.close()
-                        return
+                        rudisha
 
                     protocol = protocol_factory()
                     self._make_duplex_pipe_transport(
@@ -354,7 +354,7 @@ kundi ProactorEventLoop(proactor_events.BaseProactorEventLoop):
 
                 pipe = server._get_unconnected_pipe()
                 ikiwa pipe ni Tupu:
-                    return
+                    rudisha
 
                 f = self._proactor.accept_pipe(pipe)
             tatizo OSError kama exc:
@@ -699,7 +699,7 @@ kundi IocpProactor:
             # this ukijumuisha handles types where a successful wait has no
             # effect.  So events ama processes are all right, but locks
             # ama semaphores are not.  Also note ikiwa the handle is
-            # signalled na then quickly reset, then we may return
+            # signalled na then quickly reset, then we may rudisha
             # Uongo even though we have sio timed out.
             rudisha f._poll()
 
@@ -827,7 +827,7 @@ kundi IocpProactor:
     eleza close(self):
         ikiwa self._iocp ni Tupu:
             # already closed
-            return
+            rudisha
 
         # Cancel remaining registered operations.
         kila address, (fut, ov, obj, callback) kwenye list(self._cache.items()):

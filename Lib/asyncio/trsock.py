@@ -184,7 +184,7 @@ kundi TransportSocket:
 
     eleza settimeout(self, value):
         ikiwa value == 0:
-            return
+            rudisha
         ashiria ValueError(
             'settimeout(): only 0 timeout ni allowed on transport sockets')
 
@@ -193,7 +193,7 @@ kundi TransportSocket:
 
     eleza setblocking(self, flag):
         ikiwa sio flag:
-            return
+            rudisha
         ashiria ValueError(
             'setblocking(): transport sockets cannot be blocking')
 

@@ -300,11 +300,11 @@ kundi Cmd:
                     doc=getattr(self, 'do_' + arg).__doc__
                     ikiwa doc:
                         self.stdout.write("%s\n"%str(doc))
-                        return
+                        rudisha
                 tatizo AttributeError:
                     pita
                 self.stdout.write("%s\n"%str(self.nohelp % (arg,)))
-                return
+                rudisha
             func()
         isipokua:
             names = self.get_names()
@@ -351,7 +351,7 @@ kundi Cmd:
         """
         ikiwa sio list:
             self.stdout.write("<empty>\n")
-            return
+            rudisha
 
         nonstrings = [i kila i kwenye range(len(list))
                         ikiwa sio isinstance(list[i], str)]
@@ -361,7 +361,7 @@ kundi Cmd:
         size = len(list)
         ikiwa size == 1:
             self.stdout.write('%s\n'%str(list[0]))
-            return
+            rudisha
         # Try every row count kutoka 1 upwards
         kila nrows kwenye range(1, len(list)):
             ncols = (size+nrows-1) // nrows

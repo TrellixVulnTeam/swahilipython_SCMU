@@ -546,7 +546,7 @@ kundi CalculationTests(unittest.TestCase):
             kila year_week_format kwenye ('%Y %W', '%Y %U', '%G %V'):
                 ikiwa (year_week_format kwenye self._formats_excluded na
                         ymd_tuple kwenye self._ymd_excluded):
-                    return
+                    rudisha
                 kila weekday_format kwenye ('%w', '%u', '%a', '%A'):
                     format_string = year_week_format + ' ' + weekday_format
                     ukijumuisha self.subTest(test_reason,

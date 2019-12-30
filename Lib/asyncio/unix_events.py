@@ -192,7 +192,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                 # prevents subprocess execution ikiwa the watcher
                 # ni sio ready to handle it.
                 ashiria RuntimeError("asyncio.get_child_watcher() ni sio activated, "
-                                   "subprocess support ni sio installed.")
+                                   "subprocess support ni sio intalled.")
             waiter = self.create_future()
             transp = _UnixSubprocessTransport(self, protocol, args, shell,
                                               stdin, stdout, stderr, bufsize,
@@ -361,13 +361,13 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             self.remove_writer(registered_fd)
         ikiwa fut.cancelled():
             self._sock_sendfile_update_filepos(fileno, offset, total_sent)
-            return
+            rudisha
         ikiwa count:
             blocksize = count - total_sent
             ikiwa blocksize <= 0:
                 self._sock_sendfile_update_filepos(fileno, offset, total_sent)
                 fut.set_result(total_sent)
-                return
+                rudisha
 
         jaribu:
             sent = os.sendfile(fd, fileno, offset, blocksize)
@@ -508,7 +508,7 @@ kundi _UnixReadPipeTransport(transports.ReadTransport):
 
     eleza pause_reading(self):
         ikiwa self._closing ama self._paused:
-            return
+            rudisha
         self._paused = Kweli
         self._loop._remove_reader(self._fileno)
         ikiwa self._loop.get_debug():
@@ -516,7 +516,7 @@ kundi _UnixReadPipeTransport(transports.ReadTransport):
 
     eleza resume_reading(self):
         ikiwa self._closing ama sio self._paused:
-            return
+            rudisha
         self._paused = Uongo
         self._loop._add_reader(self._fileno, self._read_ready)
         ikiwa self._loop.get_debug():
@@ -650,14 +650,14 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
         ikiwa isinstance(data, bytearray):
             data = memoryview(data)
         ikiwa sio data:
-            return
+            rudisha
 
         ikiwa self._conn_lost ama self._closing:
             ikiwa self._conn_lost >= constants.LOG_THRESHOLD_FOR_CONNLOST_WRITES:
                 logger.warning('pipe closed by peer ama '
                                'os.write(pipe, data) raised exception.')
             self._conn_lost += 1
-            return
+            rudisha
 
         ikiwa sio self._buffer:
             # Attempt to send it right away first.
@@ -670,9 +670,9 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
             tatizo BaseException kama exc:
                 self._conn_lost += 1
                 self._fatal_error(exc, 'Fatal write error on pipe transport')
-                return
+                rudisha
             ikiwa n == len(data):
-                return
+                rudisha
             lasivyo n > 0:
                 data = memoryview(data)[n:]
             self._loop._add_writer(self._fileno, self._write_ready)
@@ -704,7 +704,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
                 ikiwa self._closing:
                     self._loop._remove_reader(self._fileno)
                     self._call_connection_lost(Tupu)
-                return
+                rudisha
             lasivyo n > 0:
                 toa self._buffer[:n]
 
@@ -713,7 +713,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
 
     eleza write_eof(self):
         ikiwa self._closing:
-            return
+            rudisha
         assert self._pipe
         self._closing = Kweli
         ikiwa sio self._buffer:
@@ -1000,7 +1000,7 @@ kundi SafeChildWatcher(BaseChildWatcher):
         isipokua:
             ikiwa pid == 0:
                 # The child process ni still alive.
-                return
+                rudisha
 
             returncode = _compute_returncode(status)
             ikiwa self._loop.get_debug():
@@ -1051,7 +1051,7 @@ kundi FastChildWatcher(BaseChildWatcher):
             self._forks -= 1
 
             ikiwa self._forks ama sio self._zombies:
-                return
+                rudisha
 
             collateral_victims = str(self._zombies)
             self._zombies.clear()
@@ -1069,7 +1069,7 @@ kundi FastChildWatcher(BaseChildWatcher):
             tatizo KeyError:
                 # The child ni running.
                 self._callbacks[pid] = callback, args
-                return
+                rudisha
 
         # The child ni dead already. We can fire the callback.
         callback(pid, returncode, *args)
@@ -1089,11 +1089,11 @@ kundi FastChildWatcher(BaseChildWatcher):
                 pid, status = os.waitpid(-1, os.WNOHANG)
             tatizo ChildProcessError:
                 # No more child processes exist.
-                return
+                rudisha
             isipokua:
                 ikiwa pid == 0:
                     # A child process ni still alive.
-                    return
+                    rudisha
 
                 returncode = _compute_returncode(status)
 
@@ -1216,7 +1216,7 @@ kundi MultiLoopChildWatcher(AbstractChildWatcher):
         isipokua:
             ikiwa pid == 0:
                 # The child process ni still alive.
-                return
+                rudisha
 
             returncode = _compute_returncode(status)
             debug_log = Kweli

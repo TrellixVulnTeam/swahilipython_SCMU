@@ -365,7 +365,7 @@ eleza merge(*iterables, key=Tupu, reverse=Uongo):
             value, order, next = h[0]
             tuma value
             tuma kutoka next.__self__
-        return
+        rudisha
 
     kila order, it kwenye enumerate(map(iter, iterables)):
         jaribu:

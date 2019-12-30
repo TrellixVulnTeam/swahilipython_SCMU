@@ -178,18 +178,18 @@ kundi AbstractFormatter:
         rudisha label
 
     eleza add_flowing_data(self, data):
-        ikiwa sio data: return
+        ikiwa sio data: rudisha
         prespace = data[:1].isspace()
         postspace = data[-1:].isspace()
         data = " ".join(data.split())
         ikiwa self.nospace na sio data:
-            return
+            rudisha
         lasivyo prespace ama self.softspace:
             ikiwa sio data:
                 ikiwa sio self.nospace:
                     self.softspace = 1
                     self.parskip = 0
-                return
+                rudisha
             ikiwa sio self.nospace:
                 data = ' ' + data
         self.hard_koma = self.nospace = self.para_end = \
@@ -198,7 +198,7 @@ kundi AbstractFormatter:
         self.writer.send_flowing_data(data)
 
     eleza add_literal_data(self, data):
-        ikiwa sio data: return
+        ikiwa sio data: rudisha
         ikiwa self.softspace:
             self.writer.send_flowing_data(" ")
         self.hard_koma = data[-1:] == '\n'
@@ -407,7 +407,7 @@ kundi DumbWriter(NullWriter):
         self.atkoma = 0
 
     eleza send_flowing_data(self, data):
-        ikiwa sio data: return
+        ikiwa sio data: rudisha
         atkoma = self.atkoma ama data[0].isspace()
         col = self.col
         maxcol = self.maxcol

@@ -263,7 +263,7 @@ kundi _AssertWarnsContext(_AssertRaisesBaseContext):
         self.warnings_manager.__exit__(exc_type, exc_value, tb)
         ikiwa exc_type ni sio Tupu:
             # let unexpected exceptions pita through
-            return
+            rudisha
         jaribu:
             exc_name = self.expected.__name__
         tatizo AttributeError:
@@ -282,7 +282,7 @@ kundi _AssertWarnsContext(_AssertRaisesBaseContext):
             self.warning = w
             self.filename = m.filename
             self.lineno = m.lineno
-            return
+            rudisha
         # Now we simply try to choose a helpful failure message
         ikiwa first_matching ni sio Tupu:
             self._raiseFailure('"{}" does sio match "{}"'.format(
@@ -570,7 +570,7 @@ kundi TestCase(object):
         """
         ikiwa self._outcome ni Tupu ama sio self._outcome.result_supports_subtests:
             tuma
-            return
+            rudisha
         parent = self._subtest
         ikiwa parent ni Tupu:
             params_map = _OrderedChainMap(params)
@@ -658,7 +658,7 @@ kundi TestCase(object):
                 self._addSkip(result, self, skip_why)
             mwishowe:
                 result.stopTest(self)
-            return
+            rudisha
         expecting_failure_method = getattr(testMethod,
                                            "__unittest_expecting_failure__", Uongo)
         expecting_failure_class = getattr(self,
@@ -881,7 +881,7 @@ kundi TestCase(object):
         #
         # NOTE(gregory.p.smith): I considered isinstance(first, type(second))
         # na vice versa.  I opted kila the conservative approach kwenye case
-        # subclasses are sio intended to be compared kwenye detail to their super
+        # subclasses are sio inended to be compared kwenye detail to their super
         # kundi instances using a type equality func.  This means testing
         # subtypes won't automagically use the detailed comparison.  Callers
         # should use their type specific assertSpamEqual method to compare
@@ -936,14 +936,14 @@ kundi TestCase(object):
         """
         ikiwa first == second:
             # shortcut
-            return
+            rudisha
         ikiwa delta ni sio Tupu na places ni sio Tupu:
             ashiria TypeError("specify delta ama places sio both")
 
         diff = abs(first - second)
         ikiwa delta ni sio Tupu:
             ikiwa diff <= delta:
-                return
+                rudisha
 
             standardMsg = '%s != %s within %s delta (%s difference)' % (
                 safe_repr(first),
@@ -955,7 +955,7 @@ kundi TestCase(object):
                 places = 7
 
             ikiwa round(diff, places) == 0:
-                return
+                rudisha
 
             standardMsg = '%s != %s within %r places (%s difference)' % (
                 safe_repr(first),
@@ -982,7 +982,7 @@ kundi TestCase(object):
         diff = abs(first - second)
         ikiwa delta ni sio Tupu:
             ikiwa sio (first == second) na diff > delta:
-                return
+                rudisha
             standardMsg = '%s == %s within %s delta (%s difference)' % (
                 safe_repr(first),
                 safe_repr(second),
@@ -992,7 +992,7 @@ kundi TestCase(object):
             ikiwa places ni Tupu:
                 places = 7
             ikiwa sio (first == second) na round(diff, places) != 0:
-                return
+                rudisha
             standardMsg = '%s == %s within %r places' % (safe_repr(first),
                                                          safe_repr(second),
                                                          places)
@@ -1041,7 +1041,7 @@ kundi TestCase(object):
 
         ikiwa differing ni Tupu:
             ikiwa seq1 == seq2:
-                return
+                rudisha
 
             differing = '%ss differ: %s != %s\n' % (
                     (seq_type_name.capitalize(),) +
@@ -1070,7 +1070,7 @@ kundi TestCase(object):
                 ikiwa (len1 == len2 na seq_type ni Tupu na
                     type(seq1) != type(seq2)):
                     # The sequences are the same, but have differing types.
-                    return
+                    rudisha
 
             ikiwa len1 > len2:
                 differing += ('\nFirst %s contains %d additional '
@@ -1156,7 +1156,7 @@ kundi TestCase(object):
             self.fail('second argument does sio support set difference: %s' % e)
 
         ikiwa sio (difference1 ama difference2):
-            return
+            rudisha
 
         lines = []
         ikiwa difference1:
@@ -1225,7 +1225,7 @@ kundi TestCase(object):
                                    safe_repr(dictionary[key])))
 
         ikiwa sio (missing ama mismatched):
-            return
+            rudisha
 
         standardMsg = ''
         ikiwa missing:
@@ -1260,7 +1260,7 @@ kundi TestCase(object):
             differences = _count_diff_all_purpose(first_seq, second_seq)
         isipokua:
             ikiwa first == second:
-                return
+                rudisha
             differences = _count_diff_hashable(first_seq, second_seq)
 
         ikiwa differences:

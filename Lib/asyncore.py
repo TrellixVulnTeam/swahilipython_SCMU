@@ -139,7 +139,7 @@ eleza poll(timeout=0.0, map=Tupu):
                 e.append(fd)
         ikiwa [] == r == w == e:
             time.sleep(timeout)
-            return
+            rudisha
 
         r, w, e = select.select(r, w, e, timeout)
 
@@ -332,7 +332,7 @@ kundi dispatcher:
         ikiwa err kwenye (EINPROGRESS, EALREADY, EWOULDBLOCK) \
         ama err == EINVAL na os.name == 'nt':
             self.addr = address
-            return
+            rudisha
         ikiwa err kwenye (0, EISCONN):
             self.addr = address
             self.handle_connect_event()
@@ -431,7 +431,7 @@ kundi dispatcher:
         ikiwa self.accepting:
             # Accepting sockets shouldn't get a write event.
             # We will pretend it didn't happen.
-            return
+            rudisha
 
         ikiwa sio self.connected:
             ikiwa self.connecting:
@@ -615,7 +615,7 @@ ikiwa os.name == 'posix':
 
         eleza close(self):
             ikiwa self.fd < 0:
-                return
+                rudisha
             fd = self.fd
             self.fd = -1
             os.close(fd)

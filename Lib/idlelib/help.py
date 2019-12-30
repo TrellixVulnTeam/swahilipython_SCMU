@@ -281,7 +281,7 @@ eleza show_idlehelp(parent):
     filename = join(abspath(dirname(__file__)), 'help.html')
     ikiwa sio isfile(filename):
         # Try copy_strip, present message.
-        return
+        rudisha
     HelpWindow(parent, filename, 'IDLE Help (%s)' % python_version())
 
 ikiwa __name__ == '__main__':

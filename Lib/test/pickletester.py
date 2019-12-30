@@ -2378,7 +2378,7 @@ kundi AbstractPickleTests(unittest.TestCase):
 
     eleza test_optional_frames(self):
         ikiwa pickle.HIGHEST_PROTOCOL < 4:
-            return
+            rudisha
 
         eleza remove_frames(pickled, keep_frame=Tupu):
             """Remove frame opcodes kutoka the given pickle."""

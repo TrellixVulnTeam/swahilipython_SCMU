@@ -216,7 +216,7 @@ eleza makedirs(name, mode=0o777, exist_ok=Uongo):
         ikiwa isinstance(tail, bytes):
             cdir = bytes(curdir, 'ASCII')
         ikiwa tail == cdir:           # xxx/newdir/. exists ikiwa xxx/newdir exists
-            return
+            rudisha
     jaribu:
         mkdir(name, mode)
     tatizo OSError:
@@ -351,7 +351,7 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
     tatizo OSError kama error:
         ikiwa onerror ni sio Tupu:
             onerror(error)
-        return
+        rudisha
 
     ukijumuisha scandir_it:
         wakati Kweli:
@@ -363,7 +363,7 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
             tatizo OSError kama error:
                 ikiwa onerror ni sio Tupu:
                     onerror(error)
-                return
+                rudisha
 
             jaribu:
                 is_dir = entry.is_dir()
@@ -587,7 +587,7 @@ eleza _execvpe(file, args, env=Tupu):
 
     ikiwa path.dirname(file):
         exec_func(file, *argrest)
-        return
+        rudisha
     saved_exc = Tupu
     path_list = get_exec_path(env)
     ikiwa name != 'nt':

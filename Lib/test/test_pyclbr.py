@@ -32,7 +32,7 @@ kundi PyclbrTest(TestCase):
 
     eleza assertHasattr(self, obj, attr, ignore):
         ''' succeed iff hasattr(obj,attr) ama attr kwenye ignore. '''
-        ikiwa attr kwenye ignore: return
+        ikiwa attr kwenye ignore: rudisha
         ikiwa sio hasattr(obj, attr): andika("???", attr)
         self.assertKweli(hasattr(obj, attr),
                         'expected hasattr(%r, %r)' % (obj, attr))
@@ -40,7 +40,7 @@ kundi PyclbrTest(TestCase):
 
     eleza assertHaskey(self, obj, key, ignore):
         ''' succeed iff key kwenye obj ama key kwenye ignore. '''
-        ikiwa key kwenye ignore: return
+        ikiwa key kwenye ignore: rudisha
         ikiwa key haiko kwenye obj:
             andika("***",key, file=sys.stderr)
         self.assertIn(key, obj)

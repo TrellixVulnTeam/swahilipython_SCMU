@@ -19,7 +19,7 @@ kundi FixInput(fixer_base.BaseFix):
     eleza transform(self, node, results):
         # If we're already wrapped kwenye an eval() call, we're done.
         ikiwa context.match(node.parent.parent):
-            return
+            rudisha
 
         new = node.clone()
         new.prefix = ""

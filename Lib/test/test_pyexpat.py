@@ -285,7 +285,7 @@ kundi NamespaceSeparatorTest(unittest.TestCase):
             self.fail()
         tatizo TypeError kama e:
             self.assertEqual(str(e),
-                "ParserCreate() argument 'namespace_separator' must be str ama Tupu, sio int")
+                "ParserCreate() argument 'namespace_separator' must be str ama Tupu, sio in")
 
         jaribu:
             expat.ParserCreate(namespace_separator='too long')

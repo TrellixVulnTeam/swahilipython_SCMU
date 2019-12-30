@@ -234,13 +234,13 @@ kundi TestThreadedServer(SocketThread):
     eleza _run(self):
         wakati self._active:
             ikiwa self._clients >= self._max_clients:
-                return
+                rudisha
 
             r, w, x = select.select(
                 [self._sock, self._s1], [], [], self._timeout)
 
             ikiwa self._s1 kwenye r:
-                return
+                rudisha
 
             ikiwa self._sock kwenye r:
                 jaribu:
@@ -249,7 +249,7 @@ kundi TestThreadedServer(SocketThread):
                     endelea
                 tatizo socket.timeout:
                     ikiwa sio self._active:
-                        return
+                        rudisha
                     isipokua:
                         raise
                 isipokua:

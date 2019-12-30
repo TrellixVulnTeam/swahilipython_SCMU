@@ -54,7 +54,7 @@ eleza encode(input, output, quotetabs, header=Uongo):
         data = input.read()
         odata = b2a_qp(data, quotetabs=quotetabs, header=header)
         output.write(odata)
-        return
+        rudisha
 
     eleza write(s, output=output, lineEnd=b'\n'):
         # RFC 1521 requires that the line ending kwenye a space ama tab must have
@@ -123,7 +123,7 @@ eleza decode(input, output, header=Uongo):
         data = input.read()
         odata = a2b_qp(data, header=header)
         output.write(odata)
-        return
+        rudisha
 
     new = b''
     wakati 1:

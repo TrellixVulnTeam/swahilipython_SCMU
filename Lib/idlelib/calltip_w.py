@@ -51,7 +51,7 @@ kundi CalltipWindow(TooltipBase):
         "Reposition the window ikiwa needed."
         curline = int(self.anchor_widget.index("insert").split('.')[0])
         ikiwa curline == self.lastline:
-            return
+            rudisha
         self.lastline = curline
         self.anchor_widget.see("insert")
         super(CalltipWindow, self).position_window()
@@ -67,7 +67,7 @@ kundi CalltipWindow(TooltipBase):
         # Only called kwenye calltip.Calltip, where lines are truncated
         self.text = text
         ikiwa self.tipwindow ama sio self.text:
-            return
+            rudisha
 
         self.anchor_widget.mark_set(MARK_RIGHT, parenright)
         self.parenline, self.parencol = map(
@@ -123,7 +123,7 @@ kundi CalltipWindow(TooltipBase):
     eleza hidetip(self):
         """Hide the call-tip."""
         ikiwa sio self.tipwindow:
-            return
+            rudisha
 
         jaribu:
             self.label.destroy()

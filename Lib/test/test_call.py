@@ -386,7 +386,7 @@ kundi FastCallTests(unittest.TestCase):
 
     eleza check_result(self, result, expected):
         ikiwa expected ni IGNORE_RESULT:
-            return
+            rudisha
         self.assertEqual(result, expected)
 
     eleza test_fastcall(self):
@@ -506,7 +506,7 @@ kundi TestPEP590(unittest.TestCase):
         self.assertKweli(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
         self.assertUongo(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
-        # Heap type should sio inherit Py_TPFLAGS_METHOD_DESCRIPTOR
+        # Heap type should sio inerit Py_TPFLAGS_METHOD_DESCRIPTOR
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pita
         self.assertUongo(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
@@ -517,7 +517,7 @@ kundi TestPEP590(unittest.TestCase):
         self.assertUongo(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
         self.assertKweli(_testcapi.MethodDescriptor2.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
-        # Heap type should sio inherit Py_TPFLAGS_HAVE_VECTORCALL
+        # Heap type should sio inerit Py_TPFLAGS_HAVE_VECTORCALL
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pita
         self.assertUongo(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)

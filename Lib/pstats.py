@@ -118,7 +118,7 @@ kundi Stats:
     eleza load_stats(self, arg):
         ikiwa arg ni Tupu:
             self.stats = {}
-            return
+            rudisha
         lasivyo isinstance(arg, str):
             ukijumuisha open(arg, 'rb') kama f:
                 self.stats = marshal.load(f)
@@ -135,7 +135,7 @@ kundi Stats:
         ikiwa sio self.stats:
             ashiria TypeError("Cannot create ama construct a %r object kutoka %r"
                             % (self.__class__, arg))
-        return
+        rudisha
 
     eleza get_top_level_stats(self):
         kila func, (cc, nc, tt, ct, callers) kwenye self.stats.items():
@@ -290,7 +290,7 @@ kundi Stats:
 
     eleza calc_callees(self):
         ikiwa self.all_callees:
-            return
+            rudisha
         self.all_callees = all_callees = {}
         kila func, (cc, nc, tt, ct, callers) kwenye self.stats.items():
             ikiwa sio func kwenye all_callees:
@@ -299,7 +299,7 @@ kundi Stats:
                 ikiwa sio func2 kwenye all_callees:
                     all_callees[func2] = {}
                 all_callees[func2][func]  = caller
-        return
+        rudisha
 
     #******************************************************************
     # The following functions support actual printing of reports
@@ -422,7 +422,7 @@ kundi Stats:
         andika(func_std_string(source).ljust(name_size) + arrow, end=' ', file=self.stream)
         ikiwa sio call_dict:
             andika(file=self.stream)
-            return
+            rudisha
         clist = sorted(call_dict.keys())
         indent = ""
         kila func kwenye clist:
@@ -645,10 +645,10 @@ ikiwa __name__ == '__main__':
                     self.stats = Stats(line)
                 tatizo OSError kama err:
                     andika(err.args[1], file=self.stream)
-                    return
+                    rudisha
                 tatizo Exception kama err:
                     andika(err.__class__.__name__ + ':', err, file=self.stream)
-                    return
+                    rudisha
                 self.prompt = line + "% "
             lasivyo len(self.prompt) > 2:
                 line = self.prompt[:-2]
@@ -672,7 +672,7 @@ ikiwa __name__ == '__main__':
         eleza do_sort(self, line):
             ikiwa sio self.stats:
                 andika("No statistics object ni loaded.", file=self.stream)
-                return
+                rudisha
             abbrevs = self.stats.get_sort_arg_defs()
             ikiwa line na all((x kwenye abbrevs) kila x kwenye line.split()):
                 self.stats.sort_stats(*line.split())

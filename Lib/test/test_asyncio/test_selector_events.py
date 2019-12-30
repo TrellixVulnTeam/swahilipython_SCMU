@@ -43,7 +43,7 @@ eleza close_transport(transport):
     # Don't call transport.close() because the event loop na the selector
     # are mocked
     ikiwa transport._sock ni Tupu:
-        return
+        rudisha
     transport._sock.close()
     transport._sock = Tupu
 

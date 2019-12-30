@@ -194,7 +194,7 @@ eleza makepipeline(infile, steps, outfile):
     # Take care of the input na output ends
     #
     [cmd, kind] = list[0][1:3]
-    ikiwa kind[0] == 'f' na sio infile:
+    ikiwa kind[0] == 'f' na sio inile:
         list.insert(0, ['', 'cat', '--', ''])
     list[0][0] = infile
     #

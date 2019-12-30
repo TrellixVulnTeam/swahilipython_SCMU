@@ -697,7 +697,7 @@ eleza _main():
     """Display all information sysconfig detains."""
     ikiwa '--generate-posix-vars' kwenye sys.argv:
         _generate_posix_vars()
-        return
+        rudisha
     andika('Platform: "%s"' % get_platform())
     andika('Python version: "%s"' % get_python_version())
     andika('Current installation scheme: "%s"' % _get_default_scheme())

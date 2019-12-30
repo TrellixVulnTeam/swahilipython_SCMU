@@ -151,7 +151,7 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
             x = q.get()
             ikiwa x < 0:
                 q.task_done()
-                return
+                rudisha
             ukijumuisha self.cumlock:
                 self.cum += x
             q.task_done()
@@ -422,7 +422,7 @@ kundi BaseSimpleQueueTest:
             jaribu:
                 val = seq.pop()
             tatizo IndexError:
-                return
+                rudisha
             q.put(val)
             ikiwa rnd.random() > 0.5:
                 time.sleep(rnd.random() * 1e-3)
@@ -431,7 +431,7 @@ kundi BaseSimpleQueueTest:
         wakati Kweli:
             val = q.get()
             ikiwa val == sentinel:
-                return
+                rudisha
             results.append(val)
 
     eleza consume_nonblock(self, q, results, sentinel):
@@ -444,7 +444,7 @@ kundi BaseSimpleQueueTest:
                 isipokua:
                     koma
             ikiwa val == sentinel:
-                return
+                rudisha
             results.append(val)
 
     eleza consume_timeout(self, q, results, sentinel):
@@ -457,7 +457,7 @@ kundi BaseSimpleQueueTest:
                 isipokua:
                     koma
             ikiwa val == sentinel:
-                return
+                rudisha
             results.append(val)
 
     eleza run_threads(self, n_feeders, n_consumers, q, inputs,

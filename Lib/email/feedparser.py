@@ -103,7 +103,7 @@ kundi BufferedSubFile(object):
         self._partial.write(data)
         ikiwa '\n' haiko kwenye data na '\r' haiko kwenye data:
             # No new complete lines, wait kila more.
-            return
+            rudisha
 
         # Crack into lines, preserving the linesep characters.
         self._partial.seek(0)
@@ -252,7 +252,7 @@ kundi FeedParser:
                     koma
                 lines.append(line)
             self._cur.set_payload(EMPTYSTRING.join(lines))
-            return
+            rudisha
         ikiwa self._cur.get_content_type() == 'message/delivery-status':
             # message/delivery-status contains blocks of headers separated by
             # a blank line.  We'll represent each header block kama a separate
@@ -291,7 +291,7 @@ kundi FeedParser:
                     koma
                 # Not at EOF so this ni a line we're going to need.
                 self._input.unreadline(line)
-            return
+            rudisha
         ikiwa self._cur.get_content_maintype() == 'message':
             # The message claims to be a message/* type, then what follows is
             # another RFC 2822 message.
@@ -301,7 +301,7 @@ kundi FeedParser:
                     endelea
                 koma
             self._pop_message()
-            return
+            rudisha
         ikiwa self._cur.get_content_maintype() == 'multipart':
             boundary = self._cur.get_boundary()
             ikiwa boundary ni Tupu:
@@ -318,7 +318,7 @@ kundi FeedParser:
                         endelea
                     lines.append(line)
                 self._cur.set_payload(EMPTYSTRING.join(lines))
-                return
+                rudisha
             # Make sure a valid content type was specified per RFC 2045:6.4.
             ikiwa (str(self._cur.get('content-transfer-encoding', '8bit')).lower()
                     haiko kwenye ('7bit', '8bit', 'binary')):
@@ -429,13 +429,13 @@ kundi FeedParser:
                         tuma NeedMoreData
                         endelea
                 self._cur.epilogue = EMPTYSTRING.join(epilogue)
-                return
+                rudisha
             # If we're sio processing the preamble, then we might have seen
             # EOF without seeing that end boundary...that ni also a defect.
             ikiwa sio close_boundary_seen:
                 defect = errors.CloseBoundaryNotFoundDefect()
                 self.policy.handle_defect(self._cur, defect)
-                return
+                rudisha
             # Everything kutoka here to the EOF ni epilogue.  If the end boundary
             # ended kwenye a newline, we'll need to make sure the epilogue isn't
             # Tupu
@@ -457,7 +457,7 @@ kundi FeedParser:
                 ikiwa bolmo:
                     epilogue[0] = firstline[len(bolmo.group(0)):]
             self._cur.epilogue = EMPTYSTRING.join(epilogue)
-            return
+            rudisha
         # Otherwise, it's some non-multipart type, so the entire rest of the
         # file contents becomes the payload.
         lines = []
@@ -501,7 +501,7 @@ kundi FeedParser:
                     # probably the first line of the body, so push back the
                     # line na stop.
                     self._input.unreadline(line)
-                    return
+                    rudisha
                 isipokua:
                     # Weirdly placed unix-kutoka line.  Note this kama a defect
                     # na ignore it.

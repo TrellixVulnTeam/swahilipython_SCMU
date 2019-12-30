@@ -309,7 +309,7 @@ kundi Message:
         ikiwa hasattr(payload, 'encode'):
             ikiwa charset ni Tupu:
                 self._payload = payload
-                return
+                rudisha
             ikiwa sio isinstance(charset, Charset):
                 charset = Charset(charset)
             payload = payload.encode(charset.output_charset)
@@ -337,7 +337,7 @@ kundi Message:
         ikiwa charset ni Tupu:
             self.del_param('charset')
             self._charset = Tupu
-            return
+            rudisha
         ikiwa sio isinstance(charset, Charset):
             charset = Charset(charset)
         self._charset = charset
@@ -672,7 +672,7 @@ kundi Message:
         header, ama the Content-Type header has no such parameter.  Optional
         header ni the header to search instead of Content-Type.
 
-        Parameter keys are always compared case insensitively.  The return
+        Parameter keys are always compared case insensitively.  The rudisha
         value can either be a string, ama a 3-tuple ikiwa the parameter was RFC
         2231 encoded.  When it's a 3-tuple, the elements of the value are of
         the form (CHARSET, LANGUAGE, VALUE).  Note that both CHARSET na
@@ -758,7 +758,7 @@ kundi Message:
         header.
         """
         ikiwa header haiko kwenye self:
-            return
+            rudisha
         new_ctype = ''
         kila p, v kwenye self.get_params(header=header, unquote=requote):
             ikiwa p.lower() != param.lower():
@@ -795,7 +795,7 @@ kundi Message:
             self['MIME-Version'] = '1.0'
         ikiwa header haiko kwenye self:
             self[header] = type
-            return
+            rudisha
         params = self.get_params(header=header, unquote=requote)
         toa self[header]
         self[header] = type
@@ -976,18 +976,18 @@ kundi MIMEPart(Message):
 
     eleza _find_body(self, part, preferencelist):
         ikiwa part.is_attachment():
-            return
+            rudisha
         maintype, subtype = part.get_content_type().split('/')
         ikiwa maintype == 'text':
             ikiwa subtype kwenye preferencelist:
                 tuma (preferencelist.index(subtype), part)
-            return
+            rudisha
         ikiwa maintype != 'multipart':
-            return
+            rudisha
         ikiwa subtype != 'related':
             kila subpart kwenye part.iter_parts():
                 tuma kutoka self._find_body(subpart, preferencelist)
-            return
+            rudisha
         ikiwa 'related' kwenye preferencelist:
             tuma (preferencelist.index('related'), part)
         candidate = Tupu
@@ -1009,7 +1009,7 @@ kundi MIMEPart(Message):
         Do a depth first search, starting ukijumuisha self, looking kila the first part
         matching each of the items kwenye preferencelist, na rudisha the part
         corresponding to the first item that has a match, ama Tupu ikiwa no items
-        have a match.  If 'related' ni sio included kwenye preferencelist, consider
+        have a match.  If 'related' ni sio inluded kwenye preferencelist, consider
         the root part of any multipart/related encountered kama a candidate
         match.  Ignore parts ukijumuisha 'Content-Disposition: attachment'.
         """
@@ -1040,7 +1040,7 @@ kundi MIMEPart(Message):
         """
         maintype, subtype = self.get_content_type().split('/')
         ikiwa maintype != 'multipart' ama subtype == 'alternative':
-            return
+            rudisha
         payload = self.get_payload()
         # Certain malformed messages can have content type set to `multipart/*`
         # but still have single part body, kwenye which case payload.copy() can
@@ -1049,7 +1049,7 @@ kundi MIMEPart(Message):
             parts = payload.copy()
         tatizo AttributeError:
             # payload ni sio a list, it ni most probably a string.
-            return
+            rudisha
 
         ikiwa maintype == 'multipart' na subtype == 'related':
             # For related, we treat everything but the root kama an attachment.
@@ -1066,10 +1066,10 @@ kundi MIMEPart(Message):
                         attachments.append(part)
                 ikiwa found:
                     tuma kutoka attachments
-                    return
+                    rudisha
             parts.pop(0)
             tuma kutoka parts
-            return
+            rudisha
         # Otherwise we more ama less invert the remaining logic kwenye get_body.
         # This only really works kwenye edge cases (ex: non-text related ama
         # alternatives) ikiwa the sending agent sets content-disposition.

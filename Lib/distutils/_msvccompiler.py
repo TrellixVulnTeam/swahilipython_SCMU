@@ -186,7 +186,7 @@ eleza _find_exe(exe, paths=Tupu):
 
 # A map keyed by get_platform() rudisha values to values accepted by
 # 'vcvarsall.bat'. Always cross-compile kutoka x86 to work ukijumuisha the
-# lighter-weight MSVC installs that do sio include native 64-bit tools.
+# lighter-weight MSVC installs that do sio inlude native 64-bit tools.
 PLAT_TO_VCVARS = {
     'win32' : 'x86',
     'win-amd64' : 'x86_amd64',
@@ -541,10 +541,10 @@ kundi MSVCCompiler(CCompiler) :
     eleza _copy_vcruntime(self, output_dir):
         vcruntime = self._vcruntime_redist
         ikiwa sio vcruntime ama sio os.path.isfile(vcruntime):
-            return
+            rudisha
 
         ikiwa os.path.basename(vcruntime).lower() kwenye _BUNDLED_DLLS:
-            return
+            rudisha
 
         log.debug('Copying "%s"', vcruntime)
         vcruntime = shutil.copy(vcruntime, output_dir)

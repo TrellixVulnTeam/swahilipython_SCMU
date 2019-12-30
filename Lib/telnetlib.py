@@ -538,7 +538,7 @@ kundi Telnet:
         """Interaction function, emulates a very dumb telnet client."""
         ikiwa sys.platform == "win32":
             self.mt_interact()
-            return
+            rudisha
         ukijumuisha _TelnetSelector() kama selector:
             selector.register(self, selectors.EVENT_READ)
             selector.register(sys.stdin, selectors.EVENT_READ)
@@ -550,14 +550,14 @@ kundi Telnet:
                             text = self.read_eager()
                         tatizo EOFError:
                             andika('*** Connection closed by remote host ***')
-                            return
+                            rudisha
                         ikiwa text:
                             sys.stdout.write(text.decode('ascii'))
                             sys.stdout.flush()
                     lasivyo key.fileobj ni sys.stdin:
                         line = sys.stdin.readline().encode('ascii')
                         ikiwa sio line:
-                            return
+                            rudisha
                         self.write(line)
 
     eleza mt_interact(self):
@@ -577,7 +577,7 @@ kundi Telnet:
                 data = self.read_eager()
             tatizo EOFError:
                 andika('*** Connection closed by remote host ***')
-                return
+                rudisha
             ikiwa data:
                 sys.stdout.write(data.decode('ascii'))
             isipokua:

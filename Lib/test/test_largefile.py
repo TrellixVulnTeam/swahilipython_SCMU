@@ -26,7 +26,7 @@ kundi LargeFileTest:
         ukijumuisha self.open(TESTFN, mode) kama f:
             current_size = os.fstat(f.fileno())[stat.ST_SIZE]
             ikiwa current_size == size+1:
-                return
+                rudisha
 
             ikiwa current_size == 0:
                 f.write(b'z')

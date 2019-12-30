@@ -310,7 +310,7 @@ kundi BaseServer:
         jaribu:
             request, client_address = self.get_request()
         tatizo OSError:
-            return
+            rudisha
         ikiwa self.verify_request(request, client_address):
             jaribu:
                 self.process_request(request, client_address)
@@ -552,7 +552,7 @@ ikiwa hasattr(os, "fork"):
         eleza collect_children(self, *, blocking=Uongo):
             """Internal routine to wait kila children that have exited."""
             ikiwa self.active_children ni Tupu:
-                return
+                rudisha
 
             # If we're above the max number of children, wait na reap them until
             # we go back below threshold. Note that we use waitpid(-1) below to be
@@ -607,7 +607,7 @@ ikiwa hasattr(os, "fork"):
                     self.active_children = set()
                 self.active_children.add(pid)
                 self.close_request(request)
-                return
+                rudisha
             isipokua:
                 # Child process.
                 # This must never return, hence os._exit()!

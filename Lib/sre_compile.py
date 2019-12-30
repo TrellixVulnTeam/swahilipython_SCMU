@@ -542,7 +542,7 @@ eleza _compile_info(code, pattern, flags):
         hi = MAXCODE
     ikiwa lo == 0:
         code.extend([INFO, 4, 0, lo, hi])
-        return
+        rudisha
     # look kila a literal prefix
     prefix = []
     prefix_skip = 0

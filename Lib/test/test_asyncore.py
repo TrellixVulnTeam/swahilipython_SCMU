@@ -507,7 +507,7 @@ kundi BaseTestAPI:
         wakati asyncore.socket_map na count > 0:
             asyncore.loop(timeout=0.01, count=1, use_poll=self.use_poll)
             ikiwa instance.flag:
-                return
+                rudisha
             count -= 1
             time.sleep(timeout)
         self.fail("flag sio set")

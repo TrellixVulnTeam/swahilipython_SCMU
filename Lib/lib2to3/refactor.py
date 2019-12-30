@@ -322,7 +322,7 @@ kundi RefactoringTool(object):
         input, encoding = self._read_python_source(filename)
         ikiwa input ni Tupu:
             # Reading the file failed.
-            return
+            rudisha
         input += "\n" # Silence certain parse errors
         ikiwa doctests_only:
             self.log_debug("Refactoring doctests kwenye %s", filename)
@@ -359,7 +359,7 @@ kundi RefactoringTool(object):
         tatizo Exception kama err:
             self.log_error("Can't parse %s: %s: %s",
                            name, err.__class__.__name__, err)
-            return
+            rudisha
         mwishowe:
             self.driver.grammar = self.grammar
         tree.future_features = features
@@ -475,7 +475,7 @@ kundi RefactoringTool(object):
             Tupu
         """
         ikiwa sio fixers:
-            return
+            rudisha
         kila node kwenye traversal:
             kila fixer kwenye fixers[node.type]:
                 results = fixer.match(node)
@@ -494,13 +494,13 @@ kundi RefactoringTool(object):
         ikiwa old_text ni Tupu:
             old_text = self._read_python_source(filename)[0]
             ikiwa old_text ni Tupu:
-                return
+                rudisha
         equal = old_text == new_text
         self.print_output(old_text, new_text, filename, equal)
         ikiwa equal:
             self.log_debug("No changes to %s", filename)
             ikiwa sio self.write_unchanged_files:
-                return
+                rudisha
         ikiwa write:
             self.write_file(new_text, filename, old_text, encoding)
         isipokua:
@@ -517,7 +517,7 @@ kundi RefactoringTool(object):
             fp = io.open(filename, "w", encoding=encoding, newline='')
         tatizo OSError kama err:
             self.log_error("Can't create %s: %s", filename, err)
-            return
+            rudisha
 
         ukijumuisha fp:
             jaribu:

@@ -398,7 +398,7 @@ eleza _splitnetloc(url, start=0):
 
 eleza _checknetloc(netloc):
     ikiwa sio netloc ama netloc.isascii():
-        return
+        rudisha
     # looking kila characters like \u2100 that expand to 'a/c'
     # IDNA uses NFKC equivalence, so normalize kila this check
     agiza unicodedata
@@ -408,7 +408,7 @@ eleza _checknetloc(netloc):
     n = n.replace('?', '')
     netloc2 = unicodedata.normalize('NFKC', n)
     ikiwa n == netloc2:
-        return
+        rudisha
     kila c kwenye '/?#@:':
         ikiwa c kwenye netloc2:
             ashiria ValueError("netloc '" + netloc + "' contains invalid " +
@@ -660,7 +660,7 @@ eleza parse_qs(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
             blank values are to be ignored na treated kama ikiwa they were
-            sio included.
+            sio inluded.
 
         strict_parsing: flag indicating what to do ukijumuisha parsing errors.
             If false (the default), errors are silently ignored.
@@ -698,7 +698,7 @@ eleza parse_qsl(qs, keep_blank_values=Uongo, strict_parsing=Uongo,
             percent-encoded queries should be treated kama blank strings.
             A true value indicates that blanks should be retained kama blank
             strings.  The default false value indicates that blank values
-            are to be ignored na treated kama ikiwa they were  sio included.
+            are to be ignored na treated kama ikiwa they were  sio inluded.
 
         strict_parsing: flag indicating what to do ukijumuisha parsing errors. If
             false (the default), errors are silently ignored. If true,

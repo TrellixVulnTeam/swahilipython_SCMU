@@ -126,7 +126,7 @@ eleza splitdrive(p):
     up to na including the colon.  e.g. splitdrive("c:/dir") returns ("c:", "/dir")
 
     If the path contained a UNC path, the drive_or_unc will contain the host name
-    na share up to but sio including the fourth directory separator character.
+    na share up to but sio inluding the fourth directory separator character.
     e.g. splitdrive("//host/computer/dir") returns ("//host/computer", "/dir")
 
     Paths cannot contain both a drive letter na a UNC path.

@@ -173,7 +173,7 @@ kundi Heap(object):
         # Reusing an existing arena ni faster than creating a new one, so
         # we only reclaim space ikiwa it's large enough.
         ikiwa length < self._DISCARD_FREE_SPACE_LARGER_THAN:
-            return
+            rudisha
         blocks = self._allocated_blocks.pop(arena)
         assert sio blocks
         toa self._start_to_block[(arena, 0)]

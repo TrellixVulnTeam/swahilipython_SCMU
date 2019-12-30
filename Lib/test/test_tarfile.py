@@ -1235,7 +1235,7 @@ kundi WriteTest(WriteTestBase, unittest.TestCase):
 
             eleza filter(tarinfo):
                 ikiwa os.path.basename(tarinfo.name) == "bar":
-                    return
+                    rudisha
                 tarinfo.uid = 123
                 tarinfo.uname = "foo"
                 rudisha tarinfo

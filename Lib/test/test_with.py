@@ -178,7 +178,7 @@ kundi FailureTestCase(unittest.TestCase):
     eleza testExitThrows(self):
         kundi ExitThrows(object):
             eleza __enter__(self):
-                return
+                rudisha
             eleza __exit__(self, *args):
                 ashiria RuntimeError(42)
         eleza shouldThrow():

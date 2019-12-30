@@ -1421,7 +1421,7 @@ kundi OptionParser (OptionContainer):
             # len of the opt string ni greater than 1.
             ikiwa arg == "--":
                 toa rargs[0]
-                return
+                rudisha
             lasivyo arg[0:2] == "--":
                 # process a single long option (possibly ukijumuisha value(s))
                 self._process_long_opt(rargs, values)

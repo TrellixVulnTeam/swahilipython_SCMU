@@ -427,7 +427,7 @@ kundi Element:
         """
         tag = self.tag
         ikiwa sio isinstance(tag, str) na tag ni sio Tupu:
-            return
+            rudisha
         t = self.text
         ikiwa t:
             tuma t
@@ -1640,7 +1640,7 @@ kundi XMLParser:
             jaribu:
                 data_handler = self.target.data
             tatizo AttributeError:
-                return
+                rudisha
             jaribu:
                 data_handler(self.entity[text[1:-1]])
             tatizo KeyError:
@@ -1660,10 +1660,10 @@ kundi XMLParser:
             # parse doctype contents
             ikiwa prefix == ">":
                 self._doctype = Tupu
-                return
+                rudisha
             text = text.strip()
             ikiwa sio text:
-                return
+                rudisha
             self._doctype.append(text)
             n = len(self._doctype)
             ikiwa n > 2:
@@ -1676,7 +1676,7 @@ kundi XMLParser:
                     name, type, system = self._doctype
                     pubid = Tupu
                 isipokua:
-                    return
+                    rudisha
                 ikiwa hasattr(self.target, "doctype"):
                     self.target.doctype(name, pubid, system[1:-1])
                 lasivyo hasattr(self, "doctype"):
@@ -1865,13 +1865,13 @@ kundi C14NWriterTarget:
             qname_text = data ikiwa data na _looks_like_prefix_name(data) isipokua Tupu
             self._start(*args, qname_text)
             ikiwa qname_text ni sio Tupu:
-                return
+                rudisha
         ikiwa data na self._root_seen:
             self._write(_escape_cdata_c14n(data))
 
     eleza start_ns(self, prefix, uri):
         ikiwa self._ignored_depth:
-            return
+            rudisha
         # we may have to resolve qnames kwenye text content
         ikiwa self._data:
             self._flush()
@@ -1881,7 +1881,7 @@ kundi C14NWriterTarget:
         ikiwa self._exclude_tags ni sio Tupu na (
                 self._ignored_depth ama tag kwenye self._exclude_tags):
             self._ignored_depth += 1
-            return
+            rudisha
         ikiwa self._data:
             self._flush()
 
@@ -1891,7 +1891,7 @@ kundi C14NWriterTarget:
         ikiwa self._qname_aware_tags ni sio Tupu na tag kwenye self._qname_aware_tags:
             # Need to parse text first to see ikiwa it requires a prefix declaration.
             self._pending_start = (tag, attrs, new_namespaces)
-            return
+            rudisha
         self._start(tag, attrs, new_namespaces)
 
     eleza _start(self, tag, attrs, new_namespaces, qname_text=Tupu):
@@ -1966,7 +1966,7 @@ kundi C14NWriterTarget:
     eleza end(self, tag):
         ikiwa self._ignored_depth:
             self._ignored_depth -= 1
-            return
+            rudisha
         ikiwa self._data:
             self._flush()
         self._write(f'</{self._qname(tag)[0]}>')
@@ -1977,9 +1977,9 @@ kundi C14NWriterTarget:
 
     eleza comment(self, text):
         ikiwa sio self._with_comments:
-            return
+            rudisha
         ikiwa self._ignored_depth:
-            return
+            rudisha
         ikiwa self._root_done:
             self._write('\n')
         lasivyo self._root_seen na self._data:
@@ -1990,7 +1990,7 @@ kundi C14NWriterTarget:
 
     eleza pi(self, target, data):
         ikiwa self._ignored_depth:
-            return
+            rudisha
         ikiwa self._root_done:
             self._write('\n')
         lasivyo self._root_seen na self._data:

@@ -173,7 +173,7 @@ eleza spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw
     object.
     """
     cmd_line = [sys.executable]
-    ikiwa sio interpreter_requires_environment():
+    ikiwa sio inerpreter_requires_environment():
         cmd_line.append('-E')
     cmd_line.extend(args)
     # Under Fedora (?), GNU readline can output junk on stderr when initialized,

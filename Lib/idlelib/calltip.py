@@ -60,16 +60,16 @@ kundi Calltip:
         hp = HyperParser(self.editwin, "insert")
         sur_paren = hp.get_surrounding_brackets('(')
         ikiwa sio sur_paren:
-            return
+            rudisha
         hp.set_index(sur_paren[0])
         expression  = hp.get_expression()
         ikiwa sio expression:
-            return
+            rudisha
         ikiwa sio evalfuncs na (expression.find('(') != -1):
-            return
+            rudisha
         argspec = self.fetch_tip(expression)
         ikiwa sio argspec:
-            return
+            rudisha
         self.active_calltip = self._calltip_window()
         self.active_calltip.showtip(argspec, sur_paren[0], sur_paren[1])
 

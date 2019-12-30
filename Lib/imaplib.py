@@ -257,7 +257,7 @@ kundi IMAP4:
             ikiwa sio version kwenye self.capabilities:
                 endelea
             self.PROTOCOL_VERSION = version
-            return
+            rudisha
 
         ashiria self.error('server sio IMAP4 compliant')
 
@@ -273,7 +273,7 @@ kundi IMAP4:
 
     eleza __exit__(self, *args):
         ikiwa self.state == "LOGOUT":
-            return
+            rudisha
 
         jaribu:
             self.logout()
@@ -1229,7 +1229,7 @@ kundi IMAP4:
         eleza _dump_ur(self, dict):
             # Dump untagged responses (in `dict').
             l = dict.items()
-            ikiwa sio l: return
+            ikiwa sio l: rudisha
             t = '\n\t\t'
             l = map(lambda x:'%s: "%s"' % (x[0], x[1][0] na '" "'.join(x[1]) ama ''), l)
             self._mesg('untagged responses dump:%s%s' % (t, t.join(l)))
@@ -1409,7 +1409,7 @@ kundi _Authenticator:
         rudisha oup
 
     eleza decode(self, inp):
-        ikiwa sio inp:
+        ikiwa sio in:
             rudisha b''
         rudisha binascii.a2b_base64(inp)
 

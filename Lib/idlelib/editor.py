@@ -679,7 +679,7 @@ kundi EditorWindow(object):
         """Get module name kutoka user na open it.
 
         Return module path ama Tupu kila calls by open_module_browser
-        when latter ni sio invoked kwenye named editor window.
+        when latter ni sio inoked kwenye named editor window.
         """
         # XXX This, open_module_browser, na open_path_browser
         # would fit better kwenye iomenu.IOBinding.
@@ -761,7 +761,7 @@ kundi EditorWindow(object):
 
     eleza _addcolorizer(self):
         ikiwa self.color:
-            return
+            rudisha
         ikiwa self.ispythonsource(self.io.filename):
             self.color = self.ColorDelegator()
         # can add more colorizers here...
@@ -772,7 +772,7 @@ kundi EditorWindow(object):
 
     eleza _rmcolorizer(self):
         ikiwa sio self.color:
-            return
+            rudisha
         self.color.removecolors()
         self.per.removefilter(self.color)
         self.color = Tupu
@@ -1384,7 +1384,7 @@ kundi EditorWindow(object):
             ikiwa c != pyparse.C_NONE:
                 # The current stmt hasn't ended yet.
                 ikiwa c == pyparse.C_STRING_FIRST_LINE:
-                    # after the first line of a string; do sio indent at all
+                    # after the first line of a string; do sio inent at all
                     pita
                 lasivyo c == pyparse.C_STRING_NEXT_LINES:
                     # inside a string which started before this line;
@@ -1480,7 +1480,7 @@ kundi EditorWindow(object):
 
     eleza toggle_line_numbers_event(self, event=Tupu):
         ikiwa self.line_numbers ni Tupu:
-            return
+            rudisha
 
         ikiwa self.line_numbers.is_shown:
             self.line_numbers.hide_sidebar()

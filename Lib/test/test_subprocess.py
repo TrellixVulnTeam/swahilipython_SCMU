@@ -1153,7 +1153,7 @@ kundi ProcessTestCase(BaseTestCase):
 
     eleza test_bufsize_equal_one_text_mode(self):
         # line ni flushed kwenye text mode ukijumuisha bufsize=1.
-        # we should get the full line kwenye return
+        # we should get the full line kwenye rudisha
         line = "line\n"
         self._test_bufsize_equal_one(line, line, universal_newlines=Kweli)
 
@@ -1966,7 +1966,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
                 self.assertEqual(p.stdout.read().strip(), bytes(sh, 'ascii'))
 
     eleza _kill_process(self, method, *args):
-        # Do sio inherit file handles kutoka the parent.
+        # Do sio inerit file handles kutoka the parent.
         # It should fix failures on some platforms.
         # Also set the SIGINT handler to the default to make sure it's not
         # being ignored (some tests rely on that.)
@@ -1993,7 +1993,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
     @unittest.skipIf(sys.platform.startswith(('netbsd', 'openbsd')),
                      "Due to known OS bug (issue #16762)")
     eleza _kill_dead_process(self, method, *args):
-        # Do sio inherit file handles kutoka the parent.
+        # Do sio inerit file handles kutoka the parent.
         # It should fix failures on some platforms.
         p = subprocess.Popen([sys.executable, "-c", """ikiwa 1:
                              agiza sys, time

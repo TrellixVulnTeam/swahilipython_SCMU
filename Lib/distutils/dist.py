@@ -314,7 +314,7 @@ Common commands: (see '--help-commands' kila more)
 
         ikiwa sio commands:
             self.announce(indent + "no commands known yet")
-            return
+            rudisha
 
         kila cmd_name kwenye commands:
             opt_dict = self.command_options.get(cmd_name)
@@ -478,11 +478,11 @@ Common commands: (see '--help-commands' kila more)
 
         # kila display options we rudisha immediately
         ikiwa self.handle_display_options(option_order):
-            return
+            rudisha
         wakati args:
             args = self._parse_command_opts(parser, args)
             ikiwa args ni Tupu:            # user asked kila help (and got it)
-                return
+                rudisha
 
         # Handle the cases of --help kama a "global" option, ie.
         # "setup.py --help" na "setup.py --help command ...".  For the
@@ -494,7 +494,7 @@ Common commands: (see '--help-commands' kila more)
             self._show_help(parser,
                             display_options=len(self.commands) == 0,
                             commands=self.commands)
-            return
+            rudisha
 
         # Oops, no commands found -- an end-user error
         ikiwa sio self.commands:
@@ -578,7 +578,7 @@ Common commands: (see '--help-commands' kila more)
         (args, opts) = parser.getopt(args[1:])
         ikiwa hasattr(opts, 'help') na opts.help:
             self._show_help(parser, display_options=0, commands=[cmd_class])
-            return
+            rudisha
 
         ikiwa (hasattr(cmd_class, 'help_options') na
                 isinstance(cmd_class.help_options, list)):
@@ -595,7 +595,7 @@ Common commands: (see '--help-commands' kila more)
                             % (func, help_option))
 
             ikiwa help_option_found:
-                return
+                rudisha
 
         # Put the options kutoka the command-line into their official
         # holding pen, the 'command_options' dictionary.
@@ -671,7 +671,7 @@ Common commands: (see '--help-commands' kila more)
     eleza handle_display_options(self, option_order):
         """If there were any non-global "display-only" options
         (--help-commands ama the metadata display options) on the command
-        line, display the requested info na rudisha true; isipokua return
+        line, display the requested info na rudisha true; isipokua rudisha
         false.
         """
         kutoka distutils.core agiza gen_usage
@@ -970,14 +970,14 @@ Common commands: (see '--help-commands' kila more)
     eleza run_command(self, command):
         """Do whatever it takes to run a command (including nothing at all,
         ikiwa the command has already been run).  Specifically: ikiwa we have
-        already created na run the command named by 'command', return
+        already created na run the command named by 'command', rudisha
         silently without doing anything.  If the command named by 'command'
         doesn't even have a command object yet, create one.  Then invoke
         'run()' on that command object (or an existing one).
         """
         # Already been here, done that? then rudisha silently.
         ikiwa self.have_run.get(command):
-            return
+            rudisha
 
         log.info("running %s", command)
         cmd_obj = self.get_command_obj(command)

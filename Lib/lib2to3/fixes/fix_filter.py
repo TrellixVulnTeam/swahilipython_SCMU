@@ -57,7 +57,7 @@ kundi FixFilter(fixer_base.ConditionalFix):
 
     eleza transform(self, node, results):
         ikiwa self.should_skip(node):
-            return
+            rudisha
 
         trailers = []
         ikiwa 'extra_trailers' kwenye results:

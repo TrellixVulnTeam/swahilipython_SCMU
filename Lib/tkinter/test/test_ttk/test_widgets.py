@@ -1556,7 +1556,7 @@ kundi TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             self.fail("The command associated to the treeview heading wasn't "
                 "invoked.")
 
-        # XXX The following raises an error kwenye a tcl interpreter, but sio in
+        # XXX The following raises an error kwenye a tcl interpreter, but haiko kwenye
         # Python
         #self.tv.heading('#0', command='I dont exist')
         #simulate_heading_click(5, 5)

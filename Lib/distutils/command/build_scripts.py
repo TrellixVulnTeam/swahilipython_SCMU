@@ -46,7 +46,7 @@ kundi build_scripts(Command):
 
     eleza run(self):
         ikiwa sio self.scripts:
-            return
+            rudisha
         self.copy_scripts()
 
 

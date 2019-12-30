@@ -95,7 +95,7 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
 
     eleza close(self):
         ikiwa self._closed:
-            return
+            rudisha
         self._closed = Kweli
 
         kila proto kwenye self._pipes.values():
@@ -237,7 +237,7 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
     eleza _try_finish(self):
         assert sio self._finished
         ikiwa self._returncode ni Tupu:
-            return
+            rudisha
         ikiwa all(p ni sio Tupu na p.disconnected
                kila p kwenye self._pipes.values()):
             self._finished = Kweli

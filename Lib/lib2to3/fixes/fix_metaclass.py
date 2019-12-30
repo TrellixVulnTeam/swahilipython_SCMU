@@ -49,7 +49,7 @@ eleza fixup_parse_tree(cls_node):
     kila node kwenye cls_node.children:
         ikiwa node.type == syms.suite:
             # already kwenye the preferred format, do nothing
-            return
+            rudisha
 
     # !%@#! oneliners have no suite node, we have to fake one up
     kila i, node kwenye enumerate(cls_node.children):
@@ -77,7 +77,7 @@ eleza fixup_simple_stmt(parent, i, stmt_node):
         ikiwa node.type == token.SEMI: # *sigh*
             koma
     isipokua:
-        return
+        rudisha
 
     node.remove() # kill the semicolon
     new_expr = Node(syms.expr_stmt, [])
@@ -137,7 +137,7 @@ eleza fixup_indent(suite):
         ikiwa isinstance(node, Leaf) na node.type != token.DEDENT:
             ikiwa node.prefix:
                 node.prefix = ''
-            return
+            rudisha
         isipokua:
             kids.extend(node.children[::-1])
 
@@ -151,7 +151,7 @@ kundi FixMetaclass(fixer_base.BaseFix):
 
     eleza transform(self, node, results):
         ikiwa sio has_metaclass(node):
-            return
+            rudisha
 
         fixup_parse_tree(node)
 

@@ -283,7 +283,7 @@ kundi bdist_rpm(Command):
                      "writing '%s'" % spec_path)
 
         ikiwa self.spec_only: # stop ikiwa requested
-            return
+            rudisha
 
         # Make a source distribution na copy to SOURCES directory with
         # optional icon.

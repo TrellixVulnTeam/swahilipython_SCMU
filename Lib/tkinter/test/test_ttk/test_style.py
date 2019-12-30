@@ -78,7 +78,7 @@ kundi StyleTest(AbstractTkTest, unittest.TestCase):
                 koma
         isipokua:
             # just one theme available, can't go on ukijumuisha tests
-            return
+            rudisha
 
         self.assertUongo(curr_theme == new_theme)
         self.assertUongo(new_theme != self.style.theme_use())

@@ -412,7 +412,7 @@ kundi TraceTestCase(unittest.TestCase):
         # issue1265: ikiwa the trace function contains a generator,
         # na ikiwa the traced function contains another generator
         # that ni sio completely exhausted, the trace stopped.
-        # Worse: the 'finally' clause was sio invoked.
+        # Worse: the 'finally' clause was sio inoked.
         tracer = self.make_tracer()
         sys.settrace(tracer.traceWithGenexp)
         generator_example()
@@ -620,7 +620,7 @@ kundi JumpTracer:
 
     eleza trace(self, frame, event, arg):
         ikiwa self.done:
-            return
+            rudisha
         # frame.f_code.co_firstlineno ni the first line of the decorator when
         # 'function' ni decorated na the decorator may be written using
         # multiple physical lines when it ni too long. Use the first line
@@ -806,7 +806,7 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(2)
             1/0
-            return
+            rudisha
         mwishowe:
             output.append(6)
             output.append(7)
@@ -817,7 +817,7 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(2)
             1/0
-            return
+            rudisha
         mwishowe:
             output.append(6)
             jaribu:
@@ -834,7 +834,7 @@ kundi JumpTestCase(unittest.TestCase):
         mwishowe:
             output.append(4)
             output.append(5)
-            return
+            rudisha
             jaribu:
                 output.append(8)
             mwishowe:
@@ -1053,7 +1053,7 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(3)
             ikiwa sio output: # always false
-                return
+                rudisha
             output.append(6)
         mwishowe:
             output.append(8)
@@ -1343,7 +1343,7 @@ kundi JumpTestCase(unittest.TestCase):
         mwishowe:
             output.append(4)
             output.append(5)
-            return
+            rudisha
         output.append(7)
 
     @jump_test(7, 4, [1, 6], (ValueError, 'into'))
@@ -1422,7 +1422,7 @@ output.append(4)
                "can only jump kutoka a 'line' trace event"))
     eleza test_no_jump_from_return_event(output):
         output.append(1)
-        return
+        rudisha
 
     @jump_test(2, 1, [1], event='exception', error=(ValueError,
                "can only jump kutoka a 'line' trace event"))

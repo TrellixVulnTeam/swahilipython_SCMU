@@ -244,11 +244,11 @@ eleza _fixup_main_from_name(mod_name):
     # __main__ attributes
     current_main = sys.modules['__main__']
     ikiwa mod_name == "__main__" ama mod_name.endswith(".__main__"):
-        return
+        rudisha
 
     # If this process was forked, __main__ may already be populated
     ikiwa getattr(current_main.__spec__, "name", Tupu) == mod_name:
-        return
+        rudisha
 
     # Otherwise, __main__ may contain some non-main code where we need to
     # support unpickling it properly. We rerun it kama __mp_main__ na make
@@ -272,12 +272,12 @@ eleza _fixup_main_from_path(main_path):
     # See https://github.com/ipython/ipython/issues/4698
     main_name = os.path.splitext(os.path.basename(main_path))[0]
     ikiwa main_name == 'ipython':
-        return
+        rudisha
 
     # Otherwise, ikiwa __file__ already has the setting we expect,
     # there's nothing more to do
     ikiwa getattr(current_main, '__file__', Tupu) == main_path:
-        return
+        rudisha
 
     # If the parent process has sent a path through rather than a module
     # name we assume it ni an executable script that may contain

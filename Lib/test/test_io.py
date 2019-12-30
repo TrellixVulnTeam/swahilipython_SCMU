@@ -961,12 +961,12 @@ kundi IOTest(unittest.TestCase):
             # (test method, total data available, read buffer size, expected
             #     read size)
             ("readinto", 10, 5, 5),
-            ("readinto", 10, 6, 6),  # More than read1() can return
+            ("readinto", 10, 6, 6),  # More than read1() can rudisha
             ("readinto", 5, 6, 5),  # Buffer larger than total available
             ("readinto", 6, 7, 6),
             ("readinto", 10, 0, 0),  # Empty buffer
             ("readinto1", 10, 5, 5),  # Result limited to single read1() call
-            ("readinto1", 10, 6, 5),  # Buffer larger than read1() can return
+            ("readinto1", 10, 6, 5),  # Buffer larger than read1() can rudisha
             ("readinto1", 5, 6, 5),  # Buffer larger than total available
             ("readinto1", 6, 7, 5),
             ("readinto1", 10, 0, 0),  # Empty buffer
@@ -1816,7 +1816,7 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
                             jaribu:
                                 s = queue.popleft()
                             tatizo IndexError:
-                                return
+                                rudisha
                             bufio.write(s)
                     tatizo Exception kama e:
                         errors.append(e)

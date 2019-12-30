@@ -45,7 +45,7 @@ kundi HTTPError(URLError, urllib.response.addinfourl):
         # The addinfourl classes depend on fp being a valid file
         # object.  In some cases, the HTTPError may sio have a valid
         # file object.  If this happens, the simplest workaround ni to
-        # sio initialize the base classes.
+        # sio intialize the base classes.
         ikiwa fp ni sio Tupu:
             self.__super_init(fp, hdrs, url, code)
 

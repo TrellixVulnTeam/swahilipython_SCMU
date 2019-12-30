@@ -289,7 +289,7 @@ kundi ModuleFinderTest(unittest.TestCase):
 ##                tatizo:
 ##                    agiza traceback; traceback.print_exc()
 ##                sys.path = opath
-##                return
+##                rudisha
             modules = sorted(set(modules))
             found = sorted(mf.modules)
             # check ikiwa we found what we expected, sio more, sio less

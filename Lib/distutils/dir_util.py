@@ -186,7 +186,7 @@ eleza remove_tree(directory, verbose=1, dry_run=0):
     ikiwa verbose >= 1:
         log.info("removing '%s' (and everything under it)", directory)
     ikiwa dry_run:
-        return
+        rudisha
     cmdtuples = []
     _build_cmdtuple(directory, cmdtuples)
     kila cmd kwenye cmdtuples:

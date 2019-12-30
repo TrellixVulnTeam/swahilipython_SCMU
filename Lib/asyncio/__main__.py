@@ -37,14 +37,14 @@ kundi AsyncIOInteractiveConsole(code.InteractiveConsole):
             tatizo KeyboardInterrupt kama ex:
                 repl_future_interrupted = Kweli
                 future.set_exception(ex)
-                return
+                rudisha
             tatizo BaseException kama ex:
                 future.set_exception(ex)
-                return
+                rudisha
 
-            ikiwa sio inspect.iscoroutine(coro):
+            ikiwa sio inpect.iscoroutine(coro):
                 future.set_result(coro)
-                return
+                rudisha
 
             jaribu:
                 repl_future = self.loop.create_task(coro)

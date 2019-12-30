@@ -824,7 +824,7 @@ kundi GCTests(unittest.TestCase):
 
     eleza test_38379(self):
         # When a finalizer resurrects objects, stats were reporting them as
-        # having been collected.  This affected both collect()'s return
+        # having been collected.  This affected both collect()'s rudisha
         # value na the dicts returned by get_stats().
         N = 100
 

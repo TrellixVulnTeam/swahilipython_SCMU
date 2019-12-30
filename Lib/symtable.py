@@ -219,7 +219,7 @@ kundi Symbol(object):
 
         Note that a single name can be bound to multiple objects.  If
         is_namespace() ni true, the name may also be bound to other
-        objects, like an int ama list, that does sio introduce a new
+        objects, like an int ama list, that does sio inroduce a new
         namespace.
         """
         rudisha bool(self.__namespaces)

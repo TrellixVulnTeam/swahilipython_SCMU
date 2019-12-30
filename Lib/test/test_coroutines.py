@@ -969,7 +969,7 @@ kundi CoroutineTest(unittest.TestCase):
     eleza test_await_5(self):
         kundi Awaitable:
             eleza __await__(self):
-                return
+                rudisha
 
         async eleza foo():
             rudisha (await Awaitable())
@@ -1356,7 +1356,7 @@ kundi CoroutineTest(unittest.TestCase):
             nonlocal CNT
             async ukijumuisha CM():
                 CNT += 1
-                return
+                rudisha
         ukijumuisha self.assertRaisesRegex(
                 TypeError,
                 "'async with' received an object kutoka __aexit__ "

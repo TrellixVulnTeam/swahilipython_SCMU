@@ -49,13 +49,13 @@ eleza _iglob(pathname, recursive, dironly):
             # Patterns ending ukijumuisha a slash should match only directories
             ikiwa os.path.isdir(dirname):
                 tuma pathname
-        return
+        rudisha
     ikiwa sio dirname:
         ikiwa recursive na _isrecursive(basename):
             tuma kutoka _glob2(dirname, basename, dironly)
         isipokua:
             tuma kutoka _glob1(dirname, basename, dironly)
-        return
+        rudisha
     # `os.path.split()` returns the argument itself kama a dirname ikiwa it ni a
     # drive ama UNC path.  Prevent an infinite recursion ikiwa a drive ama UNC path
     # contains magic characters (i.e. r'\\?\C:').
@@ -128,7 +128,7 @@ eleza _iterdir(dirname, dironly):
                 tatizo OSError:
                     pita
     tatizo OSError:
-        return
+        rudisha
 
 # Recursively tumas relative pathnames inside a literal directory.
 eleza _rlistdir(dirname, dironly):

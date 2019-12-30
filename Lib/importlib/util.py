@@ -44,7 +44,7 @@ eleza _find_spec_from_path(name, path=Tupu):
 
     First, sys.modules ni checked to see ikiwa the module was already imported. If
     so, then sys.modules[name].__spec__ ni returned. If that happens to be
-    set to Tupu, then ValueError ni raised. If the module ni sio in
+    set to Tupu, then ValueError ni raised. If the module ni haiko kwenye
     sys.modules, then sys.meta_path ni searched kila a suitable spec ukijumuisha the
     value of 'path' given to the finders. Tupu ni returned ikiwa no spec could
     be found.
@@ -75,7 +75,7 @@ eleza find_spec(name, package=Tupu):
 
     First, sys.modules ni checked to see ikiwa the module was already imported. If
     so, then sys.modules[name].__spec__ ni returned. If that happens to be
-    set to Tupu, then ValueError ni raised. If the module ni sio in
+    set to Tupu, then ValueError ni raised. If the module ni haiko kwenye
     sys.modules, then sys.meta_path ni searched kila a suitable spec ukijumuisha the
     value of 'path' given to the finders. Tupu ni returned ikiwa no spec could
     be found.

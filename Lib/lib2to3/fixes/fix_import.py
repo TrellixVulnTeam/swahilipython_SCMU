@@ -50,7 +50,7 @@ kundi FixImport(fixer_base.BaseFix):
 
     eleza transform(self, node, results):
         ikiwa self.skip:
-            return
+            rudisha
         imp = results['imp']
 
         ikiwa node.type == syms.import_from:
@@ -76,7 +76,7 @@ kundi FixImport(fixer_base.BaseFix):
                     # We won't handle both sibling na absolute imports kwenye the
                     # same statement at the moment.
                     self.warning(node, "absolute na local imports together")
-                return
+                rudisha
 
             new = FromImport(".", [imp])
             new.prefix = node.prefix

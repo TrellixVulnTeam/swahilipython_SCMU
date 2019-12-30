@@ -268,7 +268,7 @@ eleza findall(dir=os.curdir):
 
 
 eleza glob_to_re(pattern):
-    """Translate a shell-like glob pattern to a regular expression; return
+    """Translate a shell-like glob pattern to a regular expression; rudisha
     a string containing the regex.  Differs kutoka 'fnmatch.translate()' in
     that '*' does sio match "special characters" (which are
     platform-specific).

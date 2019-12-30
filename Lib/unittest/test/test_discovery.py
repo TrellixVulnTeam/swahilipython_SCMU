@@ -35,7 +35,7 @@ kundi TestDiscovery(unittest.TestCase):
 
         ikiwa sio __debug__:
             # asserts are off
-            return
+            rudisha
 
         ukijumuisha self.assertRaises(AssertionError):
             loader._get_name_from_path('/bar/baz.py')

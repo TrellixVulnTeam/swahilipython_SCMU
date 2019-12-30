@@ -166,7 +166,7 @@ kundi PrettyPrinter:
             stream.write(_recursion(object))
             self._recursive = Kweli
             self._readable = Uongo
-            return
+            rudisha
         rep = self._repr(object, context, level)
         max_width = self._width - indent - allowance
         ikiwa len(rep) > max_width:
@@ -175,13 +175,13 @@ kundi PrettyPrinter:
                 context[objid] = 1
                 p(self, object, stream, indent, allowance, context, level + 1)
                 toa context[objid]
-                return
+                rudisha
             lasivyo isinstance(object, dict):
                 context[objid] = 1
                 self._pprint_dict(object, stream, indent, allowance,
                                   context, level + 1)
                 toa context[objid]
-                return
+                rudisha
         stream.write(rep)
 
     _dispatch = {}
@@ -206,7 +206,7 @@ kundi PrettyPrinter:
     eleza _pprint_ordered_dict(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            return
+            rudisha
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         self._format(list(object.items()), stream,
@@ -236,7 +236,7 @@ kundi PrettyPrinter:
     eleza _pprint_set(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            return
+            rudisha
         typ = object.__class__
         ikiwa typ ni set:
             stream.write('{')
@@ -257,7 +257,7 @@ kundi PrettyPrinter:
         write = stream.write
         ikiwa sio len(object):
             write(repr(object))
-            return
+            rudisha
         chunks = []
         lines = object.splitlines(Kweli)
         ikiwa level == 1:
@@ -292,7 +292,7 @@ kundi PrettyPrinter:
                     chunks.append(repr(current))
         ikiwa len(chunks) == 1:
             write(rep)
-            return
+            rudisha
         ikiwa level == 1:
             write('(')
         kila i, rep kwenye enumerate(chunks):
@@ -308,7 +308,7 @@ kundi PrettyPrinter:
         write = stream.write
         ikiwa len(object) <= 4:
             write(repr(object))
-            return
+            rudisha
         parens = level == 1
         ikiwa parens:
             indent += 1
@@ -371,7 +371,7 @@ kundi PrettyPrinter:
         jaribu:
             next_ent = next(it)
         tatizo StopIteration:
-            return
+            rudisha
         last = Uongo
         wakati sio last:
             ent = next_ent
@@ -419,7 +419,7 @@ kundi PrettyPrinter:
     eleza _pprint_default_dict(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            return
+            rudisha
         rdf = self._repr(object.default_factory, context, level)
         cls = object.__class__
         indent += len(cls.__name__) + 1
@@ -432,7 +432,7 @@ kundi PrettyPrinter:
     eleza _pprint_counter(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            return
+            rudisha
         cls = object.__class__
         stream.write(cls.__name__ + '({')
         ikiwa self._indent_per_level > 1:
@@ -448,7 +448,7 @@ kundi PrettyPrinter:
     eleza _pprint_chain_map(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object.maps):
             stream.write(repr(object))
-            return
+            rudisha
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1
@@ -465,7 +465,7 @@ kundi PrettyPrinter:
     eleza _pprint_deque(self, object, stream, indent, allowance, context, level):
         ikiwa sio len(object):
             stream.write(repr(object))
-            return
+            rudisha
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1

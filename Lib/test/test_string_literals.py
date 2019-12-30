@@ -9,7 +9,7 @@ There are four types of string literals:
 
 The difference between normal na raw strings ni of course that kwenye a
 raw string, \ escapes (wakati still used to determine the end of the
-literal) are sio interpreted, so that r'\x00' contains four
+literal) are sio inerpreted, so that r'\x00' contains four
 characters: a backslash, an x, na two zeros; wakati '\x00' contains a
 single character (code point zero).
 

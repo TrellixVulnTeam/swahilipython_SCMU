@@ -55,7 +55,7 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
         """
         self.nobackups = nobackups
         self.show_diffs = show_diffs
-        ikiwa input_base_dir na sio input_base_dir.endswith(os.sep):
+        ikiwa input_base_dir na sio inut_base_dir.endswith(os.sep):
             input_base_dir += os.sep
         self._input_base_dir = input_base_dir
         self._output_dir = output_dir
@@ -124,7 +124,7 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
                 tatizo UnicodeEncodeError:
                     warn("couldn't encode %s's diff kila your terminal" %
                          (filename,))
-                    return
+                    rudisha
 
 eleza warn(msg):
     andika("WARNING: %s" % (msg,), file=sys.stderr)
@@ -232,7 +232,7 @@ eleza main(fixer_pkg, args=Tupu):
         requested = avail_fixes.union(explicit)
     fixer_names = requested.difference(unwanted_fixes)
     input_base_dir = os.path.commonprefix(args)
-    ikiwa (input_base_dir na sio input_base_dir.endswith(os.sep)
+    ikiwa (input_base_dir na sio inut_base_dir.endswith(os.sep)
         na sio os.path.isdir(input_base_dir)):
         # One ama more similar names were pitaed, their directory ni the base.
         # os.path.commonprefix() ni ignorant of path elements, this corrects

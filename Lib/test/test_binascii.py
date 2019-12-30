@@ -107,7 +107,7 @@ kundi BinASCIITest(unittest.TestCase):
             res += b
         self.assertEqual(res, self.rawdata)
 
-        # Test base64 ukijumuisha just invalid characters, which should return
+        # Test base64 ukijumuisha just invalid characters, which should rudisha
         # empty strings. TBD: shouldn't it ashiria an exception instead ?
         self.assertEqual(binascii.a2b_base64(self.type2test(fillers)), b'')
 

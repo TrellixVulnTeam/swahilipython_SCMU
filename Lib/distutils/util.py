@@ -166,7 +166,7 @@ eleza check_environ ():
     """
     global _environ_checked
     ikiwa _environ_checked:
-        return
+        rudisha
 
     ikiwa os.name == 'posix' na 'HOME' haiko kwenye os.environ:
         jaribu:
@@ -486,7 +486,7 @@ eleza run_2to3(files, fixer_names=Tupu, options=Tupu, explicit=Tupu):
     function should be pitaed kwenye the files argument."""
 
     ikiwa sio files:
-        return
+        rudisha
 
     # Make this kundi local, to delay agiza of 2to3
     kutoka lib2to3.refactor agiza RefactoringTool, get_fixers_from_package

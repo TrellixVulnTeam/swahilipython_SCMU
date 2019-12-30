@@ -254,7 +254,7 @@ kundi _Framer:
         # object. Be careful sio to concatenate the header na the payload
         # prior to calling 'write' kama we do sio want to allocate a large
         # temporary bytes object.
-        # We intentionally do sio insert a protocol 4 frame opcode to make
+        # We intentionally do sio inert a protocol 4 frame opcode to make
         # it possible to optimize file.read calls kwenye the loader.
         write(header)
         write(payload)
@@ -502,7 +502,7 @@ kundi _Pickler:
         # scheme allows the Unpickler memo to be implemented kama a plain (but
         # growable) array, indexed by memo key.
         ikiwa self.fast:
-            return
+            rudisha
         assert id(obj) haiko kwenye self.memo
         idx = len(self.memo)
         self.write(self.put(idx))
@@ -537,13 +537,13 @@ kundi _Pickler:
         pid = self.persistent_id(obj)
         ikiwa pid ni sio Tupu na save_persistent_id:
             self.save_pers(pid)
-            return
+            rudisha
 
         # Check the memo
         x = self.memo.get(id(obj))
         ikiwa x ni sio Tupu:
             self.write(self.get(x[0]))
-            return
+            rudisha
 
         rv = NotImplemented
         reduce = getattr(self, "reducer_override", Tupu)
@@ -556,7 +556,7 @@ kundi _Pickler:
             f = self.dispatch.get(t)
             ikiwa f ni sio Tupu:
                 f(self, obj)  # Call unbound method ukijumuisha explicit self
-                return
+                rudisha
 
             # Check private dispatch table ikiwa any, ama isipokua
             # copyreg.dispatch_table
@@ -568,7 +568,7 @@ kundi _Pickler:
                 # class
                 ikiwa issubclass(t, type):
                     self.save_global(obj)
-                    return
+                    rudisha
 
                 # Check kila a __reduce_ex__ method, fall back to __reduce__
                 reduce = getattr(obj, "__reduce_ex__", Tupu)
@@ -585,7 +585,7 @@ kundi _Pickler:
         # Check kila string returned by reduce(), meaning "save kama global"
         ikiwa isinstance(rv, str):
             self.save_global(obj, rv)
-            return
+            rudisha
 
         # Assert that reduce() returned a tuple
         ikiwa sio isinstance(rv, tuple):
@@ -755,14 +755,14 @@ kundi _Pickler:
             ikiwa obj >= 0:
                 ikiwa obj <= 0xff:
                     self.write(BININT1 + pack("<B", obj))
-                    return
+                    rudisha
                 ikiwa obj <= 0xffff:
                     self.write(BININT2 + pack("<H", obj))
-                    return
+                    rudisha
             # Next check kila 4-byte signed ints:
             ikiwa -0x80000000 <= obj <= 0x7fffffff:
                 self.write(BININT + pack("<i", obj))
-                return
+                rudisha
         ikiwa self.proto >= 2:
             encoded = encode_long(obj)
             n = len(encoded)
@@ -770,7 +770,7 @@ kundi _Pickler:
                 self.write(LONG1 + pack("<B", n) + encoded)
             isipokua:
                 self.write(LONG4 + pack("<i", n) + encoded)
-            return
+            rudisha
         ikiwa -0x80000000 <= obj <= 0x7fffffff:
             self.write(INT + repr(obj).encode("ascii") + b'\n')
         isipokua:
@@ -791,7 +791,7 @@ kundi _Pickler:
             isipokua:
                 self.save_reduce(codecs.encode,
                                  (str(obj, 'latin1'), 'latin1'), obj=obj)
-            return
+            rudisha
         n = len(obj)
         ikiwa n <= 0xff:
             self.write(SHORT_BINBYTES + pack("<B", n) + obj)
@@ -810,7 +810,7 @@ kundi _Pickler:
                 self.save_reduce(bytearray, (), obj=obj)
             isipokua:
                 self.save_reduce(bytearray, (bytes(obj),), obj=obj)
-            return
+            rudisha
         n = len(obj)
         ikiwa n >= self.framer._FRAME_SIZE_TARGET:
             self._write_large_bytes(BYTEARRAY8 + pack("<Q", n), obj)
@@ -874,7 +874,7 @@ kundi _Pickler:
                 self.write(EMPTY_TUPLE)
             isipokua:
                 self.write(MARK + TUPLE)
-            return
+            rudisha
 
         n = len(obj)
         save = self.save
@@ -889,7 +889,7 @@ kundi _Pickler:
             isipokua:
                 self.write(_tuplesize2code[n])
                 self.memoize(obj)
-            return
+            rudisha
 
         # proto 0 ama proto 1 na tuple isn't empty, ama proto > 1 na tuple
         # has more than 3 elements.
@@ -911,7 +911,7 @@ kundi _Pickler:
                 write(POP_MARK + get)
             isipokua:   # proto 0 -- POP_MARK sio available
                 write(POP * (n+1) + get)
-            return
+            rudisha
 
         # No recursion.
         write(TUPLE)
@@ -941,7 +941,7 @@ kundi _Pickler:
             kila x kwenye items:
                 save(x)
                 write(APPEND)
-            return
+            rudisha
 
         it = iter(items)
         wakati Kweli:
@@ -957,7 +957,7 @@ kundi _Pickler:
                 write(APPEND)
             # isipokua tmp ni empty, na we're done
             ikiwa n < self._BATCHSIZE:
-                return
+                rudisha
 
     eleza save_dict(self, obj):
         ikiwa self.bin:
@@ -982,7 +982,7 @@ kundi _Pickler:
                 save(k)
                 save(v)
                 write(SETITEM)
-            return
+            rudisha
 
         it = iter(items)
         wakati Kweli:
@@ -1001,7 +1001,7 @@ kundi _Pickler:
                 write(SETITEM)
             # isipokua tmp ni empty, na we're done
             ikiwa n < self._BATCHSIZE:
-                return
+                rudisha
 
     eleza save_set(self, obj):
         save = self.save
@@ -1009,7 +1009,7 @@ kundi _Pickler:
 
         ikiwa self.proto < 4:
             self.save_reduce(set, (list(obj),), obj=obj)
-            return
+            rudisha
 
         write(EMPTY_SET)
         self.memoize(obj)
@@ -1024,7 +1024,7 @@ kundi _Pickler:
                     save(item)
                 write(ADDITEMS)
             ikiwa n < self._BATCHSIZE:
-                return
+                rudisha
     dispatch[set] = save_set
 
     eleza save_frozenset(self, obj):
@@ -1033,7 +1033,7 @@ kundi _Pickler:
 
         ikiwa self.proto < 4:
             self.save_reduce(frozenset, (list(obj),), obj=obj)
-            return
+            rudisha
 
         write(MARK)
         kila item kwenye obj:
@@ -1044,7 +1044,7 @@ kundi _Pickler:
             # recursive. In this case, throw away everything we put on the
             # stack, na fetch the object back kutoka the memo.
             write(POP_MARK + self.get(self.memo[id(obj)][0]))
-            return
+            rudisha
 
         write(FROZENSET)
         self.memoize(obj)
@@ -1084,7 +1084,7 @@ kundi _Pickler:
                     write(EXT2 + pack("<H", code))
                 isipokua:
                     write(EXT4 + pack("<i", code))
-                return
+                rudisha
         lastname = name.rpartition('.')[2]
         ikiwa parent ni module:
             name = lastname
@@ -1555,7 +1555,7 @@ kundi _Unpickler:
         obj = _extension_cache.get(code, nil)
         ikiwa obj ni sio nil:
             self.append(obj)
-            return
+            rudisha
         key = _inverted_registry.get(code)
         ikiwa sio key:
             ikiwa code <= 0: # note that 0 ni forbidden
@@ -1659,7 +1659,7 @@ kundi _Unpickler:
             pita
         isipokua:
             extend(items)
-            return
+            rudisha
         # Even ikiwa the PEP 307 requires extend() na append() methods,
         # fall back on append() ikiwa the object has no extend() method
         # kila backward compatibility.
@@ -1701,7 +1701,7 @@ kundi _Unpickler:
         setstate = getattr(inst, "__setstate__", Tupu)
         ikiwa setstate ni sio Tupu:
             setstate(state)
-            return
+            rudisha
         slotstate = Tupu
         ikiwa isinstance(state, tuple) na len(state) == 2:
             state, slotstate = state

@@ -314,7 +314,7 @@ kundi XMLRPCTestCase(unittest.TestCase):
                 self.rfile.read(length)
                 ikiwa self.handled:
                     self.close_connection = Kweli
-                    return
+                    rudisha
                 response = xmlrpclib.dumps((5,), methodresponse=Kweli)
                 response = response.encode()
                 self.send_response(http.HTTPStatus.OK)
@@ -596,7 +596,7 @@ eleza http_server(evt, numrequests, requestHandler=Tupu, encoding=Tupu):
     kundi MyXMLRPCServer(xmlrpc.server.SimpleXMLRPCServer):
         eleza get_request(self):
             # Ensure the socket ni always non-blocking.  On Linux, socket
-            # attributes are sio inherited like they are on *BSD na Windows.
+            # attributes are sio inerited like they are on *BSD na Windows.
             s, port = self.socket.accept()
             s.setblocking(Kweli)
             rudisha s, port
@@ -659,7 +659,7 @@ eleza http_multi_server(evt, numrequests, requestHandler=Tupu):
     kundi MyXMLRPCServer(xmlrpc.server.MultiPathXMLRPCServer):
         eleza get_request(self):
             # Ensure the socket ni always non-blocking.  On Linux, socket
-            # attributes are sio inherited like they are on *BSD na Windows.
+            # attributes are sio inerited like they are on *BSD na Windows.
             s, port = self.socket.accept()
             s.setblocking(Kweli)
             rudisha s, port

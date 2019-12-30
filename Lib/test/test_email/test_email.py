@@ -3130,7 +3130,7 @@ kundi TestMiscellaneous(TestEmailBase):
 
     eleza test_parseaddr_preserves_quoted_pairs_in_addresses(self):
         # issue 10005.  Note that kwenye the third test the second pair of
-        # backslashes ni sio actually a quoted pair because it ni sio inside a
+        # backslashes ni sio actually a quoted pair because it ni sio inide a
         # comment ama quoted string: the address being parsed has a quoted
         # string containing a quoted backslash, followed by 'example' na two
         # backslashes, followed by another quoted string containing a space na
@@ -4297,13 +4297,13 @@ kundi TestQuopri(unittest.TestCase):
     eleza test_header_quopri_len(self):
         eq = self.assertEqual
         eq(quoprimime.header_length(b'hello'), 5)
-        # RFC 2047 chrome ni sio included kwenye header_length().
+        # RFC 2047 chrome ni sio inluded kwenye header_length().
         eq(len(quoprimime.header_encode(b'hello', charset='xxx')),
            quoprimime.header_length(b'hello') +
            # =?xxx?q?...?= means 10 extra characters
            10)
         eq(quoprimime.header_length(b'h@e@l@l@o@'), 20)
-        # RFC 2047 chrome ni sio included kwenye header_length().
+        # RFC 2047 chrome ni sio inluded kwenye header_length().
         eq(len(quoprimime.header_encode(b'h@e@l@l@o@', charset='xxx')),
            quoprimime.header_length(b'h@e@l@l@o@') +
            # =?xxx?q?...?= means 10 extra characters

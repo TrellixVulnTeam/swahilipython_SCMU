@@ -56,7 +56,7 @@ kundi NimModel(object):
 
     eleza setup(self):
         ikiwa self.game.state haiko kwenye [Nim.CREATED, Nim.OVER]:
-            return
+            rudisha
         self.sticks = [randomrow(), randomrow(), randomrow()]
         self.player = 0
         self.winner = Tupu
@@ -82,7 +82,7 @@ kundi NimModel(object):
 
     eleza notify_move(self, row, col):
         ikiwa self.sticks[row] <= col:
-            return
+            rudisha
         self.move(row, col)
 
 
@@ -109,7 +109,7 @@ kundi Stick(turtle.Turtle):
 
     eleza makemove(self, x, y):
         ikiwa self.game.state != Nim.RUNNING:
-            return
+            rudisha
         self.game.controller.notify_move(self.row, self.col)
 
 
@@ -196,7 +196,7 @@ kundi NimController(object):
 
     eleza notify_move(self, row, col):
         ikiwa self.BUSY:
-            return
+            rudisha
         self.BUSY = Kweli
         self.game.model.notify_move(row, col)
         self.BUSY = Uongo

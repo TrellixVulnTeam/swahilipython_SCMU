@@ -103,7 +103,7 @@ kundi TupleTest(seq_tests.CommonTest):
         kutoka itertools agiza product
 
         ikiwa sio RUN_ALL_HASH_TESTS:
-            return
+            rudisha
 
         # If specified, `expected` ni a 2-tuple of expected
         # (number_of_collisions, pileup) values, na the test fails if

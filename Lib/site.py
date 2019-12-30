@@ -100,7 +100,7 @@ eleza makepath(*paths):
 eleza abs_paths():
     """Set all module __file__ na __cached__ attributes to an absolute path"""
     kila m kwenye set(sys.modules.values()):
-        ikiwa (getattr(getattr(m, '__loader__', Tupu), '__module__', Tupu) sio in
+        ikiwa (getattr(getattr(m, '__loader__', Tupu), '__module__', Tupu) haiko kwenye
                 ('_frozen_importlib', '_frozen_importlib_external')):
             endelea   # don't mess ukijumuisha a PEP 302-supplied __file__
         jaribu:
@@ -159,7 +159,7 @@ eleza addpackage(sitedir, name, known_paths):
     jaribu:
         f = io.TextIOWrapper(io.open_code(fullname))
     tatizo OSError:
-        return
+        rudisha
     ukijumuisha f:
         kila n, line kwenye enumerate(f):
             ikiwa line.startswith("#"):
@@ -202,7 +202,7 @@ eleza addsitedir(sitedir, known_paths=Tupu):
     jaribu:
         names = os.listdir(sitedir)
     tatizo OSError:
-        return
+        rudisha
     names = [name kila name kwenye names ikiwa name.endswith(".pth")]
     kila name kwenye sorted(names):
         addpackage(sitedir, name, known_paths)
@@ -279,7 +279,7 @@ eleza getuserbase():
     """Returns the `user base` directory path.
 
     The `user base` directory can be used to store data. If the global
-    variable ``USER_BASE`` ni sio initialized yet, this function will also set
+    variable ``USER_BASE`` ni sio intialized yet, this function will also set
     it.
     """
     global USER_BASE
@@ -291,7 +291,7 @@ eleza getuserbase():
 eleza getusersitepackages():
     """Returns the user-specific site-packages directory path.
 
-    If the global variable ``USER_SITE`` ni sio initialized yet, this
+    If the global variable ``USER_SITE`` ni sio intialized yet, this
     function will also set it.
     """
     global USER_SITE
@@ -409,7 +409,7 @@ eleza enablerlcompleter():
             agiza readline
             agiza rlcompleter
         tatizo ImportError:
-            return
+            rudisha
 
         # Reading the initialization (config) file may sio be enough to set a
         # completion key, so we set one first na then read the file.

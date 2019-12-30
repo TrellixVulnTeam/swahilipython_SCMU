@@ -188,7 +188,7 @@ kundi EnvBuilder:
                         os.symlink(os.path.basename(src), dst)
                     isipokua:
                         os.symlink(src, dst)
-                    return
+                    rudisha
                 tatizo Exception:   # may need to use a more specific exception
                     logger.warning('Unable to symlink %r to %r', src, dst)
 
@@ -215,7 +215,7 @@ kundi EnvBuilder:
             ikiwa sio os.path.exists(src):
                 ikiwa sio bad_src:
                     logger.warning('Unable to copy %r', src)
-                return
+                rudisha
 
             shutil.copyfile(src, dst)
 

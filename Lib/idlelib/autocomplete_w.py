@@ -234,11 +234,11 @@ kundi AutoCompleteWindow:
     eleza winconfig_event(self, event):
         ikiwa self.is_configuring:
             # Avoid running on recursive <Configure> callback invocations.
-            return
+            rudisha
 
         self.is_configuring = Kweli
         ikiwa sio self.is_active():
-            return
+            rudisha
         # Position the completion list window
         text = self.widget
         text.see(self.startindex)
@@ -269,7 +269,7 @@ kundi AutoCompleteWindow:
 
     eleza _hide_event_check(self):
         ikiwa sio self.autocompletewindow:
-            return
+            rudisha
 
         jaribu:
             ikiwa sio self.autocompletewindow.focus_get():
@@ -285,7 +285,7 @@ kundi AutoCompleteWindow:
         ikiwa self.is_active():
             ikiwa event.type == EventType.FocusOut:
                 # On Windows platform, it will need to delay the check for
-                # acw.focus_get() when click on acw, otherwise it will return
+                # acw.focus_get() when click on acw, otherwise it will rudisha
                 # Tupu na close the window
                 self.widget.after(1, self._hide_event_check)
             lasivyo event.type == EventType.ButtonPress:
@@ -422,7 +422,7 @@ kundi AutoCompleteWindow:
 
     eleza keyrelease_event(self, event):
         ikiwa sio self.is_active():
-            return
+            rudisha
         ikiwa self.widget.index("insert") != \
            self.widget.index("%s+%dc" % (self.startindex, len(self.start))):
             # If we didn't catch an event which moved the insert, close window
@@ -437,7 +437,7 @@ kundi AutoCompleteWindow:
 
     eleza hide_window(self):
         ikiwa sio self.is_active():
-            return
+            rudisha
 
         # unbind events
         self.autocompletewindow.event_delete(HIDE_VIRTUAL_EVENT_NAME,

@@ -127,14 +127,14 @@ eleza _uninstall_helper(*, verbosity=0):
     jaribu:
         agiza pip
     tatizo ImportError:
-        return
+        rudisha
 
     # If the pip version doesn't match the bundled one, leave it alone
     ikiwa pip.__version__ != _PIP_VERSION:
         msg = ("ensurepip will only uninstall a matching version "
                "({!r} installed, {!r} bundled)")
         andika(msg.format(pip.__version__, _PIP_VERSION), file=sys.stderr)
-        return
+        rudisha
 
     _disable_pip_configuration_settings()
 

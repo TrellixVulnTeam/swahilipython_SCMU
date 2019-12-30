@@ -277,7 +277,7 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
     eleza _iterencode_list(lst, _current_indent_level):
         ikiwa sio lst:
             tuma '[]'
-            return
+            rudisha
         ikiwa markers ni sio Tupu:
             markerid = id(lst)
             ikiwa markerid kwenye markers:
@@ -333,7 +333,7 @@ eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
     eleza _iterencode_dict(dct, _current_indent_level):
         ikiwa sio dct:
             tuma '{}'
-            return
+            rudisha
         ikiwa markers ni sio Tupu:
             markerid = id(dct)
             ikiwa markerid kwenye markers:

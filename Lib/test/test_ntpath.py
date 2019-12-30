@@ -58,7 +58,7 @@ eleza tester(fn, wantResult):
 kundi NtpathTestCase(unittest.TestCase):
     eleza assertPathEqual(self, path1, path2):
         ikiwa path1 == path2 ama _norm(path1) == _norm(path2):
-            return
+            rudisha
         self.assertEqual(path1, path2)
 
     eleza assertPathIn(self, path, pathset):

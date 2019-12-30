@@ -377,7 +377,7 @@ kundi EventLoopTestsMixin:
             tatizo BlockingIOError:
                 # Spurious readiness notifications are possible
                 # at least on Linux -- see man select.
-                return
+                rudisha
             ikiwa data:
                 bytes_read.extend(data)
             isipokua:

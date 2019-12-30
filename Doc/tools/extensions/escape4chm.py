@@ -54,4 +54,4 @@ def setup(app):
     # output.
     app.connect('build-finished', fixup_keywords)
 
-    return {'version': '1.0', 'parallel_read_safe': True}
+    return {'version': '1.0', 'parallel_read_safe': Kweli}

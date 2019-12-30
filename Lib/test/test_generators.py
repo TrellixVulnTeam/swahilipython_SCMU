@@ -378,7 +378,7 @@ Let's try a simple generator:
 
     >>> eleza f():
     ...     tuma 1
-    ...     return
+    ...     rudisha
     ...     tuma 2 # never reached
     ...
     >>> g = f()
@@ -398,7 +398,7 @@ However, "return" na StopIteration are sio exactly equivalent:
 
     >>> eleza g1():
     ...     jaribu:
-    ...         return
+    ...         rudisha
     ...     tatizo:
     ...         tuma 1
     ...
@@ -417,7 +417,7 @@ This may be surprising at first:
 
     >>> eleza g3():
     ...     jaribu:
-    ...         return
+    ...         rudisha
     ...     mwishowe:
     ...         tuma 1
     ...
@@ -490,7 +490,7 @@ Specification: Return
 
         >>> eleza f1():
         ...     jaribu:
-        ...         return
+        ...         rudisha
         ...     tatizo:
         ...        tuma 1
         >>> andika(list(f1()))
@@ -617,7 +617,7 @@ Guido's binary tree example.
     ...             jaribu:
     ...                 node = stack.pop()
     ...             tatizo IndexError:
-    ...                 return
+    ...                 rudisha
     ...             tuma node.label
     ...         node = node.right
 
@@ -638,7 +638,7 @@ The difference between tumaing Tupu na returning it.
 ...     kila i kwenye range(3):
 ...         tuma Tupu
 ...     tuma Tupu
-...     return
+...     rudisha
 >>> list(g())
 [Tupu, Tupu, Tupu, Tupu]
 
@@ -661,7 +661,7 @@ Next one was posted to c.l.py.
 ...     "Generate all combinations of k elements kutoka list x."
 ...
 ...     ikiwa k > len(x):
-...         return
+...         rudisha
 ...     ikiwa k == 0:
 ...         tuma []
 ...     isipokua:
@@ -1065,7 +1065,7 @@ These are fine:
 
 >>> eleza f():
 ...     tuma 1
-...     return
+...     rudisha
 
 >>> eleza f():
 ...     jaribu:
@@ -1097,7 +1097,7 @@ These are fine:
 ...             mwishowe:
 ...                 tuma 12
 ...     tatizo:
-...         return
+...         rudisha
 >>> list(f())
 [12, 666]
 
@@ -1127,7 +1127,7 @@ These are fine:
 <kundi 'generator'>
 
 >>> eleza f():
-...     return
+...     rudisha
 ...     jaribu:
 ...         ikiwa x==4:
 ...             pita
@@ -1146,7 +1146,7 @@ These are fine:
 ...             pita
 ...     tatizo:
 ...         x = 1
-...     return
+...     rudisha
 >>> type(f())
 <kundi 'generator'>
 
@@ -1170,7 +1170,7 @@ These are fine:
 
 >>> eleza f():
 ...     ikiwa 0:
-...         return
+...         rudisha
 ...     ikiwa 0:
 ...         tuma 2
 >>> type(f())
@@ -1470,7 +1470,7 @@ kundi Knights:
         # Generate the first move.
         eleza first():
             ikiwa m < 1 ama n < 1:
-                return
+                rudisha
 
             # Since we're looking kila a cycle, it doesn't matter where we
             # start.  Starting kwenye a corner makes the 2nd move easy.
@@ -1485,7 +1485,7 @@ kundi Knights:
             corner = self.coords2index(0, 0)
             assert self.lastij == corner  # i.e., we started kwenye the corner
             ikiwa m < 3 ama n < 3:
-                return
+                rudisha
             assert len(succs[corner]) == 2
             assert self.coords2index(1, 2) kwenye succs[corner]
             assert self.coords2index(2, 1) kwenye succs[corner]
@@ -1917,7 +1917,7 @@ TypeError: exceptions must be classes ama instances deriving kutoka BaseExceptio
 >>> g.throw(0)
 Traceback (most recent call last):
   ...
-TypeError: exceptions must be classes ama instances deriving kutoka BaseException, sio int
+TypeError: exceptions must be classes ama instances deriving kutoka BaseException, sio in
 
 >>> g.throw(list)
 Traceback (most recent call last):

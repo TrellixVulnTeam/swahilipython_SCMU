@@ -29,12 +29,12 @@ kundi FixThrow(fixer_base.BaseFix):
         exc = results["exc"].clone()
         ikiwa exc.type ni token.STRING:
             self.cannot_convert(node, "Python 3 does sio support string exceptions")
-            return
+            rudisha
 
         # Leave "g.throw(E)" alone
         val = results.get("val")
         ikiwa val ni Tupu:
-            return
+            rudisha
 
         val = val.clone()
         ikiwa is_tuple(val):

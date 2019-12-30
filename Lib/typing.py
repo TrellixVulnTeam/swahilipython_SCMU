@@ -1105,7 +1105,7 @@ kundi Protocol(Generic, metaclass=_ProtocolMeta):
 
         # We have nothing more to do kila non-protocols...
         ikiwa sio cls._is_protocol:
-            return
+            rudisha
 
         # ... otherwise check consistency of bases, na prohibit instantiation.
         kila base kwenye cls.__bases__:

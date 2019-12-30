@@ -21,7 +21,7 @@ kundi CurvesTurtle(Pen):
     # p. 96-98
     eleza hilbert(self, size, level, parity):
         ikiwa level == 0:
-            return
+            rudisha
         # rotate na draw first subcurve ukijumuisha opposite parity to big curve
         self.left(parity * 90)
         self.hilbert(size, level - 1, -parity)
@@ -66,7 +66,7 @@ kundi CurvesTurtle(Pen):
     eleza fractal(self, dist, depth, dir):
         ikiwa depth < 1:
             self.fd(dist)
-            return
+            rudisha
         self.fractal(dist / 3, depth - 1, dir)
         self.lt(60 * dir)
         self.fractal(dist / 3, depth - 1, dir)

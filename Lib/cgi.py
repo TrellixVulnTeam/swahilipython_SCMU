@@ -129,7 +129,7 @@ eleza parse(fp=Tupu, environ=os.environ, keep_blank_values=0, strict_parsing=0):
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
             blank values are to be ignored na treated kama ikiwa they were
-            sio included.
+            sio inluded.
 
         strict_parsing: flag indicating what to do ukijumuisha parsing errors.
             If false (the default), errors are silently ignored.
@@ -336,7 +336,7 @@ kundi FieldStorage:
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
             blank values are to be ignored na treated kama ikiwa they were
-            sio included.
+            sio inluded.
 
         strict_parsing: flag indicating what to do ukijumuisha parsing errors.
             If false (the default), errors are silently ignored.
@@ -777,7 +777,7 @@ kundi FieldStorage:
     eleza skip_lines(self):
         """Internal: skip lines until outer boundary ikiwa defined."""
         ikiwa sio self.outerboundary ama self.done:
-            return
+            rudisha
         next_boundary = b"--" + self.outerboundary
         last_boundary = next_boundary + b"--"
         last_line_lfend = Kweli

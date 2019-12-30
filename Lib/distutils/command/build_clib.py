@@ -93,7 +93,7 @@ kundi build_clib(Command):
 
     eleza run(self):
         ikiwa sio self.libraries:
-            return
+            rudisha
 
         # Yech -- this ni cut 'n pasted kutoka build_ext.py!
         kutoka distutils.ccompiler agiza new_compiler

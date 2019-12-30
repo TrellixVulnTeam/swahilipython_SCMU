@@ -222,7 +222,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
     # Can be executed earlier than 'setup' ikiwa desired
     eleza execRcLines(self):
         ikiwa sio self.rcLines:
-            return
+            rudisha
         # local copy because of recursion
         rcLines = self.rcLines
         rcLines.reverse()
@@ -244,7 +244,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """This method ni called when there ni the remote possibility
         that we ever need to stop kwenye this function."""
         ikiwa self._wait_for_mainpyfile:
-            return
+            rudisha
         ikiwa self.stop_here(frame):
             self.message('--Call--')
             self.interaction(frame, Tupu)
@@ -254,7 +254,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         ikiwa self._wait_for_mainpyfile:
             ikiwa (self.mainpyfile != self.canonic(frame.f_code.co_filename)
                 ama frame.f_lineno <= 0):
-                return
+                rudisha
             self._wait_for_mainpyfile = Uongo
         ikiwa self.bp_commands(frame):
             self.interaction(frame, Tupu)
@@ -280,13 +280,13 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             ikiwa self.commands_doprompt[currentbp]:
                 self._cmdloop()
             self.forget()
-            return
+            rudisha
         rudisha 1
 
     eleza user_return(self, frame, return_value):
         """This function ni called when a rudisha trap ni set here."""
         ikiwa self._wait_for_mainpyfile:
-            return
+            rudisha
         frame.f_locals['__return__'] = return_value
         self.message('--Return--')
         self.interaction(frame, Tupu)
@@ -295,7 +295,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """This function ni called ikiwa an exception occurs,
         but only ikiwa we are to stop at ama just below this level."""
         ikiwa self._wait_for_mainpyfile:
-            return
+            rudisha
         exc_type, exc_value, exc_traceback = exc_info
         frame.f_locals['__exception__'] = exc_type, exc_value
 
@@ -350,7 +350,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             # no interaction desired at this time (happens ikiwa .pdbrc contains
             # a command like "endelea")
             self.forget()
-            return
+            rudisha
         self.print_stack_entry(self.stack[self.curindex])
         self._cmdloop()
         self.forget()
@@ -426,7 +426,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """Handles one command line during command list definition."""
         cmd, arg, line = self.parseline(line)
         ikiwa sio cmd:
-            return
+            rudisha
         ikiwa cmd == 'silent':
             self.commands_silent[self.commands_bnum] = Kweli
             rudisha # endelea to handle other cmd eleza kwenye the cmd list
@@ -448,7 +448,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             self.commands_doprompt[self.commands_bnum] = Uongo
             self.cmdqueue = []
             rudisha 1
-        return
+        rudisha
 
     # interface abstraction functions
 
@@ -560,7 +560,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 bnum = int(arg)
             tatizo:
                 self.error("Usage: commands [bnum]\n        ...\n        end")
-                return
+                rudisha
         self.commands_bnum = bnum
         # Save old definitions kila the case of a keyboard interrupt.
         ikiwa bnum kwenye self.commands:
@@ -616,7 +616,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 kila bp kwenye bdb.Breakpoint.bpbynumber:
                     ikiwa bp:
                         self.message(bp.bpformat())
-            return
+            rudisha
         # parse arguments; comma has lowest precedence
         # na cannot occur kwenye filename
         filename = Tupu
@@ -635,7 +635,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             f = self.lookupmodule(filename)
             ikiwa sio f:
                 self.error('%r sio found kutoka sys.path' % filename)
-                return
+                rudisha
             isipokua:
                 filename = f
             arg = arg[colon+1:].lstrip()
@@ -643,7 +643,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 lineno = int(arg)
             tatizo ValueError:
                 self.error('Bad lineno: %s' % arg)
-                return
+                rudisha
         isipokua:
             # no colon; can be lineno ama function
             jaribu:
@@ -670,7 +670,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                     ikiwa sio ok:
                         self.error('The specified object %r ni sio a function '
                                    'or was sio found along sys.path.' % arg)
-                        return
+                        rudisha
                     funcname = ok # ok contains a function name
                     lineno = int(ln)
         ikiwa sio filename:
@@ -880,7 +880,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 self.clear_all_komas()
                 kila bp kwenye bplist:
                     self.message('Deleted %s' % bp)
-            return
+            rudisha
         ikiwa ':' kwenye arg:
             # Make sure it works kila "clear C:\foo\bar.py:12"
             i = arg.rfind(':')
@@ -898,7 +898,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             isipokua:
                 kila bp kwenye bplist:
                     self.message('Deleted %s' % bp)
-            return
+            rudisha
         numberlist = arg.split()
         kila i kwenye numberlist:
             jaribu:
@@ -938,12 +938,12 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """
         ikiwa self.curindex == 0:
             self.error('Oldest frame')
-            return
+            rudisha
         jaribu:
             count = int(arg ama 1)
         tatizo ValueError:
             self.error('Invalid frame count (%s)' % arg)
-            return
+            rudisha
         ikiwa count < 0:
             newframe = 0
         isipokua:
@@ -958,12 +958,12 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """
         ikiwa self.curindex + 1 == len(self.stack):
             self.error('Newest frame')
-            return
+            rudisha
         jaribu:
             count = int(arg ama 1)
         tatizo ValueError:
             self.error('Invalid frame count (%s)' % arg)
-            return
+            rudisha
         ikiwa count < 0:
             newframe = len(self.stack) - 1
         isipokua:
@@ -984,11 +984,11 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 lineno = int(arg)
             tatizo ValueError:
                 self.error('Error kwenye argument: %r' % arg)
-                return
+                rudisha
             ikiwa lineno <= self.curframe.f_lineno:
                 self.error('"until" line number ni smaller than current '
                            'line number')
-                return
+                rudisha
         isipokua:
             lineno = Tupu
         self.set_until(self.curframe, lineno)
@@ -1070,7 +1070,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """
         ikiwa self.curindex + 1 != len(self.stack):
             self.error('You can only jump within the bottom frame')
-            return
+            rudisha
         jaribu:
             arg = int(arg)
         tatizo ValueError:
@@ -1228,7 +1228,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                     first = max(1, first - 5)
             tatizo ValueError:
                 self.error('Error kwenye argument: %r' % arg)
-                return
+                rudisha
         lasivyo self.lineno ni Tupu ama arg == '.':
             first = max(1, self.curframe.f_lineno - 5)
         isipokua:
@@ -1258,7 +1258,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             lines, lineno = getsourcelines(self.curframe)
         tatizo OSError kama err:
             self.error(err)
-            return
+            rudisha
         self._print_lines(lines, lineno, komalist, self.curframe)
     do_ll = do_longlist
 
@@ -1269,12 +1269,12 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         jaribu:
             obj = self._getval(arg)
         tatizo:
-            return
+            rudisha
         jaribu:
             lines, lineno = getsourcelines(obj)
         tatizo (OSError, TypeError) kama err:
             self.error(err)
-            return
+            rudisha
         self._print_lines(lines, lineno)
 
     complete_source = _complete_expression
@@ -1308,7 +1308,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             value = self._getval(arg)
         tatizo:
             # _getval() already printed the error
-            return
+            rudisha
         code = Tupu
         # Is it a function?
         jaribu:
@@ -1317,7 +1317,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             pita
         ikiwa code:
             self.message('Function %s' % code.co_name)
-            return
+            rudisha
         # Is it an instance method?
         jaribu:
             code = value.__func__.__code__
@@ -1325,11 +1325,11 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             pita
         ikiwa code:
             self.message('Method %s' % code.co_name)
-            return
+            rudisha
         # Is it a class?
         ikiwa value.__class__ ni type:
             self.message('Class %s.%s' % (value.__module__, value.__qualname__))
-            return
+            rudisha
         # Tupu of the above...
         self.message(type(value))
 
@@ -1411,7 +1411,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             keys = sorted(self.aliases.keys())
             kila alias kwenye keys:
                 self.message("%s = %s" % (alias, self.aliases[alias]))
-            return
+            rudisha
         ikiwa args[0] kwenye self.aliases na len(args) == 1:
             self.message("%s = %s" % (args[0], self.aliases[args[0]]))
         isipokua:
@@ -1422,7 +1422,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         Delete the specified alias.
         """
         args = arg.split()
-        ikiwa len(args) == 0: return
+        ikiwa len(args) == 0: rudisha
         ikiwa args[0] kwenye self.aliases:
             toa self.aliases[args[0]]
 
@@ -1480,7 +1480,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             ikiwa sys.flags.optimize >= 2:
                 self.error('No help kila %r; please do sio run Python ukijumuisha -OO '
                            'ikiwa you need command help' % arg)
-                return
+                rudisha
             self.message(command.__doc__.rstrip())
 
     do_h = do_help

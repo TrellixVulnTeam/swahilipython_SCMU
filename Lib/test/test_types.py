@@ -134,14 +134,14 @@ kundi TypesTests(unittest.TestCase):
             prod = divisor * j
             ikiwa prod != m:
                 self.fail("%r * %r == %r != %r" % (divisor, j, prod, m))
-            ikiwa type(prod) ni sio int:
+            ikiwa type(prod) ni sio in:
                 self.fail("expected type(prod) to be int, sio %r" %
                                    type(prod))
         # Check kila unified integral type
         kila divisor kwenye 1, 2, 4, 8, 16, 32:
             j = m // divisor - 1
             prod = divisor * j
-            ikiwa type(prod) ni sio int:
+            ikiwa type(prod) ni sio in:
                 self.fail("expected type(%r) to be int, sio %r" %
                                    (prod, type(prod)))
         # Check kila unified integral type
@@ -149,7 +149,7 @@ kundi TypesTests(unittest.TestCase):
         kila divisor kwenye 1, 2, 4, 8, 16, 32:
             j = m // divisor + 1
             prod = divisor * j
-            ikiwa type(prod) ni sio int:
+            ikiwa type(prod) ni sio in:
                 self.fail("expected type(%r) to be int, sio %r" %
                                    (prod, type(prod)))
 

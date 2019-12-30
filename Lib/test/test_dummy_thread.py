@@ -19,7 +19,7 @@ kundi LockTests(unittest.TestCase):
     eleza test_initlock(self):
         #Make sure locks start locked
         self.assertUongo(self.lock.locked(),
-                        "Lock object ni sio initialized unlocked.")
+                        "Lock object ni sio intialized unlocked.")
 
     eleza test_release(self):
         # Test self.lock.release()

@@ -68,7 +68,7 @@ master_doc = 'contents'
 html_theme = 'python_docs_theme'
 html_theme_path = ['tools']
 html_theme_options = {
-    'collapsiblesidebar': True,
+    'collapsiblesidebar': Kweli,
     'issues_url': 'https://docs.python.org/3/bugs.html',
     'root_include_title': False   # We use the version switcher instead.
 }
@@ -107,7 +107,7 @@ html_static_path = ['tools/static']
 htmlhelp_basename = 'python' + release.replace('.', '')
 
 # Split the index
-html_split_index = True
+html_split_index = Kweli
 
 
 # Options for LaTeX output

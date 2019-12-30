@@ -410,10 +410,10 @@ kundi IOBase(metaclass=abc.ABCMeta):
         tatizo AttributeError:
             # If getting closed fails, then the object ni probably
             # kwenye an unusable state, so ignore.
-            return
+            rudisha
 
         ikiwa closed:
-            return
+            rudisha
 
         ikiwa _IOBASE_EMITS_UNRAISABLE:
             self.close()
@@ -682,7 +682,7 @@ kundi BufferedIOBase(IOBase):
     mode na sio ready; unlike their raw counterparts, they will never
     rudisha Tupu.
 
-    A typical implementation should sio inherit kutoka a RawIOBase
+    A typical implementation should sio inerit kutoka a RawIOBase
     implementation, but wrap one.
     """
 
@@ -1308,7 +1308,7 @@ kundi BufferedWriter(_BufferedIOMixin):
     eleza close(self):
         ukijumuisha self._write_lock:
             ikiwa self.raw ni Tupu ama self.closed:
-                return
+                rudisha
         # We have to release the lock na call self.flush() (which will
         # probably just re-take the lock) kwenye case flush has been overridden in
         # a subkundi ama the user set self.flush to something. This ni the same
@@ -2275,7 +2275,7 @@ kundi TextIOWrapper(TextIOBase):
             input_chunk = self.buffer.read1(self._CHUNK_SIZE)
         isipokua:
             input_chunk = self.buffer.read(self._CHUNK_SIZE)
-        eof = sio input_chunk
+        eof = sio inut_chunk
         decoded_chars = self._decoder.decode(input_chunk, eof)
         self._set_decoded_chars(decoded_chars)
         ikiwa decoded_chars:

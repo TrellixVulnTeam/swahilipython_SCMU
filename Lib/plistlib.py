@@ -781,14 +781,14 @@ kundi _BinaryPlistWriter (object):
         # will be serialized kama distinct values.
         ikiwa isinstance(value, _scalars):
             ikiwa (type(value), value) kwenye self._objtable:
-                return
+                rudisha
 
         lasivyo isinstance(value, Data):
             ikiwa (type(value.data), value.data) kwenye self._objtable:
-                return
+                rudisha
 
         lasivyo id(value) kwenye self._objidtable:
-            return
+            rudisha
 
         # Add to objectreference map
         refnum = len(self._objlist)

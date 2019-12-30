@@ -1687,7 +1687,7 @@ test case
     eleza _testDeprecatedFailMethods(self):
         """Test that the deprecated fail* methods get removed kwenye 3.x"""
         ikiwa sys.version_info[:2] < (3, 3):
-            return
+            rudisha
         deprecated_names = [
             'failIfEqual', 'failUnlessEqual', 'failUnlessAlmostEqual',
             'failIfAlmostEqual', 'failUnless', 'failUnlessRaises', 'failIf',

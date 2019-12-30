@@ -159,7 +159,7 @@ kundi PyShellEditorWindow(EditorWindow):
         "Turn colorizing of komapoint text on ama off"
         ikiwa self.io ni Tupu:
             # possible due to update kwenye restore_file_komas
-            return
+            rudisha
         ikiwa color:
             theme = idleConf.CurrentTheme()
             cfg = idleConf.GetHighlight(theme, "koma")
@@ -186,7 +186,7 @@ kundi PyShellEditorWindow(EditorWindow):
         filename = self.io.filename
         ikiwa sio filename:
             text.bell()
-            return
+            rudisha
         lineno = int(float(text.index("insert")))
         self.set_komapoint(lineno)
 
@@ -195,7 +195,7 @@ kundi PyShellEditorWindow(EditorWindow):
         filename = self.io.filename
         ikiwa sio filename:
             text.bell()
-            return
+            rudisha
         lineno = int(float(text.index("insert")))
         jaribu:
             self.komapoints.remove(lineno)
@@ -215,7 +215,7 @@ kundi PyShellEditorWindow(EditorWindow):
             filename = self.io.filename
             ikiwa sio filename:
                 text.bell()
-                return
+                rudisha
             self.komapoints = []
             text.tag_remove("BREAK", "1.0", END)
             jaribu:
@@ -270,10 +270,10 @@ kundi PyShellEditorWindow(EditorWindow):
         self.text.update()   # this enables setting "BREAK" tags to be visible
         ikiwa self.io ni Tupu:
             # can happen ikiwa IDLE closes due to the .update() call
-            return
+            rudisha
         filename = self.io.filename
         ikiwa filename ni Tupu:
-            return
+            rudisha
         ikiwa os.path.isfile(self.komapointPath):
             ukijumuisha open(self.komapointPath, "r") kama fp:
                 lines = fp.readlines()
@@ -367,7 +367,7 @@ kundi ModifiedUndoDelegator(UndoDelegator):
         jaribu:
             ikiwa self.delegate.compare(index, "<", "iomark"):
                 self.delegate.bell()
-                return
+                rudisha
         tatizo TclError:
             pita
         UndoDelegator.insert(self, index, chars, tags)
@@ -376,7 +376,7 @@ kundi ModifiedUndoDelegator(UndoDelegator):
         jaribu:
             ikiwa self.delegate.compare(index1, "<", "iomark"):
                 self.delegate.bell()
-                return
+                rudisha
         tatizo TclError:
             pita
         UndoDelegator.delete(self, index1, index2)
@@ -427,7 +427,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             "Socket should have been assigned a port number.")
         w = ['-W' + s kila s kwenye sys.warnoptions]
         # Maybe IDLE ni installed na ni being accessed via sys.path,
-        # ama maybe it's sio installed na the idle.py script ni being
+        # ama maybe it's sio intalled na the idle.py script ni being
         # run kutoka the IDLE source directory.
         del_exitf = idleConf.GetOption('main', 'General', 'delete-exitfunc',
                                        default=Uongo, type='bool')
@@ -548,12 +548,12 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             self.rpcsubproc.kill()
         tatizo OSError:
             # process already terminated
-            return
+            rudisha
         isipokua:
             jaribu:
                 self.rpcsubproc.wait()
             tatizo OSError:
-                return
+                rudisha
 
     eleza transfer_path(self, with_cwd=Uongo):
         ikiwa with_cwd:        # Issue 13506
@@ -573,14 +573,14 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
     eleza poll_subprocess(self):
         clt = self.rpcclt
         ikiwa clt ni Tupu:
-            return
+            rudisha
         jaribu:
             response = clt.pollresponse(self.active_seq, wait=0.05)
         tatizo (EOFError, OSError, KeyboardInterrupt):
             # lost connection ama subprocess terminated itself, restart
             # [the KBI ni kutoka rpc.SocketIO.handle_EOF()]
             ikiwa self.tkconsole.closing:
-                return
+                rudisha
             response = Tupu
             self.restart_subprocess()
         ikiwa response:
@@ -627,14 +627,14 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
 
         """
         self.tkconsole.text.after(300, self.remote_stack_viewer)
-        return
+        rudisha
 
     eleza remote_stack_viewer(self):
         kutoka idlelib agiza debugobj_r
         oid = self.rpcclt.remotequeue("exec", "stackviewer", ("flist",), {})
         ikiwa oid ni Tupu:
             self.tkconsole.root.bell()
-            return
+            rudisha
         item = debugobj_r.StubObjectTreeItem(self.rpcclt, oid)
         kutoka idlelib.tree agiza ScrolledCanvas, TreeNode
         top = Toplevel(self.tkconsole.root)
@@ -1068,7 +1068,7 @@ kundi PyShell(OutputWindow):
 
     eleza stop_readline(self):
         ikiwa sio self.reading:  # no nested mainloop to exit.
-            return
+            rudisha
         self._stop_readline_flag = Kweli
         self.top.quit()
 
@@ -1257,7 +1257,7 @@ kundi PyShell(OutputWindow):
                 "There ni no stack trace yet.\n"
                 "(sys.last_traceback ni sio defined)",
                 parent=self.text)
-            return
+            rudisha
         kutoka idlelib.stackviewer agiza StackBrowser
         StackBrowser(self.root, self.flist)
 

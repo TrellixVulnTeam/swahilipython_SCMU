@@ -96,7 +96,7 @@ kundi LibPathFindTest(unittest.TestCase):
                    '-Wl,-soname,lib%s.so' % libname, srcname]
             out = subprocess.check_output(cmd)
             self.assertKweli(os.path.exists(dstname))
-            # now check that the .so can't be found (since sio in
+            # now check that the .so can't be found (since haiko kwenye
             # LD_LIBRARY_PATH)
             self.assertIsTupu(find_library(libname))
             # now add the location to LD_LIBRARY_PATH

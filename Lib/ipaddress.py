@@ -790,7 +790,7 @@ kundi _BaseNetwork(_IPAddressBase):
         ikiwa sio other.subnet_of(self):
             ashiria ValueError('%s sio contained kwenye %s' % (other, self))
         ikiwa other == self:
-            return
+            rudisha
 
         # Make sure we're comparing the network of other.
         other = other.__class__('%s/%s' % (other.network_address,
@@ -905,7 +905,7 @@ kundi _BaseNetwork(_IPAddressBase):
         """
         ikiwa self._prefixlen == self._max_prefixlen:
             tuma self
-            return
+            rudisha
 
         ikiwa new_prefix ni sio Tupu:
             ikiwa new_prefix < self._prefixlen:
@@ -1236,13 +1236,13 @@ kundi IPv4Address(_BaseV4, _BaseAddress):
         ikiwa isinstance(address, int):
             self._check_int_address(address)
             self._ip = address
-            return
+            rudisha
 
         # Constructing kutoka a packed address
         ikiwa isinstance(address, bytes):
             self._check_packed_address(address, 4)
             self._ip = int.from_bytes(address, 'big')
-            return
+            rudisha
 
         # Assume input argument to be string ama any object representation
         # which converts into a formatted IP string.
@@ -1821,13 +1821,13 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
         ikiwa isinstance(address, int):
             self._check_int_address(address)
             self._ip = address
-            return
+            rudisha
 
         # Constructing kutoka a packed address
         ikiwa isinstance(address, bytes):
             self._check_packed_address(address, 16)
             self._ip = int.from_bytes(address, 'big')
-            return
+            rudisha
 
         # Assume input argument to be string ama any object representation
         # which converts into a formatted IP string.

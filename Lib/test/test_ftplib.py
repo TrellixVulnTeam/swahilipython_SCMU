@@ -325,7 +325,7 @@ ikiwa ssl ni sio Tupu:
             tatizo ssl.SSLError kama err:
                 ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return
+                    rudisha
                 lasivyo err.args[0] == ssl.SSL_ERROR_EOF:
                     rudisha self.handle_close()
                 # TODO: SSLError does sio expose alert information
@@ -345,9 +345,9 @@ ikiwa ssl ni sio Tupu:
             tatizo ssl.SSLError kama err:
                 ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return
+                    rudisha
             tatizo OSError kama err:
-                # Any "socket error" corresponds to a SSL_ERROR_SYSCALL return
+                # Any "socket error" corresponds to a SSL_ERROR_SYSCALL rudisha
                 # kutoka OpenSSL's SSL_shutdown(), corresponding to a
                 # closed socket condition. See also:
                 # http://www.mail-archive.com/openssl-users@openssl.org/msg60710.html
@@ -503,7 +503,7 @@ kundi TestFTPClass(TestCase):
                       EOFError)
         kila x kwenye exceptions:
             jaribu:
-                ashiria x('exception sio included kwenye all_errors set')
+                ashiria x('exception sio inluded kwenye all_errors set')
             tatizo ftplib.all_errors:
                 pita
 

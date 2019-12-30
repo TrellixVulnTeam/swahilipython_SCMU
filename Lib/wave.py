@@ -491,7 +491,7 @@ kundi Wave_write:
     eleza _patchheader(self):
         assert self._headerwritten
         ikiwa self._datawritten == self._datalength:
-            return
+            rudisha
         curpos = self._file.tell()
         self._file.seek(self._form_length_pos, 0)
         self._file.write(struct.pack('<L', 36 + self._datawritten))

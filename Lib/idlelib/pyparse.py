@@ -24,7 +24,7 @@ _synchre = re.compile(r"""
     (?: while
     |   isipokua
     |   def
-    |   return
+    |   rudisha
     |   assert
     |   koma
     |   class
@@ -80,7 +80,7 @@ _itemre = re.compile(r"""
 
 _closere = re.compile(r"""
     \s*
-    (?: return
+    (?: rudisha
     |   koma
     |   endelea
     |   raise
@@ -211,7 +211,7 @@ kundi Parser:
         Creates self.{goodlines, continuation}.
         """
         ikiwa self.study_level >= 1:
-            return
+            rudisha
         self.study_level = 1
 
         # Map all uninteresting characters to "x", all open brackets
@@ -361,7 +361,7 @@ kundi Parser:
                 ikiwa continuation ni C_BRACKET, index of last open bracket
         """
         ikiwa self.study_level >= 2:
-            return
+            rudisha
         self._study1()
         self.study_level = 2
 

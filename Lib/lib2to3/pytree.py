@@ -126,7 +126,7 @@ kundi Base(object):
         node = self
         wakati sio isinstance(node, Leaf):
             ikiwa sio node.children:
-                return
+                rudisha
             node = node.children[0]
         rudisha node.lineno
 
@@ -821,7 +821,7 @@ kundi NegatedPattern(BasePattern):
         isipokua:
             # Return a match ikiwa the argument pattern has no matches
             kila c, r kwenye self.content.generate_matches(nodes):
-                return
+                rudisha
             tuma 0, {}
 
 

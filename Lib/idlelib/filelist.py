@@ -61,7 +61,7 @@ kundi FileList:
             key = self.inversedict[edit]
         tatizo KeyError:
             andika("Don't know this EditorWindow object.  (close)")
-            return
+            rudisha
         ikiwa key:
             toa self.dict[key]
         toa self.inversedict[edit]
@@ -74,17 +74,17 @@ kundi FileList:
             key = self.inversedict[edit]
         tatizo KeyError:
             andika("Don't know this EditorWindow object.  (rename)")
-            return
+            rudisha
         filename = edit.io.filename
         ikiwa sio filename:
             ikiwa key:
                 toa self.dict[key]
             self.inversedict[edit] = Tupu
-            return
+            rudisha
         filename = self.canonize(filename)
         newkey = os.path.normcase(filename)
         ikiwa newkey == key:
-            return
+            rudisha
         ikiwa newkey kwenye self.dict:
             conflict = self.dict[newkey]
             self.inversedict[conflict] = Tupu

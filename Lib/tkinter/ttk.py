@@ -286,7 +286,7 @@ eleza _list_from_layouttuple(tk, ltuple):
     rudisha res
 
 eleza _val_or_dict(tk, options, *args):
-    """Format options then call Tk command ukijumuisha args na options na return
+    """Format options then call Tk command ukijumuisha args na options na rudisha
     the appropriate result.
 
     If no option ni specified, a dict ni returned. If an option is
@@ -1580,7 +1580,7 @@ kundi LabeledScale(Frame):
         ikiwa sio from_ <= newval <= to:
             # value outside range, set value back to the last valid one
             self.value = self._last_valid
-            return
+            rudisha
 
         self._last_valid = newval
         self.label['text'] = newval

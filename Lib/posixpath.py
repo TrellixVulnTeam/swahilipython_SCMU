@@ -357,7 +357,7 @@ eleza normpath(path):
     kila comp kwenye comps:
         ikiwa comp kwenye (empty, dot):
             endelea
-        ikiwa (comp != dotdot ama (sio initial_slashes na sio new_comps) ama
+        ikiwa (comp != dotdot ama (sio intial_slashes na sio new_comps) ama
              (new_comps na new_comps[-1] == dotdot)):
             new_comps.append(comp)
         lasivyo new_comps:

@@ -113,7 +113,7 @@ eleza _fastcopy_sendfile(fsrc, fdst):
     high-performance sendfile(2) syscall.
     This should work on Linux >= 2.6.33 only.
     """
-    # Note: copyfileobj() ni left alone kwenye order to sio introduce any
+    # Note: copyfileobj() ni left alone kwenye order to sio inroduce any
     # unexpected komaage. Possible risks by using zero-copy calls
     # kwenye copyfileobj() are:
     # - fdst cannot be open kwenye "a"(ppend) mode
@@ -293,7 +293,7 @@ eleza copymode(src, dst, *, follow_symlinks=Kweli):
         ikiwa hasattr(os, 'lchmod'):
             stat_func, chmod_func = os.lstat, os.lchmod
         isipokua:
-            return
+            rudisha
     isipokua:
         stat_func, chmod_func = _stat, os.chmod
 
@@ -315,7 +315,7 @@ ikiwa hasattr(os, 'listxattr'):
         tatizo OSError kama e:
             ikiwa e.errno haiko kwenye (errno.ENOTSUP, errno.ENODATA, errno.EINVAL):
                 raise
-            return
+            rudisha
         kila name kwenye names:
             jaribu:
                 value = os.getxattr(src, name, follow_symlinks=follow_symlinks)
@@ -619,7 +619,7 @@ eleza _rmtree_safe_fd(topfd, path, onerror):
     tatizo OSError kama err:
         err.filename = path
         onerror(os.scandir, path, sys.exc_info())
-        return
+        rudisha
     kila entry kwenye entries:
         fullname = os.path.join(path, entry.name)
         jaribu:
@@ -697,12 +697,12 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
             orig_st = os.lstat(path)
         tatizo Exception:
             onerror(os.lstat, path, sys.exc_info())
-            return
+            rudisha
         jaribu:
             fd = os.open(path, os.O_RDONLY)
         tatizo Exception:
             onerror(os.lstat, path, sys.exc_info())
-            return
+            rudisha
         jaribu:
             ikiwa os.path.samestat(orig_st, os.fstat(fd)):
                 _rmtree_safe_fd(fd, path, onerror)
@@ -726,7 +726,7 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
         tatizo OSError:
             onerror(os.path.islink, path, sys.exc_info())
             # can't endelea even ikiwa onerror hook returns
-            return
+            rudisha
         rudisha _rmtree_unsafe(path, onerror)
 
 # Allow introspection of whether ama sio the hardening against symlink
@@ -771,7 +771,7 @@ eleza move(src, dst, copy_function=copy2):
             # We might be on a case insensitive filesystem,
             # perform the rename anyway.
             os.rename(src, dst)
-            return
+            rudisha
 
         real_dst = os.path.join(dst, _basename(src))
         ikiwa os.path.exists(real_dst):

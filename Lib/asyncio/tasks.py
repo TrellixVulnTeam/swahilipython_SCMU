@@ -756,7 +756,7 @@ eleza gather(*coros_or_futures, loop=Tupu, return_exceptions=Uongo):
             ikiwa sio fut.cancelled():
                 # Mark exception retrieved.
                 fut.exception()
-            return
+            rudisha
 
         ikiwa sio return_exceptions:
             ikiwa fut.cancelled():
@@ -765,12 +765,12 @@ eleza gather(*coros_or_futures, loop=Tupu, return_exceptions=Uongo):
                 # instead of returning it.
                 exc = exceptions.CancelledError()
                 outer.set_exception(exc)
-                return
+                rudisha
             isipokua:
                 exc = fut.exception()
                 ikiwa exc ni sio Tupu:
                     outer.set_exception(exc)
-                    return
+                    rudisha
 
         ikiwa nfinished == nfuts:
             # All futures are done; create a list of results
@@ -866,10 +866,10 @@ eleza shield(arg, *, loop=Tupu):
 
     eleza _inner_done_callback(inner):
         ikiwa outer.cancelled():
-            ikiwa sio inner.cancelled():
+            ikiwa sio iner.cancelled():
                 # Mark inner's result kama retrieved.
                 inner.exception()
-            return
+            rudisha
 
         ikiwa inner.cancelled():
             outer.cancel()
@@ -882,7 +882,7 @@ eleza shield(arg, *, loop=Tupu):
 
 
     eleza _outer_done_callback(outer):
-        ikiwa sio inner.done():
+        ikiwa sio iner.done():
             inner.remove_done_callback(_inner_done_callback)
 
     inner.add_done_callback(_inner_done_callback)

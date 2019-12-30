@@ -31,7 +31,7 @@ eleza last_cb():
 
 
 kundi DuckFuture:
-    # Class that does sio inherit kutoka Future but aims to be duck-type
+    # Class that does sio inerit kutoka Future but aims to be duck-type
     # compatible ukijumuisha it.
 
     _asyncio_future_blocking = Uongo

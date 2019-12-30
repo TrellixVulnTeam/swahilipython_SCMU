@@ -373,7 +373,7 @@ kundi install(Command):
     eleza dump_dirs(self, msg):
         """Dumps the list of user options."""
         ikiwa sio DEBUG:
-            return
+            rudisha
         kutoka distutils.fancy_getopt agiza longopt_xlate
         log.debug(msg + ":")
         kila opt kwenye self.user_options:
@@ -401,7 +401,7 @@ kundi install(Command):
                 ashiria DistutilsOptionError(
                       "install-base ama install-platbase supplied, but "
                       "installation scheme ni incomplete")
-            return
+            rudisha
 
         ikiwa self.user:
             ikiwa self.install_userbase ni Tupu:
@@ -529,7 +529,7 @@ kundi install(Command):
     eleza create_home_path(self):
         """Create directories under ~."""
         ikiwa sio self.user:
-            return
+            rudisha
         home = convert_path(os.path.expanduser("~"))
         kila name, path kwenye self.config_vars.items():
             ikiwa path.startswith(home) na sio os.path.isdir(path):

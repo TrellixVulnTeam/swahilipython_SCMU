@@ -144,7 +144,7 @@ kundi ParserTesterMetaclass(type):
 
     eleza __init__(cls, name, bases, bodydict):
         ikiwa name == 'ParserTestCase':
-            return
+            rudisha
 
         # default parser signature ni empty
         ikiwa sio hasattr(cls, 'parser_signature'):
@@ -3049,7 +3049,7 @@ kundi TestHelpFormattingMetaclass(type):
 
     eleza __init__(cls, name, bases, bodydict):
         ikiwa name == 'HelpTestCase':
-            return
+            rudisha
 
         kundi AddTests(object):
 
@@ -5233,7 +5233,7 @@ kundi TestImportStar(TestCase):
             name
             kila name, value kwenye vars(argparse).items()
             ikiwa sio (name.startswith("_") ama name == 'ngettext')
-            ikiwa sio inspect.ismodule(value)
+            ikiwa sio inpect.ismodule(value)
         ]
         self.assertEqual(sorted(items), sorted(argparse.__all__))
 

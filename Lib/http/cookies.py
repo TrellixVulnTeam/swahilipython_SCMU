@@ -531,7 +531,7 @@ kundi BaseCookie(dict):
             # self.update() wouldn't call our custom __setitem__
             kila key, value kwenye rawdata.items():
                 self[key] = value
-        return
+        rudisha
 
     eleza __parse_string(self, str, patt=_CookiePattern):
         i = 0                 # Our starting point
@@ -565,13 +565,13 @@ kundi BaseCookie(dict):
             lasivyo key.lower() kwenye Morsel._reserved:
                 ikiwa sio morsel_seen:
                     # Invalid cookie string
-                    return
+                    rudisha
                 ikiwa value ni Tupu:
                     ikiwa key.lower() kwenye Morsel._flags:
                         parsed_items.append((TYPE_ATTRIBUTE, key, Kweli))
                     isipokua:
                         # Invalid cookie string
-                        return
+                        rudisha
                 isipokua:
                     parsed_items.append((TYPE_ATTRIBUTE, key, _unquote(value)))
             lasivyo value ni sio Tupu:
@@ -579,7 +579,7 @@ kundi BaseCookie(dict):
                 morsel_seen = Kweli
             isipokua:
                 # Invalid cookie string
-                return
+                rudisha
 
         # The cookie string ni valid, apply it.
         M = Tupu         # current morsel

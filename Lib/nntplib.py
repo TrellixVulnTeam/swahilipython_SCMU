@@ -960,7 +960,7 @@ kundi _NNTPBase:
             pita
         # Perform NNTP authentication ikiwa needed.
         ikiwa sio user:
-            return
+            rudisha
         resp = self._shortcmd('authinfo user ' + user)
         ikiwa resp.startswith('381'):
             ikiwa sio pitaword:

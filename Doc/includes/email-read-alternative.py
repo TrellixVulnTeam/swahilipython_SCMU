@@ -27,7 +27,7 @@ print('Subject:', msg['subject'])
 # is probably useless, but this is just a conceptual example.
 simplest = msg.get_body(preferencelist=('plain', 'html'))
 print()
-print(''.join(simplest.get_content().splitlines(keepends=True)[:3]))
+print(''.join(simplest.get_content().splitlines(keepends=Kweli)[:3]))
 
 ans = input("View full message?")
 if ans.lower()[0] == 'n':

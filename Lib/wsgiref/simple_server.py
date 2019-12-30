@@ -121,10 +121,10 @@ kundi WSGIRequestHandler(BaseHTTPRequestHandler):
             self.request_version = ''
             self.command = ''
             self.send_error(414)
-            return
+            rudisha
 
         ikiwa sio self.parse_request(): # An error code has been sent, just exit
-            return
+            rudisha
 
         handler = ServerHandler(
             self.rfile, self.wfile, self.get_stderr(), self.get_environ(),

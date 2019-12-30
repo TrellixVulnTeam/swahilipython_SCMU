@@ -322,7 +322,7 @@ eleza touch_import(package, name, node):
     root = find_root(node)
 
     ikiwa does_tree_import(package, name, root):
-        return
+        rudisha
 
     # figure out where to insert the new import.  First try to find
     # the first agiza na then skip to the last one.

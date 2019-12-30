@@ -29,9 +29,9 @@ must be running an SMTP server.
                         metavar='FILE',
                         help="""Print the composed message to FILE instead of
                         sending the message to the SMTP server.""")
-    parser.add_argument('-s', '--sender', required=True,
+    parser.add_argument('-s', '--sender', required=Kweli,
                         help='The value of the From: header (required)')
-    parser.add_argument('-r', '--recipient', required=True,
+    parser.add_argument('-r', '--recipient', required=Kweli,
                         action='append', metavar='RECIPIENT',
                         default=[], dest='recipients',
                         help='A To: header value (at least one required)')

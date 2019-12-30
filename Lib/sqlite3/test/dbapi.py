@@ -175,7 +175,7 @@ kundi ConnectionTests(unittest.TestCase):
         ikiwa sqlite.sqlite_version_info < (3, 7, 7):
             ukijumuisha self.assertRaises(sqlite.NotSupportedError):
                 sqlite.connect(':memory:', uri=Kweli)
-            return
+            rudisha
         self.addCleanup(unlink, TESTFN)
         ukijumuisha sqlite.connect(TESTFN) kama cx:
             cx.execute('create table test(id integer)')
@@ -526,9 +526,9 @@ kundi ThreadTests(unittest.TestCase):
             jaribu:
                 cur = con.cursor()
                 errors.append("did sio ashiria ProgrammingError")
-                return
+                rudisha
             tatizo sqlite.ProgrammingError:
-                return
+                rudisha
             tatizo:
                 errors.append("raised wrong exception")
 
@@ -544,9 +544,9 @@ kundi ThreadTests(unittest.TestCase):
             jaribu:
                 con.commit()
                 errors.append("did sio ashiria ProgrammingError")
-                return
+                rudisha
             tatizo sqlite.ProgrammingError:
-                return
+                rudisha
             tatizo:
                 errors.append("raised wrong exception")
 
@@ -562,9 +562,9 @@ kundi ThreadTests(unittest.TestCase):
             jaribu:
                 con.rollback()
                 errors.append("did sio ashiria ProgrammingError")
-                return
+                rudisha
             tatizo sqlite.ProgrammingError:
-                return
+                rudisha
             tatizo:
                 errors.append("raised wrong exception")
 
@@ -580,9 +580,9 @@ kundi ThreadTests(unittest.TestCase):
             jaribu:
                 con.close()
                 errors.append("did sio ashiria ProgrammingError")
-                return
+                rudisha
             tatizo sqlite.ProgrammingError:
-                return
+                rudisha
             tatizo:
                 errors.append("raised wrong exception")
 
@@ -598,9 +598,9 @@ kundi ThreadTests(unittest.TestCase):
             jaribu:
                 cur.execute("insert into test(name) values ('a')")
                 errors.append("did sio ashiria ProgrammingError")
-                return
+                rudisha
             tatizo sqlite.ProgrammingError:
-                return
+                rudisha
             tatizo:
                 errors.append("raised wrong exception")
 
@@ -616,9 +616,9 @@ kundi ThreadTests(unittest.TestCase):
             jaribu:
                 cur.close()
                 errors.append("did sio ashiria ProgrammingError")
-                return
+                rudisha
             tatizo sqlite.ProgrammingError:
-                return
+                rudisha
             tatizo:
                 errors.append("raised wrong exception")
 
@@ -634,9 +634,9 @@ kundi ThreadTests(unittest.TestCase):
             jaribu:
                 cur.execute("select name kutoka test")
                 errors.append("did sio ashiria ProgrammingError")
-                return
+                rudisha
             tatizo sqlite.ProgrammingError:
-                return
+                rudisha
             tatizo:
                 errors.append("raised wrong exception")
 
@@ -653,9 +653,9 @@ kundi ThreadTests(unittest.TestCase):
             jaribu:
                 row = cur.fetchone()
                 errors.append("did sio ashiria ProgrammingError")
-                return
+                rudisha
             tatizo sqlite.ProgrammingError:
-                return
+                rudisha
             tatizo:
                 errors.append("raised wrong exception")
 

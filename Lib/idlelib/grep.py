@@ -136,11 +136,11 @@ kundi GrepDialog(SearchDialogBase):
         """
         prog = self.engine.getprog()
         ikiwa sio prog:
-            return
+            rudisha
         path = self.globvar.get()
         ikiwa sio path:
             self.top.bell()
-            return
+            rudisha
         kutoka idlelib.outwin agiza OutputWindow  # leave here!
         save = sys.stdout
         jaribu:

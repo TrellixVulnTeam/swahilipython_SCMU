@@ -46,7 +46,7 @@ eleza _extension_details():
                 EXTENSIONS.ext = ext
                 EXTENSIONS.filename = filename
                 EXTENSIONS.file_path = file_path
-                return
+                rudisha
 
 _extension_details()
 
@@ -443,7 +443,7 @@ eleza create_package(file, path, is_package=Kweli, contents=()):
                 tuma entry
 
     name = 'testingpackage'
-    # Unfortunately importlib.util.module_from_spec() was sio introduced until
+    # Unfortunately importlib.util.module_from_spec() was sio inroduced until
     # Python 3.5.
     module = types.ModuleType(name)
     loader = Reader()

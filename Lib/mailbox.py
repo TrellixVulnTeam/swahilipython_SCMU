@@ -420,15 +420,15 @@ kundi Maildir(Mailbox):
 
     eleza lock(self):
         """Lock the mailbox."""
-        return
+        rudisha
 
     eleza unlock(self):
         """Unlock the mailbox ikiwa it ni locked."""
-        return
+        rudisha
 
     eleza close(self):
         """Flush na close the mailbox."""
-        return
+        rudisha
 
     eleza list_folders(self):
         """Return a list of folder names."""
@@ -531,7 +531,7 @@ kundi Maildir(Mailbox):
                     refresh = Kweli
                 self._toc_mtimes[subdir] = mtime
             ikiwa sio refresh:
-                return
+                rudisha
         # Refresh toc
         self._toc = {}
         kila subdir kwenye self._toc_mtimes:
@@ -654,7 +654,7 @@ kundi _singlefileMailbox(Mailbox):
                 # ni enough.
                 _sync_flush(self._file)
                 self._pending_sync = Uongo
-            return
+            rudisha
 
         # In order to be writing anything out at all, self._toc must
         # already have been generated (and presumably has been modified
@@ -712,15 +712,15 @@ kundi _singlefileMailbox(Mailbox):
 
     eleza _pre_mailbox_hook(self, f):
         """Called before writing the mailbox to file f."""
-        return
+        rudisha
 
     eleza _pre_message_hook(self, f):
         """Called before writing each message to file f."""
-        return
+        rudisha
 
     eleza _post_message_hook(self, f):
         """Called after writing each message to file f."""
-        return
+        rudisha
 
     eleza close(self):
         """Flush na close the mailbox."""
@@ -1103,7 +1103,7 @@ kundi MH(Mailbox):
 
     eleza flush(self):
         """Write any pending changes to the disk."""
-        return
+        rudisha
 
     eleza close(self):
         """Flush na close the mailbox."""
@@ -1212,7 +1212,7 @@ kundi MH(Mailbox):
             prev += 1
         self._next_key = prev + 1
         ikiwa len(changes) == 0:
-            return
+            rudisha
         kila name, key_list kwenye sequences.items():
             kila old, new kwenye changes:
                 ikiwa old kwenye key_list:
@@ -1956,7 +1956,7 @@ kundi _ProxyFile:
         wakati Kweli:
             line = self.readline()
             ikiwa sio line:
-                return
+                rudisha
             tuma line
 
     eleza tell(self):

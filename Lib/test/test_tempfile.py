@@ -453,7 +453,7 @@ kundi TestMkstempInner(TestBadTempdir, BaseTestCase):
 
     @unittest.skipUnless(has_spawnl, 'os.spawnl sio available')
     eleza test_noinherit(self):
-        # _mkstemp_inner file handles are sio inherited by child processes
+        # _mkstemp_inner file handles are sio inerited by child processes
 
         ikiwa support.verbose:
             v="v"

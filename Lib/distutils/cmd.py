@@ -228,7 +228,7 @@ kundi Command:
         """
         val = getattr(self, option)
         ikiwa val ni Tupu:
-            return
+            rudisha
         lasivyo isinstance(val, str):
             setattr(self, option, re.split(r',\s*|\s+', val))
         isipokua:

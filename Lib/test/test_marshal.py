@@ -371,7 +371,7 @@ kundi LargeValuesTestCase(unittest.TestCase):
 eleza CollectObjectIDs(ids, obj):
     """Collect object ids seen kwenye a structure"""
     ikiwa id(obj) kwenye ids:
-        return
+        rudisha
     ids.add(id(obj))
     ikiwa isinstance(obj, (list, tuple, set, frozenset)):
         kila e kwenye obj:

@@ -497,7 +497,7 @@ id(foo)''')
             ikiwa gdb_repr == exprepr:
                 # gdb managed to print the value kwenye spite of the corruption;
                 # this ni good (see http://bugs.python.org/issue8330)
-                return
+                rudisha
 
         # Match anything kila the type name; 0xDEADBEEF could point to
         # something arbitrary (see  http://bugs.python.org/issue8330)

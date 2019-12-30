@@ -1164,7 +1164,7 @@ kundi UnivariateTypeMixin:
 
     eleza test_types_conserved(self):
         # Test that functions keeps the same type kama their data points.
-        # (Excludes mixed data types.) This only tests the type of the return
+        # (Excludes mixed data types.) This only tests the type of the rudisha
         # result, sio the value.
         data = self.prepare_data()
         kila kind kwenye self.prepare_types_for_conservation_test():

@@ -168,7 +168,7 @@ kundi FileDialog:
             names = os.listdir(dir)
         tatizo OSError:
             self.master.bell()
-            return
+            rudisha
         self.directory = dir
         self.set_filter(dir, pat)
         names.sort()
@@ -247,7 +247,7 @@ kundi SaveFileDialog(FileDialog):
         ikiwa os.path.exists(file):
             ikiwa os.path.isdir(file):
                 self.master.bell()
-                return
+                rudisha
             d = Dialog(self.top,
                        title="Overwrite Existing File Question",
                        text="Overwrite existing file %r?" % (file,),
@@ -255,12 +255,12 @@ kundi SaveFileDialog(FileDialog):
                        default=1,
                        strings=("Yes", "Cancel"))
             ikiwa d.num != 0:
-                return
+                rudisha
         isipokua:
             head, tail = os.path.split(file)
             ikiwa sio os.path.isdir(head):
                 self.master.bell()
-                return
+                rudisha
         self.quit(file)
 
 

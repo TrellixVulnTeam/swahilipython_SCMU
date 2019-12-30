@@ -271,7 +271,7 @@ kundi _FlowControlMixin(Transport):
     eleza _maybe_pause_protocol(self):
         size = self.get_write_buffer_size()
         ikiwa size <= self._high_water:
-            return
+            rudisha
         ikiwa sio self._protocol_paused:
             self._protocol_paused = Kweli
             jaribu:

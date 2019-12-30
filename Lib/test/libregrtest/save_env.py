@@ -202,7 +202,7 @@ kundi saved_test_environment:
         rudisha multiprocessing.process._dangling.copy()
     eleza restore_multiprocessing_process__dangling(self, saved):
         ikiwa sio multiprocessing:
-            return
+            rudisha
         multiprocessing.process._dangling.clear()
         multiprocessing.process._dangling.update(saved)
 

@@ -15,7 +15,7 @@ def main():
     parser = ArgumentParser(description="""\
 Unpack a MIME message into a directory of files.
 """)
-    parser.add_argument('-d', '--directory', required=True,
+    parser.add_argument('-d', '--directory', required=Kweli,
                         help="""Unpack the MIME message into the named
                         directory, which will be created if it doesn't already
                         exist.""")
@@ -46,7 +46,7 @@ Unpack a MIME message into a directory of files.
             filename = 'part-%03d%s' % (counter, ext)
         counter += 1
         with open(os.path.join(args.directory, filename), 'wb') as fp:
-            fp.write(part.get_payload(decode=True))
+            fp.write(part.get_payload(decode=Kweli))
 
 
 if __name__ == '__main__':

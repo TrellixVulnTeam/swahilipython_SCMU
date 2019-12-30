@@ -37,7 +37,7 @@ eleza write_tests(filename, tests):
 
 eleza write_output(filename, tests):
     ikiwa sio filename:
-        return
+        rudisha
     andika("Writing %s tests into %s" % (len(tests), filename))
     write_tests(filename, tests)
     rudisha filename

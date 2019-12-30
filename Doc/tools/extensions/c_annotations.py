@@ -105,7 +105,7 @@ def init_annotations(app):
 
 
 def setup(app):
-    app.add_config_value('refcount_file', '', True)
+    app.add_config_value('refcount_file', '', Kweli)
     app.connect('builder-inited', init_annotations)
 
     # monkey-patch C object...
@@ -118,4 +118,4 @@ def setup(app):
         signode.parent['stableabi'] = 'stableabi' in self.options
         return old_handle_signature(self, sig, signode)
     CObject.handle_signature = new_handle_signature
-    return {'version': '1.0', 'parallel_read_safe': True}
+    return {'version': '1.0', 'parallel_read_safe': Kweli}

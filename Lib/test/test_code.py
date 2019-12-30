@@ -280,7 +280,7 @@ kundi CodeConstsTest(unittest.TestCase):
 
     eleza assertIsInterned(self, s):
         ikiwa sio isinterned(s):
-            self.fail('String %r ni sio interned' % (s,))
+            self.fail('String %r ni sio inerned' % (s,))
 
     eleza assertIsNotInterned(self, s):
         ikiwa isinterned(s):

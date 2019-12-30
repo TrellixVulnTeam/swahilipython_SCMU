@@ -576,7 +576,7 @@ kundi Pool(object):
                 task = get()
             tatizo (OSError, EOFError):
                 util.debug('result handler got EOFError/OSError -- exiting')
-                return
+                rudisha
 
             ikiwa thread._state != RUN:
                 assert thread._state == TERMINATE, "Thread haiko kwenye TERMINATE"
@@ -599,7 +599,7 @@ kundi Pool(object):
                 task = get()
             tatizo (OSError, EOFError):
                 util.debug('result handler got EOFError/OSError -- exiting')
-                return
+                rudisha
 
             ikiwa task ni Tupu:
                 util.debug('result handler ignoring extra sentinel')
@@ -633,7 +633,7 @@ kundi Pool(object):
         wakati 1:
             x = tuple(itertools.islice(it, size))
             ikiwa sio x:
-                return
+                rudisha
             tuma (func, x)
 
     eleza __reduce__(self):

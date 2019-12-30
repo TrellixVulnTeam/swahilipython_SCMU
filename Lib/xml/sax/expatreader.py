@@ -235,7 +235,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         ikiwa (self._entity_stack ama self._parser ni Tupu ama
             isinstance(self._parser, _ClosedParser)):
             # If we are completing an external entity, do nothing here
-            return
+            rudisha
         jaribu:
             self.feed("", isFinal = 1)
             self._cont_handler.endDocument()

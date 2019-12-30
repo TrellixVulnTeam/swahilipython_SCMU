@@ -93,7 +93,7 @@ eleza change_sequence(seq, action, seqno=_Unspecified, cond = _Unspecified):
             ikiwa seqno ni _Unspecified:
                 seqno = seq[i][2]
             seq[i] = (action, cond, seqno)
-            return
+            rudisha
     ashiria ValueError("Action sio found kwenye sequence")
 
 eleza add_data(db, table, values):
@@ -117,7 +117,7 @@ eleza add_data(db, table, values):
         jaribu:
             v.Modify(MSIMODIFY_INSERT, r)
         tatizo Exception kama e:
-            ashiria MSIError("Could sio insert "+repr(values)+" into "+table)
+            ashiria MSIError("Could sio inert "+repr(values)+" into "+table)
 
         r.ClearData()
     v.Close()
@@ -202,7 +202,7 @@ kundi CAB:
 
     eleza append(self, full, file, logical):
         ikiwa os.path.isdir(full):
-            return
+            rudisha
         ikiwa sio logical:
             logical = self.gen_id(file)
         self.index += 1

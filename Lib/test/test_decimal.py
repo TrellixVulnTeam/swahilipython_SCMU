@@ -96,7 +96,7 @@ ORIGINAL_CONTEXT = {
   P: P.getcontext().copy()
 }
 eleza init(m):
-    ikiwa sio m: return
+    ikiwa sio m: rudisha
     DefaultTestContext = m.Context(
        prec=9, rounding=ROUND_HALF_EVEN, traps=dict.fromkeys(Signals[m], 0)
     )
@@ -307,9 +307,9 @@ kundi IBMTestCases(unittest.TestCase):
         kila ignore kwenye self.ignore_list:
             ikiwa s.find(ignore) >= 0:
                 #print s.split()[0], 'NotImplemented--', ignore
-                return
+                rudisha
         ikiwa sio s:
-            return
+            rudisha
         lasivyo ':' kwenye s:
             rudisha self.eval_directive(s)
         isipokua:
@@ -331,7 +331,7 @@ kundi IBMTestCases(unittest.TestCase):
     eleza eval_equation(self, s):
 
         ikiwa sio TEST_ALL na random.random() < 0.90:
-            return
+            rudisha
 
         self.context.clear_flags()
 
@@ -355,11 +355,11 @@ kundi IBMTestCases(unittest.TestCase):
             rudisha val
 
         ikiwa id kwenye self.skipped_test_ids:
-            return
+            rudisha
 
         fname = self.NameAdapter.get(funct, funct)
         ikiwa fname == 'rescale':
-            return
+            rudisha
         funct = getattr(self.context, fname)
         vals = []
         conglomerate = ''

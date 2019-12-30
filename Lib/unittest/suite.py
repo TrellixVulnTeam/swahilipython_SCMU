@@ -143,11 +143,11 @@ kundi TestSuite(BaseTestSuite):
         previousClass = getattr(result, '_previousTestClass', Tupu)
         currentClass = test.__class__
         ikiwa currentClass == previousClass:
-            return
+            rudisha
         ikiwa result._moduleSetUpFailed:
-            return
+            rudisha
         ikiwa getattr(currentClass, "__unittest_skip__", Uongo):
-            return
+            rudisha
 
         jaribu:
             currentClass._classSetupFailed = Uongo
@@ -191,7 +191,7 @@ kundi TestSuite(BaseTestSuite):
         previousModule = self._get_previous_module(result)
         currentModule = test.__class__.__module__
         ikiwa currentModule == previousModule:
-            return
+            rudisha
 
         self._handleModuleTearDown(result)
 
@@ -200,7 +200,7 @@ kundi TestSuite(BaseTestSuite):
         jaribu:
             module = sys.modules[currentModule]
         tatizo KeyError:
-            return
+            rudisha
         setUpModule = getattr(module, 'setUpModule', Tupu)
         ikiwa setUpModule ni sio Tupu:
             _call_if_exists(result, '_setupStdout')
@@ -234,7 +234,7 @@ kundi TestSuite(BaseTestSuite):
         ikiwa addSkip ni sio Tupu na isinstance(exception, case.SkipTest):
             addSkip(error, str(exception))
         isipokua:
-            ikiwa sio info:
+            ikiwa sio ino:
                 result.addError(error, sys.exc_info())
             isipokua:
                 result.addError(error, info)
@@ -242,14 +242,14 @@ kundi TestSuite(BaseTestSuite):
     eleza _handleModuleTearDown(self, result):
         previousModule = self._get_previous_module(result)
         ikiwa previousModule ni Tupu:
-            return
+            rudisha
         ikiwa result._moduleSetUpFailed:
-            return
+            rudisha
 
         jaribu:
             module = sys.modules[previousModule]
         tatizo KeyError:
-            return
+            rudisha
 
         tearDownModule = getattr(module, 'tearDownModule', Tupu)
         ikiwa tearDownModule ni sio Tupu:
@@ -275,13 +275,13 @@ kundi TestSuite(BaseTestSuite):
         previousClass = getattr(result, '_previousTestClass', Tupu)
         currentClass = test.__class__
         ikiwa currentClass == previousClass:
-            return
+            rudisha
         ikiwa getattr(previousClass, '_classSetupFailed', Uongo):
-            return
+            rudisha
         ikiwa getattr(result, '_moduleSetUpFailed', Uongo):
-            return
+            rudisha
         ikiwa getattr(previousClass, "__unittest_skip__", Uongo):
-            return
+            rudisha
 
         tearDownClass = getattr(previousClass, 'tearDownClass', Tupu)
         ikiwa tearDownClass ni sio Tupu:

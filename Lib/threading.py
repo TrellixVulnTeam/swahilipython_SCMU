@@ -353,7 +353,7 @@ kundi Condition:
         all_waiters = self._waiters
         waiters_to_notify = _deque(_islice(all_waiters, n))
         ikiwa sio waiters_to_notify:
-            return
+            rudisha
         kila waiter kwenye waiters_to_notify:
             waiter.release()
             jaribu:
@@ -465,7 +465,7 @@ kundi BoundedSemaphore(Semaphore):
 
     Like regular semaphores, bounded semaphores manage a counter representing
     the number of release() calls minus the number of acquire() calls, plus an
-    initial value. The acquire() method blocks ikiwa necessary until it can return
+    initial value. The acquire() method blocks ikiwa necessary until it can rudisha
     without making the counter negative. If sio given, value defaults to 1.
 
     """
@@ -548,7 +548,7 @@ kundi Event:
         floating point number specifying a timeout kila the operation kwenye seconds
         (or fractions thereof).
 
-        This method returns the internal flag on exit, so it will always return
+        This method returns the internal flag on exit, so it will always rudisha
         Kweli tatizo ikiwa a timeout ni given na the operation times out.
 
         """
@@ -890,7 +890,7 @@ kundi Thread:
             self._bootstrap_inner()
         tatizo:
             ikiwa self._daemonic na _sys ni Tupu:
-                return
+                rudisha
             raise
 
     eleza _set_ident(self):
@@ -1149,7 +1149,7 @@ tatizo ImportError:
         """
         ikiwa args.exc_type == SystemExit:
             # silently ignore SystemExit
-            return
+            rudisha
 
         ikiwa _sys ni sio Tupu na _sys.stderr ni sio Tupu:
             stderr = _sys.stderr
@@ -1158,10 +1158,10 @@ tatizo ImportError:
             ikiwa stderr ni Tupu:
                 # do nothing ikiwa sys.stderr ni Tupu na sys.stderr was Tupu
                 # when the thread was created
-                return
+                rudisha
         isipokua:
             # do nothing ikiwa sys.stderr ni Tupu na args.thread ni Tupu
-            return
+            rudisha
 
         ikiwa args.thread ni sio Tupu:
             name = args.thread.name
@@ -1363,7 +1363,7 @@ eleza _shutdown():
     # isn't enough:  other threads may already be waiting on _tstate_lock.
     ikiwa _main_thread._is_stopped:
         # _shutdown() was already called
-        return
+        rudisha
 
     # Main thread
     tlock = _main_thread._tstate_lock

@@ -801,7 +801,7 @@ kundi LongTest(unittest.TestCase):
         # then applies a float division.  This can give doubly-rounded
         # results on x87-using machines (particularly 32-bit Linux).
         ikiwa skip_small na max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
-            return
+            rudisha
 
         jaribu:
             # use repr so that we can distinguish between -0.0 na 0.0
@@ -827,7 +827,7 @@ kundi LongTest(unittest.TestCase):
         # result of true division of ints ni always correctly rounded.
         # This test should probably be considered CPython-specific.
 
-        # Exercise all the code paths sio involving Gb-sized ints.
+        # Exercise all the code paths sio inolving Gb-sized ints.
         # ... divisions involving zero
         self.check_truediv(123, 0)
         self.check_truediv(-456, 0)

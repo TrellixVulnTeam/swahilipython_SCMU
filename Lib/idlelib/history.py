@@ -63,14 +63,14 @@ kundi History:
                     pointer = -1  # will be incremented
                 isipokua:  # abort history_next
                     self.text.bell()
-                    return
+                    rudisha
         nprefix = len(prefix)
         wakati 1:
             pointer += -1 ikiwa reverse isipokua 1
             ikiwa pointer < 0 ama pointer >= nhist:
                 self.text.bell()
                 ikiwa sio self.cyclic na pointer < 0:  # abort history_prev
-                    return
+                    rudisha
                 isipokua:
                     ikiwa self.text.get("iomark", "end-1c") != prefix:
                         self.text.delete("iomark", "end-1c")

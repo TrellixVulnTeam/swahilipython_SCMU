@@ -325,7 +325,7 @@ eleza run_pty(script, input=b"dummy input\r", env=Tupu):
                         ikiwa err.errno != EIO:
                             raise
                         input = b""  # Stop writing
-                    ikiwa sio input:
+                    ikiwa sio inut:
                         sel.modify(master, selectors.EVENT_READ)
 
 

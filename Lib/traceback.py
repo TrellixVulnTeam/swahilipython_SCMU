@@ -558,7 +558,7 @@ kundi TracebackException:
         """
         ikiwa self.exc_type ni Tupu:
             tuma _format_final_exc_line(Tupu, self._str)
-            return
+            rudisha
 
         stype = self.exc_type.__qualname__
         smod = self.exc_type.__module__
@@ -567,7 +567,7 @@ kundi TracebackException:
 
         ikiwa sio issubclass(self.exc_type, SyntaxError):
             tuma _format_final_exc_line(stype, self._str)
-            return
+            rudisha
 
         # It was a syntax error; show exactly where the problem was found.
         filename = self.filename ama "<string>"

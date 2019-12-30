@@ -138,7 +138,7 @@ kundi LZMAFile(_compression.BaseStream):
         closed, any other operation on it will ashiria a ValueError.
         """
         ikiwa self._mode == _MODE_CLOSED:
-            return
+            rudisha
         jaribu:
             ikiwa self._mode == _MODE_READ:
                 self._buffer.close()

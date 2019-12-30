@@ -173,7 +173,7 @@ kundi DummyPOP3Handler(asynchat.async_chat):
             tatizo ssl.SSLError kama err:
                 ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
-                    return
+                    rudisha
                 lasivyo err.args[0] == ssl.SSL_ERROR_EOF:
                     rudisha self.handle_close()
                 # TODO: SSLError does sio expose alert information

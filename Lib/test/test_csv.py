@@ -857,7 +857,7 @@ kundi TestDialectValidity(unittest.TestCase):
         ukijumuisha self.assertRaises(csv.Error) kama cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"quotechar" must be string, sio int')
+                         '"quotechar" must be string, sio in')
 
     eleza test_delimiter(self):
         kundi mydialect(csv.Dialect):
@@ -892,7 +892,7 @@ kundi TestDialectValidity(unittest.TestCase):
         ukijumuisha self.assertRaises(csv.Error) kama cm:
             mydialect()
         self.assertEqual(str(cm.exception),
-                         '"delimiter" must be string, sio int')
+                         '"delimiter" must be string, sio in')
 
     eleza test_lineterminator(self):
         kundi mydialect(csv.Dialect):

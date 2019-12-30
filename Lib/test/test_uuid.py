@@ -454,7 +454,7 @@ kundi BaseTestUUID:
     # need sio necessarily be 48 bits (e.g., EUI-64).
     eleza test_uuid1_eui64(self):
         # Confirm that uuid.getnode ignores hardware addresses larger than 48
-        # bits. Mock out each platform's *_getnode helper functions to return
+        # bits. Mock out each platform's *_getnode helper functions to rudisha
         # something just larger than 48 bits to test. This will cause
         # uuid.getnode to fall back on uuid._random_getnode, which will
         # generate a valid value.

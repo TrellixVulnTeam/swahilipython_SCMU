@@ -91,7 +91,7 @@ kundi WindowsLoadTracker():
 
     eleza close(self, kill=Kweli):
         ikiwa self._popen ni Tupu:
-            return
+            rudisha
 
         self._load = Tupu
 

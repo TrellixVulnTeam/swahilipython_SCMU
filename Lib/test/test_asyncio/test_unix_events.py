@@ -37,7 +37,7 @@ eleza close_pipe_transport(transport):
     # Don't call transport.close() because the event loop na the selector
     # are mocked
     ikiwa transport._pipe ni Tupu:
-        return
+        rudisha
     transport._pipe.close()
     transport._pipe = Tupu
 

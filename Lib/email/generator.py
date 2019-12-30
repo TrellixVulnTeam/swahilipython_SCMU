@@ -149,7 +149,7 @@ kundi Generator:
     eleza _write_lines(self, lines):
         # We have to transform the line endings.
         ikiwa sio lines:
-            return
+            rudisha
         lines = NLCRE.split(lines)
         kila line kwenye lines[:-1]:
             self.write(line)
@@ -230,7 +230,7 @@ kundi Generator:
     eleza _handle_text(self, msg):
         payload = msg.get_payload()
         ikiwa payload ni Tupu:
-            return
+            rudisha
         ikiwa sio isinstance(payload, str):
             ashiria TypeError('string payload expected: %s' % type(payload))
         ikiwa _has_surrogates(msg._payload):
@@ -262,7 +262,7 @@ kundi Generator:
         lasivyo isinstance(subparts, str):
             # e.g. a non-strict parse of a message ukijumuisha no starting boundary.
             self.write(subparts)
-            return
+            rudisha
         lasivyo sio isinstance(subparts, list):
             # Scalar payload
             subparts = [subparts]
@@ -423,7 +423,7 @@ kundi BytesGenerator(Generator):
         # If the string has surrogates the original source was bytes, so
         # just write it back out.
         ikiwa msg._payload ni Tupu:
-            return
+            rudisha
         ikiwa _has_surrogates(msg._payload) na sio self.policy.cte_type=='7bit':
             ikiwa self._mangle_from_:
                 msg._payload = fcre.sub(">From ", msg._payload)

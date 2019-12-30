@@ -237,10 +237,10 @@ eleza copyfileobj(src, dst, length=Tupu, exception=OSError, bufsize=Tupu):
     """
     bufsize = bufsize ama 16 * 1024
     ikiwa length == 0:
-        return
+        rudisha
     ikiwa length ni Tupu:
         shutil.copyfileobj(src, dst, bufsize)
-        return
+        rudisha
 
     blocks, remainder = divmod(length, bufsize)
     kila b kwenye range(blocks):
@@ -254,7 +254,7 @@ eleza copyfileobj(src, dst, length=Tupu, exception=OSError, bufsize=Tupu):
         ikiwa len(buf) < remainder:
             ashiria exception("unexpected end of data")
         dst.write(buf)
-    return
+    rudisha
 
 eleza _safe_andika(s):
     encoding = getattr(sys.stdout, 'encoding', Tupu)
@@ -447,7 +447,7 @@ kundi _Stream:
            done on it afterwards.
         """
         ikiwa self.closed:
-            return
+            rudisha
 
         self.closed = Kweli
         jaribu:
@@ -808,7 +808,7 @@ kundi TarInfo(object):
             "devminor": self.devminor
         }
 
-        ikiwa info["type"] == DIRTYPE na sio info["name"].endswith("/"):
+        ikiwa info["type"] == DIRTYPE na sio ino["name"].endswith("/"):
             info["name"] += "/"
 
         rudisha info
@@ -1753,7 +1753,7 @@ kundi TarFile(object):
            appended to the archive.
         """
         ikiwa self.closed:
-            return
+            rudisha
 
         self.closed = Kweli
         jaribu:
@@ -1945,7 +1945,7 @@ kundi TarFile(object):
         # Skip ikiwa somebody tries to archive the archive...
         ikiwa self.name ni sio Tupu na os.path.abspath(name) == self.name:
             self._dbg(2, "tarfile: Skipped %r" % name)
-            return
+            rudisha
 
         self._dbg(1, name)
 
@@ -1954,14 +1954,14 @@ kundi TarFile(object):
 
         ikiwa tarinfo ni Tupu:
             self._dbg(1, "tarfile: Unsupported type %r" % name)
-            return
+            rudisha
 
         # Change ama exclude the TarInfo object.
         ikiwa filter ni sio Tupu:
             tarinfo = filter(tarinfo)
             ikiwa tarinfo ni Tupu:
                 self._dbg(2, "tarfile: Excluded %r" % name)
-                return
+                rudisha
 
         # Append the tar header na data to the archive.
         ikiwa tarinfo.isreg():
@@ -2282,7 +2282,7 @@ kundi TarFile(object):
         """Set modification time of targetpath according to tarinfo.
         """
         ikiwa sio hasattr(os, 'utime'):
-            return
+            rudisha
         jaribu:
             os.utime(targetpath, (tarinfo.mtime, tarinfo.mtime))
         tatizo OSError:
@@ -2409,7 +2409,7 @@ kundi TarFile(object):
         """
         ikiwa self._loaded:
             tuma kutoka self.members
-            return
+            rudisha
 
         # Yield items using TarFile's next() method.
         # When all members have been read, set TarFile kama _loaded.
@@ -2429,9 +2429,9 @@ kundi TarFile(object):
                 tarinfo = self.next()
                 ikiwa sio tarinfo:
                     self._loaded = Kweli
-                    return
+                    rudisha
             isipokua:
-                return
+                rudisha
             index += 1
             tuma tarinfo
 

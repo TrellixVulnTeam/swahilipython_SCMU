@@ -23,7 +23,7 @@ kundi TkLoadTest(unittest.TestCase):
 
             # XXX Maybe on tk older than 8.4.13 it would be possible,
             # see tkinter.h.
-            return
+            rudisha
         ukijumuisha test_support.EnvironmentVarGuard() kama env:
             ikiwa 'DISPLAY' kwenye os.environ:
                 toa env['DISPLAY']
@@ -34,7 +34,7 @@ kundi TkLoadTest(unittest.TestCase):
                 ukijumuisha os.popen('echo $DISPLAY') kama pipe:
                     display = pipe.read().strip()
                 ikiwa display:
-                    return
+                    rudisha
 
             tcl = Tcl()
             self.assertRaises(TclError, tcl.winfo_geometry)

@@ -152,17 +152,17 @@ kundi samplecmdclass(cmd.Cmd):
         l = s.split()
         ikiwa len(l) != 2:
             andika("*** invalid number of arguments")
-            return
+            rudisha
         jaribu:
             l = [int(i) kila i kwenye l]
         tatizo ValueError:
             andika("*** arguments should be numbers")
-            return
+            rudisha
         andika(l[0]+l[1])
 
     eleza help_add(self):
         andika("help text kila add")
-        return
+        rudisha
 
     eleza do_exit(self, arg):
         rudisha Kweli

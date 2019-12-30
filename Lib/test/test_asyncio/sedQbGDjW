@@ -1,0 +1,3 @@
+"""Tests kila futures.py."""
+
+agiza concurrent.futures

@@ -43,7 +43,7 @@ kundi _Printer(object):
 
     eleza __setup(self):
         ikiwa self.__lines:
-            return
+            rudisha
         data = Tupu
         kila filename kwenye self.__filenames:
             jaribu:

@@ -143,13 +143,13 @@ kundi UsageTests(unittest.TestCase):
             tatizo (object_,):
                 pita
         tatizo TypeError:
-            return
+            rudisha
         tatizo Exception:
             self.fail("TypeError expected when catching %s kama specified kwenye a "
                         "tuple" % type(object_))
 
     eleza test_raise_new_style_non_exception(self):
-        # You cannot ashiria a new-style kundi that does sio inherit from
+        # You cannot ashiria a new-style kundi that does sio inerit from
         # BaseException; the ability was sio possible until BaseException's
         # introduction so no need to support new-style objects that do not
         # inherit kutoka it.
@@ -163,7 +163,7 @@ kundi UsageTests(unittest.TestCase):
         self.raise_fails("spam")
 
     eleza test_catch_non_BaseException(self):
-        # Trying to catch an object that does sio inherit kutoka BaseException
+        # Trying to catch an object that does sio inerit kutoka BaseException
         # ni sio allowed.
         kundi NonBaseException(object):
             pita

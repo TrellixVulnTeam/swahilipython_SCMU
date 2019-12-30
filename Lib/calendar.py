@@ -253,7 +253,7 @@ kundi Calendar(object):
 
     eleza yeardatescalendar(self, year, width=3):
         """
-        Return the data kila the specified year ready kila formatting. The return
+        Return the data kila the specified year ready kila formatting. The rudisha
         value ni a list of month rows. Each month row contains up to width months.
         Each month contains between 4 na 6 weeks na each week contains 1-7
         days. Days are datetime.date objects.
@@ -557,7 +557,7 @@ kundi different_locale:
 
 kundi LocaleTextCalendar(TextCalendar):
     """
-    This kundi can be pitaed a locale name kwenye the constructor na will return
+    This kundi can be pitaed a locale name kwenye the constructor na will rudisha
     month na weekday names kwenye the specified locale. If this locale includes
     an encoding all strings containing month na weekday names will be returned
     kama unicode.
@@ -588,7 +588,7 @@ kundi LocaleTextCalendar(TextCalendar):
 
 kundi LocaleHTMLCalendar(HTMLCalendar):
     """
-    This kundi can be pitaed a locale name kwenye the constructor na will return
+    This kundi can be pitaed a locale name kwenye the constructor na will rudisha
     month na weekday names kwenye the specified locale. If this locale includes
     an encoding all strings containing month na weekday names will be returned
     kama unicode.

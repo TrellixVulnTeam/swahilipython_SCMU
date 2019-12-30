@@ -107,19 +107,19 @@ kundi Designer(Turtle):
         self.getscreen().update()
 
     eleza pentl(self, side, ang, scale):
-        ikiwa side < (2 * scale): return
+        ikiwa side < (2 * scale): rudisha
         self.forward(side)
         self.left(ang)
         self.pentl(side - (.38 * scale), ang, scale)
 
     eleza pentr(self, side, ang, scale):
-        ikiwa side < (2 * scale): return
+        ikiwa side < (2 * scale): rudisha
         self.forward(side)
         self.right(ang)
         self.pentr(side - (.38 * scale), ang, scale)
 
     eleza tripolyr(self, side, scale):
-        ikiwa side < (4 * scale): return
+        ikiwa side < (4 * scale): rudisha
         self.forward(side)
         self.right(111)
         self.forward(side / 1.78)
@@ -129,7 +129,7 @@ kundi Designer(Turtle):
         self.tripolyr(side * .75, scale)
 
     eleza tripolyl(self, side, scale):
-        ikiwa side < (4 * scale): return
+        ikiwa side < (4 * scale): rudisha
         self.forward(side)
         self.left(111)
         self.forward(side / 1.78)
@@ -141,7 +141,7 @@ kundi Designer(Turtle):
     eleza centerpiece(self, s, a, scale):
         self.forward(s); self.left(a)
         ikiwa s < (7.5 * scale):
-            return
+            rudisha
         self.centerpiece(s - (1.2 * scale), a, scale)
 
 eleza main():

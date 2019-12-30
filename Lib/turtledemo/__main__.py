@@ -347,7 +347,7 @@ kundi DemoWindow(object):
                 self.state = DONE
         tatizo turtle.Terminator:
             ikiwa self.root ni Tupu:
-                return
+                rudisha
             self.state = DONE
             result = "stopped!"
         ikiwa self.state == DONE:

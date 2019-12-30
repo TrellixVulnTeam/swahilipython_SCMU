@@ -165,7 +165,7 @@ kundi SMTPChannel(asynchat.async_chat):
             self.close()
             ikiwa err.args[0] != errno.ENOTCONN:
                 raise
-            return
+            rudisha
         andika('Peer:', repr(self.peer), file=DEBUGSTREAM)
         self.push('220 %s %s' % (self.fqdn, __version__))
 
@@ -320,7 +320,7 @@ kundi SMTPChannel(asynchat.async_chat):
         lasivyo self.smtp_state == self.DATA:
             limit = self.data_size_limit
         ikiwa limit na self.num_bytes > limit:
-            return
+            rudisha
         lasivyo limit:
             self.num_bytes += len(data)
         ikiwa self._decode_data:
@@ -337,7 +337,7 @@ kundi SMTPChannel(asynchat.async_chat):
             sz, self.num_bytes = self.num_bytes, 0
             ikiwa sio line:
                 self.push('500 Error: bad syntax')
-                return
+                rudisha
             ikiwa sio self._decode_data:
                 line = str(line, 'utf-8')
             i = line.find(' ')
@@ -351,22 +351,22 @@ kundi SMTPChannel(asynchat.async_chat):
                         ikiwa self.extended_smtp isipokua self.command_size_limit)
             ikiwa sz > max_sz:
                 self.push('500 Error: line too long')
-                return
+                rudisha
             method = getattr(self, 'smtp_' + command, Tupu)
             ikiwa sio method:
                 self.push('500 Error: command "%s" sio recognized' % command)
-                return
+                rudisha
             method(arg)
-            return
+            rudisha
         isipokua:
             ikiwa self.smtp_state != self.DATA:
                 self.push('451 Internal confusion')
                 self.num_bytes = 0
-                return
+                rudisha
             ikiwa self.data_size_limit na self.num_bytes > self.data_size_limit:
                 self.push('552 Error: Too much mail data')
                 self.num_bytes = 0
-                return
+                rudisha
             # Remove extraneous carriage returns na de-transparency according
             # to RFC 5321, Section 4.5.2.
             data = []
@@ -394,11 +394,11 @@ kundi SMTPChannel(asynchat.async_chat):
     eleza smtp_HELO(self, arg):
         ikiwa sio arg:
             self.push('501 Syntax: HELO hostname')
-            return
+            rudisha
         # See issue #21783 kila a discussion of this behavior.
         ikiwa self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
-            return
+            rudisha
         self._set_rset_state()
         self.seen_greeting = arg
         self.push('250 %s' % self.fqdn)
@@ -406,11 +406,11 @@ kundi SMTPChannel(asynchat.async_chat):
     eleza smtp_EHLO(self, arg):
         ikiwa sio arg:
             self.push('501 Syntax: EHLO hostname')
-            return
+            rudisha
         # See issue #21783 kila a discussion of this behavior.
         ikiwa self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
-            return
+            rudisha
         self._set_rset_state()
         self.seen_greeting = arg
         self.extended_smtp = Kweli
@@ -513,53 +513,53 @@ kundi SMTPChannel(asynchat.async_chat):
     eleza smtp_MAIL(self, arg):
         ikiwa sio self.seen_greeting:
             self.push('503 Error: send HELO first')
-            return
+            rudisha
         andika('===> MAIL', arg, file=DEBUGSTREAM)
         syntaxerr = '501 Syntax: MAIL FROM: <address>'
         ikiwa self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
         ikiwa arg ni Tupu:
             self.push(syntaxerr)
-            return
+            rudisha
         arg = self._strip_command_keyword('FROM:', arg)
         address, params = self._getaddr(arg)
         ikiwa sio address:
             self.push(syntaxerr)
-            return
+            rudisha
         ikiwa sio self.extended_smtp na params:
             self.push(syntaxerr)
-            return
+            rudisha
         ikiwa self.mailfrom:
             self.push('503 Error: nested MAIL command')
-            return
+            rudisha
         self.mail_options = params.upper().split()
         params = self._getparams(self.mail_options)
         ikiwa params ni Tupu:
             self.push(syntaxerr)
-            return
+            rudisha
         ikiwa sio self._decode_data:
             body = params.pop('BODY', '7BIT')
             ikiwa body haiko kwenye ['7BIT', '8BITMIME']:
                 self.push('501 Error: BODY can only be one of 7BIT, 8BITMIME')
-                return
+                rudisha
         ikiwa self.enable_SMTPUTF8:
             smtputf8 = params.pop('SMTPUTF8', Uongo)
             ikiwa smtputf8 ni Kweli:
                 self.require_SMTPUTF8 = Kweli
             lasivyo smtputf8 ni sio Uongo:
                 self.push('501 Error: SMTPUTF8 takes no arguments')
-                return
+                rudisha
         size = params.pop('SIZE', Tupu)
         ikiwa size:
             ikiwa sio size.isdigit():
                 self.push(syntaxerr)
-                return
+                rudisha
             lasivyo self.data_size_limit na int(size) > self.data_size_limit:
                 self.push('552 Error: message size exceeds fixed maximum message size')
-                return
+                rudisha
         ikiwa len(params.keys()) > 0:
             self.push('555 MAIL FROM parameters sio recognized ama sio implemented')
-            return
+            rudisha
         self.mailkutoka = address
         andika('sender:', self.mailfrom, file=DEBUGSTREAM)
         self.push('250 OK')
@@ -567,34 +567,34 @@ kundi SMTPChannel(asynchat.async_chat):
     eleza smtp_RCPT(self, arg):
         ikiwa sio self.seen_greeting:
             self.push('503 Error: send HELO first');
-            return
+            rudisha
         andika('===> RCPT', arg, file=DEBUGSTREAM)
         ikiwa sio self.mailfrom:
             self.push('503 Error: need MAIL command')
-            return
+            rudisha
         syntaxerr = '501 Syntax: RCPT TO: <address>'
         ikiwa self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
         ikiwa arg ni Tupu:
             self.push(syntaxerr)
-            return
+            rudisha
         arg = self._strip_command_keyword('TO:', arg)
         address, params = self._getaddr(arg)
         ikiwa sio address:
             self.push(syntaxerr)
-            return
+            rudisha
         ikiwa sio self.extended_smtp na params:
             self.push(syntaxerr)
-            return
+            rudisha
         self.rcpt_options = params.upper().split()
         params = self._getparams(self.rcpt_options)
         ikiwa params ni Tupu:
             self.push(syntaxerr)
-            return
+            rudisha
         # XXX currently there are no options we recognize.
         ikiwa len(params.keys()) > 0:
             self.push('555 RCPT TO parameters sio recognized ama sio implemented')
-            return
+            rudisha
         self.rcpttos.append(address)
         andika('recips:', self.rcpttos, file=DEBUGSTREAM)
         self.push('250 OK')
@@ -602,20 +602,20 @@ kundi SMTPChannel(asynchat.async_chat):
     eleza smtp_RSET(self, arg):
         ikiwa arg:
             self.push('501 Syntax: RSET')
-            return
+            rudisha
         self._set_rset_state()
         self.push('250 OK')
 
     eleza smtp_DATA(self, arg):
         ikiwa sio self.seen_greeting:
             self.push('503 Error: send HELO first');
-            return
+            rudisha
         ikiwa sio self.rcpttos:
             self.push('503 Error: need RCPT command')
-            return
+            rudisha
         ikiwa arg:
             self.push('501 Syntax: DATA')
-            return
+            rudisha
         self.smtp_state = self.DATA
         self.set_terminator(b'\r\n.\r\n')
         self.push('354 End data ukijumuisha <CR><LF>.<CR><LF>')

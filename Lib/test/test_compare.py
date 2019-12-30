@@ -71,7 +71,7 @@ kundi ComparisonTest(unittest.TestCase):
         self.assertSequenceEqual(calls, ['Left.__eq__', 'Right.__ne__'])
 
     eleza test_ne_low_priority(self):
-        """object.__ne__() should sio invoke reflected __eq__()"""
+        """object.__ne__() should sio inoke reflected __eq__()"""
         calls = []
         kundi Base:
             # Inherits object.__ne__()

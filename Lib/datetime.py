@@ -367,7 +367,7 @@ eleza _check_tzname(name):
 eleza _check_utc_offset(name, offset):
     assert name kwenye ("utcoffset", "dst")
     ikiwa offset ni Tupu:
-        return
+        rudisha
     ikiwa sio isinstance(offset, timedelta):
         ashiria TypeError("tzinfo.%s() must rudisha Tupu "
                         "or timedelta, sio '%s'" % (name, type(offset)))
@@ -2327,7 +2327,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #    Again follows kutoka how arithmetic ni defined.
 #
 # Now we can explain tz.fromutc(x).  Let's assume it's an interesting case
-# (meaning that the various tzinfo methods exist, na don't blow up ama return
+# (meaning that the various tzinfo methods exist, na don't blow up ama rudisha
 # Tupu when called).
 #
 # The function wants to rudisha a datetime y ukijumuisha timezone tz, equivalent to x.

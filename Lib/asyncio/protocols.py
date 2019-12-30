@@ -212,7 +212,7 @@ eleza _feed_data_to_buffered_proto(proto, data):
         ikiwa buf_len >= data_len:
             buf[:data_len] = data
             proto.buffer_updated(data_len)
-            return
+            rudisha
         isipokua:
             buf[:buf_len] = data[:buf_len]
             proto.buffer_updated(buf_len)

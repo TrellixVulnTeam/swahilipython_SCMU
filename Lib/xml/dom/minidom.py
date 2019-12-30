@@ -136,7 +136,7 @@ kundi Node(xml.dom.Node):
             ashiria xml.dom.HierarchyRequestErr(
                 "%s cannot be child of %s" % (repr(newChild), repr(self)))
         ikiwa newChild ni oldChild:
-            return
+            rudisha
         ikiwa newChild.parentNode ni sio Tupu:
             newChild.parentNode.removeChild(newChild)
         jaribu:

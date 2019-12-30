@@ -52,7 +52,7 @@ kundi RegressionTestResult(unittest.TextTestResult):
         e = self.__e
         self.__e = Tupu
         ikiwa e ni Tupu:
-            return
+            rudisha
         e.set('name', args.pop('name', self.__getId(test)))
         e.set('status', args.pop('status', 'run'))
         e.set('result', args.pop('result', 'completed'))

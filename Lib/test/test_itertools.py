@@ -232,7 +232,7 @@ kundi TestBasicOps(unittest.TestCase):
             pool = tuple(iterable)
             n = len(pool)
             ikiwa r > n:
-                return
+                rudisha
             indices = list(range(r))
             tuma tuple(pool[i] kila i kwenye indices)
             wakati 1:
@@ -240,7 +240,7 @@ kundi TestBasicOps(unittest.TestCase):
                     ikiwa indices[i] != i + n - r:
                         koma
                 isipokua:
-                    return
+                    rudisha
                 indices[i] += 1
                 kila j kwenye range(i+1, r):
                     indices[j] = indices[j-1] + 1
@@ -316,7 +316,7 @@ kundi TestBasicOps(unittest.TestCase):
             pool = tuple(iterable)
             n = len(pool)
             ikiwa sio n na r:
-                return
+                rudisha
             indices = [0] * r
             tuma tuple(pool[i] kila i kwenye indices)
             wakati 1:
@@ -324,7 +324,7 @@ kundi TestBasicOps(unittest.TestCase):
                     ikiwa indices[i] != n - 1:
                         koma
                 isipokua:
-                    return
+                    rudisha
                 indices[i:] = [indices[i] + 1] * (r - i)
                 tuma tuple(pool[i] kila i kwenye indices)
 
@@ -398,7 +398,7 @@ kundi TestBasicOps(unittest.TestCase):
             n = len(pool)
             r = n ikiwa r ni Tupu isipokua r
             ikiwa r > n:
-                return
+                rudisha
             indices = list(range(n))
             cycles = list(range(n-r+1, n+1))[::-1]
             tuma tuple(pool[i] kila i kwenye indices[:r])
@@ -414,7 +414,7 @@ kundi TestBasicOps(unittest.TestCase):
                         tuma tuple(pool[i] kila i kwenye indices[:r])
                         koma
                 isipokua:
-                    return
+                    rudisha
 
         eleza permutations2(iterable, r=Tupu):
             'Pure python version shown kwenye the docs'
@@ -1045,9 +1045,9 @@ kundi TestBasicOps(unittest.TestCase):
             n = len(pools)
             ikiwa n == 0:
                 tuma ()
-                return
+                rudisha
             ikiwa any(len(pool) == 0 kila pool kwenye pools):
-                return
+                rudisha
             indices = [0] * n
             tuma tuple(pool[i] kila pool, i kwenye zip(pools, indices))
             wakati 1:
@@ -1060,7 +1060,7 @@ kundi TestBasicOps(unittest.TestCase):
                     tuma tuple(pool[i] kila pool, i kwenye zip(pools, indices))
                     koma
                 isipokua:
-                    return
+                    rudisha
 
         eleza product2(*args, **kwds):
             'Pure python version used kwenye docs'
@@ -1677,7 +1677,7 @@ kundi TestPurePythonRoughEquivalents(unittest.TestCase):
             # Consume *iterable* up to the *start* position.
             kila i, element kwenye zip(range(start), iterable):
                 pita
-            return
+            rudisha
         jaribu:
             kila i, element kwenye enumerate(iterable):
                 ikiwa i == nexti:
@@ -1755,7 +1755,7 @@ kundi TestGC(unittest.TestCase):
         self.makecycle(groupby([a]*2, lambda x:x), a)
 
     eleza test_issue2246(self):
-        # Issue 2246 -- the _grouper iterator was sio included kwenye GC
+        # Issue 2246 -- the _grouper iterator was sio inluded kwenye GC
         n = 10
         keyfunc = lambda x: x
         kila i, j kwenye groupby(range(n), key=keyfunc):

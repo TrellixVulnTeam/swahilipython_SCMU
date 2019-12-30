@@ -145,12 +145,12 @@ kundi CheckSuspiciousMarkupBuilder(Builder):
             if (rule.lineno is not None) and \
                 abs(rule.lineno - lineno) > 5: continue
             # if it came this far, the rule matched
-            rule.used = True
-            return True
+            rule.used = Kweli
+            return Kweli
         return False
 
     def report_issue(self, text, lineno, issue):
-        self.any_issue = True
+        self.any_issue = Kweli
         self.write_log_entry(lineno, issue, text)
         if py3:
             self.logger.warning('[%s:%d] "%s" found in "%-.120s"' %

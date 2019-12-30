@@ -397,7 +397,7 @@ kundi TestLoader(object):
             ikiwa sio should_recurse:
                 # Either an error occurred, ama load_tests was used by the
                 # package.
-                return
+                rudisha
         # Handle the contents.
         paths = sorted(os.listdir(start_dir))
         kila path kwenye paths:

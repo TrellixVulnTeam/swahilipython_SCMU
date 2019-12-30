@@ -966,7 +966,7 @@ kundi CommonTest(BaseTest):
     # stringlike classes. Currently this ni str na UserString.
 
     eleza test_hash(self):
-        # SF bug 1054139:  += optimization was sio invalidating cached hash value
+        # SF bug 1054139:  += optimization was sio inalidating cached hash value
         a = self.type2test('DNSSEC')
         b = self.type2test('')
         kila c kwenye a:

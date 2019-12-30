@@ -3,7 +3,7 @@ kutoka test.support agiza import_module
 
 # Skip test_idle ikiwa _tkinter wasn't built, ikiwa tkinter ni missing,
 # ikiwa tcl/tk ni sio the 8.5+ needed kila ttk widgets,
-# ama ikiwa idlelib ni missing (sio installed).
+# ama ikiwa idlelib ni missing (sio intalled).
 tk = import_module('tkinter')  # Also imports _tkinter.
 ikiwa tk.TkVersion < 8.5:
     ashiria unittest.SkipTest("IDLE requires tk 8.5 ama later.")

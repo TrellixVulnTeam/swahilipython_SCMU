@@ -60,10 +60,10 @@ kundi FixerTestCase(support.TestCase):
         n = "fix_" + self.fixer
         ikiwa post na post[-1].__class__.__module__.endswith(n):
             # We're the last fixer to run
-            return
+            rudisha
         ikiwa pre na pre[-1].__class__.__module__.endswith(n) na sio post:
             # We're the last kwenye pre na post ni empty
-            return
+            rudisha
         self.fail("Fixer run order (%s) ni incorrect; %s should be last."\
                %(", ".join([x.__class__.__module__ kila x kwenye (pre+post)]), n))
 

@@ -1707,7 +1707,7 @@ eleza writedocs(dir, pkgpath='', done=Tupu):
     ikiwa done ni Tupu: done = {}
     kila importer, modname, ispkg kwenye pkgutil.walk_packages([dir], pkgpath):
         writedoc(modname)
-    return
+    rudisha
 
 kundi Helper:
 
@@ -2028,11 +2028,11 @@ Here ni a list of available topics.  Enter any topic name to get more help.
 Sorry, topic na keyword documentation ni sio available because the
 module "pydoc_data.topics" could sio be found.
 ''')
-            return
+            rudisha
         target = self.topics.get(topic, self.keywords.get(topic))
         ikiwa sio target:
             self.output.write('no documentation found kila %s\n' % repr(topic))
-            return
+            rudisha
         ikiwa type(target) ni type(''):
             rudisha self.showtopic(target, more_xrefs)
 
@@ -2041,7 +2041,7 @@ module "pydoc_data.topics" could sio be found.
             doc = pydoc_data.topics.topics[label]
         tatizo KeyError:
             self.output.write('no documentation found kila %s\n' % repr(topic))
-            return
+            rudisha
         doc = doc.strip() + '\n'
         ikiwa more_xrefs:
             xrefs = (xrefs ama '') + ' ' + more_xrefs
@@ -2606,7 +2606,7 @@ eleza browse(port=0, *, open_browser=Kweli, hostname='localhost'):
     serverthread = _start_server(_url_handler, hostname, port)
     ikiwa serverthread.error:
         andika(serverthread.error)
-        return
+        rudisha
     ikiwa serverthread.serving:
         server_help_msg = 'Server commands: [b]rowser, [q]uit'
         ikiwa open_browser:
@@ -2694,7 +2694,7 @@ eleza cli():
                 open_browser = Kweli
             ikiwa opt == '-k':
                 apropos(val)
-                return
+                rudisha
             ikiwa opt == '-p':
                 start_server = Kweli
                 port = val
@@ -2706,7 +2706,7 @@ eleza cli():
 
         ikiwa start_server:
             browse(port, hostname=hostname, open_browser=open_browser)
-            return
+            rudisha
 
         ikiwa sio args: ashiria BadUsage
         kila arg kwenye args:

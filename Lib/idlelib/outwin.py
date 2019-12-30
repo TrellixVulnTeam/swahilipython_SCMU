@@ -32,7 +32,7 @@ eleza file_line_helper(line):
     """Extract file name na line number kutoka line of text.
 
     Check ikiwa line of text contains one of the file/line patterns.
-    If it does na ikiwa the file na line are valid, return
+    If it does na ikiwa the file na line are valid, rudisha
     a tuple of the file name na line number.  If it doesn't match
     ama ikiwa the file ama line ni invalid, rudisha Tupu.
     """
@@ -152,7 +152,7 @@ kundi OutputWindow(EditorWindow):
                     "The line you point at doesn't look like "
                     "a valid file name followed by a line number.",
                     parent=self.text)
-                return
+                rudisha
         filename, lineno = result
         self.flist.gotofileline(filename, lineno)
 

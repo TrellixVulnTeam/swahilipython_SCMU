@@ -368,7 +368,7 @@ ikiwa sys.platform.startswith("win"):
             # dealing ukijumuisha files that are pending deletion.
             L = os.listdir(dirname)
             ikiwa sio (L ikiwa waitall isipokua name kwenye L):
-                return
+                rudisha
             # Increase the timeout na try again
             time.sleep(timeout)
             timeout *= 2
@@ -419,7 +419,7 @@ isipokua:
     eleza _rmtree(path):
         jaribu:
             shutil.rmtree(path)
-            return
+            rudisha
         tatizo OSError:
             pita
 
@@ -1148,7 +1148,7 @@ eleza sortdict(dict):
 
 eleza make_bad_fd():
     """
-    Create an invalid file descriptor by opening na closing a file na return
+    Create an invalid file descriptor by opening na closing a file na rudisha
     its fd.
     """
     file = open(TESTFN, "wb")
@@ -1844,7 +1844,7 @@ kundi _MemoryWatchdog:
             warnings.warn('/proc sio available kila stats: {}'.format(e),
                           RuntimeWarning)
             sys.stderr.flush()
-            return
+            rudisha
 
         ukijumuisha f:
             watchdog_script = findfile("memory_watchdog.py")
@@ -2073,7 +2073,7 @@ eleza set_match_tests(patterns):
 
     ikiwa patterns == _match_test_patterns:
         # No change: no need to recompile patterns.
-        return
+        rudisha
 
     ikiwa sio patterns:
         func = Tupu
@@ -2316,7 +2316,7 @@ eleza reap_children():
 
     # Need os.waitpid(-1, os.WNOHANG): Windows ni sio supported
     ikiwa sio (hasattr(os, 'waitpid') na hasattr(os, 'WNOHANG')):
-        return
+        rudisha
 
     # Reap all our dead child processes so we don't leave zombies around.
     # These hog resources na might be causing some of the buildbots to die.
@@ -2873,7 +2873,7 @@ kundi SuppressCrashReport:
     eleza __exit__(self, *ignore_exc):
         """Restore Windows ErrorMode ama core file behavior to initial value."""
         ikiwa self.old_value ni Tupu:
-            return
+            rudisha
 
         ikiwa sys.platform.startswith('win'):
             self._k32.SetErrorMode(self.old_value)

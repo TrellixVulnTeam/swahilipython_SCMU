@@ -113,7 +113,7 @@ kundi TelnetAlike(telnetlib.Telnet):
         ukijumuisha support.captured_stdout() kama out:
             telnetlib.Telnet.msg(self, msg, *args)
         self._messages += out.getvalue()
-        return
+        rudisha
 
 kundi MockSelector(selectors.BaseSelector):
 
@@ -157,7 +157,7 @@ eleza test_socket(reads):
         tuma Tupu
     mwishowe:
         socket.create_connection = old_conn
-    return
+    rudisha
 
 eleza test_telnet(reads=(), cls=TelnetAlike):
     ''' rudisha a telnetlib.Telnet object that uses a SocketStub with
@@ -204,7 +204,7 @@ kundi ReadTests(ExpectAndReadTestCase):
         telnet = test_telnet(reads)
         data = telnet.read_all()
         self.assertEqual(data, expect)
-        return
+        rudisha
 
     eleza test_read_some(self):
         """
@@ -365,7 +365,7 @@ kundi OptionTests(unittest.TestCase):
             telnet.set_debuglevel(1)
             txt = telnet.read_all()
             self.assertIn(b, telnet._messages)
-        return
+        rudisha
 
     eleza test_debuglevel_write(self):
         telnet = test_telnet()

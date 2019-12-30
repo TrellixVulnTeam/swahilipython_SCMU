@@ -386,7 +386,7 @@ kundi ConfigDialog(Toplevel):
                 # Limit size to fit non-expanding space ukijumuisha larger font.
                 Entry(entry_area, textvariable=var, width=15
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
-        return
+        rudisha
 
     eleza set_extension_value(self, section, opt):
         """Return Kweli ikiwa the configuration was added ama changed.
@@ -630,7 +630,7 @@ kundi FontPage(Frame):
         """Store changes to font attributes.
 
         When one font attribute changes, save them all, kama they are
-        sio independent kutoka each other. In particular, when we are
+        sio inependent kutoka each other. In particular, when we are
         overriding the default font, we need to write out everything.
         """
         value = self.font_name.get()
@@ -1105,7 +1105,7 @@ kundi HighPage(Frame):
                            'Enter a name kila your new Custom Theme below.')
                 new_theme = self.get_new_theme_name(message)
                 ikiwa sio new_theme:  # User cancelled custom theme creation.
-                    return
+                    rudisha
                 isipokua:  # Create new custom theme based on previously active theme.
                     self.create_new(new_theme)
                     self.color.set(color_string)
@@ -1318,7 +1318,7 @@ kundi HighPage(Frame):
         delmsg = 'Are you sure you wish to delete the theme %r ?'
         ikiwa sio self.askyesno(
                 'Delete Theme',  delmsg % theme_name, parent=self):
-            return
+            rudisha
         self.cd.deactivate_current_config()
         # Remove theme kutoka changes, config, na file.
         changes.delete_section('highlight', theme_name)
@@ -1631,7 +1631,7 @@ kundi KeysPage(Frame):
                 ikiwa sio new_keyset:  # User cancelled custom key set creation.
                     self.bindingslist.select_set(list_index)
                     self.bindingslist.select_anchor(list_index)
-                    return
+                    rudisha
                 isipokua:  # Create new custom key set based on previously active key set.
                     self.create_new_key_set(new_keyset)
             self.bindingslist.delete(list_index)
@@ -1749,7 +1749,7 @@ kundi KeysPage(Frame):
         delmsg = 'Are you sure you wish to delete the key set %r ?'
         ikiwa sio self.askyesno(
                 'Delete Key Set',  delmsg % keyset_name, parent=self):
-            return
+            rudisha
         self.cd.deactivate_current_config()
         # Remove key set kutoka changes, config, na file.
         changes.delete_section('keys', keyset_name)
@@ -2352,7 +2352,7 @@ kundi VerticalScrolledFrame(Frame):
                 canvas.itemconfigure(interior_id, width=canvas.winfo_width())
         canvas.bind('<Configure>', _configure_canvas)
 
-        return
+        rudisha
 
 
 ikiwa __name__ == '__main__':

@@ -32,7 +32,7 @@ kundi InterProcessSignalTests(unittest.TestCase):
 
         wakati time.monotonic() < deadline:
             ikiwa self.got_signals[signame]:
-                return
+                rudisha
             signal.pause()
 
         self.fail('signal %s sio received after %s seconds'

@@ -8,7 +8,7 @@ __all__ = [
     'body_line_iterator',
     'typed_subpart_iterator',
     'walk',
-    # Do sio include _structure() since it's part of the debugging API.
+    # Do sio inlude _structure() since it's part of the debugging API.
     ]
 
 agiza sys

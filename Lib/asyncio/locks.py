@@ -231,11 +231,11 @@ kundi Lock(_ContextManagerMixin):
     eleza _wake_up_first(self):
         """Wake up the first waiter ikiwa it isn't done."""
         ikiwa sio self._waiters:
-            return
+            rudisha
         jaribu:
             fut = next(iter(self._waiters))
         tatizo StopIteration:
-            return
+            rudisha
 
         # .done() necessarily means that a waiter will wake up later on na
         # either take the lock, or, ikiwa it was cancelled na lock wasn't
@@ -474,7 +474,7 @@ kundi Semaphore(_ContextManagerMixin):
             waiter = self._waiters.popleft()
             ikiwa sio waiter.done():
                 waiter.set_result(Tupu)
-                return
+                rudisha
 
     eleza locked(self):
         """Returns Kweli ikiwa semaphore can sio be acquired immediately."""
@@ -486,7 +486,7 @@ kundi Semaphore(_ContextManagerMixin):
         If the internal counter ni larger than zero on entry,
         decrement it by one na rudisha Kweli immediately.  If it is
         zero on entry, block, waiting until some other coroutine has
-        called release() to make it larger than 0, na then return
+        called release() to make it larger than 0, na then rudisha
         Kweli.
         """
         wakati self._value <= 0:

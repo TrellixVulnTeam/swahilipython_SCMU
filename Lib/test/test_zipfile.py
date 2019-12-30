@@ -1453,7 +1453,7 @@ kundi OtherTests(unittest.TestCase):
 
         # The bug we're testing kila caused an AttributeError to be raised
         # when a ZipFile instance was created kila a file that did not
-        # exist; the .fp member was sio initialized but was needed by the
+        # exist; the .fp member was sio intialized but was needed by the
         # __del__() method.  Since the AttributeError ni kwenye the __del__(),
         # it ni ignored, but the user should be sufficiently annoyed by
         # the message on the output that regression will be noticed

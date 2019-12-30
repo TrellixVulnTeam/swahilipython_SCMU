@@ -33,7 +33,7 @@ kundi install_headers(Command):
     eleza run(self):
         headers = self.distribution.headers
         ikiwa sio headers:
-            return
+            rudisha
 
         self.mkpath(self.install_dir)
         kila header kwenye headers:

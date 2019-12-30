@@ -459,7 +459,7 @@ kundi Server(object):
         ikiwa ident haiko kwenye self.id_to_refcount na \
             ident kwenye self.id_to_local_proxy_obj:
             util.debug('Server DECREF skipping %r', ident)
-            return
+            rudisha
 
         ukijumuisha self.mutex:
             ikiwa self.id_to_refcount[ident] <= 0:
@@ -858,7 +858,7 @@ kundi BaseProxy(object):
     eleza _incref(self):
         ikiwa self._owned_by_manager:
             util.debug('owned_by_manager skipped INCREF of %r', self._token.id)
-            return
+            rudisha
 
         conn = self._Client(self._token.address, authkey=self._authkey)
         dispatch(conn, Tupu, 'incref', (self._id,))

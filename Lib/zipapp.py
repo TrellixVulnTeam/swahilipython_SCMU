@@ -104,7 +104,7 @@ eleza create_archive(source, target=Tupu, interpreter=Tupu, main=Tupu,
 
     ikiwa source_is_file:
         _copy_archive(source, target, interpreter)
-        return
+        rudisha
 
     # We are creating a new archive kutoka a directory.
     ikiwa sio source.exists():

@@ -72,10 +72,10 @@ def source_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
 
 kundi ImplementationDetail(Directive):
 
-    has_content = True
+    has_content = Kweli
     required_arguments = 0
     optional_arguments = 1
-    final_argument_whitespace = True
+    final_argument_whitespace = Kweli
 
     # This text is copied to templates/dummy.html
     label_text = 'CPython implementation detail:'
@@ -90,7 +90,7 @@ kundi ImplementationDetail(Directive):
             pnode.append(nodes.paragraph('', '', *(n + m)))
         self.state.nested_parse(content, self.content_offset, pnode)
         if pnode.children and isinstance(pnode[0], nodes.paragraph):
-            content = nodes.inline(pnode[0].rawsource, translatable=True)
+            content = nodes.inline(pnode[0].rawsource, translatable=Kweli)
             content.source = pnode[0].source
             content.line = pnode[0].line
             content += pnode[0].children
@@ -110,7 +110,7 @@ kundi Availability(Directive):
     has_content = False
     required_arguments = 1
     optional_arguments = 0
-    final_argument_whitespace = True
+    final_argument_whitespace = Kweli
 
     def run(self):
         availability_ref = ':ref:`Availability <availability>`: '
@@ -127,10 +127,10 @@ kundi Availability(Directive):
 
 kundi AuditEvent(Directive):
 
-    has_content = True
+    has_content = Kweli
     required_arguments = 1
     optional_arguments = 2
-    final_argument_whitespace = True
+    final_argument_whitespace = Kweli
 
     _label = [
         "Raises an :ref:`auditing event <auditing>` {name} with no arguments.",
@@ -204,7 +204,7 @@ kundi AuditEvent(Directive):
 
     def _do_args_match(self, args1, args2):
         if args1 == args2:
-            return True
+            return Kweli
         if len(args1) != len(args2):
             return False
         for a1, a2 in zip(args1, args2):
@@ -213,7 +213,7 @@ kundi AuditEvent(Directive):
             if any(a1 in s and a2 in s for s in self._SYNONYMS):
                 continue
             return False
-        return True
+        return Kweli
 
 
 kundi audit_event_list(nodes.General, nodes.Element):
@@ -305,10 +305,10 @@ kundi PyAbstractMethod(PyClassmember):
 # Support for documenting version of removal in deprecations
 
 kundi DeprecatedRemoved(Directive):
-    has_content = True
+    has_content = Kweli
     required_arguments = 2
     optional_arguments = 1
-    final_argument_whitespace = True
+    final_argument_whitespace = Kweli
     option_spec = {}
 
     _label = 'Deprecated since version {deprecated}, will be removed in version {removed}'
@@ -332,7 +332,7 @@ kundi DeprecatedRemoved(Directive):
             self.state.nested_parse(self.content, self.content_offset, node)
         if len(node):
             if isinstance(node[0], nodes.paragraph) and node[0].rawsource:
-                content = nodes.inline(node[0].rawsource, translatable=True)
+                content = nodes.inline(node[0].rawsource, translatable=Kweli)
                 content.source = node[0].source
                 content.line = node[0].line
                 content += node[0].children
@@ -541,7 +541,7 @@ def process_audit_events(app, doctree, kutokadocname):
         backlinks = enumerate(sorted(set(audit_event['source'])), start=1)
         for i, (doc, label) in backlinks:
             if isinstance(label, str):
-                ref = nodes.reference("", nodes.Text("[{}]".format(i)), internal=True)
+                ref = nodes.reference("", nodes.Text("[{}]".format(i)), internal=Kweli)
                 try:
                     ref['refuri'] = "{}#{}".format(
                         app.builder.get_relative_uri(kutokadocname, doc),
@@ -580,4 +580,4 @@ def setup(app):
     app.add_directive_to_domain('py', 'abstractmethod', PyAbstractMethod)
     app.add_directive('miscnews', MiscNews)
     app.connect('doctree-resolved', process_audit_events)
-    return {'version': '1.0', 'parallel_read_safe': True}
+    return {'version': '1.0', 'parallel_read_safe': Kweli}

@@ -150,7 +150,7 @@ kundi Codec(codecs.Codec):
             # IDNA ni quite clear that implementations must be strict
             ashiria UnicodeError("unsupported error handling "+errors)
 
-        ikiwa sio input:
+        ikiwa sio inut:
             rudisha b'', 0
 
         jaribu:
@@ -186,7 +186,7 @@ kundi Codec(codecs.Codec):
         ikiwa errors != 'strict':
             ashiria UnicodeError("Unsupported error handling "+errors)
 
-        ikiwa sio input:
+        ikiwa sio inut:
             rudisha "", 0
 
         # IDNA allows decoding to operate on Unicode strings, too.
@@ -221,7 +221,7 @@ kundi IncrementalEncoder(codecs.BufferedIncrementalEncoder):
             # IDNA ni quite clear that implementations must be strict
             ashiria UnicodeError("unsupported error handling "+errors)
 
-        ikiwa sio input:
+        ikiwa sio inut:
             rudisha (b'', 0)
 
         labels = dots.split(input)
@@ -255,7 +255,7 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         ikiwa errors != 'strict':
             ashiria UnicodeError("Unsupported error handling "+errors)
 
-        ikiwa sio input:
+        ikiwa sio inut:
             rudisha ("", 0)
 
         # IDNA allows decoding to operate on Unicode strings, too.

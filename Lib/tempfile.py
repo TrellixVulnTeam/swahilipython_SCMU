@@ -317,7 +317,7 @@ eleza mkstemp(suffix=Tupu, prefix=Tupu, dir=Tupu, text=Uongo):
     The file ni readable na writable only by the creating user ID.
     If the operating system uses permission bits to indicate whether a
     file ni executable, the file ni executable by no one. The file
-    descriptor ni sio inherited by children of this process.
+    descriptor ni sio inerited by children of this process.
 
     Caller ni responsible kila deleting the file when done ukijumuisha it.
     """
@@ -645,13 +645,13 @@ kundi SpooledTemporaryFile:
                                    'dir': dir, 'errors': errors}
 
     eleza _check(self, file):
-        ikiwa self._rolled: return
+        ikiwa self._rolled: rudisha
         max_size = self._max_size
         ikiwa max_size na file.tell() > max_size:
             self.rollover()
 
     eleza rollover(self):
-        ikiwa self._rolled: return
+        ikiwa self._rolled: rudisha
         file = self._file
         newfile = self._file = TemporaryFile(**self._TemporaryFileArgs)
         toa self._TemporaryFileArgs

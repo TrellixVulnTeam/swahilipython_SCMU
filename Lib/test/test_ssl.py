@@ -2374,7 +2374,7 @@ kundi ThreadedEchoServer(threading.Thread):
             self.running = Kweli
             ikiwa sio self.server.starttls_server:
                 ikiwa sio self.wrap_conn():
-                    return
+                    rudisha
             wakati self.running:
                 jaribu:
                     msg = self.read()
@@ -2396,14 +2396,14 @@ kundi ThreadedEchoServer(threading.Thread):
                         ikiwa support.verbose na self.server.connectionchatty:
                             sys.stdout.write(" server: client closed connection\n")
                         self.close()
-                        return
+                        rudisha
                     lasivyo (self.server.starttls_server na
                           stripped == b'STARTTLS'):
                         ikiwa support.verbose na self.server.connectionchatty:
                             sys.stdout.write(" server: read STARTTLS kutoka client, sending OK...\n")
                         self.write(b"OK\n")
                         ikiwa sio self.wrap_conn():
-                            return
+                            rudisha
                     lasivyo (self.server.starttls_server na self.sslconn
                           na stripped == b'ENDTLS'):
                         ikiwa support.verbose na self.server.connectionchatty:
@@ -2580,7 +2580,7 @@ kundi AsyncoreEchoServer(threading.Thread):
                 jaribu:
                     self.socket.do_handshake()
                 tatizo (ssl.SSLWantReadError, ssl.SSLWantWriteError):
-                    return
+                    rudisha
                 tatizo ssl.SSLEOFError:
                     rudisha self.handle_close()
                 tatizo ssl.SSLError:

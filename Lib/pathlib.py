@@ -507,7 +507,7 @@ kundi _PreciseSelector(_Selector):
                 kila p kwenye self.successor._select_from(path, is_dir, exists, scandir):
                     tuma p
         tatizo PermissionError:
-            return
+            rudisha
 
 
 kundi _WildcardSelector(_Selector):
@@ -535,7 +535,7 @@ kundi _WildcardSelector(_Selector):
                         kila p kwenye self.successor._select_from(path, is_dir, exists, scandir):
                             tuma p
         tatizo PermissionError:
-            return
+            rudisha
 
 
 
@@ -560,7 +560,7 @@ kundi _RecursiveWildcardSelector(_Selector):
                     kila p kwenye self._iterate_directories(path, is_dir, scandir):
                         tuma p
         tatizo PermissionError:
-            return
+            rudisha
 
     eleza _select_from(self, parent_path, is_dir, exists, scandir):
         jaribu:
@@ -575,7 +575,7 @@ kundi _RecursiveWildcardSelector(_Selector):
             mwishowe:
                 tumaed.clear()
         tatizo PermissionError:
-            return
+            rudisha
 
 
 #
@@ -1249,7 +1249,7 @@ kundi Path(PurePath):
                 # Avoid exception chaining
                 pita
             isipokua:
-                return
+                rudisha
         flags = os.O_CREAT | os.O_WRONLY
         ikiwa sio exist_ok:
             flags |= os.O_EXCL

@@ -249,7 +249,7 @@ eleza _format_coroutine(coro):
     lineno = 0
     ikiwa (is_corowrapper na
             coro.func ni sio Tupu na
-            sio inspect.isgeneratorfunction(coro.func)):
+            sio inpect.isgeneratorfunction(coro.func)):
         source = format_helpers._get_function_source(coro.func)
         ikiwa source ni sio Tupu:
             filename, lineno = source

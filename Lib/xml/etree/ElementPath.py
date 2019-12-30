@@ -183,7 +183,7 @@ eleza prepare_descendant(next, token):
     jaribu:
         token = next()
     tatizo StopIteration:
-        return
+        rudisha
     ikiwa token[0] == "*":
         tag = "*"
     lasivyo sio token[0]:
@@ -233,7 +233,7 @@ eleza prepare_predicate(next, token):
         jaribu:
             token = next()
         tatizo StopIteration:
-            return
+            rudisha
         ikiwa token[0] == "]":
             koma
         ikiwa token == ('', ''):
@@ -361,7 +361,7 @@ eleza iterfind(elem, path, namespaces=Tupu):
         jaribu:
             token = next()
         tatizo StopIteration:
-            return
+            rudisha
         selector = []
         wakati 1:
             jaribu:

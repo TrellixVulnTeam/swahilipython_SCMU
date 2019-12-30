@@ -239,7 +239,7 @@ kundi AST_Tests(unittest.TestCase):
 
     eleza _assertKweliorder(self, ast_node, parent_pos):
         ikiwa sio isinstance(ast_node, ast.AST) ama ast_node._fields ni Tupu:
-            return
+            rudisha
         ikiwa isinstance(ast_node, (ast.expr, ast.stmt, ast.excepthandler)):
             node_pos = (ast_node.lineno, ast_node.col_offset)
             self.assertGreaterEqual(node_pos, parent_pos)
@@ -713,7 +713,7 @@ kundi ASTHelpers_Test(unittest.TestCase):
             'lineno=4, col_offset=4, end_lineno=4, end_col_offset=5), lineno=4, '
             'col_offset=0, end_lineno=4, end_col_offset=5))'
         )
-        # issue10869: do sio increment lineno of root twice
+        # issue10869: do sio inrement lineno of root twice
         src = ast.parse('1 + 1', mode='eval')
         self.assertEqual(ast.increment_lineno(src.body, n=3), src.body)
         self.assertEqual(ast.dump(src, include_attributes=Kweli),
@@ -1744,7 +1744,7 @@ kundi NodeVisitorTests(unittest.TestCase):
 
 eleza main():
     ikiwa __name__ != '__main__':
-        return
+        rudisha
     ikiwa sys.argv[1:] == ['-g']:
         kila statements, kind kwenye ((exec_tests, "exec"), (single_tests, "single"),
                                  (eval_tests, "eval")):

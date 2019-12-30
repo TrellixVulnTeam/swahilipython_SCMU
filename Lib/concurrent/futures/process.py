@@ -183,7 +183,7 @@ eleza _get_chunks(*iterables, chunksize):
     wakati Kweli:
         chunk = tuple(itertools.islice(it, chunksize))
         ikiwa sio chunk:
-            return
+            rudisha
         tuma chunk
 
 eleza _process_chunk(fn, chunk):
@@ -228,13 +228,13 @@ eleza _process_worker(call_queue, result_queue, initializer, initargs):
             _base.LOGGER.critical('Exception kwenye initializer:', exc_info=Kweli)
             # The parent will notice that the process stopped na
             # mark the pool broken
-            return
+            rudisha
     wakati Kweli:
         call_item = call_queue.get(block=Kweli)
         ikiwa call_item ni Tupu:
             # Wake up queue management thread
             result_queue.put(os.getpid())
-            return
+            rudisha
         jaribu:
             r = call_item.fn(*call_item.args, **call_item.kwargs)
         tatizo BaseException kama e:
@@ -268,11 +268,11 @@ eleza _add_call_item_to_queue(pending_work_items,
     """
     wakati Kweli:
         ikiwa call_queue.full():
-            return
+            rudisha
         jaribu:
             work_id = work_ids.get(block=Uongo)
         tatizo queue.Empty:
-            return
+            rudisha
         isipokua:
             work_item = pending_work_items[work_id]
 
@@ -400,7 +400,7 @@ eleza _queue_management_worker(executor_reference,
             kila p kwenye processes.values():
                 p.terminate()
             shutdown_worker()
-            return
+            rudisha
         ikiwa isinstance(result_item, int):
             # Clean shutdown of a worker using its PID
             # (avoids marking the executor broken)
@@ -409,7 +409,7 @@ eleza _queue_management_worker(executor_reference,
             p.join()
             ikiwa sio processes:
                 shutdown_worker()
-                return
+                rudisha
         lasivyo result_item ni sio Tupu:
             work_item = pending_work_items.pop(result_item.work_id, Tupu)
             # work_item can be Tupu ikiwa another process terminated (see above)
@@ -439,7 +439,7 @@ eleza _queue_management_worker(executor_reference,
                 # this thread ikiwa there are no pending work items.
                 ikiwa sio pending_work_items:
                     shutdown_worker()
-                    return
+                    rudisha
             tatizo Full:
                 # This ni sio a problem: we will eventually be woken up (in
                 # result_queue.get()) na be able to send a sentinel again.
@@ -461,15 +461,15 @@ eleza _check_system_limits():
         nsems_max = os.sysconf("SC_SEM_NSEMS_MAX")
     tatizo (AttributeError, ValueError):
         # sysconf sio available ama setting sio available
-        return
+        rudisha
     ikiwa nsems_max == -1:
         # indetermined limit, assume that limit ni determined
         # by available memory only
-        return
+        rudisha
     ikiwa nsems_max >= 256:
         # minimum number of semaphores available
         # according to POSIX
-        return
+        rudisha
     _system_limited = ("system provides too few semaphores (%d"
                        " available, 256 necessary)" % nsems_max)
     ashiria NotImplementedError(_system_limited)

@@ -621,7 +621,7 @@ kundi TestEmailMessageBase:
         make_method = 'make_' + method
         ikiwa outcome kwenye ('', 'raises'):
             self._check_disallowed_subtype_raises(m, method, subtype, make_method)
-            return
+            rudisha
         getattr(m, make_method)()
         self.assertEqual(m.get_content_maintype(), 'multipart')
         self.assertEqual(m.get_content_subtype(), method)
@@ -641,7 +641,7 @@ kundi TestEmailMessageBase:
             m['Content-Type'] = 'multipart/' + subtype
             ukijumuisha self.assertRaises(ValueError) kama cm:
                 getattr(m, 'make_' + method)()
-            return
+            rudisha
         ikiwa subtype == 'plain':
             m['Content-Type'] = 'text/plain'
         lasivyo subtype != 'no_content':
@@ -668,7 +668,7 @@ kundi TestEmailMessageBase:
         add_method = 'add_attachment' ikiwa method=='mixed' isipokua 'add_' + method
         ikiwa outcome == 'raises':
             self._check_disallowed_subtype_raises(m, method, subtype, add_method)
-            return
+            rudisha
         getattr(m, add_method)('test', content_manager=cm)
         self.assertEqual(m.get_content_maintype(), 'multipart')
         self.assertEqual(m.get_content_subtype(), method)

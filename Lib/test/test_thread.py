@@ -166,14 +166,14 @@ kundi Barrier:
         ikiwa self.waiting == self.num_threads:
             self.waiting = self.num_threads - 1
             self.checkout_mutex.release()
-            return
+            rudisha
         self.checkin_mutex.release()
 
         self.checkout_mutex.acquire()
         self.waiting = self.waiting - 1
         ikiwa self.waiting == 0:
             self.checkin_mutex.release()
-            return
+            rudisha
         self.checkout_mutex.release()
 
 

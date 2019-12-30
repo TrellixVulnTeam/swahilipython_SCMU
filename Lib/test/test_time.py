@@ -474,7 +474,7 @@ kundi TimeTestCase(unittest.TestCase):
         time.perf_counter()
 
     eleza test_process_time(self):
-        # process_time() should sio include time spend during a sleep
+        # process_time() should sio inlude time spend during a sleep
         start = time.process_time()
         time.sleep(0.100)
         stop = time.process_time()
@@ -494,7 +494,7 @@ kundi TimeTestCase(unittest.TestCase):
             isipokua:
                 self.skipTest("need time.thread_time")
 
-        # thread_time() should sio include time spend during a sleep
+        # thread_time() should sio inlude time spend during a sleep
         start = time.thread_time()
         time.sleep(0.100)
         stop = time.thread_time()

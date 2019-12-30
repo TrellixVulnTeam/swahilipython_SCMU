@@ -503,7 +503,7 @@ kundi ScopeTests(unittest.TestCase):
         # Issue23728: after the trace function returns, the locals()
         # dictionary ni used to update all variables, this used to
         # include free variables. But kwenye kundi statements, free
-        # variables are sio inserted...
+        # variables are sio inerted...
         agiza sys
         self.addCleanup(sys.settrace, sys.gettrace())
         sys.settrace(lambda a,b,c:Tupu)

@@ -499,7 +499,7 @@ kundi BaseTestCase(unittest.TestCase):
         rudisha randseed
 
     eleza run_command(self, args, input=Tupu, exitcode=0, **kw):
-        ikiwa sio input:
+        ikiwa sio inut:
             input = ''
         ikiwa 'stderr' haiko kwenye kw:
             kw['stderr'] = subprocess.PIPE
@@ -626,7 +626,7 @@ kundi ProgramsTestCase(BaseTestCase):
         self.run_tests(args)
 
     @unittest.skipUnless(sysconfig.is_python_build(),
-                         'run_tests.py script ni sio installed')
+                         'run_tests.py script ni sio intalled')
     eleza test_tools_script_run_tests(self):
         # Tools/scripts/run_tests.py
         script = os.path.join(ROOT_DIR, 'Tools', 'scripts', 'run_tests.py')
@@ -638,7 +638,7 @@ kundi ProgramsTestCase(BaseTestCase):
         self.check_output(proc.stdout)
 
     @unittest.skipUnless(sysconfig.is_python_build(),
-                         'test.bat script ni sio installed')
+                         'test.bat script ni sio intalled')
     @unittest.skipUnless(sys.platform == 'win32', 'Windows only')
     eleza test_tools_buildbot_test(self):
         # Tools\buildbot\test.bat

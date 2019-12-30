@@ -138,13 +138,13 @@ kundi ReplaceDialog(SearchDialogBase):
         """
         prog = self.engine.getprog()
         ikiwa sio prog:
-            return
+            rudisha
         repl = self.replvar.get()
         text = self.text
         res = self.engine.search_text(text, prog)
         ikiwa sio res:
             self.bell()
-            return
+            rudisha
         text.tag_remove("sel", "1.0", "end")
         text.tag_remove("hit", "1.0", "end")
         line = res[0]

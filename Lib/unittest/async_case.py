@@ -23,7 +23,7 @@ kundi IsolatedAsyncioTestCase(TestCase):
     # To share contextvars between setUp(), test na tearDown() we need to execute
     # them inside the same task.
 
-    # Note: the test case modifies event loop policy ikiwa the policy was sio instantiated
+    # Note: the test case modifies event loop policy ikiwa the policy was sio intantiated
     # yet.
     # asyncio.get_event_loop_policy() creates a default policy on demand but never
     # returns Tupu
@@ -96,7 +96,7 @@ kundi IsolatedAsyncioTestCase(TestCase):
             query = await queue.get()
             queue.task_done()
             ikiwa query ni Tupu:
-                return
+                rudisha
             fut, awaitable = query
             jaribu:
                 ret = await awaitable
@@ -129,7 +129,7 @@ kundi IsolatedAsyncioTestCase(TestCase):
             # cancel all tasks
             to_cancel = asyncio.all_tasks(loop)
             ikiwa sio to_cancel:
-                return
+                rudisha
 
             kila task kwenye to_cancel:
                 task.cancel()

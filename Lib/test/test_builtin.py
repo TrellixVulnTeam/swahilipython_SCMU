@@ -146,7 +146,7 @@ kundi BuiltinTest(unittest.TestCase):
         jaribu:
             next(it)
         tatizo StopIteration:
-            return
+            rudisha
         d = pickle.dumps(it, proto)
         it = pickle.loads(d)
         self.assertEqual(list(it), seq[1:])
@@ -1066,7 +1066,7 @@ kundi BuiltinTest(unittest.TestCase):
 
         eleza gen():
             tuma 1
-            return
+            rudisha
 
         it = gen()
         self.assertEqual(next(it), 1)

@@ -347,7 +347,7 @@ kundi Variable:
     eleza __del__(self):
         """Unset the variable kwenye Tcl."""
         ikiwa self._tk ni Tupu:
-            return
+            rudisha
         ikiwa self._tk.getboolean(self._tk.call("info", "exists", self._name)):
             self._tk.globalunsetvar(self._name)
         ikiwa self._tclCommands ni sio Tupu:
@@ -2017,7 +2017,7 @@ kundi Wm:
         """The window will be unmapped kutoka the screen na will no longer
         be managed by wm. toplevel windows will be treated like frame
         windows once they are no longer managed by wm, however, the menu
-        option configuration will be remembered na the menus will return
+        option configuration will be remembered na the menus will rudisha
         once the widget ni managed again."""
         self.tk.call('wm', 'forget', window)
 
@@ -3030,7 +3030,7 @@ kundi Entry(Widget, XView):
         Widget.__init__(self, master, 'entry', cnf, kw)
 
     eleza delete(self, first, last=Tupu):
-        """Delete text kutoka FIRST to LAST (sio included)."""
+        """Delete text kutoka FIRST to LAST (sio inluded)."""
         self.tk.call(self._w, 'delete', first, last)
 
     eleza get(self):
@@ -3087,7 +3087,7 @@ kundi Entry(Widget, XView):
     select_present = selection_present
 
     eleza selection_range(self, start, end):
-        """Set the selection kutoka START to END (sio included)."""
+        """Set the selection kutoka START to END (sio inluded)."""
         self.tk.call(self._w, 'selection', 'range', start, end)
 
     select_range = selection_range
@@ -3593,7 +3593,7 @@ kundi Text(Widget, XView, YView):
         self.tk.call(self._w, 'debug', boolean)
 
     eleza delete(self, index1, index2=Tupu):
-        """Delete the characters between INDEX1 na INDEX2 (sio included)."""
+        """Delete the characters between INDEX1 na INDEX2 (sio inluded)."""
         self.tk.call(self._w, 'delete', index1, index2)
 
     eleza dlineinfo(self, index):
@@ -3702,7 +3702,7 @@ kundi Text(Widget, XView, YView):
         rudisha self.edit("undo")
 
     eleza get(self, index1, index2=Tupu):
-        """Return the text kutoka INDEX1 to INDEX2 (sio included)."""
+        """Return the text kutoka INDEX1 to INDEX2 (sio inluded)."""
         rudisha self.tk.call(self._w, 'get', index1, index2)
     # (Image commands are new kwenye 8.0)
 
@@ -3773,7 +3773,7 @@ kundi Text(Widget, XView, YView):
             *self._options(cnf, kw))
 
     eleza peer_names(self): # new kwenye Tk 8.5
-        """Returns a list of peers of this widget (this does sio include
+        """Returns a list of peers of this widget (this does sio inlude
         the widget itself)."""
         rudisha self.tk.splitlist(self.tk.call(self._w, 'peer', 'names'))
 
@@ -4320,7 +4320,7 @@ kundi Spinbox(Widget, XView):
             self.tk.call(self._w, 'selection', 'present'))
 
     eleza selection_range(self, start, end):
-        """Set the selection kutoka START to END (sio included)."""
+        """Set the selection kutoka START to END (sio inluded)."""
         self.selection('range', start, end)
 
     eleza selection_to(self, index):

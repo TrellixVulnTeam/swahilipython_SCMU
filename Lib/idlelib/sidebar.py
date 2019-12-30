@@ -269,7 +269,7 @@ kundi LineNumbers(BaseSideBar):
         eleza selection_handler(event):
             ikiwa last_yview ni Tupu:
                 # This logic ni only needed wakati dragging.
-                return
+                rudisha
             yview = self.sidebar_text.yview()
             ikiwa yview != last_yview:
                 self.text.yview_moveto(yview[0])
@@ -289,7 +289,7 @@ kundi LineNumbers(BaseSideBar):
         Synchronize ukijumuisha editwin.text so that both sidebar_text na
         editwin.text contain the same number of lines"""
         ikiwa end == self.prev_end:
-            return
+            rudisha
 
         width_difference = len(str(end)) - len(str(self.prev_end))
         ikiwa width_difference:

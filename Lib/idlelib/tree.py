@@ -113,7 +113,7 @@ kundi TreeNode:
 
     eleza select(self, event=Tupu):
         ikiwa self.selected:
-            return
+            rudisha
         self.deselectall()
         self.selected = Kweli
         self.canvas.delete(self.image_id)
@@ -122,7 +122,7 @@ kundi TreeNode:
 
     eleza deselect(self, event=Tupu):
         ikiwa sio self.selected:
-            return
+            rudisha
         self.selected = Uongo
         self.canvas.delete(self.image_id)
         self.drawicon()
@@ -150,7 +150,7 @@ kundi TreeNode:
 
     eleza expand(self, event=Tupu):
         ikiwa sio self.item._IsExpandable():
-            return
+            rudisha
         ikiwa self.state != 'expanded':
             self.state = 'expanded'
             self.update()
@@ -169,7 +169,7 @@ kundi TreeNode:
         visible_height = self.canvas.winfo_height()
         visible_bottom = self.canvas.canvasy(visible_height)
         ikiwa visible_top <= top na bottom <= visible_bottom:
-            return
+            rudisha
         x0, y0, x1, y1 = self.canvas._getints(self.canvas['scrollregion'])
         ikiwa top >= visible_top na height <= visible_height:
             fraction = top + height - visible_height
@@ -309,7 +309,7 @@ kundi TreeNode:
             entry = self.entry
             toa self.entry
         tatizo AttributeError:
-            return
+            rudisha
         text = entry.get()
         entry.destroy()
         ikiwa text na text != self.item.GetText():
@@ -324,7 +324,7 @@ kundi TreeNode:
             entry = self.entry
             toa self.entry
         tatizo AttributeError:
-            return
+            rudisha
         entry.destroy()
         self.drawtext()
         self.canvas.focus_set()
@@ -407,7 +407,7 @@ kundi FileTreeItem(TreeItem):
         newpath = os.path.dirname(self.path)
         newpath = os.path.join(newpath, text)
         ikiwa os.path.dirname(newpath) != os.path.dirname(self.path):
-            return
+            rudisha
         jaribu:
             os.rename(self.path, newpath)
             self.path = newpath

@@ -237,12 +237,12 @@ eleza test():
     caps = getcaps()
     ikiwa sio sys.argv[1:]:
         show(caps)
-        return
+        rudisha
     kila i kwenye range(1, len(sys.argv), 2):
         args = sys.argv[i:i+2]
         ikiwa len(args) < 2:
             andika("usage: mailcap [MIMEtype file] ...")
-            return
+            rudisha
         MIMEtype = args[0]
         file = args[1]
         command, e = findmatch(caps, MIMEtype, 'view', file)

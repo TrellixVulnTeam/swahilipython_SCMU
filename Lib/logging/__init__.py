@@ -1495,7 +1495,7 @@ kundi Logger(Filterer):
             ikiwa raiseExceptions:
                 ashiria TypeError("level must be an integer")
             isipokua:
-                return
+                rudisha
         ikiwa self.isEnabledFor(level):
             self._log(level, msg, args, **kwargs)
 

@@ -498,7 +498,7 @@ kundi MinidomTest(unittest.TestCase):
         self.confirm(domstr == str.replace("\n", "\r\n"))
 
     eleza test_toprettyxml_with_text_nodes(self):
-        # see issue #4147, text nodes are sio indented
+        # see issue #4147, text nodes are sio inented
         decl = '<?xml version="1.0" ?>\n'
         self.assertEqual(parseString('<B>A</B>').toprettyxml(),
                          decl + '<B>A</B>\n')

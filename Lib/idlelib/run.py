@@ -127,7 +127,7 @@ eleza main(del_exitfunc=Uongo):
     tatizo:
         andika("IDLE Subprocess: no IP port pitaed kwenye sys.argv.",
               file=sys.__stderr__)
-        return
+        rudisha
 
     capture_warnings(Kweli)
     sys.argv[:] = [""]
@@ -191,7 +191,7 @@ eleza manage_socket(address):
         show_socket_error(socket_error, address)
         global exit_now
         exit_now = Kweli
-        return
+        rudisha
     server.handle_request() # A single request only
 
 eleza show_socket_error(err, address):

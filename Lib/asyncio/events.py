@@ -738,7 +738,7 @@ eleza get_event_loop():
     When called kutoka a coroutine ama a callback (e.g. scheduled ukijumuisha call_soon
     ama similar API), this function will always rudisha the running event loop.
 
-    If there ni no running event loop set, the function will return
+    If there ni no running event loop set, the function will rudisha
     the result of `get_event_loop_policy().get_event_loop()` call.
     """
     # NOTE: this function ni implemented kwenye C (see _asynciomodule.c)

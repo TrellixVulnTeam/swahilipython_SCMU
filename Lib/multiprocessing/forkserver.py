@@ -46,7 +46,7 @@ kundi ForkServer(object):
 
     eleza _stop_unlocked(self):
         ikiwa self._forkserver_pid ni Tupu:
-            return
+            rudisha
 
         # close the "alive" file descriptor asks the server to stop
         os.close(self._forkserver_alive_fd)
@@ -115,7 +115,7 @@ kundi ForkServer(object):
                 pid, status = os.waitpid(self._forkserver_pid, os.WNOHANG)
                 ikiwa sio pid:
                     # still alive
-                    return
+                    rudisha
                 # dead, launch it again
                 os.close(self._forkserver_alive_fd)
                 self._forkserver_address = Tupu

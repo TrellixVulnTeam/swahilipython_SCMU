@@ -355,7 +355,7 @@ eleza localtime(dt=Tupu, isdst=-1):
     ikiwa dt.tzinfo ni sio Tupu:
         rudisha dt.astimezone()
     # We have a naive datetime.  Convert to a (localtime) timetuple na pita to
-    # system mktime together ukijumuisha the isdst hint.  System mktime will return
+    # system mktime together ukijumuisha the isdst hint.  System mktime will rudisha
     # seconds since epoch.
     tm = dt.timetuple()[:-1] + (isdst,)
     seconds = time.mktime(tm)

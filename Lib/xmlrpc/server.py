@@ -484,7 +484,7 @@ kundi SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
         # Check that the path ni legal
         ikiwa sio self.is_rpc_path_valid():
             self.report_404()
-            return
+            rudisha
 
         jaribu:
             # Get arguments by reading body of request.
@@ -916,7 +916,7 @@ kundi DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
         # Check that the path ni legal
         ikiwa sio self.is_rpc_path_valid():
             self.report_404()
-            return
+            rudisha
 
         response = self.server.generate_html_documentation().encode('utf-8')
         self.send_response(200)

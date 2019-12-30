@@ -217,7 +217,7 @@ eleza iter_format(nitems, testobj='ndarray'):
     kila t kwenye iter_mode(nitems, testobj):
         tuma t
     ikiwa testobj != 'ndarray':
-        return
+        rudisha
     tuma struct_items(nitems, testobj)
 
 
@@ -850,7 +850,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                 ff = fmt ikiwa fmt isipokua 'B'
                 flattened = flatten(lst)
 
-                # Rules kila 'A': ikiwa the array ni already contiguous, return
+                # Rules kila 'A': ikiwa the array ni already contiguous, rudisha
                 # the array unaltered. Otherwise, rudisha a contiguous 'C'
                 # representation.
                 kila order kwenye ['C', 'F', 'A']:
@@ -936,7 +936,7 @@ kundi TestBufferProtocol(unittest.TestCase):
             jaribu:
                 m = memoryview(result)
             tatizo BufferError: # re-exporter does sio provide full information
-                return
+                rudisha
             ex = result.obj ikiwa isinstance(result, memoryview) isipokua result
 
             eleza check_memoryview(m, expected_readonly=readonly):
@@ -983,7 +983,7 @@ kundi TestBufferProtocol(unittest.TestCase):
             (sio match(req, PyBUF_ND) na match(req, PyBUF_FORMAT))):
 
             self.assertRaises(BufferError, ndarray, ex, getbuf=req)
-            return
+            rudisha
 
         ikiwa isinstance(ex, ndarray) ama is_memoryview_format(ex.format):
             lst = ex.tolist()

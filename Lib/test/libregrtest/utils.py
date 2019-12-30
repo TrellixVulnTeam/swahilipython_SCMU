@@ -31,7 +31,7 @@ eleza format_duration(seconds):
 
 eleza removepy(names):
     ikiwa sio names:
-        return
+        rudisha
     kila idx, name kwenye enumerate(names):
         basename, ext = os.path.splitext(name)
         ikiwa ext == '.py':

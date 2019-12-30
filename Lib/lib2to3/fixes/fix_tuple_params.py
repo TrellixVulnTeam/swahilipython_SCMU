@@ -85,7 +85,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
                     handle_tuple(arg, add_prefix=(i > 0))
 
         ikiwa sio new_lines:
-            return
+            rudisha
 
         # This isn't strictly necessary, but it plays nicely ukijumuisha other fixers.
         # TODO(cwinter) get rid of this when children becomes a smart list
@@ -117,7 +117,7 @@ kundi FixTupleParams(fixer_base.BaseFix):
             inner = inner.clone()
             inner.prefix = " "
             args.replace(inner)
-            return
+            rudisha
 
         params = find_params(args)
         to_index = map_to_index(params)

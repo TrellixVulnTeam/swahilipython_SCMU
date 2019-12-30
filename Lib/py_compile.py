@@ -150,7 +150,7 @@ eleza compile(file, cfile=Tupu, dfile=Tupu, doraise=Uongo, optimize=-1,
                 ashiria py_exc
             isipokua:
                 sys.stderr.write(py_exc.msg + '\n')
-        return
+        rudisha
     jaribu:
         dirname = os.path.dirname(cfile)
         ikiwa dirname:

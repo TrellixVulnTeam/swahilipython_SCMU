@@ -579,7 +579,7 @@ kundi OpenerDirectorTests(unittest.TestCase):
         # non-Tupu.  Handlers without .http_open() never get any methods called
         # on them.
         # In fact, second mock handler defining .http_open() returns self
-        # (instead of response), which becomes the OpenerDirector's return
+        # (instead of response), which becomes the OpenerDirector's rudisha
         # value.
         self.assertEqual(r, handlers[2])
         calls = [(handlers[0], "http_open"), (handlers[2], "http_open")]

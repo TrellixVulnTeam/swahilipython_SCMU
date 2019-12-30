@@ -248,7 +248,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
         concatenated contents of the buffer kama source.  If this
         indicates that the command was executed ama invalid, the buffer
         ni reset; otherwise, the command ni incomplete, na the buffer
-        ni left kama it was after the line was appended.  The return
+        ni left kama it was after the line was appended.  The rudisha
         value ni 1 ikiwa more input ni required, 0 ikiwa the line was dealt
         ukijumuisha kwenye some way (this ni the same kama runsource()).
 
@@ -263,7 +263,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
     eleza raw_uliza(self, prompt=""):
         """Write a prompt na read a line.
 
-        The returned line does sio include the trailing newline.
+        The returned line does sio inlude the trailing newline.
         When the user enters the EOF key sequence, EOFError ni raised.
 
         The base implementation uses the built-in function

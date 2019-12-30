@@ -3068,7 +3068,7 @@ kundi CodePageTest(unittest.TestCase):
         self.assertEqual(decoded, ('abc', 3))
 
     eleza test_mbcs_alias(self):
-        # Check that looking up our 'default' codepage will return
+        # Check that looking up our 'default' codepage will rudisha
         # mbcs when we don't have a more specific one available
         ukijumuisha mock.patch('_winapi.GetACP', return_value=123):
             codec = codecs.lookup('cp123')

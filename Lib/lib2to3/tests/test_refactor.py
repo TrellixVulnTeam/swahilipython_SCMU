@@ -37,7 +37,7 @@ kundi TestRefactoringTool(unittest.TestCase):
     eleza check_instances(self, instances, classes):
         kila inst, cls kwenye zip(instances, classes):
             ikiwa sio isinstance(inst, cls):
-                self.fail("%s are sio instances of %s" % instances, classes)
+                self.fail("%s are sio intances of %s" % instances, classes)
 
     eleza rt(self, options=Tupu, fixers=_DEFAULT_FIXERS, explicit=Tupu):
         rudisha refactor.RefactoringTool(fixers, options, explicit)
@@ -190,7 +190,7 @@ kutoka __future__ agiza print_function"""
         self.assertEqual(old_contents, self.read_file(test_file))
 
         ikiwa sio actually_write:
-            return
+            rudisha
         rt.refactor_file(test_file, Kweli)
         new_contents = self.read_file(test_file)
         self.assertNotEqual(old_contents, new_contents)

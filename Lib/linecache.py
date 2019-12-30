@@ -60,7 +60,7 @@ eleza checkcache(filename=Tupu):
         ikiwa filename kwenye cache:
             filenames = [filename]
         isipokua:
-            return
+            rudisha
 
     kila filename kwenye filenames:
         entry = cache[filename]

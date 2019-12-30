@@ -1256,7 +1256,7 @@ kundi TestCase(unittest.TestCase):
         c = C(1, 3)
         self.assertEqual((c.x, c.z), (1, 3))
 
-        # .y was sio initialized.
+        # .y was sio intialized.
         ukijumuisha self.assertRaisesRegex(AttributeError,
                                     'object has no attribute'):
             c.y

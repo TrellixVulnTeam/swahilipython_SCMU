@@ -93,7 +93,7 @@ async eleza staggered_race(
         jaribu:
             this_index, coro_fn = next(enum_coro_fns)
         tatizo StopIteration:
-            return
+            rudisha
         # Start task that will run the next coroutine
         this_failed = locks.Event()
         next_task = loop.create_task(run_one_coro(this_failed))

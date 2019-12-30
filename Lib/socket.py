@@ -653,7 +653,7 @@ kundi SocketIO(io.RawIOBase):
         self._timeout_occurred = Uongo
 
     eleza readinto(self, b):
-        """Read up to len(b) bytes into the writable buffer *b* na return
+        """Read up to len(b) bytes into the writable buffer *b* na rudisha
         the number of bytes read.  If the socket ni non-blocking na no bytes
         are available, Tupu ni returned.
 
@@ -734,7 +734,7 @@ kundi SocketIO(io.RawIOBase):
         socket, tatizo ikiwa all references to it have disappeared.
         """
         ikiwa self.closed:
-            return
+            rudisha
         io.RawIOBase.close(self)
         self._sock._decref_socketios()
         self._sock = Tupu

@@ -480,7 +480,7 @@ hello world
 
     eleza testReturn(self):
         # 'return' [testlist]
-        eleza g1(): return
+        eleza g1(): rudisha
         eleza g2(): rudisha 1
         g1()
         x = g2()

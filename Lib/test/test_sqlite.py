@@ -1,6 +1,6 @@
 agiza test.support
 
-# Skip test ikiwa _sqlite3 module sio installed
+# Skip test ikiwa _sqlite3 module sio intalled
 test.support.import_module('_sqlite3')
 
 agiza unittest

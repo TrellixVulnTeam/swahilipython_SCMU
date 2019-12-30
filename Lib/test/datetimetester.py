@@ -440,7 +440,7 @@ kundi HarmlessMixedComparison:
         self.assertIn(me, [1, 20, [], me])
         self.assertIn([], [me, 1, 20, []])
 
-        # Comparison to objects of unsupported types should return
+        # Comparison to objects of unsupported types should rudisha
         # NotImplemented which falls back to the right hand side's __eq__
         # method. In this case, ALWAYS_EQ.__eq__ always returns Kweli.
         # ALWAYS_EQ.__ne__ always returns Uongo.
@@ -1468,7 +1468,7 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
         dt = self.theclass(2007, 9, 10)
         self.assertEqual(dt.__format__(''), str(dt))
 
-        ukijumuisha self.assertRaisesRegex(TypeError, 'must be str, sio int'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'must be str, sio in'):
             dt.__format__(123)
 
         # check that a derived class's __str__() gets called
@@ -2038,7 +2038,7 @@ kundi TestDateTime(TestDate):
         dt = self.theclass(2007, 9, 10, 4, 5, 1, 123)
         self.assertEqual(dt.__format__(''), str(dt))
 
-        ukijumuisha self.assertRaisesRegex(TypeError, 'must be str, sio int'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'must be str, sio in'):
             dt.__format__(123)
 
         # check that a derived class's __str__() gets called
@@ -3261,7 +3261,7 @@ kundi TestTime(HarmlessMixedComparison, unittest.TestCase):
         t = self.theclass(1, 2, 3, 4)
         self.assertEqual(t.__format__(''), str(t))
 
-        ukijumuisha self.assertRaisesRegex(TypeError, 'must be str, sio int'):
+        ukijumuisha self.assertRaisesRegex(TypeError, 'must be str, sio in'):
             t.__format__(123)
 
         # check that a derived class's __str__() gets called
@@ -5685,7 +5685,7 @@ kundi ZoneInfo(tzinfo):
         jaribu:
             f = open(zone_tab)
         tatizo OSError:
-            return
+            rudisha
         ukijumuisha f:
             kila line kwenye f:
                 line = line.strip()

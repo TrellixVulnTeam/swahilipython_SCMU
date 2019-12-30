@@ -116,10 +116,10 @@ kundi async_chat(asyncore.dispatcher):
         jaribu:
             data = self.recv(self.ac_in_buffer_size)
         tatizo BlockingIOError:
-            return
+            rudisha
         tatizo OSError kama why:
             self.handle_error()
-            return
+            rudisha
 
         ikiwa isinstance(data, str) na self.use_encoding:
             data = bytes(str, self.encoding)
@@ -229,7 +229,7 @@ kundi async_chat(asyncore.dispatcher):
                 toa self.producer_fifo[0]
                 ikiwa first ni Tupu:
                     self.handle_close()
-                    return
+                    rudisha
 
             # handle classic producer behavior
             obs = self.ac_out_buffer_size
@@ -251,7 +251,7 @@ kundi async_chat(asyncore.dispatcher):
                 num_sent = self.send(data)
             tatizo OSError:
                 self.handle_error()
-                return
+                rudisha
 
             ikiwa num_sent:
                 ikiwa num_sent < len(data) ama obs < len(first):
@@ -259,7 +259,7 @@ kundi async_chat(asyncore.dispatcher):
                 isipokua:
                     toa self.producer_fifo[0]
             # we tried to send some actual data
-            return
+            rudisha
 
     eleza discard_buffers(self):
         # Emergencies only!

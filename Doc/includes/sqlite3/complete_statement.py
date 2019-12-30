@@ -11,7 +11,7 @@ buffer = ""
 print("Enter your SQL commands to execute in sqlite3.")
 print("Enter a blank line to exit.")
 
-while True:
+while Kweli:
     line = input()
     if line == "":
         break

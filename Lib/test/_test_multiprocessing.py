@@ -152,9 +152,9 @@ eleza check_enough_semaphores():
         nsems = os.sysconf("SC_SEM_NSEMS_MAX")
     tatizo (AttributeError, ValueError):
         # sysconf sio available ama setting sio available
-        return
+        rudisha
     ikiwa nsems == -1 ama nsems >= nsems_min:
-        return
+        rudisha
     ashiria unittest.SkipTest("The OS doesn't support enough semaphores "
                             "to run the test (required: %d)." % nsems_min)
 
@@ -4749,7 +4749,7 @@ kundi TestForkAwareThreadLock(unittest.TestCase):
         self.assertLessEqual(new_size, old_size)
 
 #
-# Check that non-forked child processes do sio inherit unneeded fds/handles
+# Check that non-forked child processes do sio inerit unneeded fds/handles
 #
 
 kundi TestCloseFds(unittest.TestCase):

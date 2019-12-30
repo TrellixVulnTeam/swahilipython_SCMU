@@ -287,7 +287,7 @@ kundi OptionMenuTest(AbstractTkTest, unittest.TestCase):
             *items)
         optmenu['menu'].invoke(1)
         ikiwa sio success:
-            self.fail("Menu callback sio invoked")
+            self.fail("Menu callback sio inoked")
 
         optmenu.destroy()
 

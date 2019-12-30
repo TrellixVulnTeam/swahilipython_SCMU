@@ -83,7 +83,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
         ikiwa self.is_running():
             ashiria RuntimeError("Cannot close a running event loop")
         ikiwa self.is_closed():
-            return
+            rudisha
         self._close_self_pipe()
         super().close()
         ikiwa self._selector ni sio Tupu:
@@ -368,7 +368,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
         # _sock_recv() can add itself kama an I/O callback ikiwa the operation can't
         # be done immediately. Don't use it directly, call sock_recv().
         ikiwa fut.done():
-            return
+            rudisha
         jaribu:
             data = sock.recv(n)
         tatizo (BlockingIOError, InterruptedError):
@@ -404,7 +404,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
         # can't be done immediately. Don't use it directly, call
         # sock_recv_into().
         ikiwa fut.done():
-            return
+            rudisha
         jaribu:
             nbytes = sock.recv_into(buf)
         tatizo (BlockingIOError, InterruptedError):
@@ -434,7 +434,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
 
         ikiwa n == len(data):
             # all data sent
-            return
+            rudisha
 
         fut = self.create_future()
         fd = sock.fileno()
@@ -448,17 +448,17 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
     eleza _sock_sendall(self, fut, sock, view, pos):
         ikiwa fut.done():
             # Future cancellation can be scheduled on previous loop iteration
-            return
+            rudisha
         start = pos[0]
         jaribu:
             n = sock.send(view[start:])
         tatizo (BlockingIOError, InterruptedError):
-            return
+            rudisha
         tatizo (SystemExit, KeyboardInterrupt):
             raise
         tatizo BaseException kama exc:
             fut.set_exception(exc)
-            return
+            rudisha
 
         start += n
 
@@ -508,7 +508,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
 
     eleza _sock_connect_cb(self, fut, sock, address):
         ikiwa fut.done():
-            return
+            rudisha
 
         jaribu:
             err = sock.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
@@ -544,7 +544,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
         ikiwa registered:
             self.remove_reader(fd)
         ikiwa fut.done():
-            return
+            rudisha
         jaribu:
             conn, address = sock.accept()
             conn.setblocking(Uongo)
@@ -671,7 +671,7 @@ kundi _SelectorTransport(transports._FlowControlMixin,
 
     eleza close(self):
         ikiwa self._closing:
-            return
+            rudisha
         self._closing = Kweli
         self._loop._remove_reader(self._sock_fd)
         ikiwa sio self._buffer:
@@ -700,7 +700,7 @@ kundi _SelectorTransport(transports._FlowControlMixin,
 
     eleza _force_close(self, exc):
         ikiwa self._conn_lost:
-            return
+            rudisha
         ikiwa self._buffer:
             self._buffer.clear()
             self._loop._remove_writer(self._sock_fd)
@@ -729,7 +729,7 @@ kundi _SelectorTransport(transports._FlowControlMixin,
 
     eleza _add_reader(self, fd, callback, *args):
         ikiwa self._closing:
-            return
+            rudisha
 
         self._loop._add_reader(fd, callback, *args)
 
@@ -775,7 +775,7 @@ kundi _SelectorSocketTransport(_SelectorTransport):
 
     eleza pause_reading(self):
         ikiwa self._closing ama self._paused:
-            return
+            rudisha
         self._paused = Kweli
         self._loop._remove_reader(self._sock_fd)
         ikiwa self._loop.get_debug():
@@ -783,7 +783,7 @@ kundi _SelectorSocketTransport(_SelectorTransport):
 
     eleza resume_reading(self):
         ikiwa self._closing ama sio self._paused:
-            return
+            rudisha
         self._paused = Uongo
         self._add_reader(self._sock_fd, self._read_ready)
         ikiwa self._loop.get_debug():
@@ -794,7 +794,7 @@ kundi _SelectorSocketTransport(_SelectorTransport):
 
     eleza _read_ready__get_buffer(self):
         ikiwa self._conn_lost:
-            return
+            rudisha
 
         jaribu:
             buf = self._protocol.get_buffer(-1)
@@ -805,21 +805,21 @@ kundi _SelectorSocketTransport(_SelectorTransport):
         tatizo BaseException kama exc:
             self._fatal_error(
                 exc, 'Fatal error: protocol.get_buffer() call failed.')
-            return
+            rudisha
 
         jaribu:
             nbytes = self._sock.recv_into(buf)
         tatizo (BlockingIOError, InterruptedError):
-            return
+            rudisha
         tatizo (SystemExit, KeyboardInterrupt):
             raise
         tatizo BaseException kama exc:
             self._fatal_error(exc, 'Fatal read error on socket transport')
-            return
+            rudisha
 
         ikiwa sio nbytes:
             self._read_ready__on_eof()
-            return
+            rudisha
 
         jaribu:
             self._protocol.buffer_updated(nbytes)
@@ -831,20 +831,20 @@ kundi _SelectorSocketTransport(_SelectorTransport):
 
     eleza _read_ready__data_received(self):
         ikiwa self._conn_lost:
-            return
+            rudisha
         jaribu:
             data = self._sock.recv(self.max_size)
         tatizo (BlockingIOError, InterruptedError):
-            return
+            rudisha
         tatizo (SystemExit, KeyboardInterrupt):
             raise
         tatizo BaseException kama exc:
             self._fatal_error(exc, 'Fatal read error on socket transport')
-            return
+            rudisha
 
         ikiwa sio data:
             self._read_ready__on_eof()
-            return
+            rudisha
 
         jaribu:
             self._protocol.data_received(data)
@@ -865,7 +865,7 @@ kundi _SelectorSocketTransport(_SelectorTransport):
         tatizo BaseException kama exc:
             self._fatal_error(
                 exc, 'Fatal error: protocol.eof_received() call failed.')
-            return
+            rudisha
 
         ikiwa keep_open:
             # We're keeping the connection open so the
@@ -884,13 +884,13 @@ kundi _SelectorSocketTransport(_SelectorTransport):
         ikiwa self._empty_waiter ni sio Tupu:
             ashiria RuntimeError('unable to write; sendfile ni kwenye progress')
         ikiwa sio data:
-            return
+            rudisha
 
         ikiwa self._conn_lost:
             ikiwa self._conn_lost >= constants.LOG_THRESHOLD_FOR_CONNLOST_WRITES:
                 logger.warning('socket.send() raised exception.')
             self._conn_lost += 1
-            return
+            rudisha
 
         ikiwa sio self._buffer:
             # Optimization: try to send now.
@@ -902,11 +902,11 @@ kundi _SelectorSocketTransport(_SelectorTransport):
                 raise
             tatizo BaseException kama exc:
                 self._fatal_error(exc, 'Fatal write error on socket transport')
-                return
+                rudisha
             isipokua:
                 data = data[n:]
                 ikiwa sio data:
-                    return
+                    rudisha
             # Not all was written; register write handler.
             self._loop._add_writer(self._sock_fd, self._write_ready)
 
@@ -918,7 +918,7 @@ kundi _SelectorSocketTransport(_SelectorTransport):
         assert self._buffer, 'Data should sio be empty'
 
         ikiwa self._conn_lost:
-            return
+            rudisha
         jaribu:
             n = self._sock.send(self._buffer)
         tatizo (BlockingIOError, InterruptedError):
@@ -946,7 +946,7 @@ kundi _SelectorSocketTransport(_SelectorTransport):
 
     eleza write_eof(self):
         ikiwa self._closing ama self._eof:
-            return
+            rudisha
         self._eof = Kweli
         ikiwa sio self._buffer:
             self._sock.shutdown(socket.SHUT_WR)
@@ -994,7 +994,7 @@ kundi _SelectorDatagramTransport(_SelectorTransport):
 
     eleza _read_ready(self):
         ikiwa self._conn_lost:
-            return
+            rudisha
         jaribu:
             data, addr = self._sock.recvfrom(self.max_size)
         tatizo (BlockingIOError, InterruptedError):
@@ -1013,7 +1013,7 @@ kundi _SelectorDatagramTransport(_SelectorTransport):
             ashiria TypeError(f'data argument must be a bytes-like object, '
                             f'not {type(data).__name__!r}')
         ikiwa sio data:
-            return
+            rudisha
 
         ikiwa self._address:
             ikiwa addr haiko kwenye (Tupu, self._address):
@@ -1025,7 +1025,7 @@ kundi _SelectorDatagramTransport(_SelectorTransport):
             ikiwa self._conn_lost >= constants.LOG_THRESHOLD_FOR_CONNLOST_WRITES:
                 logger.warning('socket.send() raised exception.')
             self._conn_lost += 1
-            return
+            rudisha
 
         ikiwa sio self._buffer:
             # Attempt to send it right away first.
@@ -1034,18 +1034,18 @@ kundi _SelectorDatagramTransport(_SelectorTransport):
                     self._sock.send(data)
                 isipokua:
                     self._sock.sendto(data, addr)
-                return
+                rudisha
             tatizo (BlockingIOError, InterruptedError):
                 self._loop._add_writer(self._sock_fd, self._sendto_ready)
             tatizo OSError kama exc:
                 self._protocol.error_received(exc)
-                return
+                rudisha
             tatizo (SystemExit, KeyboardInterrupt):
                 raise
             tatizo BaseException kama exc:
                 self._fatal_error(
                     exc, 'Fatal write error on datagram transport')
-                return
+                rudisha
 
         # Ensure that what we buffer ni immutable.
         self._buffer.append((bytes(data), addr))
@@ -1064,13 +1064,13 @@ kundi _SelectorDatagramTransport(_SelectorTransport):
                 koma
             tatizo OSError kama exc:
                 self._protocol.error_received(exc)
-                return
+                rudisha
             tatizo (SystemExit, KeyboardInterrupt):
                 raise
             tatizo BaseException kama exc:
                 self._fatal_error(
                     exc, 'Fatal write error on datagram transport')
-                return
+                rudisha
 
         self._maybe_resume_protocol()  # May append to buffer.
         ikiwa sio self._buffer:

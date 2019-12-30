@@ -39,7 +39,7 @@ kundi FixExitfunc(fixer_base.BaseFix):
         ikiwa "sys_import" kwenye results:
             ikiwa self.sys_agiza ni Tupu:
                 self.sys_agiza = results["sys_import"]
-            return
+            rudisha
 
         func = results["func"].clone()
         func.prefix = ""
@@ -53,7 +53,7 @@ kundi FixExitfunc(fixer_base.BaseFix):
             # That's interesting.
             self.warning(node, "Can't find sys import; Please add an atexit "
                              "agiza at the top of your file.")
-            return
+            rudisha
 
         # Now add an atexit agiza after the sys import.
         names = self.sys_import.children[1]

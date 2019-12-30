@@ -78,7 +78,7 @@ kundi Extension:
         kutoka the source extensions ikiwa sio provided.
       optional : boolean
         specifies that a build failure kwenye the extension should sio abort the
-        build process, but simply sio install the failing extension.
+        build process, but simply sio intall the failing extension.
     """
 
     # When adding arguments to this constructor, be sure to update

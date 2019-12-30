@@ -777,7 +777,7 @@ kundi DictConfigurator(BaseConfigurator):
         level = config.get('level', Tupu)
         ikiwa level ni sio Tupu:
             logger.setLevel(logging._checkLevel(level))
-        ikiwa sio incremental:
+        ikiwa sio inremental:
             #Remove any existing handlers
             kila h kwenye logger.handlers[:]:
                 logger.removeHandler(h)

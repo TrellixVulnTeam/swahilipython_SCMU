@@ -397,14 +397,14 @@ kundi BuildExtTestCase(TempdirManager,
         path = cmd.get_ext_fullpath('lxml.etree')
         self.assertEqual(wanted, path)
 
-        # building lxml.etree sio inplace
+        # building lxml.etree sio inlace
         cmd.inplace = 0
         cmd.build_lib = os.path.join(curdir, 'tmpdir')
         wanted = os.path.join(curdir, 'tmpdir', 'lxml', 'etree' + ext)
         path = cmd.get_ext_fullpath('lxml.etree')
         self.assertEqual(wanted, path)
 
-        # building twisted.runner.portmap sio inplace
+        # building twisted.runner.portmap sio inlace
         build_py = cmd.get_finalized_command('build_py')
         build_py.package_dir = {}
         cmd.distribution.packages = ['twisted', 'twisted.runner.portmap']

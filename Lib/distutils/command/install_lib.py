@@ -112,13 +112,13 @@ kundi install_lib(Command):
         isipokua:
             self.warn("'%s' does sio exist -- no Python modules to install" %
                       self.build_dir)
-            return
+            rudisha
         rudisha outfiles
 
     eleza byte_compile(self, files):
         ikiwa sys.dont_write_bytecode:
             self.warn('byte-compiling ni disabled, skipping.')
-            return
+            rudisha
 
         kutoka distutils.util agiza byte_compile
 

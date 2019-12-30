@@ -573,7 +573,7 @@ eleza main():
         ikiwa o == '-e': func = encode
         ikiwa o == '-d': func = decode
         ikiwa o == '-u': func = decode
-        ikiwa o == '-t': test(); return
+        ikiwa o == '-t': test(); rudisha
     ikiwa args na args[0] != '-':
         ukijumuisha open(args[0], 'rb') kama f:
             func(f, sys.stdout.buffer)

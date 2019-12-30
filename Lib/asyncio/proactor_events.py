@@ -101,7 +101,7 @@ kundi _ProactorBasePipeTransport(transports._FlowControlMixin,
 
     eleza close(self):
         ikiwa self._closing:
-            return
+            rudisha
         self._closing = Kweli
         self._conn_lost += 1
         ikiwa sio self._buffer na self._write_fut ni Tupu:
@@ -137,7 +137,7 @@ kundi _ProactorBasePipeTransport(transports._FlowControlMixin,
             isipokua:
                 self._empty_waiter.set_exception(exc)
         ikiwa self._closing:
-            return
+            rudisha
         self._closing = Kweli
         self._conn_lost += 1
         ikiwa self._write_fut:
@@ -192,7 +192,7 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
 
     eleza pause_reading(self):
         ikiwa self._closing ama self._paused:
-            return
+            rudisha
         self._paused = Kweli
 
         # bpo-33694: Don't cancel self._read_fut because cancelling an
@@ -211,7 +211,7 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
 
     eleza resume_reading(self):
         ikiwa self._closing ama sio self._paused:
-            return
+            rudisha
 
         self._paused = Uongo
         ikiwa self._read_fut ni Tupu:
@@ -238,7 +238,7 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         tatizo BaseException kama exc:
             self._fatal_error(
                 exc, 'Fatal error: protocol.eof_received() call failed.')
-            return
+            rudisha
 
         ikiwa sio keep_open:
             self.close()
@@ -249,11 +249,11 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
             # The protocol will be called on resume_reading().
             assert self._pending_data ni Tupu
             self._pending_data = data
-            return
+            rudisha
 
         ikiwa sio data:
             self._eof_received()
-            return
+            rudisha
 
         ikiwa isinstance(self._protocol, protocols.BufferedProtocol):
             jaribu:
@@ -264,7 +264,7 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
                 self._fatal_error(exc,
                                   'Fatal error: protocol.buffer_updated() '
                                   'call failed.')
-                return
+                rudisha
         isipokua:
             self._protocol.data_received(data)
 
@@ -285,11 +285,11 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
             ikiwa self._closing:
                 # since close() has been called we ignore any read data
                 data = Tupu
-                return
+                rudisha
 
             ikiwa data == b'':
                 # we got end-of-file so no need to reschedule a new read
-                return
+                rudisha
 
             # bpo-33694: buffer_updated() has currently no fast path because of
             # a data loss issue caused by overlapped WSASend() cancellation.
@@ -339,13 +339,13 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
             ashiria RuntimeError('unable to write; sendfile ni kwenye progress')
 
         ikiwa sio data:
-            return
+            rudisha
 
         ikiwa self._conn_lost:
             ikiwa self._conn_lost >= constants.LOG_THRESHOLD_FOR_CONNLOST_WRITES:
                 logger.warning('socket.send() raised exception.')
             self._conn_lost += 1
-            return
+            rudisha
 
         # Observable states:
         # 1. IDLE: _write_fut na _buffer both Tupu
@@ -371,7 +371,7 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
             ikiwa f ni sio Tupu na self._write_fut ni Tupu na self._closing:
                 # XXX most likely self._force_close() has been called, na
                 # it has set self._write_fut to Tupu.
-                return
+                rudisha
             assert f ni self._write_fut
             self._write_fut = Tupu
             self._pending_write = 0
@@ -437,11 +437,11 @@ kundi _ProactorWritePipeTransport(_ProactorBaseWritePipeTransport):
     eleza _pipe_closed(self, fut):
         ikiwa fut.cancelled():
             # the transport has been closed
-            return
+            rudisha
         assert fut.result() == b''
         ikiwa self._closing:
             assert self._read_fut ni Tupu
-            return
+            rudisha
         assert fut ni self._read_fut, (fut, self._read_fut)
         self._read_fut = Tupu
         ikiwa self._write_fut ni sio Tupu:
@@ -479,7 +479,7 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
                             type(data))
 
         ikiwa sio data:
-            return
+            rudisha
 
         ikiwa self._address ni sio Tupu na addr haiko kwenye (Tupu, self._address):
             ashiria ValueError(
@@ -489,7 +489,7 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
             ikiwa self._conn_lost >= constants.LOG_THRESHOLD_FOR_CONNLOST_WRITES:
                 logger.warning('socket.sendto() raised exception.')
             self._conn_lost += 1
-            return
+            rudisha
 
         # Ensure that what we buffer ni immutable.
         self._buffer.append((bytes(data), addr))
@@ -504,7 +504,7 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
     eleza _loop_writing(self, fut=Tupu):
         jaribu:
             ikiwa self._conn_lost:
-                return
+                rudisha
 
             assert fut ni self._write_fut
             self._write_fut = Tupu
@@ -516,7 +516,7 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
                 # The connection has been closed
                 ikiwa self._closing:
                     self._loop.call_soon(self._call_connection_lost, Tupu)
-                return
+                rudisha
 
             data, addr = self._buffer.popleft()
             ikiwa self._address ni sio Tupu:
@@ -538,7 +538,7 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
         data = Tupu
         jaribu:
             ikiwa self._conn_lost:
-                return
+                rudisha
 
             assert self._read_fut ni fut ama (self._read_fut ni Tupu na
                                              self._closing)
@@ -550,7 +550,7 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
                 ikiwa self._closing:
                     # since close() has been called we ignore any read data
                     data = Tupu
-                    return
+                    rudisha
 
                 ikiwa self._address ni sio Tupu:
                     data, addr = res, self._address
@@ -558,7 +558,7 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
                     data, addr = res
 
             ikiwa self._conn_lost:
-                return
+                rudisha
             ikiwa self._address ni sio Tupu:
                 self._read_fut = self._loop._proactor.recv(self._sock,
                                                            self.max_size)
@@ -610,7 +610,7 @@ kundi _ProactorSocketTransport(_ProactorReadPipeTransport,
 
     eleza write_eof(self):
         ikiwa self._closing ama self._eof_written:
-            return
+            rudisha
         self._eof_written = Kweli
         ikiwa self._write_fut ni Tupu:
             self._sock.shutdown(socket.SHUT_WR)
@@ -674,7 +674,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
         ikiwa self.is_running():
             ashiria RuntimeError("Cannot close a running event loop")
         ikiwa self.is_closed():
-            return
+            rudisha
 
         signal.set_wakeup_fd(-1)
         # Call these methods before closing the event loop (before calling
@@ -769,7 +769,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
             f = self._proactor.recv(self._ssock, 4096)
         tatizo exceptions.CancelledError:
             # _close_self_pipe() has been called, stop waiting kila data
-            return
+            rudisha
         tatizo (SystemExit, KeyboardInterrupt):
             raise
         tatizo BaseException kama exc:
@@ -813,7 +813,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
                             conn, protocol,
                             extra={'peername': addr}, server=server)
                 ikiwa self.is_closed():
-                    return
+                    rudisha
                 f = self._proactor.accept(sock)
             tatizo OSError kama exc:
                 ikiwa sock.fileno() != -1:

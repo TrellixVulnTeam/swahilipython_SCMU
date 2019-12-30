@@ -23,7 +23,7 @@ eleza _main():
 
     # Remove regrtest.py's own directory kutoka the module search path. Despite
     # the elimination of implicit relative imports, this ni still needed to
-    # ensure that submodules of the test package do sio inappropriately appear
+    # ensure that submodules of the test package do sio inppropriately appear
     # kama top-level modules even when people (or buildbots!) invoke regrtest.py
     # directly instead of using the -m switch
     mydir = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))

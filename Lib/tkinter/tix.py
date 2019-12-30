@@ -376,7 +376,7 @@ kundi TixWidget(tkinter.Widget):
     eleza config_all(self, option, value):
         """Set configuration options kila all subwidgets (and self)."""
         ikiwa option == '':
-            return
+            rudisha
         lasivyo sio isinstance(option, str):
             option = repr(option)
         ikiwa sio isinstance(value, str):
@@ -412,7 +412,7 @@ kundi TixSubWidget(TixWidget):
     """Subwidget class.
 
     This ni used to mirror child widgets automatically created
-    by Tix/Tk kama part of a mega-widget kwenye Python (which ni sio informed
+    by Tix/Tk kama part of a mega-widget kwenye Python (which ni sio inormed
     of this)"""
 
     eleza __init__(self, master, name,

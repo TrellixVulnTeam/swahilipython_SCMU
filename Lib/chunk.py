@@ -144,7 +144,7 @@ kundi Chunk:
 
     eleza skip(self):
         """Skip the rest of the chunk.
-        If you are sio interested kwenye the contents of the chunk,
+        If you are sio inerested kwenye the contents of the chunk,
         this method should be called so that the file points to
         the start of the next chunk.
         """
@@ -159,7 +159,7 @@ kundi Chunk:
                     n = n + 1
                 self.file.seek(n, 1)
                 self.size_read = self.size_read + n
-                return
+                rudisha
             tatizo OSError:
                 pita
         wakati self.size_read < self.chunksize:

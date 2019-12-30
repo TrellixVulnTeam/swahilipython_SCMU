@@ -1038,7 +1038,7 @@ kundi SourceFileLoader(FileLoader, SourceLoader):
                 # about writing the data.
                 _bootstrap._verbose_message('could sio create {!r}: {!r}',
                                             parent, exc)
-                return
+                rudisha
         jaribu:
             _write_atomic(path, data, _mode)
             _bootstrap._verbose_message('created {!r}', path)

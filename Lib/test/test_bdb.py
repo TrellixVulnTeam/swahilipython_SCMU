@@ -201,7 +201,7 @@ kundi Tracer(Bdb):
         # first 'call' event when the Tracer ni started ukijumuisha Tracer.runcall()
         # which may be possibly considered kama a bug.
         ikiwa sio self.stop_here(frame):
-            return
+            rudisha
         self.process_event('call', frame, argument_list)
         self.next_set_method()
 
@@ -265,7 +265,7 @@ kundi Tracer(Bdb):
         self.pop_next()
         ikiwa self.dry_run:
             self.print_state(self.header)
-            return
+            rudisha
 
         # Validate the expected results.
         ikiwa self.expect:
@@ -299,7 +299,7 @@ kundi Tracer(Bdb):
 
     eleza check_equal(self, expected, result, msg):
         ikiwa expected == result:
-            return
+            rudisha
         self.raise_not_expected("%s at expect_set item %d, got '%s'" %
                                 (msg, self.expect_set_no, result))
 
@@ -367,17 +367,17 @@ kundi Tracer(Bdb):
         # The following set methods give back control to the tracer.
         ikiwa set_type kwenye ('step', 'endelea', 'quit'):
             set_method()
-            return
+            rudisha
         lasivyo set_type kwenye ('next', 'return'):
             set_method(self.frame)
-            return
+            rudisha
         lasivyo set_type == 'until':
             lineno = Tupu
             ikiwa args:
                 lineno = self.lno_rel2abs(self.frame.f_code.co_filename,
                                           args[0])
             set_method(self.frame, lineno)
-            return
+            rudisha
 
         # The following set methods do sio give back control to the tracer na
         # next_set_method() ni called recursively.
@@ -514,7 +514,7 @@ eleza run_test(modules, set_list, skip=Tupu):
                 tuma x
                 tuma y
         tatizo StopIteration:
-            return
+            rudisha
 
     # Step over the agiza statement kwenye tfunc_agiza using 'next' na step
     # into main() kwenye test_module.

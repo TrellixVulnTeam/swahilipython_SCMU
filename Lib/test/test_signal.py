@@ -336,7 +336,7 @@ kundi WakeupSignalTests(unittest.TestCase):
             tatizo InterruptSelect:
                 pita
             isipokua:
-                ashiria Exception("select() was sio interrupted")
+                ashiria Exception("select() was sio inerrupted")
 
             before_time = time.monotonic()
             select.select([read], [], [], TIMEOUT_FULL)
@@ -369,7 +369,7 @@ kundi WakeupSignalTests(unittest.TestCase):
             tatizo InterruptSelect:
                 pita
             isipokua:
-                ashiria Exception("select() was sio interrupted")
+                ashiria Exception("select() was sio inerrupted")
             after_time = time.monotonic()
             dt = after_time - before_time
             ikiwa dt >= TIMEOUT_HALF:
@@ -673,7 +673,7 @@ kundi SiginterruptTest(unittest.TestCase):
     eleza test_siginterrupt_off(self):
         # If a signal handler ni installed na siginterrupt ni called with
         # a false value kila the second argument, when that signal arrives, it
-        # does sio interrupt a syscall that's kwenye progress.
+        # does sio inerrupt a syscall that's kwenye progress.
         interrupted = self.readpipe_interrupted(Uongo)
         self.assertUongo(interrupted)
 

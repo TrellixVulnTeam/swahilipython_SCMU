@@ -59,7 +59,7 @@
 #            workarounds kwenye _syscmd_ver() -- still sio 100% elegant
 #            though
 #    0.5.2 - fixed uname() to rudisha '' instead of 'unknown' kwenye all
-#            rudisha values (the system uname command tends to return
+#            rudisha values (the system uname command tends to rudisha
 #            'unknown' instead of just leaving the field empty)
 #    0.5.1 - included code kila slackware dist; added exception handlers
 #            to cover up situations where platforms don't have os.popen

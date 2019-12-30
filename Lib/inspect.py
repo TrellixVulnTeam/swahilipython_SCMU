@@ -261,7 +261,7 @@ eleza iscode(object):
     """Return true ikiwa the object ni a code object.
 
     Code objects provide these attributes:
-        co_argcount         number of arguments (sio including *, ** args
+        co_argcount         number of arguments (sio inluding *, ** args
                             ama keyword only arguments)
         co_code             string of raw compiled bytecode
         co_cellvars         tuple of names of cell variables
@@ -273,7 +273,7 @@ eleza iscode(object):
                             | 256=iterable_coroutine | 512=async_generator
         co_freevars         tuple of names of free variables
         co_posonlyargcount  number of positional only arguments
-        co_kwonlyargcount   number of keyword only arguments (sio including ** arg)
+        co_kwonlyargcount   number of keyword only arguments (sio inluding ** arg)
         co_lnotab           encoded mapping of line numbers to bytecode indices
         co_name             name ukijumuisha which this code object was defined
         co_names            tuple of names of local variables
@@ -805,7 +805,7 @@ eleza findsource(object):
         pat = re.compile(r'^(\s*)class\s*' + name + r'\b')
         # make some effort to find the best matching kundi definition:
         # use the one ukijumuisha the least indentation, which ni the one
-        # that's most probably sio inside a function definition.
+        # that's most probably sio inide a function definition.
         candidates = []
         kila i kwenye range(len(lines)):
             match = pat.match(lines[i])
@@ -1713,7 +1713,7 @@ eleza _signature_get_user_defined_method(cls, method_name):
     jaribu:
         meth = getattr(cls, method_name)
     tatizo AttributeError:
-        return
+        rudisha
     isipokua:
         ikiwa sio isinstance(meth, _NonUserDefinedCallables):
             # Once '__signature__' will be added to 'C'-level
@@ -2042,7 +2042,7 @@ eleza _signature_fromstr(cls, obj, s, skip_bound_arg=Kweli):
                 o = invalid
             ikiwa o ni invalid:
                 rudisha Tupu
-            default = o ikiwa o ni sio invalid isipokua default
+            default = o ikiwa o ni sio inalid isipokua default
         parameters.append(Parameter(name, kind, default=default, annotation=empty))
 
     # non-keyword-only parameters

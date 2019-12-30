@@ -1032,9 +1032,9 @@ kundi HexFloatTestCase(unittest.TestCase):
         # are NaNs
         ikiwa isnan(x) ama isnan(y):
             ikiwa isnan(x) == isnan(y):
-                return
+                rudisha
         lasivyo x == y na (x != 0.0 ama copysign(1.0, x) == copysign(1.0, y)):
-            return
+            rudisha
         self.fail('%r sio identical to %r' % (x, y))
 
     eleza test_ends(self):

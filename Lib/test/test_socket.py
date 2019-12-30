@@ -35,7 +35,7 @@ tatizo ImportError:
     fcntl = Tupu
 
 HOST = support.HOST
-# test unicode string na carriage return
+# test unicode string na carriage rudisha
 MSG = 'Michael Gilfix was here\u1234\r\n'.encode('utf-8')
 MAIN_TIMEOUT = 60.0
 
@@ -341,12 +341,12 @@ kundi ThreadableTest:
         tatizo BaseException kama e:
             self.queue.put(e)
             self.clientTearDown()
-            return
+            rudisha
         mwishowe:
             self.client_ready.set()
         ikiwa self.server_crashed:
             self.clientTearDown()
-            return
+            rudisha
         ikiwa sio hasattr(test_func, '__call__'):
             ashiria TypeError("test_func must be a callable function")
         jaribu:
@@ -2779,7 +2779,7 @@ kundi SendmsgStreamTests(SendmsgTests):
 
 kundi SendmsgConnectionlessTests(SendmsgTests):
     # Tests kila sendmsg() which require a connectionless-mode
-    # (e.g. datagram) socket, na do sio involve recvmsg() ama
+    # (e.g. datagram) socket, na do sio inolve recvmsg() ama
     # recvmsg_into().
 
     eleza testSendmsgNoDestAddr(self):
@@ -3469,7 +3469,7 @@ kundi SCMRightsTest(SendrecvmsgServerTimeoutBase):
         self.checkFlags(flags, eor=Kweli, checkset=socket.MSG_CTRUNC)
 
         ikiwa mindata == 0 na ancdata == []:
-            return
+            rudisha
         self.assertEqual(len(ancdata), 1)
         cmsg_level, cmsg_type, cmsg_data = ancdata[0]
         self.assertEqual(cmsg_level, socket.SOL_SOCKET)
@@ -5567,7 +5567,7 @@ kundi TestSocketSharing(SocketTCPTest):
         self.assertEqual(org.type, other.type)
         # If the user specified "0" kila proto, then
         # internally windows will have picked the correct value.
-        # Python introspection on the socket however will still return
+        # Python introspection on the socket however will still rudisha
         # 0.  For the shared socket, the python value ni recreated
         # kutoka the actual value, so it may sio compare correctly.
         ikiwa org.proto != 0:
@@ -6156,7 +6156,7 @@ kundi CreateServerFunctionalTest(unittest.TestCase):
                     event.wait(self.timeout)
                     msg = conn.recv(1024)
                     ikiwa sio msg:
-                        return
+                        rudisha
                     conn.sendall(msg)
 
         event = threading.Event()

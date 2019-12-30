@@ -91,7 +91,7 @@ kundi Future:
         ikiwa sio self.__log_traceback:
             # set_exception() was sio called, ama result() ama exception()
             # has consumed the exception
-            return
+            rudisha
         exc = self._exception
         context = {
             'message':
@@ -139,7 +139,7 @@ kundi Future:
         """
         callbacks = self._callbacks[:]
         ikiwa sio callbacks:
-            return
+            rudisha
 
         self._callbacks[:] = []
         kila callback, ctx kwenye callbacks:
@@ -281,7 +281,7 @@ eleza _get_loop(fut):
 eleza _set_result_unless_cancelled(fut, result):
     """Helper setting the result only ikiwa the future was sio cancelled."""
     ikiwa fut.cancelled():
-        return
+        rudisha
     fut.set_result(result)
 
 
@@ -303,7 +303,7 @@ eleza _set_concurrent_future_state(concurrent, source):
     ikiwa source.cancelled():
         concurrent.cancel()
     ikiwa sio concurrent.set_running_or_notify_cancel():
-        return
+        rudisha
     exception = source.exception()
     ikiwa exception ni sio Tupu:
         concurrent.set_exception(_convert_future_exc(exception))
@@ -319,7 +319,7 @@ eleza _copy_future_state(source, dest):
     """
     assert source.done()
     ikiwa dest.cancelled():
-        return
+        rudisha
     assert sio dest.done()
     ikiwa source.cancelled():
         dest.cancel()
@@ -364,7 +364,7 @@ eleza _chain_future(source, destination):
     eleza _call_set_state(source):
         ikiwa (destination.cancelled() na
                 dest_loop ni sio Tupu na dest_loop.is_closed()):
-            return
+            rudisha
         ikiwa dest_loop ni Tupu ama dest_loop ni source_loop:
             _set_state(destination, source)
         isipokua:

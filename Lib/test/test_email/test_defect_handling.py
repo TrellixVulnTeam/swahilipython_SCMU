@@ -55,7 +55,7 @@ kundi TestDefectsBase:
         # XXX better would be to actually detect the duplicate.
         ukijumuisha self._raise_point(errors.StartBoundaryNotFoundDefect):
             msg = self._str_msg(source)
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         inner = msg.get_payload(0)
         self.assertKweli(hasattr(inner, 'defects'))
         self.assertEqual(len(self.get_defects(inner)), 1)
@@ -83,7 +83,7 @@ kundi TestDefectsBase:
             """)
         ukijumuisha self._raise_point(errors.NoBoundaryInMultipartDefect):
             msg = self._str_msg(source)
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         self.assertIsInstance(msg.get_payload(), str)
         self.assertEqual(len(self.get_defects(msg)), 2)
         self.assertIsInstance(self.get_defects(msg)[0],
@@ -120,18 +120,18 @@ kundi TestDefectsBase:
             msg = self._str_msg(
                     self.multipart_msg.format(
                         "\nContent-Transfer-Encoding: base64"))
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         self.assertEqual(len(self.get_defects(msg)), 1)
         self.assertIsInstance(self.get_defects(msg)[0],
             errors.InvalidMultipartContentTransferEncodingDefect)
 
     eleza test_multipart_no_cte_no_defect(self):
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         msg = self._str_msg(self.multipart_msg.format(''))
         self.assertEqual(len(self.get_defects(msg)), 0)
 
     eleza test_multipart_valid_cte_no_defect(self):
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         kila cte kwenye ('7bit', '8bit', 'BINary'):
             msg = self._str_msg(
                 self.multipart_msg.format("\nContent-Transfer-Encoding: "+cte))
@@ -150,7 +150,7 @@ kundi TestDefectsBase:
             """)
         ukijumuisha self._raise_point(errors.NoBoundaryInMultipartDefect):
             msg = self._str_msg(source)
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         self.assertKweli(hasattr(msg, 'defects'))
         self.assertEqual(len(self.get_defects(msg)), 2)
         self.assertIsInstance(self.get_defects(msg)[0],
@@ -190,7 +190,7 @@ kundi TestDefectsBase:
         # [*] This message ni missing its start boundary
         ukijumuisha self._raise_point(errors.StartBoundaryNotFoundDefect):
             outer = self._str_msg(source)
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         bad = outer.get_payload(1).get_payload(0)
         self.assertEqual(len(self.get_defects(bad)), 1)
         self.assertIsInstance(self.get_defects(bad)[0],
@@ -199,7 +199,7 @@ kundi TestDefectsBase:
     eleza test_first_line_is_continuation_header(self):
         ukijumuisha self._raise_point(errors.FirstHeaderLineIsContinuationDefect):
             msg = self._str_msg(' Line 1\nSubject: test\n\nbody')
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         self.assertEqual(msg.keys(), ['Subject'])
         self.assertEqual(msg.get_payload(), 'body')
         self.assertEqual(len(self.get_defects(msg)), 1)
@@ -214,7 +214,7 @@ kundi TestDefectsBase:
         # headers na start parsing the body.
         ukijumuisha self._raise_point(errors.MissingHeaderBodySeparatorDefect):
             msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         self.assertEqual(msg.keys(), ['Subject'])
         self.assertEqual(msg.get_payload(), 'not a header\nTo: abc\n\nb\n')
         self.assertDefectsEqual(self.get_defects(msg),
@@ -232,7 +232,7 @@ kundi TestDefectsBase:
         msg = self._str_msg(source)
         ukijumuisha self._raise_point(errors.InvalidBase64PaddingDefect):
             payload = msg.get_payload(decode=Kweli)
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         self.assertEqual(payload, b'vi')
         self.assertDefectsEqual(self.get_defects(msg),
                                 [errors.InvalidBase64PaddingDefect])
@@ -249,7 +249,7 @@ kundi TestDefectsBase:
         msg = self._str_msg(source)
         ukijumuisha self._raise_point(errors.InvalidBase64CharactersDefect):
             payload = msg.get_payload(decode=Kweli)
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         self.assertEqual(payload, b'vi')
         self.assertDefectsEqual(self.get_defects(msg),
                                 [errors.InvalidBase64CharactersDefect])
@@ -266,7 +266,7 @@ kundi TestDefectsBase:
         msg = self._str_msg(source)
         ukijumuisha self._raise_point(errors.InvalidBase64LengthDefect):
             payload = msg.get_payload(decode=Kweli)
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         self.assertEqual(payload, b'abcde')
         self.assertDefectsEqual(self.get_defects(msg),
                                 [errors.InvalidBase64LengthDefect])
@@ -294,7 +294,7 @@ kundi TestDefectsBase:
             """)
         ukijumuisha self._raise_point(errors.CloseBoundaryNotFoundDefect):
             msg = self._str_msg(source)
-        ikiwa self.raise_expected: return
+        ikiwa self.raise_expected: rudisha
         self.assertEqual(len(msg.get_payload()), 2)
         self.assertEqual(msg.get_payload(1).get_payload(), 'Alternative 2\n')
         self.assertDefectsEqual(self.get_defects(msg),
