@@ -3075,7 +3075,7 @@ kundi CodePageTest(unittest.TestCase):
             self.assertEqual(codec.name, 'mbcs')
 
     @support.bigmemtest(size=2**31, memuse=7, dry_run=Uongo)
-    eleza test_large_uliza(self, size):
+    eleza test_large_input(self, size):
         # Test input longer than INT_MAX.
         # Input should contain undecodable bytes before na after
         # the INT_MAX limit.
@@ -3093,7 +3093,7 @@ kundi CodePageTest(unittest.TestCase):
                          '\udcef\udcfc\udcfd\udcfe\udcff')
 
     @support.bigmemtest(size=2**31, memuse=6, dry_run=Uongo)
-    eleza test_large_utf8_uliza(self, size):
+    eleza test_large_utf8_input(self, size):
         # Test input longer than INT_MAX.
         # Input should contain a decodable multi-byte character
         # surrounding INT_MAX

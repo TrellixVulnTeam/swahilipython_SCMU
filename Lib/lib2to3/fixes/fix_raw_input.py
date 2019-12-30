@@ -1,4 +1,4 @@
-"""Fixer that changes raw_uliza(...) into uliza(...)."""
+"""Fixer that changes raw_input(...) into uliza(...)."""
 # Author: Andre Roberge
 
 # Local imports

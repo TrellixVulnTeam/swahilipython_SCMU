@@ -3,7 +3,7 @@
 Typical use is:
 
     agiza fileinput
-    kila line kwenye fileinput.uliza():
+    kila line kwenye fileinput.input():
         process(line)
 
 This iterates over the lines of all files listed kwenye sys.argv[1:],

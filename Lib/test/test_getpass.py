@@ -53,37 +53,37 @@ kundi GetpitaRawinputTest(unittest.TestCase):
         # see issue 1703
         stream = mock.Mock(spec=StringIO)
         input = StringIO('input_string')
-        getpita._raw_uliza('some_prompt', stream, input=input)
+        getpita._raw_input('some_prompt', stream, input=input)
         stream.flush.assert_called_once_with()
 
     eleza test_uses_stderr_as_default(self):
         input = StringIO('input_string')
         prompt = 'some_prompt'
         ukijumuisha mock.patch('sys.stderr') kama stderr:
-            getpita._raw_uliza(prompt, input=input)
+            getpita._raw_input(prompt, input=input)
             stderr.write.assert_called_once_with(prompt)
 
     @mock.patch('sys.stdin')
-    eleza test_uses_stdin_as_default_uliza(self, mock_input):
+    eleza test_uses_stdin_as_default_input(self, mock_input):
         mock_input.readline.return_value = 'input_string'
-        getpita._raw_uliza(stream=StringIO())
+        getpita._raw_input(stream=StringIO())
         mock_input.readline.assert_called_once_with()
 
     @mock.patch('sys.stdin')
     eleza test_uses_stdin_as_different_locale(self, mock_input):
         stream = TextIOWrapper(BytesIO(), encoding="ascii")
         mock_input.readline.return_value = "HasÅ‚o: "
-        getpita._raw_uliza(prompt="HasÅ‚o: ",stream=stream)
+        getpita._raw_input(prompt="HasÅ‚o: ",stream=stream)
         mock_input.readline.assert_called_once_with()
 
 
-    eleza test_raises_on_empty_uliza(self):
+    eleza test_raises_on_empty_input(self):
         input = StringIO('')
         self.assertRaises(EOFError, getpita._raw_input, input=input)
 
     eleza test_trims_trailing_newline(self):
         input = StringIO('test\n')
-        self.assertEqual('test', getpita._raw_uliza(input=input))
+        self.assertEqual('test', getpita._raw_input(input=input))
 
 
 # Some of these tests are a bit white-box.  The functional requirement ni that
@@ -134,7 +134,7 @@ kundi UnixGetpitaTest(unittest.TestCase):
             fallback.assert_called_once_with('Password: ',
                                              textio.return_value)
 
-    eleza test_flushes_stream_after_uliza(self):
+    eleza test_flushes_stream_after_input(self):
         # issue 7208
         ukijumuisha mock.patch('os.open') kama open, \
                 mock.patch('io.FileIO'), \

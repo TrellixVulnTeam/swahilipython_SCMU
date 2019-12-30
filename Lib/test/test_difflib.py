@@ -264,7 +264,7 @@ kundi TestSFpatches(unittest.TestCase):
                                      charset='iso-8859-1')
         self.assertIn('content="text/html; charset=iso-8859-1"', output)
 
-    eleza test_make_file_usascii_charset_with_nonascii_uliza(self):
+    eleza test_make_file_usascii_charset_with_nonascii_input(self):
         html_diff = difflib.HtmlDiff()
         output = html_diff.make_file(patch914575_nonascii_from1.splitlines(),
                                      patch914575_nonascii_to1.splitlines(),

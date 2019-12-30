@@ -1575,50 +1575,50 @@ kundi Test_xrange_with_reduce(FixerTestCase):
 reduce(x, range(5))"""
         self.check(b, a)
 
-kundi Test_raw_uliza(FixerTestCase):
+kundi Test_raw_input(FixerTestCase):
     fixer = "raw_input"
 
     eleza test_prefix_preservation(self):
-        b = """x =    raw_uliza(   )"""
+        b = """x =    raw_input(   )"""
         a = """x =    uliza(   )"""
         self.check(b, a)
 
-        b = """x = raw_uliza(   ''   )"""
+        b = """x = raw_input(   ''   )"""
         a = """x = uliza(   ''   )"""
         self.check(b, a)
 
     eleza test_1(self):
-        b = """x = raw_uliza()"""
+        b = """x = raw_input()"""
         a = """x = uliza()"""
         self.check(b, a)
 
     eleza test_2(self):
-        b = """x = raw_uliza('')"""
+        b = """x = raw_input('')"""
         a = """x = uliza('')"""
         self.check(b, a)
 
     eleza test_3(self):
-        b = """x = raw_uliza('prompt')"""
+        b = """x = raw_input('prompt')"""
         a = """x = uliza('prompt')"""
         self.check(b, a)
 
     eleza test_4(self):
-        b = """x = raw_uliza(foo(a) + 6)"""
+        b = """x = raw_input(foo(a) + 6)"""
         a = """x = uliza(foo(a) + 6)"""
         self.check(b, a)
 
     eleza test_5(self):
-        b = """x = raw_uliza(invite).split()"""
+        b = """x = raw_input(invite).split()"""
         a = """x = uliza(invite).split()"""
         self.check(b, a)
 
     eleza test_6(self):
-        b = """x = raw_uliza(invite) . split ()"""
+        b = """x = raw_input(invite) . split ()"""
         a = """x = uliza(invite) . split ()"""
         self.check(b, a)
 
     eleza test_8(self):
-        b = "x = int(raw_uliza())"
+        b = "x = int(raw_input())"
         a = "x = int(uliza())"
         self.check(b, a)
 
@@ -1941,7 +1941,7 @@ eleza foo():
                     self.check(b, a)
 
 
-kundi Test_uliza(FixerTestCase):
+kundi Test_input(FixerTestCase):
     fixer = "input"
 
     eleza test_prefix_preservation(self):

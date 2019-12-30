@@ -235,7 +235,7 @@ kundi CmdLineTest(unittest.TestCase):
             data = err ikiwa stream == 'stderr' isipokua out
             self.assertEqual(data, b'x', "text %s sio unbuffered" % stream)
 
-    eleza test_unbuffered_uliza(self):
+    eleza test_unbuffered_input(self):
         # sys.stdin still works ukijumuisha '-u'
         code = ("agiza sys; sys.stdout.write(sys.stdin.read(1))")
         p = spawn_python('-u', '-c', code)
@@ -295,7 +295,7 @@ kundi CmdLineTest(unittest.TestCase):
             escaped = repr(text).encode(encoding, 'backslashreplace')
             self.assertIn(escaped, data)
 
-    eleza check_uliza(self, code, expected):
+    eleza check_input(self, code, expected):
         ukijumuisha tempfile.NamedTemporaryFile("wb+") kama stdin:
             sep = os.linesep.encode('ASCII')
             stdin.write(sep.join((b'abc', b'def')))
@@ -310,14 +310,14 @@ kundi CmdLineTest(unittest.TestCase):
     eleza test_stdin_readline(self):
         # Issue #11272: check that sys.stdin.readline() replaces '\r\n' by '\n'
         # on Windows (sys.stdin ni opened kwenye binary mode)
-        self.check_uliza(
+        self.check_input(
             "agiza sys; andika(repr(sys.stdin.readline()))",
             b"'abc\\n'")
 
-    eleza test_builtin_uliza(self):
-        # Issue #11272: check that uliza() strips newlines ('\n' ama '\r\n')
-        self.check_uliza(
-            "andika(repr(uliza()))",
+    eleza test_builtin_input(self):
+        # Issue #11272: check that input() strips newlines ('\n' ama '\r\n')
+        self.check_input(
+            "andika(repr(input()))",
             b"'abc'")
 
     eleza test_output_newline(self):

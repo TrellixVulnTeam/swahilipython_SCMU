@@ -1568,7 +1568,7 @@ kundi Popen(object):
 
             ikiwa shell:
                 # On Android the default shell ni at '/system/bin/sh'.
-                unix_shell = ('/system/bin/sh' if
+                unix_shell = ('/system/bin/sh' ikiwa
                           hasattr(sys, 'getandroidapilevel') isipokua '/bin/sh')
                 args = [unix_shell, "-c"] + args
                 ikiwa executable:
@@ -1840,7 +1840,7 @@ kundi Popen(object):
             ikiwa self.stderr:
                 stderr = self._fileobj2output[self.stderr]
 
-            self._save_uliza(input)
+            self._save_input(input)
 
             ikiwa self._input:
                 input_view = memoryview(self._input)
@@ -1912,7 +1912,7 @@ kundi Popen(object):
             rudisha (stdout, stderr)
 
 
-        eleza _save_uliza(self, input):
+        eleza _save_input(self, input):
             # This method ni called kutoka the _communicate_with_*() methods
             # so that ikiwa we time out wakati communicating, we can endelea
             # sending input ikiwa we retry.

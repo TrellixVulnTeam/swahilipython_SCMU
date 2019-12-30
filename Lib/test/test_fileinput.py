@@ -588,11 +588,11 @@ kundi BaseFileInputGlobalMethodsTest(unittest.TestCase):
         actual_total_count = len(mock_file_input.invocation_counts)
         self.assertEqual(actual_total_count, 1)
 
-kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
-    """Unit tests kila fileinput.uliza()"""
+kundi Test_fileinput_input(BaseFileInputGlobalMethodsTest):
+    """Unit tests kila fileinput.input()"""
 
     eleza test_state_is_not_Tupu_and_state_file_is_not_Tupu(self):
-        """Tests invoking fileinput.uliza() when fileinput._state ni sio Tupu
+        """Tests invoking fileinput.input() when fileinput._state ni sio Tupu
            na its _file attribute ni also sio Tupu.  Expect RuntimeError to
            be raised ukijumuisha a meaningful error message na kila fileinput._state
            to *not* be modified."""
@@ -600,12 +600,12 @@ kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
         instance._file = object()
         fileinput._state = instance
         ukijumuisha self.assertRaises(RuntimeError) kama cm:
-            fileinput.uliza()
-        self.assertEqual(("uliza() already active",), cm.exception.args)
+            fileinput.input()
+        self.assertEqual(("input() already active",), cm.exception.args)
         self.assertIs(instance, fileinput._state, "fileinput._state")
 
     eleza test_state_is_not_Tupu_and_state_file_is_Tupu(self):
-        """Tests invoking fileinput.uliza() when fileinput._state ni sio Tupu
+        """Tests invoking fileinput.input() when fileinput._state ni sio Tupu
            but its _file attribute *is* Tupu.  Expect it to create na rudisha
            a new fileinput.FileInput object ukijumuisha all method parameters pitaed
            explicitly to the __init__() method; also ensure that
@@ -613,19 +613,19 @@ kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
         instance = MockFileInput()
         instance._file = Tupu
         fileinput._state = instance
-        self.do_test_call_uliza()
+        self.do_test_call_input()
 
     eleza test_state_is_Tupu(self):
-        """Tests invoking fileinput.uliza() when fileinput._state ni Tupu
+        """Tests invoking fileinput.input() when fileinput._state ni Tupu
            Expect it to create na rudisha a new fileinput.FileInput object
            ukijumuisha all method parameters pitaed explicitly to the __init__()
            method; also ensure that fileinput._state ni set to the returned
            instance."""
         fileinput._state = Tupu
-        self.do_test_call_uliza()
+        self.do_test_call_input()
 
-    eleza do_test_call_uliza(self):
-        """Tests that fileinput.uliza() creates a new fileinput.FileInput
+    eleza do_test_call_input(self):
+        """Tests that fileinput.input() creates a new fileinput.FileInput
            object, pitaing the given parameters unmodified to
            fileinput.FileInput.__init__().  Note that this test depends on the
            monkey patching of fileinput.FileInput done by setUp()."""
@@ -635,14 +635,14 @@ kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
         mode = object()
         openhook = object()
 
-        # call fileinput.uliza() ukijumuisha different values kila each argument
-        result = fileinput.uliza(files=files, inplace=inplace, backup=backup,
+        # call fileinput.input() ukijumuisha different values kila each argument
+        result = fileinput.input(files=files, inplace=inplace, backup=backup,
             mode=mode, openhook=openhook)
 
         # ensure fileinput._state was set to the returned object
         self.assertIs(result, fileinput._state, "fileinput._state")
 
-        # ensure the parameters to fileinput.uliza() were pitaed directly
+        # ensure the parameters to fileinput.input() were pitaed directly
         # to FileInput.__init__()
         self.assertIs(files, result.files, "files")
         self.assertIs(inplace, result.inplace, "inplace")
@@ -679,7 +679,7 @@ kundi Test_fileinput_nextfile(BaseFileInputGlobalMethodsTest):
         fileinput._state = Tupu
         ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.nextfile()
-        self.assertEqual(("no active uliza()",), cm.exception.args)
+        self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
 
     eleza test_state_is_not_Tupu(self):
@@ -706,7 +706,7 @@ kundi Test_fileinput_filename(BaseFileInputGlobalMethodsTest):
         fileinput._state = Tupu
         ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.filename()
-        self.assertEqual(("no active uliza()",), cm.exception.args)
+        self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
 
     eleza test_state_is_not_Tupu(self):
@@ -733,7 +733,7 @@ kundi Test_fileinput_lineno(BaseFileInputGlobalMethodsTest):
         fileinput._state = Tupu
         ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.lineno()
-        self.assertEqual(("no active uliza()",), cm.exception.args)
+        self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
 
     eleza test_state_is_not_Tupu(self):
@@ -760,7 +760,7 @@ kundi Test_fileinput_filelineno(BaseFileInputGlobalMethodsTest):
         fileinput._state = Tupu
         ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.filelineno()
-        self.assertEqual(("no active uliza()",), cm.exception.args)
+        self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
 
     eleza test_state_is_not_Tupu(self):
@@ -787,7 +787,7 @@ kundi Test_fileinput_fileno(BaseFileInputGlobalMethodsTest):
         fileinput._state = Tupu
         ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.fileno()
-        self.assertEqual(("no active uliza()",), cm.exception.args)
+        self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
 
     eleza test_state_is_not_Tupu(self):
@@ -815,7 +815,7 @@ kundi Test_fileinput_isfirstline(BaseFileInputGlobalMethodsTest):
         fileinput._state = Tupu
         ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.isfirstline()
-        self.assertEqual(("no active uliza()",), cm.exception.args)
+        self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
 
     eleza test_state_is_not_Tupu(self):
@@ -842,7 +842,7 @@ kundi Test_fileinput_isstdin(BaseFileInputGlobalMethodsTest):
         fileinput._state = Tupu
         ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.isstdin()
-        self.assertEqual(("no active uliza()",), cm.exception.args)
+        self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
 
     eleza test_state_is_not_Tupu(self):

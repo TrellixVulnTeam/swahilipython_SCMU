@@ -224,7 +224,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
                 isipokua:
                     prompt = sys.ps1
                 jaribu:
-                    line = self.raw_uliza(prompt)
+                    line = self.raw_input(prompt)
                 tatizo EOFError:
                     self.write("\n")
                     koma
@@ -260,7 +260,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
             self.resetbuffer()
         rudisha more
 
-    eleza raw_uliza(self, prompt=""):
+    eleza raw_input(self, prompt=""):
         """Write a prompt na read a line.
 
         The returned line does sio inlude the trailing newline.
@@ -285,7 +285,7 @@ eleza interact(banner=Tupu, readfunc=Tupu, local=Tupu, exitmsg=Tupu):
     Arguments (all optional, all default to Tupu):
 
     banner -- pitaed to InteractiveConsole.interact()
-    readfunc -- ikiwa sio Tupu, replaces InteractiveConsole.raw_uliza()
+    readfunc -- ikiwa sio Tupu, replaces InteractiveConsole.rawinput()
     local -- pitaed to InteractiveInterpreter.__init__()
     exitmsg -- pitaed to InteractiveConsole.interact()
 

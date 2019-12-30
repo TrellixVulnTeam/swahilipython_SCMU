@@ -74,7 +74,7 @@ eleza unix_getpita(prompt='Password: ', stream=Tupu):
                     tcsetattr_flags |= termios.TCSASOFT
                 jaribu:
                     termios.tcsetattr(fd, tcsetattr_flags, new)
-                    pitawd = _raw_uliza(prompt, stream, input=input)
+                    pitawd = _raw_input(prompt, stream, input=input)
                 mwishowe:
                     termios.tcsetattr(fd, tcsetattr_flags, old)
                     stream.flush()  # issue7208
@@ -123,10 +123,10 @@ eleza fallback_getpita(prompt='Password: ', stream=Tupu):
     ikiwa sio stream:
         stream = sys.stderr
     andika("Warning: Password input may be echoed.", file=stream)
-    rudisha _raw_uliza(prompt, stream)
+    rudisha _raw_input(prompt, stream)
 
 
-eleza _raw_uliza(prompt="", stream=Tupu, input=Tupu):
+eleza _raw_input(prompt="", stream=Tupu, input=Tupu):
     # This doesn't save the string kwenye the GNU readline history.
     ikiwa sio stream:
         stream = sys.stderr

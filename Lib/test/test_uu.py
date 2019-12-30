@@ -88,7 +88,7 @@ kundi UUTest(unittest.TestCase):
             uu.decode(inp, out)
             self.assertEqual(out.getvalue(), plaintext)
 
-    eleza test_truncateduliza(self):
+    eleza test_truncatedinput(self):
         inp = io.BytesIO(b"begin 644 t1\n" + encodedtext)
         out = io.BytesIO()
         jaribu:

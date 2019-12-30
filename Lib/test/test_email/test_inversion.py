@@ -29,7 +29,7 @@ kundi TestInversion(TestEmailBase):
     policy = policy.default
     message = EmailMessage
 
-    eleza msg_as_uliza(self, msg):
+    eleza msg_as_input(self, msg):
         m = message_from_bytes(msg, policy=policy.SMTP)
         b = io.BytesIO()
         g = BytesGenerator(b)

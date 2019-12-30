@@ -323,9 +323,9 @@ kundi SubprocessMixin:
         self.assertEqual(output.rstrip(), b'3')
         self.assertEqual(exitcode, 0)
 
-    eleza test_empty_uliza(self):
+    eleza test_empty_input(self):
 
-        async eleza empty_uliza():
+        async eleza empty_input():
             code = 'agiza sys; data = sys.stdin.read(); andika(len(data))'
             proc = await asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
@@ -338,13 +338,13 @@ kundi SubprocessMixin:
             exitcode = await proc.wait()
             rudisha (stdout, exitcode)
 
-        output, exitcode = self.loop.run_until_complete(empty_uliza())
+        output, exitcode = self.loop.run_until_complete(empty_input())
         self.assertEqual(output.rstrip(), b'0')
         self.assertEqual(exitcode, 0)
 
-    eleza test_devnull_uliza(self):
+    eleza test_devnull_input(self):
 
-        async eleza empty_uliza():
+        async eleza empty_input():
             code = 'agiza sys; data = sys.stdin.read(); andika(len(data))'
             proc = await asyncio.create_subprocess_exec(
                 sys.executable, '-c', code,
@@ -357,7 +357,7 @@ kundi SubprocessMixin:
             exitcode = await proc.wait()
             rudisha (stdout, exitcode)
 
-        output, exitcode = self.loop.run_until_complete(empty_uliza())
+        output, exitcode = self.loop.run_until_complete(empty_input())
         self.assertEqual(output.rstrip(), b'0')
         self.assertEqual(exitcode, 0)
 

@@ -110,7 +110,7 @@ eleza parameterize(cls):
 
         example_params = {'foo': ('bar', 1), 'bing': ('bang', 2)}
 
-        eleza example_as_myfunc_uliza(self, name, count):
+        eleza example_as_myfunc_input(self, name, count):
             self.assertEqual(name+str(count), myfunc(name, count))
 
     na get:

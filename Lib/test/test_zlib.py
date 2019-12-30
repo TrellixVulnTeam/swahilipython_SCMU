@@ -605,7 +605,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         uncomp = dco.decompress(comp) + dco.flush()
         self.assertEqual(zdict, uncomp)
 
-    eleza test_flush_with_freed_uliza(self):
+    eleza test_flush_with_freed_input(self):
         # Issue #16411: decompressor accesses input to last decompress() call
         # kwenye flush(), even ikiwa this object has been freed kwenye the meanwhile.
         input1 = b'abcdefghijklmnopqrstuvwxyz'

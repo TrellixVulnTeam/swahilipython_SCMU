@@ -375,37 +375,37 @@ kundi TypeCommentTests(unittest.TestCase):
         check_both_ways("pita  # type: ignorewhatever\n")
         check_both_ways("pita  # type: ignoreé\n")
 
-    eleza test_func_type_uliza(self):
+    eleza test_func_type_input(self):
 
-        eleza parse_func_type_uliza(source):
+        eleza parse_func_type_input(source):
             rudisha ast.parse(source, "<unknown>", "func_type")
 
         # Some checks below will crash ikiwa the returned structure ni wrong
-        tree = parse_func_type_uliza("() -> int")
+        tree = parse_func_type_input("() -> int")
         self.assertEqual(tree.argtypes, [])
         self.assertEqual(tree.returns.id, "int")
 
-        tree = parse_func_type_uliza("(int) -> List[str]")
+        tree = parse_func_type_input("(int) -> List[str]")
         self.assertEqual(len(tree.argtypes), 1)
         arg = tree.argtypes[0]
         self.assertEqual(arg.id, "int")
         self.assertEqual(tree.returns.value.id, "List")
         self.assertEqual(tree.returns.slice.value.id, "str")
 
-        tree = parse_func_type_uliza("(int, *str, **Any) -> float")
+        tree = parse_func_type_input("(int, *str, **Any) -> float")
         self.assertEqual(tree.argtypes[0].id, "int")
         self.assertEqual(tree.argtypes[1].id, "str")
         self.assertEqual(tree.argtypes[2].id, "Any")
         self.assertEqual(tree.returns.id, "float")
 
         ukijumuisha self.assertRaises(SyntaxError):
-            tree = parse_func_type_uliza("(int, *str, *Any) -> float")
+            tree = parse_func_type_input("(int, *str, *Any) -> float")
 
         ukijumuisha self.assertRaises(SyntaxError):
-            tree = parse_func_type_uliza("(int, **str, Any) -> float")
+            tree = parse_func_type_input("(int, **str, Any) -> float")
 
         ukijumuisha self.assertRaises(SyntaxError):
-            tree = parse_func_type_uliza("(**int, **str) -> float")
+            tree = parse_func_type_input("(**int, **str) -> float")
 
 
 ikiwa __name__ == '__main__':

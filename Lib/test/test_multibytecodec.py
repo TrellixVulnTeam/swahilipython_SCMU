@@ -275,7 +275,7 @@ kundi Test_IncrementalDecoder(unittest.TestCase):
         decoder.setstate((b'abc', 123456789))
         self.assertEqual(decoder.getstate(), (b'abc', 123456789))
 
-    eleza test_setstate_validates_uliza(self):
+    eleza test_setstate_validates_input(self):
         decoder = codecs.getincrementaldecoder('euc_jp')()
         self.assertRaises(TypeError, decoder.setstate, 123)
         self.assertRaises(TypeError, decoder.setstate, ("invalid", 0))

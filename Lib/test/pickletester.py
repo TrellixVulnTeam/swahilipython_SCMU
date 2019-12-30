@@ -1083,7 +1083,7 @@ kundi AbstractUnpickleTests(unittest.TestCase):
         self.check_unpickling_error(ValueError, dumped)
 
     @requires_32b
-    eleza test_negative_32b_buliza(self):
+    eleza test_negative_32b_binput(self):
         # Issue #12847
         dumped = b'\x80\x03X\x01\x00\x00\x00ar\xff\xff\xff\xff.'
         self.check_unpickling_error(ValueError, dumped)
@@ -3120,7 +3120,7 @@ kundi AbstractPickleModuleTests(unittest.TestCase):
             f.close()
             support.unlink(TESTFN)
 
-    eleza test_incomplete_uliza(self):
+    eleza test_incomplete_input(self):
         s = io.BytesIO(b"X''.")
         self.assertRaises((EOFError, struct.error, pickle.UnpicklingError), self.load, s)
 

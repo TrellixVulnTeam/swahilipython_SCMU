@@ -812,7 +812,7 @@ kundi TurtleScreenBase(object):
         """
         TK.mainloop()
 
-    eleza textuliza(self, title, prompt):
+    eleza textinput(self, title, prompt):
         """Pop up a dialog window kila input of a string.
 
         Arguments: title ni the title of the dialog window,
@@ -822,12 +822,12 @@ kundi TurtleScreenBase(object):
         If the dialog ni canceled, rudisha Tupu.
 
         Example (kila a TurtleScreen instance named screen):
-        >>> screen.textuliza("NIM", "Name of first player:")
+        >>> screen.textinput("NIM", "Name of first player:")
 
         """
         rudisha simpledialog.askstring(title, prompt)
 
-    eleza numuliza(self, title, prompt, default=Tupu, minval=Tupu, maxval=Tupu):
+    eleza numinput(self, title, prompt, default=Tupu, minval=Tupu, maxval=Tupu):
         """Pop up a dialog window kila input of a number.
 
         Arguments: title ni the title of the dialog window,
@@ -842,7 +842,7 @@ kundi TurtleScreenBase(object):
         If the dialog ni canceled,  rudisha Tupu.
 
         Example (kila a TurtleScreen instance named screen):
-        >>> screen.numuliza("Poker", "Your stakes:", 1000, minval=10, maxval=10000)
+        >>> screen.numinput("Poker", "Your stakes:", 1000, minval=10, maxval=10000)
 
         """
         rudisha simpledialog.askfloat(title, prompt, initialvalue=default,

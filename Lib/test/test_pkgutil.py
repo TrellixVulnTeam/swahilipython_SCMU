@@ -176,7 +176,7 @@ kundi PkgutilTests(unittest.TestCase):
                 endelea
             toa sys.modules[pkg]
 
-    eleza test_walk_packages_raises_on_string_or_bytes_uliza(self):
+    eleza test_walk_packages_raises_on_string_or_bytes_input(self):
 
         str_input = 'test_dir'
         ukijumuisha self.assertRaises((TypeError, ValueError)):

@@ -31,7 +31,7 @@ kundi Grammar:
                      number ama a symbol number, na y ni either Tupu
                      ama a string; the strings are keywords.  The label
                      number ni the index kwenye this list; label numbers
-                     are used to mark state transitions (arcs) kwenye the
+                     are used to mark state transitions (arcs) in the
                      DFAs.
 
     start         -- the number of the grammar's start symbol.

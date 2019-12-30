@@ -128,7 +128,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         old_stdin = sys.stdin
         jaribu:
             sys.stdin = stdin
-            write_uliza(
+            writeinput(
                 stdin.buffer.raw,
                 (text + '\r\n').encode('utf-16-le', 'surrogatepita')
             )
@@ -137,7 +137,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
             sys.stdin = old_stdin
         self.assertEqual(actual, text)
 
-    eleza test_uliza(self):
+    eleza test_input(self):
         # ASCII
         self.assertStdinRoundTrip('abc123')
         # Non-ASCII
@@ -154,7 +154,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         expected = 'ϼўТλФЙ\r\n'.encode('utf-8')
         kila read_count kwenye range(1, 16):
             ukijumuisha open('CONIN$', 'rb', buffering=0) kama stdin:
-                write_uliza(stdin, source)
+                write_input(stdin, source)
 
                 actual = b''
                 wakati sio actual.endswith(b'\n'):
@@ -171,7 +171,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         expected = '\U00101FFF\U00101001\r\n'.encode('utf-8')
         kila read_count kwenye range(1, 16):
             ukijumuisha open('CONIN$', 'rb', buffering=0) kama stdin:
-                write_uliza(stdin, source)
+                write_input(stdin, source)
 
                 actual = b''
                 wakati sio actual.endswith(b'\n'):
@@ -184,7 +184,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         ukijumuisha open('CONIN$', 'rb', buffering=0) kama stdin:
             source = '\xC4\x1A\r\n'.encode('utf-16-le')
             expected = '\xC4'.encode('utf-8')
-            write_uliza(stdin, source)
+            write_input(stdin, source)
             a, b = stdin.read(1), stdin.readall()
             self.assertEqual(expected[0:1], a)
             self.assertEqual(expected[1:], b)

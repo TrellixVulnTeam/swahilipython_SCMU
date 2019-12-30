@@ -1679,7 +1679,7 @@ kundi TestMIMEText(unittest.TestCase):
         eq(msg['content-type'], 'text/plain; charset="utf-8"')
         eq(msg.get_payload(), 'hello there')
 
-    eleza test_7bit_uliza(self):
+    eleza test_7bit_input(self):
         eq = self.assertEqual
         msg = MIMEText('hello there', _charset='us-ascii')
         eq(msg.get_charset().input_charset, 'us-ascii')
@@ -1692,7 +1692,7 @@ kundi TestMIMEText(unittest.TestCase):
         eq(msg['content-type'], 'text/plain; charset="us-ascii"')
         self.assertIn('hello there', msg.as_string())
 
-    eleza test_utf8_uliza(self):
+    eleza test_utf8_input(self):
         teststr = '\u043a\u0438\u0440\u0438\u043b\u0438\u0446\u0430'
         eq = self.assertEqual
         msg = MIMEText(teststr, _charset='utf-8')

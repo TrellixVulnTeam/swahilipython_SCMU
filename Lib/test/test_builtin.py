@@ -1219,7 +1219,7 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertEqual(mod10(2, 6), 4)
         self.assertEqual(mod10(exp=6, base=2), 4)
 
-    eleza test_uliza(self):
+    eleza test_input(self):
         self.write_testfile()
         fp = open(TESTFN, 'r')
         savestdin = sys.stdin

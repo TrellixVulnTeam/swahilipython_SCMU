@@ -251,7 +251,7 @@ kundi CompressorDecompressorTestCase(unittest.TestCase):
         self._test_decompressor(lzd, COMPRESSED_XZ + extra, lzma.CHECK_CRC64,
                                 unused_data=extra)
 
-    eleza test_decompressor_bad_uliza(self):
+    eleza test_decompressor_bad_input(self):
         lzd = LZMADecompressor()
         self.assertRaises(LZMAError, lzd.decompress, COMPRESSED_RAW_1)
 
@@ -423,7 +423,7 @@ kundi CompressDecompressFunctionTestCase(unittest.TestCase):
 
     # Test LZMADecompressor on known-good input data.
 
-    eleza test_decompress_good_uliza(self):
+    eleza test_decompress_good_input(self):
         ddata = lzma.decompress(COMPRESSED_XZ)
         self.assertEqual(ddata, INPUT)
 
@@ -452,7 +452,7 @@ kundi CompressDecompressFunctionTestCase(unittest.TestCase):
                 COMPRESSED_RAW_4, lzma.FORMAT_RAW, filters=FILTERS_RAW_4)
         self.assertEqual(ddata, INPUT)
 
-    eleza test_decompress_incomplete_uliza(self):
+    eleza test_decompress_incomplete_input(self):
         self.assertRaises(LZMAError, lzma.decompress, COMPRESSED_XZ[:128])
         self.assertRaises(LZMAError, lzma.decompress, COMPRESSED_ALONE[:128])
         self.assertRaises(LZMAError, lzma.decompress, COMPRESSED_RAW_1[:128],
@@ -464,7 +464,7 @@ kundi CompressDecompressFunctionTestCase(unittest.TestCase):
         self.assertRaises(LZMAError, lzma.decompress, COMPRESSED_RAW_4[:128],
                           format=lzma.FORMAT_RAW, filters=FILTERS_RAW_4)
 
-    eleza test_decompress_bad_uliza(self):
+    eleza test_decompress_bad_input(self):
         ukijumuisha self.assertRaises(LZMAError):
             lzma.decompress(COMPRESSED_BOGUS)
         ukijumuisha self.assertRaises(LZMAError):

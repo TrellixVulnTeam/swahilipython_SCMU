@@ -332,7 +332,7 @@ eleza check_environ(environ):
     assert_(environ['wsgi.url_scheme'] kwenye ('http', 'https'),
         "wsgi.url_scheme unknown: %r" % environ['wsgi.url_scheme'])
 
-    check_uliza(environ['wsgi.input'])
+    check_input(environ['wsgi.input'])
     check_errors(environ['wsgi.errors'])
 
     # @@: these need filling out:
@@ -360,7 +360,7 @@ eleza check_environ(environ):
         "SCRIPT_NAME cansio be '/'; it should instead be '', na "
         "PATH_INFO should be '/'")
 
-eleza check_uliza(wsgi_input):
+eleza check_input(wsgi_input):
     kila attr kwenye ['read', 'readline', 'readlines', '__iter__']:
         assert_(hasattr(wsgi_input, attr),
             "wsgi.input (%r) doesn't have the attribute %s"

@@ -287,7 +287,7 @@ kundi GrammarTests(unittest.TestCase):
     # expr_input: testlist NEWLINE
     # XXX Hard to test -- used only kwenye calls to uliza()
 
-    eleza test_eval_uliza(self):
+    eleza test_eval_input(self):
         # testlist ENDMARKER
         x = eval('1, 0 ama 1')
 

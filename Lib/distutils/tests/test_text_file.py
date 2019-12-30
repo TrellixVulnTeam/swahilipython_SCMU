@@ -47,7 +47,7 @@ kundi TextFileTestCase(support.TempdirManager, unittest.TestCase):
         # "collapse" joined lines
         result6 = ["line 3 endeleas on next line"]
 
-        eleza test_uliza(count, description, file, expected_result):
+        eleza test_input(count, description, file, expected_result):
             result = file.readlines()
             self.assertEqual(result, expected_result)
 
@@ -62,41 +62,41 @@ kundi TextFileTestCase(support.TempdirManager, unittest.TestCase):
         in_file = TextFile(filename, strip_comments=0, skip_blanks=0,
                            lstrip_ws=0, rstrip_ws=0)
         jaribu:
-            test_uliza(1, "no processing", in_file, result1)
+            test_input(1, "no processing", in_file, result1)
         mwishowe:
             in_file.close()
 
         in_file = TextFile(filename, strip_comments=1, skip_blanks=0,
                            lstrip_ws=0, rstrip_ws=0)
         jaribu:
-            test_uliza(2, "strip comments", in_file, result2)
+            test_input(2, "strip comments", in_file, result2)
         mwishowe:
             in_file.close()
 
         in_file = TextFile(filename, strip_comments=0, skip_blanks=1,
                            lstrip_ws=0, rstrip_ws=0)
         jaribu:
-            test_uliza(3, "strip blanks", in_file, result3)
+            test_input(3, "strip blanks", in_file, result3)
         mwishowe:
             in_file.close()
 
         in_file = TextFile(filename)
         jaribu:
-            test_uliza(4, "default processing", in_file, result4)
+            test_input(4, "default processing", in_file, result4)
         mwishowe:
             in_file.close()
 
         in_file = TextFile(filename, strip_comments=1, skip_blanks=1,
                            join_lines=1, rstrip_ws=1)
         jaribu:
-            test_uliza(5, "join lines without collapsing", in_file, result5)
+            test_input(5, "join lines without collapsing", in_file, result5)
         mwishowe:
             in_file.close()
 
         in_file = TextFile(filename, strip_comments=1, skip_blanks=1,
                            join_lines=1, rstrip_ws=1, collapse_join=1)
         jaribu:
-            test_uliza(6, "join lines ukijumuisha collapsing", in_file, result6)
+            test_input(6, "join lines ukijumuisha collapsing", in_file, result6)
         mwishowe:
             in_file.close()
 

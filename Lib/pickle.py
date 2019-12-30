@@ -1624,14 +1624,14 @@ kundi _Unpickler:
         self.memo[i] = self.stack[-1]
     dispatch[PUT[0]] = load_put
 
-    eleza load_buliza(self):
+    eleza load_binput(self):
         i = self.read(1)[0]
         ikiwa i < 0:
             ashiria ValueError("negative BINPUT argument")
         self.memo[i] = self.stack[-1]
     dispatch[BINPUT[0]] = load_binput
 
-    eleza load_long_buliza(self):
+    eleza load_long_binput(self):
         i, = unpack('<I', self.read(4))
         ikiwa i > maxsize:
             ashiria ValueError("negative LONG_BINPUT argument")

@@ -556,7 +556,7 @@ kundi PyWarnTests(WarnTests, unittest.TestCase):
 
 kundi WCmdLineTests(BaseTest):
 
-    eleza test_improper_uliza(self):
+    eleza test_improper_input(self):
         # Uses the private _setoption() function to test the parsing
         # of command-line warning arguments
         ukijumuisha original_warnings.catch_warnings(module=self.module):

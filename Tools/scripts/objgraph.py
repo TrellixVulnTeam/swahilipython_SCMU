@@ -63,7 +63,7 @@ undef2file = {}
 # Read one input file na merge the data into the tables.
 # Argument ni an open file.
 #
-eleza readuliza(fp):
+eleza read_input(fp):
     wakati 1:
         s = fp.readline()
         ikiwa sio s:
@@ -178,10 +178,10 @@ eleza main():
         args = ['-']
     kila filename kwenye args:
         ikiwa filename == '-':
-            readuliza(sys.stdin)
+            readinput(sys.stdin)
         isipokua:
             ukijumuisha open(filename) kama f:
-                readuliza(f)
+                readinput(f)
     #
     warndups()
     #

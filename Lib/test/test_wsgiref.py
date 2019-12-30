@@ -193,7 +193,7 @@ kundi IntegrationTests(TestCase):
                 ))
                 self.assertEqual(err.splitlines()[-2], exc_message)
 
-    eleza test_wsgi_uliza(self):
+    eleza test_wsgi_input(self):
         eleza bad_app(e,s):
             e["wsgi.input"].read()
             s("200 OK", [("Content-Type", "text/plain; charset=utf-8")])

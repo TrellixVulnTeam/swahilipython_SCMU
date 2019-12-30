@@ -2794,7 +2794,7 @@ kundi TextIOWrapperTest(unittest.TestCase):
                             self.assertEqual(got_line, exp_line)
                         self.assertEqual(len(got_lines), len(exp_lines))
 
-    eleza test_newlines_uliza(self):
+    eleza test_newlines_input(self):
         testdata = b"AAA\nBB\x00B\nCCC\rDDD\rEEE\r\nFFF\r\nGGG"
         normalized = testdata.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
         kila newline, expected kwenye [

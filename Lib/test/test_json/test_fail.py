@@ -103,7 +103,7 @@ kundi TestFail:
                 'Object of type module ni sio JSON serializable'):
             self.dumps(sys)
 
-    eleza test_truncated_uliza(self):
+    eleza test_truncated_input(self):
         test_cases = [
             ('', 'Expecting value', 0),
             ('[', 'Expecting value', 1),

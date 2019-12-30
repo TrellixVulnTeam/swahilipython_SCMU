@@ -2475,7 +2475,7 @@ kundi Bz2PartialReadTest(Bz2Test, unittest.TestCase):
     # Issue5068: The _BZ2Proxy.read() method loops forever
     # on an empty ama partial bzipped file.
 
-    eleza _test_partial_uliza(self, mode):
+    eleza _test_partial_input(self, mode):
         kundi MyBytesIO(io.BytesIO):
             hit_eof = Uongo
             eleza read(self, n):
@@ -2495,11 +2495,11 @@ kundi Bz2PartialReadTest(Bz2Test, unittest.TestCase):
             tatizo tarfile.ReadError:
                 pita # we have no interest kwenye ReadErrors
 
-    eleza test_partial_uliza(self):
-        self._test_partial_uliza("r")
+    eleza test_partialinput(self):
+        self._test_partial_input("r")
 
     eleza test_partial_input_bz2(self):
-        self._test_partial_uliza("r:bz2")
+        self._test_partial_input("r:bz2")
 
 
 eleza root_is_uid_gid_0():

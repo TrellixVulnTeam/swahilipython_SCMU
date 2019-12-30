@@ -384,7 +384,7 @@ kundi MiscNews(Directive):
         content = whatsnew_re.sub(r'\1', content)
         # remove first 3 lines kama they are the main heading
         lines = ['.. default-role:: obj', ''] + content.splitlines()[3:]
-        self.state_machine.insert_uliza(lines, fname)
+        self.state_machine.insert_input(lines, fname)
         rudisha []
 
 
