@@ -502,7 +502,7 @@ kundi finalize:
 
     # Finalizer objects don't have any state of their own.  They are
     # just used kama keys to lookup _Info objects kwenye the registry.  This
-    # ensures that they cansio be part of a ref-cycle.
+    # ensures that they cannot be part of a ref-cycle.
 
     __slots__ = ()
     _registry = {}

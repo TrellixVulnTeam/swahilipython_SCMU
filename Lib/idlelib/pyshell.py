@@ -27,7 +27,7 @@ ikiwa TkVersion < 8.5:
     root.withdraw()
     kutoka idlelib.run agiza fix_scaling
     fix_scaling(root)
-    tkMessageBox.showerror("Idle Cansio Start",
+    tkMessageBox.showerror("Idle Cannot Start",
             "Idle requires tcl/tk 8.5+, sio %s." % TkVersion,
             parent=root)
     ashiria SystemExit(1)

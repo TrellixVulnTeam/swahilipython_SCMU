@@ -392,7 +392,7 @@ eleza classify_class_attrs(cls):
 
     If one of the items kwenye dir(cls) ni stored kwenye the metakundi it will now
     be discovered na sio have Tupu be listed kama the kundi kwenye which it was
-    defined.  Any items whose home kundi cansio be discovered are skipped.
+    defined.  Any items whose home kundi cannot be discovered are skipped.
     """
 
     mro = getmro(cls)
@@ -775,7 +775,7 @@ eleza findsource(object):
     The argument may be a module, class, method, function, traceback, frame,
     ama code object.  The source code ni returned kama a list of all the lines
     kwenye the file na the line number indexes a line kwenye that list.  An OSError
-    ni raised ikiwa the source code cansio be retrieved."""
+    ni raised ikiwa the source code cannot be retrieved."""
 
     file = getsourcefile(object)
     ikiwa file:
@@ -962,7 +962,7 @@ eleza getsourcelines(object):
     ama code object.  The source code ni returned kama a list of the lines
     corresponding to the object na the line number indicates where kwenye the
     original source file the first line of code was found.  An OSError is
-    raised ikiwa the source code cansio be retrieved."""
+    raised ikiwa the source code cannot be retrieved."""
     object = unwrap(object)
     lines, lnum = findsource(object)
 
@@ -981,7 +981,7 @@ eleza getsource(object):
 
     The argument may be a module, class, method, function, traceback, frame,
     ama code object.  The source code ni returned kama a single string.  An
-    OSError ni raised ikiwa the source code cansio be retrieved."""
+    OSError ni raised ikiwa the source code cannot be retrieved."""
     lines, lnum = getsourcelines(object)
     rudisha ''.join(lines)
 
@@ -2481,7 +2481,7 @@ kundi Parameter:
             ashiria ValueError(f'value {kind!r} ni sio a valid Parameter.kind')
         ikiwa default ni sio _empty:
             ikiwa self._kind kwenye (_VAR_POSITIONAL, _VAR_KEYWORD):
-                msg = '{} parameters cansio have default values'
+                msg = '{} parameters cannot have default values'
                 msg = msg.format(self._kind.description)
                 ashiria ValueError(msg)
         self._default = default

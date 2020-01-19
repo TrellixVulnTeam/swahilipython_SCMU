@@ -424,12 +424,12 @@ kundi HashLibTestCase(unittest.TestCase):
                    b'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
                    'd174ab98d277d9f5a5611c2c9f419d9f')
 
-    @unittest.skipIf(sys.maxsize < _4G + 5, 'test cansio run on 32-bit systems')
+    @unittest.skipIf(sys.maxsize < _4G + 5, 'test cannot run on 32-bit systems')
     @bigmemtest(size=_4G + 5, memuse=1, dry_run=Uongo)
     eleza test_case_md5_huge(self, size):
         self.check('md5', b'A'*size, 'c9af2dff37468ce5dfee8f2cfc0a9c6d')
 
-    @unittest.skipIf(sys.maxsize < _4G - 1, 'test cansio run on 32-bit systems')
+    @unittest.skipIf(sys.maxsize < _4G - 1, 'test cannot run on 32-bit systems')
     @bigmemtest(size=_4G - 1, memuse=1, dry_run=Uongo)
     eleza test_case_md5_uintmax(self, size):
         self.check('md5', b'A'*size, '28138d306ff1b8281f1a9067e1a1a2b3')

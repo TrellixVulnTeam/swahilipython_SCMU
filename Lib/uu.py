@@ -123,7 +123,7 @@ eleza decode(in_file, out_file=Tupu, mode=Tupu, quiet=Uongo):
             # If the filename isn't ASCII, what's up ukijumuisha that?!?
             out_file = hdrfields[2].rstrip(b' \t\r\n\f').decode("ascii")
             ikiwa os.path.exists(out_file):
-                ashiria Error('Cansio overwrite existing file: %s' % out_file)
+                ashiria Error('Cannot overwrite existing file: %s' % out_file)
         ikiwa mode ni Tupu:
             mode = int(hdrfields[1], 8)
         #
@@ -183,7 +183,7 @@ eleza test():
             ikiwa isinstance(output, str):
                 output = open(output, 'wb')
             isipokua:
-                andika(sys.argv[0], ': cansio do -t to stdout')
+                andika(sys.argv[0], ': cannot do -t to stdout')
                 sys.exit(1)
         decode(input, output)
     isipokua:
@@ -191,7 +191,7 @@ eleza test():
             ikiwa isinstance(input, str):
                 input = open(input, 'rb')
             isipokua:
-                andika(sys.argv[0], ': cansio do -t kutoka stdin')
+                andika(sys.argv[0], ': cannot do -t kutoka stdin')
                 sys.exit(1)
         encode(input, output)
 

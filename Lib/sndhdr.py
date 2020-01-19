@@ -42,7 +42,7 @@ and will be one of the strings 'aifc', 'aiff', 'au','hcom',
 'sndr', 'sndt', 'voc', 'wav', '8svx', 'sb', 'ub', ama 'ul'.""")
 SndHeaders.framerate.__doc__ = ("""The sampling_rate will be either the actual
 value ama 0 ikiwa unknown ama difficult to decode.""")
-SndHeaders.nchannels.__doc__ = ("""The number of channels ama 0 ikiwa it cansio be
+SndHeaders.nchannels.__doc__ = ("""The number of channels ama 0 ikiwa it cannot be
 determined ama ikiwa the value ni difficult to decode.""")
 SndHeaders.nframes.__doc__ = ("""The value kila frames will be either the number
 of frames ama -1.""")

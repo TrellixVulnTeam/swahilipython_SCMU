@@ -27,15 +27,15 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
 
         ukijumuisha tempfile.TemporaryFile() kama tmpfile:
             fd = tmpfile.fileno()
-            # Windows 10: "Cansio open non-console file"
-            # Earlier: "Cansio open console output buffer kila reading"
+            # Windows 10: "Cannot open non-console file"
+            # Earlier: "Cannot open console output buffer kila reading"
             self.assertRaisesRegex(ValueError,
-                "Cansio open (console|non-console file)", ConIO, fd)
+                "Cannot open (console|non-console file)", ConIO, fd)
 
         jaribu:
             f = ConIO(0)
         tatizo ValueError:
-            # cansio open console because it's sio a real console
+            # cannot open console because it's sio a real console
             pita
         isipokua:
             self.assertKweli(f.readable())
@@ -47,7 +47,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         jaribu:
             f = ConIO(1, 'w')
         tatizo ValueError:
-            # cansio open console because it's sio a real console
+            # cannot open console because it's sio a real console
             pita
         isipokua:
             self.assertUongo(f.readable())
@@ -59,7 +59,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         jaribu:
             f = ConIO(2, 'w')
         tatizo ValueError:
-            # cansio open console because it's sio a real console
+            # cannot open console because it's sio a real console
             pita
         isipokua:
             self.assertUongo(f.readable())
@@ -165,7 +165,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
 
     eleza test_partial_surrogate_reads(self):
         # Test that reading less than 1 full character works when stdin
-        # contains surrogate pairs that cansio be decoded to UTF-8 without
+        # contains surrogate pairs that cannot be decoded to UTF-8 without
         # reading an extra character.
         source = '\U00101FFF\U00101001\r\n'.encode('utf-16-le')
         expected = '\U00101FFF\U00101001\r\n'.encode('utf-8')

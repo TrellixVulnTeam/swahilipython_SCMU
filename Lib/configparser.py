@@ -287,7 +287,7 @@ kundi InterpolationDepthError(InterpolationError):
     eleza __init__(self, option, section, rawval):
         msg = ("Recursion limit exceeded kwenye value substitution: option {!r} "
                "in section {!r} contains an interpolation key which "
-               "cansio be substituted kwenye {} steps. Raw value: {!r}"
+               "cannot be substituted kwenye {} steps. Raw value: {!r}"
                "".format(option, section, MAX_INTERPOLATION_DEPTH,
                          rawval))
         InterpolationError.__init__(self, option, section, msg)
@@ -301,7 +301,7 @@ kundi ParsingError(Error):
         # Exactly one of `source'/`filename' arguments has to be given.
         # `filename' kept kila compatibility.
         ikiwa filename na source:
-            ashiria ValueError("Cansio specify both `filename' na `source'. "
+            ashiria ValueError("Cannot specify both `filename' na `source'. "
                              "Use `source'.")
         lasivyo sio filename na sio source:
             ashiria ValueError("Required argument `source' sio given.")
@@ -679,7 +679,7 @@ kundi RawConfigParser(MutableMapping):
     eleza read(self, filenames, encoding=Tupu):
         """Read na parse a filename ama an iterable of filenames.
 
-        Files that cansio be opened are silently ignored; this is
+        Files that cannot be opened are silently ignored; this is
         designed so that you can specify an iterable of potential
         configuration file locations (e.g. current directory, user's
         home directory, systemwide directory), na all existing
@@ -863,7 +863,7 @@ kundi RawConfigParser(MutableMapping):
         a (section_name, section_proxy) tuple. If no section ni present, raise
         KeyError.
 
-        The section DEFAULT ni never returned because it cansio be removed.
+        The section DEFAULT ni never returned because it cannot be removed.
         """
         kila key kwenye self.sections():
             value = self[key]
@@ -975,7 +975,7 @@ kundi RawConfigParser(MutableMapping):
 
     eleza __delitem__(self, key):
         ikiwa key == self.default_section:
-            ashiria ValueError("Cansio remove the default section.")
+            ashiria ValueError("Cannot remove the default section.")
         ikiwa sio self.has_section(key):
             ashiria KeyError(key)
         self.remove_section(key)
@@ -1333,7 +1333,7 @@ kundi ConverterMapping(MutableMapping):
             ashiria ValueError('Incompatible key: {} (type: {})'
                              ''.format(key, type(key)))
         ikiwa k == 'get':
-            ashiria ValueError('Incompatible key: cansio use "" kama a name')
+            ashiria ValueError('Incompatible key: cannot use "" kama a name')
         self._data[key] = value
         func = functools.partial(self._parser._get_conv, conv=value)
         func.converter = value

@@ -672,7 +672,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
 
     eleza close(self):
         ikiwa self.is_running():
-            ashiria RuntimeError("Cansio close a running event loop")
+            ashiria RuntimeError("Cannot close a running event loop")
         ikiwa self.is_closed():
             rudisha
 

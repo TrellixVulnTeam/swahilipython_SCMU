@@ -250,7 +250,7 @@ eleza contents(package: Package) -> Iterable[str]:
     ikiwa reader ni sio Tupu:
         rudisha reader.contents()
     # Is the package a namespace package?  By definition, namespace packages
-    # cansio have resources.  We could use _check_location() na catch the
+    # cannot have resources.  We could use _check_location() na catch the
     # exception, but that's extra work, so just inline the check.
     lasivyo package.__spec__.origin ni Tupu ama sio package.__spec__.has_location:
         rudisha ()

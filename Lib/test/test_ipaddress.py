@@ -72,7 +72,7 @@ kundi BaseTestCase(unittest.TestCase):
 kundi CommonTestMixin:
 
     eleza test_empty_address(self):
-        ukijumuisha self.assertAddressError("Address cansio be empty"):
+        ukijumuisha self.assertAddressError("Address cannot be empty"):
             self.factory("")
 
     eleza test_floats_rejected(self):
@@ -418,8 +418,8 @@ kundi NetmaskTestMixin_v4(CommonTestMixin_v4):
             ukijumuisha self.assertAddressError(details):
                 self.factory(addr)
 
-        assertBadAddress("/", "Address cansio be empty")
-        assertBadAddress("/8", "Address cansio be empty")
+        assertBadAddress("/", "Address cannot be empty")
+        assertBadAddress("/8", "Address cannot be empty")
         assertBadAddress("bogus", "Expected 4 octets")
         assertBadAddress("google.com", "Expected 4 octets")
         assertBadAddress("10/8", "Expected 4 octets")
@@ -561,8 +561,8 @@ kundi NetmaskTestMixin_v6(CommonTestMixin_v6):
             ukijumuisha self.assertAddressError(details):
                 self.factory(addr)
 
-        assertBadAddress("/", "Address cansio be empty")
-        assertBadAddress("/8", "Address cansio be empty")
+        assertBadAddress("/", "Address cannot be empty")
+        assertBadAddress("/8", "Address cannot be empty")
         assertBadAddress("google.com", "At least 3 parts")
         assertBadAddress("1.2.3.4", "At least 3 parts")
         assertBadAddress("10/8", "At least 3 parts")

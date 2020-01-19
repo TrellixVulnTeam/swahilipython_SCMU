@@ -971,7 +971,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
 
     eleza test_mro_disagreement(self):
         # Testing error messages kila MRO disagreement...
-        mro_err_msg = """Cansio create a consistent method resolution
+        mro_err_msg = """Cannot create a consistent method resolution
 order (MRO) kila bases """
 
         eleza raises(exc, expected, callable, *args):

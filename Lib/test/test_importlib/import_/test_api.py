@@ -23,7 +23,7 @@ kundi BadSpecFinderLoader:
     @staticmethod
     eleza exec_module(module):
         ikiwa module.__name__ == SUBMOD_NAME:
-            ashiria ImportError('I cansio be loaded!')
+            ashiria ImportError('I cannot be loaded!')
 
 
 kundi BadLoaderFinder:
@@ -35,7 +35,7 @@ kundi BadLoaderFinder:
     @classmethod
     eleza load_module(cls, fullname):
         ikiwa fullname == SUBMOD_NAME:
-            ashiria ImportError('I cansio be loaded!')
+            ashiria ImportError('I cannot be loaded!')
 
 
 kundi APITest:

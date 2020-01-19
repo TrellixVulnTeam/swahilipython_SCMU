@@ -4492,7 +4492,7 @@ kundi PanedWindow(Widget):
             adjusted by the movement of sashes kwenye the panedwindow.
             Size may be any value accepted by Tk_GetPixels.
         minsize n
-            Specifies that the size of the window cansio be made
+            Specifies that the size of the window cannot be made
             less than n. This constraint only affects the size of
             the widget kwenye the paned dimension -- the x dimension
             kila horizontal panedwindows, the y dimension for

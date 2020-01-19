@@ -1105,7 +1105,7 @@ kundi MIMEPart(Message):
             existing_subtype = self.get_content_subtype()
             disallowed_subtypes = disallowed_subtypes + (subtype,)
             ikiwa existing_subtype kwenye disallowed_subtypes:
-                ashiria ValueError("Cansio convert {} to {}".format(
+                ashiria ValueError("Cannot convert {} to {}".format(
                     existing_subtype, subtype))
         keep_headers = []
         part_headers = []

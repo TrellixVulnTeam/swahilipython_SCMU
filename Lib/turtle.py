@@ -908,7 +908,7 @@ kundi Shape(object):
         >>> # .. add more components na then use register_shape()
         """
         ikiwa self._type != "compound":
-            ashiria TurtleGraphicsError("Cansio add component to %s Shape"
+            ashiria TurtleGraphicsError("Cannot add component to %s Shape"
                                                                 % self._type)
         ikiwa outline ni Tupu:
             outline = fill
@@ -3874,7 +3874,7 @@ jaribu:
     ikiwa _LANGUAGE != "english":
         read_docstrings(_LANGUAGE)
 tatizo ImportError:
-    andika("Cansio find docsdict for", _LANGUAGE)
+    andika("Cannot find docsdict for", _LANGUAGE)
 tatizo Exception:
     andika ("Unknown Error when trying to agiza %s-docstring-dictionary" %
                                                                   _LANGUAGE)

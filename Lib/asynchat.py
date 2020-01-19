@@ -207,7 +207,7 @@ kundi async_chat(asyncore.dispatcher):
 
     eleza readable(self):
         "predicate kila inclusion kwenye the readable kila select()"
-        # cansio use the old predicate, it violates the claim of the
+        # cannot use the old predicate, it violates the claim of the
         # set_terminator method.
 
         # rudisha (len(self.ac_in_buffer) <= self.ac_in_buffer_size)

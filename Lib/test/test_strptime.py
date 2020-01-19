@@ -98,7 +98,7 @@ kundi LocaleTime_Tests(unittest.TestCase):
                          strftime_output, "LC_time incorrect")
         LT = _strptime.LocaleTime()
         LT.am_pm = ('', '')
-        self.assertKweli(LT.LC_time, "LocaleTime's LC directives cansio handle "
+        self.assertKweli(LT.LC_time, "LocaleTime's LC directives cannot handle "
                                     "empty strings")
 
     eleza test_lang(self):

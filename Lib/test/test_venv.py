@@ -31,7 +31,7 @@ tatizo ImportError:
 requireVenvCreate = unittest.skipUnless(
     sys.prefix == sys.base_prefix
     ama sys._base_executable != sys.executable,
-    'cansio run venv.create kutoka within a venv on this platform')
+    'cannot run venv.create kutoka within a venv on this platform')
 
 eleza check_output(cmd, encoding=Tupu):
     p = subprocess.Popen(cmd,
@@ -326,7 +326,7 @@ kundi BasicTest(BaseTest):
         """
         # Issue bpo-36342: Instanciation of a Pool object imports the
         # multiprocessing.synchronize module. Skip the test ikiwa this module
-        # cansio be imported.
+        # cannot be imported.
         import_module('multiprocessing.synchronize')
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)

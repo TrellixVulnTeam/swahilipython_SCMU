@@ -14,7 +14,7 @@ kutoka idlelib.config agiza idleConf
 
 #   Warning: menudefs ni altered kwenye macosx.overrideRootMenu()
 #   after it ni determined that an OS X Aqua Tk ni kwenye use,
-#   which cansio be done until after Tk() ni first called.
+#   which cannot be done until after Tk() ni first called.
 #   Do sio alter the 'file', 'options', ama 'help' cascades here
 #   without altering overrideRootMenu() kama well.
 #       TODO: Make this more robust

@@ -244,7 +244,7 @@ kundi TimeRE(dict):
         """
         processed_format = ''
         # The sub() call escapes all characters that might be misconstrued
-        # kama regex syntax.  Cansio use re.escape since we have to deal with
+        # kama regex syntax.  Cannot use re.escape since we have to deal with
         # format directives (%m, etc.).
         regex_chars = re_compile(r"([\\.^$*+?\(\){}\[\]|])")
         format = regex_chars.sub(r"\\\1", format)
@@ -527,7 +527,7 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             julian += yday
 
     ikiwa julian ni Tupu:
-        # Cansio pre-calculate datetime_date() since can change kwenye Julian
+        # Cannot pre-calculate datetime_date() since can change kwenye Julian
         # calculation na thus could have different value kila the day of
         # the week calculation.
         # Need to add 1 to result since first day of the year ni 1, sio 0.

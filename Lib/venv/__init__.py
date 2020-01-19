@@ -452,7 +452,7 @@ eleza main(args=Tupu):
                                  'this environment.')
         options = parser.parse_args(args)
         ikiwa options.upgrade na options.clear:
-            ashiria ValueError('you cansio supply --upgrade na --clear together.')
+            ashiria ValueError('you cannot supply --upgrade na --clear together.')
         builder = EnvBuilder(system_site_packages=options.system_site,
                              clear=options.clear,
                              symlinks=options.symlinks,

@@ -27,9 +27,9 @@ JSONDOCS = [
     # http://json.org/JSON_checker/test/fail12.json
     '{"Illegal invocation": alert()}',
     # http://json.org/JSON_checker/test/fail13.json
-    '{"Numbers cansio have leading zeroes": 013}',
+    '{"Numbers cannot have leading zeroes": 013}',
     # http://json.org/JSON_checker/test/fail14.json
-    '{"Numbers cansio be hex": 0x14}',
+    '{"Numbers cannot be hex": 0x14}',
     # http://json.org/JSON_checker/test/fail15.json
     '["Illegal backslash escape: \\x15"]',
     # http://json.org/JSON_checker/test/fail16.json

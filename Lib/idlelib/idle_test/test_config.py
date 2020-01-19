@@ -15,7 +15,7 @@ kutoka idlelib.idle_test.mock_idle agiza Func
 
 # Tests should sio depend on fortuitous user configurations.
 # They must sio affect actual user .cfg files.
-# Replace user parsers ukijumuisha empty parsers that cansio be saved
+# Replace user parsers ukijumuisha empty parsers that cannot be saved
 # due to getting '' kama the filename when created.
 
 idleConf = config.idleConf

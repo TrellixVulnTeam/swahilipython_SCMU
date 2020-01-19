@@ -62,7 +62,7 @@ kundi SemLock(object):
             isipokua:
                 koma
         isipokua:
-            ashiria FileExistsError('cansio find name kila semaphore')
+            ashiria FileExistsError('cannot find name kila semaphore')
 
         util.debug('created semlock ukijumuisha handle %s' % sl.handle)
         self._make_methods()

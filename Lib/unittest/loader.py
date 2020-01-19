@@ -172,7 +172,7 @@ kundi TestLoader(object):
                 ikiwa (getattr(obj, '__path__', Tupu) ni sio Tupu
                     na error_case ni sio Tupu):
                     # This ni a package (no __path__ per importlib docs), na we
-                    # encountered an error importing something. We cansio tell
+                    # encountered an error importing something. We cannot tell
                     # the difference between package.WrongNameTestClass na
                     # package.wrong_module_name so we just report the
                     # ImportError - it ni more informative.

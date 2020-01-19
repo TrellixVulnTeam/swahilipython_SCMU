@@ -284,7 +284,7 @@ kundi ReadTest(MixInCheckStateHandling):
             '        rudisha [ frog.objects.BlogEntry.load(storageEngine, date, Id) kila Id kwenye entryids ]\r\n',
             '    tatizo StorageError,x:\r\n',
             '        log.error("Error loading articles: "+str(x))\r\n',
-            '        self.abort("cansio load articles")\r\n',
+            '        self.abort("cannot load articles")\r\n',
             '\r\n',
             'showdate=Tupu\r\n',
             '\r\n',

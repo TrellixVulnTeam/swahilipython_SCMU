@@ -353,7 +353,7 @@ kundi Future(object):
         """Cancel the future ikiwa possible.
 
         Returns Kweli ikiwa the future was cancelled, Uongo otherwise. A future
-        cansio be cancelled ikiwa it ni running ama has already completed.
+        cannot be cancelled ikiwa it ni running ama has already completed.
         """
         ukijumuisha self._condition:
             ikiwa self._state kwenye [RUNNING, FINISHED]:

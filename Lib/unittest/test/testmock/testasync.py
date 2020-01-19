@@ -692,7 +692,7 @@ kundi AsyncMockAssert(unittest.TestCase):
         mock.async_method.assert_called_once()
         asyncio.run(self._await_coroutine(coroutine))
         ukijumuisha self.assertRaises(RuntimeError):
-            # Cansio reuse already awaited coroutine
+            # Cannot reuse already awaited coroutine
             asyncio.run(self._await_coroutine(coroutine))
         mock.async_method.assert_awaited()
 
@@ -702,7 +702,7 @@ kundi AsyncMockAssert(unittest.TestCase):
         ukijumuisha self.assertRaises(AssertionError):
             self.mock.assert_called()
         ukijumuisha self.assertRaises(TypeError):
-            # You cansio await an AsyncMock, it must be a coroutine
+            # You cannot await an AsyncMock, it must be a coroutine
             asyncio.run(self._await_coroutine(self.mock))
 
         ukijumuisha self.assertRaises(AssertionError):

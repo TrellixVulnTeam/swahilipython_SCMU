@@ -152,7 +152,7 @@ kundi _GeneratorContextManager(_GeneratorContextManagerBase,
                 # fixes the impedance mismatch between the throw() protocol
                 # na the __exit__() protocol.
                 #
-                # This cansio use 'tatizo BaseException kama exc' (as kwenye the
+                # This cannot use 'tatizo BaseException kama exc' (as kwenye the
                 # async implementation) to maintain compatibility with
                 # Python 2, where old-style kundi exceptions are sio caught
                 # by 'tatizo BaseException'.
@@ -429,7 +429,7 @@ kundi _BaseExitStack:
     eleza callback(*args, **kwds):
         """Registers an arbitrary callback na arguments.
 
-        Cansio suppress exceptions.
+        Cannot suppress exceptions.
         """
         ikiwa len(args) >= 2:
             self, callback, *args = args
@@ -590,7 +590,7 @@ kundi AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
     eleza push_async_callback(*args, **kwds):
         """Registers an arbitrary coroutine function na arguments.
 
-        Cansio suppress exceptions.
+        Cannot suppress exceptions.
         """
         ikiwa len(args) >= 2:
             self, callback, *args = args

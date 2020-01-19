@@ -136,18 +136,18 @@ eleza _get_module_details(mod_name, error=ImportError):
         ashiria error("No module named %s" % mod_name)
     ikiwa spec.submodule_search_locations ni sio Tupu:
         ikiwa mod_name == "__main__" ama mod_name.endswith(".__main__"):
-            ashiria error("Cansio use package kama __main__ module")
+            ashiria error("Cannot use package kama __main__ module")
         jaribu:
             pkg_main_name = mod_name + ".__main__"
             rudisha _get_module_details(pkg_main_name, error)
         tatizo error kama e:
             ikiwa mod_name haiko kwenye sys.modules:
                 ashiria  # No module loaded; being a package ni irrelevant
-            ashiria error(("%s; %r ni a package na cansio " +
+            ashiria error(("%s; %r ni a package na cannot " +
                                "be directly executed") %(e, mod_name))
     loader = spec.loader
     ikiwa loader ni Tupu:
-        ashiria error("%r ni a namespace package na cansio be executed"
+        ashiria error("%r ni a namespace package na cannot be executed"
                                                                  % mod_name)
     jaribu:
         code = loader.get_code(mod_name)

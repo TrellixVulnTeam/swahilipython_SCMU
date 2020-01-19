@@ -191,6 +191,6 @@ kundi FixUrllib(FixImports):
             self.transform_dot(node, results)
         # Renaming na star imports are sio supported kila these modules.
         lasivyo results.get("module_star"):
-            self.cannot_convert(node, "Cansio handle star imports.")
+            self.cannot_convert(node, "Cannot handle star imports.")
         lasivyo results.get("module_as"):
             self.cannot_convert(node, "This module ni now multiple modules")

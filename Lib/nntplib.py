@@ -1003,7 +1003,7 @@ kundi _NNTPBase:
             ikiwa self.tls_on:
                 ashiria ValueError("TLS ni already enabled.")
             ikiwa self.authenticated:
-                ashiria ValueError("TLS cansio be started after authentication.")
+                ashiria ValueError("TLS cannot be started after authentication.")
             resp = self._shortcmd('STARTTLS')
             ikiwa resp.startswith('382'):
                 self.file.close()

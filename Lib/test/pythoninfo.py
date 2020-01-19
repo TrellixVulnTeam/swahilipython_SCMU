@@ -639,7 +639,7 @@ eleza collect_cc(info_add):
                                 stderr=subprocess.STDOUT,
                                 universal_newlines=Kweli)
     tatizo OSError:
-        # Cansio run the compiler, kila example when Python has been
+        # Cannot run the compiler, kila example when Python has been
         # cross-compiled na installed on the target platform where the
         # compiler ni missing.
         rudisha

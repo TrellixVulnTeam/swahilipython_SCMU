@@ -188,14 +188,14 @@ kundi Formatter:
                 # handle arg indexing when empty field_names are given.
                 ikiwa field_name == '':
                     ikiwa auto_arg_index ni Uongo:
-                        ashiria ValueError('cansio switch kutoka manual field '
+                        ashiria ValueError('cannot switch kutoka manual field '
                                          'specification to automatic field '
                                          'numbering')
                     field_name = str(auto_arg_index)
                     auto_arg_index += 1
                 lasivyo field_name.isdigit():
                     ikiwa auto_arg_index:
-                        ashiria ValueError('cansio switch kutoka manual field '
+                        ashiria ValueError('cannot switch kutoka manual field '
                                          'specification to automatic field '
                                          'numbering')
                     # disable auto arg incrementing, ikiwa it gets

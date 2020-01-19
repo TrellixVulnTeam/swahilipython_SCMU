@@ -19,8 +19,8 @@ kutoka .subprocess agiza *
 kutoka .tasks agiza *
 kutoka .transports agiza *
 
-# Exposed kila _asynciomodule.c to implement now deprecated
-# Task.all_tasks() method.  This function will be removed kwenye 3.9.
+# Exposed for _asynciomodule.c to implement now deprecated
+# Task.all_tasks() method.  This function will be removed in 3.9.
 kutoka .tasks agiza _all_tasks_compat  # NoQA
 
 __all__ = (base_events.__all__ +

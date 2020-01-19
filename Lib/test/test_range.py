@@ -503,7 +503,7 @@ kundi RangeTest(unittest.TestCase):
             self.assert_iterators_equal(iter1, iter2, test_id, limit=100)
 
     eleza test_range_iterators_invocation(self):
-        # verify range iterators instances cansio be created by
+        # verify range iterators instances cannot be created by
         # calling their type
         rangeiter_type = type(iter(range(0)))
         self.assertRaises(TypeError, rangeiter_type, 1, 3, 1)

@@ -222,7 +222,7 @@ kundi MmapTests(unittest.TestCase):
             ukijumuisha open(TESTFN, "rb") kama fp:
                 self.assertEqual(fp.read(), b'c'*mapsize,
                                  "Copy-on-write test data file should sio be modified.")
-            # Ensuring copy-on-write maps cansio be resized
+            # Ensuring copy-on-write maps cannot be resized
             self.assertRaises(TypeError, m.resize, 2*mapsize)
             m.close()
 
@@ -481,7 +481,7 @@ kundi MmapTests(unittest.TestCase):
         f.close()
         ukijumuisha open(TESTFN, "rb") kama f :
             self.assertRaisesRegex(ValueError,
-                                   "cansio mmap an empty file",
+                                   "cannot mmap an empty file",
                                    mmap.mmap, f.fileno(), 0,
                                    access=mmap.ACCESS_READ)
 
@@ -706,7 +706,7 @@ kundi MmapTests(unittest.TestCase):
         self.assertEqual(mm.write(b"yz"), 2)
         self.assertEqual(mm.write(b"python"), 6)
 
-    @unittest.skipIf(os.name == 'nt', 'cansio resize anonymous mmaps on Windows')
+    @unittest.skipIf(os.name == 'nt', 'cannot resize anonymous mmaps on Windows')
     eleza test_resize_past_pos(self):
         m = mmap.mmap(-1, 8192)
         self.addCleanup(m.close)
@@ -812,11 +812,11 @@ kundi LargeMmapTests(unittest.TestCase):
             ukijumuisha mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) kama m:
                 self.assertEqual(m[start:end], tail)
 
-    @unittest.skipUnless(sys.maxsize > _4G, "test cansio run on 32-bit systems")
+    @unittest.skipUnless(sys.maxsize > _4G, "test cannot run on 32-bit systems")
     eleza test_around_2GB(self):
         self._test_around_boundary(_2G)
 
-    @unittest.skipUnless(sys.maxsize > _4G, "test cansio run on 32-bit systems")
+    @unittest.skipUnless(sys.maxsize > _4G, "test cannot run on 32-bit systems")
     eleza test_around_4GB(self):
         self._test_around_boundary(_4G)
 

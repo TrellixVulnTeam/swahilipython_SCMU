@@ -838,7 +838,7 @@ kundi ThreadJoinOnShutdown(BaseTestCase):
 
     @unittest.skipIf(sys.platform kwenye platforms_to_skip, "due to known OS bug")
     eleza test_4_daemon_threads(self):
-        # Check that a daemon thread cansio crash the interpreter on shutdown
+        # Check that a daemon thread cannot crash the interpreter on shutdown
         # by manipulating internal structures that are being disposed of kwenye
         # the main thread.
         script = """ikiwa Kweli:

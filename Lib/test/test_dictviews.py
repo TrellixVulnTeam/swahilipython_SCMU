@@ -204,7 +204,7 @@ kundi DictSetTest(unittest.TestCase):
         d = {}
         d[42] = d.values()
         r = repr(d)
-        # Cansio perform a stronger test, kama the contents of the repr
+        # Cannot perform a stronger test, kama the contents of the repr
         # are implementation-dependent.  All we can say ni that we
         # want a str result, sio an exception of any sort.
         self.assertIsInstance(r, str)

@@ -226,7 +226,7 @@ kundi DebuggerTests(unittest.TestCase):
         # frames back. When this happens, the Python bindings of gdb raise
         # an exception, making the test impossible to succeed.
         ikiwa "PC sio saved" kwenye err:
-            ashiria unittest.SkipTest("gdb cansio walk the frame object"
+            ashiria unittest.SkipTest("gdb cannot walk the frame object"
                                     " because the Program Counter is"
                                     " sio present")
 
@@ -338,7 +338,7 @@ kundi PrettyPrintTests(DebuggerTests):
 
     eleza test_strings(self):
         'Verify the pretty-printing of unicode strings'
-        # We cansio simply call locale.getpreferredencoding() here,
+        # We cannot simply call locale.getpreferredencoding() here,
         # kama GDB might have been linked against a different version
         # of Python ukijumuisha a different encoding na coercion policy
         # ukijumuisha respect to PEP 538 na PEP 540.
@@ -823,7 +823,7 @@ id(42)
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled ukijumuisha optimizations")
     # Some older versions of gdb will fail with
-    #  "Cansio find new threads: generic error"
+    #  "Cannot find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 kama a workaround
     eleza test_gc(self):
         'Verify that "py-bt" indicates ikiwa a thread ni garbage-collecting'
@@ -849,7 +849,7 @@ id(42)
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled ukijumuisha optimizations")
     # Some older versions of gdb will fail with
-    #  "Cansio find new threads: generic error"
+    #  "Cannot find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 kama a workaround
     eleza test_pycfunction(self):
         'Verify that "py-bt" displays invocations of PyCFunction instances'

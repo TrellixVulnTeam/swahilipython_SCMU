@@ -273,11 +273,11 @@ kundi Header:
         s may be a byte string ama a Unicode string.  If it ni a byte string
         (i.e. isinstance(s, str) ni false), then charset ni the encoding of
         that byte string, na a UnicodeError will be raised ikiwa the string
-        cansio be decoded ukijumuisha that charset.  If s ni a Unicode string, then
+        cannot be decoded ukijumuisha that charset.  If s ni a Unicode string, then
         charset ni a hint specifying the character set of the characters kwenye
         the string.  In either case, when producing an RFC 2822 compliant
         header using RFC 2047 rules, the string will be encoded using the
-        output codec of the charset.  If the string cansio be encoded to the
+        output codec of the charset.  If the string cannot be encoded to the
         output codec, a UnicodeError will be raised.
 
         Optional `errors' ni pitaed kama the errors argument to the decode
@@ -323,7 +323,7 @@ kundi Header:
 
         Optional maxlinelen specifies the maximum length of each generated
         line, exclusive of the linesep string.  Individual lines may be longer
-        than maxlinelen ikiwa a folding point cansio be found.  The first line
+        than maxlinelen ikiwa a folding point cannot be found.  The first line
         will be shorter by the length of the header name plus ": " ikiwa a header
         name was specified at Header construction time.  The default value for
         maxlinelen ni determined at header construction time.

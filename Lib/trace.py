@@ -623,7 +623,7 @@ eleza main():
     grp.add_argument('-l', '--listfuncs', action='store_true',
             help='Keep track of which functions are executed at least once '
                  'and write the results to sys.stdout after the program exits. '
-                 'Cansio be specified alongside --trace ama --count.')
+                 'Cannot be specified alongside --trace ama --count.')
     grp.add_argument('-T', '--trackcalls', action='store_true',
             help='Keep track of caller/called pairs na write the results to '
                  'sys.stdout after the program exits.')
@@ -701,7 +701,7 @@ eleza main():
                      '--listfuncs, ama --trackcalls')
 
     ikiwa opts.listfuncs na (opts.count ama opts.trace):
-        parser.error('cansio specify both --listfuncs na (--trace ama --count)')
+        parser.error('cannot specify both --listfuncs na (--trace ama --count)')
 
     ikiwa opts.summary na sio opts.count:
         parser.error('--summary can only be used ukijumuisha --count ama --report')
@@ -742,7 +742,7 @@ eleza main():
             }
         t.runctx(code, globs, globs)
     tatizo OSError kama err:
-        sys.exit("Cansio run file %r because: %s" % (sys.argv[0], err))
+        sys.exit("Cannot run file %r because: %s" % (sys.argv[0], err))
     tatizo SystemExit:
         pita
 

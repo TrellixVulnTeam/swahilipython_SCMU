@@ -137,12 +137,12 @@ Verify that syntax error's are raised kila genexps used kama lvalues
     >>> (y kila y kwenye (1,2)) = 10
     Traceback (most recent call last):
        ...
-    SyntaxError: cansio assign to generator expression
+    SyntaxError: cannot assign to generator expression
 
     >>> (y kila y kwenye (1,2)) += 10
     Traceback (most recent call last):
        ...
-    SyntaxError: cansio assign to generator expression
+    SyntaxError: cannot assign to generator expression
 
 
 ########### Tests borrowed kutoka ama inspired by test_generators.py ############
@@ -179,7 +179,7 @@ Generators can call other generators:
     [0, 1, 2, 3, 4]
 
 
-Verify that a gen exp cansio be resumed wakati it ni actively running:
+Verify that a gen exp cannot be resumed wakati it ni actively running:
 
     >>> g = (next(me) kila i kwenye range(10))
     >>> me = g

@@ -149,7 +149,7 @@ kundi UsageTests(unittest.TestCase):
                         "tuple" % type(object_))
 
     eleza test_raise_new_style_non_exception(self):
-        # You cansio ashiria a new-style kundi that does sio inerit from
+        # You cannot ashiria a new-style kundi that does sio inerit from
         # BaseException; the ability was sio possible until BaseException's
         # introduction so no need to support new-style objects that do sio
         # inherit kutoka it.

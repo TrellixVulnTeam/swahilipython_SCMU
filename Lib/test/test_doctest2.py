@@ -15,7 +15,7 @@ agiza sys
 agiza unittest
 kutoka test agiza support
 ikiwa sys.flags.optimize >= 2:
-    ashiria unittest.SkipTest("Cansio test docstrings ukijumuisha -O2")
+    ashiria unittest.SkipTest("Cannot test docstrings ukijumuisha -O2")
 
 kundi C(object):
     """Class C.

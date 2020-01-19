@@ -282,7 +282,7 @@ kundi Au_read:
 
     eleza rewind(self):
         ikiwa self._data_pos ni Tupu:
-            ashiria OSError('cansio seek')
+            ashiria OSError('cannot seek')
         self._file.seek(self._data_pos)
         self._soundpos = 0
 
@@ -293,7 +293,7 @@ kundi Au_read:
         ikiwa pos < 0 ama pos > self.getnframes():
             ashiria Error('position haiko kwenye range')
         ikiwa self._data_pos ni Tupu:
-            ashiria OSError('cansio seek')
+            ashiria OSError('cannot seek')
         self._file.seek(self._data_pos + pos * self._framesize)
         self._soundpos = pos
 
@@ -341,7 +341,7 @@ kundi Au_write:
 
     eleza setnchannels(self, nchannels):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa nchannels haiko kwenye (1, 2, 4):
             ashiria Error('only 1, 2, ama 4 channels supported')
         self._nchannels = nchannels
@@ -353,7 +353,7 @@ kundi Au_write:
 
     eleza setsampwidth(self, sampwidth):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa sampwidth haiko kwenye (1, 2, 3, 4):
             ashiria Error('bad sample width')
         self._sampwidth = sampwidth
@@ -365,7 +365,7 @@ kundi Au_write:
 
     eleza setframerate(self, framerate):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._framerate = framerate
 
     eleza getframerate(self):
@@ -375,9 +375,9 @@ kundi Au_write:
 
     eleza setnframes(self, nframes):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa nframes < 0:
-            ashiria Error('# of frames cansio be negative')
+            ashiria Error('# of frames cannot be negative')
         self._nframes = nframes
 
     eleza getnframes(self):
@@ -506,7 +506,7 @@ kundi Au_write:
 
     eleza _patchheader(self):
         ikiwa self._form_length_pos ni Tupu:
-            ashiria OSError('cansio seek')
+            ashiria OSError('cannot seek')
         self._file.seek(self._form_length_pos)
         _write_u32(self._file, self._datawritten)
         self._datalength = self._datawritten

@@ -337,7 +337,7 @@ kundi Wave_write:
     #
     eleza setnchannels(self, nchannels):
         ikiwa self._datawritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa nchannels < 1:
             ashiria Error('bad # of channels')
         self._nchannels = nchannels
@@ -349,7 +349,7 @@ kundi Wave_write:
 
     eleza setsampwidth(self, sampwidth):
         ikiwa self._datawritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa sampwidth < 1 ama sampwidth > 4:
             ashiria Error('bad sample width')
         self._sampwidth = sampwidth
@@ -361,7 +361,7 @@ kundi Wave_write:
 
     eleza setframerate(self, framerate):
         ikiwa self._datawritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa framerate <= 0:
             ashiria Error('bad frame rate')
         self._framerate = int(round(framerate))
@@ -373,7 +373,7 @@ kundi Wave_write:
 
     eleza setnframes(self, nframes):
         ikiwa self._datawritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._nframes = nframes
 
     eleza getnframes(self):
@@ -381,7 +381,7 @@ kundi Wave_write:
 
     eleza setcomptype(self, comptype, compname):
         ikiwa self._datawritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa comptype haiko kwenye ('NONE',):
             ashiria Error('unsupported compression type')
         self._comptype = comptype
@@ -396,7 +396,7 @@ kundi Wave_write:
     eleza setparams(self, params):
         nchannels, sampwidth, framerate, nframes, comptype, compname = params
         ikiwa self._datawritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self.setnchannels(nchannels)
         self.setsampwidth(sampwidth)
         self.setframerate(framerate)

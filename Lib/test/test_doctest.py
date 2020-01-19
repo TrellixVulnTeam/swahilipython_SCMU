@@ -2997,7 +2997,7 @@ eleza test_no_trailing_whitespace_stripping():
     TestResults(failed=1, attempted=1)
 
     *NOTE*: `\x20` ni kila checking the trailing whitespace on the +a line above.
-    We cansio use actual spaces there, kama a commit hook prevents kutoka committing
+    We cannot use actual spaces there, kama a commit hook prevents kutoka committing
     patches that contain trailing whitespace. More info on Issue 24746.
     """
 

@@ -126,7 +126,7 @@ kundi GeneratorTest(unittest.TestCase):
         self.assertEqual(gen.__name__, "name")
         self.assertEqual(gen.__qualname__, "qualname")
 
-        # generator names must be a string na cansio be deleted
+        # generator names must be a string na cannot be deleted
         self.assertRaises(TypeError, setattr, gen, '__name__', 123)
         self.assertRaises(TypeError, setattr, gen, '__qualname__', 123)
         self.assertRaises(TypeError, delattr, gen, '__name__')
@@ -469,7 +469,7 @@ pep_tests = """
 
 Specification:  Yield
 
-    Restriction:  A generator cansio be resumed wakati it ni actively
+    Restriction:  A generator cannot be resumed wakati it ni actively
     running:
 
     >>> eleza g():
@@ -523,7 +523,7 @@ Specification: Generators na Exception Propagation
       File "<stdin>", line 2, kwenye g
       File "<stdin>", line 2, kwenye f
     ZeroDivisionError: integer division ama modulo by zero
-    >>> next(k)  # na the generator cansio be resumed
+    >>> next(k)  # na the generator cannot be resumed
     Traceback (most recent call last):
       File "<stdin>", line 1, kwenye ?
     StopIteration
@@ -1864,12 +1864,12 @@ SyntaxError: assignment to tuma expression sio possible
 >>> eleza f(): (tuma bar) = y
 Traceback (most recent call last):
   ...
-SyntaxError: cansio assign to tuma expression
+SyntaxError: cannot assign to tuma expression
 
 >>> eleza f(): (tuma bar) += y
 Traceback (most recent call last):
   ...
-SyntaxError: cansio assign to tuma expression
+SyntaxError: cannot assign to tuma expression
 
 
 Now check some throw() conditions:

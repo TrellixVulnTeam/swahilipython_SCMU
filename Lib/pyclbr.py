@@ -169,7 +169,7 @@ eleza _readmodule(module, path, inpackage=Tupu):
     jaribu:
         source = spec.loader.get_source(fullmodule)
     tatizo (AttributeError, ImportError):
-        # If module ni sio Python source, we cansio do anything.
+        # If module ni sio Python source, we cannot do anything.
         rudisha tree
     isipokua:
         ikiwa source ni Tupu:

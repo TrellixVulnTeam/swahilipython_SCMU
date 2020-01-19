@@ -126,7 +126,7 @@ test_2 = """
 
 The __slots__ declaration takes a list of instance variables, na reserves
 space kila exactly these kwenye the instance. When __slots__ ni used, other
-instance variables cansio be assigned to:
+instance variables cannot be assigned to:
 
     >>> a = defaultdict2(default=0.0)
     >>> a[1]

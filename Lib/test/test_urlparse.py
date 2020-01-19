@@ -799,25 +799,25 @@ kundi UrlParseTestCase(unittest.TestCase):
     eleza test_mixed_types_rejected(self):
         # Several functions that process either strings ama ASCII encoded bytes
         # accept multiple arguments. Check they reject mixed type input
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urlparse("www.python.org", b"http")
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urlparse(b"www.python.org", "http")
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urlsplit("www.python.org", b"http")
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urlsplit(b"www.python.org", "http")
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urlunparse(( b"http", "www.python.org","","","",""))
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urlunparse(("http", b"www.python.org","","","",""))
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urlunsplit((b"http", "www.python.org","","",""))
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urlunsplit(("http", b"www.python.org","","",""))
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urljoin("http://python.org", b"http://python.org")
-        ukijumuisha self.assertRaisesRegex(TypeError, "Cansio mix str"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "Cannot mix str"):
             urllib.parse.urljoin(b"http://python.org", "http://python.org")
 
     eleza _check_result_type(self, str_type):
@@ -892,7 +892,7 @@ kundi UrlParseTestCase(unittest.TestCase):
         # Other tests incidentally urlencode things; test non-covered cases:
         # Sequence na object values.
         result = urllib.parse.urlencode({'a': [1, 2], 'b': (3, 4, 5)}, Kweli)
-        # we cansio rely on ordering here
+        # we cannot rely on ordering here
         assert set(result.split('&')) == {'a=1', 'a=2', 'b=3', 'b=4', 'b=5'}
 
         kundi Trivial:

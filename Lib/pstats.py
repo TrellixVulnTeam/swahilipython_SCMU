@@ -133,7 +133,7 @@ kundi Stats:
             self.stats = arg.stats
             arg.stats = {}
         ikiwa sio self.stats:
-            ashiria TypeError("Cansio create ama construct a %r object kutoka %r"
+            ashiria TypeError("Cannot create ama construct a %r object kutoka %r"
                             % (self.__class__, arg))
         rudisha
 
@@ -654,7 +654,7 @@ ikiwa __name__ == '__main__':
                 line = self.prompt[:-2]
                 self.do_read(line)
             isipokua:
-                andika("No statistics object ni current -- cansio reload.", file=self.stream)
+                andika("No statistics object ni current -- cannot reload.", file=self.stream)
             rudisha 0
         eleza help_read(self):
             andika("Read kwenye profile data kutoka a specified file.", file=self.stream)

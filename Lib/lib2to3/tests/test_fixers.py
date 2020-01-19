@@ -1886,7 +1886,7 @@ kundi Test_urllib(FixerTestCase):
     eleza test_star(self):
         kila old kwenye self.modules:
             s = "kutoka %s agiza *" % old
-            self.warns_unchanged(s, "Cansio handle star imports")
+            self.warns_unchanged(s, "Cannot handle star imports")
 
     eleza test_indented(self):
         b = """
@@ -3059,7 +3059,7 @@ kundi Test_map(FixerTestCase):
 
     eleza test_Tupu_with_multiple_arguments(self):
         s = """x = map(Tupu, a, b, c)"""
-        self.warns_unchanged(s, "cansio convert map(Tupu, ...) ukijumuisha "
+        self.warns_unchanged(s, "cannot convert map(Tupu, ...) ukijumuisha "
                              "multiple arguments")
 
     eleza test_map_basic(self):

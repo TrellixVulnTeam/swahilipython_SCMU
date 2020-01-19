@@ -243,7 +243,7 @@ kundi Tracer(Bdb):
             self.expect = self.expected_list.pop(0)
         tatizo IndexError:
             ashiria BdbNotExpectedError(
-                'expect_set list exhausted, cansio pop item %d' %
+                'expect_set list exhausted, cannot pop item %d' %
                 self.expect_set_no)
         self.set_tuple = self.set_list.pop(0)
 

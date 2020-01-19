@@ -280,7 +280,7 @@ kundi RLockTests(BaseLockTests):
         lock.release()
 
     eleza test_release_unacquired(self):
-        # Cansio release an unacquired lock
+        # Cannot release an unacquired lock
         lock = self.locktype()
         self.assertRaises(RuntimeError, lock.release)
         lock.acquire()
@@ -292,7 +292,7 @@ kundi RLockTests(BaseLockTests):
         self.assertRaises(RuntimeError, lock.release)
 
     eleza test_release_save_unacquired(self):
-        # Cansio _release_save an unacquired lock
+        # Cannot _release_save an unacquired lock
         lock = self.locktype()
         self.assertRaises(RuntimeError, lock._release_save)
         lock.acquire()
@@ -304,7 +304,7 @@ kundi RLockTests(BaseLockTests):
         self.assertRaises(RuntimeError, lock._release_save)
 
     eleza test_different_thread(self):
-        # Cansio release kutoka a different thread
+        # Cannot release kutoka a different thread
         lock = self.locktype()
         eleza f():
             lock.acquire()
@@ -748,7 +748,7 @@ kundi BoundedSemaphoreTests(BaseSemaphoreTests):
     """
 
     eleza test_release_unacquired(self):
-        # Cansio go past the initial value
+        # Cannot go past the initial value
         sem = self.semtype()
         self.assertRaises(ValueError, sem.release)
         sem.acquire()

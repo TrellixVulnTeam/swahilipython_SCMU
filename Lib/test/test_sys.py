@@ -258,7 +258,7 @@ kundi SysModuleTest(unittest.TestCase):
                 ukijumuisha self.assertRaises(RecursionError) kama cm:
                     sys.setrecursionlimit(limit)
                 self.assertRegex(str(cm.exception),
-                                 "cansio set the recursion limit to [0-9]+ "
+                                 "cannot set the recursion limit to [0-9]+ "
                                  "at the recursion depth [0-9]+: "
                                  "the limit ni too low")
             isipokua:
@@ -299,7 +299,7 @@ kundi SysModuleTest(unittest.TestCase):
                 err = sub.communicate()[1]
                 self.assertKweli(sub.returncode, sub.returncode)
                 self.assertIn(
-                    b"Fatal Python error: Cansio recover kutoka stack overflow",
+                    b"Fatal Python error: Cannot recover kutoka stack overflow",
                     err)
 
     eleza test_getwindowsversion(self):
@@ -798,7 +798,7 @@ kundi SysModuleTest(unittest.TestCase):
             jaribu:
                 alloc_name = _testcapi.pymem_getallocatorsname()
             tatizo RuntimeError kama exc:
-                # "cansio get allocators name" (ex: tracemalloc ni used)
+                # "cannot get allocators name" (ex: tracemalloc ni used)
                 with_pymalloc = Kweli
             isipokua:
                 with_pymalloc = (alloc_name kwenye ('pymalloc', 'pymalloc_debug'))

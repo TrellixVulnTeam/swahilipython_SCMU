@@ -121,7 +121,7 @@ kundi ResourceTracker(object):
     eleza _check_alive(self):
         '''Check that the pipe has sio been closed by sending a probe.'''
         jaribu:
-            # We cansio use send here kama it calls ensure_running, creating
+            # We cannot use send here kama it calls ensure_running, creating
             # a cycle.
             os.write(self._fd, b'PROBE:0:noop\n')
         tatizo OSError:
@@ -179,7 +179,7 @@ eleza main(fd):
                     cleanup_func = _CLEANUP_FUNCS.get(rtype, Tupu)
                     ikiwa cleanup_func ni Tupu:
                         ashiria ValueError(
-                            f'Cansio register {name} kila automatic cleanup: '
+                            f'Cannot register {name} kila automatic cleanup: '
                             f'unknown resource type {rtype}')
 
                     ikiwa cmd == 'REGISTER':

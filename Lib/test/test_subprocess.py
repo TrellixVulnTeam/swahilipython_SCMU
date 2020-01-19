@@ -658,9 +658,9 @@ kundi ProcessTestCase(BaseTestCase):
     # Windows requires at least the SYSTEMROOT environment variable to start
     # Python
     @unittest.skipIf(sys.platform == 'win32',
-                     'cansio test an empty env on Windows')
+                     'cannot test an empty env on Windows')
     @unittest.skipIf(sysconfig.get_config_var('Py_ENABLE_SHARED') == 1,
-                     'The Python shared library cansio be loaded '
+                     'The Python shared library cannot be loaded '
                      'ukijumuisha an empty environment.')
     eleza test_empty_env(self):
         """Verify that env={} ni kama empty kama possible."""

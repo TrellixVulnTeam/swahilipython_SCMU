@@ -37,7 +37,7 @@ eleza mksalt(method=Tupu, *, rounds=Tupu):
     ikiwa method ni Tupu:
         method = methods[0]
     ikiwa rounds ni sio Tupu na sio isinstance(rounds, int):
-        ashiria TypeError(f'{rounds.__class__.__name__} object cansio be '
+        ashiria TypeError(f'{rounds.__class__.__name__} object cannot be '
                         f'interpreted kama an integer')
     ikiwa sio method.ident:  # traditional
         s = ''

@@ -121,7 +121,7 @@ eleza copy_tree(src, dst, preserve_mode=1, preserve_times=1,
 
     ikiwa sio dry_run na sio os.path.isdir(src):
         ashiria DistutilsFileError(
-              "cansio copy tree '%s': sio a directory" % src)
+              "cannot copy tree '%s': sio a directory" % src)
     jaribu:
         names = os.listdir(src)
     tatizo OSError kama e:

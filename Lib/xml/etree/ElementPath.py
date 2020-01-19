@@ -356,7 +356,7 @@ eleza iterfind(elem, path, namespaces=Tupu):
         ikiwa len(_cache) > 100:
             _cache.clear()
         ikiwa path[:1] == "/":
-            ashiria SyntaxError("cansio use absolute path on element")
+            ashiria SyntaxError("cannot use absolute path on element")
         next = iter(xpath_tokenizer(path, namespaces)).__next__
         jaribu:
             token = next()

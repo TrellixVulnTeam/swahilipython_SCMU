@@ -97,7 +97,7 @@ kundi HTTPStatus(IntEnum):
         'Entity body kwenye unsupported format')
     REQUESTED_RANGE_NOT_SATISFIABLE = (416,
         'Requested Range Not Satisfiable',
-        'Cansio satisfy request range')
+        'Cannot satisfy request range')
     EXPECTATION_FAILED = (417, 'Expectation Failed',
         'Expect condition could sio be satisfied')
     MISDIRECTED_REQUEST = (421, 'Misdirected Request',
@@ -128,11 +128,11 @@ kundi HTTPStatus(IntEnum):
     BAD_GATEWAY = (502, 'Bad Gateway',
         'Invalid responses kutoka another server/proxy')
     SERVICE_UNAVAILABLE = (503, 'Service Unavailable',
-        'The server cansio process the request due to a high load')
+        'The server cannot process the request due to a high load')
     GATEWAY_TIMEOUT = (504, 'Gateway Timeout',
         'The gateway server did sio receive a timely response')
     HTTP_VERSION_NOT_SUPPORTED = (505, 'HTTP Version Not Supported',
-        'Cansio fulfill request')
+        'Cannot fulfill request')
     VARIANT_ALSO_NEGOTIATES = 506, 'Variant Also Negotiates'
     INSUFFICIENT_STORAGE = 507, 'Insufficient Storage'
     LOOP_DETECTED = 508, 'Loop Detected'

@@ -450,7 +450,7 @@ kundi StatAttributeTests(unittest.TestCase):
         jaribu:
             fname = self.fname.encode(sys.getfilesystemencoding())
         tatizo UnicodeEncodeError:
-            self.skipTest("cansio encode %a kila the filesystem" % self.fname)
+            self.skipTest("cannot encode %a kila the filesystem" % self.fname)
         self.check_stat_attributes(fname)
 
     eleza test_stat_result_pickle(self):
@@ -911,13 +911,13 @@ kundi EnvironTests(mapping_tests.BasicTestMappingProtocol):
         self.assertSequenceEqual(test_path, os.get_exec_path(test_env))
 
         ikiwa os.supports_bytes_environ:
-            # env cansio contain 'PATH' na b'PATH' keys
+            # env cannot contain 'PATH' na b'PATH' keys
             jaribu:
                 # ignore BytesWarning warning
                 ukijumuisha warnings.catch_warnings(record=Kweli):
                     mixed_env = {'PATH': '1', b'PATH': b'2'}
             tatizo BytesWarning:
-                # mixed_env cansio be created ukijumuisha python -bb
+                # mixed_env cannot be created ukijumuisha python -bb
                 pita
             isipokua:
                 self.assertRaises(ValueError, os.get_exec_path, mixed_env)
@@ -1354,7 +1354,7 @@ kundi MakedirTests(unittest.TestCase):
             jaribu:
                 os.chmod(support.TESTFN, existing_testfn_mode | S_ISGID)
             tatizo PermissionError:
-                ashiria unittest.SkipTest('Cansio set S_ISGID kila dir.')
+                ashiria unittest.SkipTest('Cannot set S_ISGID kila dir.')
             ikiwa (os.lstat(support.TESTFN).st_mode & S_ISGID != S_ISGID):
                 ashiria unittest.SkipTest('No support kila S_ISGID dir mode.')
             # The os should apply S_ISGID kutoka the parent dir kila us, but
@@ -3303,7 +3303,7 @@ kundi TermsizeTests(unittest.TestCase):
         tatizo OSError kama e:
             ikiwa sys.platform == "win32" ama e.errno kwenye (errno.EINVAL, errno.ENOTTY):
                 # Under win32 a generic OSError can be thrown ikiwa the
-                # handle cansio be retrieved
+                # handle cannot be retrieved
                 self.skipTest("failed to query terminal size")
             raise
 
@@ -3329,7 +3329,7 @@ kundi TermsizeTests(unittest.TestCase):
         tatizo OSError kama e:
             ikiwa sys.platform == "win32" ama e.errno kwenye (errno.EINVAL, errno.ENOTTY):
                 # Under win32 a generic OSError can be thrown ikiwa the
-                # handle cansio be retrieved
+                # handle cannot be retrieved
                 self.skipTest("failed to query terminal size")
             raise
         self.assertEqual(expected, actual)
@@ -3826,7 +3826,7 @@ kundi TestScandir(unittest.TestCase):
 
     eleza test_broken_symlink(self):
         ikiwa sio support.can_symlink():
-            rudisha self.skipTest('cansio create symbolic link')
+            rudisha self.skipTest('cannot create symbolic link')
 
         filename = self.create_file("file.txt")
         os.symlink(filename,

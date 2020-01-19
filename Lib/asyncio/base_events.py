@@ -1,15 +1,15 @@
 """Base implementation of event loop.
 
 The event loop can be broken up into a multiplexer (the part
-responsible kila notifying us of I/O events) na the event loop proper,
-which wraps a multiplexer ukijumuisha functionality kila scheduling callbacks,
-immediately ama at a given time kwenye the future.
+responsible for notifying us of I/O events) and the event loop proper,
+which wraps a multiplexer with functionality for scheduling callbacks,
+immediately or at a given time in the future.
 
 Whenever a public API takes a callback, subsequent positional
-arguments will be pitaed to the callback if/when it ni called.  This
+arguments will be passed to the callback if/when it is called.  This
 avoids the proliferation of trivial lambdas implementing closures.
-Keyword arguments kila the callback are sio supported; this ni a
-conscious design decision, leaving the door open kila keyword arguments
+Keyword arguments for the callback are not supported; this is a
+conscious design decision, leaving the door open for keyword arguments
 to modify the meaning of the API call itself.
 """
 
@@ -53,17 +53,17 @@ __all__ = 'BaseEventLoop',
 
 
 # Minimum number of _scheduled timer handles before cleanup of
-# cancelled handles ni performed.
+# cancelled handles is performed.
 _MIN_SCHEDULED_TIMER_HANDLES = 100
 
 # Minimum fraction of _scheduled timer handles that are cancelled
-# before cleanup of cancelled handles ni performed.
+# before cleanup of cancelled handles is performed.
 _MIN_CANCELLED_TIMER_HANDLES_FRACTION = 0.5
 
 
 _HAS_IPv6 = hasattr(socket, 'AF_INET6')
 
-# Maximum timeout pitaed to select to avoid OS limitations
+# Maximum timeout passed to select to avoid OS limitations
 MAXIMUM_SELECT_TIMEOUT = 24 * 3600
 
 
@@ -87,18 +87,18 @@ eleza _format_pipe(fd):
 
 eleza _set_reuseport(sock):
     ikiwa sio hasattr(socket, 'SO_REUSEPORT'):
-        ashiria ValueError('reuse_port sio supported by socket module')
+        ashiria ValueError('reuse_port not supported by socket module')
     isipokua:
         jaribu:
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
         tatizo OSError:
-            ashiria ValueError('reuse_port sio supported by socket module, '
-                             'SO_REUSEPORT defined but sio implemented.')
+            ashiria ValueError('reuse_port not supported by socket module, '
+                             'SO_REUSEPORT defined but not implemented.')
 
 
 eleza _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
-    # Try to skip getaddrinfo ikiwa "host" ni already an IP. Users might have
-    # handled name resolution kwenye their own code na pita kwenye resolved IPs.
+    # Try to skip getaddrinfo if "host" is already an IP. Users might have
+    # handled name resolution in their own code and pass in resolved IPs.
     ikiwa sio hasattr(socket, 'inet_pton'):
         rudisha
 
@@ -151,7 +151,7 @@ eleza _ipaddr_info(host, port, family, type, proto, flowinfo=0, scopeid=0):
         tatizo OSError:
             pita
 
-    # "host" ni sio an IP address.
+    # "host" is not an IP address.
     rudisha Tupu
 
 
@@ -231,7 +231,7 @@ kundi _SendfileFallbackProtocol(protocols.Protocol):
             # Thus disconnection ni always an exception kutoka user perspective
             ikiwa exc ni Tupu:
                 self._write_ready_fut.set_exception(
-                    ConnectionError("Connection ni closed by peer"))
+                    ConnectionError("Connection is closed by peer"))
             isipokua:
                 self._write_ready_fut.set_exception(exc)
         self._proto.connection_lost(exc)
@@ -351,9 +351,9 @@ kundi Server(events.AbstractServer):
     async eleza serve_forever(self):
         ikiwa self._serving_forever_fut ni sio Tupu:
             ashiria RuntimeError(
-                f'server {self!r} ni already being awaited on serve_forever()')
+                f'server {self!r} is already being awaited on serve_forever()')
         ikiwa self._sockets ni Tupu:
-            ashiria RuntimeError(f'server {self!r} ni closed')
+            ashiria RuntimeError(f'server {self!r} is closed')
 
         self._start_serving()
         self._serving_forever_fut = self._loop.create_future()
@@ -547,10 +547,10 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         """Run until stop() ni called."""
         self._check_closed()
         ikiwa self.is_running():
-            ashiria RuntimeError('This event loop ni already running')
+            ashiria RuntimeError('This event loop is already running')
         ikiwa events._get_running_loop() ni sio Tupu:
             ashiria RuntimeError(
-                'Cansio run the event loop wakati another loop ni running')
+                'Cannot run the event loop while another loop is running')
         self._set_coroutine_origin_tracking(self._debug)
         self._thread_id = threading.get_ident()
 
@@ -573,13 +573,13 @@ kundi BaseEventLoop(events.AbstractEventLoop):
     eleza run_until_complete(self, future):
         """Run until the Future ni done.
 
-        If the argument ni a coroutine, it ni wrapped kwenye a Task.
+        If the argument is a coroutine, it is wrapped in a Task.
 
         WARNING: It would be disastrous to call run_until_complete()
-        ukijumuisha the same coroutine twice -- it would wrap it kwenye two
-        different Tasks na that can't be good.
+        with the same coroutine twice -- it would wrap it in two
+        different Tasks and that can't be good.
 
-        Return the Future's result, ama ashiria its exception.
+        Return the Future's result, or raise its exception.
         """
         self._check_closed()
 
@@ -618,13 +618,13 @@ kundi BaseEventLoop(events.AbstractEventLoop):
     eleza close(self):
         """Close the event loop.
 
-        This clears the queues na shuts down the executor,
-        but does sio wait kila the executor to finish.
+        This clears the queues and shuts down the executor,
+        but does not wait for the executor to finish.
 
-        The event loop must sio be running.
+        The event loop must not be running.
         """
         ikiwa self.is_running():
-            ashiria RuntimeError("Cansio close a running event loop")
+            ashiria RuntimeError("Cannot close a running event loop")
         ikiwa self._closed:
             rudisha
         ikiwa self._debug:
@@ -638,7 +638,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             executor.shutdown(wait=Uongo)
 
     eleza is_closed(self):
-        """Returns Kweli ikiwa the event loop was closed."""
+        """Returns Kweli if the event loop was closed."""
         rudisha self._closed
 
     eleza __del__(self, _warn=warnings.warn):
@@ -648,33 +648,33 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                 self.close()
 
     eleza is_running(self):
-        """Returns Kweli ikiwa the event loop ni running."""
+        """Returns Kweli if the event loop is running."""
         rudisha (self._thread_id ni sio Tupu)
 
     eleza time(self):
         """Return the time according to the event loop's clock.
 
-        This ni a float expressed kwenye seconds since an epoch, but the
-        epoch, precision, accuracy na drift are unspecified na may
+        This is a float expressed in seconds since an epoch, but the
+        epoch, precision, accuracy and drift are unspecified and may
         differ per event loop.
         """
         rudisha time.monotonic()
 
     eleza call_later(self, delay, callback, *args, context=Tupu):
-        """Arrange kila a callback to be called at a given time.
+        """Arrange for a callback to be called at a given time.
 
-        Return a Handle: an opaque object ukijumuisha a cancel() method that
+        Return a Handle: an opaque object with a cancel() method that
         can be used to cancel the call.
 
-        The delay can be an int ama float, expressed kwenye seconds.  It is
+        The delay can be an int or float, expressed in seconds.  It is
         always relative to the current time.
 
         Each callback will be called exactly once.  If two callbacks
-        are scheduled kila exactly the same time, it undefined which
+        are scheduled for exactly the same time, it undefined which
         will be called first.
 
-        Any positional arguments after the callback will be pitaed to
-        the callback when it ni called.
+        Any positional arguments after the callback will be passed to
+        the callback when it is called.
         """
         timer = self.call_at(self.time() + delay, callback, *args,
                              context=context)
@@ -699,14 +699,14 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         rudisha timer
 
     eleza call_soon(self, callback, *args, context=Tupu):
-        """Arrange kila a callback to be called kama soon kama possible.
+        """Arrange for a callback to be called as soon as possible.
 
-        This operates kama a FIFO queue: callbacks are called kwenye the
-        order kwenye which they are registered.  Each callback will be
+        This operates as a FIFO queue: callbacks are called in the
+        order in which they are registered.  Each callback will be
         called exactly once.
 
-        Any positional arguments after the callback will be pitaed to
-        the callback when it ni called.
+        Any positional arguments after the callback will be passed to
+        the callback when it is called.
         """
         self._check_closed()
         ikiwa self._debug:
@@ -721,7 +721,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         ikiwa (coroutines.iscoroutine(callback) ama
                 coroutines.iscoroutinefunction(callback)):
             ashiria TypeError(
-                f"coroutines cansio be used ukijumuisha {method}()")
+                f"coroutines cannot be used with {method}()")
         ikiwa sio callable(callback):
             ashiria TypeError(
                 f'a callable object was expected by {method}(), '
@@ -735,13 +735,13 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         rudisha handle
 
     eleza _check_thread(self):
-        """Check that the current thread ni the thread running the event loop.
+        """Check that the current thread is the thread running the event loop.
 
-        Non-thread-safe methods of this kundi make this assumption na will
-        likely behave incorrectly when the assumption ni violated.
+        Non-thread-safe methods of this kundi make this assumption and will
+        likely behave incorrectly when the assumption is violated.
 
         Should only be called when (self._debug == Kweli).  The caller is
-        responsible kila checking this condition kila performance reasons.
+        responsible for checking this condition for performance reasons.
         """
         ikiwa self._thread_id ni Tupu:
             rudisha
@@ -777,8 +777,8 @@ kundi BaseEventLoop(events.AbstractEventLoop):
     eleza set_default_executor(self, executor):
         ikiwa sio isinstance(executor, concurrent.futures.ThreadPoolExecutor):
             warnings.warn(
-                'Using the default executor that ni sio an instance of '
-                'ThreadPoolExecutor ni deprecated na will be prohibited '
+                'Using the default executor that is not an instance of '
+                'ThreadPoolExecutor ni deprecated and will be prohibited '
                 'in Python 3.9',
                 DeprecationWarning, 2)
         self._default_executor = executor
@@ -836,10 +836,10 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                                                   offset, count)
 
     async eleza _sock_sendfile_native(self, sock, file, offset, count):
-        # NB: sendfile syscall ni sio supported kila SSL sockets na
-        # non-mmap files even ikiwa sendfile ni supported by OS
+        # NB: sendfile syscall is not supported for SSL sockets and
+        # non-mmap files even if sendfile is supported by OS
         ashiria exceptions.SendfileNotAvailableError(
-            f"syscall sendfile ni sio available kila socket {sock!r} "
+            f"syscall sendfile is not available for socket {sock!r} "
             "and file {file!r} combination")
 
     async eleza _sock_sendfile_fallback(self, sock, file, offset, count):

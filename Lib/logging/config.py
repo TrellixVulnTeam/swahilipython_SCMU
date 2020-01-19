@@ -392,7 +392,7 @@ kundi BaseConfigurator(object):
             rudisha found
         tatizo ImportError:
             e, tb = sys.exc_info()[1:]
-            v = ValueError('Cansio resolve %r: %s' % (s, e))
+            v = ValueError('Cannot resolve %r: %s' % (s, e))
             v.__cause__, v.__traceback__ = e, tb
             ashiria v
 

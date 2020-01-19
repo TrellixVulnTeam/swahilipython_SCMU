@@ -939,7 +939,7 @@ kundi cached_property:
             self.attrname = name
         lasivyo name != self.attrname:
             ashiria TypeError(
-                "Cansio assign the same cached_property to two different names "
+                "Cannot assign the same cached_property to two different names "
                 f"({self.attrname!r} na {name!r})."
             )
 
@@ -948,7 +948,7 @@ kundi cached_property:
             rudisha self
         ikiwa self.attrname ni Tupu:
             ashiria TypeError(
-                "Cansio use cached_property instance without calling __set_name__ on it.")
+                "Cannot use cached_property instance without calling __set_name__ on it.")
         jaribu:
             cache = instance.__dict__
         tatizo AttributeError:  # sio all objects have __dict__ (e.g. kundi defines slots)

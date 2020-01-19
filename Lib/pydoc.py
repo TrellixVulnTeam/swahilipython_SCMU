@@ -48,7 +48,7 @@ Richard Chamberlain, kila the first implementation of textdoc.
 """
 
 # Known bugs that can't be fixed here:
-#   - synopsis() cansio be prevented kutoka clobbering existing
+#   - synopsis() cannot be prevented kutoka clobbering existing
 #     loaded modules.
 #   - If the __file__ attribute on a module ni a relative path na
 #     the current directory ni changed ukijumuisha os.chdir(), an incorrect

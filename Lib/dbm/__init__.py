@@ -85,7 +85,7 @@ eleza open(file, flag='r', mode=0o666):
             ashiria error[0]("db file doesn't exist; "
                            "use 'c' ama 'n' flag to create a new db")
     lasivyo result == "":
-        # db type cansio be determined
+        # db type cannot be determined
         ashiria error[0]("db type could sio be determined")
     lasivyo result haiko kwenye _modules:
         ashiria error[0]("db type ni {0}, but the module ni sio "

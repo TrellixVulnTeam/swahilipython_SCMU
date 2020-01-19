@@ -119,9 +119,9 @@ eleza convert_path (pathname):
     ikiwa sio pathname:
         rudisha pathname
     ikiwa pathname[0] == '/':
-        ashiria ValueError("path '%s' cansio be absolute" % pathname)
+        ashiria ValueError("path '%s' cannot be absolute" % pathname)
     ikiwa pathname[-1] == '/':
-        ashiria ValueError("path '%s' cansio end ukijumuisha '/'" % pathname)
+        ashiria ValueError("path '%s' cannot end ukijumuisha '/'" % pathname)
 
     paths = pathname.split('/')
     wakati '.' kwenye paths:

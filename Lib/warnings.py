@@ -461,7 +461,7 @@ kundi catch_warnings(object):
 
     eleza __enter__(self):
         ikiwa self._entered:
-            ashiria RuntimeError("Cansio enter %r twice" % self)
+            ashiria RuntimeError("Cannot enter %r twice" % self)
         self._entered = Kweli
         self._filters = self._module.filters
         self._module.filters = self._filters[:]
@@ -480,7 +480,7 @@ kundi catch_warnings(object):
 
     eleza __exit__(self, *exc_info):
         ikiwa sio self._entered:
-            ashiria RuntimeError("Cansio exit %r without entering first" % self)
+            ashiria RuntimeError("Cannot exit %r without entering first" % self)
         self._module.filters = self._filters
         self._module._filters_mutated()
         self._module.showwarning = self._showwarning

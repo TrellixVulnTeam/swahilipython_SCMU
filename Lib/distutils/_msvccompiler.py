@@ -126,11 +126,11 @@ eleza _find_vcvarsall(plat_spec):
 
     vcvarsall = os.path.join(best_dir, "vcvarsall.bat")
     ikiwa sio os.path.isfile(vcvarsall):
-        log.debug("%s cansio be found", vcvarsall)
+        log.debug("%s cannot be found", vcvarsall)
         rudisha Tupu, Tupu
 
     ikiwa sio vcruntime ama sio os.path.isfile(vcruntime):
-        log.debug("%s cansio be found", vcruntime)
+        log.debug("%s cannot be found", vcruntime)
         vcruntime = Tupu
 
     rudisha vcvarsall, vcruntime
@@ -508,7 +508,7 @@ kundi MSVCCompiler(CCompiler) :
             ld_args = (ldflags + lib_opts + export_opts +
                        objects + ['/OUT:' + output_filename])
 
-            # The MSVC linker generates .lib na .exp files, which cansio be
+            # The MSVC linker generates .lib na .exp files, which cannot be
             # suppressed by any linker switches. The .lib files may even be
             # needed! Make sure they are generated kwenye the temporary build
             # directory. Since they have different names kila debug na release

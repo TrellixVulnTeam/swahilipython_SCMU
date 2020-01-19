@@ -32,7 +32,7 @@ kundi VarSizeTest(unittest.TestCase):
         self.assertEqual((x.item, x.array[0]), (42, 100))
 
     eleza test_array_invalid_length(self):
-        # cansio create arrays ukijumuisha non-positive size
+        # cannot create arrays ukijumuisha non-positive size
         self.assertRaises(ValueError, lambda: c_int * -1)
         self.assertRaises(ValueError, lambda: c_int * -3)
 

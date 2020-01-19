@@ -88,7 +88,7 @@ kundi Callbacks(unittest.TestCase):
         self.check_type(c_char, b"a")
 
     # disabled: would now (correctly) ashiria a RuntimeWarning about
-    # a memory leak.  A callback function cansio rudisha a non-integral
+    # a memory leak.  A callback function cannot rudisha a non-integral
     # C type without causing a memory leak.
     @unittest.skip('test disabled')
     eleza test_char_p(self):

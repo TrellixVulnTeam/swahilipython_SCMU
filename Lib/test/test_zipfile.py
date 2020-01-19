@@ -599,7 +599,7 @@ kundi StoredTestsWithSourceFile(AbstractTestsWithSourceFile,
         jaribu:
             os.utime(TESTFN, (4386268800, 4386268800))
         tatizo OverflowError:
-            self.skipTest('Host fs cansio set timestamp to required value.')
+            self.skipTest('Host fs cannot set timestamp to required value.')
 
         ukijumuisha zipfile.ZipFile(TESTFN2, "w") kama zipfp:
             self.assertRaises(struct.error, zipfp.write, TESTFN)

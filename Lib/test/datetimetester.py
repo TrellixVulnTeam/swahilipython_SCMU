@@ -5668,7 +5668,7 @@ kundi ZoneInfo(tzinfo):
 
     eleza dst(self, dt):
         isdst = self._find_ti(dt, 1)
-        # XXX: We cansio accurately determine the "save" value,
+        # XXX: We cannot accurately determine the "save" value,
         # so let's rudisha 1h whenever DST ni kwenye effect.  Since
         # we don't use dst() kwenye fromutc(), it ni unlikely that
         # it will be needed kila anything more than bool(dst()).

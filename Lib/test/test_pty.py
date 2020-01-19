@@ -61,7 +61,7 @@ eleza _readline(fd):
 
 
 
-# Marginal testing of pty suite. Cansio do extensive 'do ama fail' testing
+# Marginal testing of pty suite. Cannot do extensive 'do ama fail' testing
 # because pty code ni sio too portable.
 # XXX(nnorwitz):  these tests leak fds when there ni an error.
 kundi PtyTest(unittest.TestCase):

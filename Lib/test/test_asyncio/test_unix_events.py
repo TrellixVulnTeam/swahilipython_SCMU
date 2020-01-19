@@ -92,7 +92,7 @@ kundi SelectorEventLoopSignalTests(test_utils.TestCase):
         self.addCleanup(coro_obj.close)
         kila func kwenye (coro_func, coro_obj):
             self.assertRaisesRegex(
-                TypeError, 'coroutines cansio be used ukijumuisha add_signal_handler',
+                TypeError, 'coroutines cannot be used ukijumuisha add_signal_handler',
                 self.loop.add_signal_handler,
                 signal.SIGINT, func)
 

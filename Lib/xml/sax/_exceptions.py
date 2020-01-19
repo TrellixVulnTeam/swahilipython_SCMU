@@ -126,6 +126,6 @@ kundi SAXReaderNotAvailable(SAXNotSupportedException):
     """Exception kundi kila a missing driver.
 
     An XMLReader module (driver) should ashiria this exception when it
-    ni first imported, e.g. when a support module cansio be imported.
+    ni first imported, e.g. when a support module cannot be imported.
     It also may be raised during parsing, e.g. ikiwa executing an external
     program ni sio permitted."""

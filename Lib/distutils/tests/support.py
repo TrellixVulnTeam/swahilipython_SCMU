@@ -152,7 +152,7 @@ eleza copy_xxmodule_c(directory):
     """
     filename = _get_xxmodule_path()
     ikiwa filename ni Tupu:
-        ashiria unittest.SkipTest('cansio find xxmodule.c (test must run kwenye '
+        ashiria unittest.SkipTest('cannot find xxmodule.c (test must run kwenye '
                                 'the python build dir)')
     shutil.copy(filename, directory)
 

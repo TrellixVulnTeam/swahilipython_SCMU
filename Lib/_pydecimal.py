@@ -215,7 +215,7 @@ kundi Clamped(DecimalException):
     altered kwenye order to fit the constraints of a specific concrete
     representation.  This may occur when the exponent of a zero result would
     be outside the bounds of a representation, ama when a large normal
-    number would have an encoded exponent that cansio be represented.  In
+    number would have an encoded exponent that cannot be represented.  In
     this latter case, the exponent ni reduced to fit na the corresponding
     number of zero digits are appended to the coefficient ("fold-down").
     """
@@ -276,7 +276,7 @@ kundi DivisionByZero(DecimalException, ZeroDivisionError):
         rudisha _SignedInfinity[sign]
 
 kundi DivisionImpossible(InvalidOperation):
-    """Cansio perform the division adequately.
+    """Cannot perform the division adequately.
 
     This occurs na signals invalid-operation ikiwa the integer result of a
     divide-integer ama remainder operation had too many digits (would be
@@ -663,7 +663,7 @@ kundi Decimal(object):
             self._is_special  = value._is_special
             rudisha self
 
-        ashiria TypeError("Cansio convert %r to Decimal" % value)
+        ashiria TypeError("Cannot convert %r to Decimal" % value)
 
     @classmethod
     eleza from_float(cls, f):
@@ -945,7 +945,7 @@ kundi Decimal(object):
         # kwenye the documentation.  (See library docs, 'Built-in Types').
         ikiwa self._is_special:
             ikiwa self.is_snan():
-                ashiria TypeError('Cansio hash a signaling NaN value.')
+                ashiria TypeError('Cannot hash a signaling NaN value.')
             lasivyo self.is_nan():
                 rudisha _PyHASH_NAN
             isipokua:
@@ -985,9 +985,9 @@ kundi Decimal(object):
         """
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                ashiria ValueError("cansio convert NaN to integer ratio")
+                ashiria ValueError("cannot convert NaN to integer ratio")
             isipokua:
-                ashiria OverflowError("cansio convert Infinity to integer ratio")
+                ashiria OverflowError("cannot convert Infinity to integer ratio")
 
         ikiwa sio self:
             rudisha 0, 1
@@ -1607,7 +1607,7 @@ kundi Decimal(object):
         """Float representation."""
         ikiwa self._isnan():
             ikiwa self.is_snan():
-                ashiria ValueError("Cansio convert signaling NaN to float")
+                ashiria ValueError("Cannot convert signaling NaN to float")
             s = "-nan" ikiwa self._sign isipokua "nan"
         isipokua:
             s = str(self)
@@ -1617,9 +1617,9 @@ kundi Decimal(object):
         """Converts self to an int, truncating ikiwa necessary."""
         ikiwa self._is_special:
             ikiwa self._isnan():
-                ashiria ValueError("Cansio convert NaN to integer")
+                ashiria ValueError("Cannot convert NaN to integer")
             lasivyo self._isinfinity():
-                ashiria OverflowError("Cansio convert infinity to integer")
+                ashiria OverflowError("Cannot convert infinity to integer")
         s = (-1)**self._sign
         ikiwa self._exp >= 0:
             rudisha s*int(self._int)*10**self._exp
@@ -1845,11 +1845,11 @@ kundi Decimal(object):
         >>> round(Decimal('Inf'))
         Traceback (most recent call last):
           ...
-        OverflowError: cansio round an infinity
+        OverflowError: cannot round an infinity
         >>> round(Decimal('NaN'))
         Traceback (most recent call last):
           ...
-        ValueError: cansio round a NaN
+        ValueError: cannot round a NaN
 
         If a second argument n ni supplied, self ni rounded to n
         decimal places using the rounding mode kila the current
@@ -1880,9 +1880,9 @@ kundi Decimal(object):
         # one-argument form
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                ashiria ValueError("cansio round a NaN")
+                ashiria ValueError("cannot round a NaN")
             isipokua:
-                ashiria OverflowError("cansio round an infinity")
+                ashiria OverflowError("cannot round an infinity")
         rudisha int(self._rescale(0, ROUND_HALF_EVEN))
 
     eleza __floor__(self):
@@ -1895,9 +1895,9 @@ kundi Decimal(object):
         """
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                ashiria ValueError("cansio round a NaN")
+                ashiria ValueError("cannot round a NaN")
             isipokua:
-                ashiria OverflowError("cansio round an infinity")
+                ashiria OverflowError("cannot round an infinity")
         rudisha int(self._rescale(0, ROUND_FLOOR))
 
     eleza __ceil__(self):
@@ -1910,9 +1910,9 @@ kundi Decimal(object):
         """
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                ashiria ValueError("cansio round a NaN")
+                ashiria ValueError("cannot round a NaN")
             isipokua:
-                ashiria OverflowError("cansio round an infinity")
+                ashiria OverflowError("cannot round an infinity")
         rudisha int(self._rescale(0, ROUND_CEILING))
 
     eleza fma(self, other, third, context=Tupu):
@@ -2002,11 +2002,11 @@ kundi Decimal(object):
                                         'unless all arguments are integers')
         ikiwa other < 0:
             rudisha context._raise_error(InvalidOperation,
-                                        'pow() 2nd argument cansio be '
+                                        'pow() 2nd argument cannot be '
                                         'negative when 3rd argument specified')
         ikiwa sio modulo:
             rudisha context._raise_error(InvalidOperation,
-                                        'pow() 3rd argument cansio be 0')
+                                        'pow() 3rd argument cannot be 0')
 
         # additional restriction kila decimal: the modulus must be less
         # than 10**prec kwenye absolute value
@@ -3968,7 +3968,7 @@ kundi Context(object):
                 "'decimal.Context' object has no attribute '%s'" % name)
 
     eleza __delattr__(self, name):
-        ashiria AttributeError("%s cansio be deleted" % name)
+        ashiria AttributeError("%s cannot be deleted" % name)
 
     # Support kila pickling, copy, na deepcopy
     eleza __reduce__(self):
@@ -5290,7 +5290,7 @@ kundi Context(object):
 
         This operation will fail under the same conditions kama integer division
         (that is, ikiwa integer division on the same two operands would fail, the
-        remainder cansio be calculated).
+        remainder cannot be calculated).
 
         >>> ExtendedContext.remainder(Decimal('2.1'), Decimal('3'))
         Decimal('2.1')
@@ -5326,7 +5326,7 @@ kundi Context(object):
 
         This operation will fail under the same conditions kama integer division
         (that is, ikiwa integer division on the same two operands would fail, the
-        remainder cansio be calculated).
+        remainder cannot be calculated).
 
         >>> ExtendedContext.remainder_near(Decimal('2.1'), Decimal('3'))
         Decimal('-0.9')

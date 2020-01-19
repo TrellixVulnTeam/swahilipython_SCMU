@@ -86,7 +86,7 @@ kundi Node(xml.dom.Node):
             rudisha newChild
         ikiwa newChild.nodeType haiko kwenye self._child_node_types:
             ashiria xml.dom.HierarchyRequestErr(
-                "%s cansio be child of %s" % (repr(newChild), repr(self)))
+                "%s cannot be child of %s" % (repr(newChild), repr(self)))
         ikiwa newChild.parentNode ni sio Tupu:
             newChild.parentNode.removeChild(newChild)
         ikiwa refChild ni Tupu:
@@ -118,7 +118,7 @@ kundi Node(xml.dom.Node):
             rudisha node
         ikiwa node.nodeType haiko kwenye self._child_node_types:
             ashiria xml.dom.HierarchyRequestErr(
-                "%s cansio be child of %s" % (repr(node), repr(self)))
+                "%s cannot be child of %s" % (repr(node), repr(self)))
         lasivyo node.nodeType kwenye _nodeTypes_with_children:
             _clear_id_cache(self)
         ikiwa node.parentNode ni sio Tupu:
@@ -134,7 +134,7 @@ kundi Node(xml.dom.Node):
             rudisha self.insertBefore(newChild, refChild)
         ikiwa newChild.nodeType haiko kwenye self._child_node_types:
             ashiria xml.dom.HierarchyRequestErr(
-                "%s cansio be child of %s" % (repr(newChild), repr(self)))
+                "%s cannot be child of %s" % (repr(newChild), repr(self)))
         ikiwa newChild ni oldChild:
             rudisha
         ikiwa newChild.parentNode ni sio Tupu:
@@ -606,7 +606,7 @@ kundi NamedNodeMap(object):
     eleza setNamedItem(self, node):
         ikiwa sio isinstance(node, Attr):
             ashiria xml.dom.HierarchyRequestErr(
-                "%s cansio be child of %s" % (repr(node), repr(self)))
+                "%s cannot be child of %s" % (repr(node), repr(self)))
         old = self._attrs.get(node.name)
         ikiwa old:
             old.unlink()
@@ -941,7 +941,7 @@ kundi Childless:
 
     eleza appendChild(self, node):
         ashiria xml.dom.HierarchyRequestErr(
-            self.nodeName + " nodes cansio have children")
+            self.nodeName + " nodes cannot have children")
 
     eleza hasChildNodes(self):
         rudisha Uongo
@@ -1020,11 +1020,11 @@ kundi CharacterData(Childless, Node):
 
     eleza substringData(self, offset, count):
         ikiwa offset < 0:
-            ashiria xml.dom.IndexSizeErr("offset cansio be negative")
+            ashiria xml.dom.IndexSizeErr("offset cannot be negative")
         ikiwa offset >= len(self.data):
-            ashiria xml.dom.IndexSizeErr("offset cansio be beyond end of data")
+            ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
         ikiwa count < 0:
-            ashiria xml.dom.IndexSizeErr("count cansio be negative")
+            ashiria xml.dom.IndexSizeErr("count cannot be negative")
         rudisha self.data[offset:offset+count]
 
     eleza appendData(self, arg):
@@ -1032,30 +1032,30 @@ kundi CharacterData(Childless, Node):
 
     eleza insertData(self, offset, arg):
         ikiwa offset < 0:
-            ashiria xml.dom.IndexSizeErr("offset cansio be negative")
+            ashiria xml.dom.IndexSizeErr("offset cannot be negative")
         ikiwa offset >= len(self.data):
-            ashiria xml.dom.IndexSizeErr("offset cansio be beyond end of data")
+            ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
         ikiwa arg:
             self.data = "%s%s%s" % (
                 self.data[:offset], arg, self.data[offset:])
 
     eleza deleteData(self, offset, count):
         ikiwa offset < 0:
-            ashiria xml.dom.IndexSizeErr("offset cansio be negative")
+            ashiria xml.dom.IndexSizeErr("offset cannot be negative")
         ikiwa offset >= len(self.data):
-            ashiria xml.dom.IndexSizeErr("offset cansio be beyond end of data")
+            ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
         ikiwa count < 0:
-            ashiria xml.dom.IndexSizeErr("count cansio be negative")
+            ashiria xml.dom.IndexSizeErr("count cannot be negative")
         ikiwa count:
             self.data = self.data[:offset] + self.data[offset+count:]
 
     eleza replaceData(self, offset, count, arg):
         ikiwa offset < 0:
-            ashiria xml.dom.IndexSizeErr("offset cansio be negative")
+            ashiria xml.dom.IndexSizeErr("offset cannot be negative")
         ikiwa offset >= len(self.data):
-            ashiria xml.dom.IndexSizeErr("offset cansio be beyond end of data")
+            ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
         ikiwa count < 0:
-            ashiria xml.dom.IndexSizeErr("count cansio be negative")
+            ashiria xml.dom.IndexSizeErr("count cannot be negative")
         ikiwa count:
             self.data = "%s%s%s" % (
                 self.data[:offset], arg, self.data[offset+count:])
@@ -1365,19 +1365,19 @@ kundi Entity(Identified, Node):
 
     eleza appendChild(self, newChild):
         ashiria xml.dom.HierarchyRequestErr(
-            "cansio append children to an entity node")
+            "cannot append children to an entity node")
 
     eleza insertBefore(self, newChild, refChild):
         ashiria xml.dom.HierarchyRequestErr(
-            "cansio insert children below an entity node")
+            "cannot insert children below an entity node")
 
     eleza removeChild(self, oldChild):
         ashiria xml.dom.HierarchyRequestErr(
-            "cansio remove children kutoka an entity node")
+            "cannot remove children kutoka an entity node")
 
     eleza replaceChild(self, newChild, oldChild):
         ashiria xml.dom.HierarchyRequestErr(
-            "cansio replace children of an entity node")
+            "cannot replace children of an entity node")
 
 kundi Notation(Identified, Childless, Node):
     nodeType = Node.NOTATION_NODE
@@ -1587,7 +1587,7 @@ kundi Document(Node, DocumentLS):
     eleza appendChild(self, node):
         ikiwa node.nodeType haiko kwenye self._child_node_types:
             ashiria xml.dom.HierarchyRequestErr(
-                "%s cansio be child of %s" % (repr(node), repr(self)))
+                "%s cannot be child of %s" % (repr(node), repr(self)))
         ikiwa node.parentNode ni sio Tupu:
             # This needs to be done before the next test since this
             # may *be* the document element, kwenye which case it should
@@ -1782,9 +1782,9 @@ kundi Document(Node, DocumentLS):
 
     eleza importNode(self, node, deep):
         ikiwa node.nodeType == Node.DOCUMENT_NODE:
-            ashiria xml.dom.NotSupportedErr("cansio agiza document nodes")
+            ashiria xml.dom.NotSupportedErr("cannot agiza document nodes")
         lasivyo node.nodeType == Node.DOCUMENT_TYPE_NODE:
-            ashiria xml.dom.NotSupportedErr("cansio agiza document type nodes")
+            ashiria xml.dom.NotSupportedErr("cannot agiza document type nodes")
         rudisha _clone_node(node, deep, self)
 
     eleza writexml(self, writer, indent="", addindent="", newl="", encoding=Tupu):
@@ -1801,7 +1801,7 @@ kundi Document(Node, DocumentLS):
     eleza renameNode(self, n, namespaceURI, name):
         ikiwa n.ownerDocument ni sio self:
             ashiria xml.dom.WrongDocumentErr(
-                "cansio rename nodes kutoka other documents;\n"
+                "cannot rename nodes kutoka other documents;\n"
                 "expected %s,\nfound %s" % (self, n.ownerDocument))
         ikiwa n.nodeType haiko kwenye (Node.ELEMENT_NODE, Node.ATTRIBUTE_NODE):
             ashiria xml.dom.NotSupportedErr(
@@ -1927,7 +1927,7 @@ eleza _clone_node(node, deep, newOwnerDocument):
         # Note the cloning of Document na DocumentType nodes is
         # implementation specific.  minidom handles those cases
         # directly kwenye the cloneNode() methods.
-        ashiria xml.dom.NotSupportedErr("Cansio clone node %s" % repr(node))
+        ashiria xml.dom.NotSupportedErr("Cannot clone node %s" % repr(node))
 
     # Check kila _call_user_data_handler() since this could conceivably
     # used ukijumuisha other DOM implementations (one of the FourThought

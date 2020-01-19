@@ -3220,17 +3220,17 @@ kundi TestParameterObject(unittest.TestCase):
                                     'is sio a valid parameter name'):
             inspect.Parameter('.a', kind=inspect.Parameter.VAR_KEYWORD)
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio have default values'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot have default values'):
             inspect.Parameter('a', default=42,
                               kind=inspect.Parameter.VAR_KEYWORD)
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio have default values'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot have default values'):
             inspect.Parameter('a', default=42,
                               kind=inspect.Parameter.VAR_POSITIONAL)
 
         p = inspect.Parameter('a', default=42,
                               kind=inspect.Parameter.POSITIONAL_OR_KEYWORD)
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio have default values'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot have default values'):
             p.replace(kind=inspect.Parameter.VAR_POSITIONAL)
 
         self.assertKweli(repr(p).startswith('<Parameter'))

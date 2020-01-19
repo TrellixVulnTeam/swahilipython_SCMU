@@ -115,8 +115,8 @@ kundi SocketServerTest(unittest.TestCase):
         jaribu:
             server = MyServer(addr, MyHandler)
         tatizo PermissionError kama e:
-            # Issue 29184: cansio bind() a Unix socket on Android.
-            self.skipTest('Cansio create server (%s, %s): %s' %
+            # Issue 29184: cannot bind() a Unix socket on Android.
+            self.skipTest('Cannot create server (%s, %s): %s' %
                           (svrcls, addr, e))
         self.assertEqual(server.server_address, server.socket.getsockname())
         rudisha server

@@ -9,7 +9,7 @@ agiza unittest
 
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
-@unittest.skipIf(sys.platform =="win32", "Test cansio run on Windows")
+@unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
 kundi TestBreak(unittest.TestCase):
     int_handler = Tupu
 
@@ -261,17 +261,17 @@ kundi TestBreak(unittest.TestCase):
         self.assertNotEqual(signal.getsignal(signal.SIGINT), default_handler)
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
-@unittest.skipIf(sys.platform =="win32", "Test cansio run on Windows")
+@unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
 kundi TestBreakDefaultIntHandler(TestBreak):
     int_handler = signal.default_int_handler
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
-@unittest.skipIf(sys.platform =="win32", "Test cansio run on Windows")
+@unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
 kundi TestBreakSignalIgnored(TestBreak):
     int_handler = signal.SIG_IGN
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
-@unittest.skipIf(sys.platform =="win32", "Test cansio run on Windows")
+@unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
 kundi TestBreakSignalDefault(TestBreak):
     int_handler = signal.SIG_DFL
 

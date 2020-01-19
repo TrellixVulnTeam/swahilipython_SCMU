@@ -54,12 +54,12 @@ kundi TestScanstring:
             ('Illegal invocation', 21))
 
         self.assertEqual(
-            scanstring('{"Numbers cansio have leading zeroes": 013}', 2, Kweli),
-            ('Numbers cansio have leading zeroes', 37))
+            scanstring('{"Numbers cannot have leading zeroes": 013}', 2, Kweli),
+            ('Numbers cannot have leading zeroes', 37))
 
         self.assertEqual(
-            scanstring('{"Numbers cansio be hex": 0x14}', 2, Kweli),
-            ('Numbers cansio be hex', 24))
+            scanstring('{"Numbers cannot be hex": 0x14}', 2, Kweli),
+            ('Numbers cannot be hex', 24))
 
         self.assertEqual(
             scanstring('[[[[[[[[[[[[[[[[[[[["Too deep"]]]]]]]]]]]]]]]]]]]]', 21, Kweli),

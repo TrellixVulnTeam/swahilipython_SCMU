@@ -505,7 +505,7 @@ kundi TestDiscovery(unittest.TestCase):
         import_calls = []
         eleza _get_module_from_name(name):
             import_calls.append(name)
-            ashiria ImportError("Cansio agiza Name")
+            ashiria ImportError("Cannot agiza Name")
         loader = unittest.TestLoader()
         loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))

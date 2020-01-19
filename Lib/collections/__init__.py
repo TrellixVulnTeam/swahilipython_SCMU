@@ -358,13 +358,13 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
             ashiria ValueError('Type names na field names must be valid '
                              f'identifiers: {name!r}')
         ikiwa _iskeyword(name):
-            ashiria ValueError('Type names na field names cansio be a '
+            ashiria ValueError('Type names na field names cannot be a '
                              f'keyword: {name!r}')
 
     seen = set()
     kila name kwenye field_names:
         ikiwa name.startswith('_') na sio rename:
-            ashiria ValueError('Field names cansio start ukijumuisha an underscore: '
+            ashiria ValueError('Field names cannot start ukijumuisha an underscore: '
                              f'{name!r}')
         ikiwa name kwenye seen:
             ashiria ValueError(f'Encountered duplicate field name: {name!r}')

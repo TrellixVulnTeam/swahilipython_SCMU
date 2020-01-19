@@ -709,7 +709,7 @@ kundi BaseProactorEventLoopTests(test_utils.TestCase):
         self.assertIsTupu(self.loop._ssock)
         self.assertIsTupu(self.loop._csock)
 
-        # Don't call close(): _close_self_pipe() cansio be called twice
+        # Don't call close(): _close_self_pipe() cannot be called twice
         self.loop._closed = Kweli
 
     eleza test_close(self):

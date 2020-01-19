@@ -499,7 +499,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertEqual(self.gen.getrandbits(100), bits100)
 
         # Little trick to make "tuple(x % (2**32) kila x kwenye internalstate)"
-        # ashiria ValueError. I cansio think of a simple way to achieve this, so
+        # ashiria ValueError. I cannot think of a simple way to achieve this, so
         # I am opting kila using a generator kama the middle argument of setstate
         # which attempts to cast a NaN to integer.
         state_values = self.gen.getstate()[1]

@@ -4071,7 +4071,7 @@ kundi ContextInputValidation(unittest.TestCase):
         self.assertRaises(KeyError, setattr, c, 'traps',
                           {'InvalidOperation':0})
 
-        # Attributes cansio be deleted
+        # Attributes cannot be deleted
         kila attr kwenye ['prec', 'Emax', 'Emin', 'rounding', 'capitals', 'clamp',
                      'flags', 'traps']:
             self.assertRaises(AttributeError, c.__delattr__, attr)

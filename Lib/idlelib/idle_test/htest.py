@@ -188,7 +188,7 @@ HelpSource_spec = {
            "'', > than 30 chars, na 'abc' are invalid menu item names.\n"
            "'' na file does sio exist are invalid path items.\n"
            "Any url ('www...', 'http...') ni accepted.\n"
-           "Test Browse ukijumuisha na without path, kama cansio unittest.\n"
+           "Test Browse ukijumuisha na without path, kama cannot unittest.\n"
            "[Ok] ama <Return> prints valid entry to shell\n"
            "[Cancel] ama <Escape> prints Tupu to shell"
     }

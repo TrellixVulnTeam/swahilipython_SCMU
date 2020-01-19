@@ -279,7 +279,7 @@ kundi ModuleFinder:
         modules = {}
         # 'suffixes' used to be a list hardcoded to [".py", ".pyc"].
         # But we must also collect Python extension modules - although
-        # we cansio separate normal dlls kutoka Python extensions.
+        # we cannot separate normal dlls kutoka Python extensions.
         suffixes = []
         suffixes += importlib.machinery.EXTENSION_SUFFIXES[:]
         suffixes += importlib.machinery.SOURCE_SUFFIXES[:]

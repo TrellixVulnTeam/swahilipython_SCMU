@@ -104,7 +104,7 @@ kundi msvccompilerTestCase(support.TempdirManager,
     eleza test_get_vc2017(self):
         agiza distutils._msvccompiler kama _msvccompiler
 
-        # This function cansio be mocked, so pita it ikiwa we find VS 2017
+        # This function cannot be mocked, so pita it ikiwa we find VS 2017
         # na mark it skipped ikiwa we do not.
         version, path = _msvccompiler._find_vc2017()
         ikiwa version:
@@ -116,7 +116,7 @@ kundi msvccompilerTestCase(support.TempdirManager,
     eleza test_get_vc2015(self):
         agiza distutils._msvccompiler kama _msvccompiler
 
-        # This function cansio be mocked, so pita it ikiwa we find VS 2015
+        # This function cannot be mocked, so pita it ikiwa we find VS 2015
         # na mark it skipped ikiwa we do not.
         version, path = _msvccompiler._find_vc2015()
         ikiwa version:

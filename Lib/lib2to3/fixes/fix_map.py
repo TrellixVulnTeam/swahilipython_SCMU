@@ -92,7 +92,7 @@ kundi FixMap(fixer_base.ConditionalFix):
                        args.children[1].type == syms.arglist na \
                        args.children[1].children[0].type == token.NAME na \
                        args.children[1].children[0].value == "Tupu":
-                        self.warning(node, "cansio convert map(Tupu, ...) "
+                        self.warning(node, "cannot convert map(Tupu, ...) "
                                      "ukijumuisha multiple arguments because map() "
                                      "now truncates to the shortest sequence")
                         rudisha

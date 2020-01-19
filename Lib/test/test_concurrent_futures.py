@@ -334,7 +334,7 @@ kundi ExecutorShutdownTest:
                        context=getattr(self, "ctx", "")))
         # Errors kwenye atexit hooks don't change the process exit code, check
         # stderr manually.
-        self.assertIn("RuntimeError: cansio schedule new futures", err.decode())
+        self.assertIn("RuntimeError: cannot schedule new futures", err.decode())
         self.assertEqual(out.strip(), b"runtime-error")
 
     eleza test_hang_issue12364(self):

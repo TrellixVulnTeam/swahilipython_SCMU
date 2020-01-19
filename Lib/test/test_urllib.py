@@ -1202,7 +1202,7 @@ kundi urlencode_Tests(unittest.TestCase):
             * 2nd, 2
             * 3rd, 3
 
-        Test cansio assume anything about order.  Docs make no guarantee na
+        Test cannot assume anything about order.  Docs make no guarantee na
         have possible dictionary input.
 
         """
@@ -1615,7 +1615,7 @@ kundi URL2PathNameTests(unittest.TestCase):
         self.assertEqual(url2pathname("///C|/"), 'C:\\')
 
     eleza test_converting_when_no_drive_letter(self):
-        # cansio end a raw string kwenye \
+        # cannot end a raw string kwenye \
         self.assertEqual(url2pathname("///C/test/"), r'\\\C\test' '\\')
         self.assertEqual(url2pathname("////C/test/"), r'\\C\test' '\\')
 

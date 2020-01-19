@@ -105,7 +105,7 @@ eleza updatecache(filename, module_globals=Tupu):
                 pita
             isipokua:
                 ikiwa data ni Tupu:
-                    # No luck, the PEP302 loader cansio find the source
+                    # No luck, the PEP302 loader cannot find the source
                     # kila this module.
                     rudisha []
                 cache[filename] = (

@@ -35,7 +35,7 @@ eleza setUpModule():
 
 
 @unittest.skipUnless(hasattr(readline, "clear_history"),
-                     "The history update test cansio be run because the "
+                     "The history update test cannot be run because the "
                      "clear_history method ni sio available.")
 kundi TestHistoryManipulation (unittest.TestCase):
     """
@@ -111,7 +111,7 @@ kundi TestHistoryManipulation (unittest.TestCase):
         jaribu:
             readline.add_history("entrée 1")
         tatizo UnicodeEncodeError kama err:
-            self.skipTest("Locale cansio encode test data: " + format(err))
+            self.skipTest("Locale cannot encode test data: " + format(err))
         readline.add_history("entrée 2")
         readline.replace_history_item(1, "entrée 22")
         readline.write_history_file(TESTFN)
@@ -164,7 +164,7 @@ andika("History length:", readline.get_current_history_length())
         jaribu:
             readline.add_history("\xEB\xEF")
         tatizo UnicodeEncodeError kama err:
-            self.skipTest("Locale cansio encode test data: " + format(err))
+            self.skipTest("Locale cannot encode test data: " + format(err))
 
         script = r"""agiza readline
 

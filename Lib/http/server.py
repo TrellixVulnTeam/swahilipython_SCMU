@@ -22,7 +22,7 @@ SECURITY WARNING: DON'T USE THIS CODE UNLESS YOU ARE INSIDE A FIREWALL
 -- it may execute arbitrary Python code ama external programs.
 
 Note that status code 200 ni sent prior to execution of a CGI script, so
-scripts cansio send other status codes such kama 302 (redirect).
+scripts cannot send other status codes such kama 302 (redirect).
 
 XXX To do:
 
@@ -546,7 +546,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     eleza log_error(self, format, *args):
         """Log an error.
 
-        This ni called when a request cansio be fulfilled.  By
+        This ni called when a request cannot be fulfilled.  By
         default it pitaes the message on to log_message().
 
         Arguments are the same kama kila log_message().

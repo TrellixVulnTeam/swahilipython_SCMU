@@ -83,14 +83,14 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         """
         ikiwa (coroutines.iscoroutine(callback) ama
                 coroutines.iscoroutinefunction(callback)):
-            ashiria TypeError("coroutines cansio be used "
+            ashiria TypeError("coroutines cannot be used "
                             "ukijumuisha add_signal_handler()")
         self._check_signal(sig)
         self._check_closed()
         jaribu:
             # set_wakeup_fd() raises ValueError ikiwa this ni sio the
             # main thread.  By calling it early we ensure that an
-            # event loop running kwenye another thread cansio add a signal
+            # event loop running kwenye another thread cannot add a signal
             # handler.
             signal.set_wakeup_fd(self._csock.fileno())
         tatizo (ValueError, OSError) kama exc:
@@ -116,7 +116,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                     logger.info('set_wakeup_fd(-1) failed: %s', nexc)
 
             ikiwa exc.errno == errno.EINVAL:
-                ashiria RuntimeError(f'sig {sig} cansio be caught')
+                ashiria RuntimeError(f'sig {sig} cannot be caught')
             isipokua:
                 raise
 
@@ -150,7 +150,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             signal.signal(sig, handler)
         tatizo OSError kama exc:
             ikiwa exc.errno == errno.EINVAL:
-                ashiria RuntimeError(f'sig {sig} cansio be caught')
+                ashiria RuntimeError(f'sig {sig} cannot be caught')
             isipokua:
                 raise
 

@@ -247,7 +247,7 @@ kundi HelpWindow(Toplevel):
 eleza copy_strip():
     """Copy idle.html to idlelib/help.html, stripping trailing whitespace.
 
-    Files ukijumuisha trailing whitespace cansio be pushed to the git cpython
+    Files ukijumuisha trailing whitespace cannot be pushed to the git cpython
     repository.  For 3.x (on Windows), help.html ni generated, after
     editing idle.rst on the master branch, with
       sphinx-build -bhtml . build/html

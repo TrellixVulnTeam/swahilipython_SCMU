@@ -1424,7 +1424,7 @@ kundi _ActionsContainer(object):
         title_group_map = {}
         kila group kwenye self._action_groups:
             ikiwa group.title kwenye title_group_map:
-                msg = _('cansio merge actions - two groups are named %r')
+                msg = _('cannot merge actions - two groups are named %r')
                 ashiria ValueError(msg % (group.title))
             title_group_map[group.title] = group
 
@@ -1715,7 +1715,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
     # ==================================
     eleza add_subparsers(self, **kwargs):
         ikiwa self._subparsers ni sio Tupu:
-            self.error(_('cansio have multiple subparser arguments'))
+            self.error(_('cannot have multiple subparser arguments'))
 
         # add the parser kundi to the arguments ikiwa it's sio present
         kwargs.setdefault('parser_class', type(self))

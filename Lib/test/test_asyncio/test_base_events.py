@@ -214,7 +214,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         kundi DummyExecutor(concurrent.futures.ThreadPoolExecutor):
             eleza submit(self, fn, *args, **kwargs):
                 ashiria NotImplementedError(
-                    'cansio submit into a dummy executor')
+                    'cannot submit into a dummy executor')
 
         executor = DummyExecutor()
         self.loop.set_default_executor(executor)

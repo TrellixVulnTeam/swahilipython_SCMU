@@ -349,7 +349,7 @@ kundi _PosixFlavour(_Flavour):
                     seen[newpath] = path # resolved symlink
 
             rudisha path
-        # NOTE: according to POSIX, getcwd() cansio contain path components
+        # NOTE: according to POSIX, getcwd() cannot contain path components
         # which are symlinks.
         base = '' ikiwa path.is_absolute() isipokua os.getcwd()
         rudisha _resolve(base, str(path)) ama sep
@@ -1005,7 +1005,7 @@ kundi Path(PurePath):
     methods to do system calls on path objects. Depending on your system,
     instantiating a Path will rudisha either a PosixPath ama a WindowsPath
     object. You can also instantiate a PosixPath ama WindowsPath directly,
-    but cansio instantiate a WindowsPath on a POSIX system ama vice versa.
+    but cannot instantiate a WindowsPath on a POSIX system ama vice versa.
     """
     __slots__ = (
         '_accessor',
@@ -1017,7 +1017,7 @@ kundi Path(PurePath):
             cls = WindowsPath ikiwa os.name == 'nt' isipokua PosixPath
         self = cls._from_parts(args, init=Uongo)
         ikiwa sio self._flavour.is_supported:
-            ashiria NotImplementedError("cansio instantiate %r on your system"
+            ashiria NotImplementedError("cannot instantiate %r on your system"
                                       % (cls.__name__,))
         self._init()
         rudisha self
@@ -1270,7 +1270,7 @@ kundi Path(PurePath):
             self.parent.mkdir(parents=Kweli, exist_ok=Kweli)
             self.mkdir(mode, parents=Uongo, exist_ok=exist_ok)
         tatizo OSError:
-            # Cansio rely on checking kila EEXIST, since the operating system
+            # Cannot rely on checking kila EEXIST, since the operating system
             # could give priority to other errors like EACCES ama EROFS
             ikiwa sio exist_ok ama sio self.is_dir():
                 raise

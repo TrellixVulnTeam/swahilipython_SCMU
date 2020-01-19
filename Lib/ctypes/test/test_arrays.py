@@ -65,7 +65,7 @@ kundi ArrayTestCase(unittest.TestCase):
 
         self.assertEqual(len(ca), 3)
 
-        # cansio delete items
+        # cannot delete items
         kutoka operator agiza delitem
         self.assertRaises(TypeError, delitem, ca, 0)
 

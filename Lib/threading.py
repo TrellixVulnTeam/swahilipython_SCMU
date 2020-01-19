@@ -143,7 +143,7 @@ kundi _RLock:
 
         When invoked ukijumuisha the floating-point timeout argument set to a positive
         value, block kila at most the number of seconds specified by timeout
-        na kama long kama the lock cansio be acquired.  Return true ikiwa the lock has
+        na kama long kama the lock cannot be acquired.  Return true ikiwa the lock has
         been acquired, false ikiwa the timeout has elapsed.
 
         """
@@ -176,7 +176,7 @@ kundi _RLock:
 
         """
         ikiwa self._owner != get_ident():
-            ashiria RuntimeError("cansio release un-acquired lock")
+            ashiria RuntimeError("cannot release un-acquired lock")
         self._count = count = self._count - 1
         ikiwa sio count:
             self._owner = Tupu
@@ -193,7 +193,7 @@ kundi _RLock:
 
     eleza _release_save(self):
         ikiwa self._count == 0:
-            ashiria RuntimeError("cansio release un-acquired lock")
+            ashiria RuntimeError("cannot release un-acquired lock")
         count = self._count
         self._count = 0
         owner = self._owner
@@ -291,7 +291,7 @@ kundi Condition:
 
         """
         ikiwa sio self._is_owned():
-            ashiria RuntimeError("cansio wait on un-acquired lock")
+            ashiria RuntimeError("cannot wait on un-acquired lock")
         waiter = _allocate_lock()
         waiter.acquire()
         self._waiters.append(waiter)
@@ -349,7 +349,7 @@ kundi Condition:
 
         """
         ikiwa sio self._is_owned():
-            ashiria RuntimeError("cansio notify on un-acquired lock")
+            ashiria RuntimeError("cannot notify on un-acquired lock")
         all_waiters = self._waiters
         waiters_to_notify = _deque(_islice(all_waiters, n))
         ikiwa sio waiters_to_notify:
@@ -1003,9 +1003,9 @@ kundi Thread:
         ikiwa sio self._initialized:
             ashiria RuntimeError("Thread.__init__() sio called")
         ikiwa sio self._started.is_set():
-            ashiria RuntimeError("cansio join thread before it ni started")
+            ashiria RuntimeError("cannot join thread before it ni started")
         ikiwa self ni current_thread():
-            ashiria RuntimeError("cansio join current thread")
+            ashiria RuntimeError("cannot join current thread")
 
         ikiwa timeout ni Tupu:
             self._wait_for_tstate_lock()
@@ -1112,7 +1112,7 @@ kundi Thread:
         ikiwa sio self._initialized:
             ashiria RuntimeError("Thread.__init__() sio called")
         ikiwa self._started.is_set():
-            ashiria RuntimeError("cansio set daemon status of active thread")
+            ashiria RuntimeError("cannot set daemon status of active thread")
         self._daemonic = daemonic
 
     eleza isDaemon(self):
@@ -1298,7 +1298,7 @@ kundi _DummyThread(Thread):
         rudisha Kweli
 
     eleza join(self, timeout=Tupu):
-        assert Uongo, "cansio join a dummy thread"
+        assert Uongo, "cannot join a dummy thread"
 
 
 # Global API functions

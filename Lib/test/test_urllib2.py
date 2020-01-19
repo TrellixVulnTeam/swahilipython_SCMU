@@ -969,7 +969,7 @@ kundi HandlerTests(unittest.TestCase):
 
     eleza test_http_body_pipe(self):
         # A file reading kutoka a pipe.
-        # A pipe cansio be seek'ed.  There ni no way to determine the
+        # A pipe cannot be seek'ed.  There ni no way to determine the
         # content length up front.  Thus, do_request_() should fall
         # back to Transfer-encoding chunked.
 

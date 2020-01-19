@@ -32,7 +32,7 @@ kundi LoaderTests(abc.LoaderTests):
             module = self.load_module(util.BUILTINS.good_name)
             self.verify(module)
 
-    # Built-in modules cansio be a package.
+    # Built-in modules cannot be a package.
     test_package = test_lacking_parent = Tupu
 
     # No way to force an agiza failure.
@@ -86,7 +86,7 @@ kundi InspectLoaderTests:
         self.assertIsTupu(result)
 
     eleza test_is_package(self):
-        # Cansio be a package.
+        # Cannot be a package.
         result = self.machinery.BuiltinImporter.is_package(util.BUILTINS.good_name)
         self.assertUongo(result)
 

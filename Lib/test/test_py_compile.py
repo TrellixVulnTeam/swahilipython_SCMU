@@ -116,7 +116,7 @@ kundi PyCompileTestsBase:
     @unittest.skipIf(hasattr(os, 'geteuid') na os.geteuid() == 0,
                      'non-root user required')
     @unittest.skipIf(os.name == 'nt',
-                     'cansio control directory permissions on Windows')
+                     'cannot control directory permissions on Windows')
     eleza test_exceptions_propagate(self):
         # Make sure that exceptions raised thanks to issues ukijumuisha writing
         # bytecode.

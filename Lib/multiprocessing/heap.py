@@ -45,7 +45,7 @@ ikiwa sys.platform == 'win32':
                 # We have reopened a preexisting mmap.
                 buf.close()
             isipokua:
-                ashiria FileExistsError('Cansio find name kila new mmap')
+                ashiria FileExistsError('Cannot find name kila new mmap')
             self.name = name
             self.buffer = buf
             self._state = (self.size, self.name)

@@ -1911,7 +1911,7 @@ kundi AbstractPickleTests(unittest.TestCase):
     eleza test_newobj_proxies(self):
         # NEWOBJ should use the __class__ rather than the raw type
         classes = myclasses[:]
-        # Cansio create weakproxies to these classes
+        # Cannot create weakproxies to these classes
         kila c kwenye (MyInt, MyTuple):
             classes.remove(c)
         kila proto kwenye protocols:
@@ -2684,7 +2684,7 @@ kundi AbstractPickleTests(unittest.TestCase):
                 self.assertIs(type(new), type(obj))
                 self.assertEqual(new, obj)
 
-    # XXX Unfortunately cansio test non-contiguous array
+    # XXX Unfortunately cannot test non-contiguous array
     # (see comment kwenye PicklableNDArray.__reduce_ex__)
 
     eleza test_oob_buffers(self):
@@ -2913,7 +2913,7 @@ kundi BigmemPickleTests(unittest.TestCase):
         mwishowe:
             data = Tupu
 
-    # BINUNICODE (protocols 1, 2 na 3) cansio carry more than 2**32 - 1 bytes
+    # BINUNICODE (protocols 1, 2 na 3) cannot carry more than 2**32 - 1 bytes
     # of utf-8 encoded unicode. BINUNICODE8 (protocol 4) supports these huge
     # unicode strings however.
 

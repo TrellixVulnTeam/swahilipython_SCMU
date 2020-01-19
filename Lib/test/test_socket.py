@@ -277,7 +277,7 @@ kundi ThreadableTest:
     are caught na transferred to the main thread to alert
     the testing framework.
 
-    Note, the server setup function cansio call any blocking
+    Note, the server setup function cannot call any blocking
     functions that rely on the client thread during setup,
     unless serverExplicitReady() ni called just before
     the blocking call (such kama kwenye setting up a client/server
@@ -732,7 +732,7 @@ eleza requireAttrs(obj, *attributes):
 
 
 eleza requireSocket(*args):
-    """Skip decorated test ikiwa a socket cansio be created ukijumuisha given arguments.
+    """Skip decorated test ikiwa a socket cannot be created ukijumuisha given arguments.
 
     When an argument ni given kama a string, will use the value of that
     attribute of the socket module, ama skip the test ikiwa it doesn't
@@ -2331,7 +2331,7 @@ kundi BasicTCPTest(SocketConnectedTest):
         fileno = self.cli_conn.fileno()
         f = self.cli_conn.detach()
         self.assertEqual(f, fileno)
-        # cli_conn cansio be used anymore...
+        # cli_conn cannot be used anymore...
         self.assertKweli(self.cli_conn._closed)
         self.assertRaises(OSError, self.cli_conn.recv, 1024)
         self.cli_conn.close()
@@ -2744,7 +2744,7 @@ kundi SendmsgStreamTests(SendmsgTests):
                 ikiwa exc.errno != errno.ENOMEM:
                     raise
                 # bpo-33937 the test randomly fails on Travis CI with
-                # "OSError: [Errno 12] Cansio allocate memory"
+                # "OSError: [Errno 12] Cannot allocate memory"
             isipokua:
                 self.fail("socket.timeout sio raised")
         mwishowe:
@@ -2770,7 +2770,7 @@ kundi SendmsgStreamTests(SendmsgTests):
                 wakati Kweli:
                     self.sendmsgToServer([b"a"*512], [], socket.MSG_DONTWAIT)
             # bpo-33937: catch also ENOMEM, the test randomly fails on Travis CI
-            # ukijumuisha "OSError: [Errno 12] Cansio allocate memory"
+            # ukijumuisha "OSError: [Errno 12] Cannot allocate memory"
             self.assertIn(cm.exception.errno,
                           (errno.EAGAIN, errno.EWOULDBLOCK, errno.ENOMEM))
         mwishowe:
@@ -4101,7 +4101,7 @@ kundi RecvmsgIntoSCMRightsStreamTest(RecvmsgIntoMixin, SCMRightsTest,
 
 # Test interrupting the interruptible send/receive methods ukijumuisha a
 # signal when a timeout ni set.  These tests avoid having multiple
-# threads alive during the test so that the OS cansio deliver the
+# threads alive during the test so that the OS cannot deliver the
 # signal to the wrong one.
 
 kundi InterruptedTimeoutBase(unittest.TestCase):
@@ -4520,7 +4520,7 @@ kundi FileObjectClassTestCase(SocketConnectedTest):
         # Second read ni disallowed
         ukijumuisha self.assertRaises(OSError) kama ctx:
             self.read_file.read(1)
-        self.assertIn("cansio read kutoka timed out object", str(ctx.exception))
+        self.assertIn("cannot read kutoka timed out object", str(ctx.exception))
 
     eleza _testReadAfterTimeout(self):
         self.write_file.write(self.write_msg[0:3])
@@ -5099,7 +5099,7 @@ kundi TestUnixDomain(unittest.TestCase):
             rudisha os.fsencode(path)
         tatizo UnicodeEncodeError:
             self.skipTest(
-                "Pathname {0!a} cansio be represented kwenye file "
+                "Pathname {0!a} cannot be represented kwenye file "
                 "system encoding {1!r}".format(
                     path, sys.getfilesystemencoding()))
 
@@ -5143,7 +5143,7 @@ kundi TestUnixDomain(unittest.TestCase):
         self.assertEqual(self.sock.getsockname(), path)
 
     eleza testUnencodableAddr(self):
-        # Test binding to a pathname that cansio be encoded kwenye the
+        # Test binding to a pathname that cannot be encoded kwenye the
         # file system encoding.
         ikiwa support.TESTFN_UNENCODABLE ni Tupu:
             self.skipTest("No unencodable filename available")

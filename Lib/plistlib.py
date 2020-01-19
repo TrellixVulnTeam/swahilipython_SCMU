@@ -180,7 +180,7 @@ kundi UID:
         ikiwa sio isinstance(data, int):
             ashiria TypeError("data must be an int")
         ikiwa data >= 1 << 64:
-            ashiria ValueError("UIDs cansio be >= 2**64")
+            ashiria ValueError("UIDs cannot be >= 2**64")
         ikiwa data < 0:
             ashiria ValueError("UIDs must be positive")
         self.data = data
@@ -691,7 +691,7 @@ kundi _BinaryPlistParser:
         # tokenH == 0xB0 ni documented kama 'ordset', but ni sio actually
         # implemented kwenye the Apple reference code.
 
-        # tokenH == 0xC0 ni documented kama 'set', but sets cansio be used kwenye
+        # tokenH == 0xC0 ni documented kama 'set', but sets cannot be used kwenye
         # plists.
 
         lasivyo tokenH == 0xD0:  # dict

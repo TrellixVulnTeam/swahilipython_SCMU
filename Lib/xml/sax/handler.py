@@ -104,7 +104,7 @@ kundi ContentHandler:
 
         There are cases, however, when applications need to use
         prefixes kwenye character data ama kwenye attribute values, where they
-        cansio safely be expanded automatically; the
+        cannot safely be expanded automatically; the
         start/endPrefixMapping event supplies the information to the
         application to expand prefixes kwenye those contexts itself, if
         necessary.

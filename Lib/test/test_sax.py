@@ -8,7 +8,7 @@ kutoka unittest agiza mock
 jaribu:
     make_parser()
 tatizo SAXReaderNotAvailable:
-    # don't try to test this module ikiwa we cansio create a parser
+    # don't try to test this module ikiwa we cannot create a parser
     ashiria unittest.SkipTest("no XML parsers available")
 kutoka xml.sax.saxutils agiza XMLGenerator, escape, unescape, quoteattr, \
                              XMLFilterBase, prepare_input_source
@@ -37,7 +37,7 @@ ikiwa sio os.path.supports_unicode_filenames:
         support.TESTFN_UNICODE.encode(support.TESTFN_ENCODING)
     tatizo (UnicodeError, TypeError):
         # Either the file system encoding ni Tupu, ama the file name
-        # cansio be encoded kwenye the file system encoding.
+        # cannot be encoded kwenye the file system encoding.
         supports_nonascii_filenames = Uongo
 requires_nonascii_filenames = unittest.skipUnless(
         supports_nonascii_filenames,

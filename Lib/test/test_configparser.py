@@ -1236,7 +1236,7 @@ kundi ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
             [dollars]
             $var = $$value
             $var2 = ${$var}
-            ${sick} = cansio interpolate me
+            ${sick} = cannot interpolate me
 
             [interpolated]
             $other = ${dollars:$var}
@@ -1245,7 +1245,7 @@ kundi ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
 
         self.assertEqual(cf['dollars']['$var'], '$value')
         self.assertEqual(cf['interpolated']['$other'], '$value')
-        self.assertEqual(cf['dollars']['${sick}'], 'cansio interpolate me')
+        self.assertEqual(cf['dollars']['${sick}'], 'cannot interpolate me')
         exception_class = configparser.InterpolationMissingOptionError
         ukijumuisha self.assertRaises(exception_class) kama cm:
             cf['interpolated']['$trying']
@@ -1600,7 +1600,7 @@ kundi CoverageOneHundredTestCase(unittest.TestCase):
                                             "given.")
         ukijumuisha self.assertRaises(ValueError) kama cm:
             configparser.ParsingError(source='source', filename='filename')
-        self.assertEqual(str(cm.exception), "Cansio specify both `filename' "
+        self.assertEqual(str(cm.exception), "Cannot specify both `filename' "
                                             "and `source'. Use `source'.")
         error = configparser.ParsingError(filename='source')
         self.assertEqual(error.source, 'source')

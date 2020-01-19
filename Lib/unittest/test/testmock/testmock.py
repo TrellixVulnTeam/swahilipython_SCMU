@@ -1539,7 +1539,7 @@ kundi MockTest(unittest.TestCase):
     #Issue21238
     eleza test_mock_unsafe(self):
         m = Mock()
-        msg = "Attributes cansio start ukijumuisha 'assert' ama 'assret'"
+        msg = "Attributes cannot start ukijumuisha 'assert' ama 'assret'"
         ukijumuisha self.assertRaisesRegex(AttributeError, msg):
             m.assert_foo_call()
         ukijumuisha self.assertRaisesRegex(AttributeError, msg):

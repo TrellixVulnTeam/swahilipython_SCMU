@@ -334,7 +334,7 @@ eleza field(*, default=MISSING, default_factory=MISSING, init=Kweli, repr=Kweli,
     """
 
     ikiwa default ni sio MISSING na default_factory ni sio MISSING:
-        ashiria ValueError('cansio specify both default na default_factory')
+        ashiria ValueError('cannot specify both default na default_factory')
     rudisha Field(default, default_factory, init, repr, hash, compare,
                  metadata)
 
@@ -554,13 +554,13 @@ eleza _frozen_get_del_attr(cls, fields):
     rudisha (_create_fn('__setattr__',
                       ('self', 'name', 'value'),
                       (f'ikiwa type(self) ni cls ama name kwenye {fields_str}:',
-                        ' ashiria FrozenInstanceError(f"cansio assign to field {name!r}")',
+                        ' ashiria FrozenInstanceError(f"cannot assign to field {name!r}")',
                        f'super(cls, self).__setattr__(name, value)'),
                        globals=globals),
             _create_fn('__delattr__',
                       ('self', 'name'),
                       (f'ikiwa type(self) ni cls ama name kwenye {fields_str}:',
-                        ' ashiria FrozenInstanceError(f"cansio delete field {name!r}")',
+                        ' ashiria FrozenInstanceError(f"cannot delete field {name!r}")',
                        f'super(cls, self).__delattr__(name)'),
                        globals=globals),
             )
@@ -726,7 +726,7 @@ eleza _get_field(cls, a_name, a_type):
     # Special restrictions kila ClassVar na InitVar.
     ikiwa f._field_type kwenye (_FIELD_CLASSVAR, _FIELD_INITVAR):
         ikiwa f.default_factory ni sio MISSING:
-            ashiria TypeError(f'field {f.name} cansio have a '
+            ashiria TypeError(f'field {f.name} cannot have a '
                             'default factory')
         # Should I check kila other field settings? default_factory
         # seems the most serious to check for.  Maybe add others.  For
@@ -765,7 +765,7 @@ eleza _hash_add(cls, fields):
 
 eleza _hash_exception(cls, fields):
     # Raise an exception.
-    ashiria TypeError(f'Cansio overwrite attribute __hash__ '
+    ashiria TypeError(f'Cannot overwrite attribute __hash__ '
                     f'in kundi {cls.__name__}')
 
 #
@@ -872,12 +872,12 @@ eleza _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
     ikiwa has_dataclass_bases:
         # Raise an exception ikiwa any of our bases are frozen, but we're not.
         ikiwa any_frozen_base na sio frozen:
-            ashiria TypeError('cansio inherit non-frozen datakundi kutoka a '
+            ashiria TypeError('cannot inherit non-frozen datakundi kutoka a '
                             'frozen one')
 
         # Raise an exception ikiwa we're frozen, but none of our bases are.
         ikiwa sio any_frozen_base na frozen:
-            ashiria TypeError('cansio inherit frozen datakundi kutoka a '
+            ashiria TypeError('cannot inherit frozen datakundi kutoka a '
                             'non-frozen one')
 
     # Remember all of the fields on our kundi (including bases).  This
@@ -946,14 +946,14 @@ eleza _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
                          ]:
             ikiwa _set_new_attribute(cls, name,
                                   _cmp_fn(name, op, self_tuple, other_tuple)):
-                ashiria TypeError(f'Cansio overwrite attribute {name} '
+                ashiria TypeError(f'Cannot overwrite attribute {name} '
                                 f'in kundi {cls.__name__}. Consider using '
                                 'functools.total_ordering')
 
     ikiwa frozen:
         kila fn kwenye _frozen_get_del_attr(cls, field_list):
             ikiwa _set_new_attribute(cls, fn.__name__, fn):
-                ashiria TypeError(f'Cansio overwrite attribute {fn.__name__} '
+                ashiria TypeError(f'Cannot overwrite attribute {fn.__name__} '
                                 f'in kundi {cls.__name__}')
 
     # Decide if/how we're going to create a hash function.
@@ -1256,7 +1256,7 @@ eleza replace(*args, **changes):
             # Error ikiwa this field ni specified kwenye changes.
             ikiwa f.name kwenye changes:
                 ashiria ValueError(f'field {f.name} ni declared ukijumuisha '
-                                 'init=Uongo, it cansio be specified ukijumuisha '
+                                 'init=Uongo, it cannot be specified ukijumuisha '
                                  'replace()')
             endelea
 

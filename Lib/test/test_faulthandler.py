@@ -186,7 +186,7 @@ kundi FaultHandlerTests(unittest.TestCase):
             'Aborted')
 
     @unittest.skipIf(sys.platform == 'win32',
-                     "SIGFPE cansio be caught on Windows")
+                     "SIGFPE cannot be caught on Windows")
     eleza test_sigfpe(self):
         self.check_fatal_error("""
             agiza faulthandler

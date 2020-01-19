@@ -297,7 +297,7 @@ kundi Mingw32CCompiler(CygwinCCompiler):
 
         ikiwa is_cygwingcc():
             ashiria CCompilerError(
-                'Cygwin gcc cansio be used ukijumuisha --compiler=mingw32')
+                'Cygwin gcc cannot be used ukijumuisha --compiler=mingw32')
 
         self.set_executables(compiler='gcc -O -Wall',
                              compiler_so='gcc -mdll -O -Wall',

@@ -855,7 +855,7 @@ kundi TarInfo(object):
         rudisha buf + self._create_header(info, GNU_FORMAT, encoding, errors)
 
     eleza create_pax_header(self, info, encoding):
-        """Return the object kama a ustar header block. If it cansio be
+        """Return the object kama a ustar header block. If it cannot be
            represented this way, prepend a pax extended header sequence
            ukijumuisha supplement information.
         """
@@ -2103,7 +2103,7 @@ kundi TarFile(object):
                 # A small but ugly workaround kila the case that someone tries
                 # to extract a (sym)link kama a file-object kutoka a non-seekable
                 # stream of tar blocks.
-                ashiria StreamError("cansio extract (sym)link kama file object")
+                ashiria StreamError("cannot extract (sym)link kama file object")
             isipokua:
                 # A (sym)link's file object ni its target's file object.
                 rudisha self.extractfile(self._find_link_target(tarinfo))
@@ -2219,7 +2219,7 @@ kundi TarFile(object):
                  os.makedev(tarinfo.devmajor, tarinfo.devminor))
 
     eleza makelink(self, tarinfo, targetpath):
-        """Make a (symbolic) link called targetpath. If it cansio be created
+        """Make a (symbolic) link called targetpath. If it cannot be created
           (platform limitation), we try to make a copy of the referenced file
           instead of a link.
         """

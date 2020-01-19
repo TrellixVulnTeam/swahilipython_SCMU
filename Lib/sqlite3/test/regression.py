@@ -268,7 +268,7 @@ kundi RegressionTests(unittest.TestCase):
         eleza collation_cb(a, b):
             rudisha 1
         self.assertRaises(sqlite.ProgrammingError, self.con.create_collation,
-            # Lone surrogate cansio be encoded to the default encoding (utf8)
+            # Lone surrogate cannot be encoded to the default encoding (utf8)
             "\uDC80", collation_cb)
 
     eleza CheckRecursiveCursorUse(self):

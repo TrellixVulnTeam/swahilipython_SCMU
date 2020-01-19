@@ -667,7 +667,7 @@ kundi IocpProactor:
 
     eleza _wait_cancel(self, event, done_callback):
         fut = self._wait_for_handle(event, Tupu, Kweli)
-        # add_done_callback() cansio be used because the wait may only complete
+        # add_done_callback() cannot be used because the wait may only complete
         # kwenye IocpProactor.close(), wakati the event loop ni sio running.
         fut._done_callback = done_callback
         rudisha fut
@@ -727,7 +727,7 @@ kundi IocpProactor:
             toa f._source_traceback[-1]
         ikiwa sio ov.pending:
             # The operation has completed, so no need to postpone the
-            # work.  We cansio take this short cut ikiwa we need the
+            # work.  We cannot take this short cut ikiwa we need the
             # NumberOfBytes, CompletionKey values returned by
             # PostQueuedCompletionStatus().
             jaribu:

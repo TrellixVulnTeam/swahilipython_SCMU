@@ -233,7 +233,7 @@ kundi GzipFile(_compression.BaseStream):
         self.fileobj.write(b'\010')                 # compression method
         jaribu:
             # RFC 1952 requires the FNAME field to be Latin-1. Do sio
-            # include filenames that cansio be represented that way.
+            # include filenames that cannot be represented that way.
             fname = os.path.basename(self.name)
             ikiwa sio isinstance(fname, bytes):
                 fname = fname.encode('latin-1')

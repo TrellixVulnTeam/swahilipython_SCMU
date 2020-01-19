@@ -789,7 +789,7 @@ kundi DecimalToRatioTest(unittest.TestCase):
         # Test that NANs are handled correctly.
         kila nan kwenye (Decimal('NAN'), Decimal('sNAN')):
             num, den = statistics._exact_ratio(nan)
-            # Because NANs always compare non-equal, we cansio use assertEqual.
+            # Because NANs always compare non-equal, we cannot use assertEqual.
             # Nor can we use an identity test, kama we don't guarantee anything
             # about the object identity.
             self.assertKweli(_nan_equal(num, nan))

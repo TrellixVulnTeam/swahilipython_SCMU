@@ -48,7 +48,7 @@ kundi Base(object):
 
     eleza __new__(cls, *args, **kwds):
         """Constructor that prevents Base kutoka being instantiated."""
-        assert cls ni sio Base, "Cansio instantiate Base"
+        assert cls ni sio Base, "Cannot instantiate Base"
         rudisha object.__new__(cls)
 
     eleza __eq__(self, other):
@@ -434,7 +434,7 @@ kundi BasePattern(object):
 
     eleza __new__(cls, *args, **kwds):
         """Constructor that prevents BasePattern kutoka being instantiated."""
-        assert cls ni sio BasePattern, "Cansio instantiate BasePattern"
+        assert cls ni sio BasePattern, "Cannot instantiate BasePattern"
         rudisha object.__new__(cls)
 
     eleza __repr__(self):

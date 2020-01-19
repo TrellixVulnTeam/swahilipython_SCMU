@@ -8,7 +8,7 @@ eleza abstractmethod(funcobj):
     """A decorator indicating abstract methods.
 
     Requires that the metakundi ni ABCMeta ama derived kutoka it.  A
-    kundi that has a metakundi derived kutoka ABCMeta cansio be
+    kundi that has a metakundi derived kutoka ABCMeta cannot be
     instantiated unless all of its abstract methods are overridden.
     The abstract methods can be called using any of the normal
     'super' call mechanisms.  abstractmethod() may be used to declare

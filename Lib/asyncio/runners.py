@@ -12,7 +12,7 @@ eleza run(main, *, debug=Uongo):
     managing the asyncio event loop na finalizing asynchronous
     generators.
 
-    This function cansio be called when another asyncio event loop is
+    This function cannot be called when another asyncio event loop is
     running kwenye the same thread.
 
     If debug ni Kweli, the event loop will be run kwenye debug mode.
@@ -31,7 +31,7 @@ eleza run(main, *, debug=Uongo):
     """
     ikiwa events._get_running_loop() ni sio Tupu:
         ashiria RuntimeError(
-            "asyncio.run() cansio be called kutoka a running event loop")
+            "asyncio.run() cannot be called kutoka a running event loop")
 
     ikiwa sio coroutines.iscoroutine(main):
         ashiria ValueError("a coroutine was expected, got {!r}".format(main))

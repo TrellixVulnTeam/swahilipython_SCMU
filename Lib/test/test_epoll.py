@@ -125,7 +125,7 @@ kundi TestEPoll(unittest.TestCase):
                               select.EPOLLIN | select.EPOLLOUT)
             self.assertRaises(TypeError, ep.register, Tupu,
                               select.EPOLLIN | select.EPOLLOUT)
-            # ValueError: file descriptor cansio be a negative integer (-1)
+            # ValueError: file descriptor cannot be a negative integer (-1)
             self.assertRaises(ValueError, ep.register, -1,
                               select.EPOLLIN | select.EPOLLOUT)
             # OSError: [Errno 9] Bad file descriptor

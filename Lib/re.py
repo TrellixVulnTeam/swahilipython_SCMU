@@ -295,7 +295,7 @@ eleza _compile(pattern, flags):
     ikiwa isinstance(pattern, Pattern):
         ikiwa flags:
             ashiria ValueError(
-                "cansio process flags argument ukijumuisha a compiled pattern")
+                "cannot process flags argument ukijumuisha a compiled pattern")
         rudisha pattern
     ikiwa sio sre_compile.isstring(pattern):
         ashiria TypeError("first argument must be string ama compiled pattern")

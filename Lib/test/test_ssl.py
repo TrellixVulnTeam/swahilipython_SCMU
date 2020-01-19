@@ -1321,7 +1321,7 @@ kundi ContextTests(unittest.TestCase):
             ctx.load_cert_chain(CERTFILE_PROTECTED, password=Kweli)
         ukijumuisha self.assertRaises(ssl.SSLError):
             ctx.load_cert_chain(CERTFILE_PROTECTED, password="badpita")
-        ukijumuisha self.assertRaisesRegex(ValueError, "cansio be longer"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cannot be longer"):
             # openssl has a fixed limit on the password buffer.
             # PEM_BUFSIZE ni generally set to 1kb.
             # Return a string larger than this.
@@ -1354,7 +1354,7 @@ kundi ContextTests(unittest.TestCase):
                             password=GetPassCallable().getpita)
         ukijumuisha self.assertRaises(ssl.SSLError):
             ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_badpita)
-        ukijumuisha self.assertRaisesRegex(ValueError, "cansio be longer"):
+        ukijumuisha self.assertRaisesRegex(ValueError, "cannot be longer"):
             ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_huge)
         ukijumuisha self.assertRaisesRegex(TypeError, "must rudisha a string"):
             ctx.load_cert_chain(CERTFILE_PROTECTED, password=getpita_bad_type)
@@ -1692,7 +1692,7 @@ kundi ContextTests(unittest.TestCase):
         self.assertKweli(ctx.check_hostname)
         self.assertEqual(ctx.verify_mode, ssl.CERT_OPTIONAL)
 
-        # Cansio set CERT_NONE ukijumuisha check_hostname enabled
+        # Cannot set CERT_NONE ukijumuisha check_hostname enabled
         ukijumuisha self.assertRaises(ValueError):
             ctx.verify_mode = ssl.CERT_NONE
         ctx.check_hostname = Uongo
@@ -4332,11 +4332,11 @@ kundi ThreadedTests(unittest.TestCase):
             ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
                 s.connect((HOST, server.port))
-                # cansio set session after handshake
+                # cannot set session after handshake
                 ukijumuisha self.assertRaises(ValueError) kama e:
                     s.session = session
                 self.assertEqual(str(e.exception),
-                                 'Cansio set session after handshake.')
+                                 'Cannot set session after handshake.')
 
             ukijumuisha client_context.wrap_socket(socket.socket(),
                                             server_hostname=hostname) kama s:
@@ -4350,7 +4350,7 @@ kundi ThreadedTests(unittest.TestCase):
 
             ukijumuisha client_context2.wrap_socket(socket.socket(),
                                              server_hostname=hostname) kama s:
-                # cansio re-use session ukijumuisha a different SSLContext
+                # cannot re-use session ukijumuisha a different SSLContext
                 ukijumuisha self.assertRaises(ValueError) kama e:
                     s.session = session
                     s.connect((HOST, server.port))

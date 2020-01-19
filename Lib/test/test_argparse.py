@@ -4949,7 +4949,7 @@ kundi TestIntermixedArgs(TestCase):
         self.assertEqual(NS(bar='y', cmd='cmd', foo='x', rest=[1, 2, 3]), args)
 
         args, extras = parser.parse_known_args(argv)
-        # cansio parse the '1,2,3'
+        # cannot parse the '1,2,3'
         self.assertEqual(NS(bar='y', cmd='cmd', foo='x', rest=[]), args)
         self.assertEqual(["1", "2", "3"], extras)
 

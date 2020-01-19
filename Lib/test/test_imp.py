@@ -111,9 +111,9 @@ kundi ImportTests(unittest.TestCase):
             support.unlink(temp_mod_name + '.pyc')
 
     eleza test_issue5604(self):
-        # Test cansio cover imp.load_compiled function.
-        # Martin von Loewis note what shared library cansio have non-ascii
-        # character because init_xxx function cansio be compiled
+        # Test cannot cover imp.load_compiled function.
+        # Martin von Loewis note what shared library cannot have non-ascii
+        # character because init_xxx function cannot be compiled
         # na issue never happens kila dynamic modules.
         # But sources modified to follow generic way kila processing paths.
 

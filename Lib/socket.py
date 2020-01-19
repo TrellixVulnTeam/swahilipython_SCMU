@@ -135,7 +135,7 @@ ikiwa sys.platform.lower().startswith("win"):
     errorTab[10046] = "Protocol family sio supported."
     errorTab[10047] = "Address family sio supported by protocol family."
     errorTab[10048] = "The network address ni kwenye use."
-    errorTab[10049] = "Cansio assign requested address."
+    errorTab[10049] = "Cannot assign requested address."
     errorTab[10050] = "Network ni down."
     errorTab[10051] = "Network ni unreachable."
     errorTab[10052] = "Network dropped connection on reset."
@@ -148,7 +148,7 @@ ikiwa sys.platform.lower().startswith("win"):
     errorTab[10059] = "Too many references."
     errorTab[10060] = "The operation timed out."
     errorTab[10061] = "Connection refused."
-    errorTab[10062] = "Cansio translate name."
+    errorTab[10062] = "Cannot translate name."
     errorTab[10063] = "The name ni too long."
     errorTab[10064] = "The host ni down."
     errorTab[10065] = "The host ni unreachable."
@@ -269,7 +269,7 @@ kundi socket(_socket.socket):
         rudisha s
 
     eleza __getstate__(self):
-        ashiria TypeError(f"cansio pickle {self.__class__.__name__!r} object")
+        ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
 
     eleza dup(self):
         """dup() -> socket object
@@ -503,7 +503,7 @@ kundi socket(_socket.socket):
         """detach() -> file descriptor
 
         Close the socket object without closing the underlying file descriptor.
-        The object cansio be used after this call, but the file descriptor
+        The object cannot be used after this call, but the file descriptor
         can be reused kila other purposes.  The file descriptor ni returned.
         """
         self._closed = Kweli
@@ -663,7 +663,7 @@ kundi SocketIO(io.RawIOBase):
         self._checkClosed()
         self._checkReadable()
         ikiwa self._timeout_occurred:
-            ashiria OSError("cansio read kutoka timed out object")
+            ashiria OSError("cannot read kutoka timed out object")
         wakati Kweli:
             jaribu:
                 rudisha self._sock.recv_into(b)

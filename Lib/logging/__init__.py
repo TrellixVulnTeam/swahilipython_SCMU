@@ -1721,7 +1721,7 @@ kundi Logger(Filterer):
         # However, the root logger's kundi has its own __reduce__ method.
         ikiwa getLogger(self.name) ni sio self:
             agiza pickle
-            ashiria pickle.PicklingError('logger cansio be pickled')
+            ashiria pickle.PicklingError('logger cannot be pickled')
         rudisha getLogger, (self.name,)
 
 

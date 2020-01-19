@@ -423,7 +423,7 @@ kundi WatchedFileHandler(logging.FileHandler):
     opened to get a new stream.
 
     This handler ni sio appropriate kila use under Windows, because
-    under Windows open files cansio be moved ama renamed - logging
+    under Windows open files cannot be moved ama renamed - logging
     opens the files ukijumuisha exclusive locks - na so there ni no need
     kila such a handler. Furthermore, ST_INO ni sio supported under
     Windows; stat always returns zero kila this value.

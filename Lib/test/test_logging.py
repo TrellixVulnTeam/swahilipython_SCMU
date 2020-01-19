@@ -3591,7 +3591,7 @@ ikiwa hasattr(logging.handlers, 'QueueListener'):
         @patch.object(logging.handlers.QueueListener, 'handle')
         eleza test_handle_called_with_mp_queue(self, mock_handle):
             # Issue 28668: The multiprocessing (mp) module ni sio functional
-            # when the mp.synchronize module cansio be imported.
+            # when the mp.synchronize module cannot be imported.
             support.import_module('multiprocessing.synchronize')
             kila i kwenye range(self.repeat):
                 log_queue = multiprocessing.Queue()
@@ -3617,7 +3617,7 @@ ikiwa hasattr(logging.handlers, 'QueueListener'):
             _after_ the QueueListener stopped.
             """
             # Issue 28668: The multiprocessing (mp) module ni sio functional
-            # when the mp.synchronize module cansio be imported.
+            # when the mp.synchronize module cannot be imported.
             support.import_module('multiprocessing.synchronize')
             kila i kwenye range(self.repeat):
                 queue = multiprocessing.Queue()
@@ -4234,7 +4234,7 @@ kundi ModuleLevelMiscTest(BaseTest):
             rec()"""
         rc, out, err = assert_python_failure("-c", code)
         err = err.decode()
-        self.assertNotIn("Cansio recover kutoka stack overflow.", err)
+        self.assertNotIn("Cannot recover kutoka stack overflow.", err)
         self.assertEqual(rc, 1)
 
 

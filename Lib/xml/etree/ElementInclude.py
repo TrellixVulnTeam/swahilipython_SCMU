@@ -111,7 +111,7 @@ eleza include(elem, loader=Tupu):
                 node = loader(href, parse)
                 ikiwa node ni Tupu:
                     ashiria FatalIncludeError(
-                        "cansio load %r kama %r" % (href, parse)
+                        "cannot load %r kama %r" % (href, parse)
                         )
                 node = copy.copy(node)
                 ikiwa e.tail:
@@ -121,7 +121,7 @@ eleza include(elem, loader=Tupu):
                 text = loader(href, parse, e.get("encoding"))
                 ikiwa text ni Tupu:
                     ashiria FatalIncludeError(
-                        "cansio load %r kama %r" % (href, parse)
+                        "cannot load %r kama %r" % (href, parse)
                         )
                 ikiwa i:
                     node = elem[i-1]

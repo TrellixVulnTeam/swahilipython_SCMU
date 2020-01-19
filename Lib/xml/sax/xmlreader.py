@@ -67,7 +67,7 @@ kundi XMLReader:
         """Allow an application to set the locale kila errors na warnings.
 
         SAX parsers are sio required to provide localization kila errors
-        na warnings; ikiwa they cansio support the requested locale,
+        na warnings; ikiwa they cannot support the requested locale,
         however, they must ashiria a SAX exception. Applications may
         request a locale change kwenye the middle of a parse."""
         ashiria SAXNotSupportedException("Locale support sio implemented")

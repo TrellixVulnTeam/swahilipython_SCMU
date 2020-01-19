@@ -28,7 +28,7 @@ kundi FinderTests(abc.FinderTests):
     # No extension module kwenye a package available kila testing.
     test_module_in_package = Tupu
 
-    # Extension modules cansio be an __init__ kila a package.
+    # Extension modules cannot be an __init__ kila a package.
     test_package_over_module = Tupu
 
     eleza test_failure(self):

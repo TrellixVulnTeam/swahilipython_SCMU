@@ -90,7 +90,7 @@ kundi StringTestCase(unittest.TestCase):
     eleza test_basic_strings(self):
         cs = c_string("abcdef")
 
-        # Cansio call len on a c_string any longer
+        # Cannot call len on a c_string any longer
         self.assertRaises(TypeError, len, cs)
         self.assertEqual(sizeof(cs), 7)
 

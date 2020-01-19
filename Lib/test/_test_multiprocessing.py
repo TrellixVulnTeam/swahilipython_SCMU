@@ -522,7 +522,7 @@ kundi _TestProcess(BaseTestCase):
         p.daemon = Kweli
         p.start()
         self.assertEqual(p.is_alive(), Kweli)
-        # Child ni still alive, cansio close
+        # Child ni still alive, cannot close
         ukijumuisha self.assertRaises(ValueError):
             p.close()
 
@@ -1009,7 +1009,7 @@ kundi _TestQueue(BaseTestCase):
         kila i kwenye range(10, 20):
             queue.put(i)
         # note that at this point the items may only be buffered, so the
-        # process cansio shutdown until the feeder thread has finished
+        # process cannot shutdown until the feeder thread has finished
         # pushing items onto the pipe.
 
     eleza test_fork(self):
@@ -2368,7 +2368,7 @@ kundi _TestPool(BaseTestCase):
             self.skipTest('test sio appropriate kila {}'.format(self.TYPE))
         kundi A(object):
             eleza __reduce__(self):
-                ashiria RuntimeError('cansio pickle')
+                ashiria RuntimeError('cannot pickle')
         ukijumuisha self.assertRaises(RuntimeError):
             self.pool.map(sqr, [A()]*10)
 

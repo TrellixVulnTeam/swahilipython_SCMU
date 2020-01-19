@@ -857,7 +857,7 @@ kundi DocTestFinder:
 
         If `module` ni Uongo, no attempt to find the module will be made.
         This ni obscure, of use mostly kwenye tests:  ikiwa `module` ni Uongo, ama
-        ni Tupu but cansio be found automatically, then all objects are
+        ni Tupu but cannot be found automatically, then all objects are
         considered to belong to the (non-existent) module, so all contained
         objects will (recursively) be searched kila doctests.
 

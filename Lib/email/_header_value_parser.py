@@ -2909,7 +2909,7 @@ eleza _fold_mime_parameters(part, lines, maxlen, encoding):
     """Fold TokenList 'part' into the 'lines' list kama mime parameters.
 
     Using the decoded list of parameters na values, format them according to
-    the RFC rules, including using RFC2231 encoding ikiwa the value cansio be
+    the RFC rules, including using RFC2231 encoding ikiwa the value cannot be
     expressed kwenye 'encoding' and/or the parameter+value ni too long to fit
     within 'maxlen'.
 

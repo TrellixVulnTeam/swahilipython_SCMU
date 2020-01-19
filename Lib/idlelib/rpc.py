@@ -334,7 +334,7 @@ kundi SocketIO(object):
         jaribu:
             s = dumps(message)
         tatizo pickle.PicklingError:
-            andika("Cansio pickle:", repr(message), file=sys.__stderr__)
+            andika("Cannot pickle:", repr(message), file=sys.__stderr__)
             raise
         s = struct.pack("<i", len(s)) + s
         wakati len(s) > 0:
@@ -388,7 +388,7 @@ kundi SocketIO(object):
             message = pickle.loads(packet)
         tatizo pickle.UnpicklingError:
             andika("-----------------------", file=sys.__stderr__)
-            andika("cansio unpickle packet:", repr(packet), file=sys.__stderr__)
+            andika("cannot unpickle packet:", repr(packet), file=sys.__stderr__)
             traceback.print_stack(file=sys.__stderr__)
             andika("-----------------------", file=sys.__stderr__)
             raise

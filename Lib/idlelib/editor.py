@@ -938,7 +938,7 @@ kundi EditorWindow(object):
                 ikiwa sio getattr(self.root, "recentfiles_message", Uongo):
                     self.root.recentfiles_message = Kweli
                     tkMessageBox.showwarning(title='IDLE Warning',
-                        message="Cansio save Recent Files list to disk.\n"
+                        message="Cannot save Recent Files list to disk.\n"
                                 f"  {err}\n"
                                 "Select OK to endelea.",
                         parent=self.text)

@@ -269,7 +269,7 @@ eleza import_fresh_module(name, fresh=(), blocked=(), deprecated=Uongo):
     Module na package deprecation messages are suppressed during this import
     ikiwa *deprecated* ni Kweli.
 
-    This function will ashiria ImportError ikiwa the named module cansio be
+    This function will ashiria ImportError ikiwa the named module cannot be
     imported.
     """
     # NOTE: test_heapq, test_json na test_warnings include extra sanity checks
@@ -521,7 +521,7 @@ eleza _is_gui_available():
     lasivyo sys.platform == 'darwin':
         # The Aqua Tk implementations on OS X can abort the process if
         # being called kwenye an environment where a window server connection
-        # cansio be made, kila instance when invoked by a buildbot ama ssh
+        # cannot be made, kila instance when invoked by a buildbot ama ssh
         # process sio running under the same user id kama the current console
         # user.  To avoid that, ashiria an exception ikiwa the window manager
         # connection ni sio available.
@@ -531,7 +531,7 @@ eleza _is_gui_available():
         app_services = cdll.LoadLibrary(find_library("ApplicationServices"))
 
         ikiwa app_services.CGMainDisplayID() == 0:
-            reason = "gui tests cansio run without OS X window manager"
+            reason = "gui tests cannot run without OS X window manager"
         isipokua:
             kundi ProcessSerialNumber(Structure):
                 _fields_ = [("highLongOfPSN", c_int),
@@ -540,7 +540,7 @@ eleza _is_gui_available():
             psn_p = pointer(psn)
             ikiwa (  (app_services.GetCurrentProcess(psn_p) < 0) ama
                   (app_services.SetFrontProcess(psn_p) < 0) ):
-                reason = "cansio run without OS X gui process"
+                reason = "cannot run without OS X gui process"
 
     # check on every platform whether tkinter can actually do anything
     ikiwa sio reason:
@@ -792,7 +792,7 @@ eleza bind_unix_socket(sock, addr):
         sock.bind(addr)
     tatizo PermissionError:
         sock.close()
-        ashiria unittest.SkipTest('cansio bind AF_UNIX sockets')
+        ashiria unittest.SkipTest('cannot bind AF_UNIX sockets')
 
 eleza _is_ipv6_enabled():
     """Check whether IPv6 ni enabled on this host."""
@@ -935,7 +935,7 @@ TESTFN_ENCODING = sys.getfilesystemencoding()
 
 # TESTFN_UNENCODABLE ni a filename (str type) that should *not* be able to be
 # encoded by the filesystem encoding (in strict mode). It can be Tupu ikiwa we
-# cansio generate such filename.
+# cannot generate such filename.
 TESTFN_UNENCODABLE = Tupu
 ikiwa os.name == 'nt':
     # skip win32s (0) ama Windows 9x/ME (1)
@@ -955,7 +955,7 @@ ikiwa os.name == 'nt':
 # Mac OS X denies unencodable filenames (invalid utf-8)
 lasivyo sys.platform != 'darwin':
     jaribu:
-        # ascii na utf-8 cansio encode the byte 0xff
+        # ascii na utf-8 cannot encode the byte 0xff
         b'\xff'.decode(TESTFN_ENCODING)
     tatizo UnicodeDecodeError:
         # 0xff will be encoded using the surrogate character u+DCFF
@@ -968,7 +968,7 @@ lasivyo sys.platform != 'darwin':
 
 # TESTFN_UNDECODABLE ni a filename (bytes type) that should *not* be able to be
 # decoded kutoka the filesystem encoding (in strict mode). It can be Tupu ikiwa we
-# cansio generate such filename (ex: the latin1 encoding can decode any byte
+# cannot generate such filename (ex: the latin1 encoding can decode any byte
 # sequence). On UNIX, TESTFN_UNDECODABLE can be decoded by os.fsdecode() thanks
 # to the surrogateescape error handler (PEP 383), but sio kutoka the filesystem
 # encoding kwenye strict mode.
@@ -1022,7 +1022,7 @@ eleza temp_dir(path=Tupu, quiet=Uongo):
         defaults to creating a temporary directory using tempfile.mkdtemp.
 
       quiet: ikiwa Uongo (the default), the context manager raises an exception
-        on error.  Otherwise, ikiwa the path ni specified na cansio be
+        on error.  Otherwise, ikiwa the path ni specified na cannot be
         created, only a warning ni issued.
 
     """
@@ -1532,7 +1532,7 @@ eleza get_socket_conn_refused_errs():
         # ukijumuisha EADDRNOTAVAIL on Travis CI
         errors.append(errno.EADDRNOTAVAIL)
     ikiwa hasattr(errno, 'EHOSTUNREACH'):
-        # bpo-37583: The destination host cansio be reached
+        # bpo-37583: The destination host cannot be reached
         errors.append(errno.EHOSTUNREACH)
     ikiwa sio IPV6_ENABLED:
         errors.append(errno.EAFNOSUPPORT)
@@ -1740,7 +1740,7 @@ eleza run_with_locale(catstr, *locales):
                 # ikiwa the test author gives us an invalid category string
                 raise
             tatizo:
-                # cansio retrieve original locale, so do nothing
+                # cannot retrieve original locale, so do nothing
                 locale = orig_locale = Tupu
             isipokua:
                 kila loc kwenye locales:
@@ -2938,7 +2938,7 @@ eleza run_in_subinterp(code):
         pita
     isipokua:
         ikiwa tracemalloc.is_tracing():
-            ashiria unittest.SkipTest("run_in_subinterp() cansio be used "
+            ashiria unittest.SkipTest("run_in_subinterp() cannot be used "
                                      "ikiwa tracemalloc module ni tracing "
                                      "memory allocations")
     agiza _testcapi
@@ -3092,7 +3092,7 @@ kundi SaveSignals:
         agiza signal
         self.signal = signal
         self.signals = signal.valid_signals()
-        # SIGKILL na SIGSTOP signals cansio be ignored nor caught
+        # SIGKILL na SIGSTOP signals cannot be ignored nor caught
         kila signame kwenye ('SIGKILL', 'SIGSTOP'):
             jaribu:
                 signum = getattr(signal, signame)
@@ -3109,7 +3109,7 @@ kundi SaveSignals:
                 # registered by the Python signal module,
                 # na the handler ni sio SIG_DFL nor SIG_IGN.
                 #
-                # Ignore the signal: we cansio restore the handler.
+                # Ignore the signal: we cannot restore the handler.
                 endelea
             self.handlers[signum] = handler
 

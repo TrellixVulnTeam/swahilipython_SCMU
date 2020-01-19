@@ -1244,7 +1244,7 @@ kundi AbstractHTTPHandler(BaseHandler):
             data = request.data
             ikiwa isinstance(data, str):
                 msg = "POST data should be bytes, an iterable of bytes, " \
-                      "or a file object. It cansio be of type str."
+                      "or a file object. It cannot be of type str."
                 ashiria TypeError(msg)
             ikiwa sio request.has_header('Content-type'):
                 request.add_unredirected_header(

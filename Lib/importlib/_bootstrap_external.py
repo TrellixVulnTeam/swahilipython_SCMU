@@ -457,7 +457,7 @@ eleza _check_name(method):
         ikiwa name ni Tupu:
             name = self.name
         lasivyo self.name != name:
-            ashiria ImportError('loader kila %s cansio handle %s' %
+            ashiria ImportError('loader kila %s cannot handle %s' %
                                 (self.name, name), name=name)
         rudisha method(self, name, *args, **kwargs)
     jaribu:
@@ -778,7 +778,7 @@ kundi _LoaderBasics:
         """Execute the module."""
         code = self.get_code(module.__name__)
         ikiwa code ni Tupu:
-            ashiria ImportError('cansio load module {!r} when get_code() '
+            ashiria ImportError('cannot load module {!r} when get_code() '
                               'returns Tupu'.format(module.__name__))
         _bootstrap._call_with_frames_removed(exec, code, module.__dict__)
 
@@ -793,7 +793,7 @@ kundi SourceLoader(_LoaderBasics):
         """Optional method that returns the modification time (an int) kila the
         specified path (a str).
 
-        Raises OSError when the path cansio be handled.
+        Raises OSError when the path cannot be handled.
         """
         ashiria OSError
 
@@ -807,7 +807,7 @@ kundi SourceLoader(_LoaderBasics):
         - 'size' (optional) ni the size kwenye bytes of the source code.
 
         Implementing this method allows the loader to read bytecode files.
-        Raises OSError when the path cansio be handled.
+        Raises OSError when the path cannot be handled.
         """
         rudisha {'mtime': self.path_mtime(path)}
 
@@ -1117,7 +1117,7 @@ kundi ExtensionFileLoader(FileLoader, _LoaderBasics):
                    kila suffix kwenye EXTENSION_SUFFIXES)
 
     eleza get_code(self, fullname):
-        """Return Tupu kama an extension module cansio create a code object."""
+        """Return Tupu kama an extension module cannot create a code object."""
         rudisha Tupu
 
     eleza get_source(self, fullname):

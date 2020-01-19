@@ -618,7 +618,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                         self.message(bp.bpformat())
             rudisha
         # parse arguments; comma has lowest precedence
-        # na cansio occur kwenye filename
+        # na cannot occur kwenye filename
         filename = Tupu
         lineno = Tupu
         cond = Tupu

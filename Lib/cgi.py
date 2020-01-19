@@ -571,7 +571,7 @@ kundi FieldStorage:
 
     eleza __bool__(self):
         ikiwa self.list ni Tupu:
-            ashiria TypeError("Cansio be converted to bool.")
+            ashiria TypeError("Cannot be converted to bool.")
         rudisha bool(self.list)
 
     eleza read_urlencoded(self):

@@ -637,7 +637,7 @@ kundi NonCallableMock(Base):
             ashiria AttributeError(name)
         ikiwa sio self._mock_unsafe:
             ikiwa name.startswith(('assert', 'assret')):
-                ashiria AttributeError("Attributes cansio start ukijumuisha 'assert' "
+                ashiria AttributeError("Attributes cannot start ukijumuisha 'assert' "
                                      "or 'assret'")
 
         result = self._mock_children.get(name)
@@ -766,7 +766,7 @@ kundi NonCallableMock(Base):
 
         ikiwa self._mock_sealed na sio hasattr(self, name):
             mock_name = f'{self._extract_mock_name()}.{name}'
-            ashiria AttributeError(f'Cansio set {mock_name}')
+            ashiria AttributeError(f'Cannot set {mock_name}')
 
         rudisha object.__setattr__(self, name, value)
 
@@ -1240,11 +1240,11 @@ kundi _patch(object):
         ikiwa new_callable ni sio Tupu:
             ikiwa new ni sio DEFAULT:
                 ashiria ValueError(
-                    "Cansio use 'new' na 'new_callable' together"
+                    "Cannot use 'new' na 'new_callable' together"
                 )
             ikiwa autospec ni sio Tupu:
                 ashiria ValueError(
-                    "Cansio use 'autospec' na 'new_callable' together"
+                    "Cannot use 'autospec' na 'new_callable' together"
                 )
 
         self.getter = getter

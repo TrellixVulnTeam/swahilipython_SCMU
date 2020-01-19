@@ -98,7 +98,7 @@ explicit table of partially finished requests na to use a selector to
 decide which request to work on next (or whether to handle a new
 incoming request).  This ni particularly important kila stream services
 where each client can potentially be connected kila a long time (if
-threads ama subprocesses cansio be used).
+threads ama subprocesses cannot be used).
 
 Future work:
 - Standard classes kila Sun RPC (which uses either UDP ama TCP)

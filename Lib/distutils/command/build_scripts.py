@@ -107,7 +107,7 @@ kundi build_scripts(Command):
                     shebang = b"#!" + executable + post_interp + b"\n"
                     # Python parser starts to read a script using UTF-8 until
                     # it gets a #coding:xxx cookie. The shebang has to be the
-                    # first line of a file, the #coding:xxx cookie cansio be
+                    # first line of a file, the #coding:xxx cookie cannot be
                     # written before. So the shebang has to be decodable from
                     # UTF-8.
                     jaribu:

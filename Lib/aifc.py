@@ -603,17 +603,17 @@ kundi Aifc_write:
     #
     eleza aiff(self):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._aifc = 0
 
     eleza aifc(self):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._aifc = 1
 
     eleza setnchannels(self, nchannels):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa nchannels < 1:
             ashiria Error('bad # of channels')
         self._nchannels = nchannels
@@ -625,7 +625,7 @@ kundi Aifc_write:
 
     eleza setsampwidth(self, sampwidth):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa sampwidth < 1 ama sampwidth > 4:
             ashiria Error('bad sample width')
         self._sampwidth = sampwidth
@@ -637,7 +637,7 @@ kundi Aifc_write:
 
     eleza setframerate(self, framerate):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa framerate <= 0:
             ashiria Error('bad frame rate')
         self._framerate = framerate
@@ -649,7 +649,7 @@ kundi Aifc_write:
 
     eleza setnframes(self, nframes):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._nframes = nframes
 
     eleza getnframes(self):
@@ -657,7 +657,7 @@ kundi Aifc_write:
 
     eleza setcomptype(self, comptype, compname):
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa comptype haiko kwenye (b'NONE', b'ulaw', b'ULAW',
                             b'alaw', b'ALAW', b'G722'):
             ashiria Error('unsupported compression type')
@@ -672,13 +672,13 @@ kundi Aifc_write:
 
 ##  eleza setversion(self, version):
 ##      ikiwa self._nframeswritten:
-##          ashiria Error, 'cansio change parameters after starting to write'
+##          ashiria Error, 'cannot change parameters after starting to write'
 ##      self._version = version
 
     eleza setparams(self, params):
         nchannels, sampwidth, framerate, nframes, comptype, compname = params
         ikiwa self._nframeswritten:
-            ashiria Error('cansio change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa comptype haiko kwenye (b'NONE', b'ulaw', b'ULAW',
                             b'alaw', b'ALAW', b'G722'):
             ashiria Error('unsupported compression type')

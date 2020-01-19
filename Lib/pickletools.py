@@ -1482,7 +1482,7 @@ opcodes = [
       IEEE-754 double precision values, which ni what Python float maps to
       on most boxes).
 
-      In general, FLOAT cansio be used to transport infinities, NaNs, ama
+      In general, FLOAT cannot be used to transport infinities, NaNs, ama
       minus zero across boxes (or even on a single box, ikiwa the platform C
       library can't read the strings it produces kila such things -- Windows
       ni like that), but may do less damage than BINFLOAT on boxes with
@@ -1498,7 +1498,7 @@ opcodes = [
       doc="""Float stored kwenye binary form, ukijumuisha 8 bytes of data.
 
       This generally requires less than half the space of FLOAT encoding.
-      In general, BINFLOAT cansio be used to transport infinities, NaNs, ama
+      In general, BINFLOAT cannot be used to transport infinities, NaNs, ama
       minus zero, raises an exception ikiwa the exponent exceeds the range of
       an IEEE-754 double, na retains no more than 53 bits of precision (if
       there are more than that, "add a half na chop" rounding ni used to

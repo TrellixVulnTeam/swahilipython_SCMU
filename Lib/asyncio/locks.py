@@ -363,7 +363,7 @@ kundi Condition(_ContextManagerMixin):
         awakened, it re-acquires the lock na returns Kweli.
         """
         ikiwa sio self.locked():
-            ashiria RuntimeError('cansio wait on un-acquired lock')
+            ashiria RuntimeError('cannot wait on un-acquired lock')
 
         self.release()
         jaribu:
@@ -414,7 +414,7 @@ kundi Condition(_ContextManagerMixin):
         sio release the lock, its caller should.
         """
         ikiwa sio self.locked():
-            ashiria RuntimeError('cansio notify on un-acquired lock')
+            ashiria RuntimeError('cannot notify on un-acquired lock')
 
         idx = 0
         kila fut kwenye self._waiters:

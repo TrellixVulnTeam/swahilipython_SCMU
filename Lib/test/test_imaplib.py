@@ -77,7 +77,7 @@ kundi TestImaplib(unittest.TestCase):
             jaribu:
                 s.connect(('', imaplib.IMAP4_PORT))
                 self.skipTest(
-                    "Cansio run the test ukijumuisha local IMAP server running.")
+                    "Cannot run the test ukijumuisha local IMAP server running.")
             tatizo socket.error:
                 pita
 

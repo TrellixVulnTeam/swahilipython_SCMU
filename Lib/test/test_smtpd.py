@@ -571,7 +571,7 @@ kundi SMTPDChannelTest(unittest.TestCase):
     eleza test_VRFY(self):
         self.write_line(b'VRFY eggs@example')
         self.assertEqual(self.channel.socket.last,
-            b'252 Cansio VRFY user, but will accept message na attempt ' + \
+            b'252 Cannot VRFY user, but will accept message na attempt ' + \
             b'delivery\r\n')
 
     eleza test_VRFY_syntax(self):

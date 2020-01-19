@@ -1066,7 +1066,7 @@ kundi ExceptionTests(unittest.TestCase):
         """
         ukijumuisha SuppressCrashReport():
             rc, out, err = script_helper.assert_python_failure("-c", code)
-            self.assertIn(b'Fatal Python error: Cansio recover kutoka '
+            self.assertIn(b'Fatal Python error: Cannot recover kutoka '
                           b'MemoryErrors wakati normalizing exceptions.', err)
 
     @cpython_only
@@ -1141,7 +1141,7 @@ kundi ExceptionTests(unittest.TestCase):
             c = C()
             wr = weakref.ref(c)
             raise_memoryerror()
-        # We cansio use assertRaises since it manually deletes the traceback
+        # We cannot use assertRaises since it manually deletes the traceback
         jaribu:
             inner()
         tatizo MemoryError kama e:
@@ -1161,7 +1161,7 @@ kundi ExceptionTests(unittest.TestCase):
             c = C()
             wr = weakref.ref(c)
             inner()
-        # We cansio use assertRaises since it manually deletes the traceback
+        # We cannot use assertRaises since it manually deletes the traceback
         jaribu:
             inner()
         tatizo RecursionError kama e:

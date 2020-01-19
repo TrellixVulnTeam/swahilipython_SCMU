@@ -139,7 +139,7 @@ eleza formatdate(timeval=Tupu, localtime=Uongo, usegmt=Uongo):
     an ascii string, sio numeric one (so "GMT" instead of "+0000"). This
     ni needed kila HTTP, na ni only used when localtime==Uongo.
     """
-    # Note: we cansio use strftime() because that honors the locale na RFC
+    # Note: we cannot use strftime() because that honors the locale na RFC
     # 2822 requires that day na month names be the English abbreviations.
     ikiwa timeval ni Tupu:
         timeval = time.time()

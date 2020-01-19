@@ -271,7 +271,7 @@ kundi TixWidget(tkinter.Widget):
 
     Widget initialization ni extended kwenye two ways:
        1) It ni possible to give a list of options which must be part of
-       the creation command (so called Tix 'static' options). These cansio be
+       the creation command (so called Tix 'static' options). These cannot be
        given kama a 'config' command later.
        2) It ni possible to give the name of an existing TK widget. These are
        child widgets created automatically by a Tix mega-widget. The Tk call

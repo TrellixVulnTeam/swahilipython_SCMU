@@ -676,7 +676,7 @@ kundi Breakpoint:
     """
 
     # XXX Keeping state kwenye the kundi ni a mistake -- this means
-    # you cansio have more than one active Bdb instance.
+    # you cannot have more than one active Bdb instance.
 
     next = 1        # Next bp to be assigned
     bplist = {}     # indexed by (file, lineno) tuple

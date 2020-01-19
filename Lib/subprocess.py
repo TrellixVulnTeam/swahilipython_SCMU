@@ -780,7 +780,7 @@ kundi Popen(object):
         # Validate the combinations of text na universal_newlines
         ikiwa (text ni sio Tupu na universal_newlines ni sio Tupu
             na bool(universal_newlines) != bool(text)):
-            ashiria SubprocessError('Cansio disambiguate when both text '
+            ashiria SubprocessError('Cannot disambiguate when both text '
                                   'and universal_newlines are supplied but '
                                   'different. Pass one ama the other.')
 
@@ -996,7 +996,7 @@ kundi Popen(object):
         """
 
         ikiwa self._communication_started na input:
-            ashiria ValueError("Cansio send input after starting communication")
+            ashiria ValueError("Cannot send input after starting communication")
 
         # Optimization: If we are sio worried about timeouts, we haven't
         # started communicating, na we have one ama zero pipes, using select()
@@ -1726,7 +1726,7 @@ kundi Popen(object):
             """Check ikiwa child process has terminated.  Returns returncode
             attribute.
 
-            This method ni called by __del__, so it cansio reference anything
+            This method ni called by __del__, so it cannot reference anything
             outside of the local scope (nor can any methods it calls).
 
             """

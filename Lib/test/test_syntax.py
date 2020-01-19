@@ -33,7 +33,7 @@ SyntaxError: invalid syntax
 
 >>> Tupu = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to Tupu
+SyntaxError: cannot assign to Tupu
 
 >>> obj.Kweli = 1
 Traceback (most recent call last):
@@ -41,55 +41,55 @@ SyntaxError: invalid syntax
 
 >>> Kweli = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to Kweli
+SyntaxError: cannot assign to Kweli
 
 >>> (Kweli := 1)
 Traceback (most recent call last):
-SyntaxError: cansio use named assignment ukijumuisha Kweli
+SyntaxError: cannot use named assignment ukijumuisha Kweli
 
 >>> obj.__debug__ = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to __debug__
+SyntaxError: cannot assign to __debug__
 
 >>> __debug__ = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to __debug__
+SyntaxError: cannot assign to __debug__
 
 >>> (__debug__ := 1)
 Traceback (most recent call last):
-SyntaxError: cansio assign to __debug__
+SyntaxError: cannot assign to __debug__
 
 >>> f() = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to function call
+SyntaxError: cannot assign to function call
 
 >>> toa f()
 Traceback (most recent call last):
-SyntaxError: cansio delete function call
+SyntaxError: cannot delete function call
 
 >>> a + 1 = 2
 Traceback (most recent call last):
-SyntaxError: cansio assign to operator
+SyntaxError: cannot assign to operator
 
 >>> (x kila x kwenye x) = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to generator expression
+SyntaxError: cannot assign to generator expression
 
 >>> 1 = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to literal
+SyntaxError: cannot assign to literal
 
 >>> "abc" = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to literal
+SyntaxError: cannot assign to literal
 
 >>> b"" = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to literal
+SyntaxError: cannot assign to literal
 
 >>> ... = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to Ellipsis
+SyntaxError: cannot assign to Ellipsis
 
 >>> `1` = 1
 Traceback (most recent call last):
@@ -102,31 +102,31 @@ them.
 
 >>> (a, "b", c) = (1, 2, 3)
 Traceback (most recent call last):
-SyntaxError: cansio assign to literal
+SyntaxError: cannot assign to literal
 
 >>> (a, Kweli, c) = (1, 2, 3)
 Traceback (most recent call last):
-SyntaxError: cansio assign to Kweli
+SyntaxError: cannot assign to Kweli
 
 >>> (a, __debug__, c) = (1, 2, 3)
 Traceback (most recent call last):
-SyntaxError: cansio assign to __debug__
+SyntaxError: cannot assign to __debug__
 
 >>> (a, *Kweli, c) = (1, 2, 3)
 Traceback (most recent call last):
-SyntaxError: cansio assign to Kweli
+SyntaxError: cannot assign to Kweli
 
 >>> (a, *__debug__, c) = (1, 2, 3)
 Traceback (most recent call last):
-SyntaxError: cansio assign to __debug__
+SyntaxError: cannot assign to __debug__
 
 >>> [a, b, c + 1] = [1, 2, 3]
 Traceback (most recent call last):
-SyntaxError: cansio assign to operator
+SyntaxError: cannot assign to operator
 
 >>> a ikiwa 1 isipokua b = 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to conditional expression
+SyntaxError: cannot assign to conditional expression
 
 From compiler_complex_args():
 
@@ -299,45 +299,45 @@ SyntaxError: invalid syntax
 
 >>> f(lambda x: x[0] = 3)
 Traceback (most recent call last):
-SyntaxError: expression cansio contain assignment, perhaps you meant "=="?
+SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 
 The grammar accepts any test (basically, any expression) kwenye the
 keyword slot of a call site.  Test a few different options.
 
 >>> f(x()=2)
 Traceback (most recent call last):
-SyntaxError: expression cansio contain assignment, perhaps you meant "=="?
+SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 >>> f(a ama b=1)
 Traceback (most recent call last):
-SyntaxError: expression cansio contain assignment, perhaps you meant "=="?
+SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 >>> f(x.y=1)
 Traceback (most recent call last):
-SyntaxError: expression cansio contain assignment, perhaps you meant "=="?
+SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 >>> f((x)=2)
 Traceback (most recent call last):
-SyntaxError: expression cansio contain assignment, perhaps you meant "=="?
+SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 >>> f(Kweli=2)
 Traceback (most recent call last):
-SyntaxError: cansio assign to Kweli
+SyntaxError: cannot assign to Kweli
 >>> f(__debug__=1)
 Traceback (most recent call last):
-SyntaxError: cansio assign to __debug__
+SyntaxError: cannot assign to __debug__
 
 
 More set_context():
 
 >>> (x kila x kwenye x) += 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to generator expression
+SyntaxError: cannot assign to generator expression
 >>> Tupu += 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to Tupu
+SyntaxError: cannot assign to Tupu
 >>> __debug__ += 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to __debug__
+SyntaxError: cannot assign to __debug__
 >>> f() += 1
 Traceback (most recent call last):
-SyntaxError: cansio assign to function call
+SyntaxError: cannot assign to function call
 
 
 Test endelea kwenye finally kwenye weird combinations.
@@ -534,7 +534,7 @@ leading to spurious errors.
    ...   pita
    Traceback (most recent call last):
      ...
-   SyntaxError: cansio assign to function call
+   SyntaxError: cannot assign to function call
 
    >>> ikiwa 1:
    ...   pita
@@ -542,27 +542,27 @@ leading to spurious errors.
    ...   x() = 1
    Traceback (most recent call last):
      ...
-   SyntaxError: cansio assign to function call
+   SyntaxError: cannot assign to function call
 
    >>> ikiwa 1:
    ...   x() = 1
    ... lasivyo 1:
    ...   pita
+   ... isipokua:
+   ...   pita
+   Traceback (most recent call last):
+     ...
+   SyntaxError: cannot assign to function call
+
+   >>> ikiwa 1:
+   ...   pita
+   ... lasivyo 1:
+   ...   x() = 1
    ... isipokua:
    ...   pita
    Traceback (most recent call last):
      ...
-   SyntaxError: cansio assign to function call
-
-   >>> ikiwa 1:
-   ...   pita
-   ... lasivyo 1:
-   ...   x() = 1
-   ... isipokua:
-   ...   pita
-   Traceback (most recent call last):
-     ...
-   SyntaxError: cansio assign to function call
+   SyntaxError: cannot assign to function call
 
    >>> ikiwa 1:
    ...   pita
@@ -572,7 +572,7 @@ leading to spurious errors.
    ...   x() = 1
    Traceback (most recent call last):
      ...
-   SyntaxError: cansio assign to function call
+   SyntaxError: cannot assign to function call
 
 Make sure that the old "ashiria X, Y[, Z]" form ni gone:
    >>> ashiria X, Y
@@ -592,33 +592,33 @@ SyntaxError: keyword argument repeated
 
 >>> {1, 2, 3} = 42
 Traceback (most recent call last):
-SyntaxError: cansio assign to set display
+SyntaxError: cannot assign to set display
 
 >>> {1: 2, 3: 4} = 42
 Traceback (most recent call last):
-SyntaxError: cansio assign to dict display
+SyntaxError: cannot assign to dict display
 
 >>> f'{x}' = 42
 Traceback (most recent call last):
-SyntaxError: cansio assign to f-string expression
+SyntaxError: cannot assign to f-string expression
 
 >>> f'{x}-{y}' = 42
 Traceback (most recent call last):
-SyntaxError: cansio assign to f-string expression
+SyntaxError: cannot assign to f-string expression
 
 Corner-cases that used to fail to ashiria the correct error:
 
     >>> eleza f(*, x=lambda __debug__:0): pita
     Traceback (most recent call last):
-    SyntaxError: cansio assign to __debug__
+    SyntaxError: cannot assign to __debug__
 
     >>> eleza f(*args:(lambda __debug__:0)): pita
     Traceback (most recent call last):
-    SyntaxError: cansio assign to __debug__
+    SyntaxError: cannot assign to __debug__
 
     >>> eleza f(**kwargs:(lambda __debug__:0)): pita
     Traceback (most recent call last):
-    SyntaxError: cansio assign to __debug__
+    SyntaxError: cannot assign to __debug__
 
     >>> ukijumuisha (lambda *:0): pita
     Traceback (most recent call last):
@@ -628,11 +628,11 @@ Corner-cases that used to crash:
 
     >>> eleza f(**__debug__): pita
     Traceback (most recent call last):
-    SyntaxError: cansio assign to __debug__
+    SyntaxError: cannot assign to __debug__
 
     >>> eleza f(*xx, __debug__): pita
     Traceback (most recent call last):
-    SyntaxError: cansio assign to __debug__
+    SyntaxError: cannot assign to __debug__
 
 """
 

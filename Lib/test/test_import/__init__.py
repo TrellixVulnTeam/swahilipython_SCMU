@@ -90,7 +90,7 @@ kundi ImportTests(unittest.TestCase):
             kutoka os agiza i_dont_exist
         self.assertEqual(cm.exception.name, 'os')
         self.assertEqual(cm.exception.path, os.__file__)
-        self.assertRegex(str(cm.exception), r"cansio agiza name 'i_dont_exist' kutoka 'os' \(.*os.py\)")
+        self.assertRegex(str(cm.exception), r"cannot agiza name 'i_dont_exist' kutoka 'os' \(.*os.py\)")
 
     @cpython_only
     eleza test_from_import_missing_attr_has_name_and_so_path(self):
@@ -99,7 +99,7 @@ kundi ImportTests(unittest.TestCase):
             kutoka _testcapi agiza i_dont_exist
         self.assertEqual(cm.exception.name, '_testcapi')
         self.assertEqual(cm.exception.path, _testcapi.__file__)
-        self.assertRegex(str(cm.exception), r"cansio agiza name 'i_dont_exist' kutoka '_testcapi' \(.*\.(so|pyd)\)")
+        self.assertRegex(str(cm.exception), r"cannot agiza name 'i_dont_exist' kutoka '_testcapi' \(.*\.(so|pyd)\)")
 
     eleza test_from_import_missing_attr_has_name(self):
         ukijumuisha self.assertRaises(ImportError) kama cm:
@@ -374,12 +374,12 @@ kundi ImportTests(unittest.TestCase):
             jaribu:
                 os.utime(source, (2 ** 33 - 5, 2 ** 33 - 5))
             tatizo OverflowError:
-                self.skipTest("cansio set modification time to large integer")
+                self.skipTest("cannot set modification time to large integer")
             tatizo OSError kama e:
                 ikiwa e.errno haiko kwenye (getattr(errno, 'EOVERFLOW', Tupu),
                                    getattr(errno, 'EINVAL', Tupu)):
                     raise
-                self.skipTest("cansio set modification time to large integer ({})".format(e))
+                self.skipTest("cannot set modification time to large integer ({})".format(e))
             __import__(TESTFN)
             # The pyc file was created.
             os.stat(compiled)
@@ -405,7 +405,7 @@ kundi ImportTests(unittest.TestCase):
             kutoka bogus agiza foo
 
     eleza test_from_import_message_for_existing_module(self):
-        ukijumuisha self.assertRaisesRegex(ImportError, "^cansio agiza name 'bogus'"):
+        ukijumuisha self.assertRaisesRegex(ImportError, "^cannot agiza name 'bogus'"):
             kutoka re agiza bogus
 
     eleza test_from_import_AttributeError(self):
@@ -422,7 +422,7 @@ kundi ImportTests(unittest.TestCase):
             kutoka test_from_import_AttributeError agiza does_not_exist
 
         self.assertEqual(str(cm.exception),
-            "cansio agiza name 'does_not_exist' kutoka '<unknown module name>' (unknown location)")
+            "cannot agiza name 'does_not_exist' kutoka '<unknown module name>' (unknown location)")
 
     @cpython_only
     eleza test_issue31492(self):
@@ -721,7 +721,7 @@ kundi PathsTests(unittest.TestCase):
         tatizo OSError kama e:
             ikiwa e.errno kwenye (errno.EPERM, errno.EACCES, errno.ENOENT):
                 # See issue #15338
-                self.skipTest("cansio access administrative share %r" % (unc,))
+                self.skipTest("cannot access administrative share %r" % (unc,))
             raise
         sys.path.insert(0, unc)
         jaribu:
@@ -1335,7 +1335,7 @@ kundi CircularImportTests(unittest.TestCase):
         ukijumuisha self.assertRaises(ImportError) kama cm:
             agiza test.test_import.data.circular_imports.from_cycle1
         self.assertIn(
-            "cansio agiza name 'b' kutoka partially initialized module "
+            "cannot agiza name 'b' kutoka partially initialized module "
             "'test.test_import.data.circular_imports.from_cycle1' "
             "(most likely due to a circular import)",
             str(cm.exception),

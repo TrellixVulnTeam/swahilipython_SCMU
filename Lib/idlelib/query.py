@@ -263,7 +263,7 @@ kundi HelpSource(Query):
 
     eleza askfilename(self, filetypes, initdir, initfile):  # htest #
         # Extracted kutoka browse_file so can mock kila unittests.
-        # Cansio unittest kama cansio simulate button clicks.
+        # Cannot unittest kama cannot simulate button clicks.
         # Test by running htest, such kama by running this file.
         rudisha filedialog.Open(parent=self, filetypes=filetypes)\
                .show(initialdir=initdir, initialfile=initfile)

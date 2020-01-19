@@ -471,10 +471,10 @@ eleza _parse_localename(localename):
 
         The localename ni normalized na pitaed through the locale
         alias engine. A ValueError ni raised kwenye case the locale name
-        cansio be parsed.
+        cannot be parsed.
 
         The language code corresponds to RFC 1766.  code na encoding
-        can be Tupu kwenye case the values cansio be determined ama are
+        can be Tupu kwenye case the values cannot be determined ama are
         unknown to this implementation.
 
     """

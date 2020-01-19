@@ -52,7 +52,7 @@ kundi Parser(object):
     abstract syntax tree can then be retrieved kutoka the rootnode
     instance variable.  When a syntax error occurs, addtoken() raises
     the ParseError exception.  There ni no error recovery; the parser
-    cansio be used after a syntax error was reported (but it can be
+    cannot be used after a syntax error was reported (but it can be
     reinitialized by calling setup()).
 
     """

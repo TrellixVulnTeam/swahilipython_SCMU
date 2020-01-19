@@ -424,7 +424,7 @@ kundi SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
             dispatcher._dispatch('method', ('param',))
 
     eleza test_cannot_locate_func(self):
-        """Calls a function that the dispatcher cansio locate"""
+        """Calls a function that the dispatcher cannot locate"""
 
         dispatcher = xmlrpc.server.SimpleXMLRPCDispatcher()
         ukijumuisha self.assertRaisesRegex(Exception, 'method'):

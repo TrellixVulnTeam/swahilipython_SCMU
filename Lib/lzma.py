@@ -96,10 +96,10 @@ kundi LZMAFile(_compression.BaseStream):
 
         ikiwa mode kwenye ("r", "rb"):
             ikiwa check != -1:
-                ashiria ValueError("Cansio specify an integrity check "
+                ashiria ValueError("Cannot specify an integrity check "
                                  "when opening a file kila reading")
             ikiwa preset ni sio Tupu:
-                ashiria ValueError("Cansio specify a preset compression "
+                ashiria ValueError("Cannot specify a preset compression "
                                  "level when opening a file kila reading")
             ikiwa format ni Tupu:
                 format = FORMAT_AUTO

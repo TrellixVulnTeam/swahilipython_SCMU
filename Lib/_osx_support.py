@@ -171,7 +171,7 @@ eleza _find_appropriate_compiler(_config_vars):
         # another location via CC).  If sio found, try using xcrun
         # to find an uninstalled clang (within a selected Xcode).
 
-        # NOTE: Cansio use subprocess here because of bootstrap
+        # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself (and os.popen is
         # implemented on top of subprocess na ni therefore sio
         # usable kama well)
@@ -188,7 +188,7 @@ eleza _find_appropriate_compiler(_config_vars):
 
     ikiwa sio cc:
         ashiria SystemError(
-               "Cansio locate working compiler")
+               "Cannot locate working compiler")
 
     ikiwa cc != oldcc:
         # Found a replacement compiler.
@@ -233,7 +233,7 @@ eleza _remove_unsupported_archs(_config_vars):
         rudisha _config_vars
 
     ikiwa re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) ni sio Tupu:
-        # NOTE: Cansio use subprocess here because of bootstrap
+        # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself
         status = os.system(
             """echo 'int main{};' | """

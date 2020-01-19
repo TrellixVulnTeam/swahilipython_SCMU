@@ -204,11 +204,11 @@ kundi SimpleTest(abc.LoaderTests):
             jaribu:
                 os.utime(source, (2 ** 33 - 5, 2 ** 33 - 5))
             tatizo OverflowError:
-                self.skipTest("cansio set modification time to large integer")
+                self.skipTest("cannot set modification time to large integer")
             tatizo OSError kama e:
                 ikiwa e.errno != getattr(errno, 'EOVERFLOW', Tupu):
                     raise
-                self.skipTest("cansio set modification time to large integer ({})".format(e))
+                self.skipTest("cannot set modification time to large integer ({})".format(e))
             loader = self.machinery.SourceFileLoader('_temp', mapping['_temp'])
             # PEP 451
             module = types.ModuleType('_temp')

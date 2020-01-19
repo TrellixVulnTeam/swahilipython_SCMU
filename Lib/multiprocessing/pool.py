@@ -528,7 +528,7 @@ kundi Pool(object):
         kila taskseq, set_length kwenye iter(taskqueue.get, Tupu):
             task = Tupu
             jaribu:
-                # iterating taskseq cansio fail
+                # iterating taskseq cannot fail
                 kila task kwenye taskseq:
                     ikiwa thread._state != RUN:
                         util.debug('task handler found thread._state != RUN')
@@ -638,7 +638,7 @@ kundi Pool(object):
 
     eleza __reduce__(self):
         ashiria NotImplementedError(
-              'pool objects cansio be pitaed between processes ama pickled'
+              'pool objects cannot be pitaed between processes ama pickled'
               )
 
     eleza close(self):
@@ -690,7 +690,7 @@ kundi Pool(object):
 
         ikiwa (sio result_handler.is_alive()) na (len(cache) != 0):
             ashiria AssertionError(
-                "Cansio have cache ukijumuisha result_hander sio alive")
+                "Cannot have cache ukijumuisha result_hander sio alive")
 
         result_handler._state = TERMINATE
         change_notifier.put(Tupu)

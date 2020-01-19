@@ -307,7 +307,7 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
                 lasivyo blocking:
                     ikiwa result ni self:
                         new_exc = RuntimeError(
-                            f'Task cansio await on itself: {self!r}')
+                            f'Task cannot await on itself: {self!r}')
                         self._loop.call_soon(
                             self.__step, new_exc, context=self._context)
                     isipokua:
@@ -545,7 +545,7 @@ async eleza _cancel_and_wait(fut, loop):
 
     jaribu:
         fut.cancel()
-        # We cansio wait on *fut* directly to make
+        # We cannot wait on *fut* directly to make
         # sure _cancel_and_wait itself ni reliably cancellable.
         await waiter
     mwishowe:
@@ -929,7 +929,7 @@ eleza _register_task(task):
 eleza _enter_task(loop, task):
     current_task = _current_tasks.get(loop)
     ikiwa current_task ni sio Tupu:
-        ashiria RuntimeError(f"Cansio enter into task {task!r} wakati another "
+        ashiria RuntimeError(f"Cannot enter into task {task!r} wakati another "
                            f"task {current_task!r} ni being executed.")
     _current_tasks[loop] = task
 

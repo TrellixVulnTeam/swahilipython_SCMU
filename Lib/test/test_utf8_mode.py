@@ -84,7 +84,7 @@ kundi UTF8ModeTests(unittest.TestCase):
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, '0')
 
-        # Cansio test ukijumuisha the POSIX locale, since the POSIX locale enables
+        # Cannot test ukijumuisha the POSIX locale, since the POSIX locale enables
         # the UTF-8 mode
         ikiwa sio self.posix_locale():
             # PYTHONUTF8 should be ignored ikiwa -E ni used

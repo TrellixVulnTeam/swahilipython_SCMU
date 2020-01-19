@@ -93,8 +93,8 @@ kundi Text:
     The mock's data motoa ni that a text ni a list of \n-terminated lines.
     The mock adds an empty string at  the beginning of the list so that the
     index of actual lines start at 1, kama ukijumuisha Tk. The methods never see this.
-    Tk initializes files ukijumuisha a terminal \n that cansio be deleted. It is
-    invisible kwenye the sense that one cansio move the cursor beyond it.
+    Tk initializes files ukijumuisha a terminal \n that cannot be deleted. It is
+    invisible kwenye the sense that one cannot move the cursor beyond it.
 
     This kundi ni only tested (and valid) ukijumuisha strings of ascii chars.
     For testing, we are sio concerned ukijumuisha Tk Text's treatment of,

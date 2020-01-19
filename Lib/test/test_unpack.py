@@ -55,7 +55,7 @@ Unpacking non-sequence
     >>> a, b, c = 7
     Traceback (most recent call last):
       ...
-    TypeError: cansio unpack non-iterable int object
+    TypeError: cannot unpack non-iterable int object
 
 Unpacking tuple of wrong size
 
@@ -129,7 +129,7 @@ Unpacking non-iterables should ashiria TypeError
     >>> () = 42
     Traceback (most recent call last):
       ...
-    TypeError: cansio unpack non-iterable int object
+    TypeError: cannot unpack non-iterable int object
 
 Unpacking to an empty iterable should ashiria ValueError
 

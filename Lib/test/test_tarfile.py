@@ -2053,7 +2053,7 @@ kundi LimitsTest(unittest.TestCase):
         tarinfo = tarfile.TarInfo("0123456789" * 10)
         tarinfo.tobuf(tarfile.USTAR_FORMAT)
 
-        # 101 char name that cansio be stored
+        # 101 char name that cannot be stored
         tarinfo = tarfile.TarInfo("0123456789" * 10 + "0")
         self.assertRaises(ValueError, tarinfo.tobuf, tarfile.USTAR_FORMAT)
 
@@ -2061,7 +2061,7 @@ kundi LimitsTest(unittest.TestCase):
         tarinfo = tarfile.TarInfo("123/" * 62 + "longname")
         tarinfo.tobuf(tarfile.USTAR_FORMAT)
 
-        # 256 char name that cansio be stored
+        # 256 char name that cannot be stored
         tarinfo = tarfile.TarInfo("1234567/" * 31 + "longname")
         self.assertRaises(ValueError, tarinfo.tobuf, tarfile.USTAR_FORMAT)
 

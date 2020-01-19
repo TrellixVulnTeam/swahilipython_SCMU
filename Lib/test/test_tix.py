@@ -5,7 +5,7 @@ agiza sys
 # Skip this test ikiwa the _tkinter module wasn't built.
 _tkinter = support.import_module('_tkinter')
 
-# Skip test ikiwa tk cansio be initialized.
+# Skip test ikiwa tk cannot be initialized.
 support.requires('gui')
 
 kutoka tkinter agiza tix, TclError

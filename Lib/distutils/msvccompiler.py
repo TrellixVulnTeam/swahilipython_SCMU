@@ -501,7 +501,7 @@ kundi MSVCCompiler(CCompiler) :
             ld_args = (ldflags + lib_opts + export_opts +
                        objects + ['/OUT:' + output_filename])
 
-            # The MSVC linker generates .lib na .exp files, which cansio be
+            # The MSVC linker generates .lib na .exp files, which cannot be
             # suppressed by any linker switches. The .lib files may even be
             # needed! Make sure they are generated kwenye the temporary build
             # directory. Since they have different names kila debug na release

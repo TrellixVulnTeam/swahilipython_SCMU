@@ -1492,7 +1492,7 @@ kundi _SubTest(TestCase):
         self.failureException = test_case.failureException
 
     eleza runTest(self):
-        ashiria NotImplementedError("subtests cansio be run directly")
+        ashiria NotImplementedError("subtests cannot be run directly")
 
     eleza _subDescription(self):
         parts = []

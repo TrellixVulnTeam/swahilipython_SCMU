@@ -986,7 +986,7 @@ deque(['g', 'h', 'i', 'j', 'k', 'l'])
 >>> deque(reversed(d))               # make a new deque kwenye reverse order
 deque(['l', 'k', 'j', 'i', 'h', 'g'])
 >>> d.clear()                        # empty the deque
->>> d.pop()                          # cansio pop kutoka an empty deque
+>>> d.pop()                          # cannot pop kutoka an empty deque
 Traceback (most recent call last):
   File "<pyshell#6>", line 1, kwenye -toplevel-
     d.pop()

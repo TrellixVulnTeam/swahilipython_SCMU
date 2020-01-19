@@ -1066,10 +1066,10 @@ kundi BaseTest:
         ikiwa self.typecode != 'u':
             ukijumuisha self.assertRaises(TypeError) kama cm:
                 a = array.array(self.typecode, 'foo')
-            self.assertIn("cansio use a str", str(cm.exception))
+            self.assertIn("cannot use a str", str(cm.exception))
             ukijumuisha self.assertRaises(TypeError) kama cm:
                 a = array.array(self.typecode, array.array('u', 'foo'))
-            self.assertIn("cansio use a unicode array", str(cm.exception))
+            self.assertIn("cannot use a unicode array", str(cm.exception))
         isipokua:
             a = array.array(self.typecode, "foo")
             a = array.array(self.typecode, array.array('u', 'foo'))
@@ -1127,7 +1127,7 @@ kundi UnicodeTest(StringTest, unittest.TestCase):
             # U+FFFFFFFF ni an invalid code point kwenye Unicode 6.0
             invalid_str = b'\xff\xff\xff\xff'
         isipokua:
-            # PyUnicode_FromUnicode() cansio fail ukijumuisha 16-bit wchar_t
+            # PyUnicode_FromUnicode() cannot fail ukijumuisha 16-bit wchar_t
             self.skipTest("specific to 32-bit wchar_t")
         a = array.array('u', invalid_str)
         self.assertRaises(ValueError, a.tounicode)

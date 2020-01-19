@@ -40,7 +40,7 @@ eleza duplicate_string(text):
     new object ukijumuisha a reference count of 1.
 
     This ni a best-effort: latin1 single letters na the empty
-    string ('') are singletons na cansio be cloned.
+    string ('') are singletons na cannot be cloned.
     """
     rudisha text.encode().decode()
 

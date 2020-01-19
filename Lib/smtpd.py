@@ -503,7 +503,7 @@ kundi SMTPChannel(asynchat.async_chat):
         ikiwa arg:
             address, params = self._getaddr(arg)
             ikiwa address:
-                self.push('252 Cansio VRFY user, but will accept message '
+                self.push('252 Cannot VRFY user, but will accept message '
                           'and attempt delivery')
             isipokua:
                 self.push('502 Could sio VRFY %s' % arg)
@@ -951,13 +951,13 @@ ikiwa __name__ == '__main__':
         jaribu:
             agiza pwd
         tatizo ImportError:
-            andika('Cansio agiza module "pwd"; try running ukijumuisha -n option.', file=sys.stderr)
+            andika('Cannot agiza module "pwd"; try running ukijumuisha -n option.', file=sys.stderr)
             sys.exit(1)
         nobody = pwd.getpwnam('nobody')[2]
         jaribu:
             os.setuid(nobody)
         tatizo PermissionError:
-            andika('Cansio setuid "nobody"; try running ukijumuisha -n option.', file=sys.stderr)
+            andika('Cannot setuid "nobody"; try running ukijumuisha -n option.', file=sys.stderr)
             sys.exit(1)
     jaribu:
         asyncore.loop()

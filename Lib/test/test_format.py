@@ -422,7 +422,7 @@ kundi FormatTest(unittest.TestCase):
             oldloc = locale.setlocale(locale.LC_ALL)
             locale.setlocale(locale.LC_ALL, '')
         tatizo locale.Error kama err:
-            self.skipTest("Cansio set locale: {}".format(err))
+            self.skipTest("Cannot set locale: {}".format(err))
         jaribu:
             localeconv = locale.localeconv()
             sep = localeconv['thousands_sep']

@@ -172,7 +172,7 @@ kundi FileList:
                           "matching '%s'"), dir_pattern)
         isipokua:
             ashiria DistutilsInternalError(
-                  "this cansio happen: invalid action '%s'" % action)
+                  "this cannot happen: invalid action '%s'" % action)
 
 
     # -- Filtering/selection methods -----------------------------------

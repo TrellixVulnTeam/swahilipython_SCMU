@@ -635,7 +635,7 @@ kundi timedelta:
 
     eleza __add__(self, other):
         ikiwa isinstance(other, timedelta):
-            # kila CPython compatibility, we cansio use
+            # kila CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
             rudisha timedelta(self._days + other._days,
                              self._seconds + other._seconds,
@@ -646,7 +646,7 @@ kundi timedelta:
 
     eleza __sub__(self, other):
         ikiwa isinstance(other, timedelta):
-            # kila CPython compatibility, we cansio use
+            # kila CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
             rudisha timedelta(self._days - other._days,
                              self._seconds - other._seconds,
@@ -659,7 +659,7 @@ kundi timedelta:
         rudisha NotImplemented
 
     eleza __neg__(self):
-        # kila CPython compatibility, we cansio use
+        # kila CPython compatibility, we cannot use
         # our __class__ here, but need a real timedelta
         rudisha timedelta(-self._days,
                          -self._seconds,
@@ -676,7 +676,7 @@ kundi timedelta:
 
     eleza __mul__(self, other):
         ikiwa isinstance(other, int):
-            # kila CPython compatibility, we cansio use
+            # kila CPython compatibility, we cannot use
             # our __class__ here, but need a real timedelta
             rudisha timedelta(self._days * other,
                              self._seconds * other,
@@ -1185,7 +1185,7 @@ kundi tzinfo:
             dtdst = dt.dst()
             ikiwa dtdst ni Tupu:
                 ashiria ValueError("fromutc(): dt.dst gave inconsistent "
-                                 "results; cansio convert")
+                                 "results; cannot convert")
         rudisha dt + dtdst
 
     # Pickle support.
@@ -1358,7 +1358,7 @@ kundi time:
             ikiwa allow_mixed:
                 rudisha 2 # arbitrary non-zero value
             isipokua:
-                ashiria TypeError("cansio compare naive na aware times")
+                ashiria TypeError("cannot compare naive na aware times")
         myhhmm = self._hour * 60 + self._minute - myoff//timedelta(minutes=1)
         othhmm = other._hour * 60 + other._minute - otoff//timedelta(minutes=1)
         rudisha _cmp((myhhmm, self._second, self._microsecond),
@@ -2053,7 +2053,7 @@ kundi datetime(date):
             ikiwa allow_mixed:
                 rudisha 2 # arbitrary non-zero value
             isipokua:
-                ashiria TypeError("cansio compare naive na aware datetimes")
+                ashiria TypeError("cannot compare naive na aware datetimes")
         # XXX What follows could be done more efficiently...
         diff = self - other     # this will take offsets into account
         ikiwa diff.days < 0:
@@ -2102,7 +2102,7 @@ kundi datetime(date):
         ikiwa myoff == otoff:
             rudisha base
         ikiwa myoff ni Tupu ama otoff ni Tupu:
-            ashiria TypeError("cansio mix naive na timezone-aware time")
+            ashiria TypeError("cannot mix naive na timezone-aware time")
         rudisha base + otoff - myoff
 
     eleza __hash__(self):

@@ -220,7 +220,7 @@ eleza makedirs(name, mode=0o777, exist_ok=Uongo):
     jaribu:
         mkdir(name, mode)
     tatizo OSError:
-        # Cansio rely on checking kila EEXIST, since the operating system
+        # Cannot rely on checking kila EEXIST, since the operating system
         # could give priority to other errors like EACCES ama EROFS
         ikiwa sio exist_ok ama sio path.isdir(name):
             raise
@@ -641,7 +641,7 @@ eleza get_exec_path(env=Tupu):
             isipokua:
                 ikiwa path_list ni sio Tupu:
                     ashiria ValueError(
-                        "env cansio contain 'PATH' na b'PATH' keys")
+                        "env cannot contain 'PATH' na b'PATH' keys")
                 path_list = path_listb
 
             ikiwa path_list ni sio Tupu na isinstance(path_list, bytes):
@@ -841,7 +841,7 @@ ikiwa _exists("fork") na sio _exists("spawnv") na _exists("execv"):
         ikiwa sio isinstance(args, (tuple, list)):
             ashiria TypeError('argv must be a tuple ama a list')
         ikiwa sio args ama sio args[0]:
-            ashiria ValueError('argv first element cansio be empty')
+            ashiria ValueError('argv first element cannot be empty')
         pid = fork()
         ikiwa sio pid:
             # Child

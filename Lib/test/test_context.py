@@ -391,9 +391,9 @@ kundi HashKey:
             ashiria EqError
 
         ikiwa self.error_on_eq_to ni sio Tupu na self.error_on_eq_to ni other:
-            ashiria ValueError(f'cansio compare {self!r} to {other!r}')
+            ashiria ValueError(f'cannot compare {self!r} to {other!r}')
         ikiwa other.error_on_eq_to ni sio Tupu na other.error_on_eq_to ni self:
-            ashiria ValueError(f'cansio compare {other!r} to {self!r}')
+            ashiria ValueError(f'cannot compare {other!r} to {self!r}')
 
         rudisha (self.name, self.hash) == (other.name, other.hash)
 
@@ -417,7 +417,7 @@ kundi HaskKeyCrasher:
 
     eleza __enter__(self):
         ikiwa HashKey._crasher ni sio Tupu:
-            ashiria RuntimeError('cansio nest crashers')
+            ashiria RuntimeError('cannot nest crashers')
         HashKey._crasher = self
 
     eleza __exit__(self, *exc):
@@ -654,7 +654,7 @@ kundi HamtTest(unittest.TestCase):
         h = h.delete(C)
         self.assertEqual(len(h), orig_len - 1)
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
             h.delete(Er)
 
         h = h.delete(D)
@@ -698,7 +698,7 @@ kundi HamtTest(unittest.TestCase):
         #             <Key name:B hash:201001>: 'b'
         #             <Key name:C hash:101001>: 'c'
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
             h.delete(Er)
 
         h = h.delete(Z)
@@ -972,10 +972,10 @@ kundi HamtTest(unittest.TestCase):
         h2 = hamt()
         h2 = h2.set(Er, 'a')
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
             h1 == h2
 
-        ukijumuisha self.assertRaisesRegex(ValueError, 'cansio compare'):
+        ukijumuisha self.assertRaisesRegex(ValueError, 'cannot compare'):
             h1 != h2
 
     eleza test_hamt_gc_1(self):

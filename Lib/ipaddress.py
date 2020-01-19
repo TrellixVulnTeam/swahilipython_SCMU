@@ -911,7 +911,7 @@ kundi _BaseNetwork(_IPAddressBase):
             ikiwa new_prefix < self._prefixlen:
                 ashiria ValueError('new prefix must be longer')
             ikiwa prefixlen_diff != 1:
-                ashiria ValueError('cansio set prefixlen_diff na new_prefix')
+                ashiria ValueError('cannot set prefixlen_diff na new_prefix')
             prefixlen_diff = new_prefix - self._prefixlen
 
         ikiwa prefixlen_diff < 0:
@@ -958,13 +958,13 @@ kundi _BaseNetwork(_IPAddressBase):
             ikiwa new_prefix > self._prefixlen:
                 ashiria ValueError('new prefix must be shorter')
             ikiwa prefixlen_diff != 1:
-                ashiria ValueError('cansio set prefixlen_diff na new_prefix')
+                ashiria ValueError('cannot set prefixlen_diff na new_prefix')
             prefixlen_diff = self._prefixlen - new_prefix
 
         new_prefixlen = self.prefixlen - prefixlen_diff
         ikiwa new_prefixlen < 0:
             ashiria ValueError(
-                'current prefixlen ni %d, cansio have a prefixlen_diff of %d' %
+                'current prefixlen ni %d, cannot have a prefixlen_diff of %d' %
                 (self.prefixlen, prefixlen_diff))
         rudisha self.__class__((
             int(self.network_address) & (int(self.netmask) << prefixlen_diff),
@@ -1137,7 +1137,7 @@ kundi _BaseV4:
 
         """
         ikiwa sio ip_str:
-            ashiria AddressValueError('Address cansio be empty')
+            ashiria AddressValueError('Address cannot be empty')
 
         octets = ip_str.split('.')
         ikiwa len(octets) != 4:
@@ -1563,7 +1563,7 @@ kundi _BaseV6:
 
         """
         ikiwa sio ip_str:
-            ashiria AddressValueError('Address cansio be empty')
+            ashiria AddressValueError('Address cannot be empty')
 
         parts = ip_str.split(':')
 

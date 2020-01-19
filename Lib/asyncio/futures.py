@@ -245,7 +245,7 @@ kundi Future:
             exception = exception()
         ikiwa type(exception) ni StopIteration:
             ashiria TypeError("StopIteration interacts badly ukijumuisha generators "
-                            "and cansio be raised into a Future")
+                            "and cannot be raised into a Future")
         self._exception = exception
         self._state = _FINISHED
         self.__schedule_callbacks()

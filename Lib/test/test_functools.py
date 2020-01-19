@@ -2503,7 +2503,7 @@ kundi TestCachedProperty(unittest.TestCase):
 
         self.assertEqual(
             str(ctx.exception.__context__),
-            str(TypeError("Cansio assign the same cached_property to two different names ('a' na 'b')."))
+            str(TypeError("Cannot assign the same cached_property to two different names ('a' na 'b')."))
         )
 
     eleza test_reuse_same_name(self):
@@ -2538,7 +2538,7 @@ kundi TestCachedProperty(unittest.TestCase):
 
         ukijumuisha self.assertRaisesRegex(
                 TypeError,
-                "Cansio use cached_property instance without calling __set_name__ on it.",
+                "Cannot use cached_property instance without calling __set_name__ on it.",
         ):
             Foo().cp
 

@@ -431,7 +431,7 @@ eleza mac_ver(release='', versioninfo=('', '', ''), machine=''):
         versioninfo, machine) ukijumuisha versioninfo being a tuple (version,
         dev_stage, non_release_version).
 
-        Entries which cansio be determined are set to the parameter values
+        Entries which cannot be determined are set to the parameter values
         which default to ''. All tuple entries are strings.
     """
 
@@ -463,7 +463,7 @@ eleza java_ver(release='', vendor='', vminfo=('', '', ''), osinfo=('', '', '')):
         a tuple (vm_name, vm_release, vm_vendor) na osinfo being a
         tuple (os_name, os_version, os_arch).
 
-        Values which cansio be determined are set to the defaults
+        Values which cannot be determined are set to the defaults
         given kama parameters (which all default to '').
 
     """
@@ -667,7 +667,7 @@ eleza architecture(executable=sys.executable, bits='', linkage=''):
         the bit architecture na the linkage format used kila the
         executable. Both values are returned kama strings.
 
-        Values that cansio be determined are returned kama given by the
+        Values that cannot be determined are returned kama given by the
         parameter presets. If bits ni given kama '', the sizeof(pointer)
         (or sizeof(long) on Python version < 1.5.2) ni used as
         indicator kila the supported pointer size.
@@ -752,7 +752,7 @@ eleza uname():
         Note that unlike the os.uname function this also returns
         possible processor information kama an additional tuple entry.
 
-        Entries which cansio be determined are set to ''.
+        Entries which cannot be determined are set to ''.
 
     """
     global _uname_cache
@@ -885,7 +885,7 @@ eleza system():
 
     """ Returns the system/OS name, e.g. 'Linux', 'Windows' ama 'Java'.
 
-        An empty string ni returned ikiwa the value cansio be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().system
@@ -895,7 +895,7 @@ eleza node():
     """ Returns the computer's network name (which may sio be fully
         qualified)
 
-        An empty string ni returned ikiwa the value cansio be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().node
@@ -904,7 +904,7 @@ eleza release():
 
     """ Returns the system's release, e.g. '2.2.0' ama 'NT'
 
-        An empty string ni returned ikiwa the value cansio be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().release
@@ -913,7 +913,7 @@ eleza version():
 
     """ Returns the system's release version, e.g. '#3 on degas'
 
-        An empty string ni returned ikiwa the value cansio be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().version
@@ -922,7 +922,7 @@ eleza machine():
 
     """ Returns the machine type, e.g. 'i386'
 
-        An empty string ni returned ikiwa the value cansio be determined.
+        An empty string ni returned ikiwa the value cannot be determined.
 
     """
     rudisha uname().machine
@@ -931,7 +931,7 @@ eleza processor():
 
     """ Returns the (true) processor name, e.g. 'amdk6'
 
-        An empty string ni returned ikiwa the value cansio be
+        An empty string ni returned ikiwa the value cannot be
         determined. Note that many platforms do sio provide this
         information ama simply rudisha the same value kama kila machine(),
         e.g.  NetBSD does this.
@@ -982,7 +982,7 @@ eleza _sys_version(sys_version=Tupu):
         defaults to '.0').
 
         The function returns empty strings kila tuple entries that
-        cansio be determined.
+        cannot be determined.
 
         sys_version may be given to parse an alternative version
         string, e.g. ikiwa the version was read kutoka a different Python

@@ -100,7 +100,7 @@ and much better kila input fuzzily ordered.
 
 Moreover, ikiwa you output the 0'th item on disk na get an input which
 may sio fit kwenye the current tournament (because the value "wins" over
-the last output value), it cansio fit kwenye the heap, so the size of the
+the last output value), it cannot fit kwenye the heap, so the size of the
 heap decreases.  The freed memory could be cleverly reused immediately
 kila progressively building a second heap, which grows at exactly the
 same rate the first heap ni melting.  When the first heap completely
@@ -114,7 +114,7 @@ around. :-)
 --------------------
 [1] The disk balancing algorithms which are current, nowadays, are
 more annoying than clever, na this ni a consequence of the seeking
-capabilities of the disks.  On devices which cansio seek, like big
+capabilities of the disks.  On devices which cannot seek, like big
 tape drives, the story was quite different, na one had to be very
 clever to ensure (far kwenye advance) that each tape movement will be the
 most effective possible (that is, will best participate at

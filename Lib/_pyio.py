@@ -185,7 +185,7 @@ eleza open(file, mode="r", buffering=-1, encoding=Tupu, errors=Tupu,
     binary = "b" kwenye modes
     ikiwa "U" kwenye modes:
         ikiwa creating ama writing ama appending ama updating:
-            ashiria ValueError("mode U cansio be combined ukijumuisha 'x', 'w', 'a', ama '+'")
+            ashiria ValueError("mode U cannot be combined ukijumuisha 'x', 'w', 'a', ama '+'")
         agiza warnings
         warnings.warn("'U' mode ni deprecated",
                       DeprecationWarning, 2)
@@ -317,7 +317,7 @@ kundi IOBase(metaclass=abc.ABCMeta):
 
     This kundi provides dummy implementations kila many methods that
     derived classes can override selectively; the default implementations
-    represent a file that cansio be read, written ama seeked.
+    represent a file that cannot be read, written ama seeked.
 
     Even though IOBase does sio declare read ama write because
     their signatures will vary, implementations na clients should
@@ -759,7 +759,7 @@ kundi BufferedIOBase(IOBase):
         kwenye bytes.
 
         Raises BlockingIOError ikiwa the buffer ni full na the
-        underlying raw stream cansio accept more data at the moment.
+        underlying raw stream cannot accept more data at the moment.
         """
         self._unsupported("write")
 
@@ -858,7 +858,7 @@ kundi _BufferedIOMixin(BufferedIOBase):
         rudisha self.raw.mode
 
     eleza __getstate__(self):
-        ashiria TypeError(f"cansio pickle {self.__class__.__name__!r} object")
+        ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
 
     eleza __repr__(self):
         modname = self.__class__.__module__
@@ -1551,7 +1551,7 @@ kundi FileIO(RawIOBase):
         jaribu:
             ikiwa fd < 0:
                 ikiwa sio closefd:
-                    ashiria ValueError('Cansio use closefd=Uongo ukijumuisha file name')
+                    ashiria ValueError('Cannot use closefd=Uongo ukijumuisha file name')
                 ikiwa opener ni Tupu:
                     fd = os.open(file, flags, 0o666)
                 isipokua:
@@ -1602,7 +1602,7 @@ kundi FileIO(RawIOBase):
             self.close()
 
     eleza __getstate__(self):
-        ashiria TypeError(f"cansio pickle {self.__class__.__name__!r} object")
+        ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
 
     eleza __repr__(self):
         class_name = '%s.%s' % (self.__class__.__module__,
@@ -1738,7 +1738,7 @@ kundi FileIO(RawIOBase):
     eleza close(self):
         """Close the file.
 
-        A closed file cansio be used kila further I/O operations.  close() may be
+        A closed file cannot be used kila further I/O operations.  close() may be
         called more than once without error.
         """
         ikiwa sio self.closed:

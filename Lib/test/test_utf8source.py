@@ -33,7 +33,7 @@ kundi BuiltinCompileTests(unittest.TestCase):
         jaribu:
             code = compile(source_code, '<dummy>', 'exec')
         tatizo SyntaxError:
-            self.fail("compile() cansio handle Latin-1 source")
+            self.fail("compile() cannot handle Latin-1 source")
         ns = {}
         exec(code, ns)
         self.assertEqual('Ç', ns['u'])

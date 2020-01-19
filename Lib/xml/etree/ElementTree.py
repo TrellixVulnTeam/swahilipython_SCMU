@@ -862,7 +862,7 @@ eleza _namespaces(elem, default_namespace=Tupu):
                 ikiwa default_namespace:
                     # FIXME: can this be handled kwenye XML 1.0?
                     ashiria ValueError(
-                        "cansio use non-qualified names ukijumuisha "
+                        "cannot use non-qualified names ukijumuisha "
                         "default_namespace option"
                         )
                 qnames[qname] = qname
@@ -1051,7 +1051,7 @@ register_namespace._namespace_map = _namespace_map
 
 eleza _raise_serialization_error(text):
     ashiria TypeError(
-        "cansio serialize %r (type %s)" % (text, type(text).__name__)
+        "cannot serialize %r (type %s)" % (text, type(text).__name__)
         )
 
 eleza _escape_cdata(text):

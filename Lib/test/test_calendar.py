@@ -550,8 +550,8 @@ kundi CalendarTestCase(unittest.TestCase):
             local_weekday = cal.formatweekday(1, 10)
             local_month = cal.formatmonthname(2010, 10, 10)
         tatizo locale.Error:
-            # cansio set the system default locale -- skip rest of test
-            ashiria unittest.SkipTest('cansio set the system default locale')
+            # cannot set the system default locale -- skip rest of test
+            ashiria unittest.SkipTest('cannot set the system default locale')
         self.assertIsInstance(local_weekday, str)
         self.assertIsInstance(local_month, str)
         self.assertEqual(len(local_weekday), 10)
@@ -845,7 +845,7 @@ kundi CommandLineTestCase(unittest.TestCase):
             mwishowe:
                 locale.setlocale(locale.LC_TIME, oldlocale)
         tatizo (locale.Error, ValueError):
-            self.skipTest('cansio set the system default locale')
+            self.skipTest('cannot set the system default locale')
         stdout = self.run_ok('--locale', lang, '--encoding', enc, '2004')
         self.assertIn('2004'.encode(enc), stdout)
 

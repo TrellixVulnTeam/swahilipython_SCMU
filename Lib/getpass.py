@@ -3,7 +3,7 @@
 getpita(prompt[, stream]) - Prompt kila a password, ukijumuisha echo turned off.
 getuser() - Get the user name kutoka the environment ama password database.
 
-GetPassWarning - This UserWarning ni issued when getpita() cansio prevent
+GetPassWarning - This UserWarning ni issued when getpita() cannot prevent
                  echoing of the password contents wakati reading.
 
 On Windows, the msvcrt module will be used.

@@ -831,7 +831,7 @@ kundi ReferencesTestCase(TestBase):
         self.assertEqual(a != d, a ni sio d)
 
     eleza test_ordering(self):
-        # weakrefs cansio be ordered, even ikiwa the underlying objects can.
+        # weakrefs cannot be ordered, even ikiwa the underlying objects can.
         ops = [operator.lt, operator.gt, operator.le, operator.ge]
         x = Object(1)
         y = Object(1)
@@ -856,7 +856,7 @@ kundi ReferencesTestCase(TestBase):
         gc.collect()
         # Dead weakrefs:
         # - retain their hash ni they were hashed when alive;
-        # - otherwise, cansio be hashed.
+        # - otherwise, cannot be hashed.
         self.assertEqual(hash(a), hash(42))
         self.assertRaises(TypeError, hash, b)
 
@@ -1147,7 +1147,7 @@ kundi WeakMethodTestCase(unittest.TestCase):
         gc.collect()
         self.assertEqual(hash(a), ha)
         self.assertEqual(hash(b), ha)
-        # If it wasn't hashed when alive, a dead WeakMethod cansio be hashed.
+        # If it wasn't hashed when alive, a dead WeakMethod cannot be hashed.
         self.assertRaises(TypeError, hash, c)
 
 

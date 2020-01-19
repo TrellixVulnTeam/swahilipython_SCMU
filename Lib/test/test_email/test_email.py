@@ -382,7 +382,7 @@ kundi TestMessageAPI(TestEmailBase):
         eq(msg.get_param('foo', header='x-header'), '')
         eq(msg.get_param('bar', header='x-header'), 'one')
         eq(msg.get_param('baz', header='x-header'), 'two')
-        # XXX: We are sio RFC-2045 compliant!  We cansio parse:
+        # XXX: We are sio RFC-2045 compliant!  We cannot parse:
         # msg["Content-Type"] = 'text/plain; weird="hey; dolly? [you] @ <\\"home\\">?"'
         # msg.get_param("weird")
         # yet.
@@ -2479,7 +2479,7 @@ This report relates to a message you sent ukijumuisha the following header field
   To: SoCal Raves <scr@socal-raves.org>
   Subject: [scr] yeah kila Ians!!
 
-Your message cansio be delivered to the following recipients:
+Your message cannot be delivered to the following recipients:
 
   Recipient address: jangel1@cougar.noc.ucla.edu
   Reason: recipient reached disk quota

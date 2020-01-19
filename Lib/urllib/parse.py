@@ -118,7 +118,7 @@ eleza _coerce_args(*args):
         # We special-case the empty string to support the
         # "scheme=''" default argument to some functions
         ikiwa arg na isinstance(arg, str) != str_input:
-            ashiria TypeError("Cansio mix str na non-str arguments")
+            ashiria TypeError("Cannot mix str na non-str arguments")
     ikiwa str_input:
         rudisha args + (_noop,)
     rudisha _decode_args(args) + (_encode_result,)

@@ -192,7 +192,7 @@ eleza length_hint(obj, default=0):
     integer >= 0.
     """
     ikiwa sio isinstance(default, int):
-        msg = ("'%s' object cansio be interpreted kama an integer" %
+        msg = ("'%s' object cannot be interpreted kama an integer" %
                type(default).__name__)
         ashiria TypeError(msg)
 

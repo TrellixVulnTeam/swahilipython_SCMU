@@ -110,7 +110,7 @@ kundi ViewWindow(Toplevel):
                  *, _htest=Uongo, _utest=Uongo):
         """Show the given text kwenye a scrollable window ukijumuisha a 'close' button.
 
-        If modal ni left Kweli, users cansio interact ukijumuisha other windows
+        If modal ni left Kweli, users cannot interact ukijumuisha other windows
         until the textview window ni closed.
 
         parent - parent of this dialog
@@ -166,7 +166,7 @@ eleza view_file(parent, title, filename, encoding, modal=Kweli, wrap='word',
               _utest=Uongo):
     """Create text viewer kila text kwenye filename.
 
-    Return error message ikiwa file cansio be read.  Otherwise calls view_text
+    Return error message ikiwa file cannot be read.  Otherwise calls view_text
     ukijumuisha contents of the file.
     """
     jaribu:

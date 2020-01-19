@@ -132,7 +132,7 @@ kundi BaseTaskTests:
         task = asyncio.ensure_future(test(), loop=self.loop)
 
         ukijumuisha self.assertRaisesRegex(RuntimeError,
-                                    'Task cansio await on itself'):
+                                    'Task cannot await on itself'):
             self.loop.run_until_complete(task)
 
     eleza test_task_class(self):
