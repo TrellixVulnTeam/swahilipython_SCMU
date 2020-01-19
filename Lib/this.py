@@ -1,24 +1,25 @@
-s = """Gur Mra bs Clguba, ol Gvz Crgref
+# generated with codecs.encode(s, 'rot13')
+s = """Ohfnen mn Clguba, an Gvz Crgref
 
-Ornhgvshy vf orggre guna htyl.
-Rkcyvpvg vf orggre guna vzcyvpvg.
-Fvzcyr vf orggre guna pbzcyrk.
-Pbzcyrk vf orggre guna pbzcyvpngrq.
-Syng vf orggre guna arfgrq.
-Fcnefr vf orggre guna qrafr.
-Ernqnovyvgl pbhagf.
-Fcrpvny pnfrf nera'g fcrpvny rabhtu gb oernx gur ehyrf.
-Nygubhtu cenpgvpnyvgl orngf chevgl.
-Reebef fubhyq arire cnff fvyragyl.
-Hayrff rkcyvpvgyl fvyraprq.
-Va gur snpr bs nzovthvgl, ershfr gur grzcgngvba gb thrff.
-Gurer fubhyq or bar-- naq cersrenoyl bayl bar --boivbhf jnl gb qb vg.
-Nygubhtu gung jnl znl abg or boivbhf ng svefg hayrff lbh'er Qhgpu.
-Abj vf orggre guna arire.
-Nygubhtu arire vf bsgra orggre guna *evtug* abj.
-Vs gur vzcyrzragngvba vf uneq gb rkcynva, vg'f n onq vqrn.
-Vs gur vzcyrzragngvba vf rnfl gb rkcynva, vg znl or n tbbq vqrn.
-Anzrfcnprf ner bar ubaxvat terng vqrn -- yrg'f qb zber bs gubfr!"""
+Herzob av oben xhyvxb honln.
+Znnan jnmv av oben xhyvxb znnan svpur.
+Enuvfv av oben xhyvxb athzh.
+Athzh av oben xhyvxb vfvlbryrjrxn.
+Zcnatvyvb jn zbwn xjn zbwn av oben xhyvxb zcnatvyvb jralr ivjnatb.
+Ansnfv xhojn av oben xhyvxb zfbatnznab.
+Zfvzob xhfbzrxn av zhuvzh.
+Xrfv znnyhz fvb fnonoh ln xhihawn furevn.
+Ynxvav hovxven hfvmvqv hgraqnxnmv.
+Zngngvmb lnfvjnuv snalvxn xvzln.
+Vfvcbxhjn lnxvalnznmvfujn unqunenav.
+Hxvxhzonan an hgngn jn znnan, cvatn hfunjvfuv jn xhpurmn xnznev.
+Lncnfjn xhjr an awvn zbwn-- vxvjrmrxnan zbwn ghh --qunuvev ln xhsnaln wnzob.
+Uhraqn vfvjr qunuvev zjnamb xnzn jrjr fv Zubynamv.
+Chaqr av oben xhyvxb xnzjr.
+Ynxvav jnxngv zjvatvar xnzjr av oben xhyvxb *fnfn* uviv.
+Vxvjn gnengvoh av athzh xhryrmrn, fvb jnmb oben.
+Vxvjn gnengvoh av enuvfv xhryrmrn, uhraqn vxnjn jnmb oben.
+Anzrfcnprf mncraqrmn xhcvaqhxvn -- ghsnalr uvmb mnvqv!"""
 
 d = {}
 kila c kwenye (65, 97):
